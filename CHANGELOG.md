@@ -11,6 +11,7 @@ This project follows semantic versioning once published.
 - Added upload crop sessions with cropper loading isolated to the crop path.
 - Changed default SCSS to square, neutral fallbacks with per-system styling only.
 - Added verification for component imports, rendered upload slots, root import isolation, product-name leaks, custom element tags, radius fallbacks, and absence of `wrap` classes in upload output.
+- Added the package publish workflow for tag-based and manual npm publishing.
 
 ## 0.2.0
 
