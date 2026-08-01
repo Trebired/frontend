@@ -1,0 +1,118 @@
+.tbf-flash-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: min(380px, calc(100vw - 36px));
+  pointer-events: none;
+  transition: height var(--tbf-transition-fast) ease;
+}
+
+.tbf-flash {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: var(--tbf-border-width) solid var(--tbf-border);
+  border-radius: var(--tbf-radius);
+  color: var(--tbf-text);
+  background: var(--tbf-surface);
+  box-shadow: var(--tbf-shadow);
+  opacity: 0;
+  pointer-events: auto;
+  transform: translateY(var(--tbf-flash-y, 0)) translateX(16px);
+  transition:
+    opacity var(--tbf-transition-fast) ease,
+    transform var(--tbf-transition-fast) ease;
+}
+
+.tbf-flash[data-tbf-visible="true"] {
+  opacity: 1;
+  transform: translateY(var(--tbf-flash-y, 0)) translateX(0);
+}
+
+.tbf-flash[data-tbf-hiding="true"] {
+  opacity: 0;
+}
+
+.tbf-flash__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--tbf-surface-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tbf-flash__body,
+.tbf-flash__form {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tbf-flash__title,
+.tbf-flash__description {
+  min-width: 0;
+}
+
+.tbf-flash__description {
+  color: var(--tbf-text-muted);
+  font-size: 0.92rem;
+}
+
+.tbf-flash__close {
+  width: 32px;
+  min-height: 32px;
+  padding: 0;
+  overflow: hidden;
+  border: var(--tbf-border-width) solid var(--tbf-border);
+  border-radius: var(--tbf-radius-sm);
+  color: var(--tbf-text);
+  background: var(--tbf-surface-muted);
+  text-indent: -999px;
+  cursor: pointer;
+}
+
+.tbf-flash__close::after {
+  content: "x";
+  display: block;
+  text-indent: 0;
+}
+
+.tbf-flash__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tbf-flash__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--tbf-focus);
+  transform-origin: left center;
+  animation-name: tbf-flash-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes tbf-flash-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}

@@ -11,16 +11,12 @@ import { bindPortals, ensureLayerRoot } from "./layer/index.js";
 import type { BindRoot, Cleanup } from "./dom/index.js";
 import { flash } from "./flash/index.js";
 import { progress } from "./progress/index.js";
+import {
+  resolveFrontendLogger,
+  type FrontendLoggingOptions,
+} from "./logging/index.js";
 
-type FrontendLoggerAdapter = {
-  debug?: (group: string, message: string, payload?: Record<string, unknown>) => void;
-  error?: (group: string, message: string, payload?: Record<string, unknown>) => void;
-  info?: (group: string, message: string, payload?: Record<string, unknown>) => void;
-  warn?: (group: string, message: string, payload?: Record<string, unknown>) => void;
-};
-
-type FrontendRuntimeAdapters = ActionAdapters & {
-  logger?: FrontendLoggerAdapter;
+type FrontendRuntimeAdapters = ActionAdapters & FrontendLoggingOptions & {
   progress?: ProgressHandle;
   themePersistence?: ThemeRuntimeOptions["persistence"];
   live?: LiveOptions["skip"];
@@ -28,8 +24,10 @@ type FrontendRuntimeAdapters = ActionAdapters & {
 
 type FrontendRuntimeOptions = {
   adapters?: FrontendRuntimeAdapters;
+  frontend_quiet?: boolean;
   live?: Omit<LiveOptions, "skip">;
   observe?: boolean;
+  quiet?: boolean;
   theme?: Omit<ThemeRuntimeOptions, "persistence">;
 };
 
@@ -83,7 +81,15 @@ function bindFrontendRuntime(
   options: FrontendRuntimeOptions = {},
 ): FrontendRuntimeBinding {
   const scope = rootScope(root);
+  const logger = resolveFrontendLogger({
+    ...options.adapters,
+    frontend_quiet: options.frontend_quiet,
+    quiet: options.quiet,
+  });
   bindFrontendRuntimeOnce(scope, options);
+  logger.info("runtime", "bound", {
+    observe: options.observe !== false,
+  });
   let observer: MutationObserver | null = null;
   if (options.observe !== false && typeof MutationObserver === "function") {
     observer = new MutationObserver((records) => {
@@ -101,6 +107,7 @@ function bindFrontendRuntime(
   return {
     disconnect() {
       observer?.disconnect();
+      logger.info("runtime", "disconnected");
     },
     root: scope,
   };
@@ -108,7 +115,7 @@ function bindFrontendRuntime(
 
 export { bindFrontendRuntime, rehydrate };
 export type {
-  FrontendLoggerAdapter,
+  FrontendLoggingOptions,
   FrontendRuntimeAdapters,
   FrontendRuntimeBinding,
   FrontendRuntimeOptions,

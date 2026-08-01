@@ -1,0 +1,16 @@
+.tbf-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  pointer-events: none;
+  z-index: var(--tbf-z-progress);
+}
+
+.tbf-progress__bar {
+  display: block;
+  height: 100%;
+  background: var(--tbf-focus);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--tbf-transition-fast) ease;
+}

@@ -9,7 +9,7 @@ const aliasMapDir = path.join(rootDir, ".code-discipline", "imports");
 async function main() {
   const aliasTargets = await readAliasMap();
   await promotePublicDistFiles();
-  await copyStylesheet();
+  await copyScssFiles();
   await rewriteDistAliases(aliasTargets);
 }
 
@@ -35,13 +35,6 @@ async function promotePublicDistFiles() {
     force: true,
     recursive: true,
   });
-}
-
-async function copyStylesheet() {
-  await fs.copyFile(
-    path.join(rootDir, "src", "styles.css"),
-    path.join(distDir, "styles.css"),
-  );
 }
 
 async function rewriteDistAliases(aliasTargets) {
@@ -95,7 +88,7 @@ function resolveCompiledTarget(target, kind) {
 
   const relativeTarget = normalized.replace(/^src\//u, "");
   const compiledRelative = relativeTarget.replace(/\.(ts|tsx|js|jsx)$/u, kind === "types" ? ".d.ts" : ".js");
-  return path.join(distDir, relativeTarget === "styles.css" ? "styles.css" : compiledRelative);
+  return path.join(distDir, compiledRelative);
 }
 
 function toRelativeImport(value) {
@@ -105,6 +98,31 @@ function toRelativeImport(value) {
 
 function normalizePath(value) {
   return value.replace(/\\/g, "/").replace(/^\.\//u, "");
+}
+
+async function copyScssFiles() {
+  const files = await collectSourceScssFiles(path.join(rootDir, "src"));
+  await Promise.all(files.map(async (filePath) => {
+    const relative = normalizePath(path.relative(path.join(rootDir, "src"), filePath));
+    const target = path.join(distDir, relative);
+    await fs.mkdir(path.dirname(target), { recursive: true });
+    await fs.copyFile(filePath, target);
+  }));
+}
+
+async function collectSourceScssFiles(startDir) {
+  const files = [];
+  const stack = [startDir];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    const entries = await fs.readdir(current, { withFileTypes: true });
+    for (const entry of entries) {
+      const nextPath = path.join(current, entry.name);
+      if (entry.isDirectory()) stack.push(nextPath);
+      else if (entry.isFile() && entry.name.endsWith(".scss")) files.push(nextPath);
+    }
+  }
+  return files;
 }
 
 await main();

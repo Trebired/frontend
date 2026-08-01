@@ -1,0 +1,42 @@
+.tbf-button {
+  min-height: 32px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: var(--tbf-border-width) solid var(--tbf-border);
+  border-radius: var(--tbf-radius-sm);
+  color: var(--tbf-text);
+  background: var(--tbf-surface-muted);
+  cursor: pointer;
+}
+
+.tbf-button--strong {
+  border-color: var(--tbf-focus);
+  color: var(--tbf-surface);
+  background: var(--tbf-focus);
+}
+
+.tbf-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--tbf-z-confetti);
+}
+
+.tbf-confetti i {
+  position: absolute;
+  top: -12px;
+  left: var(--x);
+  width: 7px;
+  height: 12px;
+  background: var(--tbf-confetti-color, var(--tbf-focus));
+  filter: hue-rotate(var(--tbf-confetti-hue, 0deg));
+  transform: rotate(var(--r));
+  animation: tbf-confetti-fall var(--d) ease-in forwards;
+}
+
+@keyframes tbf-confetti-fall {
+  to {
+    top: 100vh;
+    transform: rotate(calc(var(--r) + 180deg));
+  }
+}

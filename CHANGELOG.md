@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.2.0
+
+- Replaced the aggregate CSS export with per-system SCSS package exports for tokens, utilities, actions, flash, progress, layers, tooltips, popovers, modals, and inputs.
+- Added logger-adapter-backed frontend runtime logging with `frontend_quiet` support.
+- Added verification for SCSS package import resolution, quiet runtime logging, and absence of the old `styles.css` export.
+
 ## 0.1.1
 
 - Completed the reusable frontend runtime package surface with Code Discipline `imports` enforcement and dead import removal enabled.

@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `@trebired/frontend`.
+This package provides generic browser runtime systems for Trebired products.
 
 ## Development Setup
 
@@ -33,7 +33,8 @@ Committed `*.spec.ts` and `*.spec.tsx` files are banned by Code Discipline. Veri
 ## Code Discipline
 
 - Keep the config at `.code-discipline/config.ts`.
-- Use `syncImports.output.type: "alias-map"`.
+- Use `imports.output.type: "alias-map"`.
+- Keep `imports.removeDeadImports: true`.
 - Keep `allowRelative: ["./"]`.
 - Do not add rule-level excludes to bypass discipline.
 - Keep `@trebired/code-discipline` in `devDependencies`.

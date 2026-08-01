@@ -1,0 +1,24 @@
+.tbf-popover,
+[data-tbf-popover] {
+  position: fixed;
+  min-width: 220px;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 8px;
+  border: var(--tbf-border-width) solid var(--tbf-border);
+  border-radius: var(--tbf-radius);
+  color: var(--tbf-text);
+  background: var(--tbf-surface);
+  box-shadow: var(--tbf-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity var(--tbf-transition-fast) ease,
+    transform var(--tbf-transition-fast) ease;
+}
+
+[data-tbf-popover][data-tbf-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}

@@ -22,7 +22,7 @@ function fireSuccessConfetti(options: ConfettiOptions = {}) {
     piece.style.setProperty("--x", `${Math.random() * 100}vw`);
     piece.style.setProperty("--d", `${Math.random() * 0.7 + 0.4}s`);
     piece.style.setProperty("--r", `${Math.random() * 360}deg`);
-    piece.style.setProperty("--h", String(Math.floor(Math.random() * 360)));
+    piece.style.setProperty("--tbf-confetti-hue", `${Math.floor(Math.random() * 360)}deg`);
     layer.appendChild(piece);
   }
   document.body.appendChild(layer);

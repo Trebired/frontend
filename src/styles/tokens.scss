@@ -1,0 +1,22 @@
+:root {
+  --tbf-radius: var(--radius-md, 8px);
+  --tbf-radius-sm: var(--radius-sm, 6px);
+  --tbf-border-width: var(--border-width, 1px);
+  --tbf-border: var(--border-surface-1, #000);
+  --tbf-surface: var(--surface-1, #fff);
+  --tbf-surface-muted: var(--surface-2, #fff);
+  --tbf-text: var(--text-color, #000);
+  --tbf-text-muted: var(--text-color-muted, #000);
+  --tbf-focus: var(--focus-color, #000);
+  --tbf-shadow: var(--shadow-overlay-lg, 0 0 0 1px #000);
+  --tbf-overlay: color-mix(in srgb, var(--tbf-text) 48%, transparent);
+  --tbf-transition-fast: var(--transition-2, 180ms);
+  --tbf-transition-normal: var(--transition-3, 240ms);
+  --tbf-gap-xs: var(--space-xs, 4px);
+  --tbf-gap-sm: var(--space-sm, 8px);
+  --tbf-gap-md: var(--space-md, 12px);
+  --tbf-gap-lg: var(--space-lg, 16px);
+  --tbf-z-layer: var(--z-layer-root, 1000);
+  --tbf-z-progress: var(--z-progress, 99999);
+  --tbf-z-confetti: var(--z-confetti, 99998);
+}

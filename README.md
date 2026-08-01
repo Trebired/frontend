@@ -1,6 +1,6 @@
 # @trebired/frontend
 
-Generic browser runtime systems for DOM binding, actions, overlays, theme state, live refresh, inputs, upload, and React rendering.
+Generic browser runtime systems for DOM binding, actions, overlays, theme state, live refresh, inputs, upload, and React rendering in the Trebired ecosystem.
 
 `@trebired/frontend` owns reusable browser behavior. Callers own product routes, product copy, storage keys, icon systems, persistence, navigation, logging, and backend response contracts beyond the documented generic JSON shape.
 
@@ -18,7 +18,6 @@ Bind the canonical runtime after your document shell is available:
 
 ```ts
 import { bindFrontendRuntime } from "@trebired/frontend";
-import "@trebired/frontend/styles.css";
 
 bindFrontendRuntime(document, {
   adapters: {
@@ -29,6 +28,21 @@ bindFrontendRuntime(document, {
     },
   },
 });
+```
+
+Load only the SCSS systems your product uses:
+
+```scss
+@use "@trebired/frontend/styles/tokens" as *;
+@use "@trebired/frontend/styles/utils" as *;
+@use "@trebired/frontend/actions/styles" as *;
+@use "@trebired/frontend/flash/styles" as *;
+@use "@trebired/frontend/progress/styles" as *;
+@use "@trebired/frontend/layer/styles" as *;
+@use "@trebired/frontend/tooltip/styles" as *;
+@use "@trebired/frontend/popover/styles" as *;
+@use "@trebired/frontend/modal/styles" as *;
+@use "@trebired/frontend/inputs/styles" as *;
 ```
 
 Markup stays normal HTML:
@@ -57,7 +71,7 @@ The package exposes feature binders such as `bindActionForms(root)`, `bindToolti
 
 ### Adapter Boundary
 
-Options accept adapters for logger, i18n, navigation, reload, progress, flash, theme persistence, and live skip checks. Defaults stay browser-generic.
+Options accept adapters for logger, i18n, navigation, reload, progress, flash, theme persistence, and live skip checks. Defaults stay browser-generic. Runtime logging uses `@trebired/logger-adapter` and emits under `trebired.frontend.*`.
 
 ### Data Attributes
 
@@ -70,6 +84,8 @@ The package-owned selectors use `data-tbf-*` attributes. They never require cust
 `bindFrontendRuntime(root, options)` accepts:
 
 - `adapters.logger`
+- `adapters.loggerAdapter`
+- `adapters.defaultLogger`
 - `adapters.i18n`
 - `adapters.navigation`
 - `adapters.reload`
@@ -80,6 +96,10 @@ The package-owned selectors use `data-tbf-*` attributes. They never require cust
 - `theme`
 - `live`
 - `observe`
+- `frontend_quiet`
+- `quiet`
+
+Set `frontend_quiet: true`, `quiet: true`, `globalThis.frontend_quiet = true`, or `<html data-tbf-frontend-quiet="true">` to disable package runtime logging.
 
 ## Runtime
 
@@ -89,7 +109,23 @@ The canonical runtime binds theme, layer roots, progress, flash, inputs, uploads
 
 ### CSS
 
-Use `@trebired/frontend/styles.css` for the package-owned UI used by flash, progress, overlays, tooltip, popover, and upload.
+There is no aggregate CSS file. Each style-owning system exposes SCSS through package exports so `@trebired/bundler` can resolve package `sass` and `style` conditions from `node_modules`.
+
+Base exports:
+
+- `@trebired/frontend/styles/tokens`
+- `@trebired/frontend/styles/utils`
+
+System exports:
+
+- `@trebired/frontend/actions/styles`
+- `@trebired/frontend/flash/styles`
+- `@trebired/frontend/progress/styles`
+- `@trebired/frontend/layer/styles`
+- `@trebired/frontend/tooltip/styles`
+- `@trebired/frontend/popover/styles`
+- `@trebired/frontend/modal/styles`
+- `@trebired/frontend/inputs/styles`
 
 ## Public API
 
@@ -110,7 +146,16 @@ Entrypoints:
 - `@trebired/frontend/live`
 - `@trebired/frontend/react`
 - `@trebired/frontend/styles`
-- `@trebired/frontend/styles.css`
+- `@trebired/frontend/styles/tokens`
+- `@trebired/frontend/styles/utils`
+- `@trebired/frontend/actions/styles`
+- `@trebired/frontend/flash/styles`
+- `@trebired/frontend/progress/styles`
+- `@trebired/frontend/layer/styles`
+- `@trebired/frontend/tooltip/styles`
+- `@trebired/frontend/popover/styles`
+- `@trebired/frontend/modal/styles`
+- `@trebired/frontend/inputs/styles`
 
 ## What It Does Not Do
 

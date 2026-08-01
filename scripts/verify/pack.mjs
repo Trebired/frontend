@@ -64,13 +64,9 @@ async function validatePackedImports(packageJson, tarballPath) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
-  const exports = Object.keys(packageJson.exports || {});
-  const imports = exports
-    .filter((subpath) => subpath !== "./styles.css")
-    .map((subpath) => {
-      const specifier = subpath === "." ? packageJson.name : `${packageJson.name}/${subpath.slice(2)}`;
-      return `await import(${JSON.stringify(specifier)});`;
-    })
+  assert.equal(packageJson.exports["./styles.css"], undefined);
+  const imports = runtimeExportSubpaths(packageJson)
+    .map((subpath) => `await import(${JSON.stringify(exportSpecifier(packageJson.name, subpath))});`)
     .join("\n");
   const checkFile = path.join(packageRoot, "check.mjs");
   await fs.writeFile(checkFile, imports);
@@ -79,7 +75,26 @@ async function validatePackedImports(packageJson, tarballPath) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
-  await fs.access(path.join(packageRoot, "node_modules", packageJson.name, "dist", "styles.css"));
+  await Promise.all(styleExportTargets(packageJson).map(async (target) => {
+    await fs.access(path.join(packageRoot, "node_modules", packageJson.name, target));
+  }));
+}
+
+function runtimeExportSubpaths(packageJson) {
+  return Object.entries(packageJson.exports || {})
+    .filter(([_subpath, value]) => typeof value?.import === "string")
+    .map(([subpath]) => subpath);
+}
+
+function exportSpecifier(packageName, subpath) {
+  return subpath === "." ? packageName : `${packageName}/${subpath.slice(2)}`;
+}
+
+function styleExportTargets(packageJson) {
+  return Object.values(packageJson.exports || {})
+    .flatMap((value) => [value?.sass, value?.style, value?.default])
+    .filter((value, index, list) => typeof value === "string" && value.endsWith(".scss") && list.indexOf(value) === index)
+    .map((value) => String(value).replace(/^\.\//u, ""));
 }
 
 function collectExportTargets(value, targets) {

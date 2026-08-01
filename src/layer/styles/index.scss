@@ -1,0 +1,6 @@
+.tbf-layer-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--tbf-z-layer);
+}

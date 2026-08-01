@@ -1,0 +1,17 @@
+.tbf-tooltip {
+  position: fixed;
+  max-width: min(380px, calc(100vw - 24px));
+  padding: 7px 9px;
+  border-radius: var(--tbf-radius-sm);
+  color: var(--tbf-surface);
+  background: var(--tbf-text);
+  font-size: 12px;
+  line-height: 1.3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.tbf-tooltip[data-tbf-open="true"] {
+  opacity: 1;
+}
