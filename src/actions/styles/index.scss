@@ -2,17 +2,17 @@
   min-height: 32px;
   box-sizing: border-box;
   padding: 0 12px;
-  border: var(--tbf-border-width) solid var(--tbf-border);
-  border-radius: var(--tbf-radius-sm);
-  color: var(--tbf-text);
-  background: var(--tbf-surface-muted);
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius-sm, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface-muted, #fff);
   cursor: pointer;
 }
 
 .tbf-button--strong {
-  border-color: var(--tbf-focus);
-  color: var(--tbf-surface);
-  background: var(--tbf-focus);
+  border-color: var(--tbf-focus, #000);
+  color: var(--tbf-surface, #fff);
+  background: var(--tbf-focus, #000);
 }
 
 .tbf-confetti {
@@ -28,7 +28,7 @@
   left: var(--x);
   width: 7px;
   height: 12px;
-  background: var(--tbf-confetti-color, var(--tbf-focus));
+  background: var(--tbf-confetti-color, var(--tbf-focus, #000));
   filter: hue-rotate(var(--tbf-confetti-hue, 0deg));
   transform: rotate(var(--r));
   animation: tbf-confetti-fall var(--d) ease-in forwards;

@@ -6,7 +6,7 @@
   place-items: center;
   box-sizing: border-box;
   padding: 24px;
-  background: var(--tbf-overlay);
+  background: var(--tbf-overlay, rgb(0 0 0 / 48%));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -36,11 +36,11 @@
   box-sizing: border-box;
   padding: 20px;
   overflow-y: auto;
-  border: var(--tbf-border-width) solid var(--tbf-border);
-  border-radius: var(--tbf-radius);
-  color: var(--tbf-text);
-  background: var(--tbf-surface);
-  box-shadow: var(--tbf-shadow);
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface, #fff);
+  box-shadow: var(--tbf-shadow, 0 0 0 1px #000);
   transform: scale(0.96);
   transition: transform var(--tbf-transition-normal) ease;
 }

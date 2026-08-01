@@ -1,0 +1,244 @@
+.tbf-upload-cropper-modal .tbf-modal__content,
+.tbf-upload-cropper-modal__content {
+  width: min(960px, calc(100vw - 40px));
+  max-height: min(90vh, 920px);
+}
+
+.tbf-upload-crop {
+  display: grid;
+  gap: var(--tbf-gap-md, 12px);
+}
+
+.tbf-upload-crop__header {
+  display: grid;
+  gap: var(--tbf-gap-xs, 4px);
+}
+
+.tbf-upload-crop__title,
+.tbf-upload-crop__description {
+  margin: 0;
+}
+
+.tbf-upload-crop__description {
+  color: var(--tbf-text-muted, #000);
+}
+
+.tbf-upload-crop__stage {
+  position: relative;
+  height: min(62vh, 640px);
+  min-height: 320px;
+  overflow: hidden;
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius, 0);
+  background: var(--tbf-surface-muted, #fff);
+}
+
+.tbf-upload-crop__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tbf-upload-crop__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--tbf-gap-sm, 8px);
+}
+
+.tbf-upload-crop__stage .cropper-container,
+.tbf-upload-crop__stage .cropper-wrap-box,
+.tbf-upload-crop__stage .cropper-canvas,
+.tbf-upload-crop__stage .cropper-drag-box,
+.tbf-upload-crop__stage .cropper-crop-box,
+.tbf-upload-crop__stage .cropper-modal {
+  position: absolute;
+  inset: 0;
+}
+
+.tbf-upload-crop__stage .cropper-container {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+  font-size: 0;
+  line-height: 0;
+  touch-action: none;
+  user-select: none;
+}
+
+.tbf-upload-crop__stage .cropper-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  backface-visibility: hidden;
+}
+
+.tbf-upload-crop__stage .cropper-wrap-box,
+.tbf-upload-crop__stage .cropper-canvas {
+  overflow: hidden;
+}
+
+.tbf-upload-crop__stage .cropper-drag-box {
+  background: #fff;
+  opacity: 0;
+}
+
+.tbf-upload-crop__stage .cropper-modal {
+  background: var(--tbf-crop-overlay, rgb(0 0 0 / 72%));
+}
+
+.tbf-upload-crop__stage .cropper-view-box {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: var(--tbf-border-width, 1px) solid var(--tbf-crop-line, #fff);
+}
+
+.tbf-upload-crop__stage .cropper-dashed {
+  position: absolute;
+  display: block;
+  border: 0 dashed var(--tbf-crop-line, #fff);
+  opacity: 0.45;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-h {
+  top: calc(100% / 3);
+  left: 0;
+  width: 100%;
+  height: calc(100% / 3);
+  border-top-width: var(--tbf-border-width, 1px);
+  border-bottom-width: var(--tbf-border-width, 1px);
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-v {
+  top: 0;
+  left: calc(100% / 3);
+  width: calc(100% / 3);
+  height: 100%;
+  border-right-width: var(--tbf-border-width, 1px);
+  border-left-width: var(--tbf-border-width, 1px);
+}
+
+.tbf-upload-crop__stage .cropper-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0.65;
+}
+
+.tbf-upload-crop__stage .cropper-center::before,
+.tbf-upload-crop__stage .cropper-center::after {
+  position: absolute;
+  display: block;
+  background: var(--tbf-crop-line, #fff);
+  content: " ";
+}
+
+.tbf-upload-crop__stage .cropper-center::before {
+  top: 0;
+  left: -4px;
+  width: 9px;
+  height: 1px;
+}
+
+.tbf-upload-crop__stage .cropper-center::after {
+  top: -4px;
+  left: 0;
+  width: 1px;
+  height: 9px;
+}
+
+.tbf-upload-crop__stage .cropper-face,
+.tbf-upload-crop__stage .cropper-line,
+.tbf-upload-crop__stage .cropper-point {
+  position: absolute;
+  display: block;
+}
+
+.tbf-upload-crop__stage .cropper-face {
+  inset: 0;
+  background: var(--tbf-crop-face, rgb(255 255 255 / 14%));
+}
+
+.tbf-upload-crop__stage .cropper-line {
+  background: var(--tbf-crop-line, #fff);
+}
+
+.tbf-upload-crop__stage .cropper-line.line-e,
+.tbf-upload-crop__stage .cropper-line.line-w {
+  top: 0;
+  width: 4px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-e {
+  right: -2px;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-w {
+  left: -2px;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-n,
+.tbf-upload-crop__stage .cropper-line.line-s {
+  left: 0;
+  width: 100%;
+  height: 4px;
+  cursor: ns-resize;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-n {
+  top: -2px;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-s {
+  bottom: -2px;
+}
+
+.tbf-upload-crop__stage .cropper-point {
+  width: 12px;
+  height: 12px;
+  border: var(--tbf-border-width, 1px) solid var(--tbf-text, #000);
+  border-radius: var(--tbf-radius-sm, 0);
+  background: var(--tbf-crop-line, #fff);
+}
+
+.tbf-upload-crop__stage .cropper-hidden {
+  display: none !important;
+}
+
+.tbf-upload-crop__stage .cropper-hide {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+}
+
+.tbf-upload-crop__stage .cropper-invisible {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .tbf-upload-cropper-modal .tbf-modal__content,
+  .tbf-upload-cropper-modal__content {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+  }
+
+  .tbf-upload-crop__stage {
+    height: min(52vh, 420px);
+    min-height: 260px;
+  }
+
+  .tbf-upload-crop__actions {
+    flex-direction: column;
+  }
+}

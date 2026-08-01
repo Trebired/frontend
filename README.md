@@ -63,6 +63,25 @@ Markup stays normal HTML:
 </div>
 ```
 
+TSX components are available from system component subpaths when a product wants package-owned default markup:
+
+```tsx
+import { UploadField } from "@trebired/frontend/inputs/components";
+
+export function AvatarUpload() {
+  return (
+    <UploadField
+      name="avatar"
+      accept="image/png,image/jpeg"
+      crop={true}
+      preview={true}
+      drop={true}
+      emptyToggle={{ name: "avatar_empty", value: "1" }}
+    />
+  );
+}
+```
+
 ## Concepts
 
 ### Runtime Ownership
@@ -76,6 +95,12 @@ Options accept adapters for logger, i18n, navigation, reload, progress, flash, t
 ### Data Attributes
 
 The package-owned selectors use `data-tbf-*` attributes. They never require custom elements.
+
+### Markup Components
+
+Component subpaths render real HTML with `data-tbf-*` attributes and `tbf-*` classes. They are not exported from `@trebired/frontend`, so the root runtime stays browser-behavior only.
+
+Upload markup includes hidden file and directory inputs, mixed file/folder buttons, multiple-file support, drag/drop slots, accepted-format metadata, preview slots, list output, clear-current-preview state, crop config, a crop hidden field, and an empty-toggle hidden field.
 
 ## Configuration
 
@@ -111,6 +136,8 @@ The canonical runtime binds theme, layer roots, progress, flash, inputs, uploads
 
 There is no aggregate CSS file. Each style-owning system exposes SCSS through package exports so `@trebired/bundler` can resolve package `sass` and `style` conditions from `node_modules`.
 
+Default SCSS is intentionally plain: `tbf-*` classes, CSS variables, black/white fallback colors, and square radius fallbacks. Products own visual polish by overriding variables.
+
 Base exports:
 
 - `@trebired/frontend/styles/tokens`
@@ -127,6 +154,10 @@ System exports:
 - `@trebired/frontend/modal/styles`
 - `@trebired/frontend/inputs/styles`
 
+### Upload Crop
+
+Upload crop uses `cropperjs` only through the upload crop path. The root runtime import and the normal `@trebired/frontend/inputs` import do not load cropper or TSX component modules until a crop session opens.
+
 ## Public API
 
 Entrypoints:
@@ -135,15 +166,25 @@ Entrypoints:
 - `@trebired/frontend/dom`
 - `@trebired/frontend/http`
 - `@trebired/frontend/actions`
+- `@trebired/frontend/actions/components`
 - `@trebired/frontend/flash`
+- `@trebired/frontend/flash/components`
 - `@trebired/frontend/progress`
+- `@trebired/frontend/progress/components`
 - `@trebired/frontend/layer`
+- `@trebired/frontend/layer/components`
 - `@trebired/frontend/tooltip`
+- `@trebired/frontend/tooltip/components`
 - `@trebired/frontend/popover`
+- `@trebired/frontend/popover/components`
 - `@trebired/frontend/modal`
+- `@trebired/frontend/modal/components`
 - `@trebired/frontend/inputs`
+- `@trebired/frontend/inputs/components`
 - `@trebired/frontend/theme`
+- `@trebired/frontend/theme/components`
 - `@trebired/frontend/live`
+- `@trebired/frontend/live/components`
 - `@trebired/frontend/react`
 - `@trebired/frontend/styles`
 - `@trebired/frontend/styles/tokens`
@@ -162,6 +203,9 @@ Entrypoints:
 This package does not:
 
 - define custom elements
+- render Markdown or MDX
+- export markup components from the root entrypoint
+- ship an aggregate `styles.css`
 - own product routes, domains, copy, or storage keys
 - require a specific icon system
 - migrate an existing application to consume the package

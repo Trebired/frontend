@@ -51,6 +51,7 @@ function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
   const scope = rootScope(root);
+  const adapters = actionAdapters(options);
   void bindThemeRuntime(scope, {
     ...(options.theme || {}),
     persistence: options.adapters?.themePersistence,
@@ -58,11 +59,17 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   ensureLayerRoot();
   bindPortals(scope);
   bindProgress();
-  bindInputControllers(scope);
+  bindInputControllers(scope, {
+    flash: adapters.flash,
+    logging: {
+      ...options.adapters,
+      frontend_quiet: options.frontend_quiet,
+      quiet: options.quiet,
+    },
+  });
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
-  const adapters = actionAdapters(options);
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });

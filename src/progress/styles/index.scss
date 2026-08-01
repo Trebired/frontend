@@ -3,13 +3,13 @@
   inset: 0 0 auto 0;
   height: 3px;
   pointer-events: none;
-  z-index: var(--tbf-z-progress);
+  z-index: var(--tbf-z-progress, 99999);
 }
 
 .tbf-progress__bar {
   display: block;
   height: 100%;
-  background: var(--tbf-focus);
+  background: var(--tbf-focus, #000);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--tbf-transition-fast) ease;

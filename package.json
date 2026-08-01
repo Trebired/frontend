@@ -1,6 +1,6 @@
 {
   "name": "@trebired/frontend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -34,41 +34,81 @@
       "import": "./dist/actions/index.js",
       "types": "./dist/actions/index.d.ts"
     },
+    "./actions/components": {
+      "import": "./dist/actions/components/index.js",
+      "types": "./dist/actions/components/index.d.ts"
+    },
     "./flash": {
       "import": "./dist/flash/index.js",
       "types": "./dist/flash/index.d.ts"
+    },
+    "./flash/components": {
+      "import": "./dist/flash/components/index.js",
+      "types": "./dist/flash/components/index.d.ts"
     },
     "./progress": {
       "import": "./dist/progress/index.js",
       "types": "./dist/progress/index.d.ts"
     },
+    "./progress/components": {
+      "import": "./dist/progress/components/index.js",
+      "types": "./dist/progress/components/index.d.ts"
+    },
     "./layer": {
       "import": "./dist/layer/index.js",
       "types": "./dist/layer/index.d.ts"
+    },
+    "./layer/components": {
+      "import": "./dist/layer/components/index.js",
+      "types": "./dist/layer/components/index.d.ts"
     },
     "./tooltip": {
       "import": "./dist/tooltip/index.js",
       "types": "./dist/tooltip/index.d.ts"
     },
+    "./tooltip/components": {
+      "import": "./dist/tooltip/components/index.js",
+      "types": "./dist/tooltip/components/index.d.ts"
+    },
     "./popover": {
       "import": "./dist/popover/index.js",
       "types": "./dist/popover/index.d.ts"
+    },
+    "./popover/components": {
+      "import": "./dist/popover/components/index.js",
+      "types": "./dist/popover/components/index.d.ts"
     },
     "./modal": {
       "import": "./dist/modal/index.js",
       "types": "./dist/modal/index.d.ts"
     },
+    "./modal/components": {
+      "import": "./dist/modal/components/index.js",
+      "types": "./dist/modal/components/index.d.ts"
+    },
     "./inputs": {
       "import": "./dist/inputs/index.js",
       "types": "./dist/inputs/index.d.ts"
+    },
+    "./inputs/components": {
+      "import": "./dist/inputs/components/index.js",
+      "types": "./dist/inputs/components/index.d.ts"
     },
     "./theme": {
       "import": "./dist/theme/index.js",
       "types": "./dist/theme/index.d.ts"
     },
+    "./theme/components": {
+      "import": "./dist/theme/components/index.js",
+      "types": "./dist/theme/components/index.d.ts"
+    },
     "./live": {
       "import": "./dist/live/index.js",
       "types": "./dist/live/index.d.ts"
+    },
+    "./live/components": {
+      "import": "./dist/live/components/index.js",
+      "types": "./dist/live/components/index.d.ts"
     },
     "./react": {
       "import": "./dist/react/index.js",
@@ -144,7 +184,8 @@
     "verify:pack": "bun ./scripts/verify/pack.mjs"
   },
   "dependencies": {
-    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.3.0"
+    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.3.0",
+    "cropperjs": "^1.6.2"
   },
   "devDependencies": {
     "@trebired/bundler": "^4.3.0",

@@ -41,7 +41,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: var(--tbf-radius);
+    border-radius: var(--tbf-radius, 0);
     background-color: var(--tbf-scroll-min-thumb);
   }
 }
@@ -197,7 +197,7 @@
 }
 
 .text-muted {
-  color: var(--tbf-text-muted);
+  color: var(--tbf-text-muted, #000);
 }
 
 .text-break {

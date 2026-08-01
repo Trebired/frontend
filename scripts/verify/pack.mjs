@@ -64,6 +64,11 @@ async function validatePackedImports(packageJson, tarballPath) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
+  execFileSync("bun", ["add", "react@^19.2.0", "react-dom@^19.2.0"], {
+    cwd: packageRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "inherit"],
+  });
   assert.equal(packageJson.exports["./styles.css"], undefined);
   const imports = runtimeExportSubpaths(packageJson)
     .map((subpath) => `await import(${JSON.stringify(exportSpecifier(packageJson.name, subpath))});`)

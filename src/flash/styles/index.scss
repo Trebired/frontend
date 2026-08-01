@@ -17,11 +17,11 @@
   width: 100%;
   box-sizing: border-box;
   padding: 12px;
-  border: var(--tbf-border-width) solid var(--tbf-border);
-  border-radius: var(--tbf-radius);
-  color: var(--tbf-text);
-  background: var(--tbf-surface);
-  box-shadow: var(--tbf-shadow);
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface, #fff);
+  box-shadow: var(--tbf-shadow, 0 0 0 1px #000);
   opacity: 0;
   pointer-events: auto;
   transform: translateY(var(--tbf-flash-y, 0)) translateX(16px);
@@ -45,8 +45,8 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: 999px;
-  background: var(--tbf-surface-muted);
+  border-radius: var(--tbf-radius-sm, 0);
+  background: var(--tbf-surface-muted, #fff);
   font-size: 12px;
   font-weight: 700;
 }
@@ -65,7 +65,7 @@
 }
 
 .tbf-flash__description {
-  color: var(--tbf-text-muted);
+  color: var(--tbf-text-muted, #000);
   font-size: 0.92rem;
 }
 
@@ -74,10 +74,10 @@
   min-height: 32px;
   padding: 0;
   overflow: hidden;
-  border: var(--tbf-border-width) solid var(--tbf-border);
-  border-radius: var(--tbf-radius-sm);
-  color: var(--tbf-text);
-  background: var(--tbf-surface-muted);
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius-sm, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface-muted, #fff);
   text-indent: -999px;
   cursor: pointer;
 }
@@ -100,7 +100,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--tbf-focus);
+  background: var(--tbf-focus, #000);
   transform-origin: left center;
   animation-name: tbf-flash-progress;
   animation-timing-function: linear;
