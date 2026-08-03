@@ -27,6 +27,7 @@ const FOCUSABLE_SELECTOR = [
 
 type ModalEntry = {
   modal: HTMLElement;
+  restoreFocus: HTMLElement | null;
   trigger: HTMLElement | null;
 };
 
@@ -34,6 +35,20 @@ const modalStack: ModalEntry[] = [];
 const triggerBindings = new WeakMap<HTMLElement, () => void>();
 let listenersInstalled = false;
 let originalBodyOverflow = "";
+let originalBodyPaddingRight = "";
+
+function requestFrame(callback: () => void): void {
+  const frame = typeof window !== "undefined" ? window.requestAnimationFrame : null;
+  if (typeof frame === "function") frame(callback);
+  else setTimeout(callback, 0);
+}
+
+function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
+  modal.dispatchEvent(new CustomEvent(name, {
+    bubbles: true,
+    detail: { modal, ...detail },
+  }));
+}
 
 function findModalTarget(root: BindRoot, trigger: HTMLElement) {
   const id = String(trigger.getAttribute("aria-controls") || "").trim();
@@ -62,14 +77,50 @@ function focusModal(modal: HTMLElement) {
   target.focus({ preventScroll: true });
 }
 
+function focusableModalElements(modal: HTMLElement): HTMLElement[] {
+  return Array.from(modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+    .filter((element) => !element.hasAttribute("disabled") && !element.hasAttribute("inert"));
+}
+
+function trapModalFocus(event: KeyboardEvent): void {
+  if (event.key !== "Tab") return;
+  const entry = modalStack[modalStack.length - 1];
+  if (!entry) return;
+  const focusable = focusableModalElements(entry.modal);
+  if (!focusable.length) {
+    event.preventDefault();
+    entry.modal.focus({ preventScroll: true });
+    return;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  if (event.shiftKey && (!active || active === first || !entry.modal.contains(active))) {
+    event.preventDefault();
+    last.focus({ preventScroll: true });
+    return;
+  }
+  if (!event.shiftKey && (!active || active === last || !entry.modal.contains(active))) {
+    event.preventDefault();
+    first.focus({ preventScroll: true });
+  }
+}
+
 function lockBodyScroll(lock: boolean) {
   if (!document.body) return;
   if (lock && modalStack.length === 1) {
     originalBodyOverflow = document.body.style.overflow;
+    originalBodyPaddingRight = document.body.style.paddingRight;
+    const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+    if (scrollbarGap > 0) {
+      const currentPadding = Number.parseFloat(window.getComputedStyle(document.body).paddingRight || "0") || 0;
+      document.body.style.paddingRight = `${currentPadding + scrollbarGap}px`;
+    }
     document.body.style.overflow = "hidden";
   }
   if (!lock && modalStack.length === 0) {
     document.body.style.overflow = originalBodyOverflow;
+    document.body.style.paddingRight = originalBodyPaddingRight;
   }
 }
 
@@ -90,7 +141,8 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   moveLayerElementToTop(modal);
   const existingIndex = modalStack.findIndex((entry) => entry.modal === modal);
   if (existingIndex >= 0) modalStack.splice(existingIndex, 1);
-  modalStack.push({ modal, trigger });
+  const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  modalStack.push({ modal, restoreFocus: active, trigger });
   applyZIndex(modal, {
     fallback: stackZIndex(MODAL_BASE_Z_INDEX, modalStack.length - 1),
   });
@@ -98,11 +150,12 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   modal.setAttribute("aria-hidden", "false");
   setTopStates();
   lockBodyScroll(true);
-  window.requestAnimationFrame(() => {
+  dispatchModalEvent(modal, "tbf:modal-open", { trigger });
+  requestFrame(() => {
     modal.removeAttribute("data-tbf-opening");
     modal.setAttribute("data-tbf-open", "true");
     focusModal(modal);
-    modal.dispatchEvent(new CustomEvent("tbf:modal-ready", { bubbles: true }));
+    dispatchModalEvent(modal, "tbf:modal-ready", { trigger });
   });
   return modal;
 }
@@ -125,7 +178,9 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
   }, 220);
   setTopStates();
   lockBodyScroll(false);
-  entry.trigger?.focus?.({ preventScroll: true });
+  const restoreTarget = entry.trigger || entry.restoreFocus;
+  if (restoreTarget?.isConnected) restoreTarget.focus({ preventScroll: true });
+  dispatchModalEvent(modal, "tbf:modal-close", { trigger: entry.trigger });
   return true;
 }
 
@@ -166,10 +221,20 @@ function installModalListeners() {
   document.addEventListener("click", (event) => {
     const target = event.target instanceof Element ? event.target : null;
     const closer = target?.closest(MODAL_CLOSE_SELECTOR);
-    if (closer) closeModal(closer.closest(MODAL_SELECTOR) as HTMLElement | null);
+    if (closer) {
+      closeModal(closer.closest(MODAL_SELECTOR) as HTMLElement | null);
+      return;
+    }
+    const top = modalStack[modalStack.length - 1]?.modal;
+    if (target === top && top.getAttribute("data-tbf-modal-backdrop-close") !== "false") closeModal(top);
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeModal();
+    if (event.key === "Escape") {
+      const top = modalStack[modalStack.length - 1]?.modal;
+      if (top?.getAttribute("data-tbf-modal-escape-close") !== "false") closeModal();
+      return;
+    }
+    trapModalFocus(event);
   });
 }
 

@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 import path from "node:path";
 import { Window } from "happy-dom";
+import { createElement as h } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
@@ -11,7 +14,9 @@ const sourceDir = path.join(rootDir, "src");
 
 async function main() {
   installDom();
+  await verifyFrontendConfig();
   await verifyCsrfFetch();
+  await verifyIcons();
   await verifyActionConfetti();
   await verifyFlash();
   await verifyTooltip();
@@ -43,6 +48,7 @@ function installDom() {
     MouseEvent: window.MouseEvent,
     MutationObserver: window.MutationObserver,
     Node: window.Node,
+    SVGElement: window.SVGElement,
     SubmitEvent: window.SubmitEvent,
     document: window.document,
     getComputedStyle: window.getComputedStyle.bind(window),
@@ -56,6 +62,117 @@ function installDom() {
   window.CSS ||= {};
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
+}
+
+async function verifyFrontendConfig() {
+  const config = await importDist("config");
+  const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config");
+  await fs.rm(fixture, { force: true, recursive: true });
+  await fs.mkdir(path.join(fixture, ".trebired", "frontend"), { recursive: true });
+
+  const defaults = await config.loadTrebiredFrontendConfig(fixture);
+  assert.equal(defaults.configPath, null);
+  assert.equal(defaults.config.prefix, "tbf");
+  assert.ok(defaults.generatedScss.includes('@use "@trebired/frontend/modal/styles" as *;'));
+
+  const configPath = path.join(fixture, ".trebired", "frontend", "config.ts");
+  await fs.writeFile(configPath, [
+    "export default {",
+    "  prefix: \"app\",",
+    "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
+    "  systems: { modal: false, icons: true },",
+    "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
+    "};",
+    "",
+  ].join("\n"));
+
+  const loaded = await config.loadTrebiredFrontendConfig(fixture);
+  assert.equal(loaded.configPath, configPath);
+  assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
+  assert.equal(loaded.generatedScss.includes('@use "@trebired/frontend/modal/styles" as *;'), false);
+  assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
+  const generatedPath = await config.writeGeneratedTrebiredFrontendScss(fixture, loaded.config);
+  assert.equal(generatedPath.endsWith(".trebired/frontend/generated/styles.scss"), true);
+  assert.ok((await fs.readFile(generatedPath, "utf8")).includes("/icons/svg"));
+
+  await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
+  await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /invalid-config/u);
+}
+
+async function verifyIcons() {
+  const iconRuntime = await importDist("icons");
+  const iconServer = await importDist("icons/server");
+  const iconMiddleware = await importDist("icons/middleware");
+  const iconReact = await importDist("icons/react");
+
+  assert.deepEqual(iconRuntime.parseIconSpec("remixicon:add-line"), {
+    icon: "add-line",
+    pack: "remixicon",
+    spec: "remixicon:add-line",
+  });
+  assert.deepEqual(iconRuntime.parseIconSpec("simple-icons github"), {
+    icon: "github",
+    pack: "simple-icons",
+    spec: "simple-icons:github",
+  });
+
+  const remixSvg = iconServer.resolveIconSvg("remixicon:add-line", { rootDir });
+  assert.equal(remixSvg.ok, true);
+  assert.ok(remixSvg.svg.includes("<svg"));
+  const githubSvg = iconServer.resolveIconSvg("simple-icons:github", { rootDir });
+  assert.equal(githubSvg.ok, true);
+  assert.match(iconServer.resolveIconColor("simple-icons:github", { rootDir }), /^#[0-9a-f]{6}$/iu);
+  assert.ok(iconServer.renderIconHtml("remixicon:add-line", {
+    className: "icon md",
+    color: "#123456",
+    label: "Add",
+  }, { rootDir }).includes("--tbf-icon-color: #123456"));
+
+  const response = iconServer.createIconSvgResponse("simple-icons:github", { rootDir });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers["Content-Type"].startsWith("image/svg+xml"), true);
+
+  let sent = "";
+  const middleware = iconMiddleware.createIconMiddleware({ rootDir });
+  middleware(
+    { query: { spec: "remixicon:add-line" } },
+    {
+      set() {},
+      status(value) {
+        assert.equal(value, 200);
+        return this;
+      },
+      type() {
+        return this;
+      },
+      send(body) {
+        sent = body;
+      },
+    },
+  );
+  assert.ok(sent.includes("<svg"));
+
+  let fetchCount = 0;
+  globalThis.fetch = async () => {
+    fetchCount += 1;
+    return new Response('<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>', {
+      headers: { "Content-Type": "image/svg+xml" },
+    });
+  };
+  const host = document.createElement("i");
+  await iconRuntime.renderIconElement(host, "remixicon:add-line", { color: "red", endpoint: "/icons" });
+  assert.equal(host.querySelector("svg") !== null, true);
+  assert.equal(fetchCount, 1);
+  const secondHost = document.createElement("i");
+  await iconRuntime.renderIconElement(secondHost, "remixicon:add-line", { endpoint: "/icons" });
+  assert.equal(fetchCount, 1);
+
+  const renderer = iconServer.createServerIconRenderer({}, { rootDir });
+  const html = iconServer.withIconServerRenderer(renderer, () => {
+    return renderToStaticMarkup(h(iconReact.Icon, { label: "GitHub", spec: "simple-icons:github" }));
+  });
+  assert.ok(html.includes("aria-label=\"GitHub\""));
+  assert.ok(html.includes("<svg"));
 }
 
 async function verifyCsrfFetch() {

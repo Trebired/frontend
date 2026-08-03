@@ -1,6 +1,8 @@
 import { bindActionButtons, bindActionForms, bindActionTriggers } from "./actions/index.js";
 import type { ActionAdapters } from "./actions/index.js";
 import { bindInputControllers } from "./inputs/index.js";
+import { bindIcons } from "./icons/index.js";
+import { bindFullscreen } from "./fullscreen/index.js";
 import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -59,6 +61,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   ensureLayerRoot();
   bindPortals(scope);
   bindProgress();
+  bindIcons(scope);
   bindInputControllers(scope, {
     flash: adapters.flash,
     logging: {
@@ -73,6 +76,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });
+  bindFullscreen(scope);
   bindLiveRefresh(scope, {
     ...(options.live || {}),
     bind(nextRoot) {
@@ -130,7 +134,9 @@ export type {
 export * from "./actions/index.js";
 export * from "./dom/index.js";
 export * from "./flash/index.js";
+export * from "./fullscreen/index.js";
 export * from "./http/index.js";
+export * from "./icons/index.js";
 export * from "./inputs/index.js";
 export * from "./layer/index.js";
 export * from "./live/index.js";

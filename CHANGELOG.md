@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.4.0
+
+- Added `.trebired/frontend/config.ts` support with `defineTrebiredFrontendConfig()`, validation, defaults, deterministic generated SCSS, and `.trebired/frontend/generated/styles.scss` output.
+- Added first-class `remixicon` and `simple-icons` support with spec parsing, server HTML rendering, SVG response helpers, Express-compatible middleware, browser fetch/cache rendering, React `Icon`, simple-icons brand colors, explicit colors, source-color preservation, and shared icon SCSS.
+- Added the fullscreen runtime and upgraded root runtime binding to include icons and fullscreen controls.
+- Improved generic modal/layer behavior with focus restoration, scroll-lock gap handling, lifecycle events, fullscreen-aware layers, and safer dialog timer cleanup for flash prompts/confirms.
+- Added config/icon/runtime verification and updated package exports, README examples, and pack coverage.
+
 ## 0.3.0
 
 - Added TSX markup component subpaths for actions, flash, progress, layers, tooltips, popovers, modals, inputs, theme, and live refresh.

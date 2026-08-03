@@ -5,6 +5,7 @@ const frontendStyleSubpaths = Object.freeze([
   "./flash/styles",
   "./progress/styles",
   "./layer/styles",
+  "./icons/styles",
   "./tooltip/styles",
   "./popover/styles",
   "./modal/styles",

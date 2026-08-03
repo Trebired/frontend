@@ -12,7 +12,11 @@ function finishDialog<T>(
   element: HTMLElement,
   resolve: (value: T) => void,
   value: T,
+  timeoutId?: number,
 ) {
+  if (element.hasAttribute("data-tbf-dialog-resolved")) return;
+  element.setAttribute("data-tbf-dialog-resolved", "true");
+  if (timeoutId !== undefined) window.clearTimeout(timeoutId);
   hideFlashElement(stack, element);
   resolve(value);
 }
@@ -32,25 +36,26 @@ function confirm(message: unknown, description = "", options: ConfirmOptions = {
     actions.append(cancel, ok);
     body?.appendChild(actions);
     stack.appendChild(controls.element);
-    bindConfirmControls(stack, controls.element, resolve, cancel, ok, controls.close);
-    window.setTimeout(() => finishDialog(stack, controls.element, resolve, false), FLASH_CONFIRM_TIMEOUT_MS);
+    let timeoutId: number | undefined;
+    const finish = (value: boolean) => finishDialog(stack, controls.element, resolve, value, timeoutId);
+    bindConfirmControls(controls.element, finish, cancel, ok, controls.close);
+    timeoutId = window.setTimeout(() => finish(false), FLASH_CONFIRM_TIMEOUT_MS);
     revealDialog(stack, controls.element, input);
   });
 }
 
 function bindConfirmControls(
-  stack: HTMLElement,
   element: HTMLElement,
-  resolve: (value: boolean) => void,
+  finish: (value: boolean) => void,
   cancel: HTMLButtonElement,
   ok: HTMLButtonElement,
   close: HTMLButtonElement,
 ) {
-  close.addEventListener("click", () => finishDialog(stack, element, resolve, false));
-  cancel.addEventListener("click", () => finishDialog(stack, element, resolve, false));
-  ok.addEventListener("click", () => finishDialog(stack, element, resolve, true));
+  close.addEventListener("click", () => finish(false));
+  cancel.addEventListener("click", () => finish(false));
+  ok.addEventListener("click", () => finish(true));
   element.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") finishDialog(stack, element, resolve, false);
+    if (event.key === "Escape") finish(false);
   });
 }
 
@@ -77,8 +82,10 @@ function prompt(message: unknown, description = "", options: PromptOptions = {})
     const form = createPromptForm(options);
     controls.element.querySelector(".tbf-flash__body")?.appendChild(form);
     stack.appendChild(controls.element);
-    bindPromptControls(stack, controls.element, resolve, form, controls.close);
-    window.setTimeout(() => finishDialog(stack, controls.element, resolve, null), FLASH_PROMPT_TIMEOUT_MS);
+    let timeoutId: number | undefined;
+    const finish = (value: string | null) => finishDialog(stack, controls.element, resolve, value, timeoutId);
+    bindPromptControls(form, controls.close, finish);
+    timeoutId = window.setTimeout(() => finish(null), FLASH_PROMPT_TIMEOUT_MS);
     revealDialog(stack, controls.element, form.querySelector("input"));
   });
 }
@@ -108,20 +115,18 @@ function submitButton(label: string) {
 }
 
 function bindPromptControls(
-  stack: HTMLElement,
-  element: HTMLElement,
-  resolve: (value: string | null) => void,
   form: HTMLFormElement,
   close: HTMLButtonElement,
+  finish: (value: string | null) => void,
 ) {
   const input = form.querySelector<HTMLInputElement>("input");
   const cancel = form.querySelector<HTMLButtonElement>(".tbf-button:not(.tbf-button--strong)");
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    finishDialog(stack, element, resolve, input?.value.trim() || null);
+    finish(input?.value.trim() || null);
   });
-  cancel?.addEventListener("click", () => finishDialog(stack, element, resolve, null));
-  close.addEventListener("click", () => finishDialog(stack, element, resolve, null));
+  cancel?.addEventListener("click", () => finish(null));
+  close.addEventListener("click", () => finish(null));
 }
 
 function revealDialog(stack: HTMLElement, element: HTMLElement, focusTarget: HTMLElement | null) {

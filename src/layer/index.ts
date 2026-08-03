@@ -3,6 +3,7 @@ import { cssEscape, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 const LAYER_ROOT_ID = "tbf_layer_root";
 const Z_INDEX_STEP = 10;
 const resolvedZIndexElements = new Set<HTMLElement>();
+let fullscreenListenerInstalled = false;
 
 type ZIndexOptions = {
   ahead?: Element | number | string | null;
@@ -13,14 +14,38 @@ type ZIndexOptions = {
 function ensureLayerRoot() {
   if (typeof document === "undefined") return null;
   const existing = document.getElementById(LAYER_ROOT_ID);
-  if (existing instanceof HTMLElement) return existing;
+  const container = resolveLayerContainer();
+  if (existing instanceof HTMLElement) {
+    if (container && existing.parentNode !== container) container.appendChild(existing);
+    installFullscreenLayerListener();
+    return existing;
+  }
 
   const root = document.createElement("div");
   root.id = LAYER_ROOT_ID;
   root.className = "tbf-layer-root";
   root.setAttribute("data-tbf-layer-root", "");
-  document.body.appendChild(root);
+  container?.appendChild(root);
+  installFullscreenLayerListener();
   return root;
+}
+
+function resolveLayerContainer(): HTMLElement | null {
+  const fullscreen = document.fullscreenElement;
+  if (fullscreen instanceof HTMLElement) return fullscreen;
+  return document.body || document.documentElement;
+}
+
+function installFullscreenLayerListener(): void {
+  if (fullscreenListenerInstalled || typeof document === "undefined") return;
+  fullscreenListenerInstalled = true;
+  document.addEventListener("fullscreenchange", () => {
+    const root = document.getElementById(LAYER_ROOT_ID);
+    const container = resolveLayerContainer();
+    if (root instanceof HTMLElement && container && root.parentNode !== container) {
+      container.appendChild(root);
+    }
+  });
 }
 
 function portalElement(element: HTMLElement | null) {

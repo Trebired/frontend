@@ -32,7 +32,7 @@ Committed `*.spec.ts` and `*.spec.tsx` files are banned by Code Discipline. Veri
 
 ## Code Discipline
 
-- Keep the config at `.code-discipline/config.ts`.
+- Keep the config at `.trebired/code-discipline/config.ts`.
 - Use `imports.output.type: "alias-map"`.
 - Keep `imports.removeDeadImports: true`.
 - Keep `allowRelative: ["./"]`.

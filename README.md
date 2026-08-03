@@ -2,7 +2,7 @@
 
 Generic browser runtime systems for DOM binding, actions, overlays, theme state, live refresh, inputs, upload, and React rendering in the Trebired ecosystem.
 
-`@trebired/frontend` owns reusable browser behavior. Callers own product routes, product copy, storage keys, icon systems, persistence, navigation, logging, and backend response contracts beyond the documented generic JSON shape.
+`@trebired/frontend` owns reusable browser behavior, generic icon rendering, and package-owned overlay/runtime primitives. Callers own product routes, product copy, storage keys, persistence, navigation, logging, domain icon maps, and backend response contracts beyond the documented generic JSON shape.
 
 ## Install
 
@@ -35,6 +35,7 @@ Load only the SCSS systems your product uses:
 ```scss
 @use "@trebired/frontend/styles/tokens" as *;
 @use "@trebired/frontend/styles/utils" as *;
+@use "@trebired/frontend/icons/styles" as *;
 @use "@trebired/frontend/actions/styles" as *;
 @use "@trebired/frontend/flash/styles" as *;
 @use "@trebired/frontend/progress/styles" as *;
@@ -104,6 +105,41 @@ Upload markup includes hidden file and directory inputs, mixed file/folder butto
 
 ## Configuration
 
+### Project Config
+
+Projects can define `.trebired/frontend/config.ts`:
+
+```ts
+import { defineTrebiredFrontendConfig } from "@trebired/frontend/config";
+
+export default defineTrebiredFrontendConfig({
+  prefix: "tbf",
+  icons: {
+    endpoint: "/__icons/svg",
+    packs: ["remixicon", "simple-icons"],
+  },
+  systems: {
+    actions: true,
+    flash: true,
+    fullscreen: true,
+    icons: true,
+    inputs: true,
+    layer: true,
+    modal: true,
+    popover: true,
+    progress: true,
+    theme: true,
+    tooltip: true,
+  },
+  theme: {
+    cssVariables: true,
+    tokens: {},
+  },
+});
+```
+
+`@trebired/frontend/config` exports `defineTrebiredFrontendConfig()`, `normalizeTrebiredFrontendConfig()`, `loadTrebiredFrontendConfig()`, `findTrebiredFrontendConfig()`, `generateTrebiredFrontendScss()`, and `writeGeneratedTrebiredFrontendScss()`. Missing config files use package defaults. Generated SCSS is written to `.trebired/frontend/generated/styles.scss`.
+
 ### Runtime Options
 
 `bindFrontendRuntime(root, options)` accepts:
@@ -130,7 +166,7 @@ Set `frontend_quiet: true`, `quiet: true`, `globalThis.frontend_quiet = true`, o
 
 ### Binding Order
 
-The canonical runtime binds theme, layer roots, progress, flash, inputs, uploads, tooltips, popovers, modals, actions, and live refresh in that order.
+The canonical runtime binds theme, layer roots, icons, progress, flash, inputs, uploads, tooltips, popovers, modals, actions, fullscreen controls, and live refresh in that order.
 
 ### CSS
 
@@ -146,6 +182,7 @@ Base exports:
 System exports:
 
 - `@trebired/frontend/actions/styles`
+- `@trebired/frontend/icons/styles`
 - `@trebired/frontend/flash/styles`
 - `@trebired/frontend/progress/styles`
 - `@trebired/frontend/layer/styles`
@@ -158,6 +195,46 @@ System exports:
 
 Upload crop uses `cropperjs` only through the upload crop path. The root runtime import and the normal `@trebired/frontend/inputs` import do not load cropper or TSX component modules until a crop session opens.
 
+### Icons
+
+Canonical icon specs use `pack:name`:
+
+- `remixicon:add-line`
+- `remixicon:settings-3-line`
+- `simple-icons:github`
+- `simple-icons:cloudflare`
+
+Browser runtime:
+
+```ts
+import { bindIcons, renderIconElement } from "@trebired/frontend/icons";
+
+bindIcons(document);
+await renderIconElement(document.querySelector("[data-tbf-icon]")!, "remixicon:add-line");
+```
+
+React:
+
+```tsx
+import { Icon } from "@trebired/frontend/icons/react";
+
+export function SaveIcon() {
+  return <Icon spec="remixicon:save-3-line" label="Save" />;
+}
+```
+
+Server:
+
+```ts
+import { renderIconHtml } from "@trebired/frontend/icons/server";
+import { createIconMiddleware } from "@trebired/frontend/icons/middleware";
+
+const html = renderIconHtml("simple-icons:github", { label: "GitHub" });
+const middleware = createIconMiddleware();
+```
+
+The icon system supports explicit colors, simple-icons brand colors, source-color preservation, browser fetch/cache rendering, server HTML rendering, and an Express-compatible `/__icons/svg` middleware.
+
 ## Public API
 
 Entrypoints:
@@ -165,6 +242,12 @@ Entrypoints:
 - `@trebired/frontend`
 - `@trebired/frontend/dom`
 - `@trebired/frontend/http`
+- `@trebired/frontend/config`
+- `@trebired/frontend/fullscreen`
+- `@trebired/frontend/icons`
+- `@trebired/frontend/icons/react`
+- `@trebired/frontend/icons/server`
+- `@trebired/frontend/icons/middleware`
 - `@trebired/frontend/actions`
 - `@trebired/frontend/actions/components`
 - `@trebired/frontend/flash`
@@ -189,6 +272,7 @@ Entrypoints:
 - `@trebired/frontend/styles`
 - `@trebired/frontend/styles/tokens`
 - `@trebired/frontend/styles/utils`
+- `@trebired/frontend/icons/styles`
 - `@trebired/frontend/actions/styles`
 - `@trebired/frontend/flash/styles`
 - `@trebired/frontend/progress/styles`
@@ -207,6 +291,6 @@ This package does not:
 - export markup components from the root entrypoint
 - ship an aggregate `styles.css`
 - own product routes, domains, copy, or storage keys
-- require a specific icon system
+- own product-specific icon maps
 - migrate an existing application to consume the package
 - replace framework-specific component libraries
