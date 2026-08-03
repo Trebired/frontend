@@ -91,9 +91,11 @@ async function verifyFrontendConfig() {
   assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
   assert.equal(loaded.generatedScss.includes('@use "@trebired/frontend/modal/styles" as *;'), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
-  const generatedPath = await config.writeGeneratedTrebiredFrontendScss(fixture, loaded.config);
-  assert.equal(generatedPath.endsWith(".trebired/frontend/generated/styles.scss"), true);
-  assert.ok((await fs.readFile(generatedPath, "utf8")).includes("/icons/svg"));
+  assert.equal(typeof config.writeGeneratedTrebiredFrontendScss, "undefined");
+  await assert.rejects(
+    () => fs.access(path.join(fixture, ".trebired", "frontend", "generated", "styles.scss")),
+    /ENOENT/u,
+  );
 
   await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
   await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /invalid-config/u);

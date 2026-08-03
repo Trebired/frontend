@@ -50,7 +50,6 @@ type LoadedTrebiredFrontendConfig = {
   config: NormalizedTrebiredFrontendConfig;
   configPath: string | null;
   generatedScss: string;
-  generatedScssPath: string;
 };
 
 type LoadTrebiredFrontendConfigOptions = {
@@ -60,8 +59,6 @@ type LoadTrebiredFrontendConfigOptions = {
 };
 
 const TREBIRED_FRONTEND_CONFIG_PATH = ".trebired/frontend/config.ts";
-const TREBIRED_FRONTEND_GENERATED_DIR = ".trebired/frontend/generated";
-const TREBIRED_FRONTEND_GENERATED_SCSS_PATH = `${TREBIRED_FRONTEND_GENERATED_DIR}/styles.scss`;
 
 const SUPPORTED_ICON_PACKS: TrebiredFrontendIconPack[] = ["remixicon", "simple-icons"];
 
@@ -366,7 +363,6 @@ async function loadTrebiredFrontendConfig(
       config,
       configPath: null,
       generatedScss: generateTrebiredFrontendScss(config),
-      generatedScssPath: resolveTrebiredFrontendGeneratedScssPath(root),
     };
   }
 
@@ -379,23 +375,7 @@ async function loadTrebiredFrontendConfig(
     config,
     configPath: resolvedPath,
     generatedScss: generateTrebiredFrontendScss(config),
-    generatedScssPath: resolveTrebiredFrontendGeneratedScssPath(root),
   };
-}
-
-function resolveTrebiredFrontendGeneratedScssPath(projectRoot: string = process.cwd()): string {
-  return path.resolve(projectRoot, TREBIRED_FRONTEND_GENERATED_SCSS_PATH);
-}
-
-async function writeGeneratedTrebiredFrontendScss(
-  projectRoot: string,
-  config: TrebiredFrontendConfig | NormalizedTrebiredFrontendConfig,
-): Promise<string> {
-  const filePath = resolveTrebiredFrontendGeneratedScssPath(projectRoot);
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  const scss = generateTrebiredFrontendScss(config);
-  await fs.writeFile(filePath, scss, "utf8");
-  return filePath;
 }
 
 export {
@@ -403,15 +383,11 @@ export {
   SUPPORTED_ICON_PACKS,
   SYSTEM_ORDER,
   TREBIRED_FRONTEND_CONFIG_PATH,
-  TREBIRED_FRONTEND_GENERATED_DIR,
-  TREBIRED_FRONTEND_GENERATED_SCSS_PATH,
   defineTrebiredFrontendConfig,
   findTrebiredFrontendConfig,
   generateTrebiredFrontendScss,
   loadTrebiredFrontendConfig,
   normalizeTrebiredFrontendConfig,
-  resolveTrebiredFrontendGeneratedScssPath,
-  writeGeneratedTrebiredFrontendScss,
 };
 export type {
   LoadedTrebiredFrontendConfig,

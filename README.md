@@ -138,7 +138,7 @@ export default defineTrebiredFrontendConfig({
 });
 ```
 
-`@trebired/frontend/config` exports `defineTrebiredFrontendConfig()`, `normalizeTrebiredFrontendConfig()`, `loadTrebiredFrontendConfig()`, `findTrebiredFrontendConfig()`, `generateTrebiredFrontendScss()`, and `writeGeneratedTrebiredFrontendScss()`. Missing config files use package defaults. Generated SCSS is written to `.trebired/frontend/generated/styles.scss`.
+`@trebired/frontend/config` exports `defineTrebiredFrontendConfig()`, `normalizeTrebiredFrontendConfig()`, `loadTrebiredFrontendConfig()`, `findTrebiredFrontendConfig()`, and `generateTrebiredFrontendScss()`. Missing config files use package defaults. Bundlers should consume the generated SCSS string in memory and emit normal bundled CSS; projects do not need a `.trebired/frontend/generated/styles.scss` file.
 
 ### Runtime Options
 

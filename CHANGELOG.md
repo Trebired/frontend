@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.4.2
+
+- Removed the project-local `.trebired/frontend/generated/styles.scss` writer contract; frontend config now exposes deterministic SCSS for bundlers to consume in memory.
+
 ## 0.4.1
 
 - Refreshed package dependency ranges and lockfile state with `bun update` after adopting the `.trebired/code-discipline` structure.
