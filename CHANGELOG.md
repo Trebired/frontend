@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.4.1
+
+- Refreshed package dependency ranges and lockfile state with `bun update` after adopting the `.trebired/code-discipline` structure.
+
 ## 0.4.0
 
 - Added `.trebired/frontend/config.ts` support with `defineTrebiredFrontendConfig()`, validation, defaults, deterministic generated SCSS, and `.trebired/frontend/generated/styles.scss` output.
