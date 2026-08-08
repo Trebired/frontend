@@ -1,22 +1,74 @@
 :root {
+  --border-width: 1px;
+  --outline-width: 2px;
+  --icon-gap: 5px;
+  --header-height: 80px;
+  --viewport-scrollbar-gap-inline-end: 0px;
+  --viewport-scrollbar-gap-block-end: 0px;
+  --transition-1: 120ms;
+  --transition-2: 180ms;
+  --transition-3: 240ms;
+  --transition-4: 320ms;
+  --theme-switch-duration: var(--transition-2, 180ms);
+  --theme-switch-easing: ease;
+  --height-input: var(--height-xs4, 35px);
+  --click-brightness: 0.85;
+  --brightness-1: var(--click-brightness);
+  --brightness-2: 0.75;
+  --brightness-3: 0.65;
+  --shadow-overlay-lg:
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-overlay-sm:
+    0 6px 18px rgba(0, 0, 0, 0.18),
+    0 2px 4px rgba(0, 0, 0, 0.08);
+  --dot-grid:
+    var(--gray-950, #1a1a1b)
+    radial-gradient(var(--gray-700, #303031) 2px, transparent 0) -5px -5px / 30px 30px;
+  --z-bottom-bar: var(--z-index-xs, 900);
+  --z-header-secondary: 910;
+  --z-header-primary: 920;
+  --z-scrollbar-gutter-border: 925;
+  --z-mobile-nav: 930;
+  --z-fullscreen: var(--z-index-sm, 1000);
+  --z-modal: var(--z-index-md, 1010);
+  --z-floating-ui: var(--z-index-lg, 1020);
+  --z-tooltip: var(--z-index-xl, 1100);
   --tbf-radius: var(--radius-md, 0);
   --tbf-radius-sm: var(--radius-sm, 0);
   --tbf-border-width: var(--border-width, 1px);
-  --tbf-border: var(--border-surface-1, #000);
-  --tbf-surface: var(--surface-1, #fff);
-  --tbf-surface-muted: var(--surface-2, #fff);
-  --tbf-text: var(--text-color, #000);
-  --tbf-text-muted: var(--text-color-muted, #000);
+  --tbf-border: var(--border-surface-1, var(--gray-750, #000));
+  --tbf-surface: var(--surface-1, var(--background-surface-1, #fff));
+  --tbf-surface-muted: var(--surface-2, var(--background-surface-2, #fff));
+  --tbf-text: var(--text-color, var(--gray-100, #000));
+  --tbf-text-muted: var(--text-color-muted, var(--gray-300, #000));
   --tbf-focus: var(--focus-color, #000);
   --tbf-shadow: var(--shadow-overlay-lg, 0 0 0 1px #000);
   --tbf-overlay: color-mix(in srgb, var(--tbf-text) 48%, transparent);
   --tbf-transition-fast: var(--transition-2, 180ms);
   --tbf-transition-normal: var(--transition-3, 240ms);
-  --tbf-gap-xs: var(--space-xs, 4px);
-  --tbf-gap-sm: var(--space-sm, 8px);
-  --tbf-gap-md: var(--space-md, 12px);
-  --tbf-gap-lg: var(--space-lg, 16px);
+  --tbf-gap-xs2: var(--space-xs2, 4px);
+  --tbf-gap-xs: var(--space-xs, 8px);
+  --tbf-gap-sm: var(--space-sm, 12px);
+  --tbf-gap-md: var(--space-md, 24px);
+  --tbf-gap-lg: var(--space-lg, 40px);
+  --tbf-canvas-bg: var(--dot-grid);
   --tbf-z-layer: var(--z-layer-root, 1000);
+  --tbf-z-bottom-bar: var(--z-bottom-bar, 900);
+  --tbf-z-header: var(--z-header-primary, 920);
+  --tbf-z-secondary-header: var(--z-header-secondary, 910);
+  --tbf-z-sidebar: var(--z-index-xs, 900);
+  --tbf-z-fullscreen: var(--z-fullscreen, var(--z-index-sm, 1000));
+  --tbf-z-modal: var(--z-modal, var(--z-index-md, 1010));
+  --tbf-z-floating-ui: var(--z-floating-ui, var(--z-index-lg, 1020));
+  --tbf-z-tooltip: var(--z-tooltip, var(--z-index-xl, 1100));
   --tbf-z-progress: var(--z-progress, 99999);
   --tbf-z-confetti: var(--z-confetti, 99998);
+}
+
+:root[data-tbf-theme="light"],
+body[data-tbf-theme="light"] {
+  --dot-grid:
+    var(--gray-950, #f8f8f9)
+    radial-gradient(var(--gray-700, #dbdbdc) 2px, transparent 0) -5px -5px / 30px 30px;
 }

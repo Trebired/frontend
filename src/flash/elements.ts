@@ -1,3 +1,4 @@
+import { flashId } from "./duration.js";
 import type { FlashOptions, FlashType } from "./types.js";
 
 function makeButton(label: string, className: string) {
@@ -20,6 +21,8 @@ function createFlashElement(
   element.setAttribute("data-tbf-flash", "");
   element.setAttribute("data-tbf-flash-type", type);
   element.setAttribute("data-tbf-flash-id", id);
+  setOptionalAttr(element, "data-tbf-flash-stack-priority", normalizeAttrValue(options.stackPriority));
+  setOptionalAttr(element, "data-tbf-progress-tone", normalizeAttrValue(options.progressTone || options.progressType || type));
   element.setAttribute("role", type === "error" ? "alert" : "status");
   element.append(
     flashIcon(type),
@@ -38,7 +41,7 @@ function flashIcon(type: FlashType) {
   const icon = document.createElement("span");
   icon.className = "tbf-flash__icon";
   icon.setAttribute("aria-hidden", "true");
-  icon.textContent = type === "success" ? "OK" : type === "error" ? "!" : "i";
+  icon.textContent = type === "success" ? "OK" : type === "info" ? "i" : "!";
   return icon;
 }
 
@@ -74,13 +77,28 @@ function flashProgress() {
   return progress;
 }
 
-function createDialogFlash(type: FlashType, titleText: unknown, descriptionText: unknown) {
-  const controls = createFlashElement(type, titleText, descriptionText, "dialog", {
+function createDialogFlash(
+  type: FlashType,
+  titleText: unknown,
+  descriptionText: unknown,
+  options: FlashOptions = {},
+) {
+  const controls = createFlashElement(type, titleText, descriptionText, flashId("dialog"), {
+    ...options,
     sticky: true,
   });
   controls.element.classList.add("tbf-flash--dialog");
-  controls.progress.hidden = true;
   return controls;
+}
+
+function normalizeAttrValue(value: unknown) {
+  const text = String(value || "").trim().toLowerCase();
+  return text ? text.replace(/[^a-z0-9_-]/gu, "") : "";
+}
+
+function setOptionalAttr(element: Element, name: string, value: string) {
+  if (value) element.setAttribute(name, value);
+  else element.removeAttribute(name);
 }
 
 export { createDialogFlash, createFlashElement, makeButton };

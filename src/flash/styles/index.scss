@@ -1,8 +1,8 @@
 .tbf-flash-stack {
   position: fixed;
   right: 18px;
-  bottom: 18px;
-  width: min(380px, calc(100vw - 36px));
+  bottom: calc(18px + var(--tbf-layout-bottom-bar-safe-offset, 0px));
+  width: min(var(--tbf-flash-max-width, 520px), calc(100vw - 36px));
   pointer-events: none;
   transition: height var(--tbf-transition-fast) ease;
 }
@@ -23,6 +23,7 @@
   background: var(--tbf-surface, #fff);
   box-shadow: var(--tbf-shadow, 0 0 0 1px #000);
   opacity: 0;
+  overflow: hidden;
   pointer-events: auto;
   transform: translateY(var(--tbf-flash-y, 0)) translateX(16px);
   transition:
@@ -49,6 +50,21 @@
   background: var(--tbf-surface-muted, #fff);
   font-size: 12px;
   font-weight: 700;
+}
+
+.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon,
+.tbf-flash[data-tbf-progress-tone="green"] .tbf-flash__icon {
+  color: var(--green-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon,
+.tbf-flash[data-tbf-progress-tone="red"] .tbf-flash__icon {
+  color: var(--red-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon,
+.tbf-flash[data-tbf-progress-tone="yellow"] .tbf-flash__icon {
+  color: var(--yellow-500, var(--tbf-focus, #000));
 }
 
 .tbf-flash__body,
@@ -105,6 +121,42 @@
   animation-name: tbf-flash-progress;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+}
+
+.tbf-flash[data-tbf-progress-tone="blue"] .tbf-flash__progress {
+  background: var(--blue-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="cyan"] .tbf-flash__progress {
+  background: var(--cyan-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="gray"] .tbf-flash__progress {
+  background: var(--gray-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="green"] .tbf-flash__progress {
+  background: var(--green-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="indigo"] .tbf-flash__progress {
+  background: var(--indigo-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="orange"] .tbf-flash__progress {
+  background: var(--orange-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="red"] .tbf-flash__progress {
+  background: var(--red-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="ruby"] .tbf-flash__progress {
+  background: var(--ruby-500, var(--tbf-focus, #000));
+}
+
+.tbf-flash[data-tbf-progress-tone="yellow"] .tbf-flash__progress {
+  background: var(--yellow-500, var(--tbf-focus, #000));
 }
 
 @keyframes tbf-flash-progress {

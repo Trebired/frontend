@@ -12,7 +12,18 @@ function stepEntries(steps: TrebiredFrontendScaleSteps): Array<[string, number]>
 
 function renderSpacingScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
   const vars = stepEntries(steps).map(([step, v]) => `  --space-${step}: ${v}px;`);
-  return { body: [], vars };
+  const body: string[] = [];
+  for (const [step] of stepEntries(steps)) {
+    body.push(
+      `@mixin gap-${step} { gap: var(--space-${step}); }`,
+      `.gap-${step} { @include gap-${step}; }`,
+      `.mt-${step} { margin-top: var(--space-${step}); }`,
+      `.mb-${step} { margin-bottom: var(--space-${step}); }`,
+      `.ml-${step} { margin-left: var(--space-${step}); }`,
+      `.mr-${step} { margin-right: var(--space-${step}); }`,
+    );
+  }
+  return { body, vars };
 }
 
 function renderPaddingScale(steps: TrebiredFrontendScaleSteps): ScaleCss {

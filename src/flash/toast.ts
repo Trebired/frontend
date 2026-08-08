@@ -8,7 +8,7 @@ function dismissFlash(id: string) {
   if (!stack) return false;
   const safeId = String(id || "").trim();
   if (!safeId) return false;
-  const target = stack.querySelector<HTMLElement>(`[data-tbf-flash-id="${safeId}"]`);
+  const target = stack.querySelector<HTMLElement>(attrSelector("data-tbf-flash-id", safeId));
   if (!target) return false;
   hideFlashElement(stack, target);
   return true;
@@ -23,14 +23,17 @@ function showFlashImpl(
   const stack = ensureFlashStack();
   if (!stack) return null;
   const id = String(options.id || "").trim() || flashId();
-  const existing = stack.querySelector<HTMLElement>(`[data-tbf-flash-id="${id}"]`);
+  const existing = stack.querySelector<HTMLElement>(attrSelector("data-tbf-flash-id", id));
   if (existing && options.update === true) existing.remove();
   const controls = createFlashElement(type, message, description, id, options);
   stack.appendChild(controls.element);
   startFlashLifetime(stack, controls, message, description, options);
+  const dismiss = () => dismissFlash(id);
   return {
-    dismiss: () => dismissFlash(id),
+    dismiss,
+    el: controls.element,
     element: controls.element,
+    hide: dismiss,
     id,
   } satisfies FlashHandle;
 }
@@ -58,7 +61,7 @@ function startFlashLifetime(
 }
 
 function showFlash(message: unknown, type: FlashType = "info", description = "", options = {}) {
-  return showFlashImpl(normalizeFlashType(type), message, description, options);
+  return showFlashImpl(normalizeFlashType(type), message, description, options as FlashOptions);
 }
 
 function stickyFlash(type: FlashType, message: unknown, description = "", options = {}) {
@@ -76,4 +79,34 @@ function liveFlash(type: FlashType, message: unknown, description = "", options 
   });
 }
 
-export { dismissFlash, liveFlash, showFlash, showFlashImpl, stickyFlash };
+function showFlashMessage(
+  flashApi: Record<string, any> | null | undefined,
+  kind: unknown,
+  message: unknown,
+  description = "",
+) {
+  const type = normalizeFlashType(kind);
+  if (flashApi && typeof flashApi[type] === "function") {
+    return flashApi[type](message, description);
+  }
+  if (flashApi && typeof flashApi === "function") {
+    return flashApi(message, type, description);
+  }
+  return showFlashImpl(type, message, description);
+}
+
+function attrSelector(name: string, value: string) {
+  const escaped = typeof CSS !== "undefined" && typeof CSS.escape === "function"
+    ? CSS.escape(value)
+    : value.replace(/\\/gu, "\\\\").replace(/"/gu, "\\\"");
+  return `[${name}="${escaped}"]`;
+}
+
+export {
+  dismissFlash,
+  liveFlash,
+  showFlash,
+  showFlashImpl,
+  showFlashMessage,
+  stickyFlash,
+};

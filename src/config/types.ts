@@ -73,7 +73,27 @@ type TrebiredFrontendScalesConfig = {
   zIndex?: TrebiredFrontendZIndexScaleConfig;
 };
 
+type TrebiredFrontendFontDisplay = "auto" | "block" | "fallback" | "optional" | "swap";
+
+type TrebiredFrontendFontStyle = "italic" | "normal";
+
+type TrebiredFrontendFontFamilyConfig = {
+  display?: TrebiredFrontendFontDisplay;
+  family?: string;
+  fontsource?: string;
+  package?: string;
+  styles?: readonly TrebiredFrontendFontStyle[];
+  subsets?: readonly string[];
+  weights?: readonly number[];
+};
+
+type TrebiredFrontendFontConfig = {
+  families?: Record<string, TrebiredFrontendFontFamilyConfig>;
+  sans?: string;
+};
+
 type TrebiredFrontendConfig = {
+  fonts?: TrebiredFrontendFontConfig;
   palette?: TrebiredFrontendPaletteConfig;
   prefix?: string;
   icons?: {
@@ -136,7 +156,23 @@ type NormalizedTrebiredFrontendScalesConfig = {
   zIndex: NormalizedTrebiredFrontendZIndexScaleConfig;
 };
 
+type NormalizedTrebiredFrontendFontFamilyConfig = {
+  display: TrebiredFrontendFontDisplay;
+  family: string;
+  key: string;
+  packageName: string;
+  styles: TrebiredFrontendFontStyle[];
+  subsets: string[];
+  weights: number[];
+};
+
+type NormalizedTrebiredFrontendFontConfig = {
+  families: NormalizedTrebiredFrontendFontFamilyConfig[];
+  sans: string;
+};
+
 type NormalizedTrebiredFrontendConfig = {
+  fonts: NormalizedTrebiredFrontendFontConfig;
   palette: NormalizedTrebiredFrontendPaletteConfig;
   prefix: string;
   icons: {
@@ -165,6 +201,8 @@ export type {
   LoadTrebiredFrontendConfigOptions,
   LoadedTrebiredFrontendConfig,
   NormalizedTrebiredFrontendConfig,
+  NormalizedTrebiredFrontendFontConfig,
+  NormalizedTrebiredFrontendFontFamilyConfig,
   NormalizedTrebiredFrontendPaletteConfig,
   NormalizedTrebiredFrontendPaletteMode,
   NormalizedTrebiredFrontendPaletteSemantic,
@@ -173,6 +211,10 @@ export type {
   NormalizedTrebiredFrontendThemeMode,
   NormalizedTrebiredFrontendZIndexScaleConfig,
   TrebiredFrontendConfig,
+  TrebiredFrontendFontConfig,
+  TrebiredFrontendFontDisplay,
+  TrebiredFrontendFontFamilyConfig,
+  TrebiredFrontendFontStyle,
   TrebiredFrontendIconPack,
   TrebiredFrontendPaletteConfig,
   TrebiredFrontendPaletteFamilies,

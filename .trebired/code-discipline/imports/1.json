@@ -36,6 +36,7 @@
   "#d5kvkm72r187": "./src/flash/stack.ts",
   "#d9gbd4jkefih": "./src/icons/middleware/index.ts",
   "#d9m9kagiuv72": "./src/modal/styles/index.scss",
+  "#dd4ujr8jaktl": "./src/config/fonts.ts",
   "#dlkmvw22tjsb": "./src/layout/styles/index.scss",
   "#dlkq0izqs981": "./scripts/prepare-dist.mjs",
   "#dwrbehrrh3dg": "./src/inputs/upload/drop.ts",

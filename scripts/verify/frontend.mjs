@@ -87,6 +87,7 @@ async function verifyFrontendConfig() {
   const configPath = path.join(fixture, ".trebired", "frontend", "config.ts");
   await fs.writeFile(configPath, [
     "export default {",
+    "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "  prefix: \"app\",",
     "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
     "  systems: { modal: false, icons: true },",
@@ -98,6 +99,8 @@ async function verifyFrontendConfig() {
   const loaded = await config.loadTrebiredFrontendConfig(fixture);
   assert.equal(loaded.configPath, configPath);
   assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
+  assert.equal(loaded.config.fonts.families[0].packageName, "inter");
+  assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.equal(typeof config.writeGeneratedTrebiredFrontendScss, "undefined");
@@ -108,6 +111,8 @@ async function verifyFrontendConfig() {
 
   await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
   await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /invalid-config/u);
+  await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
+  await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /Fontsource package name/u);
 }
 
 async function verifyIcons() {
@@ -219,12 +224,45 @@ async function verifyActionConfetti() {
 }
 
 async function verifyFlash() {
-  const { confirm, prompt, showFlash } = await importDist("flash");
+  const {
+    confirm,
+    confirmationVariantAttrs,
+    confirmElement,
+    flash,
+    installFlashGlobal,
+    prompt,
+    showFlash,
+    showFlashMessage,
+  } = await importDist("flash");
   const handle = showFlash.success("Saved", "Done");
   assert.ok(handle.element.matches("[data-tbf-flash]"));
+  assert.equal(handle.el, handle.element);
+  assert.equal(typeof handle.hide, "function");
+  assert.equal(typeof flash.stickyInfo, "function");
+  assert.equal(typeof flash.liveError, "function");
+  assert.equal(installFlashGlobal(window), flash);
+  assert.equal(window.flash, flash);
+  const live = flash.liveError("Working", "Syncing", { id: "job-1", progressTone: "red" });
+  assert.equal(live.element.getAttribute("data-tbf-progress-tone"), "red");
+  const routed = showFlashMessage(flash, "success", "Routed", "Done");
+  assert.equal(routed.element.getAttribute("data-tbf-flash-type"), "success");
   const confirmPromise = confirm("Confirm");
   document.querySelector(".tbf-button--strong").click();
   assert.equal(await confirmPromise, true);
+  const attrs = confirmationVariantAttrs({
+    confirmationText: "repository-a",
+    target: "repository-a",
+    variant: "delete",
+  });
+  const button = document.createElement("button");
+  Object.entries(attrs).forEach(([key, value]) => button.setAttribute(key, value));
+  document.body.appendChild(button);
+  const elementConfirmPromise = confirmElement(button);
+  const confirmInput = document.querySelector(".tbf-flash__body input");
+  confirmInput.value = "repository-a";
+  confirmInput.dispatchEvent(new Event("input", { bubbles: true }));
+  confirmInput.closest(".tbf-flash").querySelector(".tbf-button--strong").click();
+  assert.equal(await elementConfirmPromise, true);
   const promptPromise = prompt("Name");
   const input = document.querySelector(".tbf-flash__form input");
   input.value = "Atlas";

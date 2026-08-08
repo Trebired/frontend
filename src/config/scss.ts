@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { renderFontsCss } from "./fonts.js";
 import { cssComment, cssString } from "./shared.js";
 import {
   SYSTEM_ORDER,
@@ -49,7 +50,9 @@ function packageStyleUse(relativePath: string): string {
 function isNormalizedConfig(value: unknown): value is NormalizedTrebiredFrontendConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const config = value as Partial<NormalizedTrebiredFrontendConfig>;
-  return Array.isArray(config.theme?.modes) && Array.isArray(config.palette?.modes);
+  return Array.isArray(config.fonts?.families) &&
+    Array.isArray(config.theme?.modes) &&
+    Array.isArray(config.palette?.modes);
 }
 
 function tokenDeclarations(prefix: string, tokens: TrebiredFrontendThemeTokens): string[] {
@@ -156,6 +159,7 @@ function generateTrebiredFrontendScss(
     packageStyleUse("styles/tokens.scss"),
     packageStyleUse("styles/utils.scss"),
     ...renderSystemImports(config),
+    ...renderFontsCss(config.fonts),
     ...renderThemeCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),

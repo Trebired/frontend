@@ -2,6 +2,12 @@ import { applyZIndex } from "#ccvonx3uhbte";
 
 const FLASH_STACK_ID = "tbf_flash_stack";
 const FLASH_BASE_Z_INDEX = 1020;
+const FLASH_PRIORITY_WEIGHT = new Map([
+  ["low", 0],
+  ["normal", 1],
+  ["high", 2],
+]);
+let resizeBound = false;
 
 function ensureFlashStack() {
   if (typeof document === "undefined" || !document.body) return null;
@@ -14,6 +20,7 @@ function ensureFlashStack() {
   stack.setAttribute("data-tbf-expanded", "false");
   applyZIndex(stack, { fallback: FLASH_BASE_Z_INDEX });
   document.body.appendChild(stack);
+  bindFlashStackResize(stack);
   stack.addEventListener("mouseenter", () => {
     stack.setAttribute("data-tbf-expanded", "true");
     layoutFlashStack(stack);
@@ -26,7 +33,13 @@ function ensureFlashStack() {
 }
 
 function orderedFlashItems(stack: HTMLElement) {
-  return Array.from(stack.querySelectorAll<HTMLElement>("[data-tbf-flash]"));
+  return Array.from(stack.querySelectorAll<HTMLElement>("[data-tbf-flash]"))
+    .map((item, index) => ({ index, item }))
+    .sort((a, b) => {
+      const diff = priorityWeight(a.item) - priorityWeight(b.item);
+      return diff === 0 ? a.index - b.index : diff;
+    })
+    .map(({ item }) => item);
 }
 
 function layoutFlashStack(stack: HTMLElement) {
@@ -53,6 +66,21 @@ function hideFlashElement(stack: HTMLElement, element: HTMLElement) {
     element.remove();
     layoutFlashStack(stack);
   }, 220);
+}
+
+function priorityWeight(item: HTMLElement) {
+  const priority = String(
+    item.getAttribute("data-tbf-flash-stack-priority") ||
+    item.getAttribute("data-flash-stack-priority") ||
+    "normal",
+  ).toLowerCase();
+  return FLASH_PRIORITY_WEIGHT.get(priority) ?? FLASH_PRIORITY_WEIGHT.get("normal")!;
+}
+
+function bindFlashStackResize(stack: HTMLElement) {
+  if (resizeBound || typeof window === "undefined") return;
+  resizeBound = true;
+  window.addEventListener("resize", () => layoutFlashStack(stack));
 }
 
 export {

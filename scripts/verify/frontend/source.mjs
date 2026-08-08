@@ -3,18 +3,18 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 async function verifyFrontendSource(context) {
-  await verifyNoWrapUtility(context.sourceDir);
+  await verifyNoStandaloneWrapUtility(context.sourceDir);
   await verifyStylePackaging(context.rootDir);
   await verifyNoCustomElements(context.sourceDir, context.distDir);
   await verifyNoProductNames(context.rootDir, context.sourceDir);
   await verifyRadiusFallbacks(context.sourceDir);
 }
 
-async function verifyNoWrapUtility(sourceDir) {
+async function verifyNoStandaloneWrapUtility(sourceDir) {
   const files = await sourceFiles(sourceDir);
   for (const file of files) {
     const source = await fs.readFile(file, "utf8");
-    assert.equal(/(^|[^\w-])\.wrap\b/u.test(source), false, `${file} defines a wrap utility.`);
+    assert.equal(/(^|[^\w&-])\.wrap\b/u.test(source), false, `${file} defines a standalone wrap utility.`);
     assert.equal(
       /\bclass(Name)?\s*=\s*["'`][^"'`]*\bwrap\b/u.test(source),
       false,
@@ -48,12 +48,26 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(packageRoot, { recursive: true });
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
+  await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
   await writeFile(fixture, ".trebired/frontend/config.ts", [
     `import { defineTrebiredFrontendConfig } from "${packageName}/config";`,
     "",
     "export default defineTrebiredFrontendConfig({",
     "  prefix: \"verify\",",
+    "  fonts: {",
+    "    families: {",
+    "      sans: {",
+    "        package: \"inter\",",
+    "        family: \"Inter\",",
+    "        subsets: [\"latin\", \"latin-ext\"],",
+    "        weights: [400, 700],",
+    "        styles: [\"normal\", \"italic\"],",
+    "      },",
+    "    },",
+    "    sans: \"\\\"Inter\\\", system-ui, sans-serif\",",
+    "  },",
+    "  scales: { spacing: { xs2: 4, xs: 8, sm: 12, md: 24, lg: 40 } },",
     "  systems: { flash: true, inputs: true, modal: false },",
     "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
     "});",
@@ -77,7 +91,13 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   const css = await fs.readFile(cssOutput, "utf8");
   assert.equal(css.includes("--tbf-radius"), true);
   assert.equal(css.includes("--verify-color-brand: #123456;"), true);
+  assert.equal(css.includes("@font-face"), true);
+  assert.equal(css.includes('font-family: "Inter"'), true);
+  assert.equal(css.includes("--tbf-font-family-sans"), true);
   assert.equal(css.includes(".inline-row"), true);
+  assert.equal(css.includes(".inline-row.wrap"), true);
+  assert.equal(css.includes(".gap-xs2"), true);
+  assert.equal(css.includes(".bg-canvas"), true);
   assert.equal(css.includes(".tbf-layout"), true);
   assert.equal(css.includes(".tbf-flash"), true);
   assert.equal(css.includes(".tbf-upload"), true);
@@ -155,6 +175,25 @@ async function pathExists(filePath) {
     return true;
   } catch {
     return false;
+  }
+}
+
+async function writeFontsourceFixture(fixture, packageName, subsets, weights, styles) {
+  const packageRoot = path.join(fixture, "node_modules", "@fontsource", packageName);
+  await fs.mkdir(path.join(packageRoot, "files"), { recursive: true });
+  await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify({
+    name: `@fontsource/${packageName}`,
+    version: "0.0.0",
+  }, null, 2));
+  for (const subset of subsets) {
+    for (const weight of weights) {
+      for (const style of styles) {
+        await fs.writeFile(
+          path.join(packageRoot, "files", `${packageName}-${subset}-${weight}-${style}.woff2`),
+          "",
+        );
+      }
+    }
   }
 }
 

@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.1.0
+
+- Moved the remaining generic app CSS surface into package-owned config CSS: base document reset, config-driven Fontsource font-face generation, global tokens, canvas background, spacing/margin helpers, wrapping row helpers, vertical alignment helpers, and generated spacing utilities.
+- Expanded the package flash system with confirmation variant helpers, text confirmation models, progress tones, live/sticky convenience methods, `showFlashMessage()`, and `window.flash` installation so ecosystem apps can consume flash directly from `@trebired/frontend`.
+
 ## 1.0.0
 
 - Consolidated the public package API to structured entrypoints only: `@trebired/frontend`, `@trebired/frontend/config`, `@trebired/frontend/react`, and `@trebired/frontend/server`. Public Sass/component subpath exports are no longer part of the app contract.

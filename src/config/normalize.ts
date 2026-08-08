@@ -1,4 +1,5 @@
 import { assertPlainObject, invalidConfig } from "./shared.js";
+import { normalizeFontsConfig } from "./fonts.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig } from "./theme.js";
@@ -32,6 +33,10 @@ const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
 ];
 
 const DEFAULT_TREBIRED_FRONTEND_CONFIG: NormalizedTrebiredFrontendConfig = Object.freeze({
+  fonts: Object.freeze({
+    families: Object.freeze([]) as NormalizedTrebiredFrontendConfig["fonts"]["families"],
+    sans: "",
+  }),
   palette: Object.freeze({
     modes: Object.freeze([]) as NormalizedTrebiredFrontendConfig["palette"]["modes"],
     semantic: Object.freeze([]) as NormalizedTrebiredFrontendConfig["palette"]["semantic"],
@@ -113,6 +118,7 @@ function normalizeTrebiredFrontendConfig(config: unknown = {}): NormalizedTrebir
   const icons = source.icons === undefined ? {} : assertPlainObject(source.icons, "icons");
   const theme = normalizeThemeConfig(source.theme);
   return {
+    fonts: normalizeFontsConfig(source.fonts),
     palette: normalizePaletteConfig(source.palette, theme.modes.map((mode) => mode.key)),
     prefix: normalizePrefix(source.prefix),
     icons: {
