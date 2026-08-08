@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.13.3
+
+- Added package-owned entity icon helpers so ecosystem apps can remove local entity icon factories while keeping app-specific icon specs.
+
 ## 1.13.2
 
 - Added package-owned `.text-link` primitive styling so ecosystem apps can remove local text-link SCSS while keeping the shared class.
