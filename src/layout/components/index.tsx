@@ -255,6 +255,7 @@ export {
 export * from "./breadcrumb.js";
 export * from "./header.js";
 export * from "./mobile.js";
+export * from "./shell/index.js";
 export type {
   LayoutBootScriptProps,
   LayoutContentProps,

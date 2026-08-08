@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.13.0
+
+- Added package-owned shell header/mobile navigation composition helpers, support-link rendering, and shell chrome state helpers so ecosystem apps can share header/mobile structure while supplying app-specific slots.
+
 ## 1.12.0
 
 - Added package-owned dynamic sidebar link-list rendering and live count/state/loader runtime so ecosystem apps can remove local sidebar DOM/update logic while keeping app-specific item builders and data adapters.
