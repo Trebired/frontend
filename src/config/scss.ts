@@ -33,6 +33,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   layout: "layout/styles/index.scss",
   modal: "modal/styles/index.scss",
   popover: "popover/styles/index.scss",
+  primitives: "primitives/styles/index.scss",
   progress: "progress/styles/index.scss",
   sidebar: "sidebar/styles/index.scss",
   surface: "surface/styles/index.scss",

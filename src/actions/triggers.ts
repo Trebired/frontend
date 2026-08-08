@@ -13,6 +13,7 @@ type ActionPayload = {
 };
 type BindActionTriggerOptions = {
   action?: string;
+  externalHref?: string;
   href?: string;
   navigation?: {
     navigate?: (url: string) => unknown;
@@ -57,6 +58,13 @@ function dispatchAction(
 }
 
 function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
+  const externalHref = String(
+    options.externalHref || trigger.getAttribute("data-tbf-external-href") || "",
+  ).trim();
+  if (externalHref) {
+    window.open(externalHref, "_blank", "noopener,noreferrer");
+    return true;
+  }
   const href = String(options.href || trigger.getAttribute("data-tbf-href") || "").trim();
   if (!href) return false;
   if (options.navigation?.navigate) void options.navigation.navigate(href);
@@ -65,9 +73,15 @@ function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
 }
 
 function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOptions) {
-  if (!parseAction(trigger, options).action && !trigger.getAttribute("data-tbf-href")) return;
+  const hasHref = Boolean(
+    options.href ||
+    options.externalHref ||
+    trigger.getAttribute("data-tbf-href") ||
+    trigger.getAttribute("data-tbf-external-href"),
+  );
+  if (!parseAction(trigger, options).action && !hasHref) return;
   if (trigger.matches("button,a,input,select,textarea")) return;
-  if (!trigger.hasAttribute("role")) trigger.setAttribute("role", "button");
+  if (!trigger.hasAttribute("role")) trigger.setAttribute("role", hasHref ? "link" : "button");
   if (!trigger.hasAttribute("tabindex")) trigger.tabIndex = 0;
 }
 

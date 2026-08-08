@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.7.0
+
+- Added package-owned generic primitive helpers for legacy-shaped button, card body/item/segments/select, form, avatar, pill, separator, list, key/value rows, masonry, loader, status dot, and time counter APIs through the existing root and React entrypoints.
+- Added config-selected primitive SCSS and package runtime binding for `data-tbf-time-counter` markup so ecosystem apps can remove local primitive copies without Sass/component subpath imports.
+
 ## 1.6.0
 
 - Exposed `createKeyValueInputElement()` through the React entrypoint for package-owned key/value input DOM creation.

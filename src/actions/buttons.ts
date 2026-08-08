@@ -7,7 +7,7 @@ import {
 import { flash as defaultFlash } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
-import { actionResponseOk } from "./response.js";
+import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
 import type { ActionJson, SubmitActionButtonOptions } from "./types.js";
 
 const ACTION_BUTTON_SELECTOR =
@@ -25,6 +25,16 @@ function buttonMethod(button: HTMLElement, options: SubmitActionButtonOptions) {
 function readButtonBody(button: HTMLElement, options: SubmitActionButtonOptions) {
   if (options.body !== undefined) return options.body;
   return readDataJson<Record<string, unknown>>(button, "data-tbf-action-body", {});
+}
+
+function readBooleanAttr(button: HTMLElement, attr: string) {
+  if (!button.hasAttribute(attr)) return undefined;
+  const value = String(button.getAttribute(attr) || "").trim();
+  return value !== "false" && value !== "0";
+}
+
+function readTextAttr(button: HTMLElement, attr: string) {
+  return String(button.getAttribute(attr) || "").trim();
 }
 
 function dispatchActionButtonEvent(
@@ -46,7 +56,8 @@ async function confirmActionButton(
   button: HTMLElement,
   options: SubmitActionButtonOptions,
 ) {
-  const configured = options.confirm === true || button.hasAttribute("data-tbf-confirm");
+  if (options.confirm === false) return true;
+  const configured = options.confirm === true || readBooleanAttr(button, "data-tbf-confirm") === true;
   if (!configured && !button.hasAttribute("data-tbf-confirm-title")) return true;
   const detail: any = { button, confirm: null };
   const event = dispatchActionButtonEvent(button, "tbf:action-confirm", detail, true);
@@ -80,6 +91,35 @@ async function resolveCustomActionButtonRequest(
   return { handled: true, json: detail.json as ActionJson };
 }
 
+function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
+  const attrUi = readDataJson<Record<string, unknown>>(button, "data-tbf-action-ui", {});
+  const ignoreResponseAction =
+    options.ignoreResponseAction === true ||
+    options.ui?.ignoreResponseAction === true ||
+    attrUi.ignoreResponseAction === true ||
+    readBooleanAttr(button, "data-tbf-ignore-response-action") === true;
+  return {
+    ...attrUi,
+    ...(options.ui || {}),
+    ignoreResponseAction,
+  };
+}
+
+function buttonSuccessConfig(button: HTMLElement, options: SubmitActionButtonOptions) {
+  return {
+    success:
+      options.success ||
+      (readTextAttr(button, "data-tbf-success") === "soft-reload"
+        ? "soft-reload"
+        : undefined),
+    successTab: options.successTab || readTextAttr(button, "data-tbf-success-tab"),
+  };
+}
+
+function buttonSuccessConfetti(button: HTMLElement, options: SubmitActionButtonOptions) {
+  return options.successConfetti === true || readBooleanAttr(button, "data-tbf-confetti") === true;
+}
+
 async function submitActionButton(
   button: HTMLElement,
   event?: Event,
@@ -90,6 +130,7 @@ async function submitActionButton(
   if (!(await confirmActionButton(button, options))) return null;
   const wasDisabled = button.hasAttribute("disabled") || (button as any).disabled === true;
   let json: ActionJson | null = null;
+  const ui = buttonUi(button, options);
   setControlDisabled(button, true);
   try {
     dispatchActionButtonEvent(button, "tbf:action-submit", {});
@@ -100,10 +141,18 @@ async function submitActionButton(
           adapters: options.adapters,
           body: readButtonBody(button, options),
           method: buttonMethod(button, options),
-          ui: options.ui,
+          ui,
         });
     const ok = actionResponseOk(json);
-    if (ok) maybeFireActionSuccessConfetti(button, options.successConfetti === true);
+    if (ok) {
+      maybeFireActionSuccessConfetti(button, buttonSuccessConfetti(button, options));
+      handleConfiguredSuccessAction(
+        buttonSuccessConfig(button, options),
+        json,
+        ui,
+        options.adapters,
+      );
+    }
     dispatchActionButtonEvent(button, "tbf:action-complete", { json, ok });
     return json;
   } catch (error) {

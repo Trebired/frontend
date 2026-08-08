@@ -11,6 +11,7 @@ type TrebiredFrontendSystemKey =
   | "layout"
   | "modal"
   | "popover"
+  | "primitives"
   | "progress"
   | "sidebar"
   | "surface"

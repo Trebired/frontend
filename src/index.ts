@@ -9,6 +9,7 @@ import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
+import { bindPrimitiveControllers } from "./primitives/index.js";
 import { bindProgress, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
@@ -80,6 +81,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
     },
   });
   bindAdvancedInputControllers(scope);
+  bindPrimitiveControllers(scope);
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
@@ -188,6 +190,7 @@ export * from "./layout/index.js";
 export * from "./live/index.js";
 export * from "./modal/index.js";
 export * from "./popover/index.js";
+export * from "./primitives/index.js";
 export * from "./progress/index.js";
 export * from "./sidebar/index.js";
 export * from "./surface/index.js";

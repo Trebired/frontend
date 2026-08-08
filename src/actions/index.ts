@@ -36,8 +36,11 @@ export {
 export {
   actionResponseOk,
   computeFlashMeta,
+  dispatchTabSwitches,
+  handleConfiguredSuccessAction,
   handleResponseAction,
   isNoop,
+  normalizeTabSwitches,
   pickResponseAction,
   scheduleRedirectOrReload,
   shouldShowFlash,

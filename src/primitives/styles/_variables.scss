@@ -1,0 +1,68 @@
+@use "sass:list";
+
+$tbf-primitive-icon-sizes: (
+  xs2: (
+    18px,
+    10px,
+  ),
+  xs: (
+    22px,
+    12px,
+  ),
+  sm: (
+    26px,
+    14px,
+  ),
+  md: (
+    30px,
+    16px,
+  ),
+  lg: (
+    34px,
+    18px,
+  ),
+);
+
+$tbf-primitive-button-sizes: (
+  sm: (
+    24px,
+    9px,
+    11px,
+  ),
+  md: (
+    28px,
+    12px,
+    12px,
+  ),
+  lg: (
+    34px,
+    14px,
+    13px,
+  ),
+);
+
+$tbf-primitive-avatar-sizes: (
+  sm: 32px,
+  md: 48px,
+  lg: 64px,
+  xl: 96px,
+  xl2: 128px,
+  xl3: 160px,
+  xl4: 192px,
+  xl5: 224px,
+);
+
+$tbf-primitive-tone-colors: (
+  "green": var(--green-600),
+  "success": var(--green-600),
+  "red": var(--red-600),
+  "error": var(--red-600),
+  "yellow": var(--yellow-600),
+  "warning": var(--yellow-600),
+  "blue": var(--blue-600),
+  "info": var(--blue-600),
+  "purple": var(--ruby-600),
+  "cyan": var(--cyan-600),
+  "gray": var(--gray-600),
+  "muted": var(--gray-600),
+);

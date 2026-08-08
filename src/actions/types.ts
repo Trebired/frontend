@@ -43,11 +43,15 @@ type SubmitActionFormOptions = {
   adapters?: ActionAdapters;
   beforeSubmit?: (form: HTMLFormElement, submitter: HTMLElement | null) => void;
   confirm?: boolean;
+  ignoreResponseAction?: boolean;
+  lifecycle?: boolean;
   onComplete?: (ok: boolean, json: ActionJson) => void;
   request?: (
     form: HTMLFormElement,
     submitter: HTMLElement | null,
   ) => Promise<ActionJson> | ActionJson;
+  success?: "soft-reload";
+  successTab?: string;
   ui?: ActionRequestUi;
 };
 
@@ -55,10 +59,13 @@ type SubmitActionButtonOptions = {
   adapters?: ActionAdapters;
   body?: BodyInit | Record<string, unknown> | null;
   confirm?: boolean;
+  ignoreResponseAction?: boolean;
   keepDisabled?: (json: ActionJson | null) => boolean;
   method?: string;
   request?: () => Promise<ActionJson> | ActionJson;
+  success?: "soft-reload";
   successConfetti?: boolean;
+  successTab?: string;
   ui?: ActionRequestUi;
   url?: string;
 };

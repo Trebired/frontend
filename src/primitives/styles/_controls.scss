@@ -1,0 +1,195 @@
+@use "sass:list";
+@use "./variables" as *;
+
+.btn {
+  --button-icon-color: var(--gray-300);
+  box-sizing: border-box;
+  height: 28px;
+  min-height: 28px;
+  width: auto;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  padding-block: 0;
+  border-radius: var(--radius-md, var(--tbf-radius, 0));
+  border: var(--border-width) solid var(--border-surface-2);
+  background: var(--gray-900);
+  color: var(--text-color);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.15;
+  vertical-align: middle;
+  transition:
+    color var(--transition-1) ease,
+    background var(--transition-1) ease,
+    border-color var(--transition-1) ease,
+    opacity var(--transition-1) ease;
+
+  &:hover,
+  &.active {
+    --button-icon-color: currentColor;
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+    color: var(--gray-200);
+  }
+
+  &:disabled,
+  &[disabled],
+  &.disabled {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  &:not(.icon) {
+    > i,
+    > svg,
+    > i svg,
+    > [data-icon],
+    > [data-icon] svg {
+      color: var(--button-icon-color);
+      flex: 0 0 auto;
+    }
+
+    @each $name, $size in $tbf-primitive-button-sizes {
+      &.#{$name} {
+        height: list.nth($size, 1);
+        min-height: list.nth($size, 1);
+        padding-inline: list.nth($size, 2);
+        padding-block: 0;
+        font-size: list.nth($size, 3);
+      }
+    }
+  }
+
+  &.highlight {
+    --button-icon-color: var(--gray-800);
+    background: var(--gray-100);
+    color: var(--gray-950);
+    border-color: var(--gray-100);
+
+    &:hover,
+    &.active {
+      --button-icon-color: currentColor;
+      background: var(--gray-200);
+      border-color: var(--gray-100);
+      color: var(--gray-900);
+    }
+  }
+
+  &.red {
+    border-inline-color: var(--red-700);
+
+    &:hover,
+    &.active {
+      background: var(--red-800);
+      border-color: var(--red-700);
+      color: var(--gray-50-dark);
+      --button-icon-color: currentColor;
+    }
+  }
+
+  &.yellow {
+    border-inline-color: var(--yellow-700);
+
+    &:hover,
+    &.active {
+      --button-icon-color: currentColor;
+      background: var(--yellow-700);
+      border-color: var(--yellow-600);
+      color: var(--gray-50-dark);
+    }
+  }
+
+  &.green {
+    border-inline-color: var(--green-700);
+
+    &:hover,
+    &.active {
+      --button-icon-color: currentColor;
+      background: var(--green-800);
+      border-color: var(--green-700);
+      color: var(--gray-0-dark);
+    }
+  }
+
+  &.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    gap: 0;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1;
+    text-align: center;
+    position: relative;
+    overflow: visible;
+    flex-shrink: 0;
+
+    > i,
+    > svg,
+    > img {
+      display: block;
+      margin: 0;
+      flex: 0 0 auto;
+      font-size: inherit;
+    }
+
+    > svg,
+    > img,
+    > i svg {
+      width: 1em;
+      height: 1em;
+    }
+
+    > i::before {
+      display: block;
+      margin: 0;
+      line-height: 1;
+      text-align: center;
+    }
+
+    @each $name, $size in $tbf-primitive-icon-sizes {
+      &.#{$name} {
+        width: list.nth($size, 1);
+        height: list.nth($size, 1);
+        min-width: list.nth($size, 1);
+        min-height: list.nth($size, 1);
+        font-size: list.nth($size, 2);
+      }
+    }
+
+    &.transparent {
+      background-color: transparent;
+    }
+  }
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: var(--border-width) solid var(--gray-700);
+
+  &.unknown {
+    background-color: var(--gray-700);
+  }
+
+  @each $name, $size in $tbf-primitive-avatar-sizes {
+    &.#{$name} {
+      width: $size;
+      height: $size;
+    }
+  }
+}
