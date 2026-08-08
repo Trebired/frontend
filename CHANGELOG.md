@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.14.0
+
+- Added package-owned advanced graph runtime with Chart.js rendering, boot-template mounting, unit switching, numeric point helpers, and server graph state helpers so ecosystem apps can remove local graph controllers.
+
 ## 1.13.3
 
 - Added package-owned entity icon helpers so ecosystem apps can remove local entity icon factories while keeping app-specific icon specs.

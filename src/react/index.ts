@@ -125,7 +125,9 @@ export {
   AdvancedGraph,
   AdvancedRoadmap,
   contributions_graph,
+  createGraphRoot,
   graph,
+  GraphCard,
   roadmap,
 } from "#wvl9qa853kbz";
 export {

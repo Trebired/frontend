@@ -18,6 +18,7 @@ const messages: Record<string, string> = {
   "display.exitFullscreen": "Exit fullscreen",
   "display.fullscreen": "Fullscreen",
   "empty.noContributions": "No contributions yet.",
+  "feedback.graphUnavailable": "Graph unavailable.",
   "fields.unit": "Unit",
 };
 
