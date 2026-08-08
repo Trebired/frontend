@@ -104,3 +104,4 @@ export {
   setProgressFromEvent,
 };
 export type { ProgressHandle };
+export * from "./bars.js";

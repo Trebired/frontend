@@ -12,6 +12,19 @@ export {
   submitActionButton,
 } from "./buttons.js";
 export {
+  COPY_CONFIG_SELECTOR,
+  COPY_SELECTOR,
+  bindCopyButton,
+  bindCopyButtons,
+  bindCopyHost,
+  bootCopyButtons,
+  copyTargetId,
+  normalizeClipboardText,
+  readTargetValue,
+  runCopyButton,
+  writeClipboard,
+} from "./clipboard.js";
+export {
   ACTION_CONFIG_SELECTOR,
   ACTION_FORM_SELECTOR,
   bindActionForm,
@@ -54,3 +67,6 @@ export type {
   SubmitActionButtonOptions,
   SubmitActionFormOptions,
 } from "./types.js";
+export type { CopyButtonOptions } from "./clipboard.js";
+export * from "./labels.js";
+export * from "./standard-buttons.js";

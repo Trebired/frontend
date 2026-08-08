@@ -11,6 +11,17 @@ type LiveRegionProps = HTMLAttributes<HTMLElement> & {
 type LiveRefreshButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   url?: string;
 };
+type LiveIslandMountProps = {
+  children?: ReactNode;
+  rootAttr?: string;
+  rootId?: string;
+  state?: unknown;
+  stateId: string;
+};
+
+function jsonScript(value: unknown) {
+  return JSON.stringify(value ?? {}).replace(/</g, "\\u003c");
+}
 
 function LiveRegion(props: LiveRegionProps) {
   const { as: Tag = "section", children, className, region, skip, ...rest } = props;
@@ -41,5 +52,35 @@ function LiveRefreshButton(props: LiveRefreshButtonProps) {
   );
 }
 
-export { LiveRefreshButton, LiveRegion };
-export type { LiveRefreshButtonProps, LiveRegionProps };
+function LiveIslandMount(props: LiveIslandMountProps) {
+  const rootAttr =
+    String(props.rootAttr || "data-live-island-root").trim() ||
+    "data-live-island-root";
+  const stateId = String(props.stateId || "").trim();
+  const state =
+    props.state && typeof props.state === "object" ? props.state : {};
+  return (
+    <>
+      <script
+        type="application/json"
+        id={stateId}
+        dangerouslySetInnerHTML={{ __html: jsonScript(state) }}
+      />
+      <div
+        id={String(props.rootId || "").trim() || undefined}
+        {...{ [rootAttr]: "" }}
+        data-live-island-root=""
+        data-live-island-hydrated="false"
+      >
+        {props.children}
+      </div>
+    </>
+  );
+}
+
+function live_island_mount(props: LiveIslandMountProps) {
+  return <LiveIslandMount {...props} />;
+}
+
+export { LiveIslandMount, LiveRefreshButton, LiveRegion, live_island_mount };
+export type { LiveIslandMountProps, LiveRefreshButtonProps, LiveRegionProps };

@@ -1,4 +1,9 @@
-import { bindActionButtons, bindActionForms, bindActionTriggers } from "./actions/index.js";
+import {
+  bindActionButtons,
+  bindActionForms,
+  bindActionTriggers,
+  bindCopyButtons,
+} from "./actions/index.js";
 import { bindCodeBlocks } from "./code/index.js";
 import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
@@ -98,6 +103,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });
+  bindCopyButtons(scope);
   bindFullscreen(scope);
   bindLiveRefresh(scope, {
     ...(options.live || {}),
@@ -157,6 +163,7 @@ export * from "./actions/index.js";
 export * from "./code/index.js";
 export * from "./dom/index.js";
 export * from "./editor/index.js";
+export * from "./entity/index.js";
 export * from "./explorer/index.js";
 export * from "./flash/index.js";
 export * from "./fullscreen/index.js";
@@ -197,10 +204,12 @@ export {
 export * from "./layer/index.js";
 export * from "./layout/index.js";
 export * from "./live/index.js";
+export * from "./markdown/index.js";
 export * from "./modal/index.js";
 export * from "./popover/index.js";
 export * from "./primitives/index.js";
 export * from "./progress/index.js";
+export * from "./runtime/index.js";
 export * from "./sidebar/index.js";
 export * from "./surface/index.js";
 export * from "./theme/index.js";

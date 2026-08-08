@@ -142,3 +142,30 @@ function ActionTrigger(props: ActionTriggerProps) {
 
 export { ActionButton, ActionForm, ActionTrigger };
 export type { ActionButtonProps, ActionFormProps, ActionTriggerProps };
+export {
+  add_button,
+  cancel_button,
+  copy_button,
+  copy_code_card,
+  create_button,
+  delete_button,
+  drop_button,
+  force_stop_button,
+  insert_button,
+  install_button,
+  remove_button,
+  removeConfirmationAttrs,
+  restart_button,
+  save_icon,
+  show_button,
+  standardActionButton,
+  start_button,
+  stop_button,
+} from "#k632wzgl64a3";
+export type {
+  CopyButtonProps,
+  CopyCodeCardProps,
+  RemoveConfirmationProps,
+  SaveIconButtonProps,
+  StandardActionButtonProps,
+} from "#k632wzgl64a3";

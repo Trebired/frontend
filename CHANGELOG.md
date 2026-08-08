@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.11.0
+
+- Added package-owned standard action button helpers, copy button runtime, and copy-code cards so ecosystem apps can remove local action wrapper components.
+- Added package-owned markdown article, live island mount, searchable entity-list shell, runtime activity/progress helpers, and reusable progress bar controller exports.
+
 ## 1.10.0
 
 - Added package-owned generic search panel/item/filter components and the full family-keyed search runtime so ecosystem apps can remove local search primitives.
