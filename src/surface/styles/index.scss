@@ -1,0 +1,110 @@
+.tbf-button {
+  min-height: 32px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius-sm, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface-muted, #fff);
+  cursor: pointer;
+}
+
+.tbf-button--strong {
+  border-color: var(--tbf-focus, #000);
+  color: var(--tbf-surface, #fff);
+  background: var(--tbf-focus, #000);
+}
+
+.tbf-button--sm {
+  min-height: 28px;
+  padding-inline: 9px;
+}
+
+.tbf-button--lg {
+  min-height: 40px;
+  padding-inline: 16px;
+}
+
+.tbf-card,
+[data-tbf-card] {
+  min-width: 0;
+  box-sizing: border-box;
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius, 0);
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface, #fff);
+}
+
+.tbf-card[data-tbf-interactive="true"]:hover {
+  border-color: var(--tbf-focus, #000);
+}
+
+.tbf-card__header,
+.tbf-card__body,
+.tbf-card__footer {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.tbf-card__header,
+.tbf-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tbf-gap-sm, 8px);
+}
+
+.tbf-card__header {
+  border-block-end: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+}
+
+.tbf-card__footer {
+  border-block-start: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+}
+
+.tbf-canvas-panel {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-radius: var(--tbf-radius, 0);
+  background: var(--tbf-surface, #fff);
+}
+
+.tbf-canvas-panel__header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tbf-gap-sm, 8px);
+  padding: 10px 12px;
+  border-block-end: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+}
+
+.tbf-canvas-panel__titles {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tbf-canvas-panel__titles span {
+  color: var(--tbf-text-muted, #666);
+  font-size: 0.9rem;
+}
+
+.tbf-canvas-panel__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.tbf-canvas-panel__body {
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 12px;
+}

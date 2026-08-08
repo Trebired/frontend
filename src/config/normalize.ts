@@ -30,6 +30,8 @@ const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "inputs",
   "actions",
   "fullscreen",
+  "surface",
+  "graph",
 ];
 
 const DEFAULT_TREBIRED_FRONTEND_CONFIG: NormalizedTrebiredFrontendConfig = Object.freeze({

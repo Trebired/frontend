@@ -252,6 +252,9 @@ export {
   LayoutPortalRoot,
   LayoutSecondaryHeader,
 };
+export * from "./breadcrumb.js";
+export * from "./header.js";
+export * from "./mobile.js";
 export type {
   LayoutBootScriptProps,
   LayoutContentProps,

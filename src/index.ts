@@ -3,6 +3,7 @@ import type { ActionAdapters } from "./actions/index.js";
 import { bindInputControllers } from "./inputs/index.js";
 import { bindIcons } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
+import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
 import { bindModals } from "./modal/index.js";
@@ -68,6 +69,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindPortals(scope);
   bindProgress();
   bindIcons(scope);
+  bindGraphs(scope);
   bindInputControllers(scope, {
     flash: adapters.flash,
     logging: {
@@ -145,6 +147,7 @@ export * from "./actions/index.js";
 export * from "./dom/index.js";
 export * from "./flash/index.js";
 export * from "./fullscreen/index.js";
+export * from "./graph/index.js";
 export * from "./http/index.js";
 export * from "./icons/index.js";
 export * from "./inputs/index.js";
@@ -155,5 +158,6 @@ export * from "./modal/index.js";
 export * from "./popover/index.js";
 export * from "./progress/index.js";
 export * from "./sidebar/index.js";
+export * from "./surface/index.js";
 export * from "./theme/index.js";
 export * from "./tooltip/index.js";

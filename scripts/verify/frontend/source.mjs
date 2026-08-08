@@ -105,6 +105,9 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   assert.equal(css.includes(".tbf-upload"), true);
   assert.equal(css.includes(".tbf-sidebar-shell"), true);
   assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
+  assert.equal(css.includes(".tbf-graph"), true);
+  assert.equal(css.includes(".tbf-card"), true);
+  assert.equal(css.includes(".tbf-disclosure"), true);
   assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
   assert.equal(css.includes("assets/assets/"), false);
   assert.equal(css.includes("/../assets/"), false);

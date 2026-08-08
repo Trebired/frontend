@@ -26,6 +26,7 @@ import type {
 const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   actions: "actions/styles/index.scss",
   flash: "flash/styles/index.scss",
+  graph: "graph/styles/index.scss",
   icons: "icons/styles/index.scss",
   inputs: "inputs/styles/index.scss",
   layer: "layer/styles/index.scss",
@@ -34,6 +35,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   popover: "popover/styles/index.scss",
   progress: "progress/styles/index.scss",
   sidebar: "sidebar/styles/index.scss",
+  surface: "surface/styles/index.scss",
   tooltip: "tooltip/styles/index.scss",
   fullscreen: "fullscreen/styles/index.scss",
 };

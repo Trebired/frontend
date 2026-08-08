@@ -19,6 +19,8 @@ async function verifyReactEntrypoint(importDist) {
     "ProgressRoot",
     "LayerRoot",
     "Layout",
+    "AppHeader",
+    "Breadcrumb",
     "LayoutContent",
     "LayoutDocument",
     "LayoutPortalRoot",
@@ -29,8 +31,18 @@ async function verifyReactEntrypoint(importDist) {
     "FullscreenButton",
     "SidebarShell",
     "Sidebar",
+    "SidebarLinkList",
+    "SidebarLiveSlot",
     "SidebarList",
     "UploadField",
+    "Disclosure",
+    "Dropdown",
+    "GraphPanel",
+    "CanvasPanel",
+    "Card",
+    "Tabs",
+    "Search",
+    "StatusField",
     "ThemeToggle",
     "LiveRegion",
   ];
@@ -79,6 +91,7 @@ async function verifyRenderedUpload(importDist) {
 async function verifyRenderedSystems(importDist) {
   await verifyRenderedActions(importDist);
   await verifyRenderedLayeredSystems(importDist);
+  await verifyRenderedGenericPrimitives(importDist);
   await verifyRenderedThemeLive(importDist);
 }
 
@@ -118,6 +131,40 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.ok(html.includes("data-tbf-fullscreen-target"));
   assert.ok(html.includes("data-tbf-sidebar-shell"));
   assertNoCustomElementTags(html, "rendered layered components");
+}
+
+async function verifyRenderedGenericPrimitives(importDist) {
+  const react = await importDist("react");
+  const html = [
+    renderToStaticMarkup(h(react.AppHeader, { brand: "App", nav: "Nav" })),
+    renderToStaticMarkup(h(react.Breadcrumb, null, h(react.BreadcrumbItem, { current: true }, "Current"))),
+    renderToStaticMarkup(h(react.Disclosure, {
+      panel: "Panel",
+      trigger: h(react.DisclosureButton, null, "Open"),
+    })),
+    renderToStaticMarkup(h(react.Tabs, null, h(react.TabList, null, h(react.TabButton, { controls: "p1", value: "one" }, "One")), h(react.TabPanel, { id: "p1", value: "one" }, "Panel"))),
+    renderToStaticMarkup(h(react.Dropdown, { name: "mode", value: "one" }, h(react.DropdownTrigger, null, h(react.DropdownValue, null, "One")), h(react.DropdownMenu, null, h(react.DropdownOption, { value: "one" }, "One")))),
+    renderToStaticMarkup(h(react.Search, null, h(react.SearchInput, null), h(react.SearchItem, { text: "alpha" }, "Alpha"))),
+    renderToStaticMarkup(h(react.StatusField, { url: "/validate" }, h(react.StatusMessage, null))),
+    renderToStaticMarkup(h(react.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),
+    renderToStaticMarkup(h(react.CanvasPanel, { title: "Canvas" }, "Body")),
+    renderToStaticMarkup(h(react.Card, null, h(react.CardBody, null, "Body"))),
+    renderToStaticMarkup(h(react.SidebarLinkList, { items: [{ href: "/", label: "Home" }] })),
+  ].join("");
+  [
+    "data-tbf-header",
+    "data-tbf-breadcrumb",
+    "data-tbf-disclosure",
+    "data-tbf-tabs",
+    "data-tbf-dropdown",
+    "data-tbf-search",
+    "data-tbf-status-field",
+    "data-tbf-graph",
+    "data-tbf-canvas-panel",
+    "data-tbf-card",
+    "data-tbf-sidebar-link",
+  ].forEach((marker) => assert.ok(html.includes(marker), `missing ${marker}`));
+  assertNoCustomElementTags(html, "rendered generic primitive components");
 }
 
 async function verifyRenderedThemeLive(importDist) {

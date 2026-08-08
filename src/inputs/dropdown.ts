@@ -1,0 +1,79 @@
+import { dispatchInputChange, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+
+const DROPDOWN_SELECTOR = "[data-tbf-dropdown]";
+const DROPDOWN_TRIGGER_SELECTOR = "[data-tbf-dropdown-trigger]";
+const DROPDOWN_MENU_SELECTOR = "[data-tbf-dropdown-menu]";
+const DROPDOWN_OPTION_SELECTOR = "[data-tbf-dropdown-option]";
+const DROPDOWN_VALUE_SELECTOR = "[data-tbf-dropdown-value]";
+const DROPDOWN_EVENT = "tbf:dropdown";
+
+type DropdownState = {
+  open: boolean;
+  root: HTMLElement;
+  value: string;
+};
+
+function setDropdownOpen(root: HTMLElement, open: boolean) {
+  root.setAttribute("data-tbf-dropdown-open", open ? "true" : "false");
+  root.querySelector<HTMLElement>(DROPDOWN_MENU_SELECTOR)?.setAttribute("aria-hidden", open ? "false" : "true");
+  root.querySelector<HTMLElement>(DROPDOWN_TRIGGER_SELECTOR)?.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function dropdownValue(root: HTMLElement) {
+  return root.getAttribute("data-tbf-dropdown-current") || "";
+}
+
+function commitDropdownValue(root: HTMLElement, value: string, label = value): DropdownState {
+  root.setAttribute("data-tbf-dropdown-current", value);
+  root.querySelectorAll<HTMLInputElement>("input[type='hidden'][data-tbf-dropdown-input]").forEach((input) => {
+    input.value = value;
+    dispatchInputChange(input);
+  });
+  root.querySelectorAll<HTMLElement>(DROPDOWN_VALUE_SELECTOR).forEach((slot) => {
+    slot.textContent = label;
+  });
+  queryAll<HTMLElement>(root, DROPDOWN_OPTION_SELECTOR).forEach((option) => {
+    option.setAttribute("aria-selected", option.getAttribute("data-tbf-dropdown-option") === value ? "true" : "false");
+  });
+  const state = { open: false, root, value };
+  root.dispatchEvent(new CustomEvent(DROPDOWN_EVENT, { bubbles: true, detail: state }));
+  return state;
+}
+
+function bindDropdown(root: HTMLElement | null) {
+  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-dropdown-bound")) return null;
+  root.setAttribute("data-tbf-dropdown-bound", "true");
+  const trigger = root.querySelector<HTMLElement>(DROPDOWN_TRIGGER_SELECTOR);
+  trigger?.addEventListener("click", (event) => {
+    event.preventDefault();
+    setDropdownOpen(root, root.getAttribute("data-tbf-dropdown-open") !== "true");
+  });
+  queryAll<HTMLElement>(root, DROPDOWN_OPTION_SELECTOR).forEach((option) => {
+    option.addEventListener("click", (event) => {
+      event.preventDefault();
+      commitDropdownValue(root, option.getAttribute("data-tbf-dropdown-option") || "", option.textContent?.trim());
+      setDropdownOpen(root, false);
+    });
+  });
+  const selected = root.querySelector<HTMLElement>(`${DROPDOWN_OPTION_SELECTOR}[aria-selected="true"]`);
+  if (selected) commitDropdownValue(root, selected.getAttribute("data-tbf-dropdown-option") || "", selected.textContent?.trim());
+  return { open: false, root, value: dropdownValue(root) };
+}
+
+function bindDropdowns(root: BindRoot = document) {
+  queryAll<HTMLElement>(root, DROPDOWN_SELECTOR).forEach(bindDropdown);
+}
+
+export {
+  DROPDOWN_EVENT,
+  DROPDOWN_MENU_SELECTOR,
+  DROPDOWN_OPTION_SELECTOR,
+  DROPDOWN_SELECTOR,
+  DROPDOWN_TRIGGER_SELECTOR,
+  DROPDOWN_VALUE_SELECTOR,
+  bindDropdown,
+  bindDropdowns,
+  commitDropdownValue,
+  setDropdownOpen,
+};
+export type { DropdownState };

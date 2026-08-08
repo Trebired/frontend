@@ -108,6 +108,7 @@ export default defineTrebiredFrontendConfig({
     actions: true,
     flash: true,
     fullscreen: true,
+    graph: true,
     icons: true,
     inputs: true,
     layer: true,
@@ -116,6 +117,7 @@ export default defineTrebiredFrontendConfig({
     popover: true,
     progress: true,
     sidebar: true,
+    surface: true,
     theme: true,
     tooltip: true,
   },
@@ -194,7 +196,7 @@ The canonical runtime binds theme, layout, layer roots, icons, progress, flash, 
 
 ### Layout
 
-Ecosystem apps should use the package layout components for the document shell shape instead of owning separate layout HTML. The app still supplies product-specific header, sidebar link content, page body, and bottom-bar children.
+Ecosystem apps should use the package layout and chrome components for the document shell shape instead of owning separate layout HTML. The app still supplies product-specific brand, account actions, sidebar link models, page body, and persistence endpoints.
 
 ```tsx
 import {
@@ -202,6 +204,8 @@ import {
   LayoutBootScript,
   LayoutContent,
   LayoutDocument,
+  AppHeader,
+  MobileNav,
   Sidebar,
   SidebarLink,
   SidebarList,
@@ -229,6 +233,8 @@ export function Document({ body, header }: { body: React.ReactNode; header: Reac
   );
 }
 ```
+
+Generic app UI such as headers, mobile nav, breadcrumb, disclosure, tabs, dropdown/search controls, graph shells, cards, canvas panels, and sidebar link lists is available from `@trebired/frontend/react`. Runtime binders for those systems are included by `bindFrontendRuntime()`.
 
 ### Theme
 

@@ -225,6 +225,7 @@ export {
   SidebarSeparator,
   SidebarShell,
 };
+export * from "./links.js";
 export type {
   SidebarBootScriptProps,
   SidebarButtonProps,

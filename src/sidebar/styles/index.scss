@@ -142,6 +142,25 @@
   margin-inline-start: auto;
 }
 
+[data-tbf-sidebar-live-slot] {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-tbf-sidebar-live-state="loading"] {
+  opacity: 0.58;
+}
+
+[data-tbf-sidebar-live-state="error"] {
+  color: var(--red-500, var(--tbf-focus, #000));
+}
+
+[data-tbf-sidebar-live-state="success"] {
+  color: var(--green-500, var(--tbf-focus, #000));
+}
+
 .tbf-sidebar-separator,
 [data-tbf-sidebar-separator] {
   display: flex;

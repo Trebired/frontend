@@ -6,6 +6,7 @@ import {
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { bindSidebarLiveSlots } from "./live.js";
 
 const SIDEBAR_SHELL_SELECTOR = "[data-tbf-sidebar-shell]";
 const SIDEBAR_MINIMIZE_SELECTOR = "[data-tbf-sidebar-minimize][aria-controls]";
@@ -273,6 +274,7 @@ function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions 
     bindSidebarOpenButton(button, root);
   });
   queryAll<HTMLElement>(root, SIDEBAR_CLOSE_SELECTOR).forEach(bindSidebarCloseButton);
+  bindSidebarLiveSlots(root);
   installSharedSidebarListeners();
 }
 
@@ -310,4 +312,5 @@ export {
   setSidebarOpen,
   toggleSidebarMinimized,
 };
+export * from "./live.js";
 export type { SidebarPersistenceAdapter, SidebarRuntimeOptions, SidebarSide, SidebarState };

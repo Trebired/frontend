@@ -1,3 +1,5 @@
+@use "./chrome";
+
 :root {
   --tbf-layout-top-offset: 0px;
   --tbf-layout-content-padding: 18px 20px 32px;
@@ -13,6 +15,8 @@
   --tbf-sidebar-left-width: var(--tbf-sidebar-width);
   --tbf-sidebar-right-width: var(--tbf-sidebar-width);
   --tbf-sidebar-minimized-width: 64px;
+  --tbf-header-height: 0px;
+  --tbf-secondary-header-height: 0px;
 }
 
 body[data-tbf-sidebar-left="true"] {
@@ -104,13 +108,15 @@ body[data-tbf-sidebar-right-minimized="true"] {
 
 .tbf-layout-header,
 [data-tbf-layout-header] {
-  position: relative;
+  position: sticky;
+  inset-block-start: 0;
   z-index: var(--tbf-z-header, 920);
 }
 
 .tbf-layout-secondary-header,
 [data-tbf-layout-secondary-header] {
-  position: relative;
+  position: sticky;
+  inset-block-start: var(--tbf-header-height, 0px);
   z-index: var(--tbf-z-secondary-header, 910);
 }
 

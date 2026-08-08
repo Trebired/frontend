@@ -4,6 +4,7 @@ type TrebiredFrontendSystemKey =
   | "actions"
   | "flash"
   | "fullscreen"
+  | "graph"
   | "icons"
   | "inputs"
   | "layer"
@@ -12,6 +13,7 @@ type TrebiredFrontendSystemKey =
   | "popover"
   | "progress"
   | "sidebar"
+  | "surface"
   | "theme"
   | "tooltip";
 

@@ -1,4 +1,6 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { bindBreadcrumbs } from "./breadcrumb.js";
+import { bindHeaders, type HeaderRuntimeOptions } from "./header.js";
 
 const LAYOUT_ROOT_SELECTOR = "[data-tbf-layout-root]";
 const LAYOUT_MAIN_SELECTOR = "[data-tbf-layout-main]";
@@ -17,6 +19,7 @@ type LayoutBodyState = {
 };
 
 type LayoutRuntimeOptions = {
+  header?: HeaderRuntimeOptions;
   mobile?: boolean;
 };
 
@@ -64,6 +67,8 @@ function bindLayouts(root: BindRoot = document, options: LayoutRuntimeOptions = 
   queryAll<HTMLElement>(root, LAYOUT_ROOT_SELECTOR).forEach((layoutRoot) => {
     bindLayoutRoot(layoutRoot, options);
   });
+  bindHeaders(root, options.header || {});
+  bindBreadcrumbs(root);
   if (root === document) syncLayoutBodyState(document, options);
 }
 
@@ -113,4 +118,7 @@ export {
   readLayoutBodyState,
   syncLayoutBodyState,
 };
+export * from "./breadcrumb.js";
+export * from "./header.js";
+export * from "./state.js";
 export type { LayoutBodyState, LayoutRuntimeOptions, LayoutSide };

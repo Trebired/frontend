@@ -24,6 +24,12 @@ import {
 } from "./upload/markup.js";
 import { matchesAccept, parseAcceptList } from "./upload/files.js";
 import type { UploadRuntimeOptions } from "./upload/types.js";
+import { bindChoiceControls } from "./choice.js";
+import { bindDisclosures } from "./disclosure.js";
+import { bindDropdowns } from "./dropdown.js";
+import { bindSearchControls } from "./search.js";
+import { bindStatusFields } from "./status.js";
+import { bindTabs } from "./tabs.js";
 
 const AUTOSIZE_SELECTOR = "textarea[data-tbf-autosize]";
 const CLEAR_SELECTOR = "[data-tbf-clear]";
@@ -77,6 +83,12 @@ function bindInputControllers(
   queryAll<HTMLTextAreaElement>(root, AUTOSIZE_SELECTOR).forEach(bindAutosizeTextarea);
   queryAll<HTMLElement>(root, CLEAR_SELECTOR).forEach(bindClearButton);
   queryAll<HTMLElement>(root, PASSWORD_TOGGLE_SELECTOR).forEach(bindPasswordToggle);
+  bindChoiceControls(root);
+  bindDisclosures(root);
+  bindDropdowns(root);
+  bindSearchControls(root);
+  bindStatusFields(root);
+  bindTabs(root);
   bindUploads(root, options);
 }
 
@@ -105,6 +117,12 @@ export {
   uploadFieldHtml,
   uploadManager,
 };
+export * from "./choice.js";
+export * from "./disclosure.js";
+export * from "./dropdown.js";
+export * from "./search.js";
+export * from "./status.js";
+export * from "./tabs.js";
 export type {
   UploadEmptyToggle,
   UploadEntry,

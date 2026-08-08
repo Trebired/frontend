@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.3.0
+
+- Added package-owned generic header/mobile chrome, breadcrumb, disclosure, tabs, dropdown, search, choice/toggle/status inputs, graph/canvas/roadmap/heatmap surfaces, card/button surfaces, and sidebar link-list/live-slot APIs under the existing root and React entrypoints.
+
 ## 1.2.1
 
 - Fixed package layout grid placement so main content stays in the center track when either sidebar is omitted.

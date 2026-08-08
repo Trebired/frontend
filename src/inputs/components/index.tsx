@@ -274,4 +274,10 @@ function AutosizeTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
 }
 
 export { AutosizeTextarea, ClearButton, PasswordToggleButton, UploadField };
+export * from "./choice.js";
+export * from "./disclosure.js";
+export * from "./dropdown.js";
+export * from "./search.js";
+export * from "./status.js";
+export * from "./tabs.js";
 export type { ClearButtonProps, PasswordToggleProps, UploadFieldProps };
