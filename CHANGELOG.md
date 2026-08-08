@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.6.0
+
+- Exposed `createKeyValueInputElement()` through the React entrypoint for package-owned key/value input DOM creation.
+
 ## 1.5.0
 
 - Exposed advanced dropdown, checkbox, disclosure, and tabs helper functions through the root entrypoint so ecosystem apps can remove local primitive helper copies without importing package internals.
