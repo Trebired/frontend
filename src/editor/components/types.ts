@@ -49,6 +49,7 @@ type EditorSurfaceProps = {
   ideMode?: string;
   ideUnavailableMessage?: string;
   initialStatusText?: string;
+  lang?: string;
   labels?: EditorLabels;
   requestedPath?: string;
   title?: string;

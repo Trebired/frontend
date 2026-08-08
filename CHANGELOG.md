@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.8.1
+
+- Accepted the app-supplied `lang` prop on generic editor surface/body props so migrated callers can keep passing locale context.
+
 ## 1.8.0
 
 - Added package-owned generic code and Monaco editor primitives with runtime binding, theme-aware syntax highlighting, editable content fields, editor surfaces, and config-selected styles.
