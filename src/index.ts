@@ -1,5 +1,6 @@
 import { bindActionButtons, bindActionForms, bindActionTriggers } from "./actions/index.js";
 import type { ActionAdapters } from "./actions/index.js";
+import { bindAdvancedInputControllers } from "./inputs/advanced/index.js";
 import { bindInputControllers } from "./inputs/index.js";
 import { bindIcons } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
@@ -78,6 +79,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
       quiet: options.quiet,
     },
   });
+  bindAdvancedInputControllers(scope);
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
@@ -151,6 +153,19 @@ export * from "./graph/index.js";
 export * from "./http/index.js";
 export * from "./icons/index.js";
 export * from "./inputs/index.js";
+export {
+  bindAdvancedCheckboxes,
+  bindAdvancedDisclosures,
+  bindAdvancedDropdowns,
+  bindAdvancedInputControllers,
+  bindAdvancedRadios,
+  bindAdvancedSearch,
+  bindAdvancedTabs,
+  checkboxClient,
+  dropdownManager,
+  radioManager,
+  searchManager,
+} from "./inputs/advanced/index.js";
 export * from "./layer/index.js";
 export * from "./layout/index.js";
 export * from "./live/index.js";

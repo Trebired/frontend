@@ -1,0 +1,31 @@
+@use "./field" as *;
+
+.input {
+  &.classic {
+    @include classic-field-base;
+    @include classic-field-focus;
+
+    height: var(--height-input);
+
+    &[type="search"] {
+      appearance: none;
+      padding-right: 34px;
+
+      &::-webkit-search-decoration,
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-results-button,
+      &::-webkit-search-results-decoration {
+        display: none;
+      }
+    }
+  }
+}
+
+.textarea {
+  &.classic {
+    @include classic-field-base;
+    @include classic-field-focus;
+
+    min-height: var(--height-xs3, 50px);
+  }
+}

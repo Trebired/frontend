@@ -40,7 +40,11 @@ async function promotePublicDistFiles() {
 async function rewriteDistAliases(aliasTargets) {
   const files = await collectDistFiles(distDir);
   await Promise.all(files.map(async (filePath) => {
-    const kind = filePath.endsWith(".d.ts") ? "types" : "runtime";
+    const kind = filePath.endsWith(".d.ts")
+      ? "types"
+      : filePath.endsWith(".scss")
+        ? "scss"
+        : "runtime";
     const original = await fs.readFile(filePath, "utf8");
     const rewritten = rewriteAliasImports(original, filePath, aliasTargets, kind);
     if (rewritten !== original) await fs.writeFile(filePath, rewritten);
@@ -60,7 +64,12 @@ async function collectDistFiles(startDir) {
         stack.push(nextPath);
         continue;
       }
-      if (entry.isFile() && (nextPath.endsWith(".js") || nextPath.endsWith(".d.ts"))) {
+      if (
+        entry.isFile() &&
+        (nextPath.endsWith(".js") ||
+          nextPath.endsWith(".d.ts") ||
+          nextPath.endsWith(".scss"))
+      ) {
         files.push(nextPath);
       }
     }
@@ -87,7 +96,9 @@ function resolveCompiledTarget(target, kind) {
   if (!normalized.startsWith("src/")) return undefined;
 
   const relativeTarget = normalized.replace(/^src\//u, "");
-  const compiledRelative = relativeTarget.replace(/\.(ts|tsx|js|jsx)$/u, kind === "types" ? ".d.ts" : ".js");
+  const compiledRelative = kind === "scss"
+    ? relativeTarget
+    : relativeTarget.replace(/\.(ts|tsx|js|jsx)$/u, kind === "types" ? ".d.ts" : ".js");
   return path.join(distDir, compiledRelative);
 }
 

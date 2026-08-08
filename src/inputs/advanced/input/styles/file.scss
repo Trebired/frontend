@@ -1,0 +1,18 @@
+.file-input {
+  cursor: pointer;
+}
+
+.file-input::file-selector-button {
+  margin-right: 10px;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: var(--gray-700);
+  color: var(--text-color-muted);
+  cursor: pointer;
+}
+
+.file-input::file-selector-button:hover {
+  background: var(--gray-700);
+}

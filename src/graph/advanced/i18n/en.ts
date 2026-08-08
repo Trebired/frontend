@@ -1,0 +1,27 @@
+import { defineMessages } from "#4fte8m1x62rd";
+
+export default defineMessages({
+    contributionActiveDayCount: "{{count}} active day",
+    contributionActiveDaysCount: "{{count}} active days",
+    contributionCommitCount: "{{count}} commit",
+    contributionCommitOnDate: "{{count}} commit on {{date}}",
+    contributionCommitsCount: "{{count}} commits",
+    contributionCommitsOnDate: "{{count}} commits on {{date}}",
+    contributionRepoCount: "{{count}} repo",
+    contributionReposCount: "{{count}} repos",
+    monthAprilShort: "Apr",
+    monthAugustShort: "Aug",
+    monthDecemberShort: "Dec",
+    monthFebruaryShort: "Feb",
+    monthJanuaryShort: "Jan",
+    monthJulyShort: "Jul",
+    monthJuneShort: "Jun",
+    monthMarchShort: "Mar",
+    monthMayShort: "May",
+    monthNovemberShort: "Nov",
+    monthOctoberShort: "Oct",
+    monthSeptemberShort: "Sep",
+    weekdayFridayShort: "Fri",
+    weekdayMondayShort: "Mon",
+    weekdayWednesdayShort: "Wed",
+});

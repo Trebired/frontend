@@ -1,0 +1,27 @@
+import { defineMessages } from "#4fte8m1x62rd";
+
+export default defineMessages({
+    contributionActiveDayCount: "{{count}} aktivní den",
+    contributionActiveDaysCount: "{{count}} aktivních dní",
+    contributionCommitCount: "{{count}} commit",
+    contributionCommitOnDate: "{{count}} commit dne {{date}}",
+    contributionCommitsCount: "{{count}} commitů",
+    contributionCommitsOnDate: "{{count}} commitů dne {{date}}",
+    contributionRepoCount: "{{count}} repozitář",
+    contributionReposCount: "{{count}} repozitářů",
+    monthAprilShort: "Dub",
+    monthAugustShort: "Srp",
+    monthDecemberShort: "Pro",
+    monthFebruaryShort: "Úno",
+    monthJanuaryShort: "Led",
+    monthJulyShort: "Čvc",
+    monthJuneShort: "Čvn",
+    monthMarchShort: "Bře",
+    monthMayShort: "Kvě",
+    monthNovemberShort: "Lis",
+    monthOctoberShort: "Říj",
+    monthSeptemberShort: "Zář",
+    weekdayFridayShort: "Pá",
+    weekdayMondayShort: "Po",
+    weekdayWednesdayShort: "St",
+});

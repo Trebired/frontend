@@ -1,0 +1,144 @@
+$tabs-pane-animation-ms: 290ms;
+$tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+.tabs {
+  display: flex;
+  width: 100%;
+  gap: var(--tbf-gap-sm);
+
+  .tab {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 34px;
+    padding: 0 14px;
+    border: var(--border-width) solid var(--border-surface-1);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    transition:
+    background 0.15s,
+    border-color 0.15s;
+    font-size: 14px;
+    line-height: calc(34px - (var(--border-width) * 2));
+    text-align: left;
+
+    &:hover {
+      background: var(--background-surface-1);
+      border-color: var(--border-surface-1);
+    }
+
+    &.active {
+      background: var(--background-surface-1);
+      border-color: var(--border-surface-1);
+    }
+
+    .tab-label {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    i {
+      display: inline-block;
+      line-height: 1;
+      vertical-align: -0.125em;
+    }
+
+    i:first-child {
+      margin-right: 5px;
+    }
+
+    i:last-child {
+      margin-left: 5px;
+    }
+  }
+}
+
+.tabs-stack {
+  width: 100%;
+}
+
+.tabs-row {
+  width: 100%;
+  min-width: 0;
+}
+
+.tabs-row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+[data-tabs-panels]
+> [data-tab-panel]
+> [data-tabs-root][data-tabs-hoist-family="true"]
+> [data-tabs-family] {
+  display: none;
+}
+
+.tabs-nested-indicator-row {
+  position: relative;
+  width: 100%;
+  height: 16px;
+
+  &[data-state="inactive"] {
+    opacity: 0;
+  }
+
+  &[data-state="active"] {
+    opacity: 1;
+  }
+}
+
+.tabs-nested-indicator-icon {
+  position: absolute;
+  left: var(--tabs-nested-indicator-left, 50%);
+  top: 50%;
+  color: var(--gray-400);
+  font-size: 20px;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.tabs-nested-indicator-row[data-state="inactive"] .tabs-nested-indicator-icon {
+  opacity: 0;
+  transform: translate(-50%, calc(-50% - 4px));
+}
+
+.tabs-nested-indicator-row[data-state="active"] .tabs-nested-indicator-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+[data-tabs-ready="true"] .tabs-nested-indicator-row {
+  transition: opacity $tabs-pane-animation-ms $tabs-pane-animation-easing;
+}
+
+[data-tabs-ready="true"] .tabs-nested-indicator-icon {
+  transition:
+  left $tabs-pane-animation-ms $tabs-pane-animation-easing,
+  opacity $tabs-pane-animation-ms $tabs-pane-animation-easing,
+  transform $tabs-pane-animation-ms $tabs-pane-animation-easing;
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .tabs .tab {
+    flex: 1 1 calc(50% - 8px);
+    height: 36px;
+    font-size: 13px;
+    line-height: calc(36px - (var(--border-width) * 2));
+  }
+}
+
+@media (max-width: 380px) {
+  .tabs .tab {
+    flex-basis: 100%;
+  }
+}

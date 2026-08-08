@@ -1,0 +1,115 @@
+.toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.toggle-side {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  transition:
+  opacity 120ms ease,
+  color 120ms ease;
+
+  &:last-of-type {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  &.is-unavailable {
+    opacity: 0.55;
+  }
+}
+
+.toggle-side-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.toggle-side-note {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+.toggle-side.active .toggle-side-label {
+  color: var(--gray-100);
+}
+
+.toggle-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-flex;
+  width: 56px;
+  height: 32px;
+  align-items: center;
+  padding: 3px;
+  border: var(--border-width) solid var(--border-surface-1);
+  border-radius: 999px;
+  background: var(--gray-100);
+  transition:
+  background 120ms ease,
+  border-color 120ms ease;
+}
+
+.toggle-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--gray-400);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
+  transform: translateX(0);
+  transition: transform 140ms ease;
+}
+
+.toggle-handle[aria-checked="true"] .toggle-thumb {
+  transform: translateX(24px);
+}
+
+.toggle-handle:focus-visible {
+  outline: var(--border-width) solid var(--gray-600);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+@media (max-width: 640px) {
+  .toggle {
+    gap: 10px;
+  }
+
+  .toggle-track {
+    width: 52px;
+    height: 30px;
+  }
+
+  .toggle-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .toggle-handle[aria-checked="true"] .toggle-thumb {
+    transform: translateX(22px);
+  }
+}

@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.4.0
+
+- Added explicit package-owned advanced graph/input exports and runtime binding for the former platform graph, dropdown, disclosure, tabs, checkbox, radio, status, search, toggle, upload, input, and roadmap helpers.
+
 ## 1.3.0
 
 - Added package-owned generic header/mobile chrome, breadcrumb, disclosure, tabs, dropdown, search, choice/toggle/status inputs, graph/canvas/roadmap/heatmap surfaces, card/button surfaces, and sidebar link-list/live-slot APIs under the existing root and React entrypoints.

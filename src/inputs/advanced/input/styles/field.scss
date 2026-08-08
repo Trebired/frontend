@@ -1,0 +1,53 @@
+$classic-field-border: var(--border-width) solid var(--border-surface-1);
+$classic-field-focus-color: var(--border-surface-2);
+
+@mixin component-scroll-min {
+  --scroll-min-horizontal-gap: 6px;
+  --scroll-min-size: 6px;
+
+  &::-webkit-scrollbar {
+    width: var(--scroll-min-size);
+    height: var(--scroll-min-size);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--scroll-track);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: var(--radius-lg);
+    background-color: var(--scroll-thumb);
+    border: var(--border-width) solid var(--scroll-track);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scroll-thumb-hover);
+  }
+
+  &[data-scroll-overflow-x="true"] {
+    padding-bottom: calc(
+      var(--scroll-min-padding-bottom, 0px) + var(--scroll-min-horizontal-gap)
+    );
+  }
+}
+
+@mixin classic-field-base {
+  @include component-scroll-min;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  border: $classic-field-border;
+  background: var(--background-surface-1);
+  color: var(--text-color);
+  font-size: 14px;
+  outline: var(--border-width) solid transparent;
+  outline-offset: 2px;
+  transition: all 120ms ease;
+  line-height: 1.4;
+}
+
+@mixin classic-field-focus {
+  &:focus {
+    outline-color: $classic-field-focus-color;
+    border-color: $classic-field-focus-color;
+  }
+}
