@@ -226,6 +226,8 @@ export {
   SidebarShell,
 };
 export * from "./links.js";
+export * from "#o5qa0mbep8mh";
+export type * from "#9w9ch5jtlv9e";
 export type {
   SidebarBootScriptProps,
   SidebarButtonProps,

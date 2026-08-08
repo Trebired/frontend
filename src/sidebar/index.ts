@@ -6,6 +6,10 @@ import {
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import {
+  bindDynamicSidebarLive,
+  type DynamicSidebarLiveOptions,
+} from "./dynamic/runtime/index.js";
 import { bindSidebarLiveSlots } from "./live.js";
 
 const SIDEBAR_SHELL_SELECTOR = "[data-tbf-sidebar-shell]";
@@ -28,6 +32,7 @@ type SidebarState = {
 type SidebarPersistenceAdapter = (state: SidebarState) => Promise<unknown> | unknown;
 
 type SidebarRuntimeOptions = {
+  dynamicLive?: DynamicSidebarLiveOptions;
   persistence?: SidebarPersistenceAdapter;
 };
 
@@ -275,6 +280,7 @@ function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions 
   });
   queryAll<HTMLElement>(root, SIDEBAR_CLOSE_SELECTOR).forEach(bindSidebarCloseButton);
   bindSidebarLiveSlots(root);
+  bindDynamicSidebarLive(root, options.dynamicLive);
   installSharedSidebarListeners();
 }
 
@@ -313,4 +319,5 @@ export {
   toggleSidebarMinimized,
 };
 export * from "./live.js";
+export * from "./dynamic/index.js";
 export type { SidebarPersistenceAdapter, SidebarRuntimeOptions, SidebarSide, SidebarState };

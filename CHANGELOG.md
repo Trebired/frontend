@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.12.0
+
+- Added package-owned dynamic sidebar link-list rendering and live count/state/loader runtime so ecosystem apps can remove local sidebar DOM/update logic while keeping app-specific item builders and data adapters.
+
 ## 1.11.0
 
 - Added package-owned standard action button helpers, copy button runtime, and copy-code cards so ecosystem apps can remove local action wrapper components.
