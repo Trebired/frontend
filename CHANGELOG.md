@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.2.1
+
+- Fixed package layout grid placement so main content stays in the center track when either sidebar is omitted.
+
 ## 1.2.0
 
 - Fixed package-owned layout roots so `.tbf-layout` and `[data-tbf-layout-root]` always fill their parent width without app-side utility workarounds.

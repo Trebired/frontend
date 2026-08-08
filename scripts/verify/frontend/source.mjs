@@ -100,6 +100,7 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   assert.equal(css.includes(".bg-canvas"), true);
   assert.equal(css.includes(".tbf-layout"), true);
   assert.match(css, /\.tbf-layout,\s*\[data-tbf-layout-root\]\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*100%;/su);
+  assert.match(css, /\[data-tbf-layout-root\]\s*>\s*\[data-tbf-layout-main\]\s*\{[^}]*grid-column:\s*2;/su);
   assert.equal(css.includes(".tbf-flash"), true);
   assert.equal(css.includes(".tbf-upload"), true);
   assert.equal(css.includes(".tbf-sidebar-shell"), true);
