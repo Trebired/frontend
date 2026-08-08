@@ -41,7 +41,7 @@ type ShellHeaderMobileToggleProps = {
   label?: string;
 };
 
-type ShellMobileNavSectionProps = HTMLAttributes<HTMLElement> & {
+type ShellMobileNavSectionProps = Omit<HTMLAttributes<HTMLElement>, "content"> & {
   content?: ReactNode;
   hidden?: boolean;
   label?: ReactNode;

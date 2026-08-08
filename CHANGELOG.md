@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.13.1
+
+- Fixed the shell mobile navigation section prop type so JSX content slots are accepted by package consumers.
+
 ## 1.13.0
 
 - Added package-owned shell header/mobile navigation composition helpers, support-link rendering, and shell chrome state helpers so ecosystem apps can share header/mobile structure while supplying app-specific slots.
