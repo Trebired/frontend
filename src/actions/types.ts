@@ -35,6 +35,7 @@ type ActionAdapters = {
 
 type ActionRequestUi = {
   flashErrorOnly?: boolean;
+  flash_error_only?: boolean;
   ignoreResponseAction?: boolean;
   silent?: boolean;
 };

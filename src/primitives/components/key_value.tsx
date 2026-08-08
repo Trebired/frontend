@@ -16,18 +16,33 @@ function formatKeyValueRowValue(row: key_value_row) {
   return row.value == null ? "" : String(row.value);
 }
 
-function keyValueRow(label: string, value: unknown, id = ""): key_value_row {
+function unavailableLabel(t?: unknown) {
+  if (typeof t === "function") return toText(t("state.unavailable"), "Unavailable");
+  return "Unavailable";
+}
+
+function keyValueRow(
+  label: string,
+  value: unknown,
+  id = "",
+  t?: unknown,
+): key_value_row {
   const text = toText(value);
   return {
     ...(id ? { id } : {}),
     label,
-    value: text || "Unavailable",
+    value: text || unavailableLabel(t),
   };
 }
 
-function keyValueTimeRow(label: string, value: unknown, id = ""): key_value_row {
+function keyValueTimeRow(
+  label: string,
+  value: unknown,
+  id = "",
+  t?: unknown,
+): key_value_row {
   const text = toText(value);
-  if (!text) return keyValueRow(label, "Unavailable", id);
+  if (!text) return keyValueRow(label, unavailableLabel(t), id, t);
   return {
     ...(id ? { id } : {}),
     format: "time",

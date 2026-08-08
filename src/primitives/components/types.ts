@@ -9,14 +9,17 @@ import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 
 type attr_map = Record<string, unknown>;
+type PrimitiveAttrs = {
+  [key: string]: unknown;
+};
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & PrimitiveAttrs & {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
   variant?: "solid";
 };
 
-type CardProps = HTMLAttributes<HTMLDivElement> & {
+type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
   actionTrigger?: BindActionTriggerOptions;
 };
 
@@ -32,7 +35,7 @@ type ActionFormProps = Omit<
   method?: string;
   success?: "soft-reload";
   successTab?: string;
-};
+} & PrimitiveAttrs;
 
 type CsrfInputProps = {
   optional?: boolean;
@@ -49,7 +52,7 @@ type AvatarProps = {
   width?: string | number;
 };
 
-type PillProps = HTMLAttributes<HTMLSpanElement> & {
+type PillProps = HTMLAttributes<HTMLSpanElement> & PrimitiveAttrs & {
   children?: ReactNode;
 };
 
@@ -97,7 +100,7 @@ type key_value_props = {
   separated?: boolean;
 };
 
-type masonry_props = HTMLAttributes<HTMLDivElement> & {
+type masonry_props = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
   columns?: ReactNode[];
 };
 

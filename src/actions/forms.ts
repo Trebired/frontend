@@ -145,6 +145,11 @@ async function resolveCustomActionFormRequest(
 function formUi(options: SubmitActionFormOptions, config: Record<string, unknown>) {
   return {
     ...(options.ui || {}),
+    flashErrorOnly:
+      options.ui?.flashErrorOnly === true ||
+      options.ui?.flash_error_only === true ||
+      config.flashErrorOnly === true ||
+      config.flash_error_only === true,
     ignoreResponseAction:
       options.ui?.ignoreResponseAction === true ||
       options.ignoreResponseAction === true ||

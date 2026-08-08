@@ -60,7 +60,8 @@ function shouldShowFlash(
   ui: ActionRequestUi | undefined,
   kind: "error" | "noop" | "success",
 ) {
-  if (ui?.flashErrorOnly === true) return kind === "error";
+  if (ui?.flashErrorOnly === true || ui?.flash_error_only === true)
+    return kind === "error";
   return ui?.silent !== true;
 }
 

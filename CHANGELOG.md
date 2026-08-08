@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.7.1
+
+- Loosened primitive prop types for app-specific attributes and restored the translated key-value row helper call signature.
+- Accepted snake-case `flash_error_only` action UI config alongside the camel-case API.
+
 ## 1.7.0
 
 - Added package-owned generic primitive helpers for legacy-shaped button, card body/item/segments/select, form, avatar, pill, separator, list, key/value rows, masonry, loader, status dot, and time counter APIs through the existing root and React entrypoints.
