@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
+import { verifyFrontendTheme } from "./frontend/theme.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const distDir = path.join(rootDir, "dist");
@@ -25,6 +26,7 @@ async function main() {
   await verifyFrontendLogging();
   await verifyFrontendSource({ distDir, rootDir, sourceDir });
   await verifyFrontendComponents({ importDist, rootDir });
+  await verifyFrontendTheme({ importDist, rootDir });
   console.log("Frontend verification succeeded.");
 }
 

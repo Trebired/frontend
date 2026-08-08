@@ -138,7 +138,41 @@ export default defineTrebiredFrontendConfig({
 });
 ```
 
-`@trebired/frontend/config` exports `defineTrebiredFrontendConfig()`, `normalizeTrebiredFrontendConfig()`, `loadTrebiredFrontendConfig()`, `findTrebiredFrontendConfig()`, and `generateTrebiredFrontendScss()`. Missing config files use package defaults. Bundlers should consume the generated SCSS string in memory and emit normal bundled CSS; projects do not need a `.trebired/frontend/generated/styles.scss` file.
+`@trebired/frontend/config` exports `defineTrebiredFrontendConfig()`, `normalizeTrebiredFrontendConfig()`, `loadTrebiredFrontendConfig()`, `findTrebiredFrontendConfig()`, `generateTrebiredFrontendScss()`, `collectConfigDependencies()`, and `THEME_MODE_ATTRIBUTE`. Missing config files use package defaults. Bundlers should consume the generated SCSS string in memory and emit normal bundled CSS; projects do not need a `.trebired/frontend/generated/styles.scss` file.
+
+`loadTrebiredFrontendConfig()` resolves the config file's relative import graph, returns it as `dependencies`, and keys its compile cache on the contents of every file in that graph. A project can therefore keep design tokens in a sibling module and edit them without stale output:
+
+```ts
+// .trebired/frontend/tokens.ts
+export const surface = { dark: "#101014", light: "#ffffff", sepia: "#f4ecd8" };
+```
+
+### Theme Modes
+
+`theme.modes` declares an open set of named modes. Each mode owns a token block and, optionally, a `label` and a `scheme` (`"dark"` or `"light"`). Anything other than `label`, `scheme`, and `tokens` inside a mode is rejected, so custom properties always live under `tokens`.
+
+```ts
+import { defineTrebiredFrontendConfig } from "@trebired/frontend/config";
+import { surface } from "./tokens.js";
+
+export default defineTrebiredFrontendConfig({
+  prefix: "app",
+  theme: {
+    cssVariables: true,
+    defaultMode: "sepia",
+    tokens: { radius: { md: "6px" } },
+    modes: {
+      dark: { tokens: { color: { surface: surface.dark } } },
+      light: { tokens: { color: { surface: surface.light } } },
+      sepia: { label: "Paper", scheme: "light", tokens: { color: { surface: surface.sepia } } },
+    },
+  },
+});
+```
+
+`generateTrebiredFrontendScss()` emits shared tokens in `:root {}` and one `[data-tbf-theme="<mode>"] {}` block per declared mode, each carrying its own `color-scheme`. It also emits `--<prefix>-theme-modes`, `--<prefix>-theme-default`, and `prefers-color-scheme` fallbacks scoped to `:root:not([data-tbf-theme])` so unbooted documents still resolve.
+
+`theme.dark` and `theme.light` name which registered modes answer `prefers-color-scheme`. When omitted, the first mode of each scheme wins. Declaring no `theme.modes` keeps the previous single `:root {}` output.
 
 ### Runtime Options
 
@@ -167,6 +201,32 @@ Set `frontend_quiet: true`, `quiet: true`, `globalThis.frontend_quiet = true`, o
 ### Binding Order
 
 The canonical runtime binds theme, layer roots, icons, progress, flash, inputs, uploads, tooltips, popovers, modals, actions, fullscreen controls, and live refresh in that order.
+
+### Theme
+
+`@trebired/frontend/theme` works against a caller-supplied mode registry rather than a fixed light/dark pair. The registry defaults to `["dark", "light"]`, so existing callers keep their behavior.
+
+```ts
+import { bindThemeRuntime } from "@trebired/frontend/theme";
+
+await bindThemeRuntime(document, {
+  modes: ["dark", "light", { key: "sepia", label: "Paper", scheme: "light" }],
+  dark: "dark",
+  light: "light",
+  defaultTheme: "sepia",
+  persistence,
+});
+```
+
+Passing `modes`, `dark`, or `light` to `bindThemeRuntime()` registers them process-wide, so `setTheme()`, `nextTheme()`, and control syncing can be called later without repeating the list. `configureThemeModes(registry)` registers them directly; `configureThemeModes(null)` restores the default pair. `<ThemeBootScript>` publishes the registry it renders with, so a server-rendered page hands its modes to the client before first paint.
+
+- `setTheme(key, options)` validates `key` against the registry and falls back to system preference when it is not registered.
+- `nextTheme(options)` cycles through the registry in declaration order.
+- `data-tbf-theme` accepts any registered key; `color-scheme` is set from the mode's `scheme`, not from its name.
+- `systemThemeKey(options)` maps `prefers-color-scheme` onto the registry's `dark` / `light` members.
+- `bindThemeControls(root, options)` binds both `[data-tbf-theme-button]` cyclers and `[data-tbf-theme-select]` pickers; `bindThemeToggles()` and `bindThemeSelects()` bind one kind each.
+
+A `[data-tbf-theme-select]` element is either a `<select>` whose option values are mode keys, or a container of `[data-tbf-theme-value]` options. Both stay in sync with the active mode. `<ThemeToggle>` remains the two-mode control and now accepts a `labels` record for registries larger than two; `<ThemeSelect>` renders the multi-choice picker in either `select` or `buttons` form.
 
 ### CSS
 

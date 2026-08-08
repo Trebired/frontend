@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.5.0
+
+- Generalized the `./theme` runtime to an open, caller-supplied registry of named modes: `configureThemeModes()`, `getThemeModes()`, `themeModeKeys()`, `findThemeMode()`, `isThemeMode()`, mode-aware `setTheme()`/`normalizeTheme()`/`systemThemeKey()`, and `nextTheme()` as a cycler over the registry. `ThemeValue` is now `string`; `data-tbf-theme` accepts any registered key and `color-scheme` follows each mode's declared scheme.
+- Added `[data-tbf-theme-select]` control binding (`bindThemeControls()`, `bindThemeSelect()`, `bindThemeSelects()`, `syncThemeControls()`, `syncThemeSelect()`, `syncThemeSelects()`) for `<select>` pickers and `[data-tbf-theme-value]` option groups.
+- Added the `<ThemeSelect>` multi-choice component with `select` and `buttons` variants, a `labels` prop on `<ThemeToggle>`, and mode registry props on `<ThemeBootScript>`, whose boot script now publishes the registry for the client runtime.
+- Added `theme.modes`, `theme.defaultMode`, `theme.dark`, and `theme.light` to `.trebired/frontend/config.ts`. `generateTrebiredFrontendScss()` emits one `[data-tbf-theme="<mode>"] {}` block per declared mode plus `prefers-color-scheme` fallbacks, alongside the existing shared `:root {}` block.
+- Added `dependencies` to the `loadTrebiredFrontendConfig()` result and keyed the config compile cache on the whole relative import graph, so a design-tokens module imported by the config file drives generated CSS without stale output.
+- Added `collectConfigDependencies()` and `THEME_MODE_ATTRIBUTE` to `@trebired/frontend/config`.
+
 ## 0.4.2
 
 - Removed the project-local `.trebired/frontend/generated/styles.scss` writer contract; frontend config now exposes deterministic SCSS for bundlers to consume in memory.
