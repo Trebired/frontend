@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.9.0
+
+- Added package-owned generic explorer file-tree components, normalization helpers, and mount helpers for reusable tree browsing/selecting surfaces.
+- Added package-owned readonly editor viewer, content, diff, image-preview, and Monaco panes so ecosystem apps can remove local file viewer primitives.
+
 ## 1.8.1
 
 - Accepted the app-supplied `lang` prop on generic editor surface/body props so migrated callers can keep passing locale context.

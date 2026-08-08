@@ -155,6 +155,7 @@ export * from "./actions/index.js";
 export * from "./code/index.js";
 export * from "./dom/index.js";
 export * from "./editor/index.js";
+export * from "./explorer/index.js";
 export * from "./flash/index.js";
 export * from "./fullscreen/index.js";
 export * from "./graph/index.js";

@@ -36,3 +36,13 @@
   border-left: 0 !important;
   margin-left: 0 !important;
 }
+
+.tbf-editor-viewer-layout {
+  flex-flow: row nowrap;
+}
+
+@media (max-width: 720px) {
+  .tbf-editor-viewer-layout {
+    flex-direction: column;
+  }
+}

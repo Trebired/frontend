@@ -31,6 +31,7 @@ const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "actions",
   "code",
   "editor",
+  "explorer",
   "primitives",
   "fullscreen",
   "surface",

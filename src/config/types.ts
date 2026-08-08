@@ -4,6 +4,7 @@ type TrebiredFrontendSystemKey =
   | "actions"
   | "code"
   | "editor"
+  | "explorer"
   | "flash"
   | "fullscreen"
   | "graph"
