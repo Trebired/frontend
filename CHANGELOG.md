@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.5.0
+
+- Exposed advanced dropdown, checkbox, disclosure, and tabs helper functions through the root entrypoint so ecosystem apps can remove local primitive helper copies without importing package internals.
+
 ## 1.4.0
 
 - Added explicit package-owned advanced graph/input exports and runtime binding for the former platform graph, dropdown, disclosure, tabs, checkbox, radio, status, search, toggle, upload, input, and roadmap helpers.

@@ -18,6 +18,24 @@ import {
   defineDropdownElement,
 } from "./dropdown/index.client.js";
 import dropdownManager from "./dropdown/manager.js";
+import {
+  dropdownOptionSelected,
+  dropdownOptionValue,
+  dropdownRootConfig,
+  setDropdownOptionConfig,
+  updateDropdownRootConfig,
+} from "./dropdown/registry.js";
+import {
+  getDropdownOptions,
+  getHidden,
+  resolveNamedDropdownInput,
+  updateEmptyState,
+} from "./dropdown/shared.js";
+import { bindStaticDropdown } from "./dropdown/static/bind.js";
+import {
+  setDropdownLabel,
+  syncFromHidden,
+} from "./dropdown/static/value.js";
 import radioManager, {
   bindGroup as bindRadioGroup,
   bindStaticGroups as bindRadioGroups,
@@ -34,7 +52,7 @@ import {
   getInputStatusWrap,
   setInputStatusIcon,
 } from "./status/index.client.js";
-import { bindTabs, bindTabsHost, createTabs } from "./tabs/manager.js";
+import { bindOwnedTabs, bindTabs, bindTabsHost, createTabs } from "./tabs/manager.js";
 import { bootTabsClient } from "./tabs/client.js";
 
 const CHECKBOX_HOST_SELECTOR = "[data-tbf-checkbox-option]";
@@ -123,8 +141,10 @@ export {
   bindCheckboxOptions,
   bindDisclosureHost,
   bindDropdownElement,
+  bindOwnedTabs,
   bindRadioGroup,
   bindRadioGroups,
+  bindStaticDropdown,
   bindStatusFieldHost,
   bindStatusFields,
   bindTabs,
@@ -143,10 +163,21 @@ export {
   defineRadioGroupElement,
   disclosureSwitchEntries,
   dropdownManager,
+  dropdownOptionSelected,
+  dropdownOptionValue,
+  dropdownRootConfig,
+  getDropdownOptions,
+  getHidden,
   getInputStatusWrap,
   radioManager,
+  resolveNamedDropdownInput,
   searchManager,
+  setDropdownLabel,
+  setDropdownOptionConfig,
   setInputStatusIcon,
   switchDisclosureEntry,
   syncCheckboxOption,
+  syncFromHidden,
+  updateDropdownRootConfig,
+  updateEmptyState,
 };
