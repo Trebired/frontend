@@ -17,6 +17,7 @@ import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
 import { bindTooltips } from "./tooltip/index.js";
 import { bindPortals, ensureLayerRoot } from "./layer/index.js";
+import { bindWizard } from "./wizard/index.js";
 import type { BindRoot, Cleanup } from "./dom/index.js";
 import { flash } from "./flash/index.js";
 import { progress } from "./progress/index.js";
@@ -86,6 +87,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   });
   bindAdvancedInputControllers(scope);
   bindPrimitiveControllers(scope);
+  bindWizard(scope);
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
@@ -203,3 +205,24 @@ export * from "./sidebar/index.js";
 export * from "./surface/index.js";
 export * from "./theme/index.js";
 export * from "./tooltip/index.js";
+export {
+  bind as bindSearchPanelRuntime,
+  bindRoot as bindSearchRoot,
+  bindSearchPanel,
+  boot as bootSearchPanelRuntime,
+  refreshSearchResults,
+} from "./search/index.js";
+export {
+  createSharedStepCard,
+  groupSharedSteps,
+  renderSharedSteps,
+  renderStepsPanel,
+  default as stepsController,
+} from "./steps/index.js";
+export {
+  bindWizard,
+  bindWizardRoot,
+  wizardSteps,
+} from "./wizard/index.js";
+export type { SearchPanelBinding } from "./search/index.js";
+export type { SharedStepCardInput } from "./steps/index.js";

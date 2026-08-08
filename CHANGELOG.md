@@ -6,6 +6,12 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.10.0
+
+- Added package-owned generic search panel/item/filter components and the full family-keyed search runtime so ecosystem apps can remove local search primitives.
+- Added package-owned shared steps panel, grouped step DOM rendering helpers, and steps controller exports for reusable action progress surfaces.
+- Added package-owned wizard markup helpers, runtime binding, and primitive CSS for reusable multi-step flows.
+
 ## 1.9.0
 
 - Added package-owned generic explorer file-tree components, normalization helpers, and mount helpers for reusable tree browsing/selecting surfaces.
