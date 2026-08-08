@@ -101,7 +101,7 @@ async function buildConfigModuleToUrl(
     await fs.mkdir(outputDir, { recursive: true });
     const result = await Bun.build({
       entrypoints: [filePath],
-      external: ["@trebired/frontend", "@trebired/frontend/*"],
+      external: ["@trebired/frontend", "@trebired/frontend/config"],
       format: "esm",
       naming: `${basename}.js`,
       outdir: outputDir,

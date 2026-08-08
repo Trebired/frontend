@@ -160,7 +160,7 @@ async function verifyThemeControls(context) {
 }
 
 async function verifyThemeComponents(context) {
-  const { ThemeBootScript, ThemeSelect } = await context.importDist("theme/components");
+  const { ThemeBootScript, ThemeSelect } = await context.importDist("react");
   const modes = ["dark", "light", { key: "sepia", label: "Paper" }];
 
   const selectHtml = renderToStaticMarkup(h(ThemeSelect, { label: "Theme", modes, value: "sepia" }));

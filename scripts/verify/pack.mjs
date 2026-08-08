@@ -14,8 +14,9 @@ async function main() {
   try {
     const packageJson = readPackedPackageJson(tarballPath);
     const tarballEntries = listTarEntries(tarballPath);
-    validatePackedEntrypoints(packageJson, tarballEntries);
-    await validatePackedImports(packageJson, tarballPath);
+    const exportEntries = packageExportEntries(packageJson);
+    validatePackedEntrypoints(packageJson, exportEntries, tarballEntries);
+    await validatePackedImports(packageJson, exportEntries, tarballPath);
   } finally {
     await fs.rm(tarballPath, { force: true });
   }
@@ -46,9 +47,9 @@ function packPackage() {
   return path.isAbsolute(filename) ? filename : path.join(tempRoot, filename);
 }
 
-function validatePackedEntrypoints(packageJson, tarballEntries) {
+function validatePackedEntrypoints(packageJson, exportEntries, tarballEntries) {
   const targets = new Set([packageJson.main, packageJson.types]);
-  for (const value of Object.values(packageJson.exports || {})) {
+  for (const { value } of exportEntries) {
     collectExportTargets(value, targets);
   }
   for (const target of targets) {
@@ -58,7 +59,7 @@ function validatePackedEntrypoints(packageJson, tarballEntries) {
   }
 }
 
-async function validatePackedImports(packageJson, tarballPath) {
+async function validatePackedImports(packageJson, exportEntries, tarballPath) {
   execFileSync("bun", ["add", tarballPath], {
     cwd: packageRoot,
     encoding: "utf8",
@@ -70,7 +71,7 @@ async function validatePackedImports(packageJson, tarballPath) {
     stdio: ["ignore", "pipe", "inherit"],
   });
   assert.equal(packageJson.exports["./styles.css"], undefined);
-  const imports = runtimeExportSubpaths(packageJson)
+  const imports = runtimeExportSubpaths(exportEntries)
     .map((subpath) => `await import(${JSON.stringify(exportSpecifier(packageJson.name, subpath))});`)
     .join("\n");
   const checkFile = path.join(packageRoot, "check.mjs");
@@ -80,24 +81,37 @@ async function validatePackedImports(packageJson, tarballPath) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
-  await Promise.all(styleExportTargets(packageJson).map(async (target) => {
+  await Promise.all(styleExportTargets(exportEntries).map(async (target) => {
     await fs.access(path.join(packageRoot, "node_modules", packageJson.name, target));
   }));
 }
 
-function runtimeExportSubpaths(packageJson) {
+function packageExportEntries(packageJson) {
+  const exportKeys = Object.keys(packageJson.exports || {}).sort();
+  assert.deepEqual(exportKeys, [".", "./config", "./react", "./server"]);
+  for (const key of exportKeys) {
+    assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
+    assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);
+    assert.equal(key.includes("/components"), false, `${key} exposes component internals.`);
+  }
   return Object.entries(packageJson.exports || {})
-    .filter(([_subpath, value]) => typeof value?.import === "string")
-    .map(([subpath]) => subpath);
+    .filter(([_subpath, value]) => value !== null)
+    .map(([subpath, value]) => ({ subpath, value }));
+}
+
+function runtimeExportSubpaths(exportEntries) {
+  return exportEntries
+    .filter(({ value }) => typeof value?.import === "string")
+    .map(({ subpath }) => subpath);
 }
 
 function exportSpecifier(packageName, subpath) {
   return subpath === "." ? packageName : `${packageName}/${subpath.slice(2)}`;
 }
 
-function styleExportTargets(packageJson) {
-  return Object.values(packageJson.exports || {})
-    .flatMap((value) => [value?.sass, value?.style, value?.default])
+function styleExportTargets(exportEntries) {
+  return exportEntries
+    .flatMap(({ value }) => [value?.sass, value?.style, value?.default])
     .filter((value, index, list) => typeof value === "string" && value.endsWith(".scss") && list.indexOf(value) === index)
     .map((value) => String(value).replace(/^\.\//u, ""));
 }

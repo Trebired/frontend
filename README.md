@@ -30,21 +30,7 @@ bindFrontendRuntime(document, {
 });
 ```
 
-Load only the SCSS systems your product uses:
-
-```scss
-@use "@trebired/frontend/styles/tokens" as *;
-@use "@trebired/frontend/styles/utils" as *;
-@use "@trebired/frontend/icons/styles" as *;
-@use "@trebired/frontend/actions/styles" as *;
-@use "@trebired/frontend/flash/styles" as *;
-@use "@trebired/frontend/progress/styles" as *;
-@use "@trebired/frontend/layer/styles" as *;
-@use "@trebired/frontend/tooltip/styles" as *;
-@use "@trebired/frontend/popover/styles" as *;
-@use "@trebired/frontend/modal/styles" as *;
-@use "@trebired/frontend/inputs/styles" as *;
-```
+Configure the generic systems in `.trebired/frontend/config.ts`. `@trebired/bundler` reads that structured config and includes package-owned CSS through an internal virtual entry; products do not import package Sass paths directly.
 
 Markup stays normal HTML:
 
@@ -64,10 +50,10 @@ Markup stays normal HTML:
 </div>
 ```
 
-TSX components are available from system component subpaths when a product wants package-owned default markup:
+TSX components are available from the React entrypoint when a product wants package-owned default markup:
 
 ```tsx
-import { UploadField } from "@trebired/frontend/inputs/components";
+import { UploadField } from "@trebired/frontend/react";
 
 export function AvatarUpload() {
   return (
@@ -99,7 +85,7 @@ The package-owned selectors use `data-tbf-*` attributes. They never require cust
 
 ### Markup Components
 
-Component subpaths render real HTML with `data-tbf-*` attributes and `tbf-*` classes. They are not exported from `@trebired/frontend`, so the root runtime stays browser-behavior only.
+React components render real HTML with `data-tbf-*` attributes and `tbf-*` classes. They are exported from `@trebired/frontend/react`, so the root runtime stays browser-behavior only.
 
 Upload markup includes hidden file and directory inputs, mixed file/folder buttons, multiple-file support, drag/drop slots, accepted-format metadata, preview slots, list output, clear-current-preview state, crop config, a crop hidden field, and an empty-toggle hidden field.
 
@@ -125,9 +111,11 @@ export default defineTrebiredFrontendConfig({
     icons: true,
     inputs: true,
     layer: true,
+    layout: true,
     modal: true,
     popover: true,
     progress: true,
+    sidebar: true,
     theme: true,
     tooltip: true,
   },
@@ -186,8 +174,10 @@ export default defineTrebiredFrontendConfig({
 - `adapters.reload`
 - `adapters.progress`
 - `adapters.flash`
+- `adapters.sidebarPersistence`
 - `adapters.themePersistence`
 - `adapters.live`
+- `sidebar`
 - `theme`
 - `live`
 - `observe`
@@ -200,14 +190,52 @@ Set `frontend_quiet: true`, `quiet: true`, `globalThis.frontend_quiet = true`, o
 
 ### Binding Order
 
-The canonical runtime binds theme, layer roots, icons, progress, flash, inputs, uploads, tooltips, popovers, modals, actions, fullscreen controls, and live refresh in that order.
+The canonical runtime binds theme, layout, layer roots, icons, progress, flash, inputs, uploads, tooltips, popovers, modals, sidebars, actions, fullscreen controls, and live refresh in that order.
+
+### Layout
+
+Ecosystem apps should use the package layout components for the document shell shape instead of owning separate layout HTML. The app still supplies product-specific header, sidebar link content, page body, and bottom-bar children.
+
+```tsx
+import {
+  Layout,
+  LayoutBootScript,
+  LayoutContent,
+  LayoutDocument,
+  Sidebar,
+  SidebarLink,
+  SidebarList,
+  SidebarShell,
+} from "@trebired/frontend/react";
+
+export function Document({ body, header }: { body: React.ReactNode; header: React.ReactNode }) {
+  return (
+    <LayoutDocument title="App" scripts={<LayoutBootScript hasLeftSidebar />}>
+      <Layout
+        header={header}
+        leftSidebar={
+          <SidebarShell id="main_sidebar" side="left">
+            <Sidebar aria-label="Navigation">
+              <SidebarList>
+                <SidebarLink href="/dashboard">Dashboard</SidebarLink>
+              </SidebarList>
+            </Sidebar>
+          </SidebarShell>
+        }
+      >
+        <LayoutContent>{body}</LayoutContent>
+      </Layout>
+    </LayoutDocument>
+  );
+}
+```
 
 ### Theme
 
-`@trebired/frontend/theme` works against a caller-supplied mode registry rather than a fixed light/dark pair. The registry defaults to `["dark", "light"]`, so existing callers keep their behavior.
+Theme runtime works against a caller-supplied mode registry rather than a fixed light/dark pair. The registry defaults to `["dark", "light"]`, so existing callers keep their behavior.
 
 ```ts
-import { bindThemeRuntime } from "@trebired/frontend/theme";
+import { bindThemeRuntime } from "@trebired/frontend";
 
 await bindThemeRuntime(document, {
   modes: ["dark", "light", { key: "sepia", label: "Paper", scheme: "light" }],
@@ -230,30 +258,13 @@ A `[data-tbf-theme-select]` element is either a `<select>` whose option values a
 
 ### CSS
 
-There is no aggregate CSS file. Each style-owning system exposes SCSS through package exports so `@trebired/bundler` can resolve package `sass` and `style` conditions from `node_modules`.
+There is no aggregate CSS file and no public Sass subpath API. Package-owned CSS is selected by `.trebired/frontend/config.ts`, then emitted by `@trebired/frontend/config` as SCSS for `@trebired/bundler` to compile in memory.
 
-Default SCSS is intentionally plain: `tbf-*` classes, CSS variables, black/white fallback colors, and square radius fallbacks. Products own visual polish by overriding variables.
-
-Base exports:
-
-- `@trebired/frontend/styles/tokens`
-- `@trebired/frontend/styles/utils`
-
-System exports:
-
-- `@trebired/frontend/actions/styles`
-- `@trebired/frontend/icons/styles`
-- `@trebired/frontend/flash/styles`
-- `@trebired/frontend/progress/styles`
-- `@trebired/frontend/layer/styles`
-- `@trebired/frontend/tooltip/styles`
-- `@trebired/frontend/popover/styles`
-- `@trebired/frontend/modal/styles`
-- `@trebired/frontend/inputs/styles`
+Default CSS is intentionally plain: `tbf-*` classes, generic utility classes, CSS variables, black/white fallback colors, and square radius fallbacks. Products own visual polish by declaring config tokens or writing component-specific CSS.
 
 ### Upload Crop
 
-Upload crop uses `cropperjs` only through the upload crop path. The root runtime import and the normal `@trebired/frontend/inputs` import do not load cropper or TSX component modules until a crop session opens.
+Upload crop uses `cropperjs` only through the upload crop path. The root runtime import does not load cropper or TSX component modules until a crop session opens.
 
 ### Icons
 
@@ -267,7 +278,7 @@ Canonical icon specs use `pack:name`:
 Browser runtime:
 
 ```ts
-import { bindIcons, renderIconElement } from "@trebired/frontend/icons";
+import { bindIcons, renderIconElement } from "@trebired/frontend";
 
 bindIcons(document);
 await renderIconElement(document.querySelector("[data-tbf-icon]")!, "remixicon:add-line");
@@ -276,7 +287,7 @@ await renderIconElement(document.querySelector("[data-tbf-icon]")!, "remixicon:a
 React:
 
 ```tsx
-import { Icon } from "@trebired/frontend/icons/react";
+import { Icon } from "@trebired/frontend/react";
 
 export function SaveIcon() {
   return <Icon spec="remixicon:save-3-line" label="Save" />;
@@ -286,8 +297,7 @@ export function SaveIcon() {
 Server:
 
 ```ts
-import { renderIconHtml } from "@trebired/frontend/icons/server";
-import { createIconMiddleware } from "@trebired/frontend/icons/middleware";
+import { createIconMiddleware, renderIconHtml } from "@trebired/frontend/server";
 
 const html = renderIconHtml("simple-icons:github", { label: "GitHub" });
 const middleware = createIconMiddleware();
@@ -300,47 +310,9 @@ The icon system supports explicit colors, simple-icons brand colors, source-colo
 Entrypoints:
 
 - `@trebired/frontend`
-- `@trebired/frontend/dom`
-- `@trebired/frontend/http`
 - `@trebired/frontend/config`
-- `@trebired/frontend/fullscreen`
-- `@trebired/frontend/icons`
-- `@trebired/frontend/icons/react`
-- `@trebired/frontend/icons/server`
-- `@trebired/frontend/icons/middleware`
-- `@trebired/frontend/actions`
-- `@trebired/frontend/actions/components`
-- `@trebired/frontend/flash`
-- `@trebired/frontend/flash/components`
-- `@trebired/frontend/progress`
-- `@trebired/frontend/progress/components`
-- `@trebired/frontend/layer`
-- `@trebired/frontend/layer/components`
-- `@trebired/frontend/tooltip`
-- `@trebired/frontend/tooltip/components`
-- `@trebired/frontend/popover`
-- `@trebired/frontend/popover/components`
-- `@trebired/frontend/modal`
-- `@trebired/frontend/modal/components`
-- `@trebired/frontend/inputs`
-- `@trebired/frontend/inputs/components`
-- `@trebired/frontend/theme`
-- `@trebired/frontend/theme/components`
-- `@trebired/frontend/live`
-- `@trebired/frontend/live/components`
 - `@trebired/frontend/react`
-- `@trebired/frontend/styles`
-- `@trebired/frontend/styles/tokens`
-- `@trebired/frontend/styles/utils`
-- `@trebired/frontend/icons/styles`
-- `@trebired/frontend/actions/styles`
-- `@trebired/frontend/flash/styles`
-- `@trebired/frontend/progress/styles`
-- `@trebired/frontend/layer/styles`
-- `@trebired/frontend/tooltip/styles`
-- `@trebired/frontend/popover/styles`
-- `@trebired/frontend/modal/styles`
-- `@trebired/frontend/inputs/styles`
+- `@trebired/frontend/server`
 
 ## What It Does Not Do
 

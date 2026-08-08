@@ -26,37 +26,48 @@ async function verifyNoWrapUtility(sourceDir) {
 async function verifyStylePackaging(rootDir) {
   assert.equal(await pathExists(path.join(rootDir, "src", "styles.css")), false);
   const packageJson = JSON.parse(await fs.readFile(path.join(rootDir, "package.json"), "utf8"));
-  assert.equal(packageJson.exports["./styles.css"], undefined);
-  for (const target of styleExportTargets(packageJson)) {
-    await fs.access(path.join(rootDir, target));
-  }
-  await verifyBundlerScssPackageImports(rootDir, packageJson);
+  assertStructuredExports(packageJson);
+  await verifyBundlerConfigStyles(rootDir, packageJson);
 }
 
-async function verifyBundlerScssPackageImports(rootDir, packageJson) {
-  const fixture = path.join(rootDir, ".tmp", "verify-frontend", "scss-package");
+function assertStructuredExports(packageJson) {
+  const exportKeys = Object.keys(packageJson.exports || {}).sort();
+  assert.deepEqual(exportKeys, [".", "./config", "./react", "./server"]);
+  for (const key of exportKeys) {
+    assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
+    assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);
+    assert.equal(key.includes("/components"), false, `${key} exposes component internals.`);
+  }
+  assert.equal(packageJson.exports["./styles.css"], undefined);
+}
+
+async function verifyBundlerConfigStyles(rootDir, packageJson) {
+  const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config-styles");
   const packageName = `@${organizationName()}/frontend`;
   const packageRoot = path.join(fixture, "node_modules", ...packageName.split("/"));
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(packageRoot, { recursive: true });
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
-  await writeFile(fixture, "src/screen.client.scss", [
-    `@use "${packageName}/styles/tokens" as *;`,
-    `@use "${packageName}/styles/utils" as *;`,
-    `@use "${packageName}/flash/styles" as *;`,
-    `@use "${packageName}/inputs/styles" as *;`,
+  await writeFile(fixture, ".trebired/frontend/config.ts", [
+    `import { defineTrebiredFrontendConfig } from "${packageName}/config";`,
     "",
-    ".screen {",
-    "  color: var(--tbf-text);",
-    "}",
+    "export default defineTrebiredFrontendConfig({",
+    "  prefix: \"verify\",",
+    "  systems: { flash: true, inputs: true, modal: false },",
+    "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
+    "});",
+    "",
+  ].join("\n"));
+  await writeFile(fixture, "src/screen.client.ts", [
+    "document.documentElement.dataset.verify = \"ready\";",
     "",
   ].join("\n"));
   const { bundle } = await import(`@${organizationName()}/bundler`);
   const result = await bundle({
     discover: {
       dir: "src",
-      rules: [{ key: "style", include: ["**/*.client.scss"], strategy: "entry" }],
+      rules: [{ key: "client", include: ["**/*.client.ts"], strategy: "entry" }],
     },
     outDir: "dist",
     rootDir: fixture,
@@ -65,9 +76,14 @@ async function verifyBundlerScssPackageImports(rootDir, packageJson) {
   assert.ok(cssOutput, "expected bundled frontend SCSS output");
   const css = await fs.readFile(cssOutput, "utf8");
   assert.equal(css.includes("--tbf-radius"), true);
+  assert.equal(css.includes("--verify-color-brand: #123456;"), true);
   assert.equal(css.includes(".inline-row"), true);
+  assert.equal(css.includes(".tbf-layout"), true);
   assert.equal(css.includes(".tbf-flash"), true);
   assert.equal(css.includes(".tbf-upload"), true);
+  assert.equal(css.includes(".tbf-sidebar-shell"), true);
+  assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
+  assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
 }
 
 async function verifyNoCustomElements(sourceDir, distDir) {
@@ -127,13 +143,6 @@ async function sourceFiles(dir) {
     else if (/\.(ts|tsx|scss|js|d\.ts)$/u.test(entry.name)) out.push(full);
   }
   return out;
-}
-
-function styleExportTargets(packageJson) {
-  return Object.values(packageJson.exports || {})
-    .flatMap((value) => [value?.sass, value?.style, value?.default])
-    .filter((value, index, list) => typeof value === "string" && value.endsWith(".scss") && list.indexOf(value) === index)
-    .map((value) => String(value).replace(/^\.\//u, ""));
 }
 
 function organizationName() {

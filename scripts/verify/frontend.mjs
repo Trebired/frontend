@@ -22,6 +22,9 @@ async function main() {
   await verifyFlash();
   await verifyTooltip();
   await verifyModal();
+  await verifyLayout();
+  await verifyFullscreen();
+  await verifySidebar();
   await verifyUpload();
   await verifyFrontendLogging();
   await verifyFrontendSource({ distDir, rootDir, sourceDir });
@@ -75,7 +78,11 @@ async function verifyFrontendConfig() {
   const defaults = await config.loadTrebiredFrontendConfig(fixture);
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
-  assert.ok(defaults.generatedScss.includes('@use "@trebired/frontend/modal/styles" as *;'));
+  assert.equal(defaults.generatedScss.includes("@trebired/frontend/"), false);
+  assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
+  assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
+  assert.ok(defaults.generatedScss.includes("sidebar/styles/index.scss"));
+  assert.ok(defaults.generatedScss.includes("fullscreen/styles/index.scss"));
 
   const configPath = path.join(fixture, ".trebired", "frontend", "config.ts");
   await fs.writeFile(configPath, [
@@ -91,7 +98,7 @@ async function verifyFrontendConfig() {
   const loaded = await config.loadTrebiredFrontendConfig(fixture);
   assert.equal(loaded.configPath, configPath);
   assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
-  assert.equal(loaded.generatedScss.includes('@use "@trebired/frontend/modal/styles" as *;'), false);
+  assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.equal(typeof config.writeGeneratedTrebiredFrontendScss, "undefined");
   await assert.rejects(
@@ -104,10 +111,9 @@ async function verifyFrontendConfig() {
 }
 
 async function verifyIcons() {
-  const iconRuntime = await importDist("icons");
-  const iconServer = await importDist("icons/server");
-  const iconMiddleware = await importDist("icons/middleware");
-  const iconReact = await importDist("icons/react");
+  const iconRuntime = await importDistRoot();
+  const iconServer = await importDist("server");
+  const iconReact = await importDist("react");
 
   assert.deepEqual(iconRuntime.parseIconSpec("remixicon:add-line"), {
     icon: "add-line",
@@ -137,7 +143,7 @@ async function verifyIcons() {
   assert.equal(response.headers["Content-Type"].startsWith("image/svg+xml"), true);
 
   let sent = "";
-  const middleware = iconMiddleware.createIconMiddleware({ rootDir });
+  const middleware = iconServer.createIconMiddleware({ rootDir });
   middleware(
     { query: { spec: "remixicon:add-line" } },
     {
@@ -259,6 +265,68 @@ async function verifyModal() {
   assert.equal(modal.hasAttribute("data-tbf-opening"), false);
   assert.equal(content.style.top, "");
   assert.equal(content.style.left, "");
+}
+
+async function verifyLayout() {
+  const { bindLayouts, createLayoutBootScript, ensureLayoutPortalRoot } = await importDist("layout");
+  document.body.innerHTML = [
+    '<div data-tbf-layout-root>',
+    '<div data-tbf-sidebar-shell data-tbf-sidebar-side="left"></div>',
+    '<main data-tbf-layout-main><div data-tbf-layout-content>Body</div></main>',
+    '<nav data-tbf-layout-bottom-bar></nav>',
+    '</div>',
+  ].join("");
+  bindLayouts(document);
+  assert.equal(document.body.getAttribute("data-tbf-layout"), "true");
+  assert.equal(document.body.getAttribute("data-tbf-sidebar-left"), "true");
+  assert.equal(document.body.getAttribute("data-tbf-sidebar-right"), "false");
+  assert.equal(document.body.getAttribute("data-tbf-layout-mobile"), "true");
+  assert.equal(document.querySelector("[data-tbf-layout-root]").getAttribute("data-tbf-layout-bound"), "true");
+  assert.equal(ensureLayoutPortalRoot().id, "tbf_layout_portal_root");
+  assert.ok(createLayoutBootScript({ hasLeftSidebar: true }).includes("data-tbf-sidebar-left"));
+}
+
+async function verifyFullscreen() {
+  const { bindFullscreen, closeFullscreenTarget } = await importDist("fullscreen");
+  document.body.innerHTML = [
+    '<button id="full-open" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" data-tbf-fullscreen-mode="open">Open</button>',
+    '<button id="full-close" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" data-tbf-fullscreen-mode="close">Close</button>',
+    '<div id="panel" data-tbf-fullscreen-target data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main">Panel</div>',
+  ].join("");
+  bindFullscreen(document);
+  document.getElementById("full-open").click();
+  const panel = document.getElementById("panel");
+  assert.equal(panel.getAttribute("data-tbf-fullscreen-active"), "true");
+  assert.equal(document.querySelector("[data-tbf-fullscreen-overlay]") !== null, true);
+  assert.equal(document.getElementById("full-open").getAttribute("data-tbf-fullscreen-hidden"), "true");
+  assert.equal(document.getElementById("full-close").getAttribute("data-tbf-fullscreen-hidden"), "false");
+  closeFullscreenTarget({ immediate: true });
+  assert.equal(panel.hasAttribute("data-tbf-fullscreen-active"), false);
+  assert.equal(document.querySelector("[data-tbf-fullscreen-overlay]"), null);
+}
+
+async function verifySidebar() {
+  const { bindSidebars } = await importDist("sidebar");
+  document.body.innerHTML = [
+    '<button id="sidebar-min" data-tbf-sidebar-minimize aria-controls="side">Toggle</button>',
+    '<button id="sidebar-open" data-tbf-sidebar-open aria-controls="side">Open</button>',
+    '<div id="side" data-tbf-sidebar-shell data-tbf-sidebar-side="left">',
+    '<aside data-tbf-sidebar>',
+    '<button id="sidebar-close" data-tbf-sidebar-close>Close</button>',
+    '</aside>',
+    '</div>',
+  ].join("");
+  bindSidebars(document);
+  const shell = document.getElementById("side");
+  assert.equal(shell.getAttribute("data-tbf-sidebar-minimized"), "false");
+  document.getElementById("sidebar-min").click();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(shell.getAttribute("data-tbf-sidebar-minimized"), "true");
+  assert.equal(document.body.getAttribute("data-tbf-sidebar-left-minimized"), "true");
+  document.getElementById("sidebar-open").click();
+  assert.equal(shell.getAttribute("data-tbf-sidebar-open"), "true");
+  document.getElementById("sidebar-close").click();
+  assert.equal(shell.getAttribute("data-tbf-sidebar-open"), "false");
 }
 
 async function verifyUpload() {

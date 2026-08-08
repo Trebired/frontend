@@ -1,4 +1,6 @@
 import { assertPlainObject, invalidConfig } from "./shared.js";
+import { normalizePaletteConfig } from "./palette.js";
+import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig } from "./theme.js";
 import type {
   NormalizedTrebiredFrontendConfig,
@@ -15,6 +17,7 @@ const SUPPORTED_ICON_PACKS: TrebiredFrontendIconPack[] = ["remixicon", "simple-i
 
 const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "theme",
+  "layout",
   "layer",
   "icons",
   "progress",
@@ -22,29 +25,33 @@ const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "tooltip",
   "popover",
   "modal",
+  "sidebar",
   "inputs",
   "actions",
   "fullscreen",
 ];
 
-const SYSTEM_STYLE_IMPORTS: Partial<Record<TrebiredFrontendSystemKey, string>> = {
-  actions: "@trebired/frontend/actions/styles",
-  flash: "@trebired/frontend/flash/styles",
-  icons: "@trebired/frontend/icons/styles",
-  inputs: "@trebired/frontend/inputs/styles",
-  layer: "@trebired/frontend/layer/styles",
-  modal: "@trebired/frontend/modal/styles",
-  popover: "@trebired/frontend/popover/styles",
-  progress: "@trebired/frontend/progress/styles",
-  tooltip: "@trebired/frontend/tooltip/styles",
-};
-
 const DEFAULT_TREBIRED_FRONTEND_CONFIG: NormalizedTrebiredFrontendConfig = Object.freeze({
+  palette: Object.freeze({
+    modes: Object.freeze([]) as NormalizedTrebiredFrontendConfig["palette"]["modes"],
+    semantic: Object.freeze([]) as NormalizedTrebiredFrontendConfig["palette"]["semantic"],
+    suffixedVariants: true,
+  }),
   prefix: "tbf",
   icons: Object.freeze({
     endpoint: "/__icons/svg",
     packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as TrebiredFrontendIconPack[],
   }),
+  scales: Object.freeze({
+    height: Object.freeze({}),
+    lineHeight: Object.freeze({}),
+    padding: Object.freeze({}),
+    radius: Object.freeze({}),
+    spacing: Object.freeze({}),
+    textSize: Object.freeze({}),
+    width: Object.freeze({}),
+    zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
+  }) as NormalizedTrebiredFrontendConfig["scales"],
   systems: Object.freeze(Object.fromEntries(SYSTEM_ORDER.map((key) => [key, true]))) as Record<TrebiredFrontendSystemKey, boolean>,
   theme: Object.freeze({
     cssVariables: true,
@@ -104,14 +111,17 @@ function normalizeSystems(value: unknown): Record<TrebiredFrontendSystemKey, boo
 function normalizeTrebiredFrontendConfig(config: unknown = {}): NormalizedTrebiredFrontendConfig {
   const source = assertPlainObject(config, "config");
   const icons = source.icons === undefined ? {} : assertPlainObject(source.icons, "icons");
+  const theme = normalizeThemeConfig(source.theme);
   return {
+    palette: normalizePaletteConfig(source.palette, theme.modes.map((mode) => mode.key)),
     prefix: normalizePrefix(source.prefix),
     icons: {
       endpoint: normalizeEndpoint(icons.endpoint),
       packs: normalizeIconPacks(icons.packs),
     },
+    scales: normalizeScalesConfig(source.scales),
     systems: normalizeSystems(source.systems),
-    theme: normalizeThemeConfig(source.theme),
+    theme,
   };
 }
 
@@ -119,7 +129,6 @@ export {
   DEFAULT_TREBIRED_FRONTEND_CONFIG,
   SUPPORTED_ICON_PACKS,
   SYSTEM_ORDER,
-  SYSTEM_STYLE_IMPORTS,
   THEME_MODE_ATTRIBUTE,
   TREBIRED_FRONTEND_CONFIG_PATH,
   normalizeTrebiredFrontendConfig,

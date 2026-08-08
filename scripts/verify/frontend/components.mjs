@@ -5,33 +5,42 @@ import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyFrontendComponents(context) {
-  await verifyComponentSubpaths(context.importDist);
+  await verifyReactEntrypoint(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
   await verifyRootImportIsolation(context.rootDir);
 }
 
-async function verifyComponentSubpaths(importDist) {
-  const checks = [
-    ["actions/components", "ActionForm"],
-    ["flash/components", "FlashShell"],
-    ["progress/components", "ProgressRoot"],
-    ["layer/components", "LayerRoot"],
-    ["tooltip/components", "StatusIcon"],
-    ["popover/components", "PopoverPanel"],
-    ["modal/components", "ModalRoot"],
-    ["inputs/components", "UploadField"],
-    ["theme/components", "ThemeToggle"],
-    ["live/components", "LiveRegion"],
+async function verifyReactEntrypoint(importDist) {
+  const react = await importDist("react");
+  const symbols = [
+    "ActionForm",
+    "FlashShell",
+    "ProgressRoot",
+    "LayerRoot",
+    "Layout",
+    "LayoutContent",
+    "LayoutDocument",
+    "LayoutPortalRoot",
+    "StatusIcon",
+    "PopoverPanel",
+    "ModalRoot",
+    "FullscreenTarget",
+    "FullscreenButton",
+    "SidebarShell",
+    "Sidebar",
+    "SidebarList",
+    "UploadField",
+    "ThemeToggle",
+    "LiveRegion",
   ];
-  for (const [subpath, symbol] of checks) {
-    const mod = await importDist(subpath);
-    assert.equal(typeof mod[symbol], "function", `${subpath} missing ${symbol}`);
+  for (const symbol of symbols) {
+    assert.equal(typeof react[symbol], "function", `react entry missing ${symbol}`);
   }
 }
 
 async function verifyRenderedUpload(importDist) {
-  const { UploadField } = await importDist("inputs/components");
+  const { UploadField } = await importDist("react");
   const html = renderToStaticMarkup(h(UploadField, {
     accept: "image/png,.jpg",
     crop: true,
@@ -74,7 +83,7 @@ async function verifyRenderedSystems(importDist) {
 }
 
 async function verifyRenderedActions(importDist) {
-  const { ActionButton, ActionForm, ActionTrigger } = await importDist("actions/components");
+  const { ActionButton, ActionForm, ActionTrigger } = await importDist("react");
   const html = [
     renderToStaticMarkup(h(ActionForm, { action: "/save", successConfetti: true }, "Body")),
     renderToStaticMarkup(h(ActionButton, { actionUrl: "/ok", successConfetti: true }, "Save")),
@@ -86,32 +95,37 @@ async function verifyRenderedActions(importDist) {
 }
 
 async function verifyRenderedLayeredSystems(importDist) {
-  const flash = await importDist("flash/components");
-  const progress = await importDist("progress/components");
-  const layer = await importDist("layer/components");
-  const tooltip = await importDist("tooltip/components");
-  const popover = await importDist("popover/components");
-  const modal = await importDist("modal/components");
+  const react = await importDist("react");
   const html = [
-    renderToStaticMarkup(h(flash.FlashShell, { title: "Saved", type: "success" })),
-    renderToStaticMarkup(h(progress.ProgressRoot, { active: true, value: 0.5 })),
-    renderToStaticMarkup(h(layer.LayerRoot, null)),
-    renderToStaticMarkup(h(tooltip.StatusIcon, { label: "Ready" })),
-    renderToStaticMarkup(h(popover.PopoverPanel, { id: "p1" }, "Body")),
-    renderToStaticMarkup(h(modal.ModalRoot, { id: "m1" }, h(modal.ModalContent, null, "Body"))),
+    renderToStaticMarkup(h(react.FlashShell, { title: "Saved", type: "success" })),
+    renderToStaticMarkup(h(react.ProgressRoot, { active: true, value: 0.5 })),
+    renderToStaticMarkup(h(react.LayerRoot, null)),
+    renderToStaticMarkup(h(react.Layout, {
+      header: h(react.LayoutHeader, null, "Header"),
+      leftSidebar: h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null))),
+    }, h(react.LayoutContent, null, "Body"))),
+    renderToStaticMarkup(h(react.StatusIcon, { label: "Ready" })),
+    renderToStaticMarkup(h(react.PopoverPanel, { id: "p1" }, "Body")),
+    renderToStaticMarkup(h(react.ModalRoot, { id: "m1" }, h(react.ModalContent, null, "Body"))),
+    renderToStaticMarkup(h(react.FullscreenTarget, { fullscreenId: "panel" }, "Panel")),
+    renderToStaticMarkup(h(react.FullscreenButton, { fullscreenId: "panel" }, "Fullscreen")),
+    renderToStaticMarkup(h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null)))),
   ].join("");
   assert.ok(html.includes("data-tbf-status-icon"));
+  assert.ok(html.includes("data-tbf-layout-root"));
+  assert.ok(html.includes("data-tbf-layout-content"));
   assert.ok(html.includes("data-tbf-modal"));
+  assert.ok(html.includes("data-tbf-fullscreen-target"));
+  assert.ok(html.includes("data-tbf-sidebar-shell"));
   assertNoCustomElementTags(html, "rendered layered components");
 }
 
 async function verifyRenderedThemeLive(importDist) {
-  const theme = await importDist("theme/components");
-  const live = await importDist("live/components");
+  const react = await importDist("react");
   const html = [
-    renderToStaticMarkup(h(theme.ThemeToggle, null)),
-    renderToStaticMarkup(h(live.LiveRegion, { region: "main" }, "Body")),
-    renderToStaticMarkup(h(live.LiveRefreshButton, { url: "/current" }, "Refresh")),
+    renderToStaticMarkup(h(react.ThemeToggle, null)),
+    renderToStaticMarkup(h(react.LiveRegion, { region: "main" }, "Body")),
+    renderToStaticMarkup(h(react.LiveRefreshButton, { url: "/current" }, "Refresh")),
   ].join("");
   assert.ok(html.includes("data-tbf-theme-button"));
   assert.ok(html.includes("data-tbf-live-region"));

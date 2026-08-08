@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## Unreleased
+
+## 1.0.0
+
+- Consolidated the public package API to structured entrypoints only: `@trebired/frontend`, `@trebired/frontend/config`, `@trebired/frontend/react`, and `@trebired/frontend/server`. Public Sass/component subpath exports are no longer part of the app contract.
+- Added config-driven palette and scale CSS generation so ecosystem apps declare theme values in `.trebired/frontend/config.ts` and `@trebired/bundler` compiles package CSS in memory.
+- Added package-owned generic utility CSS coverage for layout, spacing, sizing, text, border, alignment, and scroll helpers through the config-selected package CSS path.
+- Added the package-owned sidebar system with runtime binding, persisted minimize state, mobile open/close state, React markup components, boot script, and internal CSS.
+- Added the package-owned layout system with stable document/layout/main/content/header/bottom-bar/portal markup components, body-state boot script, runtime body-state syncing, and internal CSS so Trebired ecosystem apps share the same HTML structure.
+- Expanded fullscreen into a package-owned panel fullscreen system with registered targets, open/close/toggle controls, overlay/placeholder restoration, persisted target ids, React components, and internal CSS while keeping native browser fullscreen helpers.
+- Added the `@trebired/frontend/server` entrypoint for server-side icon helpers and middleware, and moved React component consumption behind `@trebired/frontend/react`.
+- Updated verification to enforce structured exports, absence of public Sass/component subpaths, config-bundled package CSS, and package-owned layout/sidebar/fullscreen behavior.
+
 ## 0.5.0
 
 - Generalized the `./theme` runtime to an open, caller-supplied registry of named modes: `configureThemeModes()`, `getThemeModes()`, `themeModeKeys()`, `findThemeMode()`, `isThemeMode()`, mode-aware `setTheme()`/`normalizeTheme()`/`systemThemeKey()`, and `nextTheme()` as a cycler over the registry. `ThemeValue` is now `string`; `data-tbf-theme` accepts any registered key and `color-scheme` follows each mode's declared scheme.

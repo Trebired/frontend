@@ -3,10 +3,12 @@ import type { ActionAdapters } from "./actions/index.js";
 import { bindInputControllers } from "./inputs/index.js";
 import { bindIcons } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
+import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindProgress, type ProgressHandle } from "./progress/index.js";
+import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
 import { bindTooltips } from "./tooltip/index.js";
 import { bindPortals, ensureLayerRoot } from "./layer/index.js";
@@ -20,6 +22,7 @@ import {
 
 type FrontendRuntimeAdapters = ActionAdapters & FrontendLoggingOptions & {
   progress?: ProgressHandle;
+  sidebarPersistence?: SidebarRuntimeOptions["persistence"];
   themePersistence?: ThemeRuntimeOptions["persistence"];
   live?: LiveOptions["skip"];
 };
@@ -28,8 +31,10 @@ type FrontendRuntimeOptions = {
   adapters?: FrontendRuntimeAdapters;
   frontend_quiet?: boolean;
   live?: Omit<LiveOptions, "skip">;
+  layout?: LayoutRuntimeOptions;
   observe?: boolean;
   quiet?: boolean;
+  sidebar?: SidebarRuntimeOptions;
   theme?: Omit<ThemeRuntimeOptions, "persistence">;
 };
 
@@ -58,6 +63,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
     ...(options.theme || {}),
     persistence: options.adapters?.themePersistence,
   });
+  bindLayouts(scope, options.layout || {});
   ensureLayerRoot();
   bindPortals(scope);
   bindProgress();
@@ -73,6 +79,10 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
+  bindSidebars(scope, {
+    ...(options.sidebar || {}),
+    persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
+  });
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });
@@ -139,10 +149,11 @@ export * from "./http/index.js";
 export * from "./icons/index.js";
 export * from "./inputs/index.js";
 export * from "./layer/index.js";
+export * from "./layout/index.js";
 export * from "./live/index.js";
 export * from "./modal/index.js";
 export * from "./popover/index.js";
 export * from "./progress/index.js";
-export * from "./react/index.js";
+export * from "./sidebar/index.js";
 export * from "./theme/index.js";
 export * from "./tooltip/index.js";
