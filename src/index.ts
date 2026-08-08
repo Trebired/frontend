@@ -1,4 +1,6 @@
 import { bindActionButtons, bindActionForms, bindActionTriggers } from "./actions/index.js";
+import { bindCodeBlocks } from "./code/index.js";
+import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
 import { bindAdvancedInputControllers } from "./inputs/advanced/index.js";
 import { bindInputControllers } from "./inputs/index.js";
@@ -72,6 +74,8 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindProgress();
   bindIcons(scope);
   bindGraphs(scope);
+  bindCodeBlocks(scope);
+  bindEditors(scope);
   bindInputControllers(scope, {
     flash: adapters.flash,
     logging: {
@@ -148,7 +152,9 @@ export type {
   FrontendRuntimeOptions,
 };
 export * from "./actions/index.js";
+export * from "./code/index.js";
 export * from "./dom/index.js";
+export * from "./editor/index.js";
 export * from "./flash/index.js";
 export * from "./fullscreen/index.js";
 export * from "./graph/index.js";

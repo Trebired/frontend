@@ -29,6 +29,8 @@ const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "sidebar",
   "inputs",
   "actions",
+  "code",
+  "editor",
   "primitives",
   "fullscreen",
   "surface",

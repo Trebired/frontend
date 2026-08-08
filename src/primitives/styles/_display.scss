@@ -1,0 +1,90 @@
+.canvas-panel {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.canvas-panel-toolbar {
+  display: flex;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  row-gap: 8px;
+}
+
+.canvas-panel-toolbar-title {
+  display: flex;
+  flex: 0 0 auto;
+  align-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.canvas-panel-toolbar-actions {
+  display: flex;
+  flex: 1 1 auto;
+  align-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.canvas-panel-toolbar-actions-with-divider {
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: var(--border-width, var(--tbf-border-width, 1px)) solid rgba(255, 255, 255, 0.12);
+}
+
+.canvas-panel-toolbar-actions > .right,
+.canvas-panel-toolbar > .right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
+  margin-left: auto;
+  gap: 8px;
+}
+
+.canvas-panel-toolbar > *,
+.canvas-panel-toolbar-actions > * {
+  max-width: 100%;
+}
+
+.canvas-panel-content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+[data-tbf-table] {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: var(--border-width, var(--tbf-border-width, 1px)) solid var(--gray-700, var(--tbf-border, #ddd));
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    padding: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  tbody td {
+    padding: 0.5rem 0.6rem;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: var(--gray-800, var(--tbf-surface-muted, #f7f7f7));
+    cursor: pointer;
+  }
+}

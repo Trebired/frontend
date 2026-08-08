@@ -1,0 +1,38 @@
+.sticky-widget {
+  background-color: var(--gray-800, var(--tbf-surface-muted, #f7f7f7));
+}
+
+.monaco-diff-editor .editor.original,
+.monaco-diff-editor .editor.modified,
+.monaco-diff-editor .editor.original .monaco-editor,
+.monaco-diff-editor .editor.modified .monaco-editor {
+  box-shadow: none !important;
+}
+
+.monaco-diff-editor .monaco-scrollable-element > .shadow.left,
+.monaco-diff-editor .monaco-scrollable-element > .shadow.top-left-corner,
+.monaco-diff-editor .monaco-scrollable-element > .shadow.top.left {
+  display: none !important;
+  box-shadow: none !important;
+}
+
+.monaco-diff-editor .monaco-sash.vertical {
+  background: transparent !important;
+  box-shadow: none !important;
+  inline-size: 0 !important;
+}
+
+.monaco-diff-editor .diffOverview {
+  display: none !important;
+}
+
+.monaco-diff-editor .diagonal-fill {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.monaco-diff-editor .char-delete.diff-range-empty,
+.monaco-diff-editor .char-insert.diff-range-empty {
+  border-left: 0 !important;
+  margin-left: 0 !important;
+}

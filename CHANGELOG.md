@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.8.0
+
+- Added package-owned generic code and Monaco editor primitives with runtime binding, theme-aware syntax highlighting, editable content fields, editor surfaces, and config-selected styles.
+- Added reusable content display primitives for app-shaped canvas panels, summary/title-description cards, and data tables through the React entrypoint.
+
 ## 1.7.1
 
 - Loosened primitive prop types for app-specific attributes and restored the translated key-value row helper call signature.

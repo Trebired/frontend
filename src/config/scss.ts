@@ -25,6 +25,8 @@ import type {
 
 const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   actions: "actions/styles/index.scss",
+  code: "code/styles/index.scss",
+  editor: "editor/styles/index.scss",
   flash: "flash/styles/index.scss",
   graph: "graph/styles/index.scss",
   icons: "icons/styles/index.scss",

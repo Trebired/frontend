@@ -2,6 +2,8 @@ type TrebiredFrontendIconPack = "remixicon" | "simple-icons";
 
 type TrebiredFrontendSystemKey =
   | "actions"
+  | "code"
+  | "editor"
   | "flash"
   | "fullscreen"
   | "graph"
