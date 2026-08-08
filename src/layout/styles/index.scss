@@ -44,6 +44,8 @@ body[data-tbf-sidebar-right-minimized="true"] {
     var(--tbf-layout-sidebar-left-active-width, 0px)
     minmax(0, 1fr)
     var(--tbf-layout-sidebar-right-active-width, 0px);
+  width: 100%;
+  max-width: 100%;
   flex: 1 1 auto;
   min-height: calc(100dvh - var(--tbf-layout-top-offset, 0px));
 }

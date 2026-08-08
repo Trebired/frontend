@@ -99,11 +99,14 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   assert.equal(css.includes(".gap-xs2"), true);
   assert.equal(css.includes(".bg-canvas"), true);
   assert.equal(css.includes(".tbf-layout"), true);
+  assert.match(css, /\.tbf-layout,\s*\[data-tbf-layout-root\]\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*100%;/su);
   assert.equal(css.includes(".tbf-flash"), true);
   assert.equal(css.includes(".tbf-upload"), true);
   assert.equal(css.includes(".tbf-sidebar-shell"), true);
   assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
   assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
+  assert.equal(css.includes("assets/assets/"), false);
+  assert.equal(css.includes("/../assets/"), false);
 }
 
 async function verifyNoCustomElements(sourceDir, distDir) {

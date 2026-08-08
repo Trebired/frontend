@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.2.0
+
+- Fixed package-owned layout roots so `.tbf-layout` and `[data-tbf-layout-root]` always fill their parent width without app-side utility workarounds.
+- Added verification that config-bundled Fontsource assets do not emit duplicated `/assets/assets/` or `/../assets/` URL references.
+
 ## 1.1.0
 
 - Moved the remaining generic app CSS surface into package-owned config CSS: base document reset, config-driven Fontsource font-face generation, global tokens, canvas background, spacing/margin helpers, wrapping row helpers, vertical alignment helpers, and generated spacing utilities.
