@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.13.2
+
+- Added package-owned `.text-link` primitive styling so ecosystem apps can remove local text-link SCSS while keeping the shared class.
+
 ## 1.13.1
 
 - Fixed the shell mobile navigation section prop type so JSX content slots are accepted by package consumers.

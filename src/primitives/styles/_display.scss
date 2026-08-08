@@ -58,6 +58,22 @@
   min-height: 0;
 }
 
+.text-link {
+  color: var(--text-color-muted, var(--tbf-text-muted, var(--tbf-text, currentColor)));
+  font-weight: inherit;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast, var(--tbf-transition-fast, 120ms ease));
+}
+
+.text-link:hover,
+.text-link:focus {
+  color: var(--text-color, var(--tbf-text, currentColor));
+  text-decoration-style: solid;
+}
+
 [data-tbf-table] {
   width: 100%;
   border-collapse: collapse;
