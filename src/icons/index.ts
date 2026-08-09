@@ -1,11 +1,5 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import {
-  buildIconUrl,
-  classNames,
-  normalizeSpace,
-  parseIconSpec,
-  text,
-} from "./shared.js";
+import { buildIconUrl, normalizeSpace, parseIconSpec, text } from "./shared.js";
 import type { ParsedIconSpec } from "./shared.js";
 
 type IconCacheEntry = {
@@ -68,8 +62,19 @@ function storeFetchedSvg(spec: string, svgMarkup: unknown): void {
   if (entry) storeIconCacheEntry(spec, entry);
 }
 
+function uniqueClassName(...values: string[]): string {
+  return Array.from(
+    new Set(values.join(" ").split(/\s+/u).filter(Boolean)),
+  ).join(" ");
+}
+
 function applyElementAttrs(host: Element, attrs: RenderIconElementAttrs = {}): void {
-  const className = classNames("tbf-icon", "icon-glyph", text(attrs.class || attrs.className));
+  const requestedClassName = text(attrs.class || attrs.className);
+  const className = uniqueClassName(
+    "tbf-icon",
+    "icon-glyph",
+    requestedClassName || text(host.getAttribute("class")),
+  );
   const customColor = text(attrs.color);
   for (const [keyRaw, value] of Object.entries(attrs)) {
     const key = text(keyRaw);

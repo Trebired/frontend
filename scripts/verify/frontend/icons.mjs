@@ -78,8 +78,15 @@ async function verifyIconRuntime(iconRuntime) {
     });
   };
   const host = document.createElement("i");
-  await iconRuntime.renderIconElement(host, "remixicon:add-line", { color: "red", endpoint: "/icons" });
+  await iconRuntime.renderIconElement(host, "remixicon:add-line", {
+    className: "component-icon",
+    color: "red",
+    endpoint: "/icons",
+  });
   assert.equal(host.querySelector("svg") !== null, true);
+  assert.equal(host.classList.contains("component-icon"), true);
+  await iconRuntime.renderIconElement(host, "remixicon:add-line", { endpoint: "/icons" });
+  assert.equal(host.classList.contains("component-icon"), true);
   assert.equal(fetchCount, 1);
   const secondHost = document.createElement("i");
   await iconRuntime.renderIconElement(secondHost, "remixicon:add-line", { endpoint: "/icons" });

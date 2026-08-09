@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 4.0.4
+
+- Preserved component icon classes during runtime icon rebinds so flash status icons keep configured icon colors.
+
 ## 4.0.3
 
 - Kept flash stacks on the desktop bottom edge by scoping the mobile bottom-bar safe offset to mobile layout.
