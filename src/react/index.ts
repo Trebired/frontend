@@ -125,11 +125,16 @@ export {
   AdvancedGraph,
   AdvancedRoadmap,
   contributions_graph,
+  cpu_graph,
   createGraphRoot,
   createServerGraphRoot,
+  download_graph,
+  gpu_graph,
   graph,
   GraphCard,
+  memory_graph,
   roadmap,
+  upload_graph,
 } from "#wvl9qa853kbz";
 export {
   live_island_mount,

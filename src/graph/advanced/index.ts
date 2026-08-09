@@ -10,6 +10,13 @@ export {
   default as AdvancedRoadmap,
   default as roadmap,
 } from "./roadmap.js";
+export {
+  cpu_graph,
+  download_graph,
+  gpu_graph,
+  memory_graph,
+  upload_graph,
+} from "./presets.js";
 export * from "./runtime/index.js";
 export type {
   contribution_day,

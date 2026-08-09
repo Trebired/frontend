@@ -20,6 +20,11 @@ const messages: Record<string, string> = {
   "empty.noContributions": "No contributions yet.",
   "feedback.graphUnavailable": "Graph unavailable.",
   "fields.unit": "Unit",
+  "metrics.cpuUsage": "CPU usage",
+  "metrics.downloadSpeed": "Download speed",
+  "metrics.gpuUsage": "GPU usage",
+  "metrics.memoryUsage": "Memory usage",
+  "metrics.uploadSpeed": "Upload speed",
 };
 
 function toString(value: unknown, fallback = "") {

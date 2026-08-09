@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.15.0
+
+- Added package-owned health usage graph presets for CPU, memory, GPU, download, and upload graphs so ecosystem apps can remove local metric graph wrapper components.
+
 ## 1.14.1
 
 - Loosened the package-owned server graph root render type and exported `createServerGraphRoot` as a direct alias for graph boot controllers.
