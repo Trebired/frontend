@@ -1,5 +1,5 @@
 type ServerGraphRoot = {
-  render(props: Record<string, unknown>): void;
+  render(props: any): void;
   resize?(): void;
 };
 

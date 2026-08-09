@@ -126,6 +126,7 @@ export {
   AdvancedRoadmap,
   contributions_graph,
   createGraphRoot,
+  createServerGraphRoot,
   graph,
   GraphCard,
   roadmap,

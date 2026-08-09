@@ -1,4 +1,8 @@
-export { default as createGraphRuntime, createGraphRoot } from "./boot.js";
+export {
+  default as createGraphRuntime,
+  createGraphRoot,
+  createGraphRoot as createServerGraphRoot,
+} from "./boot.js";
 export { GraphCard } from "./card.js";
 export { GraphCardFrame, GraphErrorBoundary, GraphFrameFallback } from "./render.js";
 export {

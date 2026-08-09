@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.14.1
+
+- Loosened the package-owned server graph root render type and exported `createServerGraphRoot` as a direct alias for graph boot controllers.
+
 ## 1.14.0
 
 - Added package-owned advanced graph runtime with Chart.js rendering, boot-template mounting, unit switching, numeric point helpers, and server graph state helpers so ecosystem apps can remove local graph controllers.
