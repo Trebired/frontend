@@ -234,6 +234,7 @@ export {
   ShellMobileNavSection,
 };
 export * from "./links.js";
+export * from "./product/index.js";
 export * from "./state.js";
 export type {
   ShellHeaderBrandProps,

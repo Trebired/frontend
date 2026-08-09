@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.18.0
+
+- Added package-owned product shell composition helpers for primary headers, mobile navigation, mobile bottom bars, desktop sidebar shells, sidebar footer controls, theme/about/minimize actions, and shared shell state reading so ecosystem apps can remove local chrome scaffolding while keeping app-specific slots and data builders.
+
 ## 1.17.0
 
 - Added package-owned logs viewer, stats/detail UI, live socket bootstrap, frontend-log ingestion bridge, and logs styles so ecosystem apps can remove local logs components/runtime.

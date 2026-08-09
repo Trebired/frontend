@@ -172,6 +172,35 @@
   text-decoration: underline;
 }
 
+.tbf-product-shell-sidebar-footer {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--tbf-gap-sm, 8px);
+  margin-block-start: auto;
+}
+
+.tbf-product-shell-sidebar-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--tbf-gap-xs, 6px);
+  padding: var(--tbf-spacing-xs, 6px);
+}
+
+.tbf-product-shell-sidebar-minimize__collapse,
+.tbf-product-shell-sidebar-minimize__expand {
+  display: inline-flex;
+  align-items: center;
+}
+
+[data-tbf-sidebar-minimized="true"]
+  .tbf-product-shell-sidebar-minimize__collapse,
+[data-tbf-sidebar-minimized="false"]
+  .tbf-product-shell-sidebar-minimize__expand {
+  display: none;
+}
+
 .tbf-mobile-bottom-bar__items {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
