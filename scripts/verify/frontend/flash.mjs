@@ -25,7 +25,11 @@ async function verifyFlashStyles(rootDir) {
 function verifyFlashToast(api) {
   const { flash, installFlashGlobal, showFlash, showFlashMessage } = api;
   const removedCloseSelector = [".tbf-flash", "close"].join("__");
+  document.documentElement.setAttribute("data-tbf-theme", "dark");
+  document.body.setAttribute("data-tbf-theme", "dark");
   const handle = showFlash.success("Saved", "Done");
+  assert.equal(document.documentElement.getAttribute("data-tbf-theme"), "dark");
+  assert.equal(document.body.getAttribute("data-tbf-theme"), "dark");
   assert.ok(handle.element.matches("[data-tbf-flash]"));
   assert.equal(handle.element.querySelector(removedCloseSelector), null);
   assert.equal(handle.element.querySelector(".tbf-flash__icon")?.getAttribute("data-tbf-icon"), "remixicon:checkbox-circle-line");

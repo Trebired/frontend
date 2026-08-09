@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 4.0.5
+
+- Removed pressed state from command-style theme toggle buttons while keeping current theme sync on explicit data attributes.
+- Added flash/theme regression coverage to verify flash toasts do not mutate the active document theme.
+
 ## 4.0.4
 
 - Preserved component icon classes during runtime icon rebinds so flash status icons keep configured icon colors.

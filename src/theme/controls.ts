@@ -10,7 +10,7 @@ import {
 } from "./constants.js";
 import { getEffectiveTheme, nextTheme, registerThemeSync, setTheme } from "./apply.js";
 import type { ThemeRuntimeOptions } from "./apply.js";
-import { configureThemeModes, findThemeMode, getThemeModes, hasThemeModeOptions, themeModeKeyOf } from "./modes.js";
+import { configureThemeModes, findThemeMode, hasThemeModeOptions, themeModeKeyOf } from "./modes.js";
 
 const THEME_ACTIVE_ATTR = "data-tbf-theme-active";
 
@@ -32,14 +32,9 @@ function isTag(element: Element, tagName: string): boolean {
 }
 
 function syncThemeToggle(button: HTMLElement, options: ThemeRuntimeOptions = {}): void {
-  const registry = getThemeModes(options);
   const key = getEffectiveTheme(undefined, options);
   const label = button.getAttribute(`data-tbf-theme-${key}-label`) || "";
-  if (registry.modes.length === 2) {
-    button.setAttribute("aria-pressed", key === registry.dark ? "true" : "false");
-  } else {
-    button.removeAttribute("aria-pressed");
-  }
+  button.removeAttribute("aria-pressed");
   button.setAttribute(THEME_CURRENT_ATTR, key);
   if (label) button.setAttribute("aria-label", label);
   const text = button.querySelector(THEME_LABEL_SELECTOR);

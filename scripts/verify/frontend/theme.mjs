@@ -127,6 +127,18 @@ async function verifyThemeRuntimeModes(context) {
 
 async function verifyThemeControls(context) {
   const theme = await context.importDist("theme");
+  theme.configureThemeModes(null);
+  document.body.innerHTML = [
+    '<button data-tbf-theme-button aria-pressed="true" data-tbf-theme-dark-label="Dark">',
+    '<span data-tbf-theme-label></span>',
+    "</button>",
+  ].join("");
+  theme.applyTheme("dark");
+  theme.bindThemeControls(document);
+  const defaultButton = document.querySelector("[data-tbf-theme-button]");
+  assert.equal(defaultButton.hasAttribute("aria-pressed"), false);
+  assert.equal(defaultButton.getAttribute("data-tbf-theme-current"), "dark");
+
   theme.configureThemeModes({ modes: ["dark", "light", "sepia"] });
   document.body.innerHTML = [
     '<button data-tbf-theme-button data-tbf-theme-sepia-label="Sepia">',
