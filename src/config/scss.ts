@@ -34,6 +34,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   inputs: "inputs/styles/index.scss",
   layer: "layer/styles/index.scss",
   layout: "layout/styles/index.scss",
+  logs: "logs/styles/index.scss",
   modal: "modal/styles/index.scss",
   popover: "popover/styles/index.scss",
   primitives: "primitives/styles/index.scss",

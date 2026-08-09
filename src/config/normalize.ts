@@ -19,6 +19,7 @@ const SUPPORTED_ICON_PACKS: TrebiredFrontendIconPack[] = ["remixicon", "simple-i
 const SYSTEM_ORDER: TrebiredFrontendSystemKey[] = [
   "theme",
   "layout",
+  "logs",
   "layer",
   "icons",
   "progress",

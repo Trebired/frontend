@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.17.0
+
+- Added package-owned logs viewer, stats/detail UI, live socket bootstrap, frontend-log ingestion bridge, and logs styles so ecosystem apps can remove local logs components/runtime.
+
 ## 1.16.0
 
 - Added a package-owned runtime dropdown selector for Node.js, Bun, and Deno so ecosystem apps can remove local runtime dropdown wrappers.

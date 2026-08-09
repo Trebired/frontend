@@ -14,6 +14,7 @@ import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
+import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
@@ -80,6 +81,7 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindProgress();
   bindIcons(scope);
   bindGraphs(scope);
+  bindLogsRuntime(scope);
   bindCodeBlocks(scope);
   bindEditors(scope);
   bindInputControllers(scope, {
@@ -204,6 +206,7 @@ export {
 export * from "./layer/index.js";
 export * from "./layout/index.js";
 export * from "./live/index.js";
+export * from "./logs/index.js";
 export * from "./markdown/index.js";
 export * from "./modal/index.js";
 export * from "./popover/index.js";

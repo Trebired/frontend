@@ -1,6 +1,6 @@
 {
   "name": "@trebired/frontend",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -57,7 +57,8 @@
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "remixicon": "^4.9.1",
-    "simple-icons": "^16.28.0"
+    "simple-icons": "^16.28.0",
+    "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
     "@trebired/bundler": "^4.5.1",

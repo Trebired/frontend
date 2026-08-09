@@ -1,0 +1,27 @@
+import { defineMessages } from "#aq4qe9opqpbm";
+
+export default defineMessages({
+    addMarker: "Add marker",
+    clickOpenDetails: "Click to open details",
+    connectingLogs: "Connecting logs...",
+    connectionErrorRetrying: "Connection error, retrying...",
+    disconnectedRetrying: "Disconnected, retrying...",
+    fancyMode: "Fancy mode",
+    groups: "Groups",
+    groupsTotalLabel: "Groups total",
+    hideMetadata: "Hide metadata",
+    levels: "Levels",
+    loadedTab: "Loaded",
+    loadingLogs: "Loading logs...",
+    marker: "Marker",
+    noLogsAvailable: "No logs available.",
+    noMatchingLogs: "No matching logs",
+    nothingRecorded: "Nothing recorded",
+    rawMode: "Raw mode",
+    removeMarker: "Remove marker",
+    showMetadata: "Show metadata",
+    totalLabel: "Total",
+    totalTab: "Total",
+    visibleLabel: "Visible",
+    waitingForLogs: "Waiting for logs...",
+});

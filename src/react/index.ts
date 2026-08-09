@@ -137,9 +137,16 @@ export {
   upload_graph,
 } from "#wvl9qa853kbz";
 export {
+  logs_content,
+  logs_paged_content,
+  logs_stats_breakdown,
+  logs_view,
+} from "#k7m1w2ythawp";
+export {
   live_island_mount,
   LiveIslandMount,
 } from "#i6fiia6z4x10";
+export type { logs_view_props } from "#k7m1w2ythawp";
 export type {
   BackendStatusCheckConfig,
   checkbox_props,

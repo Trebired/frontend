@@ -81,6 +81,7 @@ async function verifyFrontendConfig() {
   assert.equal(defaults.generatedScss.includes("@trebired/frontend/"), false);
   assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
+  assert.ok(defaults.generatedScss.includes("logs/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("sidebar/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("fullscreen/styles/index.scss"));
 

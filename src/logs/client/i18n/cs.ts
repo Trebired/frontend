@@ -1,0 +1,27 @@
+import { defineMessages } from "#aq4qe9opqpbm";
+
+export default defineMessages({
+    addMarker: "Přidat značku",
+    clickOpenDetails: "Kliknutím otevřete podrobnosti",
+    connectingLogs: "Připojuji logy...",
+    connectionErrorRetrying: "Chyba připojení, zkouším znovu...",
+    disconnectedRetrying: "Odpojeno, zkouším znovu...",
+    fancyMode: "Přehledný režim",
+    groups: "Skupiny",
+    groupsTotalLabel: "Skupin celkem",
+    hideMetadata: "Skrýt metadata",
+    levels: "Úrovně",
+    loadedTab: "Načtené",
+    loadingLogs: "Načítám logy...",
+    marker: "Značka",
+    noLogsAvailable: "Nejsou dostupné žádné logy.",
+    noMatchingLogs: "Žádné logy neodpovídají hledání",
+    nothingRecorded: "Nic nezaznamenáno",
+    rawMode: "Raw režim",
+    removeMarker: "Odebrat značku",
+    showMetadata: "Zobrazit metadata",
+    totalLabel: "Celkem",
+    totalTab: "Celkem",
+    visibleLabel: "Viditelné",
+    waitingForLogs: "Čekám na logy...",
+});

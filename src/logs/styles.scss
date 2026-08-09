@@ -1,0 +1,260 @@
+.log-box-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+}
+
+.logs-toolbar-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.logs-toolbar-row {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.logs-toolbar-filter {
+  flex: 0 0 8rem;
+  min-width: 8rem;
+}
+
+.logs-toolbar-row > .right {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.logs-toolbar-search-field {
+  display: none;
+  flex: 1 1 20rem;
+  min-width: 16rem;
+}
+
+.logs-toolbar-search-field .logs-search-shell,
+.logs-toolbar-search-field input {
+  width: 100%;
+}
+
+.extend-target .logs-toolbar-search-field {
+  display: flex;
+}
+
+.extend-target .logs-toolbar-search-toggle {
+  display: none;
+}
+
+.canvas-panel-toolbar .logs-toolbar-search-field {
+  min-width: min(16rem, 100%);
+}
+
+.logs-platform-toggle {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.logs-platform-toggle-body {
+  flex: 0 0 auto;
+  gap: 0;
+}
+
+.logs-stats-header {
+  width: 100%;
+  min-width: 0;
+  align-items: stretch;
+}
+
+.logs-stats-header [data-tabs-stack] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.logs-stats-header [data-tabs-list] {
+  width: 100%;
+}
+
+.logs-stats-copy {
+  order: 2;
+}
+
+.log-box {
+  margin: 0;
+  padding: 8px 10px;
+  font-family:
+  ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+  "Courier New", monospace;
+  font-size: 12px;
+  white-space: normal;
+  color: var(--text-color);
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: auto;
+  overscroll-behavior: contain;
+  background: var(--tbf-canvas-bg, var(--dot-grid));
+
+  ::selection {
+    background-color: var(--gray-700) !important;
+    color: currentColor;
+  }
+}
+
+.log-raw-text {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: var(--text-color);
+}
+
+.log-detail-message {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: var(--text-color);
+}
+
+#logs-view-react-root,
+.log-box-content {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+.log-line {
+  display: block;
+  width: 100%;
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  white-space: normal;
+  line-height: var(--lh-xs, 1.2);
+  cursor: pointer;
+
+  &:hover {
+    background: color-mix(in srgb, var(--gray-700) 28%, transparent);
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+.log-cell {
+  min-width: 0;
+  vertical-align: top;
+  line-height: var(--lh-xs, 1.2);
+}
+
+.log-time,
+.log-level,
+.log-group {
+  display: block;
+  float: left;
+  margin-right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: var(--lh-xs, 1.2);
+}
+
+.log-marker {
+  display: block;
+  float: left;
+  width: 2ch;
+  margin-right: 4px;
+  text-align: center;
+  color: var(--text-color-muted);
+  line-height: var(--lh-xs, 1.2);
+}
+
+.log-time {
+  width: 19ch;
+}
+
+.log-level {
+  width: 5ch;
+  text-transform: uppercase;
+}
+
+.log-group {
+  width: 14ch;
+}
+
+.log-message {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: var(--lh-xs, 1.2);
+}
+
+.log-line-stack {
+  display: block;
+  clear: both;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: var(--lh-xs, 1.2);
+}
+
+.log-meta {
+  display: inline;
+  margin-left: 4px;
+  color: var(--text-color-muted);
+  font: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: var(--lh-xs, 1.2);
+}
+
+.logs-search-shell {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  max-width: 100%;
+
+  > .input.classic[type="search"] {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.input-search-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-muted);
+  pointer-events: none;
+  line-height: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
