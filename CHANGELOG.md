@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.19.1
+
+- Fixed package-owned product chrome surfaces so they inherit config `background-page`, keep header support links horizontal on desktop, hide the mobile menu toggle outside mobile breakpoints, and preserve dark platform spacing/colors without app-side legacy chrome CSS.
+
 ## 1.19.0
 
 - Added package-owned locale switching and source-language visualizer components/runtime so ecosystem apps can remove local language switcher, language card/modal, bucket filtering, and file-tree mounting code.

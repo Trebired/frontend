@@ -38,6 +38,7 @@
   --tbf-radius-sm: var(--radius-sm, 0);
   --tbf-border-width: var(--border-width, 1px);
   --tbf-border: var(--border-surface-1, var(--gray-750, #000));
+  --tbf-page: var(--background-page, var(--tbf-surface, #fff));
   --tbf-surface: var(--surface-1, var(--background-surface-1, #fff));
   --tbf-surface-muted: var(--surface-2, var(--background-surface-2, #fff));
   --tbf-text: var(--text-color, var(--gray-100, #000));
