@@ -9,6 +9,12 @@ import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
 import { bindAdvancedInputControllers } from "./inputs/advanced/index.js";
 import { bindInputControllers } from "./inputs/index.js";
+import {
+  bindLocaleSwitchers,
+  bindSourceLanguageRuntime,
+  type LocaleRuntimeOptions,
+  type SourceLanguageRuntimeOptions,
+} from "./language/index.js";
 import { bindIcons } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
@@ -44,9 +50,11 @@ type FrontendRuntimeOptions = {
   frontend_quiet?: boolean;
   live?: Omit<LiveOptions, "skip">;
   layout?: LayoutRuntimeOptions;
+  locale?: LocaleRuntimeOptions;
   observe?: boolean;
   quiet?: boolean;
   sidebar?: SidebarRuntimeOptions;
+  sourceLanguage?: SourceLanguageRuntimeOptions;
   theme?: Omit<ThemeRuntimeOptions, "persistence">;
 };
 
@@ -80,6 +88,8 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindPortals(scope);
   bindProgress();
   bindIcons(scope);
+  bindLocaleSwitchers(scope, options.locale || {});
+  bindSourceLanguageRuntime(scope, options.sourceLanguage || {});
   bindGraphs(scope);
   bindLogsRuntime(scope);
   bindCodeBlocks(scope);
@@ -204,6 +214,7 @@ export {
   updateEmptyState,
 } from "./inputs/advanced/index.js";
 export * from "./layer/index.js";
+export * from "./language/index.js";
 export * from "./layout/index.js";
 export * from "./live/index.js";
 export * from "./logs/index.js";

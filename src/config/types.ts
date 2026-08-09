@@ -12,6 +12,7 @@ type TrebiredFrontendSystemKey =
   | "inputs"
   | "layer"
   | "layout"
+  | "language"
   | "logs"
   | "modal"
   | "popover"

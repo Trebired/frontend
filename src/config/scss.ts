@@ -32,6 +32,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   graph: "graph/styles/index.scss",
   icons: "icons/styles/index.scss",
   inputs: "inputs/styles/index.scss",
+  language: "language/styles/index.scss",
   layer: "layer/styles/index.scss",
   layout: "layout/styles/index.scss",
   logs: "logs/styles/index.scss",
