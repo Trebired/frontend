@@ -56,7 +56,6 @@ function upload_button(props: UploadButtonProps) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
   return button({
     type: props.type || "submit",
-    variant: "solid",
     className: props.className,
     ...(props.disabled ? { disabled: true } : {}),
     ...(props.form ? { form: props.form } : {}),

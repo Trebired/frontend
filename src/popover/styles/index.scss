@@ -1,6 +1,9 @@
 .tbf-popover,
 [data-tbf-popover] {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   min-width: 220px;
   max-width: min(320px, calc(100vw - 24px));
   padding: 8px;
@@ -9,16 +12,72 @@
   color: var(--tbf-text, #000);
   background: var(--tbf-surface, #fff);
   box-shadow: var(--tbf-shadow, 0 0 0 1px #000);
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(8px);
+  transform: translateY(8px) scale(0.98);
   transition:
     opacity var(--tbf-transition-fast) ease,
+    transform var(--tbf-transition-fast) ease,
+    visibility 0s linear var(--tbf-transition-fast);
+}
+
+.tbf-popover.show,
+[data-tbf-popover][data-tbf-open="true"] {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--tbf-transition-fast) ease,
+    transform var(--tbf-transition-fast) ease,
+    visibility 0s;
+}
+
+.tbf-popover :where(a, button).popover-item,
+.tbf-popover > :where(a, button),
+[data-tbf-popover] :where(a, button).popover-item,
+[data-tbf-popover] > :where(a, button) {
+  display: flex;
+  width: 100%;
+  height: 35px;
+  min-height: 35px;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--tbf-radius-sm, var(--tbf-radius, 0));
+  color: var(--tbf-text-muted, #666);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.2;
+  text-align: left;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    color var(--tbf-transition-fast) ease,
+    background var(--tbf-transition-fast) ease,
     transform var(--tbf-transition-fast) ease;
 }
 
-[data-tbf-popover][data-tbf-open="true"] {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+.tbf-popover :where(a, button).popover-item:hover,
+.tbf-popover :where(a, button).popover-item:focus,
+.tbf-popover > :where(a, button):hover,
+.tbf-popover > :where(a, button):focus,
+[data-tbf-popover] :where(a, button).popover-item:hover,
+[data-tbf-popover] :where(a, button).popover-item:focus,
+[data-tbf-popover] > :where(a, button):hover,
+[data-tbf-popover] > :where(a, button):focus {
+  color: var(--tbf-text, #000);
+  background: var(--tbf-surface-muted, #f4f4f4);
+}
+
+.tbf-popover :where(a, button).popover-item:active,
+.tbf-popover > :where(a, button):active,
+[data-tbf-popover] :where(a, button).popover-item:active,
+[data-tbf-popover] > :where(a, button):active {
+  transform: scale(0.97);
 }

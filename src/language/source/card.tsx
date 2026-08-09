@@ -59,7 +59,6 @@ function detailButton(
     "aria-label": translate(lang, "openDetails", { name: model.languageName }),
     "data-tbf-modal-open": "",
     title: translate(lang, "detailsButton"),
-    variant: "solid",
     className: "icon sm has-tooltip",
     children: <Icon spec="remixicon information-line" />,
   });

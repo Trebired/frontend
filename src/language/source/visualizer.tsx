@@ -23,7 +23,6 @@ function headerCard(model: SourceLanguageScanModel) {
           type: "button",
           "data-tbf-source-language-reset": "",
           hidden: true,
-          variant: "solid",
           className: "text-muted text-sm right",
           children: <>{translate(model.lang, "resetFilter")}</>,
         })}

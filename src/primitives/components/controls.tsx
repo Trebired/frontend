@@ -17,7 +17,8 @@ import type {
 import { actionButtonAttrs, appendClassName, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
 
 function buttonClassName(className: unknown, variant?: ButtonProps["variant"]) {
-  return appendClassName("btn", variant === "solid" ? "solid" : "", className);
+  void variant;
+  return appendClassName("btn", className);
 }
 
 function button(props: ButtonProps) {

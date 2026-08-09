@@ -228,7 +228,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
     <>
       <FullscreenOpenButton
         aria-label={state.labels.displayFullscreen}
-        className="btn solid icon md has-tooltip"
+        className="btn icon md has-tooltip"
         fullscreenId={state.extendId}
         group={state.extendGroup}
         title={state.labels.displayFullscreen}
@@ -237,7 +237,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
       </FullscreenOpenButton>
       <FullscreenCloseButton
         aria-label={state.labels.exitFullscreen}
-        className="btn solid icon md has-tooltip"
+        className="btn icon md has-tooltip"
         data-tbf-fullscreen-hidden="true"
         fullscreenId={state.extendId}
         group={state.extendGroup}

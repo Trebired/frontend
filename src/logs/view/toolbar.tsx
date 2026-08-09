@@ -166,7 +166,6 @@ function exportPopover(model: any) {
           "aria-expanded": "false",
           title: model.t("exportLogs"),
           "aria-label": model.t("exportLogs"),
-          variant: "solid",
           className: "icon md has-tooltip",
           "data-tbf-popover-open": "",
           children: <>{icon({ spec: "remixicon download-2-line" })}</>,

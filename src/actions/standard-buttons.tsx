@@ -78,7 +78,6 @@ function standardActionButton(
   const meta = ACTION_META[kind];
   return button({
     type: props.type || meta.type,
-    variant: "solid",
     className: props.className || meta.className,
     ...(props.disabled ? { disabled: true } : {}),
     ...(props.form ? { form: props.form } : {}),
@@ -169,7 +168,6 @@ function save_icon(props: SaveIconButtonProps = {}) {
     ...(props.id ? { id: props.id } : {}),
     ...(props.dataAttrs || {}),
     ...(props.disabled ? { disabled: true } : {}),
-    variant: "solid",
     className:
       props.className || (variant === "icon" ? "icon lg has-tooltip" : ""),
     ...(variant === "icon" ? { title: String(props.tooltip || label) } : {}),
@@ -194,7 +192,6 @@ function copy_button(props: CopyButtonProps) {
     </script>,
     button({
       type: "button",
-      variant: "solid",
       className: props.className || `icon ${String(props.size || "md").trim()} has-tooltip`,
       "aria-controls": target,
       "aria-label": String(props.title || actionLabel("copy", props.lang)),

@@ -16,7 +16,7 @@ type PrimitiveAttrs = {
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & PrimitiveAttrs & {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
-  variant?: "solid";
+  variant?: string;
 };
 
 type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {

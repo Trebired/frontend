@@ -52,7 +52,6 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
     })}
     {model.isMultiple
       ? button({
-          variant: "solid",
           type: "button",
           title: model.unselectAllText,
           "aria-label": model.unselectAllText,

@@ -22,7 +22,7 @@ function graphFullscreenButton(
     "aria-label": label,
     fullscreenId: String(props.extendId || ""),
     group: String(props.extendGroup || "default"),
-    className: "btn solid icon md has-tooltip",
+    className: "btn icon md has-tooltip",
   };
 
   return mode === "close" ? (

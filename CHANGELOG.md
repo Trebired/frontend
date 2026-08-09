@@ -6,6 +6,12 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.19.5
+
+- Restored legacy popover item layout so package popovers stack and style links/actions vertically.
+- Made the top progress bar use a grayscale progress token fallback instead of the focus color.
+- Stopped emitting the obsolete `solid` class from primitive action buttons.
+
 ## 1.19.4
 
 - Restored legacy primitive card page backgrounds while keeping tabs and inputs on surface backgrounds.
