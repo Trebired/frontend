@@ -100,12 +100,13 @@ type ProductShellSidebarFooterProps = HTMLAttributes<HTMLDivElement> & {
   actions?: ReactNode;
 };
 
-type ProductShellSidebarControlsProps = HTMLAttributes<HTMLDivElement> & {
-  about?: ReactNode;
-  language?: ReactNode;
-  minimize?: ReactNode;
-  theme?: ReactNode;
-};
+type ProductShellSidebarControlsProps =
+  Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
+    about?: ReactNode;
+    language?: ReactNode;
+    minimize?: ReactNode;
+    theme?: ReactNode;
+  };
 
 type ProductShellSidebarMinimizeButtonProps =
   ButtonHTMLAttributes<HTMLButtonElement> & {
