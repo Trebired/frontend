@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.19.3
+
+- Restored Inter inheritance for native controls so advanced tabs, buttons, inputs, selects, and textareas keep the app font instead of browser defaults.
+
 ## 1.19.2
 
 - Restored legacy-compatible primitive card padding by having the package `card()` helper emit the shared `card` class alongside the package `tbf-card` marker.
