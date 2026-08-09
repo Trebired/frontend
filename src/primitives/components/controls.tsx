@@ -33,7 +33,7 @@ function button(props: ButtonProps) {
 function card(props: CardProps) {
   const { actionTrigger, children, className, ...rest } = props;
   return wrapTriggerHostNode(
-    <FrontendCard className={className} {...rest}>
+    <FrontendCard className={joinClassNames("card", className)} {...rest}>
       {children}
     </FrontendCard>,
     { action: actionTrigger },

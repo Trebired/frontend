@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.19.2
+
+- Restored legacy-compatible primitive card padding by having the package `card()` helper emit the shared `card` class alongside the package `tbf-card` marker.
+
 ## 1.19.1
 
 - Fixed package-owned product chrome surfaces so they inherit config `background-page`, keep header support links horizontal on desktop, hide the mobile menu toggle outside mobile breakpoints, and preserve dark platform spacing/colors without app-side legacy chrome CSS.
