@@ -13,9 +13,12 @@ async function verifyFlash(context) {
 
 async function verifyFlashStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "flash", "styles", "index.scss"), "utf8");
-  assert.equal(source.includes("success-title-color"), false);
-  assert.equal(source.includes("success-progress-color"), false);
-  assert.equal(source.includes("error-progress-color"), false);
+  for (const type of ["error", "info", "success", "warn"]) {
+    assert.equal(source.includes(`--tbf-flash-${type}-color`), false);
+    assert.equal(source.includes(`--tbf-flash-${type}-title-color`), false);
+    assert.equal(source.includes(`--tbf-flash-${type}-progress-color`), false);
+    assert.equal(source.includes(`--tbf-flash-${type}-icon-color`), true);
+  }
 }
 
 function verifyFlashToast(api) {

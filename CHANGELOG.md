@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 4.0.2
+
+- Removed remaining flash type-color fallback variables so semantic flash colors apply only through icon color tokens.
+
 ## 4.0.1
 
 - Changed flash defaults to render Remix Icon status glyphs and keep semantic flash coloring scoped to icons only.
