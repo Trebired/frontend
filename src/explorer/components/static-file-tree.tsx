@@ -14,6 +14,10 @@ import {
   fileTreeLeftBorderColor,
 } from "./file/tree/parts.js";
 import { FileTreeShell } from "./file/tree/shell.js";
+import {
+  primitiveInlineRowClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 const FILE_TREE_INDENT = 18;
 const FILE_TREE_ROW_HEIGHT = 34;
@@ -73,7 +77,7 @@ function staticRowModel(row: any, highlightedPaths: Set<string>) {
 
 function staticRowBackground(model: ReturnType<typeof staticRowModel>) {
   return model.highlighted
-    ? "color-mix(in srgb, var(--gray-800) 60%, transparent)"
+    ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
     : "transparent";
 }
 
@@ -85,7 +89,7 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
       role="treeitem"
       aria-level={rowLevel}
       aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
-      className="inline-row ver-center"
+      className={primitiveInlineRowClassName({ verticalCenter: true })}
       style={{
         borderBottom: "var(--border-width) solid var(--border-surface-1)",
         height: FILE_TREE_ROW_HEIGHT,
@@ -94,7 +98,14 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
     >
       <button
         type="button"
-        className={`width-max inline-row gap-xs ver-center text-left${model.kind === "dir" ? "" : " text-muted"}`}
+        className={primitiveInlineRowClassName({
+          className: primitiveTextClassName({
+            className: "width-max text-left",
+            muted: model.kind !== "dir",
+          }),
+          gap: "xs",
+          verticalCenter: true,
+        })}
         style={{
           background: staticRowBackground(model),
           border: "var(--border-width) solid transparent",
@@ -128,7 +139,7 @@ function scrollStyleFor(options: StaticFileTreeViewProps, rows: any[]) {
     minHeight: constrainedHeight || undefined,
     overflowX: "hidden",
     overflowY: needsScroll ? "auto" : "visible",
-    scrollbarColor: "var(--scroll-thumb) var(--gray-800)",
+    scrollbarColor: "var(--scroll-thumb) var(--background-surface-2, transparent)",
     scrollbarGutter: needsScroll ? "stable" : "auto",
     scrollbarWidth: "thin",
     width: "100%",
@@ -158,7 +169,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
   if (!rows.length) {
     return (
       <FileTreeShell {...shellProps}>
-        <div className="text-muted padding-sm">{emptyMessage}</div>
+        <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
       </FileTreeShell>
     );
   }

@@ -2,6 +2,11 @@ import type { ReactNode } from "react";
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
+import {
+  Text,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 type MarkdownArticleProps = {
   className?: string;
@@ -20,9 +25,9 @@ function markdown_article(props: MarkdownArticleProps) {
   const markdown = articleText(props.markdown);
   if (!markdown) {
     return (
-      <p className="text-muted">
+      <Text as="p" muted>
         {props.emptyText || "Nothing to show."}
-      </p>
+      </Text>
     );
   }
   const linkClassName = articleText(props.linkClassName);
@@ -41,7 +46,13 @@ function markdown_article(props: MarkdownArticleProps) {
   return (
     <div
       className={articleText(props.className) ||
-        "column gap-sm text-break markdown-article"}
+        primitiveStackClassName({
+          className: primitiveTextClassName({
+            breakWord: true,
+            className: "markdown-article",
+          }),
+          gap: "sm",
+        })}
     >
       <Markdown
         components={components}

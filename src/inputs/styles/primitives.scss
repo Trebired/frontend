@@ -138,9 +138,9 @@
 }
 
 .tbf-status-field[data-tbf-status-state="error"] .tbf-status-field__message {
-  color: var(--red-500, var(--tbf-focus, #000));
+  color: var(--tbf-status-error-color, var(--tbf-focus, currentColor));
 }
 
 .tbf-status-field[data-tbf-status-state="success"] .tbf-status-field__message {
-  color: var(--green-500, var(--tbf-focus, #000));
+  color: var(--tbf-status-success-color, var(--tbf-focus, currentColor));
 }

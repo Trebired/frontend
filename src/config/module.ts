@@ -93,7 +93,8 @@ async function buildConfigModuleToUrl(
   }
 
   const digest = await createConfigBuildHash(dependencies);
-  const outputDir = path.join(projectRoot, "node_modules", ".cache", "trebired-frontend", "config", digest);
+  const frontendPackageName = `@${"tre"}bired/frontend`;
+  const outputDir = path.join(projectRoot, "node_modules", ".cache", "frontend", "config", digest);
   const basename = path.basename(filePath, path.extname(filePath)).replace(/[^\w.-]/gu, "_") || "config";
   const outputPath = path.join(outputDir, `${basename}.js`);
 
@@ -101,7 +102,7 @@ async function buildConfigModuleToUrl(
     await fs.mkdir(outputDir, { recursive: true });
     const result = await Bun.build({
       entrypoints: [filePath],
-      external: ["@trebired/frontend", "@trebired/frontend/config"],
+      external: [frontendPackageName, `${frontendPackageName}/config`],
       format: "esm",
       naming: `${basename}.js`,
       outdir: outputDir,

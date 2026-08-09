@@ -20,6 +20,7 @@ import {
   dynamicSidebarTextValue,
   textValue,
 } from "#yv4ubgils4dc";
+import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 
 function DynamicSidebarLiveRoot(props: DynamicSidebarLiveRootProps) {
   const { children, config, style, ...rest } = props;
@@ -145,7 +146,7 @@ function DynamicSidebarIcon(props: {
     ? props.render(props.context)
     : props.context.item.icon || defaultDynamicSidebarIcon(props.context);
   return node ? (
-    <span className="text-muted" data-tbf-sidebar-link-icon="">
+    <span className={primitiveTextClassName({ muted: true })} data-tbf-sidebar-link-icon="">
       {node}
     </span>
   ) : null;

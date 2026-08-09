@@ -1,16 +1,16 @@
 import type {
-  NormalizedTrebiredFrontendScalesConfig,
-  NormalizedTrebiredFrontendZIndexScaleConfig,
-  TrebiredFrontendScaleSteps,
+  NormalizedFrontendScalesConfig,
+  NormalizedFrontendZIndexScaleConfig,
+  FrontendScaleSteps,
 } from "./types.js";
 
 type ScaleCss = { body: string[]; vars: string[] };
 
-function stepEntries(steps: TrebiredFrontendScaleSteps): Array<[string, number]> {
+function stepEntries(steps: FrontendScaleSteps): Array<[string, number]> {
   return Object.entries(steps).sort(([a], [b]) => a.localeCompare(b));
 }
 
-function renderSpacingScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderSpacingScale(steps: FrontendScaleSteps): ScaleCss {
   const vars = stepEntries(steps).map(([step, v]) => `  --space-${step}: ${v}px;`);
   const body: string[] = [];
   for (const [step] of stepEntries(steps)) {
@@ -26,7 +26,7 @@ function renderSpacingScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
   return { body, vars };
 }
 
-function renderPaddingScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderPaddingScale(steps: FrontendScaleSteps): ScaleCss {
   const sides = ["top", "right", "bottom", "left"];
   const body: string[] = [];
   for (const [step, v] of stepEntries(steps)) {
@@ -47,7 +47,7 @@ function radiusValueMixin(name: string, value: string): string {
   return `@mixin ${name}($important: false) { @if $important { border-radius: ${value} !important; } @else { border-radius: ${value}; } }`;
 }
 
-function renderRadiusScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderRadiusScale(steps: FrontendScaleSteps): ScaleCss {
   const vars: string[] = [];
   const body: string[] = [];
   for (const [step, v] of stepEntries(steps)) {
@@ -76,7 +76,7 @@ function renderRadiusScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
   return { body, vars };
 }
 
-function renderHeightScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderHeightScale(steps: FrontendScaleSteps): ScaleCss {
   const vars: string[] = [];
   const body: string[] = [];
   for (const [step, v] of stepEntries(steps)) {
@@ -100,19 +100,19 @@ function renderHeightScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
   return { body, vars };
 }
 
-function renderWidthScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderWidthScale(steps: FrontendScaleSteps): ScaleCss {
   const body = stepEntries(steps).map(
     ([step, v]) => `.width-${step} { width: min(100%, ${v}px) !important; }`,
   );
   return { body, vars: [] };
 }
 
-function renderTextSizeScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderTextSizeScale(steps: FrontendScaleSteps): ScaleCss {
   const body = stepEntries(steps).map(([step, v]) => `.text-${step} { font-size: ${v}px; }`);
   return { body, vars: [] };
 }
 
-function renderLineHeightScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
+function renderLineHeightScale(steps: FrontendScaleSteps): ScaleCss {
   const body: string[] = [];
   for (const [step, v] of stepEntries(steps)) {
     body.push(
@@ -123,7 +123,7 @@ function renderLineHeightScale(steps: TrebiredFrontendScaleSteps): ScaleCss {
   return { body, vars: [] };
 }
 
-function renderZIndexScale(config: NormalizedTrebiredFrontendZIndexScaleConfig): ScaleCss {
+function renderZIndexScale(config: NormalizedFrontendZIndexScaleConfig): ScaleCss {
   const vars: string[] = [];
   const body: string[] = [];
   for (const [step, v] of stepEntries(config.steps)) {
@@ -136,7 +136,7 @@ function renderZIndexScale(config: NormalizedTrebiredFrontendZIndexScaleConfig):
   return { body, vars };
 }
 
-function renderScalesCss(config: NormalizedTrebiredFrontendScalesConfig): ScaleCss {
+function renderScalesCss(config: NormalizedFrontendScalesConfig): ScaleCss {
   const parts = [
     renderSpacingScale(config.spacing),
     renderPaddingScale(config.padding),

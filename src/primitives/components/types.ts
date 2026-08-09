@@ -7,6 +7,12 @@ import type {
 } from "react";
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
+import type {
+  PrimitiveButtonSize,
+  PrimitiveButtonTone,
+  PrimitiveGap,
+  PrimitivePadding,
+} from "./classes.js";
 
 type attr_map = Record<string, unknown>;
 type PrimitiveAttrs = {
@@ -16,11 +22,21 @@ type PrimitiveAttrs = {
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & PrimitiveAttrs & {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
-  variant?: string;
+  active?: boolean;
+  icon?: boolean;
+  size?: PrimitiveButtonSize;
+  tone?: PrimitiveButtonTone;
+  tooltip?: boolean;
+  transparent?: boolean;
+  variant?: PrimitiveButtonTone | "classic" | "default";
 };
 
 type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
   actionTrigger?: BindActionTriggerOptions;
+  gap?: PrimitiveGap;
+  layout?: "column" | "none";
+  padding?: PrimitivePadding;
+  scroll?: boolean;
 };
 
 type ActionFormProps = Omit<
@@ -46,7 +62,7 @@ type AvatarProps = {
   alt?: string;
   className?: string;
   height?: string | number;
-  size?: string;
+  size?: "lg" | "md" | "sm" | "xl" | "xl2" | "xl3" | "xl4" | "xl5";
   src?: string;
   style?: CSSProperties;
   width?: string | number;
@@ -102,10 +118,12 @@ type key_value_props = {
 
 type masonry_props = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
   columns?: ReactNode[];
+  gap?: PrimitiveGap;
 };
 
 type bar_props = {
   card?: boolean;
+  gap?: PrimitiveGap;
   hidden?: boolean;
   label?: string;
   meta?: string;

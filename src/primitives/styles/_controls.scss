@@ -2,30 +2,30 @@
 @use "./variables" as *;
 
 .btn {
-  --button-icon-color: var(--gray-300);
+  --button-icon-color: var(--tbf-button-icon-color, currentColor);
   box-sizing: border-box;
-  height: 28px;
-  min-height: 28px;
+  height: var(--tbf-button-height, 28px);
+  min-height: var(--tbf-button-height, 28px);
   width: auto;
   max-width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 0 12px;
-  padding-block: 0;
-  border-radius: var(--radius-md, var(--tbf-radius, 0));
-  border: var(--border-width) solid var(--border-surface-2);
-  background: var(--gray-900);
-  color: var(--text-color);
+  gap: var(--tbf-button-gap, 8px);
+  padding: var(--tbf-button-padding, 0 12px);
+  padding-block: var(--tbf-button-padding-block, 0);
+  border-radius: var(--tbf-button-radius, var(--radius-md, var(--tbf-radius, 0)));
+  border: var(--tbf-button-border, var(--border-width) solid var(--border-surface-2));
+  background: var(--tbf-button-background, transparent);
+  color: var(--tbf-button-color, var(--text-color));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   font-family: inherit;
   white-space: nowrap;
   text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--tbf-button-font-size, 12px);
+  font-weight: var(--tbf-button-font-weight, 600);
   line-height: 1.15;
   vertical-align: middle;
   transition:
@@ -36,16 +36,16 @@
 
   &:hover,
   &.active {
-    --button-icon-color: currentColor;
-    background: var(--gray-800);
-    border-color: var(--gray-700);
-    color: var(--gray-200);
+    --button-icon-color: var(--tbf-button-hover-icon-color, currentColor);
+    background: var(--tbf-button-hover-background, var(--tbf-button-background, transparent));
+    border-color: var(--tbf-button-hover-border-color, currentColor);
+    color: var(--tbf-button-hover-color, currentColor);
   }
 
   &:disabled,
   &[disabled],
   &.disabled {
-    opacity: 0.55;
+    opacity: var(--tbf-button-disabled-opacity, 0.55);
     pointer-events: none;
   }
 
@@ -61,63 +61,63 @@
 
     @each $name, $size in $tbf-primitive-button-sizes {
       &.#{$name} {
-        height: list.nth($size, 1);
-        min-height: list.nth($size, 1);
-        padding-inline: list.nth($size, 2);
+        height: var(--tbf-button-sizes-#{$name}-height, #{list.nth($size, 1)});
+        min-height: var(--tbf-button-sizes-#{$name}-height, #{list.nth($size, 1)});
+        padding-inline: var(--tbf-button-sizes-#{$name}-padding-inline, #{list.nth($size, 2)});
         padding-block: 0;
-        font-size: list.nth($size, 3);
+        font-size: var(--tbf-button-sizes-#{$name}-font-size, #{list.nth($size, 3)});
       }
     }
   }
 
   &.highlight {
-    --button-icon-color: var(--gray-800);
-    background: var(--gray-100);
-    color: var(--gray-950);
-    border-color: var(--gray-100);
+    --button-icon-color: var(--tbf-button-tones-highlight-icon-color, currentColor);
+    background: var(--tbf-button-tones-highlight-background, var(--tbf-button-background, transparent));
+    color: var(--tbf-button-tones-highlight-color, currentColor);
+    border-color: var(--tbf-button-tones-highlight-border-color, currentColor);
 
     &:hover,
     &.active {
-      --button-icon-color: currentColor;
-      background: var(--gray-200);
-      border-color: var(--gray-100);
-      color: var(--gray-900);
+      --button-icon-color: var(--tbf-button-tones-highlight-hover-icon-color, currentColor);
+      background: var(--tbf-button-tones-highlight-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
+      border-color: var(--tbf-button-tones-highlight-hover-border-color, currentColor);
+      color: var(--tbf-button-tones-highlight-hover-color, currentColor);
     }
   }
 
   &.red {
-    border-inline-color: var(--red-700);
+    border-inline-color: var(--tbf-button-tones-red-border-inline-color, currentColor);
 
     &:hover,
     &.active {
-      background: var(--red-800);
-      border-color: var(--red-700);
-      color: var(--gray-50-dark);
-      --button-icon-color: currentColor;
+      background: var(--tbf-button-tones-red-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
+      border-color: var(--tbf-button-tones-red-hover-border-color, currentColor);
+      color: var(--tbf-button-tones-red-hover-color, currentColor);
+      --button-icon-color: var(--tbf-button-tones-red-hover-icon-color, currentColor);
     }
   }
 
   &.yellow {
-    border-inline-color: var(--yellow-700);
+    border-inline-color: var(--tbf-button-tones-yellow-border-inline-color, currentColor);
 
     &:hover,
     &.active {
-      --button-icon-color: currentColor;
-      background: var(--yellow-700);
-      border-color: var(--yellow-600);
-      color: var(--gray-50-dark);
+      --button-icon-color: var(--tbf-button-tones-yellow-hover-icon-color, currentColor);
+      background: var(--tbf-button-tones-yellow-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
+      border-color: var(--tbf-button-tones-yellow-hover-border-color, currentColor);
+      color: var(--tbf-button-tones-yellow-hover-color, currentColor);
     }
   }
 
   &.green {
-    border-inline-color: var(--green-700);
+    border-inline-color: var(--tbf-button-tones-green-border-inline-color, currentColor);
 
     &:hover,
     &.active {
-      --button-icon-color: currentColor;
-      background: var(--green-800);
-      border-color: var(--green-700);
-      color: var(--gray-0-dark);
+      --button-icon-color: var(--tbf-button-tones-green-hover-icon-color, currentColor);
+      background: var(--tbf-button-tones-green-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
+      border-color: var(--tbf-button-tones-green-hover-border-color, currentColor);
+      color: var(--tbf-button-tones-green-hover-color, currentColor);
     }
   }
 
@@ -125,13 +125,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    min-height: 28px;
+    width: var(--tbf-button-icon-size, 28px);
+    height: var(--tbf-button-icon-size, 28px);
+    min-width: var(--tbf-button-icon-size, 28px);
+    min-height: var(--tbf-button-icon-size, 28px);
     gap: 0;
     padding: 0;
-    font-size: 15px;
+    font-size: var(--tbf-button-icon-font-size, 15px);
     line-height: 1;
     text-align: center;
     position: relative;
@@ -163,11 +163,11 @@
 
     @each $name, $size in $tbf-primitive-icon-sizes {
       &.#{$name} {
-        width: list.nth($size, 1);
-        height: list.nth($size, 1);
-        min-width: list.nth($size, 1);
-        min-height: list.nth($size, 1);
-        font-size: list.nth($size, 2);
+        width: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
+        height: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
+        min-width: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
+        min-height: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
+        font-size: var(--tbf-button-icon-#{$name}-font-size, #{list.nth($size, 2)});
       }
     }
 
@@ -180,10 +180,10 @@
 .avatar {
   border-radius: 50%;
   object-fit: cover;
-  border: var(--border-width) solid var(--gray-700);
+  border: var(--border-width) solid var(--border-surface-1);
 
   &.unknown {
-    background-color: var(--gray-700);
+    background-color: var(--background-surface-2, var(--tbf-surface-muted, transparent));
   }
 
   @each $name, $size in $tbf-primitive-avatar-sizes {

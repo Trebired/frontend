@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 type LocaleOption = {
   code: string;
+  flagCountry?: false | string | null;
+  flagLabel?: string;
   icon?: ReactNode;
   label?: string;
   shortLabel?: string;

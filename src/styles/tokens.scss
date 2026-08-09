@@ -22,9 +22,11 @@
   --shadow-overlay-sm:
     0 6px 18px rgba(0, 0, 0, 0.18),
     0 2px 4px rgba(0, 0, 0, 0.08);
+  --dot-grid-base: var(--background-page, #fff);
+  --dot-grid-dot: var(--border-surface-1, currentColor);
   --dot-grid:
-    var(--gray-950, #1a1a1b)
-    radial-gradient(var(--gray-700, #303031) 2px, transparent 0) -5px -5px / 30px 30px;
+    var(--dot-grid-base)
+    radial-gradient(var(--dot-grid-dot) 2px, transparent 0) -5px -5px / 30px 30px;
   --z-bottom-bar: var(--z-index-xs, 900);
   --z-header-secondary: 910;
   --z-header-primary: 920;
@@ -37,12 +39,12 @@
   --tbf-radius: var(--radius-md, 0);
   --tbf-radius-sm: var(--radius-sm, 0);
   --tbf-border-width: var(--border-width, 1px);
-  --tbf-border: var(--border-surface-1, var(--gray-750, #000));
+  --tbf-border: var(--border-surface-1, #000);
   --tbf-page: var(--background-page, var(--tbf-surface, #fff));
   --tbf-surface: var(--surface-1, var(--background-surface-1, #fff));
   --tbf-surface-muted: var(--surface-2, var(--background-surface-2, #fff));
-  --tbf-text: var(--text-color, var(--gray-100, #000));
-  --tbf-text-muted: var(--text-color-muted, var(--gray-300, #000));
+  --tbf-text: var(--text-color, #000);
+  --tbf-text-muted: var(--text-color-muted, var(--tbf-text, #000));
   --tbf-focus: var(--focus-color, #000);
   --tbf-shadow: var(--shadow-overlay-lg, 0 0 0 1px #000);
   --tbf-overlay: color-mix(in srgb, var(--tbf-text) 48%, transparent);
@@ -70,6 +72,6 @@
 :root[data-tbf-theme="light"],
 body[data-tbf-theme="light"] {
   --dot-grid:
-    var(--gray-950, #f8f8f9)
-    radial-gradient(var(--gray-700, #dbdbdc) 2px, transparent 0) -5px -5px / 30px 30px;
+    var(--dot-grid-base)
+    radial-gradient(var(--dot-grid-dot) 2px, transparent 0) -5px -5px / 30px 30px;
 }

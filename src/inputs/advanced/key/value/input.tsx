@@ -5,6 +5,11 @@ import { icon } from "#dqy2d22qyujv";
 import iconRuntime from "#e55z7pkijewq";
 import { documentLang } from "#dqy2d22qyujv";
 import { button } from "#dqy2d22qyujv";
+import {
+  primitiveButtonClassName,
+  primitiveGridClassName,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 
 type AttrMap = Record<string, unknown>;
 
@@ -83,13 +88,13 @@ function applyAttrs(element: HTMLElement, input: unknown) {
 }
 
 function fieldClassName(field: { className?: unknown }) {
-  return [
-    "column gap-xs",
-    "key-value-input-field",
-    toString(field && field.className, "grow"),
-  ]
-  .filter(Boolean)
-  .join(" ");
+  return primitiveStackClassName({
+    className: [
+      "key-value-input-field",
+      toString(field && field.className, "grow"),
+    ],
+    gap: "xs",
+  });
 }
 
 function hasLabels(fields: key_value_input_field[]) {
@@ -188,13 +193,16 @@ function removeButtonProps(
       localT("actions.remove"),
     ),
   );
-  const removeClassName = [
-    "btn red icon lg no-shrink",
-    toString(props.removeClassName),
-    toString((props.removeAttrs as any)?.className),
-  ]
-  .filter(Boolean)
-  .join(" ");
+  const removeClassName = primitiveButtonClassName({
+    className: [
+      "no-shrink",
+      toString(props.removeClassName),
+      toString((props.removeAttrs as any)?.className),
+    ],
+    icon: true,
+    size: "lg",
+    tone: "red",
+  });
   return { removeClassName, removeLabel };
 }
 
@@ -204,14 +212,14 @@ function key_value_input(props: key_value_input_props) {
   const fields = Array.isArray(props.fields)
   ? props.fields.filter(Boolean)
   : [];
-  const rootClassName = [
-    "column gap-xs",
-    "key-value-input",
-    toString(props.className),
-    toString((props.rootAttrs as any)?.className),
-  ]
-  .filter(Boolean)
-  .join(" ");
+  const rootClassName = primitiveStackClassName({
+    className: [
+      "key-value-input",
+      toString(props.className),
+      toString((props.rootAttrs as any)?.className),
+    ],
+    gap: "xs",
+  });
   const { removeClassName, removeLabel } = removeButtonProps(props);
   const labels = hasLabels(fields);
   const removeColumn = fields.length + 1;
@@ -224,7 +232,7 @@ function key_value_input(props: key_value_input_props) {
     data-key-value-input=""
     >
     <div
-    className="grid gap-xs"
+    className={primitiveGridClassName({ gap: "xs" })}
     style={gridStyle(fields, props.remove !== false)}
     data-key-value-input-controls=""
     >
@@ -312,19 +320,19 @@ function createKeyValueInputElement(
   const fields = Array.isArray(props.fields)
   ? props.fields.filter(Boolean)
   : [];
-  const rootClassName = [
-    "column gap-xs",
-    "key-value-input",
-    toString(props.className),
-    toString((props.rootAttrs as any)?.className),
-  ]
-  .filter(Boolean)
-  .join(" ");
+  const rootClassName = primitiveStackClassName({
+    className: [
+      "key-value-input",
+      toString(props.className),
+      toString((props.rootAttrs as any)?.className),
+    ],
+    gap: "xs",
+  });
   root.className = rootClassName;
   root.setAttribute("data-key-value-input", "");
   applyAttrs(root, props.rootAttrs);
   const controls = doc.createElement("div");
-  controls.className = "grid gap-xs";
+  controls.className = primitiveGridClassName({ gap: "xs" });
   controls.style.setProperty(
     "--tbf-grid-template-columns",
     gridColumns(fields, props.remove !== false),

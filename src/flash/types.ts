@@ -1,16 +1,6 @@
 type FlashType = "error" | "info" | "success" | "warn";
 type FlashStackPriority = "high" | "low" | "normal";
-type FlashProgressTone =
-  | "blue"
-  | "cyan"
-  | "gray"
-  | "green"
-  | "indigo"
-  | "orange"
-  | "red"
-  | "ruby"
-  | "yellow"
-  | (string & {});
+type FlashProgressTone = FlashType | "accent" | "muted" | (string & {});
 type FlashOptions = {
   description?: string;
   id?: string;

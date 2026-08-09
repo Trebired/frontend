@@ -8,10 +8,14 @@ import type {
 } from "#xb7hv37sq5h5";
 import { card } from "#6hfutrhvm6x6";
 import { card_body } from "./body.js";
+import { primitiveTextClassName } from "#0rl8rpgzssot";
+import { InlineRow, Stack, TitleDescription } from "#tlkyab3pczjn";
 import { toText } from "#6mupcizo1mwq";
 
+const CARD_SEGMENTS_CLASS = "card-segments";
+
 function segmentSpan(entry: CardSegment | undefined, rowIndex: number, segmentIndex: number) {
-  const className = toText(entry?.className, "text-muted");
+  const className = toText(entry?.className, primitiveTextClassName({ muted: true }));
   const text = entry?.value != null ? String(entry.value) : "";
   if (entry?.kind === "html") {
     return (
@@ -33,13 +37,15 @@ function segmentSpan(entry: CardSegment | undefined, rowIndex: number, segmentIn
 function segmentRow(row: CardSegmentRow | undefined, rowIndex: number) {
   const segments = Array.isArray(row?.segments) ? row.segments.filter(Boolean) : [];
   return (
-    <div
-      className={`inline-row gap-xs2 wrap text-muted ${toText(row?.className)}`.trim()}
+    <InlineRow
+      className={primitiveTextClassName({ className: row?.className, muted: true })}
+      gap="xs2"
       key={`segments_${rowIndex}`}
+      wrap
       {...((row?.dataAttrs || {}) as attr_map)}
     >
       {segments.map((entry, segmentIndex) => segmentSpan(entry, rowIndex, segmentIndex))}
-    </div>
+    </InlineRow>
   );
 }
 
@@ -47,9 +53,9 @@ function card_segments(props: CardSegmentsProps) {
   const rows = Array.isArray(props.rows) ? props.rows : [];
   if (!rows.length) return null;
   return (
-    <div className="column gap-xs2 text-sm card-segments text-muted">
+    <Stack className={primitiveTextClassName({ className: CARD_SEGMENTS_CLASS, muted: true, size: "sm" })} gap="xs2">
       {rows.map(segmentRow)}
-    </div>
+    </Stack>
   );
 }
 
@@ -77,15 +83,8 @@ function card_item(props: CardItemProps) {
 
 function titleDescriptionCard(props: { description: ReactNode; title: ReactNode }) {
   return card({
-    children: (
-      <>
-        <div className="title-desc column gap-sm">
-          <h3>{props.title}</h3>
-          <p className="text-muted">{props.description}</p>
-        </div>
-      </>
-    ),
-    className: "column gap-sm",
+    children: <TitleDescription className="title-desc" description={props.description} title={props.title} />,
+    gap: "sm",
   });
 }
 

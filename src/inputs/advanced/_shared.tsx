@@ -13,13 +13,12 @@ import {
   resolveDocumentTarget,
 } from "#er0dlx1gtbzh";
 import { Button } from "#4woymc9xhupl";
+import { primitiveButtonClassName, type PrimitiveButtonClassOptions } from "#hzrmwbvgt2ax";
 
 type TranslatorVars = Record<string, unknown>;
 type Translator = (key: string, vars?: TranslatorVars) => string;
-type ButtonProps = Record<string, unknown> & {
+type ButtonProps = Record<string, unknown> & PrimitiveButtonClassOptions & {
   children?: ReactNode;
-  className?: string;
-  variant?: string;
 };
 
 const messages: Record<string, string> = {
@@ -135,9 +134,32 @@ function icon(props: IconProps & { [key: string]: unknown; spec: string }) {
 }
 
 function button(props: ButtonProps) {
-  const { children, className, variant: _variant, ...rest } = props;
+  const {
+    active,
+    children,
+    className,
+    icon: iconOnly,
+    size,
+    tone,
+    tooltip,
+    transparent,
+    variant,
+    ...rest
+  } = props;
   return (
-    <Button className={joinClassNames(["btn", className])} {...(rest as any)}>
+    <Button
+      className={primitiveButtonClassName({
+        active,
+        className,
+        icon: iconOnly,
+        size,
+        tone,
+        tooltip,
+        transparent,
+        variant,
+      })}
+      {...(rest as any)}
+    >
       {children}
     </Button>
   );

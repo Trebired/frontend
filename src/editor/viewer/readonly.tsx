@@ -1,15 +1,18 @@
-import { card } from "#hzrmwbvgt2ax";
+import { Text, card } from "#hzrmwbvgt2ax";
 import { normalizePath, text } from "./shared.js";
 import { ReadonlyMonacoDiffPane, ReadonlyMonacoPane } from "./monaco.js";
 
 function EmptyEditorMessage(props: any) {
   return card({
     style: { minHeight: props.minHeight },
-    className: "column gap-sm center ver-center height-max",
+    center: true,
+    className: "height-max",
+    gap: "sm",
+    verticalCenter: true,
     children: (
       <>
         <strong>{props.title}</strong>
-        <span className="text-muted text-small">{props.copy}</span>
+        <Text muted size="sm">{props.copy}</Text>
       </>
     ),
   });

@@ -16,7 +16,7 @@
   user-select: none;
 
   &:focus-visible {
-    outline: var(--border-width) solid var(--gray-600);
+    outline: var(--border-width) solid var(--tbf-input-focus-color, var(--tbf-focus, currentColor));
     outline-offset: 2px;
   }
 
@@ -27,7 +27,7 @@
   &.is-checked,
   &:has(> .checkbox-input:checked) {
     border-color: var(--border-surface-1);
-    background: var(--gray-900);
+    background: var(--tbf-choice-checked-background, var(--background-surface-1, transparent));
   }
 
   &:not(:has(.checkbox-option-description)) {
@@ -47,9 +47,9 @@
   height: 18px;
   margin-top: 0;
   border-radius: var(--radius-xs);
-  border: var(--border-width) solid var(--gray-600);
+  border: var(--border-width) solid var(--tbf-choice-control-border-color, var(--border-surface-1, currentColor));
   background: var(--background-surface-1);
-  color: var(--gray-800);
+  color: var(--tbf-choice-control-color, currentColor);
   line-height: 0;
   position: relative;
   transition:
@@ -65,11 +65,11 @@
   }
 
   .checkbox-control-icon.active {
-    color: var(--gray-600);
+    color: var(--tbf-choice-control-active-icon-color, currentColor);
   }
 
   .checkbox-control-icon.partial {
-    color: var(--gray-300);
+    color: var(--tbf-choice-control-partial-icon-color, currentColor);
   }
 
   .checkbox-control-icon::before {
@@ -100,20 +100,20 @@
 
 .checkbox-option:has(> .checkbox-input:checked) > .checkbox-control,
 .checkbox-option.is-checked > .checkbox-control {
-  border-color: var(--gray-100);
-  background: var(--gray-100);
-  color: var(--gray-900);
+  border-color: var(--tbf-choice-control-checked-border-color, var(--tbf-focus, currentColor));
+  background: var(--tbf-choice-control-checked-background, var(--tbf-focus, transparent));
+  color: var(--tbf-choice-control-checked-color, var(--background-page, currentColor));
 }
 
 .checkbox-option:has(> .checkbox-input:indeterminate) > .checkbox-control,
 .checkbox-option.is-indeterminate > .checkbox-control {
-  border-color: var(--gray-400);
+  border-color: var(--tbf-choice-control-partial-border-color, var(--tbf-focus, currentColor));
   background: color-mix(
     in srgb,
     var(--background-surface-1) 70%,
-    var(--gray-800)
+    var(--tbf-focus, currentColor)
   );
-  color: var(--gray-200);
+  color: var(--tbf-choice-control-partial-color, currentColor);
 }
 
 .checkbox-option:has(> .checkbox-input:checked)

@@ -1,4 +1,4 @@
-const CONFIG_ERROR_PREFIX = "trebired-frontend-invalid-config";
+const CONFIG_ERROR_PREFIX = "frontend-invalid-config";
 
 function invalidConfig(message: string): Error {
   return new Error(`${CONFIG_ERROR_PREFIX} :: ${message}`);

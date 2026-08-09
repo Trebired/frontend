@@ -1,6 +1,7 @@
 import { icon } from "#dqy2d22qyujv";
 import sharedInput from "#8y47rueq20kg";
-import "./index.client";
+import { primitiveStackClassName } from "#hzrmwbvgt2ax";
+import "./index.client.js";
 
 type BackendStatusCheckConfig = {
   endpoint: string;
@@ -102,7 +103,7 @@ function status_input(props: status_input_props) {
   });
 
   return (
-    <label className="column gap-xs">
+    <label className={primitiveStackClassName({ gap: "xs" })}>
     <span className="label">{props.label}</span>
     {shouldWrap ? (
         <div

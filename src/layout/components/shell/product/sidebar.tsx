@@ -8,6 +8,7 @@ import {
   SidebarShell,
 } from "#26uyycr73i6f";
 import { ThemeToggle } from "#wavczpl1zxvg";
+import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 import { productShellLabel } from "./state.js";
 import type {
   ProductShellAboutButtonProps,
@@ -116,8 +117,8 @@ function ProductShellSidebar(props: ProductShellSidebarProps) {
   const bodyId = props.bodyId || `sidebar_body_${side}`;
   return (
     <SidebarShell className={classNames(String(side), props.className)} id={shellId} persist={props.persist} side={side}>
-      <Sidebar aria-label={props.ariaLabel} className="column gap-sm">
-        <SidebarBody className={classNames("column gap-sm", props.bodyClassName)} id={bodyId}>
+      <Sidebar aria-label={props.ariaLabel} className={primitiveStackClassName({ gap: "sm" })}>
+        <SidebarBody className={primitiveStackClassName({ className: props.bodyClassName, gap: "sm" })} id={bodyId}>
           {props.content ?? props.children}
         </SidebarBody>
         {props.showFooter === false ? null : (

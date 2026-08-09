@@ -12,6 +12,7 @@ import {
   text,
   upsertReadonlyModel,
 } from "./shared.js";
+import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 
 const editorViewerThemeHandlers = new WeakMap<HTMLElement, () => void>();
 
@@ -19,7 +20,7 @@ function showMonacoError(host: HTMLElement | null, error: any, fallback: string)
   if (!(host instanceof HTMLElement)) return;
   host.innerHTML = "";
   const message = document.createElement("div");
-  message.className = "text-muted";
+  message.className = primitiveTextClassName({ muted: true });
   message.textContent = text(error?.message, fallback);
   host.appendChild(message);
 }

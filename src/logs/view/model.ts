@@ -1,4 +1,5 @@
 import { createLocalTranslator, toString } from "#aq4qe9opqpbm";
+import { primitiveGridClassName } from "#hzrmwbvgt2ax";
 
 type view_props = {
   extendGroup?: string;
@@ -107,7 +108,7 @@ function createLogsViewModel(props: view_props) {
   const logsInstanceSnake = snake_instance_id(logsInstanceId);
   const logId = (suffix: string) => `${logsInstanceId}-${suffix}`;
   const logSnakeId = (suffix: string) => `${logsInstanceSnake}_${suffix}`;
-  const rootClassName = String(props.rootClassName || "grid gap-sm");
+  const rootClassName = String(props.rootClassName || primitiveGridClassName({ gap: "sm" }));
 
   return {
     exportOptions: exportOptionsFor(props),

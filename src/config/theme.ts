@@ -1,9 +1,9 @@
 import { assertPlainObject, invalidConfig, isPlainObject, normalizeBoolean } from "./shared.js";
 import type {
-  NormalizedTrebiredFrontendThemeConfig,
-  NormalizedTrebiredFrontendThemeMode,
-  TrebiredFrontendThemeModeScheme,
-  TrebiredFrontendThemeTokens,
+  NormalizedFrontendThemeConfig,
+  NormalizedFrontendThemeMode,
+  FrontendThemeModeScheme,
+  FrontendThemeTokens,
 } from "./types.js";
 
 const THEME_MODE_KEY_RE = /^[a-z0-9][a-z0-9_-]*$/iu;
@@ -11,10 +11,10 @@ const THEME_TOKEN_KEY_RE = /^[a-z0-9_-]+$/iu;
 const THEME_MODE_FIELDS = ["label", "scheme", "tokens"];
 const DARK_KEY_RE = /(^|[-_])dark([-_]|$)/iu;
 
-function normalizeThemeTokens(value: unknown, pathLabel = "theme.tokens"): TrebiredFrontendThemeTokens {
+function normalizeThemeTokens(value: unknown, pathLabel = "theme.tokens"): FrontendThemeTokens {
   if (value === undefined) return {};
   const source = assertPlainObject(value, pathLabel);
-  const out: TrebiredFrontendThemeTokens = {};
+  const out: FrontendThemeTokens = {};
   for (const [key, item] of Object.entries(source).sort(([a], [b]) => a.localeCompare(b))) {
     if (!THEME_TOKEN_KEY_RE.test(key)) {
       throw invalidConfig(`${pathLabel}.${key} has an invalid token key`);
@@ -39,7 +39,7 @@ function normalizeThemeModeKey(key: string): string {
   return normalized;
 }
 
-function normalizeThemeModeScheme(value: unknown, key: string): TrebiredFrontendThemeModeScheme {
+function normalizeThemeModeScheme(value: unknown, key: string): FrontendThemeModeScheme {
   if (value === undefined) return DARK_KEY_RE.test(key) ? "dark" : "light";
   if (value !== "dark" && value !== "light") {
     throw invalidConfig(`theme.modes.${key}.scheme must be "dark" or "light"`);
@@ -58,7 +58,7 @@ function normalizeThemeModeLabel(value: unknown, key: string): string {
   return value.trim();
 }
 
-function normalizeThemeMode(rawKey: string, source: Record<string, unknown>): NormalizedTrebiredFrontendThemeMode {
+function normalizeThemeMode(rawKey: string, source: Record<string, unknown>): NormalizedFrontendThemeMode {
   const key = normalizeThemeModeKey(rawKey);
   for (const field of Object.keys(source)) {
     if (!THEME_MODE_FIELDS.includes(field)) {
@@ -88,9 +88,9 @@ function themeModeEntries(value: unknown): Array<[string, Record<string, unknown
   });
 }
 
-function normalizeThemeModes(value: unknown): NormalizedTrebiredFrontendThemeMode[] {
+function normalizeThemeModes(value: unknown): NormalizedFrontendThemeMode[] {
   if (value === undefined) return [];
-  const modes: NormalizedTrebiredFrontendThemeMode[] = [];
+  const modes: NormalizedFrontendThemeMode[] = [];
   for (const [key, source] of themeModeEntries(value)) {
     const mode = normalizeThemeMode(key, source);
     if (modes.some((existing) => existing.key === mode.key)) {
@@ -102,7 +102,7 @@ function normalizeThemeModes(value: unknown): NormalizedTrebiredFrontendThemeMod
 }
 
 function resolveDeclaredMode(
-  modes: NormalizedTrebiredFrontendThemeMode[],
+  modes: NormalizedFrontendThemeMode[],
   value: unknown,
   pathLabel: string,
 ): string {
@@ -115,9 +115,9 @@ function resolveDeclaredMode(
 }
 
 function resolveSchemeMode(
-  modes: NormalizedTrebiredFrontendThemeMode[],
+  modes: NormalizedFrontendThemeMode[],
   value: unknown,
-  scheme: TrebiredFrontendThemeModeScheme,
+  scheme: FrontendThemeModeScheme,
   pathLabel: string,
 ): string {
   const explicit = resolveDeclaredMode(modes, value, pathLabel);
@@ -125,7 +125,7 @@ function resolveSchemeMode(
   return modes.find((mode) => mode.scheme === scheme)?.key || "";
 }
 
-function normalizeThemeConfig(value: unknown): NormalizedTrebiredFrontendThemeConfig {
+function normalizeThemeConfig(value: unknown): NormalizedFrontendThemeConfig {
   const source = value === undefined ? {} : assertPlainObject(value, "theme");
   const modes = normalizeThemeModes(source.modes);
   return {
@@ -139,7 +139,7 @@ function normalizeThemeConfig(value: unknown): NormalizedTrebiredFrontendThemeCo
 }
 
 function flattenThemeTokens(
-  tokens: TrebiredFrontendThemeTokens,
+  tokens: FrontendThemeTokens,
   prefix: string[] = [],
 ): Array<[string, string | number]> {
   const out: Array<[string, string | number]> = [];

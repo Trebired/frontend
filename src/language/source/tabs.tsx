@@ -1,5 +1,12 @@
 import tabs, { tab_panel } from "#92vilwel70ga";
 import { formatLanguagePercent } from "#k0q2s2kidqtq";
+import {
+  Stack,
+  Text,
+  primitiveGapClass,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 import { safeId, text, translate } from "#kv9urtb9dbq5";
 import { source_language_card } from "./card.js";
 import type {
@@ -60,7 +67,7 @@ function distributionSegment(language: any, index: number, lang?: string) {
       title={`${languageName} / ${formatLanguagePercent(percent)}%`}
       style={{
         width: `${Math.max(0, Math.min(100, percent))}%`,
-        background: text(language && language.color, "var(--gray-500)"),
+        background: text(language && language.color, "var(--tbf-language-color, currentColor)"),
       }}
     />
   );
@@ -89,7 +96,7 @@ function emptyState(lang: string | undefined, bucket: SourceLanguageBucket, hidd
     <div
       data-tbf-source-language-empty-state=""
       data-tbf-source-language-panel-bucket={bucket}
-      className="text-muted"
+      className={primitiveTextClassName({ muted: true })}
       hidden={hidden}
     >
       {translate(lang, "noLanguagesInTab")}
@@ -105,13 +112,13 @@ function languageList(model: SourceLanguageTabsContentProps, bucket: SourceLangu
       data-tbf-source-language-list=""
       data-tbf-source-language-panel-bucket={bucket}
     >
-      <div className="column gap-sm">
+      <Stack gap="sm">
         {cards.map((entry: any, index: number) => (
           <div key={`source_language_card_${index}`} data-tbf-source-language-list-item="">
             {source_language_card({ ...entry, lang: model.lang, locale: model.locale })}
           </div>
         ))}
-      </div>
+      </Stack>
     </div>
   );
 }
@@ -124,11 +131,11 @@ function languagePanel(model: SourceLanguageTabsContentProps, bucket: SourceLang
     matchesBucket(language, bucket),
   );
   return (
-    <div className="column gap-sm" data-tbf-source-language-panel-bucket={bucket}>
+    <Stack gap="sm" data-tbf-source-language-panel-bucket={bucket}>
       {languageDistribution(languages, bucket, model.lang)}
       {languageList(model, bucket)}
       {emptyState(model.lang, bucket, languages.length > 0)}
-    </div>
+    </Stack>
   );
 }
 
@@ -170,9 +177,9 @@ function sourceLanguageTabs(model: SourceLanguageTabsContentProps) {
     familyKey: "source-language-bucket",
     items: bucketTabItems(model.lang),
     listAttributes: { "data-tbf-source-language-bucket-tabs": "" },
-    listClassName: "gap-sm",
+    listClassName: primitiveGapClass("sm"),
     rootAttributes: { "data-tbf-source-language-bucket-tabs-root": "" },
-    rootClassName: "column gap-sm",
+    rootClassName: primitiveStackClassName({ gap: "sm" }),
   });
 }
 
@@ -180,7 +187,7 @@ function sourceLanguageTabPanels(model: SourceLanguageTabsContentProps) {
   return (["everything", "repository", "supporting"] as SourceLanguageBucket[]).map(
     (bucket) =>
       tab_panel({
-        className: "column gap-sm",
+        className: primitiveStackClassName({ gap: "sm" }),
         defaultActive: bucket === "everything",
         familyKey: "source-language-bucket",
         id: sourceLanguageBucketPanelId(bucket),
@@ -195,7 +202,7 @@ function source_language_tabs_content(model: SourceLanguageTabsContentProps) {
     ? model.visualLanguages
     : [];
   if (!visualLanguages.length) {
-    return <div className="text-muted">{translate(model.lang, "noLanguageScan")}</div>;
+    return <Text muted>{translate(model.lang, "noLanguageScan")}</Text>;
   }
   return (
     <>

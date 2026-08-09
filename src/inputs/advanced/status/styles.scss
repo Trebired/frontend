@@ -23,9 +23,9 @@
 }
 
 .input-status-icon.ok {
-  color: var(--green-500);
+  color: var(--tbf-status-success-color, var(--tbf-focus, currentColor));
 }
 
 .input-status-icon.bad {
-  color: var(--red-500);
+  color: var(--tbf-status-error-color, var(--tbf-focus, currentColor));
 }

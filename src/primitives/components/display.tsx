@@ -3,6 +3,11 @@ import { CanvasPanel as FrontendCanvasPanel } from "#4woymc9xhupl";
 import { FullscreenTarget } from "#vbkfq413o3u7";
 import { appendClassName, joinClassNames } from "./shared.js";
 import { card } from "./controls.js";
+import { Grid, Text, TitleDescription } from "./layout.js";
+import {
+  primitivePaddingClass,
+  primitiveStackClassName,
+} from "./classes.js";
 
 type TableProps = HTMLAttributes<HTMLTableElement> & {
   children?: ReactNode;
@@ -48,14 +53,14 @@ function table(props: TableProps) {
 
 function summary_stat_card(stat: SummaryStat) {
   return card({
-    className: "column gap-xs",
+    gap: "xs",
     children: (
       <>
         <span className="label">{stat.label}</span>
         <strong {...(stat.valueProps || {})}>
           {String(stat.value == null ? "" : stat.value)}
         </strong>
-        <span className="text-muted text-small">{stat.note}</span>
+        <Text muted size="sm">{stat.note}</Text>
       </>
     ),
   });
@@ -64,13 +69,13 @@ function summary_stat_card(stat: SummaryStat) {
 function summary_card(props: SummaryCardProps) {
   const stats = Array.isArray(props.stats) ? props.stats : [];
   return card({
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
         {titleDescriptionNode(props.title, props.description)}
-        <div className="grid auto-sm gap-sm">
+        <Grid auto="sm" gap="sm">
           {stats.map((stat) => summary_stat_card(stat))}
-        </div>
+        </Grid>
       </>
     ),
   });
@@ -78,7 +83,7 @@ function summary_card(props: SummaryCardProps) {
 
 function title_description_card(props: { description: ReactNode; title: ReactNode }) {
   return card({
-    className: "column gap-sm",
+    gap: "sm",
     children: titleDescriptionNode(props.title, props.description),
   });
 }
@@ -107,18 +112,19 @@ function canvas_panel(props: CanvasPanelCompatProps) {
 }
 
 function titleDescriptionNode(title: ReactNode, description: ReactNode) {
-  return (
-    <div className="title-desc column gap-sm">
-      <h3>{title}</h3>
-      <p className="text-muted">{description}</p>
-    </div>
-  );
+  return <TitleDescription className="title-desc" description={description} title={title} />;
 }
 
 function panelClassName(props: CanvasPanelCompatProps) {
   return appendClassName(
     appendClassName(
-      "canvas-panel column overflow-hidden padding-xs",
+      primitiveStackClassName({
+        className: [
+          "canvas-panel",
+          "overflow-hidden",
+          primitivePaddingClass("xs"),
+        ],
+      }),
       String(props.panelClassName || "height-max"),
     ),
     props.canvasBackground === false ? "" : "bg-canvas",

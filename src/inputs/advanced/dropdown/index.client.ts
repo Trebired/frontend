@@ -1,4 +1,4 @@
-import dropdown from "./manager";
+import dropdown from "./manager.js";
 import {
   readDropdownRootConfigScript,
   registerDropdownOptions,

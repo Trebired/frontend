@@ -2,6 +2,10 @@ import { createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
 import type { ReactNode } from "react";
 import { button } from "#dqy2d22qyujv";
+import {
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 type toggle_option = {
   available?: boolean;
@@ -58,7 +62,7 @@ function toggleSideButton(props: {
     >
     <span className="toggle-side-label">{option && option.label}</span>
     {note ? (
-        <span className="toggle-side-note text-muted">{note}</span>
+        <span className={primitiveTextClassName({ className: "toggle-side-note", muted: true })}>{note}</span>
       ) : null}
     </button>
   );
@@ -110,7 +114,7 @@ function toggle(props: toggle_props) {
   );
   if (options.length < 2) return null;
   const currentValue = readCurrentToggleValue(props, options);
-  const wrapperClassName = toString(props.className, "column gap-xs");
+  const wrapperClassName = toString(props.className) || primitiveStackClassName({ gap: "xs" });
   const inputName = toString(props.name);
   const inputId = toString(props.inputId);
   return (

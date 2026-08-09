@@ -1,5 +1,11 @@
 import { toString } from "#4fte8m1x62rd";
 import type { key_value_group, key_value_row } from "./types.js";
+import {
+  Grid,
+  Stack,
+  primitiveCardClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 function keyValueRowValueProps(row: key_value_row) {
   return row.value_attrs && typeof row.value_attrs === "object"
@@ -21,7 +27,7 @@ function renderDetailValue(row: key_value_row, index: number) {
     return (
       <div
       key={`graph_detail_value_html_${index}`}
-      className="text-break"
+      className={primitiveTextClassName({ breakWord: true })}
       {...keyValueRowValueProps(row)}
       dangerouslySetInnerHTML={{ __html: valueHtml }}
       />
@@ -31,7 +37,7 @@ function renderDetailValue(row: key_value_row, index: number) {
   return (
     <div
     key={`graph_detail_value_${index}`}
-    className="text-break"
+    className={primitiveTextClassName({ breakWord: true })}
     {...keyValueRowValueProps(row)}
     >
     {formatKeyValueRowValue(row)}
@@ -57,27 +63,27 @@ function renderGroupedDetails(groups: key_value_group[]) {
   if (!safeGroups.length) return null;
 
   return (
-    <div className="column gap-sm">
+    <Stack gap="sm">
     {safeGroups.map((group, groupIndex) => (
           <div
-          className="card column gap-sm padding-sm"
+          className={primitiveCardClassName({ gap: "sm", padding: "sm" })}
           key={`graph_group_${group.title || "group"}_${groupIndex}`}
           >
           {group.title ? <h4>{group.title}</h4> : null}
-          <div className="grid gap-sm">
+          <Grid gap="sm">
           {group.rows.map((row, rowIndex) => (
-                <div
-                className="column gap-xs"
+                <Stack
+                gap="xs"
                 key={`graph_group_row_${String(row.label || "row")}_${rowIndex}`}
                 >
                 <span className="label lh-xs">{String(row.label || "")}</span>
                 {renderDetailValue(row, rowIndex)}
-                </div>
+                </Stack>
           ))}
-          </div>
+          </Grid>
           </div>
     ))}
-    </div>
+    </Stack>
   );
 }
 
@@ -88,19 +94,19 @@ function renderRowDetails(rows: key_value_row[]) {
   if (!safeRows.length) return null;
 
   return (
-    <div className="column gap-sm">
-    <div className="grid gap-sm">
+    <Stack gap="sm">
+    <Grid gap="sm">
     {safeRows.map((row, rowIndex) => (
           <div
-          className="card column gap-xs padding-sm"
+          className={primitiveCardClassName({ gap: "xs", padding: "sm" })}
           key={`graph_row_${String(row.label || "row")}_${rowIndex}`}
           >
           <span className="label lh-xs">{String(row.label || "")}</span>
           {renderDetailValue(row, rowIndex)}
           </div>
     ))}
-    </div>
-    </div>
+    </Grid>
+    </Stack>
   );
 }
 

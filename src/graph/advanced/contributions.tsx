@@ -3,16 +3,17 @@ import React from "react";
 import {
   buildContributionGraphModel,
   contributionCountText,
-} from "./contributions_heatmap/model";
-import { emptyCard, heatmapCard } from "./contributions_heatmap/render";
-import { useContributionGraphLogging } from "./contributions_heatmap/logging";
+} from "./contributions_heatmap/model.js";
+import { emptyCard, heatmapCard } from "./contributions_heatmap/render.js";
+import { useContributionGraphLogging } from "./contributions_heatmap/logging.js";
 import { pill } from "./_shared.js";
+import { InlineRow, Stack } from "#hzrmwbvgt2ax";
 import type {
   contribution_day,
   contribution_summary,
   contributions_graph_props,
   heatmap_tooltip_state,
-} from "./contributions_heatmap/types";
+} from "./contributions_heatmap/types.js";
 
 function useHeatmapTooltip() {
   const [tooltip, setTooltip] = React.useState<heatmap_tooltip_state | null>(
@@ -57,7 +58,7 @@ function contributionStatsPills(
   const activeDays = Number(data.active_days) || 0;
   const repoCount = Number(data.repo_count) || 0;
   return (
-    <div className="inline-row gap-xs2" style={{ flexWrap: "wrap" }}>
+    <InlineRow gap="xs2" wrap>
     {pill({
           children: (
             <>
@@ -94,7 +95,7 @@ function contributionStatsPills(
             </>
           ),
     })}
-    </div>
+    </InlineRow>
   );
 }
 
@@ -107,13 +108,13 @@ function contributions_graph(props: contributions_graph_props) {
   useContributionGraphLogging(data, model);
 
   return (
-    <div className="column gap-sm">
+    <Stack gap="sm">
     {contributionStatsPills(data, localT)}
 
     {model.hasContributionData
       ? heatmapCard(model, tooltip, controls, localT)
       : emptyCard(props, model)}
-    </div>
+    </Stack>
   );
 }
 

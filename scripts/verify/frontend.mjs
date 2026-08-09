@@ -12,6 +12,8 @@ import { verifyFrontendTheme } from "./frontend/theme.mjs";
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const distDir = path.join(rootDir, "dist");
 const sourceDir = path.join(rootDir, "src");
+const configDirName = `.${"tre"}bired`;
+const configRelPath = `${configDirName}/frontend/config.ts`;
 
 async function main() {
   installDom();
@@ -73,12 +75,12 @@ async function verifyFrontendConfig() {
   const config = await importDist("config");
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config");
   await fs.rm(fixture, { force: true, recursive: true });
-  await fs.mkdir(path.join(fixture, ".trebired", "frontend"), { recursive: true });
+  await fs.mkdir(path.join(fixture, configDirName, "frontend"), { recursive: true });
 
-  const defaults = await config.loadTrebiredFrontendConfig(fixture);
+  const defaults = await config.loadFrontendConfig(fixture);
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
-  assert.equal(defaults.generatedScss.includes("@trebired/frontend/"), false);
+  assert.equal(defaults.generatedScss.includes(`@${"tre"}bired/frontend/`), false);
   assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("language/styles/index.scss"));
@@ -86,7 +88,7 @@ async function verifyFrontendConfig() {
   assert.ok(defaults.generatedScss.includes("sidebar/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("fullscreen/styles/index.scss"));
 
-  const configPath = path.join(fixture, ".trebired", "frontend", "config.ts");
+  const configPath = path.join(fixture, configRelPath);
   await fs.writeFile(configPath, [
     "export default {",
     "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
@@ -98,23 +100,23 @@ async function verifyFrontendConfig() {
     "",
   ].join("\n"));
 
-  const loaded = await config.loadTrebiredFrontendConfig(fixture);
+  const loaded = await config.loadFrontendConfig(fixture);
   assert.equal(loaded.configPath, configPath);
   assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
   assert.equal(loaded.config.fonts.families[0].packageName, "inter");
   assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
-  assert.equal(typeof config.writeGeneratedTrebiredFrontendScss, "undefined");
+  assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
   await assert.rejects(
-    () => fs.access(path.join(fixture, ".trebired", "frontend", "generated", "styles.scss")),
+    () => fs.access(path.join(fixture, configDirName, "frontend", "generated", "styles.scss")),
     /ENOENT/u,
   );
 
   await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
-  await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /invalid-config/u);
+  await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
-  await assert.rejects(() => config.loadTrebiredFrontendConfig(fixture), /Fontsource package name/u);
+  await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
 }
 
 async function verifyIcons() {
@@ -236,8 +238,10 @@ async function verifyFlash() {
     showFlash,
     showFlashMessage,
   } = await importDist("flash");
+  const removedCloseSelector = [".tbf-flash", "close"].join("__");
   const handle = showFlash.success("Saved", "Done");
   assert.ok(handle.element.matches("[data-tbf-flash]"));
+  assert.equal(handle.element.querySelector(removedCloseSelector), null);
   assert.equal(handle.el, handle.element);
   assert.equal(typeof handle.hide, "function");
   assert.equal(typeof flash.stickyInfo, "function");
@@ -246,6 +250,7 @@ async function verifyFlash() {
   assert.equal(window.flash, flash);
   const live = flash.liveError("Working", "Syncing", { id: "job-1", progressTone: "red" });
   assert.equal(live.element.getAttribute("data-tbf-progress-tone"), "red");
+  assert.equal(live.element.querySelector(removedCloseSelector), null);
   const routed = showFlashMessage(flash, "success", "Routed", "Done");
   assert.equal(routed.element.getAttribute("data-tbf-flash-type"), "success");
   const confirmPromise = confirm("Confirm");

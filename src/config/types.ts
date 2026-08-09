@@ -1,6 +1,6 @@
-type TrebiredFrontendIconPack = "remixicon" | "simple-icons";
+type FrontendIconPack = "remixicon" | "simple-icons";
 
-type TrebiredFrontendSystemKey =
+type FrontendSystemKey =
   | "actions"
   | "code"
   | "editor"
@@ -23,218 +23,238 @@ type TrebiredFrontendSystemKey =
   | "theme"
   | "tooltip";
 
-type TrebiredFrontendThemeTokens = Record<string, unknown>;
+type FrontendThemeTokens = Record<string, unknown>;
 
-type TrebiredFrontendThemeModeScheme = "dark" | "light";
+type FrontendThemeModeScheme = "dark" | "light";
 
-type TrebiredFrontendThemeMode = {
+type FrontendThemeMode = {
   label?: string;
-  scheme?: TrebiredFrontendThemeModeScheme;
-  tokens?: TrebiredFrontendThemeTokens;
+  scheme?: FrontendThemeModeScheme;
+  tokens?: FrontendThemeTokens;
 };
 
-type TrebiredFrontendThemeConfig = {
+type FrontendThemeConfig = {
   cssVariables?: boolean;
   dark?: string;
   defaultMode?: string;
   light?: string;
-  modes?: Record<string, TrebiredFrontendThemeMode>;
-  tokens?: TrebiredFrontendThemeTokens;
+  modes?: Record<string, FrontendThemeMode>;
+  tokens?: FrontendThemeTokens;
 };
 
-type TrebiredFrontendPaletteScale = Record<string, string>;
+type FrontendPaletteScale = Record<string, string>;
 
-type TrebiredFrontendPaletteFamilies = Record<string, TrebiredFrontendPaletteScale>;
+type FrontendPaletteFamilies = Record<string, FrontendPaletteScale>;
 
-type TrebiredFrontendPaletteMode = {
-  scale: TrebiredFrontendPaletteFamilies;
+type FrontendPaletteMode = {
+  scale: FrontendPaletteFamilies;
 };
 
-type TrebiredFrontendPaletteSemanticRef = {
+type FrontendPaletteSemanticRef = {
   family: string;
   step: string;
 };
 
-type TrebiredFrontendPaletteConfig = {
-  modes?: Record<string, TrebiredFrontendPaletteMode>;
-  semantic?: Record<string, TrebiredFrontendPaletteSemanticRef>;
+type FrontendPaletteConfig = {
+  modes?: Record<string, FrontendPaletteMode>;
+  semantic?: Record<string, FrontendPaletteSemanticRef>;
   suffixedVariants?: boolean;
 };
 
-type TrebiredFrontendScaleSteps = Record<string, number>;
+type FrontendScaleSteps = Record<string, number>;
 
-type TrebiredFrontendZIndexScaleConfig = {
+type FrontendZIndexScaleConfig = {
   confetti?: string;
   layerRoot?: string;
   progress?: string;
-  steps: TrebiredFrontendScaleSteps;
+  steps: FrontendScaleSteps;
 };
 
-type TrebiredFrontendScalesConfig = {
-  height?: TrebiredFrontendScaleSteps;
-  lineHeight?: TrebiredFrontendScaleSteps;
-  padding?: TrebiredFrontendScaleSteps;
-  radius?: TrebiredFrontendScaleSteps;
-  spacing?: TrebiredFrontendScaleSteps;
-  textSize?: TrebiredFrontendScaleSteps;
-  width?: TrebiredFrontendScaleSteps;
-  zIndex?: TrebiredFrontendZIndexScaleConfig;
+type FrontendScalesConfig = {
+  height?: FrontendScaleSteps;
+  lineHeight?: FrontendScaleSteps;
+  padding?: FrontendScaleSteps;
+  radius?: FrontendScaleSteps;
+  spacing?: FrontendScaleSteps;
+  textSize?: FrontendScaleSteps;
+  width?: FrontendScaleSteps;
+  zIndex?: FrontendZIndexScaleConfig;
 };
 
-type TrebiredFrontendFontDisplay = "auto" | "block" | "fallback" | "optional" | "swap";
+type FrontendFontDisplay = "auto" | "block" | "fallback" | "optional" | "swap";
 
-type TrebiredFrontendFontStyle = "italic" | "normal";
+type FrontendFontStyle = "italic" | "normal";
 
-type TrebiredFrontendFontFamilyConfig = {
-  display?: TrebiredFrontendFontDisplay;
+type FrontendFontFamilyConfig = {
+  display?: FrontendFontDisplay;
   family?: string;
   fontsource?: string;
   package?: string;
-  styles?: readonly TrebiredFrontendFontStyle[];
+  styles?: readonly FrontendFontStyle[];
   subsets?: readonly string[];
   weights?: readonly number[];
 };
 
-type TrebiredFrontendFontConfig = {
-  families?: Record<string, TrebiredFrontendFontFamilyConfig>;
+type FrontendFontConfig = {
+  families?: Record<string, FrontendFontFamilyConfig>;
   sans?: string;
 };
 
-type TrebiredFrontendConfig = {
-  fonts?: TrebiredFrontendFontConfig;
-  palette?: TrebiredFrontendPaletteConfig;
+type FrontendComponentTokens = FrontendThemeTokens;
+
+type FrontendComponentsConfig = {
+  actionButton?: FrontendComponentTokens;
+  button?: FrontendComponentTokens;
+  card?: FrontendComponentTokens;
+  flash?: FrontendComponentTokens;
+  surfaceButton?: FrontendComponentTokens;
+  surfaceCard?: FrontendComponentTokens;
+  tabs?: FrontendComponentTokens;
+};
+
+type FrontendConfig = {
+  components?: FrontendComponentsConfig;
+  fonts?: FrontendFontConfig;
+  palette?: FrontendPaletteConfig;
   prefix?: string;
   icons?: {
     endpoint?: string;
-    packs?: readonly TrebiredFrontendIconPack[];
+    packs?: readonly FrontendIconPack[];
   };
-  scales?: TrebiredFrontendScalesConfig;
-  systems?: Partial<Record<TrebiredFrontendSystemKey, boolean>>;
-  theme?: TrebiredFrontendThemeConfig;
+  scales?: FrontendScalesConfig;
+  systems?: Partial<Record<FrontendSystemKey, boolean>>;
+  theme?: FrontendThemeConfig;
 };
 
-type NormalizedTrebiredFrontendThemeMode = {
+type NormalizedFrontendThemeMode = {
   key: string;
   label: string;
-  scheme: TrebiredFrontendThemeModeScheme;
-  tokens: TrebiredFrontendThemeTokens;
+  scheme: FrontendThemeModeScheme;
+  tokens: FrontendThemeTokens;
 };
 
-type NormalizedTrebiredFrontendThemeConfig = {
+type NormalizedFrontendThemeConfig = {
   cssVariables: boolean;
   dark: string;
   defaultMode: string;
   light: string;
-  modes: NormalizedTrebiredFrontendThemeMode[];
-  tokens: TrebiredFrontendThemeTokens;
+  modes: NormalizedFrontendThemeMode[];
+  tokens: FrontendThemeTokens;
 };
 
-type NormalizedTrebiredFrontendPaletteMode = {
+type NormalizedFrontendPaletteMode = {
   key: string;
-  scale: TrebiredFrontendPaletteFamilies;
+  scale: FrontendPaletteFamilies;
 };
 
-type NormalizedTrebiredFrontendPaletteSemantic = {
+type NormalizedFrontendPaletteSemantic = {
   family: string;
   name: string;
   step: string;
 };
 
-type NormalizedTrebiredFrontendPaletteConfig = {
-  modes: NormalizedTrebiredFrontendPaletteMode[];
-  semantic: NormalizedTrebiredFrontendPaletteSemantic[];
+type NormalizedFrontendPaletteConfig = {
+  modes: NormalizedFrontendPaletteMode[];
+  semantic: NormalizedFrontendPaletteSemantic[];
   suffixedVariants: boolean;
 };
 
-type NormalizedTrebiredFrontendZIndexScaleConfig = {
+type NormalizedFrontendZIndexScaleConfig = {
   confetti: string;
   layerRoot: string;
   progress: string;
-  steps: TrebiredFrontendScaleSteps;
+  steps: FrontendScaleSteps;
 };
 
-type NormalizedTrebiredFrontendScalesConfig = {
-  height: TrebiredFrontendScaleSteps;
-  lineHeight: TrebiredFrontendScaleSteps;
-  padding: TrebiredFrontendScaleSteps;
-  radius: TrebiredFrontendScaleSteps;
-  spacing: TrebiredFrontendScaleSteps;
-  textSize: TrebiredFrontendScaleSteps;
-  width: TrebiredFrontendScaleSteps;
-  zIndex: NormalizedTrebiredFrontendZIndexScaleConfig;
+type NormalizedFrontendScalesConfig = {
+  height: FrontendScaleSteps;
+  lineHeight: FrontendScaleSteps;
+  padding: FrontendScaleSteps;
+  radius: FrontendScaleSteps;
+  spacing: FrontendScaleSteps;
+  textSize: FrontendScaleSteps;
+  width: FrontendScaleSteps;
+  zIndex: NormalizedFrontendZIndexScaleConfig;
 };
 
-type NormalizedTrebiredFrontendFontFamilyConfig = {
-  display: TrebiredFrontendFontDisplay;
+type NormalizedFrontendFontFamilyConfig = {
+  display: FrontendFontDisplay;
   family: string;
   key: string;
   packageName: string;
-  styles: TrebiredFrontendFontStyle[];
+  styles: FrontendFontStyle[];
   subsets: string[];
   weights: number[];
 };
 
-type NormalizedTrebiredFrontendFontConfig = {
-  families: NormalizedTrebiredFrontendFontFamilyConfig[];
+type NormalizedFrontendFontConfig = {
+  families: NormalizedFrontendFontFamilyConfig[];
   sans: string;
 };
 
-type NormalizedTrebiredFrontendConfig = {
-  fonts: NormalizedTrebiredFrontendFontConfig;
-  palette: NormalizedTrebiredFrontendPaletteConfig;
+type NormalizedFrontendComponentsConfig =
+  Record<keyof FrontendComponentsConfig, FrontendComponentTokens>;
+
+type NormalizedFrontendConfig = {
+  components: NormalizedFrontendComponentsConfig;
+  fonts: NormalizedFrontendFontConfig;
+  palette: NormalizedFrontendPaletteConfig;
   prefix: string;
   icons: {
     endpoint: string;
-    packs: TrebiredFrontendIconPack[];
+    packs: FrontendIconPack[];
   };
-  scales: NormalizedTrebiredFrontendScalesConfig;
-  systems: Record<TrebiredFrontendSystemKey, boolean>;
-  theme: NormalizedTrebiredFrontendThemeConfig;
+  scales: NormalizedFrontendScalesConfig;
+  systems: Record<FrontendSystemKey, boolean>;
+  theme: NormalizedFrontendThemeConfig;
 };
 
-type LoadedTrebiredFrontendConfig = {
-  config: NormalizedTrebiredFrontendConfig;
+type LoadedFrontendConfig = {
+  config: NormalizedFrontendConfig;
   configPath: string | null;
   dependencies: string[];
   generatedScss: string;
 };
 
-type LoadTrebiredFrontendConfigOptions = {
+type LoadFrontendConfigOptions = {
   configPath?: string;
   defaultIfMissing?: boolean;
   searchFrom?: string;
 };
 
 export type {
-  LoadTrebiredFrontendConfigOptions,
-  LoadedTrebiredFrontendConfig,
-  NormalizedTrebiredFrontendConfig,
-  NormalizedTrebiredFrontendFontConfig,
-  NormalizedTrebiredFrontendFontFamilyConfig,
-  NormalizedTrebiredFrontendPaletteConfig,
-  NormalizedTrebiredFrontendPaletteMode,
-  NormalizedTrebiredFrontendPaletteSemantic,
-  NormalizedTrebiredFrontendScalesConfig,
-  NormalizedTrebiredFrontendThemeConfig,
-  NormalizedTrebiredFrontendThemeMode,
-  NormalizedTrebiredFrontendZIndexScaleConfig,
-  TrebiredFrontendConfig,
-  TrebiredFrontendFontConfig,
-  TrebiredFrontendFontDisplay,
-  TrebiredFrontendFontFamilyConfig,
-  TrebiredFrontendFontStyle,
-  TrebiredFrontendIconPack,
-  TrebiredFrontendPaletteConfig,
-  TrebiredFrontendPaletteFamilies,
-  TrebiredFrontendPaletteMode,
-  TrebiredFrontendPaletteScale,
-  TrebiredFrontendPaletteSemanticRef,
-  TrebiredFrontendScaleSteps,
-  TrebiredFrontendScalesConfig,
-  TrebiredFrontendSystemKey,
-  TrebiredFrontendThemeConfig,
-  TrebiredFrontendThemeMode,
-  TrebiredFrontendThemeModeScheme,
-  TrebiredFrontendThemeTokens,
-  TrebiredFrontendZIndexScaleConfig,
+  LoadFrontendConfigOptions,
+  LoadedFrontendConfig,
+  NormalizedFrontendConfig,
+  NormalizedFrontendComponentsConfig,
+  NormalizedFrontendFontConfig,
+  NormalizedFrontendFontFamilyConfig,
+  NormalizedFrontendPaletteConfig,
+  NormalizedFrontendPaletteMode,
+  NormalizedFrontendPaletteSemantic,
+  NormalizedFrontendScalesConfig,
+  NormalizedFrontendThemeConfig,
+  NormalizedFrontendThemeMode,
+  NormalizedFrontendZIndexScaleConfig,
+  FrontendConfig,
+  FrontendComponentTokens,
+  FrontendComponentsConfig,
+  FrontendFontConfig,
+  FrontendFontDisplay,
+  FrontendFontFamilyConfig,
+  FrontendFontStyle,
+  FrontendIconPack,
+  FrontendPaletteConfig,
+  FrontendPaletteFamilies,
+  FrontendPaletteMode,
+  FrontendPaletteScale,
+  FrontendPaletteSemanticRef,
+  FrontendScaleSteps,
+  FrontendScalesConfig,
+  FrontendSystemKey,
+  FrontendThemeConfig,
+  FrontendThemeMode,
+  FrontendThemeModeScheme,
+  FrontendThemeTokens,
+  FrontendZIndexScaleConfig,
 };

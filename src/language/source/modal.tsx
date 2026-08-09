@@ -1,6 +1,13 @@
 import { copy_button } from "#k632wzgl64a3";
 import { ModalContent, ModalRoot } from "#2eo44c56ebfi";
-import { card } from "#6hfutrhvm6x6";
+import {
+  InlineRow,
+  Stack,
+  Text,
+  TitleDescription,
+  card,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 import { key_value } from "#kkjo6xogukzx";
 import {
   formatCompactBytes,
@@ -75,18 +82,19 @@ function sourceLanguageModalSummaryCard(
   props: SourceLanguageModalProps,
 ) {
   return card({
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
-        <div className="title-desc column gap-sm">
-          <h4>{translate(props.lang, "summary")}</h4>
-          <p className="text-muted text-sm">
-            {translate(props.lang, "summaryDescription")}
-          </p>
-        </div>
-        <div className="column gap-sm">
+        <TitleDescription
+          className="title-desc"
+          description={translate(props.lang, "summaryDescription")}
+          descriptionSize="sm"
+          level={4}
+          title={translate(props.lang, "summary")}
+        />
+        <Stack gap="sm">
           {key_value({ rows: summaryRows(model, props), separated: true })}
-        </div>
+        </Stack>
       </>
     ),
   });
@@ -97,8 +105,8 @@ function filesHeader(
   props: SourceLanguageModalProps,
 ) {
   return (
-    <div className="title-desc column gap-sm">
-      <div className="inline-row gap-sm">
+    <Stack className="title-desc" gap="sm">
+      <InlineRow gap="sm">
         <h4>{translate(props.lang, "files")}</h4>
         {model.matchingPathsText ? (
           <div className="right">
@@ -110,9 +118,9 @@ function filesHeader(
             })}
           </div>
         ) : null}
-      </div>
-      <p className="text-muted text-sm">{translate(props.lang, "filesDescription")}</p>
-    </div>
+      </InlineRow>
+      <Text as="p" muted size="sm">{translate(props.lang, "filesDescription")}</Text>
+    </Stack>
   );
 }
 
@@ -121,23 +129,23 @@ function filesCard(
   props: SourceLanguageModalProps,
 ) {
   return card({
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
         {filesHeader(model, props)}
         {model.matchingPathsText ? <code id={model.matchingPathsId} hidden>{model.matchingPathsText}</code> : null}
-        <div
+        <Stack
           id={`${model.id}_file_tree`}
-          className="column gap-sm"
+          gap="sm"
           data-tbf-source-language-file-tree-root=""
           data-tbf-source-language-file-tree-config={model.fileTreeConfig}
         >
-          <div className="text-muted text-sm">
+          <Text muted size="sm">
             {model.files.length
               ? translate(props.lang, "loadingMatchingFiles")
               : translate(props.lang, "noMatchingFiles")}
-          </div>
-        </div>
+          </Text>
+        </Stack>
       </>
     ),
   });
@@ -148,11 +156,12 @@ function source_language_modal(props: SourceLanguageModalProps) {
   if (!model.id) return null;
   return (
     <ModalRoot id={model.id}>
-      <ModalContent className="column gap-sm width-xl3 height-xl4 scroll">
-        <div className="title-desc column gap-sm">
-          <h3>{translate(props.lang, "details", { name: model.languageName })}</h3>
-          <p className="text-muted">{translate(props.lang, "detailsDescription")}</p>
-        </div>
+      <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
+        <TitleDescription
+          className="title-desc"
+          description={translate(props.lang, "detailsDescription")}
+          title={translate(props.lang, "details", { name: model.languageName })}
+        />
         {sourceLanguageModalSummaryCard(model, props)}
         {filesCard(model, props)}
       </ModalContent>

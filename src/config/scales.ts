@@ -1,16 +1,16 @@
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import type {
-  NormalizedTrebiredFrontendScalesConfig,
-  NormalizedTrebiredFrontendZIndexScaleConfig,
-  TrebiredFrontendScaleSteps,
+  NormalizedFrontendScalesConfig,
+  NormalizedFrontendZIndexScaleConfig,
+  FrontendScaleSteps,
 } from "./types.js";
 
 const SCALE_STEP_KEY_RE = /^[a-z0-9][a-z0-9_-]*$/iu;
 
-function normalizeScaleSteps(value: unknown, pathLabel: string): TrebiredFrontendScaleSteps {
+function normalizeScaleSteps(value: unknown, pathLabel: string): FrontendScaleSteps {
   if (value === undefined) return {};
   const source = assertPlainObject(value, pathLabel);
-  const out: TrebiredFrontendScaleSteps = {};
+  const out: FrontendScaleSteps = {};
   for (const [step, amount] of Object.entries(source).sort(([a], [b]) => a.localeCompare(b))) {
     if (!SCALE_STEP_KEY_RE.test(step)) {
       throw invalidConfig(`${pathLabel}.${step} has an invalid step key`);
@@ -25,7 +25,7 @@ function normalizeScaleSteps(value: unknown, pathLabel: string): TrebiredFronten
 
 function normalizeZIndexRole(
   value: unknown,
-  steps: TrebiredFrontendScaleSteps,
+  steps: FrontendScaleSteps,
   pathLabel: string,
 ): string {
   if (value === undefined || value === "") return "";
@@ -36,7 +36,7 @@ function normalizeZIndexRole(
   return key;
 }
 
-function normalizeZIndexScale(value: unknown): NormalizedTrebiredFrontendZIndexScaleConfig {
+function normalizeZIndexScale(value: unknown): NormalizedFrontendZIndexScaleConfig {
   if (value === undefined) {
     return { confetti: "", layerRoot: "", progress: "", steps: {} };
   }
@@ -50,7 +50,7 @@ function normalizeZIndexScale(value: unknown): NormalizedTrebiredFrontendZIndexS
   };
 }
 
-function normalizeScalesConfig(value: unknown): NormalizedTrebiredFrontendScalesConfig {
+function normalizeScalesConfig(value: unknown): NormalizedFrontendScalesConfig {
   const source = value === undefined ? {} : assertPlainObject(value, "scales");
   return {
     height: normalizeScaleSteps(source.height, "scales.height"),

@@ -20,6 +20,8 @@ import {
   textValue,
 } from "#yv4ubgils4dc";
 
+const DYNAMIC_SIDEBAR_DISABLED_LINK_CLASS = "tbf-sidebar-link sidebar-link-btn";
+
 function DynamicSidebarPermanentDisabledLink(props: {
   context: DynamicSidebarItemContext;
   renderIcon?: DynamicSidebarLinkListProps["renderIcon"];
@@ -27,7 +29,7 @@ function DynamicSidebarPermanentDisabledLink(props: {
   return (
     <button
       aria-disabled="true"
-      className="tbf-sidebar-link sidebar-link-btn"
+      className={DYNAMIC_SIDEBAR_DISABLED_LINK_CLASS}
       data-tbf-disabled="true"
       data-tbf-sidebar-link=""
       disabled

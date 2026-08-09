@@ -2,6 +2,13 @@ import { Icon } from "#lbkpzw8nphru";
 import { bar as progress_bar } from "#6hfutrhvm6x6";
 import { card } from "#6hfutrhvm6x6";
 import {
+  InlineRow,
+  Stack,
+  Text,
+  primitiveButtonClassName,
+  primitiveInlineRowClassName,
+} from "#hzrmwbvgt2ax";
+import {
   FullscreenCloseButton,
   FullscreenOpenButton,
   FullscreenTarget,
@@ -22,7 +29,7 @@ function editor_body(props: EditorBodyProps) {
 function editor_surface(props: EditorSurfaceProps) {
   const state = readSurfaceState(props);
   const surface = card({
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
         {editorHeader(state)}
@@ -126,19 +133,19 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
 
 function editorLoader(state: ReturnType<typeof readSurfaceState>) {
   return (
-    <div className="inline-row height-xl4" data-editor-loader="">
+    <InlineRow className="height-xl4" data-editor-loader="">
       <div className="center">
         <div className="width-fit no-stretch">{editorLoaderContent(state)}</div>
       </div>
-    </div>
+    </InlineRow>
   );
 }
 
 function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
   return (
-    <div className="column gap-sm center hor-center">
+    <Stack center gap="sm" horizontalCenter>
       <strong data-editor-status="">{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
-      <span className="text-muted text-small text-break" data-editor-detail="">{state.loading.detail}</span>
+      <Text breakWord data-editor-detail="" muted size="sm">{state.loading.detail}</Text>
       <div className="width-md max-width-full text-left">
         {progress_bar({
           label: state.loading.label,
@@ -149,25 +156,25 @@ function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
       </div>
       {unavailableMessage(state)}
       {requestedPath(state)}
-    </div>
+    </Stack>
   );
 }
 
 function unavailableMessage(state: ReturnType<typeof readSurfaceState>) {
   if (state.ideAvailable || !state.ideUnavailableMessage) return null;
   return (
-    <span className="text-muted text-small text-break" data-editor-unavailable="">
+    <Text breakWord data-editor-unavailable="" muted size="sm">
       {state.ideUnavailableMessage}
-    </span>
+    </Text>
   );
 }
 
 function requestedPath(state: ReturnType<typeof readSurfaceState>) {
   if (!state.requestedPath) return null;
   return (
-    <span className="text-muted text-small text-break">
+    <Text breakWord muted size="sm">
       {state.labels.requestedPath(state.requestedPath)}
-    </span>
+    </Text>
   );
 }
 
@@ -180,26 +187,29 @@ function viewerSurface(state: ReturnType<typeof readSurfaceState>) {
         {...{ [state.viewer.stateDataAttr]: "" }}
         dangerouslySetInnerHTML={jsonHtml(state.viewer.state)}
       />
-      <div
+      <Stack
         id={state.viewer.rootId || undefined}
-        className="column gap-sm grow"
+        gap="sm"
+        grow
         {...{ [state.viewer.rootDataAttr]: "" }}
         style={{ flex: "1 1 auto", minHeight: 0 }}
       >
         {viewerLoadingCard(state)}
-      </div>
+      </Stack>
     </>
   );
 }
 
 function viewerLoadingCard(state: ReturnType<typeof readSurfaceState>) {
   return card({
-    className: "column gap-sm center ver-center",
+    center: true,
+    gap: "sm",
+    verticalCenter: true,
     style: { minHeight: 560 },
     children: (
       <>
         <strong>{state.viewer.loadingTitle}</strong>
-        <span className="text-muted text-small text-break">{state.viewer.loadingText}</span>
+        <Text breakWord muted size="sm">{state.viewer.loadingText}</Text>
       </>
     ),
   });
@@ -207,16 +217,21 @@ function viewerLoadingCard(state: ReturnType<typeof readSurfaceState>) {
 
 function editorHeader(state: ReturnType<typeof readSurfaceState>) {
   return card({
-    className: "inline-row width-full ver-center gap-sm padding-sm",
+    className: primitiveInlineRowClassName({
+      className: "width-full padding-sm",
+      gap: "sm",
+      verticalCenter: true,
+    }),
+    layout: "none",
     children: (
       <>
         <h3>{state.title}</h3>
         <div className="right">
-          <div className="inline-row gap-xs">
+          <InlineRow gap="xs">
             {state.actions}
             {state.ideMode === "edit" ? editorExternalLink(state) : null}
             {state.ideMode !== "edit" ? fullscreenActions(state) : null}
-          </div>
+          </InlineRow>
         </div>
       </>
     ),
@@ -228,7 +243,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
     <>
       <FullscreenOpenButton
         aria-label={state.labels.displayFullscreen}
-        className="btn icon md has-tooltip"
+        className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
         fullscreenId={state.extendId}
         group={state.extendGroup}
         title={state.labels.displayFullscreen}
@@ -237,7 +252,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
       </FullscreenOpenButton>
       <FullscreenCloseButton
         aria-label={state.labels.exitFullscreen}
-        className="btn icon md has-tooltip"
+        className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
         data-tbf-fullscreen-hidden="true"
         fullscreenId={state.extendId}
         group={state.extendGroup}
@@ -252,7 +267,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
 function editorExternalLink(state: ReturnType<typeof readSurfaceState>) {
   return (
     <a
-      className="btn sm"
+      className={primitiveButtonClassName({ size: "sm" })}
       data-editor-external-link=""
       hidden
       href={state.fullIdeUrl || undefined}

@@ -1,6 +1,11 @@
 import { useMemo, useRef } from "react";
 
-import { card } from "#hzrmwbvgt2ax";
+import {
+  Text,
+  card,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 import { editor_content as EditorContent, editor_sidebar as EditorSidebar } from "#nn6lx6ueg6es";
 import { FileTreeView } from "#zgttxcjd88sc";
 import {
@@ -44,8 +49,11 @@ function EditorViewerApp(props: any) {
   useOpenedFile(props, pathState.openedFilePath, fileCacheRef, setFileState);
   const layout = useEditorViewerLayout(props, fileState, fullscreenState);
   return (
-    <div ref={rootRef} className="column gap-sm grow" style={rootStyle}>
-      <div className="inline-row gap-sm tbf-editor-viewer-layout grow" style={rowStyle}>
+    <div ref={rootRef} className={primitiveStackClassName({ gap: "sm", grow: true })} style={rootStyle}>
+      <div
+        className={primitiveInlineRowClassName({ className: "tbf-editor-viewer-layout grow", gap: "sm" })}
+        style={rowStyle}
+      >
         <ViewerSidebar
           allowUrlPathSyncRef={allowUrlPathSyncRef}
           focusedPath={pathState.focusedPath}
@@ -108,7 +116,7 @@ function useEditorViewerLayout(props: any, fileState: any, fullscreenState: any)
 function ViewerSidebar(props: any) {
   return (
     <EditorSidebar
-      className="column gap-sm no-shrink"
+      className={primitiveStackClassName({ gap: "sm", noShrink: true })}
       description={props.labels.fileTreeDescription}
       title={props.labels.fileTree}
       style={{
@@ -136,11 +144,11 @@ function ViewerSidebarBody(props: any) {
   if (props.treeState.treeError) {
     return card({
       style: { minHeight: 420 },
-      className: "column gap-sm",
+      gap: "sm",
       children: (
         <>
           <strong>{props.labels.fileTreeUnavailable}</strong>
-          <span className="text-muted text-small text-break">{props.treeState.treeError}</span>
+          <Text breakWord muted size="sm">{props.treeState.treeError}</Text>
         </>
       ),
     });
@@ -177,7 +185,7 @@ function ViewerContent(props: any) {
   return (
     <EditorContent
       body={<ViewerContentBody {...props} />}
-      className="column gap-sm grow"
+      className={primitiveStackClassName({ gap: "sm", grow: true })}
       description={viewerContentDescription(props.fileState, props.labels)}
       surfaceStyle={{ flex: "1 1 auto", minHeight: props.contentMinHeight }}
       title={props.fileState.path || props.labels.readonlyFileViewer}
@@ -213,11 +221,12 @@ function ViewerContentBody(props: any) {
 function viewerContentError(props: any, contentMinHeight: number) {
   return card({
     style: { minHeight: contentMinHeight },
-    className: "column gap-sm height-max",
+    className: "height-max",
+    gap: "sm",
     children: (
       <>
         <strong>{props.labels.fileUnavailable}</strong>
-        <span className="text-muted text-small text-break">{props.fileState.error}</span>
+        <Text breakWord muted size="sm">{props.fileState.error}</Text>
       </>
     ),
   });
@@ -236,9 +245,17 @@ function readonlyFilePane(fileState: any, contentMinHeight: number) {
 
 function emptyViewerContent(props: any, contentMinHeight: number) {
   return (
-    <div className="column gap-sm center ver-center height-max" style={{ minHeight: contentMinHeight }}>
+    <div
+      className={primitiveStackClassName({
+        center: true,
+        className: "height-max",
+        gap: "sm",
+        verticalCenter: true,
+      })}
+      style={{ minHeight: contentMinHeight }}
+    >
       <strong>{props.labels.noFileSelected}</strong>
-      <span className="text-muted text-small">{props.labels.chooseFileFromTree}</span>
+      <Text muted size="sm">{props.labels.chooseFileFromTree}</Text>
     </div>
   );
 }

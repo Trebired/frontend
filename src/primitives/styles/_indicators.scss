@@ -8,7 +8,7 @@
   padding: 3px 5px;
   border: var(--border-width) solid transparent;
   border-radius: var(--radius-lg, var(--tbf-radius, 0));
-  background-color: var(--gray-800);
+  background-color: var(--tbf-pill-background, var(--background-surface-1, transparent));
   color: var(--text-color);
   font-size: 13px;
   line-height: 1;
@@ -38,7 +38,7 @@
 }
 
 .dot {
-  --dot-color: var(--gray-600);
+  --dot-color: var(--tbf-dot-color, currentColor);
   --dot-size: 10px;
   width: var(--dot-size);
   height: var(--dot-size);
@@ -78,7 +78,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   border: calc(var(--border-width) * 8) solid;
-  border-color: var(--gray-300) transparent;
+  border-color: var(--tbf-loader-color, currentColor) transparent;
   animation: tbf-primitive-loader-spin 1s infinite;
 
   &.xs {
@@ -112,8 +112,8 @@
   margin-top: 6px;
   height: 6px;
   border-radius: var(--radius-sm, var(--tbf-radius-sm, 0));
-  --progress-color: var(--gray-400);
-  --progress-track: color-mix(in srgb, var(--gray-400) 22%, transparent);
+  --progress-color: var(--tbf-primitive-progress-color, currentColor);
+  --progress-track: var(--tbf-primitive-progress-track, color-mix(in srgb, var(--progress-color) 22%, transparent));
   --progress-percent: 0%;
   color: var(--progress-color);
   background: var(--progress-track);

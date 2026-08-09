@@ -1,5 +1,5 @@
 import React from "react";
-import type { contribution_summary } from "./types";
+import type { contribution_summary } from "./types.js";
 
 function logContributionGraph(
   level: "info" | "warn" | "error",

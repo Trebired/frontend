@@ -2,6 +2,7 @@ import { toString } from "#dqy2d22qyujv";
 import type { ReactNode } from "react";
 import { routeParamNameForFamily } from "./manager/route.js";
 import { joinClassNames } from "#dqy2d22qyujv";
+import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 
 type tabs_item = {
   buttonAttributes?: Record<string, unknown>;
@@ -146,7 +147,7 @@ function buildTabsModel(props: tabs_props, currentUrl: string): tabs_model {
     activeId: toString(activeItem && activeItem.id),
     collapseNestedSpacing,
     familyClassName: joinClassNames([
-        "tabs-family column gap-xs",
+        primitiveStackClassName({ className: "tabs-family", gap: "xs" }),
         toString(props.familyClassName),
     ]),
     familyStyle: resolveFamilyStyle(props, collapseNestedSpacing),

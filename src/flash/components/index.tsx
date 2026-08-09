@@ -9,7 +9,6 @@ type FlashStackProps = HTMLAttributes<HTMLDivElement> & {
 type FlashShellProps = HTMLAttributes<HTMLElement> & {
   actions?: ReactNode;
   description?: ReactNode;
-  dismissLabel?: string;
   id?: string;
   progress?: boolean;
   title: ReactNode;
@@ -44,7 +43,6 @@ function FlashShell(props: FlashShellProps) {
     actions,
     className,
     description,
-    dismissLabel = "Dismiss",
     id,
     progress = true,
     title,
@@ -58,6 +56,7 @@ function FlashShell(props: FlashShellProps) {
       data-tbf-flash=""
       data-tbf-flash-id={id}
       data-tbf-flash-type={type}
+      data-tbf-progress-tone={type}
       role={type === "error" ? "alert" : "status"}
     >
       <span className="tbf-flash__icon" aria-hidden="true">{iconText(type)}</span>
@@ -66,9 +65,6 @@ function FlashShell(props: FlashShellProps) {
         {description ? <span className="tbf-flash__description">{description}</span> : null}
         {actions ? <div className="tbf-flash__actions">{actions}</div> : null}
       </div>
-      <button className="tbf-flash__close" type="button" aria-label={dismissLabel}>
-        {dismissLabel}
-      </button>
       <span className="tbf-flash__progress" aria-hidden="true" hidden={!progress} />
     </section>
   );

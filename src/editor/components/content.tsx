@@ -1,9 +1,10 @@
 import { createElement, type ReactNode } from "react";
 import { card } from "#6hfutrhvm6x6";
+import { Text, primitiveStackClassName } from "#hzrmwbvgt2ax";
 import type { EditorContentProps, EditorSidebarProps } from "./types.js";
 
 function editor_content(props: EditorContentProps) {
-  const className = String(props.className || "column gap-sm grow").trim();
+  const className = String(props.className || primitiveStackClassName({ gap: "sm", grow: true })).trim();
   const minHeight = resolvedMinHeight(props.minHeight);
   const surfaceClassName = String(
     props.surfaceClassName || "border radius-md overflow-hidden bg-canvas grow",
@@ -45,7 +46,7 @@ function editor_content_body(props: EditorContentProps, minHeight: number) {
 }
 
 function editor_sidebar(props: EditorSidebarProps) {
-  const className = String(props.className || "column gap-sm no-shrink").trim();
+  const className = String(props.className || primitiveStackClassName({ gap: "sm", noShrink: true })).trim();
   return (
     <div className={className} style={props.style}>
       {cardHeader(props.title, props.description)}
@@ -56,12 +57,12 @@ function editor_sidebar(props: EditorSidebarProps) {
 
 function cardHeader(title: ReactNode, description?: ReactNode) {
   return card({
-    className: "column gap-xs",
+    gap: "xs",
     children: (
       <>
         <strong>{title}</strong>
         {description ? (
-          <span className="text-muted text-small text-break">{description}</span>
+          <Text breakWord muted size="sm">{description}</Text>
         ) : null}
       </>
     ),

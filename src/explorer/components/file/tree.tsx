@@ -14,6 +14,7 @@ import {
 import { StaticFileTreeView } from "#xjjhb3oy2yyh";
 import { FileTreeRow } from "./tree/row.js";
 import { FileTreeShell } from "./tree/shell.js";
+import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 
 const FILE_TREE_ROW_HEIGHT = 34;
 
@@ -105,7 +106,7 @@ function treeScrollStyle(treeHeight: number, rows: any[]) {
     minHeight: constrainedHeight || undefined,
     overflowX: "hidden",
     overflowY: needsScroll ? "auto" : "visible",
-    scrollbarColor: "var(--scroll-thumb) var(--gray-800)",
+    scrollbarColor: "var(--scroll-thumb) var(--background-surface-2, transparent)",
     scrollbarGutter: needsScroll ? "stable" : "auto",
     scrollbarWidth: "thin",
     width: "100%",
@@ -160,7 +161,7 @@ function renderInteractiveFileTree(options: any) {
           </div>,
         )
       ) : (
-        <div className="text-muted padding-sm">{emptyMessage}</div>
+        <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
       )}
     </FileTreeShell>
   );

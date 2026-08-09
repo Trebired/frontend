@@ -113,7 +113,7 @@
   background: var(--tbf-canvas-bg, var(--dot-grid));
 
   ::selection {
-    background-color: var(--gray-700) !important;
+    background-color: var(--tbf-log-selection-background, var(--background-surface-2, currentColor)) !important;
     color: currentColor;
   }
 }
@@ -150,7 +150,7 @@
   cursor: pointer;
 
   &:hover {
-    background: color-mix(in srgb, var(--gray-700) 28%, transparent);
+    background: var(--tbf-log-line-hover-background, color-mix(in srgb, var(--border-surface-1, currentColor) 28%, transparent));
   }
 
   &::after {

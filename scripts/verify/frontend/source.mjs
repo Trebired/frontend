@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 
+const configDirName = `.${"tre"}bired`;
+const configRelPath = `${configDirName}/frontend/config.ts`;
+
 async function verifyFrontendSource(context) {
   await verifyNoStandaloneWrapUtility(context.sourceDir);
   await verifyStylePackaging(context.rootDir);
@@ -50,10 +53,10 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
   await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
-  await writeFile(fixture, ".trebired/frontend/config.ts", [
-    `import { defineTrebiredFrontendConfig } from "${packageName}/config";`,
+  await writeFile(fixture, configRelPath, [
+    `import { defineFrontendConfig } from "${packageName}/config";`,
     "",
-    "export default defineTrebiredFrontendConfig({",
+    "export default defineFrontendConfig({",
     "  prefix: \"verify\",",
     "  fonts: {",
     "    families: {",

@@ -1,13 +1,13 @@
 import { assertPlainObject, invalidConfig, normalizeBoolean } from "./shared.js";
 import type {
-  NormalizedTrebiredFrontendPaletteConfig,
-  NormalizedTrebiredFrontendPaletteMode,
-  NormalizedTrebiredFrontendPaletteSemantic,
-  TrebiredFrontendPaletteFamilies,
+  NormalizedFrontendPaletteConfig,
+  NormalizedFrontendPaletteMode,
+  NormalizedFrontendPaletteSemantic,
+  FrontendPaletteFamilies,
 } from "./types.js";
 
 function familyStepDeclarations(
-  scale: TrebiredFrontendPaletteFamilies,
+  scale: FrontendPaletteFamilies,
   suffix = "",
 ): string[] {
   const lines: string[] = [];
@@ -20,19 +20,19 @@ function familyStepDeclarations(
   return lines;
 }
 
-function paletteModeScaleDeclarations(mode: NormalizedTrebiredFrontendPaletteMode): string[] {
+function paletteModeScaleDeclarations(mode: NormalizedFrontendPaletteMode): string[] {
   return familyStepDeclarations(mode.scale);
 }
 
 function paletteSemanticDeclarations(
-  config: NormalizedTrebiredFrontendPaletteConfig,
+  config: NormalizedFrontendPaletteConfig,
 ): string[] {
   return config.semantic.map(
     (entry) => `  --${entry.name}: var(--${entry.family}-${entry.step});`,
   );
 }
 
-function paletteSuffixedDeclarations(config: NormalizedTrebiredFrontendPaletteConfig): string[] {
+function paletteSuffixedDeclarations(config: NormalizedFrontendPaletteConfig): string[] {
   if (!config.suffixedVariants) return [];
   const lines: string[] = [];
   for (const mode of config.modes) {
@@ -42,9 +42,9 @@ function paletteSuffixedDeclarations(config: NormalizedTrebiredFrontendPaletteCo
 }
 
 function findPaletteMode(
-  config: NormalizedTrebiredFrontendPaletteConfig,
+  config: NormalizedFrontendPaletteConfig,
   modeKey: string,
-): NormalizedTrebiredFrontendPaletteMode | undefined {
+): NormalizedFrontendPaletteMode | undefined {
   return config.modes.find((mode) => mode.key === modeKey);
 }
 
@@ -66,9 +66,9 @@ function normalizePaletteKey(value: string, pathLabel: string): string {
   return key;
 }
 
-function normalizePaletteFamilies(value: unknown, pathLabel: string): TrebiredFrontendPaletteFamilies {
+function normalizePaletteFamilies(value: unknown, pathLabel: string): FrontendPaletteFamilies {
   const source = assertPlainObject(value, pathLabel);
-  const out: TrebiredFrontendPaletteFamilies = {};
+  const out: FrontendPaletteFamilies = {};
   for (const [family, stepsValue] of Object.entries(source).sort(([a], [b]) => a.localeCompare(b))) {
     const familyKey = normalizePaletteKey(family, `${pathLabel}.${family}`);
     const steps = assertPlainObject(stepsValue, `${pathLabel}.${family}`);
@@ -85,7 +85,7 @@ function normalizePaletteMode(
   key: string,
   source: Record<string, unknown>,
   themeModeKeys: readonly string[],
-): NormalizedTrebiredFrontendPaletteMode {
+): NormalizedFrontendPaletteMode {
   const modeKey = normalizePaletteKey(key, `palette.modes.${key}`);
   if (!themeModeKeys.includes(modeKey)) {
     throw invalidConfig(`palette.modes.${key} must name a mode declared in theme.modes`);
@@ -99,20 +99,20 @@ function normalizePaletteMode(
 function normalizePaletteModes(
   value: unknown,
   themeModeKeys: readonly string[],
-): NormalizedTrebiredFrontendPaletteMode[] {
+): NormalizedFrontendPaletteMode[] {
   if (value === undefined) return [];
   const source = assertPlainObject(value, "palette.modes");
-  const modes: NormalizedTrebiredFrontendPaletteMode[] = [];
+  const modes: NormalizedFrontendPaletteMode[] = [];
   for (const [key, item] of Object.entries(source)) {
     modes.push(normalizePaletteMode(key, assertPlainObject(item, `palette.modes.${key}`), themeModeKeys));
   }
   return modes;
 }
 
-function normalizePaletteSemantic(value: unknown): NormalizedTrebiredFrontendPaletteSemantic[] {
+function normalizePaletteSemantic(value: unknown): NormalizedFrontendPaletteSemantic[] {
   if (value === undefined) return [];
   const source = assertPlainObject(value, "palette.semantic");
-  const out: NormalizedTrebiredFrontendPaletteSemantic[] = [];
+  const out: NormalizedFrontendPaletteSemantic[] = [];
   for (const [name, refValue] of Object.entries(source).sort(([a], [b]) => a.localeCompare(b))) {
     const pathLabel = `palette.semantic.${name}`;
     const ref = assertPlainObject(refValue, pathLabel);
@@ -128,7 +128,7 @@ function normalizePaletteSemantic(value: unknown): NormalizedTrebiredFrontendPal
 function normalizePaletteConfig(
   value: unknown,
   themeModeKeys: readonly string[],
-): NormalizedTrebiredFrontendPaletteConfig {
+): NormalizedFrontendPaletteConfig {
   const source = value === undefined ? {} : assertPlainObject(value, "palette");
   return {
     modes: normalizePaletteModes(source.modes, themeModeKeys),

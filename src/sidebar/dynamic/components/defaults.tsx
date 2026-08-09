@@ -1,5 +1,11 @@
 import { Icon } from "#lbkpzw8nphru";
-import { circle, time_counter } from "#hzrmwbvgt2ax";
+import {
+  circle,
+  primitiveInlineRowClassName,
+  primitiveStatusDotClassName,
+  primitiveTextClassName,
+  time_counter,
+} from "#hzrmwbvgt2ax";
 import type {
   DynamicSidebarCountContext,
   DynamicSidebarItemContext,
@@ -37,14 +43,22 @@ function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {
         : null;
     }
     return context.running > 0 ? (
-      <span className="text-muted no-select inline-row gap-xs ver-center">
+      <span className={primitiveInlineRowClassName({
+        className: primitiveTextClassName({ className: "no-select", muted: true }),
+        gap: "xs",
+        verticalCenter: true,
+      })}>
         {circle({ size: "xs" })}
       </span>
     ) : null;
   }
   if (context.running <= 0) return null;
   return (
-    <span className="text-muted no-select inline-row gap-xs ver-center">
+    <span className={primitiveInlineRowClassName({
+      className: primitiveTextClassName({ className: "no-select", muted: true }),
+      gap: "xs",
+      verticalCenter: true,
+    })}>
       {circle({ size: "sm" })}
     </span>
   );
@@ -56,7 +70,10 @@ function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {
   return (
     <span
       aria-hidden="true"
-      className={`dot dot-sm ${state === "running" ? "green" : "red"}`}
+      className={primitiveStatusDotClassName({
+        size: "sm",
+        tone: state === "running" ? "green" : "red",
+      })}
       data-state={state}
       data-tbf-sidebar-state-dot=""
     />

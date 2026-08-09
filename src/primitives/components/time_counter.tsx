@@ -1,6 +1,7 @@
 import { jsonScript } from "#ndsvdqv80epr";
 import type { TimeCounterProps } from "./types.js";
 import { joinClassNames, toText } from "./shared.js";
+import { primitiveTextClassName } from "./classes.js";
 
 function normalizeDurationMs(value: number) {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
@@ -74,7 +75,7 @@ function counterClassName(props: TimeCounterProps, countMode: boolean) {
   return joinClassNames(
     "time-counter",
     unstyled || countMode ? "" : "font-mono",
-    unstyled || countMode ? "" : "text-sm",
+    unstyled || countMode ? "" : primitiveTextClassName({ size: "sm" }),
     props.className,
   );
 }

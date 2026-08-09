@@ -1,7 +1,13 @@
 import { copy_button } from "#k632wzgl64a3";
 import { code_block } from "#c55llzkpl4ob";
 import { ModalContent, ModalRoot } from "#2eo44c56ebfi";
-import { card } from "#hzrmwbvgt2ax";
+import {
+  InlineRow,
+  Stack,
+  Text,
+  card,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 
 function copyAction(target: string, title: string, tooltip: string) {
   return copy_button({
@@ -14,16 +20,17 @@ function copyAction(target: string, title: string, tooltip: string) {
 
 function summaryRow(label: string, id: string) {
   return (
-    <div className="inline-row gap-xs lh-xs">
-    <strong className="text-muted lh-xs">{label}:</strong>
-    <span className="text-break lh-xs" id={id}></span>
-    </div>
+    <InlineRow className="lh-xs" gap="xs">
+    <Text as="strong" className="lh-xs" muted>{label}:</Text>
+    <Text breakWord className="lh-xs" id={id}></Text>
+    </InlineRow>
   );
 }
 
 function detailSummary(model: any) {
   return card({
-      className: "column gap-xs log-detail-summary",
+      className: "log-detail-summary",
+      gap: "xs",
       children: (
         <>
         {summaryRow(model.t("timestamp"), model.ids.detailTimestamp)}
@@ -37,8 +44,8 @@ function detailSummary(model: any) {
 
 function detailTitle(model: any) {
   return (
-    <div className="title-desc column gap-sm">
-    <div className="inline-row gap-sm">
+    <Stack className="title-desc" gap="sm">
+      <InlineRow gap="sm">
     <h3>{model.t("logEntry")}</h3>
     <div className="right">
     {copyAction(
@@ -47,9 +54,9 @@ function detailTitle(model: any) {
         model.t("copyLogEntry"),
     )}
     </div>
-    </div>
-    <div className="text-muted">{model.t("logEntryDescription")}</div>
-    </div>
+    </InlineRow>
+    <Text muted>{model.t("logEntryDescription")}</Text>
+    </Stack>
   );
 }
 
@@ -60,13 +67,13 @@ function textDetailSection(
   tooltip: string,
 ) {
   return card({
-      className: "column gap-xs",
+      gap: "xs",
       children: (
         <>
-        <div className="inline-row gap-sm">
+        <InlineRow gap="sm">
         <span className="label">{label}</span>
         <div className="right">{copyAction(`#${id}`, title, tooltip)}</div>
-        </div>
+        </InlineRow>
         <p id={id} className="log-detail-message"></p>
         </>
       ),
@@ -82,13 +89,13 @@ function codeDetailSection(
 ) {
   return card({
       id: attrs.wrapId,
-      className: "column gap-xs",
+      gap: "xs",
       children: (
         <>
-        <div className="inline-row gap-sm">
+        <InlineRow gap="sm">
         <span className="label">{label}</span>
         <div className="right">{copyAction(`#${id}`, title, tooltip)}</div>
-        </div>
+        </InlineRow>
         {code_block({
               codeProps: attrs.codeProps,
               id,
@@ -102,7 +109,7 @@ function codeDetailSection(
 function logDetailModal(model: any) {
   return (
     <ModalRoot id={model.ids.detailModal}>
-    <ModalContent className="column gap-sm width-xl3 height-xl4 scroll">
+    <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
     {detailTitle(model)}
     {detailSummary(model)}
     {textDetailSection(

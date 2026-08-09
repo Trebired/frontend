@@ -1,6 +1,10 @@
 import { createLocalTranslator } from "#4fte8m1x62rd";
 import { Card } from "#4fte8m1x62rd";
 import {
+  Text,
+  primitivePaddingClass,
+} from "#hzrmwbvgt2ax";
+import {
   CELL_SIZE,
   CELL_SPACE,
   LEFT_PAD,
@@ -11,12 +15,12 @@ import {
   heatmap_fill_color,
   toCalendarDate,
   week_label_y,
-} from "./model";
+} from "./model.js";
 import type {
   ContributionTranslator,
   contributions_graph_props,
   heatmap_tooltip_state,
-} from "./types";
+} from "./types.js";
 
 function weekLabels(t: ContributionTranslator) {
   return (
@@ -203,12 +207,12 @@ function heatmapCard(
 function emptyCard(props: contributions_graph_props, model: any) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
   return (
-    <Card className="padding-sm">
-    <p className="text-muted text-sm">
+    <Card className={primitivePaddingClass("sm")}>
+    <Text as="p" muted size="sm">
     {model.hasInvalidContributionPayload
       ? localT("contributionPayloadInvalid")
       : props.emptyDescription || localT("noSyncedContributions")}
-    </p>
+    </Text>
     </Card>
   );
 }

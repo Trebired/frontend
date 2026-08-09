@@ -11,6 +11,7 @@ import {
 import { safeId, text, translate } from "#kv9urtb9dbq5";
 import { source_language_modal } from "./modal.js";
 import type { SourceLanguageCardProps } from "#2w72xmq6rvza";
+import { Text } from "#hzrmwbvgt2ax";
 
 function sourceLanguageCardModel(props: SourceLanguageCardProps) {
   const payload =
@@ -75,12 +76,12 @@ function languageSegments(
         segments: [
           {
             value: (
-              <span className="text-muted">
+              <Text muted>
                 <span data-tbf-source-language-percent="">
                   {formatLanguagePercent(model.percent)}
                 </span>
                 %
-              </span>
+              </Text>
             ),
           },
           { value: formatCompactBytes(model.bytes, locale || lang) },
@@ -103,7 +104,7 @@ function shareBar(model: ReturnType<typeof sourceLanguageCardModel>) {
         data-tbf-source-language-progress=""
         style={{
           width: `${Math.max(0, Math.min(100, model.percent))}%`,
-          background: text(model.language.color, "var(--gray-200)"),
+          background: text(model.language.color, "var(--tbf-language-color, currentColor)"),
         }}
       />
     </div>

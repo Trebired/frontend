@@ -1,7 +1,8 @@
 import { createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
-import "./index.client";
+import { primitiveTextClassName } from "#hzrmwbvgt2ax";
+import "./index.client.js";
 
 type checkbox_props = {
   all?: boolean;
@@ -76,7 +77,12 @@ function checkboxControl() {
 function checkboxDescription(description: ReactNode) {
   if (!description) return null;
   return (
-    <span className="checkbox-option-description text-sm text-muted text-break">
+    <span className={primitiveTextClassName({
+      breakWord: true,
+      className: "checkbox-option-description",
+      muted: true,
+      size: "sm",
+    })}>
     {description}
     </span>
   );

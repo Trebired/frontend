@@ -48,7 +48,7 @@ function confirm(message: unknown, description = "", options: ConfirmOptions = {
     stack.appendChild(controls.element);
     let timeoutId: number | undefined;
     const finish = (value: boolean) => finishDialog(stack, controls.element, resolve, value, timeoutId);
-    bindConfirmControls(controls.element, finish, cancel, ok, controls.close);
+    bindConfirmControls(controls.element, finish, cancel, ok);
     timeoutId = window.setTimeout(() => finish(false), FLASH_CONFIRM_TIMEOUT_MS);
     controls.progress.style.animationDuration = `${FLASH_CONFIRM_TIMEOUT_MS}ms`;
     revealDialog(stack, controls.element, input);
@@ -60,9 +60,7 @@ function bindConfirmControls(
   finish: (value: boolean) => void,
   cancel: HTMLButtonElement,
   ok: HTMLButtonElement,
-  close: HTMLButtonElement,
 ) {
-  close.addEventListener("click", () => finish(false));
   cancel.addEventListener("click", () => finish(false));
   ok.addEventListener("click", () => finish(true));
   element.addEventListener("keydown", (event) => {
@@ -90,14 +88,14 @@ function prompt(message: unknown, description = "", options: PromptOptions = {})
   if (!stack) return Promise.resolve(null);
   return new Promise<string | null>((resolve) => {
     const controls = createDialogFlash("info", message, description, {
-      progressTone: options.progressTone || options.progressType || "blue",
+      progressTone: options.progressTone || options.progressType || "info",
     });
     const form = createPromptForm(options);
     controls.element.querySelector(".tbf-flash__body")?.appendChild(form);
     stack.appendChild(controls.element);
     let timeoutId: number | undefined;
     const finish = (value: string | null) => finishDialog(stack, controls.element, resolve, value, timeoutId);
-    bindPromptControls(form, controls.close, finish);
+    bindPromptControls(form, finish);
     timeoutId = window.setTimeout(() => finish(null), FLASH_PROMPT_TIMEOUT_MS);
     controls.progress.style.animationDuration = `${FLASH_PROMPT_TIMEOUT_MS}ms`;
     revealDialog(stack, controls.element, form.querySelector("input"));
@@ -130,7 +128,6 @@ function submitButton(label: string) {
 
 function bindPromptControls(
   form: HTMLFormElement,
-  close: HTMLButtonElement,
   finish: (value: string | null) => void,
 ) {
   const input = form.querySelector<HTMLInputElement>("input");
@@ -140,7 +137,6 @@ function bindPromptControls(
     finish(input?.value.trim() || null);
   });
   cancel?.addEventListener("click", () => finish(null));
-  close.addEventListener("click", () => finish(null));
 }
 
 function revealDialog(stack: HTMLElement, element: HTMLElement, focusTarget: HTMLElement | null) {

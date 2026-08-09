@@ -1,3 +1,5 @@
+@use "country-flag-icons/3x2/flags";
+
 .tbf-locale-switch-popover {
   min-width: 170px;
 }
@@ -7,7 +9,7 @@
 }
 
 .tbf-locale-switch-popover .tbf-locale-option[data-tbf-locale-current="true"] {
-  background: var(--gray-850);
+  background: var(--tbf-language-current-background, var(--background-surface-2, transparent));
   color: var(--text-color);
 }
 
@@ -27,13 +29,23 @@
   line-height: 1;
 }
 
+.tbf-locale-flag {
+  --CountryFlagIcon-height: 16px;
+
+  flex: 0 0 auto;
+  border: var(--border-width, 1px) solid var(--border-surface-1);
+  border-radius: var(--radius-sm, 3px);
+  background-color: var(--background-surface-2, transparent);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.02) inset;
+}
+
 .tbf-source-language-share {
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 4px;
   border-radius: 999px;
-  background: var(--background-surface-2, var(--gray-900));
+  background: var(--background-surface-2, transparent);
 }
 
 .tbf-source-language-share-bar {
@@ -52,7 +64,7 @@
   width: 100%;
   height: 8px;
   border-radius: 999px;
-  background: var(--background-surface-2, var(--gray-900));
+  background: var(--background-surface-2, transparent);
 }
 
 .tbf-source-language-distribution-segment {

@@ -1,6 +1,10 @@
 import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
-import "./index.client";
+import {
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
+import "./index.client.js";
 
 type radio_option = {
   bodyClassName?: string;
@@ -90,7 +94,12 @@ function radioInput(option: radio_option, props: any, model: any) {
 function radioDescription(option: radio_option) {
   if (!option || !option.description) return null;
   return (
-    <span className="radio-option-description text-sm text-muted text-break">
+    <span className={primitiveTextClassName({
+      breakWord: true,
+      className: "radio-option-description",
+      muted: true,
+      size: "sm",
+    })}>
     {option.description}
     </span>
   );
@@ -127,7 +136,7 @@ function radio(props: radio_props) {
   const currentValue = String(props.currentValue || "");
   const groupClassName = [
     "radio-group-root",
-    toString(props.className, "column gap-xs"),
+    toString(props.className) || primitiveStackClassName({ gap: "xs" }),
   ]
   .filter(Boolean)
   .join(" ");

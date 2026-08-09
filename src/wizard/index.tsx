@@ -1,6 +1,10 @@
 import { createElement, type ReactNode } from "react";
 import { Icon } from "#lbkpzw8nphru";
 import { joinClassNames } from "#6mupcizo1mwq";
+import {
+  primitiveButtonClassName,
+  primitiveCardClassName,
+} from "#hzrmwbvgt2ax";
 
 type wizard_step = {
   actions?: ReactNode;
@@ -30,7 +34,7 @@ function wizard(props: wizard_props) {
       createElement(
         "wizard-step",
         {
-          className: "wizard-step card column gap-sm",
+          className: primitiveCardClassName({ className: "wizard-step", gap: "sm" }),
           id: `${props.id}_${step.id}`,
           key: step.id,
           ...(index === 0 ? { "data-wizard-step-state": "active" } : {}),
@@ -56,7 +60,7 @@ function wizard_previous_button(props: wizard_nav_button_props) {
     { style: { display: "contents" } },
     <button
     type="button"
-    className={joinClassNames("btn", props.className)}
+    className={primitiveButtonClassName({ className: props.className })}
     hidden
     >
     <Icon spec="remixicon arrow-left-line" />
@@ -69,7 +73,7 @@ function wizard_next_button(props: wizard_nav_button_props) {
   return createElement(
     "wizard-next-button",
     { style: { display: "contents" } },
-    <button type="button" className={joinClassNames("btn", props.className)}>
+    <button type="button" className={primitiveButtonClassName({ className: props.className })}>
     <Icon spec="remixicon arrow-right-line" />
     {props.label}
     </button>

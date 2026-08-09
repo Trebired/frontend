@@ -1,12 +1,20 @@
 import { copy_button } from "#k632wzgl64a3";
 import tabs, { tab_panel } from "#92vilwel70ga";
-import { card } from "#hzrmwbvgt2ax";
+import {
+  card,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 import stats_breakdown from "#ojqk8hhrpft6";
 
 function statsTabs(model: any) {
   return tabs({
       familyClassName: "width-full",
-      headerClassName: "inline-row gap-sm ver-center logs-stats-header",
+      headerClassName: primitiveInlineRowClassName({
+        className: "logs-stats-header",
+        gap: "sm",
+        verticalCenter: true,
+      }),
       headerLeading: (
         <div className="right no-shrink logs-stats-copy">
         {copy_button({
@@ -34,7 +42,7 @@ function statsBreakdownPanel(
   hidden = false,
 ) {
   return tab_panel({
-      className: "column gap-sm",
+      className: primitiveStackClassName({ gap: "sm" }),
       defaultActive: !hidden,
       familyKey: "",
       id,
@@ -59,7 +67,7 @@ function logsStatsPanel(model: any) {
   return card({
       id: model.ids.statsCard,
       "data-logs-raw-hide": "",
-      className: "column gap-sm",
+      gap: "sm",
       children: (
         <>
         {statsTabs(model)}

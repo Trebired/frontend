@@ -1,7 +1,14 @@
 import type { ReactNode } from "react";
 import type { key_value_props, key_value_row } from "./types.js";
-import { toText } from "./shared.js";
+import { joinClassNames, toText } from "./shared.js";
 import { separator } from "./controls.js";
+import {
+  primitiveCardClassName,
+  primitiveGridClassName,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "./classes.js";
 
 function formatAbsoluteDateTimeLabel(value: unknown) {
   const raw = toText(value);
@@ -102,14 +109,18 @@ function key_value_row_item(
 ) {
   return (
     <div
-      className={`${layout === "inline" ? "inline-row gap-xs2 lh-xs fit-content" : "inline-row gap-xs2 lh-xs"} ${rowClassName}`.trim()}
+      className={primitiveInlineRowClassName({
+        className: joinClassNames("lh-xs", rowClassName),
+        fit: layout === "inline",
+        gap: "xs2",
+      })}
       key={`${String(row.label || "row")}_${index}`}
     >
       {layout === "inline" && index > 0 ? (
-        <span className="text-muted lh-xs">•</span>
+        <span className={primitiveTextClassName({ className: "lh-xs", muted: true })}>•</span>
       ) : null}
       <span
-        className="text-muted lh-xs"
+        className={primitiveTextClassName({ className: "lh-xs", muted: true })}
         {...(row.label_attributes ? { "data-label-attrs-html": row.label_attributes } : {})}
       >
         {String(row.label || "")}:
@@ -125,7 +136,11 @@ function key_value_rows(
 ) {
   const layout = props?.layout === "inline" ? "inline" : "column";
   const rowClassName = toText(props?.rowClassName);
-  const valueClassName = layout === "inline" ? "text-muted text-break lh-xs" : "text-break lh-xs";
+  const valueClassName = primitiveTextClassName({
+    breakWord: true,
+    className: "lh-xs",
+    muted: layout === "inline",
+  });
   return rows
     .filter((row) => row && typeof row === "object" && row.label)
     .map((row, index) => key_value_row_item(row, index, layout, rowClassName, valueClassName));
@@ -143,20 +158,24 @@ function keyValueModel(props: key_value_props) {
   const isInlineList = layout === "inline" && !wrapInCard;
   return {
     bodyClassName: isInlineList
-      ? `inline-row gap-xs2 wrap text-muted ${rowsClassName}`.trim()
+      ? primitiveInlineRowClassName({
+          className: primitiveTextClassName({ className: rowsClassName, muted: true }),
+          gap: "xs2",
+          wrap: true,
+        })
       : layout === "inline"
-      ? `inline-row gap-xs2 wrap ${rowsClassName}`.trim()
-      : `column gap-xs ${rowsClassName}`.trim(),
+      ? primitiveInlineRowClassName({ className: rowsClassName, gap: "xs2", wrap: true })
+      : primitiveStackClassName({ className: rowsClassName, gap: "xs" }),
     groups,
     layout,
     rowClassName: toText(props.rowClassName),
     rows,
     separated,
     wrapperClassName: isInlineList
-      ? `text-sm card-segments ${className}`.trim()
+      ? primitiveTextClassName({ className: joinClassNames("card-segments", className), size: "sm" })
       : wrapInCard
-      ? "card column gap-xs"
-      : `column gap-xs ${className}`.trim(),
+      ? primitiveCardClassName({ gap: "xs" })
+      : primitiveStackClassName({ className, gap: "xs" }),
   };
 }
 
@@ -164,7 +183,7 @@ function key_value(props: key_value_props) {
   const model = keyValueModel(props);
   if (model.groups.length) {
     return (
-      <div className="grid gap-sm">
+      <div className={primitiveGridClassName({ gap: "sm" })}>
         {model.groups.map((group, index) => (
           <div className={model.wrapperClassName} key={`${String(group.title || "group")}_${index}`}>
             {group.title ? <div className="label lh-xs">{String(group.title)}</div> : null}

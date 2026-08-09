@@ -1,3 +1,10 @@
+import {
+  primitiveCardRowClassName,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
+
 type SharedStepCardInput = {
   actionLabel?: string;
   groupKey?: string;
@@ -109,10 +116,15 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   if (!message) return null;
 
   const row = doc.createElement("div");
-  row.className = "card-row column gap-xs min-height-fit";
+  row.className = primitiveCardRowClassName({
+    className: primitiveStackClassName({
+      className: "min-height-fit",
+      gap: "xs",
+    }),
+  });
 
   const header = doc.createElement("div");
-  header.className = "inline-row gap-xs";
+  header.className = primitiveInlineRowClassName({ gap: "xs" });
   header.style.alignItems = "flex-start";
 
   const tone = stepTone(input && input.level);
@@ -121,7 +133,11 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   badge.textContent = tone.label;
 
   const messageEl = doc.createElement("span");
-  messageEl.className = "text-sm text-break display-block";
+  messageEl.className = primitiveTextClassName({
+    breakWord: true,
+    className: "display-block",
+    size: "sm",
+  });
   messageEl.textContent = message;
   messageEl.style.flex = "1 1 auto";
   messageEl.style.lineHeight = "1.4";
@@ -133,7 +149,12 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
 
   if (recordedAtLabel) {
     const timeEl = doc.createElement("span");
-    timeEl.className = "text-muted text-xs text-break display-block";
+    timeEl.className = primitiveTextClassName({
+      breakWord: true,
+      className: "display-block",
+      muted: true,
+      size: "xs",
+    });
     timeEl.textContent = recordedAtLabel;
     timeEl.style.lineHeight = "1.35";
     row.appendChild(timeEl);
@@ -144,7 +165,7 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
 
 function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   const wrapper = doc.createElement("section");
-  wrapper.className = "column gap-xs";
+  wrapper.className = primitiveStackClassName({ gap: "xs" });
   wrapper.setAttribute("data-steps-group", group.key);
 
   const separator = doc.createElement("hr");
@@ -152,7 +173,7 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   wrapper.appendChild(separator);
 
   const header = doc.createElement("div");
-  header.className = "column gap-2xs";
+  header.className = primitiveStackClassName({ gap: "2xs" });
 
   const title = doc.createElement("h5");
   title.textContent = group.label;
@@ -161,7 +182,7 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   const actionLabel = onlyString(group.actionLabel);
   if (actionLabel) {
     const actionEl = doc.createElement("span");
-    actionEl.className = "text-xs text-muted";
+    actionEl.className = primitiveTextClassName({ muted: true, size: "xs" });
     actionEl.textContent =
     actionLabel.charAt(0).toUpperCase() + actionLabel.slice(1);
     header.appendChild(actionEl);
@@ -170,7 +191,7 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   wrapper.appendChild(header);
 
   const list = doc.createElement("div");
-  list.className = "column gap-xs";
+  list.className = primitiveStackClassName({ gap: "xs" });
   list.setAttribute("data-steps-group-list", group.key);
 
   group.steps.forEach((entry) => {

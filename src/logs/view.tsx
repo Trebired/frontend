@@ -1,11 +1,15 @@
 import { createElement } from "react";
-import content from "./content";
+import content from "./content.js";
 import { canvas_panel } from "#kwgj7f15gqem";
-import { createLogsViewModel } from "./view/model";
-import { logDetailModal } from "./view/detail_modal";
-import { logsStatsPanel } from "./view/stats";
-import { logsToolbar } from "./view/toolbar";
-import type { view_props } from "./view/model";
+import { createLogsViewModel } from "./view/model.js";
+import { logDetailModal } from "./view/detail_modal.js";
+import { logsStatsPanel } from "./view/stats.js";
+import { logsToolbar } from "./view/toolbar.js";
+import type { view_props } from "./view/model.js";
+import {
+  primitivePaddingClass,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 
 function jsonScriptConfig(config: Record<string, unknown>) {
   return {
@@ -35,7 +39,12 @@ function view(props: view_props) {
     />
     {canvas_panel({
           content: content({ ids: model.ids }),
-          contentClassName: "padding-xs column log-box-shell",
+          contentClassName: primitiveStackClassName({
+            className: [
+              primitivePaddingClass("xs"),
+              "log-box-shell",
+            ],
+          }),
           extendGroup: model.logsExtendGroup,
           extendId: model.logsInstanceId,
           panelClassName: model.panelClassName,

@@ -1,4 +1,4 @@
-import { bindTabs } from "./manager";
+import { bindTabs } from "./manager.js";
 
 function bootTabsClient() {
   if (typeof document === "undefined") return;

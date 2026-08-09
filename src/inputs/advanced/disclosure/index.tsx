@@ -3,6 +3,10 @@ import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
 import { DisclosureButton } from "#h6suogfkcg6i";
 import { icon } from "#dqy2d22qyujv";
+import {
+  primitiveCardClassName,
+  primitiveInlineRowClassName,
+} from "#hzrmwbvgt2ax";
 
 type disclosure_props = {
   card?: boolean;
@@ -27,7 +31,7 @@ function disclosureModel(props: disclosure_props) {
   const rootId = toString(props.id);
   const rootClassName = classNames([
       "tbf-disclosure",
-      props.card === false ? "" : "card",
+      props.card === false ? "" : primitiveCardClassName({ layout: "none" }),
       "cursor-pointer",
       "disclosure",
       toString(props.rootClassName),
@@ -48,9 +52,10 @@ function disclosureModel(props: disclosure_props) {
     rootId,
     TriggerTag: props.triggerTag === "div" ? "div" : "button",
     triggerClassName: classNames([
-        "inline-row",
-        "gap-xs",
-        "disclosure-trigger",
+        primitiveInlineRowClassName({
+          className: "disclosure-trigger",
+          gap: "xs",
+        }),
         toString(props.triggerClassName),
     ]),
   };

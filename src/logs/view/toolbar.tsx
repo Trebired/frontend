@@ -6,7 +6,13 @@ import {
 import { Icon as icon } from "#lbkpzw8nphru";
 import checkbox from "#2ne919slwy5h";
 import dropdown from "#79y0zfcyhzga";
-import { button, pill } from "#hzrmwbvgt2ax";
+import {
+  button,
+  pill,
+  primitiveButtonClassName,
+  primitiveCardClassName,
+  primitiveGapClass,
+} from "#hzrmwbvgt2ax";
 import {
   actionTrigger,
   toString,
@@ -52,8 +58,15 @@ function platformToggle(model: any) {
           checked: true,
           id: model.ids.platformToggle,
           input_attrs: {},
-          optionClassName:
-          "logs-platform-toggle card gap-xs padding-xs no-shrink cursor-pointer",
+          optionClassName: [
+            "logs-platform-toggle",
+            primitiveCardClassName({
+              className: "cursor-pointer no-shrink",
+              layout: "none",
+              padding: "xs",
+            }),
+            primitiveGapClass("xs"),
+          ].join(" "),
           title: model.t("productLogs", { product: model.productName }),
     })}
     </div>
@@ -112,7 +125,12 @@ function toolbarButton(
   if (fullscreen) {
     const fullscreenProps = {
       ...attrs,
-      className: attrs.className || "btn icon md has-tooltip",
+      className: primitiveButtonClassName({
+        className: attrs.className,
+        icon: true,
+        size: "md",
+        tooltip: true,
+      }),
       fullscreenId: String(fullscreen.id || ""),
       group: String(fullscreen.group || "default"),
     };
@@ -129,9 +147,14 @@ function toolbarButton(
     return trigger ? actionTrigger(node, trigger) : node;
   }
   const node = (
-    <button type="button" className="btn icon md has-tooltip" {...attrs}>
-    {icon({ spec })}
-    </button>
+    button({
+      ...attrs,
+      children: icon({ spec }),
+      icon: true,
+      size: "md",
+      tooltip: true,
+      type: "button",
+    })
   );
   if (trigger) return actionTrigger(node, trigger);
   return node;
@@ -142,7 +165,7 @@ function searchToggleButton(model: any) {
     {
       "aria-label": model.t("searchLogsAction"),
       "data-logs-raw-hide": "",
-      className: "btn icon md logs-toolbar-search-toggle has-tooltip",
+      className: "logs-toolbar-search-toggle",
       id: model.ids.searchButton,
       title: model.t("searchLogsAction"),
     },
@@ -166,7 +189,9 @@ function exportPopover(model: any) {
           "aria-expanded": "false",
           title: model.t("exportLogs"),
           "aria-label": model.t("exportLogs"),
-          className: "icon md has-tooltip",
+          icon: true,
+          size: "md",
+          tooltip: true,
           "data-tbf-popover-open": "",
           children: <>{icon({ spec: "remixicon download-2-line" })}</>,
     })}
@@ -210,7 +235,6 @@ function fullscreenButtons(model: any) {
     {toolbarButton(
         {
           "aria-label": model.t("display.exitFullscreen"),
-          className: "btn icon md has-tooltip",
           "data-tbf-fullscreen-hidden": "true",
           title: model.t("display.exitFullscreen"),
         },

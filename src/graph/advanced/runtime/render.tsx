@@ -3,6 +3,25 @@ import { createLocalTranslator, icon } from "#4fte8m1x62rd";
 import { graphUnitLabel } from "./units.js";
 import { resolveCanvasColor } from "./utils.js";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
+import {
+  primitiveGridClassName,
+  primitiveInlineRowClassName,
+  primitivePaddingClass,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
+
+const GRAPH_CARD_ROOT_CLASS = "graph-card-root";
+const GRAPH_FRAME_CLASS = "graph-card-frame bg-canvas";
+const GRAPH_FRAME_CHROME_CLASS = "radius-md border";
+
+function graphFrameClassName() {
+  return [
+    GRAPH_FRAME_CLASS,
+    primitivePaddingClass("xs"),
+    GRAPH_FRAME_CHROME_CLASS,
+  ].join(" ");
+}
 
 function documentLang() {
   return typeof document === "undefined" ? undefined : document.documentElement.lang || undefined;
@@ -13,12 +32,12 @@ function GraphTitle(props) {
 
   return React.createElement(
     "div",
-    { className: "inline-row gap-xs align-center wrap" },
+    { className: primitiveInlineRowClassName({ gap: "xs", verticalCenter: true, wrap: true }) },
     React.createElement("h4", null, props.title),
     typeof props.subtitle === "string" && props.subtitle.trim()
     ? React.createElement(
       "span",
-      { className: "text-muted text-sm" },
+      { className: primitiveTextClassName({ muted: true, size: "sm" }) },
       props.subtitle,
     )
     : null,
@@ -49,14 +68,14 @@ function GraphHeader(props) {
 
   return React.createElement(
     "div",
-    { className: "inline-row gap-sm" },
+    { className: primitiveInlineRowClassName({ gap: "sm" }) },
     React.createElement(GraphTitle, props),
     React.createElement(
       "div",
       { className: "right" },
       React.createElement(
         "div",
-        { className: "inline-row gap-xs wrap align-center" },
+        { className: primitiveInlineRowClassName({ gap: "xs", verticalCenter: true, wrap: true }) },
         React.createElement(GraphUnitControls, props),
       ),
     ),
@@ -88,10 +107,10 @@ function GraphWarning(props) {
   return React.createElement(
     "div",
     {
-      className: "inline-row",
+      className: primitiveInlineRowClassName(),
       style: {
         alignItems: "center",
-        color: "var(--red-400)",
+        color: "var(--tbf-status-warning-color, var(--tbf-focus, currentColor))",
         inset: 0,
         justifyContent: "center",
         pointerEvents: "none",
@@ -118,7 +137,7 @@ function GraphLoader(props) {
   return React.createElement(
     "div",
     {
-      className: "inline-row",
+      className: primitiveInlineRowClassName(),
       style: {
         alignItems: "center",
         inset: 0,
@@ -140,7 +159,7 @@ function GraphFrame(props) {
     {
       ref: props.frameRef,
       "data-graph-frame": props.graphId || "",
-      className: "graph-card-frame bg-canvas padding-xs radius-md border",
+      className: graphFrameClassName(),
       style: {
         height: "220px",
         position: "relative",
@@ -159,13 +178,17 @@ function GraphLegendView(props) {
 
   return React.createElement(
     "div",
-    { className: "grid gap-sm" },
+    { className: primitiveGridClassName({ gap: "sm" }) },
     legendItems.map((item, index) =>
       React.createElement(
         "span",
         {
           key: `${String((item && item.label) || "legend")}_${index}`,
-          className: "inline-row fit-content gap-xs text-muted text-sm",
+          className: primitiveInlineRowClassName({
+            className: primitiveTextClassName({ muted: true, size: "sm" }),
+            fit: true,
+            gap: "xs",
+          }),
         },
         React.createElement("span", {
             "aria-hidden": "true",
@@ -191,7 +214,10 @@ function GraphCardFrame(props) {
   return React.createElement(
     "div",
     {
-      className: "graph-card-root column gap-xs",
+      className: primitiveStackClassName({
+        className: GRAPH_CARD_ROOT_CLASS,
+        gap: "xs",
+      }),
       ref: props.rootRef,
       "data-graph-root": props.graphId || "",
       "data-graph-type": props.graphType || "",
@@ -209,7 +235,7 @@ function GraphFallbackBody(props) {
   return React.createElement(
     "div",
     {
-      className: "graph-card-frame bg-canvas padding-xs radius-md border",
+      className: graphFrameClassName(),
       style: {
         height: "220px",
         position: "relative",
@@ -218,7 +244,7 @@ function GraphFallbackBody(props) {
     React.createElement(
       "div",
       {
-        className: "inline-row",
+        className: primitiveInlineRowClassName(),
         style: {
           alignItems: "center",
           inset: 0,
@@ -231,7 +257,7 @@ function GraphFallbackBody(props) {
         { className: "center" },
         React.createElement(
           "span",
-          { className: "text-muted text-sm" },
+          { className: primitiveTextClassName({ muted: true, size: "sm" }) },
           props.message || localT("feedback.graphUnavailable"),
         ),
       ),
@@ -242,7 +268,12 @@ function GraphFallbackBody(props) {
 function GraphFrameFallback(props) {
   return React.createElement(
     "div",
-    { className: "graph-card-root column gap-xs" },
+    {
+      className: primitiveStackClassName({
+        className: GRAPH_CARD_ROOT_CLASS,
+        gap: "xs",
+      }),
+    },
     React.createElement(GraphHeader, props),
     React.createElement(GraphFallbackBody, props),
   );

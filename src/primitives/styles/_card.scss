@@ -1,36 +1,36 @@
 .card {
-  min-height: var(--height-xs4, 35px);
-  border-radius: var(--radius-lg, var(--tbf-radius, 0));
-  border: var(--border-width) solid var(--border-surface-1);
-  background: var(--background-page);
-  padding: 14px 14px 12px 14px;
+  min-height: var(--tbf-card-min-height, var(--height-xs4, 35px));
+  border-radius: var(--tbf-card-radius, var(--radius-lg, var(--tbf-radius, 0)));
+  border: var(--tbf-card-border, var(--border-width) solid var(--border-surface-1));
+  background: var(--tbf-card-background, var(--background-page));
+  padding: var(--tbf-card-padding, 14px 14px 12px 14px);
   overflow: hidden;
 
   h2 {
-    margin: 0 0 10px 0;
-    font-size: 15px;
-    font-weight: 700;
+    margin: var(--tbf-card-title-margin, 0 0 10px 0);
+    font-size: var(--tbf-card-title-font-size, 15px);
+    font-weight: var(--tbf-card-title-font-weight, 700);
   }
 }
 
 .card-row {
   min-height: 0;
-  border-radius: var(--radius-lg, var(--tbf-radius, 0));
-  border: var(--border-width) solid var(--border-surface-1);
-  background: transparent;
+  border-radius: var(--tbf-card-row-radius, var(--radius-lg, var(--tbf-radius, 0)));
+  border: var(--tbf-card-row-border, var(--border-width) solid var(--border-surface-1));
+  background: var(--tbf-card-row-background, transparent);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 9px 12px;
+  padding: var(--tbf-card-row-padding, 9px 12px);
   transition: all var(--transition-2) ease;
 
   &.excluded {
-    border-color: var(--border-surface-1);
+    border-color: var(--tbf-card-row-excluded-border-color, var(--border-surface-1));
   }
 
   &.selected {
-    background: var(--background-surface-1);
+    background: var(--tbf-card-row-selected-background, var(--background-surface-1));
   }
 
   > * {
@@ -40,7 +40,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .card-row:hover {
-    background: var(--gray-900);
+    background: var(--tbf-card-row-hover-background, var(--background-surface-1, transparent));
   }
 }
 
@@ -77,7 +77,7 @@
   flex: 0 0 auto;
   width: 1px;
   min-width: 1px;
-  background: var(--border-surface-1);
+  background: var(--tbf-card-body-divider-background, var(--border-surface-1));
   border-radius: 999px;
   opacity: 0.9;
 }

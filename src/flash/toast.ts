@@ -53,7 +53,6 @@ function startFlashLifetime(
   } else {
     controls.progress.hidden = true;
   }
-  controls.close.addEventListener("click", () => hideFlashElement(stack, controls.element));
   window.requestAnimationFrame(() => {
     controls.element.setAttribute("data-tbf-visible", "true");
     layoutFlashStack(stack);

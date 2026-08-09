@@ -2,6 +2,11 @@ import { createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
 import type { ReactNode } from "react";
 import { icon } from "#dqy2d22qyujv";
+import {
+  InlineRow,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 type attr_map = Record<string, string | number | boolean | null | undefined>;
 type dropdown_option = {
@@ -88,10 +93,10 @@ function optionsList(props: dropdown_props) {
   if (props.multiple === true || props.unselect !== true) return list;
   const unselectOption: dropdown_option = {
     html: (
-      <span className="text-muted inline-row gap-xs">
+      <InlineRow className={primitiveTextClassName({ muted: true })} gap="xs">
       {icon({ spec: "remixicon close-large-line" })}
       <span>{localT("actions.unselect")}</span>
-      </span>
+      </InlineRow>
     ),
     label: localT("actions.unselect"),
     search: localT("actions.unselect"),
@@ -213,7 +218,7 @@ function dropdownModel(props: dropdown_props) {
     shouldHideChecks: props.hideChecks === true,
     topNode: props.optionsTop ?? null,
     unselectAllText: localT("actions.unselectAll"),
-    wrapperClass: toString(props.wrapperClassName, "column gap-xs"),
+    wrapperClass: toString(props.wrapperClassName) || primitiveStackClassName({ gap: "xs" }),
   };
 }
 

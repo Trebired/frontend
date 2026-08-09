@@ -1,4 +1,9 @@
 import type { ReactNode } from "react";
+import {
+  Stack,
+  Text,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 
 type BindActionOptions = {
   href?: string;
@@ -43,18 +48,18 @@ function roadmapItem(
   : {};
   const actionTrigger = item.actionTrigger || (href ? { href } : undefined);
   const defaultBody = (
-    <div className="column gap-xs" {...dataAttrs}>
+    <Stack gap="xs" {...dataAttrs}>
     {item && item.title ? (
         <strong className={item.titleClassName || undefined}>
         {item.title}
         </strong>
       ) : null}
     {item && item.meta ? (
-        <span className="text-muted text-sm">{item.meta}</span>
+        <Text muted size="sm">{item.meta}</Text>
       ) : null}
     {item && item.segments ? <div>{item.segments}</div> : null}
     {item && item.extra ? <div>{item.extra}</div> : null}
-    </div>
+    </Stack>
   );
   const body =
   item && item.body
@@ -94,8 +99,8 @@ function roadmapGroup(group: roadmap_group, groupIndex: number) {
   if (!items.length) return null;
 
   return (
-    <div
-    className="column gap-sm"
+    <Stack
+    gap="sm"
     key={
       group && group.id != null
       ? String(group.id)
@@ -103,20 +108,21 @@ function roadmapGroup(group: roadmap_group, groupIndex: number) {
     }
     >
     {group && group.title ? <div>{group.title}</div> : null}
-    <ol className="tbf-roadmap column gap-sm roadmap-items">
+    <ol className={primitiveStackClassName({ className: "tbf-roadmap roadmap-items", gap: "sm" })}>
     {items.map((item, itemIndex) =>
         roadmapItem(item, groupIndex, itemIndex),
     )}
     </ol>
-    </div>
+    </Stack>
   );
 }
 
 function roadmap(props: roadmap_props) {
   const groups = Array.isArray(props.groups) ? props.groups : [];
-  const className = ["column", "gap-sm", String(props.className || "").trim()]
-  .filter(Boolean)
-  .join(" ");
+  const className = primitiveStackClassName({
+    className: props.className,
+    gap: "sm",
+  });
 
   return (
     <div className={className}>{groups.map(roadmapGroup)}</div>

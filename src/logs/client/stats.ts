@@ -1,6 +1,9 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { key_value } from "#hzrmwbvgt2ax";
+import {
+  key_value,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 import { entryMatchesConfig } from "./identity.js";
 import {
   getFilteredLoadedLogs,
@@ -64,7 +67,7 @@ function renderCountList(
 
   if (!rows.length) {
     root.render(
-      React.createElement("div", { className: "text-muted" }, emptyLabel),
+      React.createElement("div", { className: primitiveTextClassName({ muted: true }) }, emptyLabel),
     );
     return;
   }

@@ -12,15 +12,15 @@ import {
   syncNestedIndicatorRow,
   syncNestedTabsIndicator,
   uiContainer,
-} from "./manager/dom";
+} from "./manager/dom.js";
 import {
   familyKeyForRoot,
   isRootVisible,
   routeTokenForRoot,
   tabToken,
   writeRoute,
-} from "./manager/route";
-import { registeredTabRoots, registerTabRoot } from "./manager/registry";
+} from "./manager/route.js";
+import { registeredTabRoots, registerTabRoot } from "./manager/registry.js";
 
 const tabBindings = new WeakMap<HTMLElement, ReturnType<typeof createTabs>>();
 let tabSwitchListenerBound = false;

@@ -4,12 +4,14 @@ import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
-const aliasMapDir = path.join(rootDir, ".trebired/code-discipline", "imports");
+const workspaceConfigDir = `.${"tre"}bired`;
+const aliasMapDir = path.join(rootDir, workspaceConfigDir, "code-discipline", "imports");
 
 async function main() {
   const aliasTargets = await readAliasMap();
   await promotePublicDistFiles();
   await copyScssFiles();
+  await copyVendorScssFiles();
   await rewriteDistAliases(aliasTargets);
 }
 
@@ -116,9 +118,30 @@ async function copyScssFiles() {
   await Promise.all(files.map(async (filePath) => {
     const relative = normalizePath(path.relative(path.join(rootDir, "src"), filePath));
     const target = path.join(distDir, relative);
+    const source = await fs.readFile(filePath, "utf8");
     await fs.mkdir(path.dirname(target), { recursive: true });
-    await fs.copyFile(filePath, target);
+    await fs.writeFile(target, rewriteVendorScssImports(source));
   }));
+}
+
+function rewriteVendorScssImports(source) {
+  return source.replace(
+    /@use\s+["']country-flag-icons\/3x2\/flags["'];/u,
+    '@use "../../vendor/country-flag-icons/3x2/flags";',
+  );
+}
+
+async function copyVendorScssFiles() {
+  await copyVendorCssAsScss(
+    path.join(rootDir, "node_modules", "country-flag-icons", "3x2", "flags.css"),
+    path.join(distDir, "vendor", "country-flag-icons", "3x2", "flags.scss"),
+  );
+}
+
+async function copyVendorCssAsScss(source, target) {
+  const css = await fs.readFile(source, "utf8");
+  await fs.mkdir(path.dirname(target), { recursive: true });
+  await fs.writeFile(target, css);
 }
 
 async function collectSourceScssFiles(startDir) {

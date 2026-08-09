@@ -4,6 +4,13 @@ import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
 import { actionLabel, type ActionLabelKey } from "./labels.js";
 import { copyTargetId } from "./clipboard.js";
+import {
+  primitiveCardClassName,
+  primitiveInlineRowClassName,
+  primitiveTextClassName,
+  type PrimitiveButtonSize,
+  type PrimitiveButtonTone,
+} from "#0rl8rpgzssot";
 
 type StandardActionButtonProps = {
   button_attrs?: Record<string, unknown>;
@@ -13,6 +20,7 @@ type StandardActionButtonProps = {
   id?: string;
   lang?: string;
   label?: string;
+  tone?: PrimitiveButtonTone;
   type?: "button" | "submit";
 };
 
@@ -21,7 +29,7 @@ type CopyButtonProps = {
   children?: ReactNode;
   className?: string;
   lang?: string;
-  size?: string;
+  size?: PrimitiveButtonSize;
   target: string;
   title?: string;
   tooltip?: string;
@@ -54,21 +62,22 @@ const ACTION_META: Record<string, {
   className?: string;
   icon: string;
   key: ActionLabelKey;
+  tone?: PrimitiveButtonTone;
   type: "button" | "submit";
 }> = {
   add: { icon: "remixicon add-line", key: "add", type: "submit" },
-  cancel: { className: "red", icon: "remixicon close-large-line", key: "cancel", type: "button" },
+  cancel: { icon: "remixicon close-large-line", key: "cancel", tone: "red", type: "button" },
   create: { icon: "remixicon add-line", key: "create", type: "submit" },
-  delete: { className: "red", icon: "remixicon delete-bin-line", key: "delete", type: "submit" },
-  drop: { className: "red", icon: "remixicon delete-bin-6-line", key: "drop", type: "submit" },
-  forceStop: { className: "red", icon: "remixicon stop-circle-fill", key: "forceStop", type: "submit" },
+  delete: { icon: "remixicon delete-bin-line", key: "delete", tone: "red", type: "submit" },
+  drop: { icon: "remixicon delete-bin-6-line", key: "drop", tone: "red", type: "submit" },
+  forceStop: { icon: "remixicon stop-circle-fill", key: "forceStop", tone: "red", type: "submit" },
   insert: { icon: "remixicon add-line", key: "insert", type: "submit" },
   install: { icon: "remixicon download-line", key: "install", type: "submit" },
-  remove: { className: "red", icon: "remixicon close-large-line", key: "remove", type: "submit" },
-  restart: { className: "red", icon: "remixicon restart-line", key: "restart", type: "submit" },
+  remove: { icon: "remixicon close-large-line", key: "remove", tone: "red", type: "submit" },
+  restart: { icon: "remixicon restart-line", key: "restart", tone: "red", type: "submit" },
   show: { icon: "remixicon eye-line", key: "show", type: "submit" },
   start: { icon: "remixicon play-line", key: "start", type: "submit" },
-  stop: { className: "red", icon: "remixicon stop-circle-line", key: "stop", type: "submit" },
+  stop: { icon: "remixicon stop-circle-line", key: "stop", tone: "red", type: "submit" },
 };
 
 function standardActionButton(
@@ -79,6 +88,7 @@ function standardActionButton(
   return button({
     type: props.type || meta.type,
     className: props.className || meta.className,
+    tone: props.tone || meta.tone,
     ...(props.disabled ? { disabled: true } : {}),
     ...(props.form ? { form: props.form } : {}),
     ...(props.id ? { id: props.id } : {}),
@@ -110,7 +120,7 @@ function delete_button(
 ) {
   return standardActionButton("delete", {
     ...props,
-    className: props.className || (props.color === "yellow" ? "yellow" : undefined),
+    tone: props.color === "yellow" ? "yellow" : props.tone,
   });
 }
 
@@ -168,8 +178,10 @@ function save_icon(props: SaveIconButtonProps = {}) {
     ...(props.id ? { id: props.id } : {}),
     ...(props.dataAttrs || {}),
     ...(props.disabled ? { disabled: true } : {}),
-    className:
-      props.className || (variant === "icon" ? "icon lg has-tooltip" : ""),
+    className: props.className,
+    icon: variant === "icon",
+    size: variant === "icon" ? "lg" : undefined,
+    tooltip: variant === "icon",
     ...(variant === "icon" ? { title: String(props.tooltip || label) } : {}),
     children: variant === "icon" ? saveIcon : <>{saveIcon} {label}</>,
   });
@@ -192,7 +204,10 @@ function copy_button(props: CopyButtonProps) {
     </script>,
     button({
       type: "button",
-      className: props.className || `icon ${String(props.size || "md").trim()} has-tooltip`,
+      className: props.className,
+      icon: !props.children,
+      size: props.size || "md",
+      tooltip: true,
       "aria-controls": target,
       "aria-label": String(props.title || actionLabel("copy", props.lang)),
       ...(props.attrs || {}),
@@ -204,12 +219,9 @@ function copy_button(props: CopyButtonProps) {
 }
 
 function copy_code_card(props: CopyCodeCardProps) {
-  const className = ["card column gap-xs", props.className || ""]
-    .filter(Boolean)
-    .join(" ");
   return (
-    <div className={className}>
-      <div className="inline-row gap-xs between" style={{ flexWrap: "wrap" }}>
+    <div className={primitiveCardClassName({ className: props.className, gap: "xs" })}>
+      <div className={primitiveInlineRowClassName({ between: true, gap: "xs", wrap: true })}>
         <span className="label">{props.label}</span>
         <div className="right">
           {copy_button({
@@ -220,7 +232,7 @@ function copy_code_card(props: CopyCodeCardProps) {
           })}
         </div>
       </div>
-      {props.description ? <p className="text-muted">{props.description}</p> : null}
+      {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
       {code_block({ id: props.id, value: props.value, wrap: true })}
     </div>
   );

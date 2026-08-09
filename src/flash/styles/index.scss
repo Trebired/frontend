@@ -1,7 +1,7 @@
 .tbf-flash-stack {
   position: fixed;
-  right: 18px;
-  bottom: calc(18px + var(--tbf-layout-bottom-bar-safe-offset, 0px));
+  right: var(--tbf-flash-offset, 18px);
+  bottom: calc(var(--tbf-flash-offset, 18px) + var(--tbf-layout-bottom-bar-safe-offset, 0px));
   width: min(var(--tbf-flash-max-width, 520px), calc(100vw - 36px));
   pointer-events: none;
   transition: height var(--tbf-transition-fast) ease;
@@ -11,17 +11,21 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 10px;
-  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tbf-flash-gap, 10px);
+  width: max-content;
+  max-width: 100%;
   box-sizing: border-box;
-  padding: 12px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius, 0);
-  color: var(--tbf-text, #000);
-  background: var(--tbf-surface, #fff);
-  box-shadow: var(--tbf-shadow, 0 0 0 1px #000);
+  padding: var(--tbf-flash-padding, 15px);
+  border: var(
+    --tbf-flash-border,
+    var(--tbf-border-width, 1px) solid var(--tbf-flash-border-color, var(--border-surface-1, currentColor))
+  );
+  border-radius: var(--tbf-flash-radius, var(--radius-lg, var(--tbf-radius, 0)));
+  color: var(--tbf-flash-color, var(--text-color, currentColor));
+  background: var(--tbf-flash-background, var(--background-surface-1, transparent));
+  box-shadow: var(--tbf-flash-shadow, var(--tbf-shadow, none));
   opacity: 0;
   overflow: hidden;
   pointer-events: auto;
@@ -44,27 +48,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--tbf-radius-sm, 0);
-  background: var(--tbf-surface-muted, #fff);
-  font-size: 12px;
-  font-weight: 700;
+  flex: 0 0 auto;
+  color: var(--tbf-flash-icon-color, currentColor);
+  font-size: var(--tbf-flash-icon-font-size, 13px);
+  font-weight: var(--tbf-flash-icon-font-weight, 700);
 }
 
-.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon,
-.tbf-flash[data-tbf-progress-tone="green"] .tbf-flash__icon {
-  color: var(--green-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon {
+  color: var(--tbf-flash-success-icon-color, var(--tbf-flash-success-color, var(--tbf-flash-icon-color, currentColor)));
 }
 
-.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon,
-.tbf-flash[data-tbf-progress-tone="red"] .tbf-flash__icon {
-  color: var(--red-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon {
+  color: var(--tbf-flash-error-icon-color, var(--tbf-flash-error-color, var(--tbf-flash-icon-color, currentColor)));
 }
 
-.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon,
-.tbf-flash[data-tbf-progress-tone="yellow"] .tbf-flash__icon {
-  color: var(--yellow-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon {
+  color: var(--tbf-flash-warn-icon-color, var(--tbf-flash-warn-color, var(--tbf-flash-icon-color, currentColor)));
+}
+
+.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__icon {
+  color: var(--tbf-flash-info-icon-color, var(--tbf-flash-info-color, var(--tbf-flash-icon-color, currentColor)));
 }
 
 .tbf-flash__body,
@@ -72,7 +75,7 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--tbf-flash-body-gap, 8px);
 }
 
 .tbf-flash__title,
@@ -80,34 +83,31 @@
   min-width: 0;
 }
 
+.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__title {
+  color: var(--tbf-flash-success-title-color, var(--tbf-flash-success-color, var(--tbf-flash-title-color, currentColor)));
+}
+
+.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__title {
+  color: var(--tbf-flash-error-title-color, var(--tbf-flash-error-color, var(--tbf-flash-title-color, currentColor)));
+}
+
+.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__title {
+  color: var(--tbf-flash-warn-title-color, var(--tbf-flash-warn-color, var(--tbf-flash-title-color, currentColor)));
+}
+
+.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__title {
+  color: var(--tbf-flash-info-title-color, var(--tbf-flash-info-color, var(--tbf-flash-title-color, currentColor)));
+}
+
 .tbf-flash__description {
-  color: var(--tbf-text-muted, #000);
-  font-size: 0.92rem;
-}
-
-.tbf-flash__close {
-  width: 32px;
-  min-height: 32px;
-  padding: 0;
-  overflow: hidden;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-sm, 0);
-  color: var(--tbf-text, #000);
-  background: var(--tbf-surface-muted, #fff);
-  text-indent: -999px;
-  cursor: pointer;
-}
-
-.tbf-flash__close::after {
-  content: "x";
-  display: block;
-  text-indent: 0;
+  color: var(--tbf-flash-description-color, var(--text-color-muted, currentColor));
+  font-size: var(--tbf-flash-description-font-size, 0.92rem);
 }
 
 .tbf-flash__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--tbf-flash-actions-gap, 8px);
 }
 
 .tbf-flash__progress {
@@ -115,48 +115,28 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: var(--tbf-focus, #000);
+  height: var(--tbf-flash-progress-height, 4px);
+  background: var(--tbf-flash-progress-color, currentColor);
   transform-origin: left center;
   animation-name: tbf-flash-progress;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
-.tbf-flash[data-tbf-progress-tone="blue"] .tbf-flash__progress {
-  background: var(--blue-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__progress {
+  background: var(--tbf-flash-error-progress-color, var(--tbf-flash-error-color, var(--tbf-flash-progress-color, currentColor)));
 }
 
-.tbf-flash[data-tbf-progress-tone="cyan"] .tbf-flash__progress {
-  background: var(--cyan-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__progress {
+  background: var(--tbf-flash-warn-progress-color, var(--tbf-flash-warn-color, var(--tbf-flash-progress-color, currentColor)));
 }
 
-.tbf-flash[data-tbf-progress-tone="gray"] .tbf-flash__progress {
-  background: var(--gray-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__progress {
+  background: var(--tbf-flash-success-progress-color, var(--tbf-flash-success-color, var(--tbf-flash-progress-color, currentColor)));
 }
 
-.tbf-flash[data-tbf-progress-tone="green"] .tbf-flash__progress {
-  background: var(--green-500, var(--tbf-focus, #000));
-}
-
-.tbf-flash[data-tbf-progress-tone="indigo"] .tbf-flash__progress {
-  background: var(--indigo-500, var(--tbf-focus, #000));
-}
-
-.tbf-flash[data-tbf-progress-tone="orange"] .tbf-flash__progress {
-  background: var(--orange-500, var(--tbf-focus, #000));
-}
-
-.tbf-flash[data-tbf-progress-tone="red"] .tbf-flash__progress {
-  background: var(--red-500, var(--tbf-focus, #000));
-}
-
-.tbf-flash[data-tbf-progress-tone="ruby"] .tbf-flash__progress {
-  background: var(--ruby-500, var(--tbf-focus, #000));
-}
-
-.tbf-flash[data-tbf-progress-tone="yellow"] .tbf-flash__progress {
-  background: var(--yellow-500, var(--tbf-focus, #000));
+.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__progress {
+  background: var(--tbf-flash-info-progress-color, var(--tbf-flash-info-color, var(--tbf-flash-progress-color, currentColor)));
 }
 
 @keyframes tbf-flash-progress {

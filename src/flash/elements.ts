@@ -27,11 +27,9 @@ function createFlashElement(
   element.append(
     flashIcon(type),
     flashBody(message, description, options),
-    flashCloseButton(),
     flashProgress(),
   );
   return {
-    close: element.querySelector<HTMLButtonElement>(".tbf-flash__close")!,
     element,
     progress: element.querySelector<HTMLElement>(".tbf-flash__progress")!,
   };
@@ -62,12 +60,6 @@ function flashDescription(text: string) {
   desc.className = "tbf-flash__description";
   desc.textContent = text;
   return desc;
-}
-
-function flashCloseButton() {
-  const close = makeButton("Dismiss", "tbf-flash__close");
-  close.setAttribute("aria-label", "Dismiss");
-  return close;
 }
 
 function flashProgress() {

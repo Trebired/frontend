@@ -80,7 +80,7 @@
 
   th,
   td {
-    border: var(--border-width, var(--tbf-border-width, 1px)) solid var(--gray-700, var(--tbf-border, #ddd));
+    border: var(--border-width, var(--tbf-border-width, 1px)) solid var(--border-surface-1, var(--tbf-border, currentColor));
     text-align: left;
     vertical-align: middle;
   }
@@ -100,7 +100,7 @@
   }
 
   tbody tr:hover {
-    background: var(--gray-800, var(--tbf-surface-muted, #f7f7f7));
+    background: var(--background-surface-2, var(--tbf-surface-muted, transparent));
     cursor: pointer;
   }
 }

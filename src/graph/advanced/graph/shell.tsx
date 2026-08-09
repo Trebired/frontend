@@ -3,6 +3,13 @@ import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { appendClassName } from "#4fte8m1x62rd";
 import {
+  InlineRow,
+  Text,
+  primitiveButtonClassName,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
+import {
   FullscreenCloseButton,
   FullscreenOpenButton,
   FullscreenTarget,
@@ -22,7 +29,7 @@ function graphFullscreenButton(
     "aria-label": label,
     fullscreenId: String(props.extendId || ""),
     group: String(props.extendGroup || "default"),
-    className: "btn icon md has-tooltip",
+    className: primitiveButtonClassName({ icon: true, size: "md", tooltip: true }),
   };
 
   return mode === "close" ? (
@@ -45,10 +52,10 @@ function graphFullscreenActions(
 ) {
   return (
     <div className="right">
-    <div className="inline-row gap-xs">
+    <InlineRow gap="xs">
     {graphFullscreenButton(props, "open", t("display.fullscreen"))}
     {graphFullscreenButton(props, "close", t("display.exitFullscreen"))}
-    </div>
+    </InlineRow>
     </div>
   );
 }
@@ -59,7 +66,7 @@ function renderGraphToolbar(props: graph_props) {
   if (!props.toolbarContent && !hasFullscreen) return null;
 
   return (
-    <Card className="canvas-panel-toolbar gap-sm padding-xs" style={{ flexWrap: "wrap" }}>
+    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar padding-xs", gap: "sm", wrap: true })}>
     {props.toolbarContent}
     {hasFullscreen ? graphFullscreenActions(props, localT) : null}
     </Card>
@@ -69,8 +76,7 @@ function renderGraphToolbar(props: graph_props) {
 function graphShellStateOverlay(model: any) {
   if (model.resolvedState === "warning") {
     return (
-      <div
-      className="inline-row"
+      <InlineRow
       style={{
           position: "absolute",
           inset: 0,
@@ -78,8 +84,8 @@ function graphShellStateOverlay(model: any) {
           justifyContent: "center",
           color:
           model.resolvedStateTone === "warn"
-          ? "var(--red-400)"
-          : "var(--red-400)",
+          ? "var(--tbf-status-warning-color, var(--tbf-focus, currentColor))"
+          : "var(--tbf-status-error-color, var(--tbf-focus, currentColor))",
       }}
       >
       <div className="center">
@@ -91,14 +97,13 @@ function graphShellStateOverlay(model: any) {
             },
       })}
       </div>
-      </div>
+      </InlineRow>
     );
   }
 
   if (!model.isLoading) return null;
   return (
-    <div
-    className="inline-row"
+    <InlineRow
     style={{
         position: "absolute",
         inset: 0,
@@ -109,7 +114,7 @@ function graphShellStateOverlay(model: any) {
     <div className="center">
     <div className="loader md" aria-hidden="true"></div>
     </div>
-    </div>
+    </InlineRow>
   );
 }
 
@@ -137,7 +142,7 @@ function renderGraphDetails(model: any) {
       ? renderRowDetails(model.rows)
       : null}
     {model.descriptionValue ? (
-        <div className="text-muted text-sm">{model.descriptionValue}</div>
+        <Text as="span" muted size="sm">{model.descriptionValue}</Text>
       ) : null}
     </>
   );
@@ -177,10 +182,13 @@ function enhancedRootClassName(props: graph_props) {
   );
   return appendClassName(
     enhancedRootClass,
-    appendClassName(
-      "graph-shell column gap-sm padding-xs flex-1",
+    primitiveStackClassName({
+      className: appendClassName(
+        "graph-shell padding-xs flex-1",
       props.scroll === true ? "scroll scroll-min" : "",
     ),
+      gap: "sm",
+    }),
   );
 }
 
@@ -216,7 +224,7 @@ function renderEnhancedGraphShell(props: graph_props, model: any) {
 function renderSimpleGraphShell(model: any) {
   return (
     <>
-    <Card className="column gap-sm">
+    <Card className={primitiveStackClassName({ gap: "sm" })}>
     {renderGraphCanvas(model)}
     {renderGraphDetails(model)}
     </Card>

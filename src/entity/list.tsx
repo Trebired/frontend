@@ -1,5 +1,5 @@
 import { createElement, Fragment, type ReactNode } from "react";
-import { card } from "#6hfutrhvm6x6";
+import { Stack, Text, card } from "#hzrmwbvgt2ax";
 import search, { search_panel } from "#xkgew618b00p";
 
 type EntityListLive = {
@@ -42,21 +42,21 @@ function listHeader<T>(props: EntityListProps<T>) {
   return (
     <>
       {props.title ? <h3>{props.title}</h3> : null}
-      {props.description ? <p className="text-muted">{props.description}</p> : null}
+      {props.description ? <Text as="p" muted>{props.description}</Text> : null}
     </>
   );
 }
 
 function listCard<T>(props: EntityListProps<T>) {
   return card({
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
         {listHeader(props)}
         {props.items.length ? (
           listItems(props)
         ) : (
-          <p className="text-muted">{props.emptyText || "Nothing here yet."}</p>
+          <Text as="p" muted>{props.emptyText || "Nothing here yet."}</Text>
         )}
       </>
     ),
@@ -66,9 +66,9 @@ function listCard<T>(props: EntityListProps<T>) {
 function listBody<T>(props: EntityListProps<T>, familyKey: string, anchorId: string) {
   if (!props.placeholder) {
     return (
-      <div className="column gap-sm" id={anchorId}>
+      <Stack gap="sm" id={anchorId}>
         {listCard(props)}
-      </div>
+      </Stack>
     );
   }
   return (
@@ -102,10 +102,10 @@ function entity_list<T>(props: EntityListProps<T>) {
   const familyKey = text(props.familyKey);
   const anchorId = entityListAnchorId(familyKey);
   return (
-    <div className="column gap-sm">
+    <Stack gap="sm">
       {listBody(props, familyKey, anchorId)}
       {liveMarker(props.live, anchorId)}
-    </div>
+    </Stack>
   );
 }
 

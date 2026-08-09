@@ -1,5 +1,6 @@
 import React from "react";
 import { logsT } from "#gu61mitj537f";
+import { primitiveGapClass } from "#hzrmwbvgt2ax";
 
 function styleObj(input) {
   const out = {};
@@ -158,7 +159,7 @@ function LogRow({ view, onOpen, onToggleMarker }) {
   return React.createElement(
     "div",
     {
-      className: "log-line gap-xs",
+      className: ["log-line", primitiveGapClass("xs")].join(" "),
       "data-log-key": view.logKey,
       role: "button",
       tabIndex: 0,

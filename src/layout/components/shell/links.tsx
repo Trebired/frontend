@@ -51,7 +51,7 @@ function defaultSupportLink(
   return (
     <a
       {...attrs}
-      className={classNames("tbf-shell-support-links__link", linkClassName)}
+      className={classNames("text-link", "tbf-shell-support-links__link", linkClassName)}
       key={key}
       rel={attrs.rel || "noopener noreferrer"}
       target={attrs.target || "_blank"}

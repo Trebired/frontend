@@ -1,9 +1,15 @@
 import { text } from "./shared.js";
+import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 
 function ImagePreviewPane(props: any) {
   return (
     <div
-      className="column gap-sm center ver-center bg-canvas"
+      className={primitiveStackClassName({
+        center: true,
+        className: "bg-canvas",
+        gap: "sm",
+        verticalCenter: true,
+      })}
       style={{
         height: "100%",
         minHeight: Number.isFinite(props.minHeight) ? Number(props.minHeight) : 560,

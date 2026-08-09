@@ -1,4 +1,12 @@
-import { button, card } from "#6hfutrhvm6x6";
+import {
+  InlineRow,
+  Stack,
+  Text,
+  button,
+  card,
+  primitiveInlineRowClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 import {
   formatCompactBytes,
   formatCount,
@@ -15,7 +23,8 @@ import type { SourceLanguageVisualizerProps } from "#2w72xmq6rvza";
 
 function headerCard(model: SourceLanguageScanModel) {
   return card({
-    className: "inline-row gap-sm",
+    className: primitiveInlineRowClassName({ gap: "sm" }),
+    layout: "none",
     children: (
       <>
         <h3>{translate(model.lang, "languages")}</h3>
@@ -23,11 +32,13 @@ function headerCard(model: SourceLanguageScanModel) {
           type: "button",
           "data-tbf-source-language-reset": "",
           hidden: true,
-          className: "text-muted text-sm right",
+          className: primitiveTextClassName({ muted: true, right: true, size: "sm" }),
           children: <>{translate(model.lang, "resetFilter")}</>,
         })}
-        <span
-          className="text-muted text-sm no-shrink"
+        <Text
+          className="no-shrink"
+          muted
+          size="sm"
           data-tbf-source-language-detected-count=""
         >
           {translate(model.lang, "detected", {
@@ -36,7 +47,7 @@ function headerCard(model: SourceLanguageScanModel) {
               model.locale,
             ),
           })}
-        </span>
+        </Text>
       </>
     ),
   });
@@ -62,33 +73,33 @@ function progressFillStyle(model: SourceLanguageScanModel) {
 
 function source_language_scan_progress_card(model: SourceLanguageScanModel) {
   return (
-    <div
+    <Stack
       id="repository_scan_pending_content"
-      className={
-        model.hasReadySnapshot
-          ? "column gap-sm"
-          : "column center ver-center gap-sm min-height-md"
-      }
+      center={!model.hasReadySnapshot}
+      className={model.hasReadySnapshot ? "" : "min-height-md"}
+      gap="sm"
       hidden={!model.scanPending && !model.scanFailed}
+      verticalCenter={!model.hasReadySnapshot}
     >
-      <div className="column center gap-xs">
-        <span id="repository_scan_message" className="text-sm text-muted">
+      <Stack center gap="xs">
+        <Text id="repository_scan_message" muted size="sm">
           {model.scanProgressMessage}
-        </span>
-        <span
+        </Text>
+        <Text
           id="repository_scan_progress_label"
-          className="text-xs text-muted"
           data-progress-label=""
+          muted
+          size="xs"
         >
           {model.scanProgressLabel}
-        </span>
-      </div>
+        </Text>
+      </Stack>
       <div id="repository_scan_progress" className="progress progress-scan width-max" data-progress="">
         <div data-progress-mount="">
           <span data-progress-fill="" style={progressFillStyle(model)} />
         </div>
       </div>
-    </div>
+    </Stack>
   );
 }
 
@@ -96,30 +107,32 @@ function summaryRows(model: SourceLanguageScanModel) {
   const scan = model.scan;
   return (
     <>
-      <div className="inline-row gap-xs lh-xs">
-        <strong className="text-muted lh-xs">{translate(model.lang, "totalSizeLabel")}</strong>
-        <span
-          className="text-break lh-xs"
+      <InlineRow className="lh-xs" gap="xs">
+        <Text as="strong" className="lh-xs" muted>{translate(model.lang, "totalSizeLabel")}</Text>
+        <Text
+          breakWord
+          className="lh-xs"
           data-tbf-source-language-summary-total-bytes={String(safeNumber(scan.total_bytes))}
         >
           {formatCompactBytes(scan.total_bytes, model.locale)}
-        </span>
-      </div>
-      <div className="inline-row gap-xs lh-xs">
-        <strong className="text-muted lh-xs">{translate(model.lang, "files")}:</strong>
-        <span className="text-break lh-xs">{formatCount(scan.file_count, model.locale)}</span>
-      </div>
-      <div className="inline-row gap-xs lh-xs">
-        <strong className="text-muted lh-xs">{translate(model.lang, "codeLines")}</strong>
-        <span
-          className="text-break lh-xs"
+        </Text>
+      </InlineRow>
+      <InlineRow className="lh-xs" gap="xs">
+        <Text as="strong" className="lh-xs" muted>{translate(model.lang, "files")}:</Text>
+        <Text breakWord className="lh-xs">{formatCount(scan.file_count, model.locale)}</Text>
+      </InlineRow>
+      <InlineRow className="lh-xs" gap="xs">
+        <Text as="strong" className="lh-xs" muted>{translate(model.lang, "codeLines")}</Text>
+        <Text
+          breakWord
+          className="lh-xs"
           data-tbf-source-language-summary-total-lines={String(
             safeNumber(scan.total_lines && scan.total_lines.code),
           )}
         >
           {formatCount(scan.total_lines && scan.total_lines.code, model.locale)}
-        </span>
-      </div>
+        </Text>
+      </InlineRow>
     </>
   );
 }
@@ -127,18 +140,18 @@ function summaryRows(model: SourceLanguageScanModel) {
 function scannedAtRow(model: SourceLanguageScanModel) {
   if (!model.scannedAt) return null;
   return (
-    <div className="inline-row gap-xs lh-xs">
-      <strong className="text-muted lh-xs">{translate(model.lang, "scanned")}</strong>
-      <span className="text-break lh-xs">
+    <InlineRow className="lh-xs" gap="xs">
+      <Text as="strong" className="lh-xs" muted>{translate(model.lang, "scanned")}</Text>
+      <Text breakWord className="lh-xs">
         {formatDateTime(model.scannedAt, model.locale)}
-      </span>
-    </div>
+      </Text>
+    </InlineRow>
   );
 }
 
 function summaryCard(model: SourceLanguageScanModel) {
   return card({
-    className: "column gap-xs",
+    gap: "xs",
     children: (
       <>
         {summaryRows(model)}
@@ -150,9 +163,9 @@ function summaryCard(model: SourceLanguageScanModel) {
 
 function readyContent(model: SourceLanguageScanModel) {
   return (
-    <div
+    <Stack
       id="repository_scan_ready_content"
-      className="column gap-sm"
+      gap="sm"
       data-tbf-source-language-ready-state={model.hasReadySnapshot ? "available" : "empty"}
       hidden={model.scanFailed || model.scanPending}
     >
@@ -162,7 +175,7 @@ function readyContent(model: SourceLanguageScanModel) {
           {source_language_tabs_content(model)}
         </>
       ) : null}
-    </div>
+    </Stack>
   );
 }
 
@@ -177,7 +190,7 @@ function source_language_visualizer(props: SourceLanguageVisualizerProps) {
     "data-repository-scan-visualizer-url": repositoryScanVisualizerUrl,
     "data-repository-visualizer-card": "",
     "data-tbf-source-language-root": "",
-    className: "column gap-sm",
+    gap: "sm",
     children: (
       <>
         {headerCard(model)}

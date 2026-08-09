@@ -81,8 +81,8 @@ body[data-tbf-sidebar-open="true"] {
 }
 
 ::selection {
-  color: var(--tbf-selection-text, var(--gray-200, #fff));
-  background-color: var(--tbf-selection-bg, color-mix(in srgb, var(--gray-500, #888) 50%, transparent)) !important;
+  color: var(--tbf-selection-text, var(--text-color, #fff));
+  background-color: var(--tbf-selection-bg, color-mix(in srgb, var(--tbf-focus, currentColor) 50%, transparent)) !important;
 }
 
 h1,

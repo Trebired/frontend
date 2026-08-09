@@ -46,7 +46,7 @@
 }
 
 .toggle-side.active .toggle-side-label {
-  color: var(--gray-100);
+  color: var(--tbf-toggle-active-color, var(--text-color, currentColor));
 }
 
 .toggle-handle {
@@ -68,7 +68,7 @@
   padding: 3px;
   border: var(--border-width) solid var(--border-surface-1);
   border-radius: 999px;
-  background: var(--gray-100);
+  background: var(--tbf-toggle-track-background, var(--background-surface-1, transparent));
   transition:
   background 120ms ease,
   border-color 120ms ease;
@@ -78,7 +78,7 @@
   width: 24px;
   height: 24px;
   border-radius: 999px;
-  background: var(--gray-400);
+  background: var(--tbf-toggle-thumb-background, var(--text-color-muted, currentColor));
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
   transform: translateX(0);
   transition: transform 140ms ease;
@@ -89,7 +89,7 @@
 }
 
 .toggle-handle:focus-visible {
-  outline: var(--border-width) solid var(--gray-600);
+  outline: var(--border-width) solid var(--tbf-input-focus-color, var(--tbf-focus, currentColor));
   outline-offset: 3px;
   border-radius: 999px;
 }

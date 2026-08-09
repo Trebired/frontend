@@ -154,11 +154,11 @@
 }
 
 [data-tbf-sidebar-live-state="error"] {
-  color: var(--red-500, var(--tbf-focus, #000));
+  color: var(--tbf-status-error-color, var(--tbf-focus, currentColor));
 }
 
 [data-tbf-sidebar-live-state="success"] {
-  color: var(--green-500, var(--tbf-focus, #000));
+  color: var(--tbf-status-success-color, var(--tbf-focus, currentColor));
 }
 
 .tbf-sidebar-separator,

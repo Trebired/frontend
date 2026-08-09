@@ -1,19 +1,19 @@
 import { assertPlainObject, cssString, invalidConfig } from "./shared.js";
 import type {
-  NormalizedTrebiredFrontendFontConfig,
-  NormalizedTrebiredFrontendFontFamilyConfig,
-  TrebiredFrontendFontDisplay,
-  TrebiredFrontendFontStyle,
+  NormalizedFrontendFontConfig,
+  NormalizedFrontendFontFamilyConfig,
+  FrontendFontDisplay,
+  FrontendFontStyle,
 } from "./types.js";
 
-const DEFAULT_FONT_DISPLAY: TrebiredFrontendFontDisplay = "swap";
-const DEFAULT_FONT_STYLES: TrebiredFrontendFontStyle[] = ["normal"];
+const DEFAULT_FONT_DISPLAY: FrontendFontDisplay = "swap";
+const DEFAULT_FONT_STYLES: FrontendFontStyle[] = ["normal"];
 const DEFAULT_FONT_SUBSETS = ["latin"];
 const DEFAULT_FONT_WEIGHTS = [400];
 const SUPPORTED_FONT_DISPLAYS = new Set(["auto", "block", "fallback", "optional", "swap"]);
 const SUPPORTED_FONT_STYLES = new Set(["italic", "normal"]);
 
-function normalizeFontsConfig(value: unknown): NormalizedTrebiredFrontendFontConfig {
+function normalizeFontsConfig(value: unknown): NormalizedFrontendFontConfig {
   if (value === undefined) return { families: [], sans: "" };
   const source = assertPlainObject(value, "fonts");
   const familiesSource = source.families === undefined ? {} : assertPlainObject(source.families, "fonts.families");
@@ -26,7 +26,7 @@ function normalizeFontsConfig(value: unknown): NormalizedTrebiredFrontendFontCon
   };
 }
 
-function normalizeFontFamily(key: string, value: unknown): NormalizedTrebiredFrontendFontFamilyConfig {
+function normalizeFontFamily(key: string, value: unknown): NormalizedFrontendFontFamilyConfig {
   const source = assertPlainObject(value, `fonts.families.${key}`);
   const packageName = normalizeFontsourcePackage(source.package || source.fontsource || key, `fonts.families.${key}.package`);
   return {
@@ -65,20 +65,20 @@ function normalizeFontFamilyName(value: unknown, pathLabel: string): string {
   return family;
 }
 
-function normalizeFontDisplay(value: unknown, pathLabel: string): TrebiredFrontendFontDisplay {
+function normalizeFontDisplay(value: unknown, pathLabel: string): FrontendFontDisplay {
   if (value === undefined) return DEFAULT_FONT_DISPLAY;
   const display = String(value || "").trim().toLowerCase();
   if (!SUPPORTED_FONT_DISPLAYS.has(display)) {
     throw invalidConfig(`${pathLabel} must be one of auto, block, fallback, optional, or swap`);
   }
-  return display as TrebiredFrontendFontDisplay;
+  return display as FrontendFontDisplay;
 }
 
-function normalizeFontStyles(value: unknown, pathLabel: string): TrebiredFrontendFontStyle[] {
+function normalizeFontStyles(value: unknown, pathLabel: string): FrontendFontStyle[] {
   return normalizeStringArray(value, DEFAULT_FONT_STYLES, pathLabel, (item, itemPath) => {
     const style = String(item || "").trim().toLowerCase();
     if (!SUPPORTED_FONT_STYLES.has(style)) throw invalidConfig(`${itemPath} must be normal or italic`);
-    return style as TrebiredFrontendFontStyle;
+    return style as FrontendFontStyle;
   });
 }
 
@@ -134,19 +134,19 @@ function fontFamilyFromPackage(packageName: string): string {
     .join(" ");
 }
 
-function defaultSansFontStack(families: NormalizedTrebiredFrontendFontFamilyConfig[]): string {
+function defaultSansFontStack(families: NormalizedFrontendFontFamilyConfig[]): string {
   const sans = families.find((family) => family.key === "sans");
   return sans ? `${cssString(sans.family)}, sans-serif` : "";
 }
 
-function renderFontsCss(config: NormalizedTrebiredFrontendFontConfig): string[] {
+function renderFontsCss(config: NormalizedFrontendFontConfig): string[] {
   const lines = config.families.flatMap((family) => fontFaceBlocks(family));
   const root = fontRootDeclarations(config);
   if (root.length) lines.push("", ":root {", ...root, "}");
   return lines;
 }
 
-function fontFaceBlocks(family: NormalizedTrebiredFrontendFontFamilyConfig): string[] {
+function fontFaceBlocks(family: NormalizedFrontendFontFamilyConfig): string[] {
   return family.subsets.flatMap((subset) =>
     family.weights.flatMap((weight) =>
       family.styles.flatMap((style) => [
@@ -167,12 +167,12 @@ function fontsourceFileUrl(
   packageName: string,
   subset: string,
   weight: number,
-  style: TrebiredFrontendFontStyle,
+  style: FrontendFontStyle,
 ): string {
   return `@fontsource/${packageName}/files/${packageName}-${subset}-${weight}-${style}.woff2`;
 }
 
-function fontRootDeclarations(config: NormalizedTrebiredFrontendFontConfig): string[] {
+function fontRootDeclarations(config: NormalizedFrontendFontConfig): string[] {
   const lines: string[] = [];
   if (config.sans) lines.push(`  --tbf-font-sans: ${config.sans};`);
   for (const family of config.families) {

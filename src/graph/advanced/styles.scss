@@ -40,7 +40,7 @@
   height: var(--roadmap-bullet-size);
   border-radius: 999px;
   border: var(--border-width) solid var(--border-surface-1);
-  background: var(--background-surface-1, var(--gray-900));
+  background: var(--background-surface-1, transparent);
   color: var(--text-color-muted);
   flex: 0 0 auto;
 }

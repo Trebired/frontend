@@ -1,113 +1,116 @@
 import path from "node:path";
 
 import { collectConfigDependencies, importConfigModule, pathExists } from "./module.js";
-import { TREBIRED_FRONTEND_CONFIG_PATH, normalizeTrebiredFrontendConfig } from "./normalize.js";
-import { generateTrebiredFrontendScss } from "./scss.js";
+import { FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
+import { generateFrontendScss } from "./scss.js";
 import type {
-  LoadTrebiredFrontendConfigOptions,
-  LoadedTrebiredFrontendConfig,
-  TrebiredFrontendConfig,
+  LoadFrontendConfigOptions,
+  LoadedFrontendConfig,
+  FrontendConfig,
 } from "./types.js";
 
-function defineTrebiredFrontendConfig<T extends TrebiredFrontendConfig>(config: T): T {
+function defineFrontendConfig<T extends FrontendConfig>(config: T): T {
   return config;
 }
 
-async function findTrebiredFrontendConfig(
+async function findFrontendConfig(
   startDir: string = process.cwd(),
   boundaryDir?: string,
 ): Promise<string | null> {
   const boundary = path.resolve(boundaryDir || path.parse(path.resolve(startDir)).root);
   let current = path.resolve(startDir);
   for (;;) {
-    const candidate = path.join(current, TREBIRED_FRONTEND_CONFIG_PATH);
+    const candidate = path.join(current, FRONTEND_CONFIG_PATH);
     if (await pathExists(candidate)) return candidate;
     if (current === boundary || current === path.dirname(current)) return null;
     current = path.dirname(current);
   }
 }
 
-function createDefaultLoadedConfig(): LoadedTrebiredFrontendConfig {
-  const config = normalizeTrebiredFrontendConfig({});
+function createDefaultLoadedConfig(): LoadedFrontendConfig {
+  const config = normalizeFrontendConfig({});
   return {
     config,
     configPath: null,
     dependencies: [],
-    generatedScss: generateTrebiredFrontendScss(config),
+    generatedScss: generateFrontendScss(config),
   };
 }
 
-async function loadTrebiredFrontendConfig(
+async function loadFrontendConfig(
   projectRoot: string = process.cwd(),
-  options: LoadTrebiredFrontendConfigOptions = {},
-): Promise<LoadedTrebiredFrontendConfig> {
+  options: LoadFrontendConfigOptions = {},
+): Promise<LoadedFrontendConfig> {
   const root = path.resolve(projectRoot);
   const resolvedPath = options.configPath
     ? path.resolve(root, options.configPath)
-    : await findTrebiredFrontendConfig(options.searchFrom || root);
+    : await findFrontendConfig(options.searchFrom || root);
 
   if (!resolvedPath) {
     if (options.defaultIfMissing === false) {
-      throw new Error(`trebired-frontend-config-not-found :: ${TREBIRED_FRONTEND_CONFIG_PATH}`);
+      throw new Error(`frontend-config-not-found :: ${FRONTEND_CONFIG_PATH}`);
     }
     return createDefaultLoadedConfig();
   }
 
   if (!await pathExists(resolvedPath)) {
-    throw new Error(`trebired-frontend-config-not-found :: ${resolvedPath}`);
+    throw new Error(`frontend-config-not-found :: ${resolvedPath}`);
   }
 
   const dependencies = await collectConfigDependencies(resolvedPath);
-  const config = normalizeTrebiredFrontendConfig(await importConfigModule(root, resolvedPath, dependencies));
+  const config = normalizeFrontendConfig(await importConfigModule(root, resolvedPath, dependencies));
   return {
     config,
     configPath: resolvedPath,
     dependencies,
-    generatedScss: generateTrebiredFrontendScss(config),
+    generatedScss: generateFrontendScss(config),
   };
 }
 
 export {
-  DEFAULT_TREBIRED_FRONTEND_CONFIG,
+  DEFAULT_FRONTEND_CONFIG,
   SUPPORTED_ICON_PACKS,
   SYSTEM_ORDER,
   THEME_MODE_ATTRIBUTE,
-  TREBIRED_FRONTEND_CONFIG_PATH,
-  normalizeTrebiredFrontendConfig,
+  FRONTEND_CONFIG_PATH,
+  normalizeFrontendConfig,
 } from "./normalize.js";
-export { generateTrebiredFrontendScss } from "./scss.js";
+export { generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
-export { defineTrebiredFrontendConfig, findTrebiredFrontendConfig, loadTrebiredFrontendConfig };
+export { defineFrontendConfig, findFrontendConfig, loadFrontendConfig };
 export type {
-  LoadTrebiredFrontendConfigOptions,
-  LoadedTrebiredFrontendConfig,
-  NormalizedTrebiredFrontendConfig,
-  NormalizedTrebiredFrontendFontConfig,
-  NormalizedTrebiredFrontendFontFamilyConfig,
-  NormalizedTrebiredFrontendPaletteConfig,
-  NormalizedTrebiredFrontendPaletteMode,
-  NormalizedTrebiredFrontendPaletteSemantic,
-  NormalizedTrebiredFrontendScalesConfig,
-  NormalizedTrebiredFrontendThemeConfig,
-  NormalizedTrebiredFrontendThemeMode,
-  NormalizedTrebiredFrontendZIndexScaleConfig,
-  TrebiredFrontendConfig,
-  TrebiredFrontendFontConfig,
-  TrebiredFrontendFontDisplay,
-  TrebiredFrontendFontFamilyConfig,
-  TrebiredFrontendFontStyle,
-  TrebiredFrontendIconPack,
-  TrebiredFrontendPaletteConfig,
-  TrebiredFrontendPaletteFamilies,
-  TrebiredFrontendPaletteMode,
-  TrebiredFrontendPaletteScale,
-  TrebiredFrontendPaletteSemanticRef,
-  TrebiredFrontendScaleSteps,
-  TrebiredFrontendScalesConfig,
-  TrebiredFrontendSystemKey,
-  TrebiredFrontendThemeConfig,
-  TrebiredFrontendThemeMode,
-  TrebiredFrontendThemeModeScheme,
-  TrebiredFrontendThemeTokens,
-  TrebiredFrontendZIndexScaleConfig,
+  LoadFrontendConfigOptions,
+  LoadedFrontendConfig,
+  NormalizedFrontendConfig,
+  NormalizedFrontendComponentsConfig,
+  NormalizedFrontendFontConfig,
+  NormalizedFrontendFontFamilyConfig,
+  NormalizedFrontendPaletteConfig,
+  NormalizedFrontendPaletteMode,
+  NormalizedFrontendPaletteSemantic,
+  NormalizedFrontendScalesConfig,
+  NormalizedFrontendThemeConfig,
+  NormalizedFrontendThemeMode,
+  NormalizedFrontendZIndexScaleConfig,
+  FrontendConfig,
+  FrontendComponentTokens,
+  FrontendComponentsConfig,
+  FrontendFontConfig,
+  FrontendFontDisplay,
+  FrontendFontFamilyConfig,
+  FrontendFontStyle,
+  FrontendIconPack,
+  FrontendPaletteConfig,
+  FrontendPaletteFamilies,
+  FrontendPaletteMode,
+  FrontendPaletteScale,
+  FrontendPaletteSemanticRef,
+  FrontendScaleSteps,
+  FrontendScalesConfig,
+  FrontendSystemKey,
+  FrontendThemeConfig,
+  FrontendThemeMode,
+  FrontendThemeModeScheme,
+  FrontendThemeTokens,
+  FrontendZIndexScaleConfig,
 } from "./types.js";

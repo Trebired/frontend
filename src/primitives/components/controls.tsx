@@ -14,17 +14,47 @@ import type {
   list_props,
   masonry_props,
 } from "./types.js";
-import { actionButtonAttrs, appendClassName, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
-
-function buttonClassName(className: unknown, variant?: ButtonProps["variant"]) {
-  void variant;
-  return appendClassName("btn", className);
-}
+import {
+  primitiveButtonClassName,
+  primitiveCardClassName,
+  primitiveGridClassName,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+  primitiveStatusDotClassName,
+  primitiveTextClassName,
+} from "./classes.js";
+import { actionButtonAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
 
 function button(props: ButtonProps) {
-  const { actionButton, actionTrigger, children, className, variant, ...rest } = props;
+  const {
+    actionButton,
+    actionTrigger,
+    active,
+    children,
+    className,
+    icon,
+    size,
+    tone,
+    tooltip,
+    transparent,
+    variant,
+    ...rest
+  } = props;
   return wrapTriggerHostNode(
-    <FrontendButton className={buttonClassName(className, variant)} {...actionButtonAttrs(actionButton)} {...rest}>
+    <FrontendButton
+      className={primitiveButtonClassName({
+        active,
+        className,
+        icon,
+        size,
+        tone,
+        tooltip,
+        transparent,
+        variant,
+      })}
+      {...actionButtonAttrs(actionButton)}
+      {...rest}
+    >
       {children}
     </FrontendButton>,
     { action: actionTrigger },
@@ -32,9 +62,9 @@ function button(props: ButtonProps) {
 }
 
 function card(props: CardProps) {
-  const { actionTrigger, children, className, ...rest } = props;
+  const { actionTrigger, children, className, gap, layout, padding, scroll, ...rest } = props;
   return wrapTriggerHostNode(
-    <FrontendCard className={joinClassNames("card", className)} {...rest}>
+    <FrontendCard className={primitiveCardClassName({ className, gap, layout, padding, scroll })} {...rest}>
       {children}
     </FrontendCard>,
     { action: actionTrigger },
@@ -131,7 +161,9 @@ function separator(props: SeparatorProps = {}) {
 
 function list<T = unknown>(props: list_props<T>) {
   const items = Array.isArray(props.items) ? props.items : [];
-  const className = toText(props.className, "list column gap-xs");
+  const className = props.className
+    ? toText(props.className)
+    : primitiveStackClassName({ className: "list", gap: "xs" });
   const itemClassName = toText(props.itemClassName);
   return (
     <div className={className} style={props.style}>
@@ -149,14 +181,14 @@ function list<T = unknown>(props: list_props<T>) {
 }
 
 function masonry(props: masonry_props) {
-  const { columns, ...attrs } = props;
+  const { columns, gap, ...attrs } = props;
   const safeColumns = Array.isArray(columns)
     ? columns.filter((column) => column != null && column !== false)
     : [];
   return (
-    <div {...attrs} className="grid gap-sm auto-lg">
+    <div {...attrs} className={primitiveGridClassName({ auto: "lg", className: attrs.className, gap: gap || "sm" })}>
       {safeColumns.map((column, index) => (
-        <div className="column gap-sm" key={`masonry_column_${index}`}>
+        <div className={primitiveStackClassName({ gap: gap || "sm" })} key={`masonry_column_${index}`}>
           {column}
         </div>
       ))}
@@ -177,14 +209,16 @@ function bar(props: bar_props) {
   const percent = Number.isFinite(Number(props.percent))
     ? Math.max(0, Math.min(100, Number(props.percent)))
     : 0;
-  const className = props.card === true ? "card column gap-xs" : "column gap-xs";
+  const className = props.card === true
+    ? primitiveCardClassName({ gap: props.gap || "xs" })
+    : primitiveStackClassName({ gap: props.gap || "xs" });
   return (
     <div className={className} hidden={props.hidden === true} {...parse_wrapper_attributes(props.wrapperAttributes)}>
-      <div className="inline-row gap-xs">
-        <span className="text-sm" data-progress-meta="">
+      <div className={primitiveInlineRowClassName({ gap: "xs" })}>
+        <span className={primitiveTextClassName({ size: "sm" })} data-progress-meta="">
           {String(props.meta || "")}
         </span>
-        <span className="text-sm text-muted right" data-progress-label="">
+        <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} data-progress-label="">
           {String(props.label || "")}
         </span>
       </div>
@@ -211,11 +245,13 @@ function circle(props: circle_props) {
 }
 
 function status_dot(props: StatusDotProps) {
-  const tone = toText(props.tone, "gray").toLowerCase() || "gray";
-  const size = toText(props.size, "md").toLowerCase() || "md";
   return (
     <span
-      className={joinClassNames("dot", `dot-${size}`, tone, props.className)}
+      className={primitiveStatusDotClassName({
+        className: props.className,
+        size: props.size,
+        tone: props.tone,
+      })}
       {...(props.ariaHidden !== false ? { "aria-hidden": "true" } : {})}
       {...(props.title ? { title: props.title } : {})}
     />

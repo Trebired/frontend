@@ -14,6 +14,10 @@ import {
   fileTreeLeftBorderColor,
   type FileTreeRowModel,
 } from "./parts.js";
+import {
+  primitiveInlineRowClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 type FileTreeRowProps = {
   highlightedPaths?: Set<string>;
@@ -63,9 +67,9 @@ function readRowModel(props: FileTreeRowProps): FileTreeRowModel & {
 }
 
 function rowBackground(model: ReturnType<typeof readRowModel>) {
-  if (model.isInteractive && model.selected) return "var(--gray-800)";
+  if (model.isInteractive && model.selected) return "var(--background-surface-2, transparent)";
   return model.highlighted
-    ? "color-mix(in srgb, var(--gray-800) 60%, transparent)"
+    ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
     : "transparent";
 }
 
@@ -105,11 +109,18 @@ function FileTreeRow(props: FileTreeRowProps) {
       aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
       data-tbf-file-tree-path={model.relPath || undefined}
       style={rowStyle}
-      className="inline-row ver-center"
+      className={primitiveInlineRowClassName({ verticalCenter: true })}
     >
       <button
         type="button"
-        className={`width-max inline-row gap-xs ver-center text-left${model.canActivateFile || model.kind === "dir" ? "" : " text-muted"}`}
+        className={primitiveInlineRowClassName({
+          className: primitiveTextClassName({
+            className: "width-max text-left",
+            muted: !(model.canActivateFile || model.kind === "dir"),
+          }),
+          gap: "xs",
+          verticalCenter: true,
+        })}
         style={{
           background: rowBackground(model),
           border: "var(--border-width) solid transparent",

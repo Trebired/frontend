@@ -4,7 +4,7 @@
   height: 3px;
   --tbf-progress-bar-color: var(
     --tbf-progress-color,
-    var(--progress-color, var(--gray-400, var(--tbf-focus, #000)))
+    var(--progress-color, var(--tbf-focus, currentColor))
   );
   pointer-events: none;
   z-index: var(--tbf-z-progress, 99999);

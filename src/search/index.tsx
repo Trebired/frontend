@@ -5,6 +5,12 @@ import {
   search_item,
   search_query_input,
 } from "./item.js";
+import {
+  InlineRow,
+  Text,
+  primitiveCardClassName,
+  primitiveInlineRowClassName,
+} from "#hzrmwbvgt2ax";
 import { toText } from "./model.js";
 
 type search_filter_node = ReactNode | null | undefined | false;
@@ -68,11 +74,11 @@ function search(props: search_props) {
       "search-controls",
       attrs,
       config,
-      <div className="card column gap-xs">
-      <div className="inline-row gap-xs content-filter-bar">
+      <div className={primitiveCardClassName({ gap: "xs" })}>
+      <InlineRow className="content-filter-bar" gap="xs">
       {controlsRow(props)}
-      </div>
-      <p className="text-muted text-sm">{description}</p>
+      </InlineRow>
+      <Text as="p" muted size="sm">{description}</Text>
       </div>,
     );
   }
@@ -81,7 +87,10 @@ function search(props: search_props) {
     "search-controls",
     attrs,
     config,
-    <div className="card inline-row gap-xs content-filter-bar">
+    <div className={primitiveCardClassName({
+      className: primitiveInlineRowClassName({ className: "content-filter-bar", gap: "xs" }),
+      layout: "none",
+    })}>
     {controlsRow(props)}
     </div>,
   );
@@ -106,7 +115,7 @@ function search_panel(props: search_panel_props) {
       ? createElement(
         "search-empty",
         { hidden: true, style: { display: "contents" } },
-        <p className="text-muted">{props.emptyText}</p>,
+        <Text as="p" muted>{props.emptyText}</Text>,
       )
       : null}
     </div>,

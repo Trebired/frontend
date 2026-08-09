@@ -1,6 +1,6 @@
 import { toString } from "#dqy2d22qyujv";
-import { ownedNodes, panelIdForTab, simplifyRouteToken } from "./dom";
-import { registeredTabRoots } from "./registry";
+import { ownedNodes, panelIdForTab, simplifyRouteToken } from "./dom.js";
+import { registeredTabRoots } from "./registry.js";
 
 function familyKeyForRoot(root) {
   return root instanceof HTMLElement

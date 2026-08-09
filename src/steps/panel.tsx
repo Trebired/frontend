@@ -2,6 +2,10 @@ import type { ReactNode } from "react";
 import { default as disclosure } from "#7xsqb2bbtamg";
 import { bar as loader_bar } from "#6hfutrhvm6x6";
 import { joinClassNames } from "#6mupcizo1mwq";
+import {
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 
 type SharedStepsPanelProps = {
   beforeList?: ReactNode;
@@ -46,35 +50,39 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
   return disclosure({
       content: (
         <section
-        className={joinClassNames("column", "gap-sm", props.className)}
+        className={primitiveStackClassName({
+            className: props.className,
+            gap: "sm",
+        })}
         data-steps-panel=""
         data-steps-type={model.isDisclosure ? "disclosure" : "steps"}
         data-steps-default-copy={model.emptyCopy}
         data-steps-default-title={model.title}
         {...model.attrs}
         >
-        <p className="text-muted" data-steps-copy="">
+        <p className={primitiveTextClassName({ muted: true })} data-steps-copy="">
         {model.emptyCopy}
         </p>
         {model.beforeList}
         <div
-        className={joinClassNames(
-            "column",
-            "gap-xs",
+        className={primitiveStackClassName({
+          className: joinClassNames(
             "max-height-xl",
             "scroll",
             "scroll-min",
             props.listClassName,
-        )}
+          ),
+          gap: "xs",
+        })}
         data-steps-list=""
         />
         </section>
       ),
       hidden: props.hidden === true,
       label: <h4 data-steps-title="">{model.title}</h4>,
-      panelClassName: "column gap-sm",
+      panelClassName: primitiveStackClassName({ gap: "sm" }),
       panelId: `${model.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "steps"}_panel`,
-      rootClassName: "column gap-sm",
+      rootClassName: primitiveStackClassName({ gap: "sm" }),
       triggerClassName: "text-left",
   });
 }

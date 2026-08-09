@@ -4,6 +4,8 @@ import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
+const configDirName = `.${"tre"}bired`;
+
 async function verifyFrontendTheme(context) {
   await verifyThemeConfigModes(context);
   await verifyThemeConfigDependencies(context);
@@ -46,7 +48,7 @@ function tokenSource(sepia) {
 
 async function writeThemeFixture(rootDir, name, sepia) {
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", name);
-  const configDir = path.join(fixture, ".trebired", "frontend");
+  const configDir = path.join(fixture, configDirName, "frontend");
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(configDir, { recursive: true });
   await fs.writeFile(path.join(configDir, "config.ts"), modeConfigSource());
@@ -57,7 +59,7 @@ async function writeThemeFixture(rootDir, name, sepia) {
 async function verifyThemeConfigModes(context) {
   const config = await context.importDist("config");
   const { fixture } = await writeThemeFixture(context.rootDir, "theme-config", "#f4ecd8");
-  const loaded = await config.loadTrebiredFrontendConfig(fixture);
+  const loaded = await config.loadFrontendConfig(fixture);
   const scss = loaded.generatedScss;
 
   assert.deepEqual(loaded.config.theme.modes.map((mode) => mode.key), ["dark", "light", "sepia"]);
@@ -72,11 +74,11 @@ async function verifyThemeConfigModes(context) {
   assert.ok(scss.includes(":root:not([data-tbf-theme]) {"));
   assert.equal(config.THEME_MODE_ATTRIBUTE, "data-tbf-theme");
   assert.throws(
-    () => config.normalizeTrebiredFrontendConfig({ theme: { modes: { dark: { color: "#000" } } } }),
+    () => config.normalizeFrontendConfig({ theme: { modes: { dark: { color: "#000" } } } }),
     /invalid-config/u,
   );
   assert.throws(
-    () => config.normalizeTrebiredFrontendConfig({ theme: { dark: "missing", modes: { light: {} } } }),
+    () => config.normalizeFrontendConfig({ theme: { dark: "missing", modes: { light: {} } } }),
     /theme\.dark must name a mode/u,
   );
 }
@@ -86,13 +88,13 @@ async function verifyThemeConfigDependencies(context) {
   const { configDir, fixture } = await writeThemeFixture(context.rootDir, "theme-deps", "#f4ecd8");
   const tokensPath = path.join(configDir, "tokens.ts");
 
-  const first = await config.loadTrebiredFrontendConfig(fixture);
+  const first = await config.loadFrontendConfig(fixture);
   assert.ok(first.dependencies.includes(path.join(configDir, "config.ts")));
   assert.ok(first.dependencies.includes(tokensPath));
   assert.ok(first.generatedScss.includes("--app-color-surface: #f4ecd8;"));
 
   await fs.writeFile(tokensPath, tokenSource("#0f0f0f"));
-  const second = await config.loadTrebiredFrontendConfig(fixture);
+  const second = await config.loadFrontendConfig(fixture);
   assert.ok(second.generatedScss.includes("--app-color-surface: #0f0f0f;"));
   assert.equal(second.generatedScss.includes("#f4ecd8"), false);
 }

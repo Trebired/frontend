@@ -1,11 +1,15 @@
 import { Fragment } from "react";
 import { button, icon, stringifyJsonForHtml, toString } from "#dqy2d22qyujv";
 import input from "#8y47rueq20kg";
+import {
+  InlineRow,
+  primitiveTextClassName,
+} from "#hzrmwbvgt2ax";
 import type { dropdown_option, dropdown_props } from "./model.js";
 import { dropdownModel, mapAttrs } from "./model.js";
 import { search_config_script, search_query_input } from "#f1earyowcgbb";
 import type { DropdownOptionConfig, DropdownRootConfig } from "./registry.js";
-import "./index.client";
+import "./index.client.js";
 
 function dropdownConfigScript(
   attrName: "data-dropdown-option-config" | "data-dropdown-root-config",
@@ -41,7 +45,7 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
   }
   return (
     <div className="dropdown-top" data-dropdown-ignore="">
-    <div className="inline-row gap-xs">
+    <InlineRow gap="xs">
     {search_query_input({
           children: input({
               type: "search",
@@ -55,7 +59,9 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
           type: "button",
           title: model.unselectAllText,
           "aria-label": model.unselectAllText,
-          className: "icon sm has-tooltip",
+          icon: true,
+          size: "sm",
+          tooltip: true,
           "data-dropdown-clear": "",
           ...(!model.selectedValues.length
             ? { style: { display: "none" } }
@@ -63,7 +69,7 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
           children: icon({ spec: "remixicon close-line" }),
       })
       : null}
-    </div>
+    </InlineRow>
     </div>
   );
 }
@@ -185,7 +191,11 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     </ul>
     {model.isSearchable ? (
         <div
-        className="text-muted text-sm dropdown-empty"
+        className={primitiveTextClassName({
+          className: "dropdown-empty",
+          muted: true,
+          size: "sm",
+        })}
         data-search-empty-slot=""
         hidden
         >

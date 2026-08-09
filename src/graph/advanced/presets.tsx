@@ -53,8 +53,8 @@ function download_graph(props: graph_props) {
       unit_selectable: props.unit_selectable !== false,
       unit_default_scale: props.unit_default_scale || "m",
       precision: props.precision ?? 2,
-      stroke: props.stroke || "var(--blue-400)",
-      fill: props.fill || "rgba(59, 130, 246, 0.16)",
+      stroke: props.stroke || "var(--tbf-graph-download-stroke, var(--tbf-focus, currentColor))",
+      fill: props.fill || "var(--tbf-graph-download-fill, transparent)",
       ...props,
   });
 }
@@ -67,8 +67,8 @@ function upload_graph(props: graph_props) {
       unit_selectable: props.unit_selectable !== false,
       unit_default_scale: props.unit_default_scale || "m",
       precision: props.precision ?? 2,
-      stroke: props.stroke || "var(--green-400)",
-      fill: props.fill || "rgba(34, 197, 94, 0.16)",
+      stroke: props.stroke || "var(--tbf-graph-upload-stroke, var(--tbf-focus, currentColor))",
+      fill: props.fill || "var(--tbf-graph-upload-fill, transparent)",
       ...props,
   });
 }

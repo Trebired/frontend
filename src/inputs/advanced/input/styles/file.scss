@@ -8,11 +8,11 @@
   padding: 0 10px;
   border: none;
   border-radius: var(--radius-xs);
-  background: var(--gray-700);
+  background: var(--tbf-file-input-button-background, var(--background-surface-2, transparent));
   color: var(--text-color-muted);
   cursor: pointer;
 }
 
 .file-input::file-selector-button:hover {
-  background: var(--gray-700);
+  background: var(--tbf-file-input-button-hover-background, var(--tbf-file-input-button-background, var(--background-surface-2, transparent)));
 }

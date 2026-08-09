@@ -6,7 +6,7 @@ import { cssComment, cssString } from "./shared.js";
 import {
   SYSTEM_ORDER,
   THEME_MODE_ATTRIBUTE,
-  normalizeTrebiredFrontendConfig,
+  normalizeFrontendConfig,
 } from "./normalize.js";
 import {
   findPaletteMode,
@@ -17,10 +17,10 @@ import {
 import { renderScalesCss } from "./scales-css.js";
 import { flattenThemeTokens } from "./theme.js";
 import type {
-  NormalizedTrebiredFrontendConfig,
-  NormalizedTrebiredFrontendThemeMode,
-  TrebiredFrontendConfig,
-  TrebiredFrontendThemeTokens,
+  NormalizedFrontendConfig,
+  NormalizedFrontendThemeMode,
+  FrontendConfig,
+  FrontendThemeTokens,
 } from "./types.js";
 
 const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
@@ -55,19 +55,39 @@ function packageStyleUse(relativePath: string): string {
   return `@use ${cssString(packageStylePath(relativePath))} as *;`;
 }
 
-function isNormalizedConfig(value: unknown): value is NormalizedTrebiredFrontendConfig {
+function isNormalizedConfig(value: unknown): value is NormalizedFrontendConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-  const config = value as Partial<NormalizedTrebiredFrontendConfig>;
+  const config = value as Partial<NormalizedFrontendConfig>;
   return Array.isArray(config.fonts?.families) &&
     Array.isArray(config.theme?.modes) &&
     Array.isArray(config.palette?.modes);
 }
 
-function tokenDeclarations(prefix: string, tokens: TrebiredFrontendThemeTokens): string[] {
+function tokenDeclarations(prefix: string, tokens: FrontendThemeTokens): string[] {
   return flattenThemeTokens(tokens).map(([key, value]) => `  --${prefix}-${key}: ${String(value)};`);
 }
 
-function rootDeclarations(config: NormalizedTrebiredFrontendConfig): string[] {
+function cssTokenKey(value: string): string {
+  return value.replace(/([a-z0-9])([A-Z])/gu, "$1-$2").toLowerCase();
+}
+
+function componentCssTokenKey(value: string): string {
+  if (value === "actionButton") return "action-control";
+  return cssTokenKey(value);
+}
+
+function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] {
+  const lines: string[] = [];
+  for (const [component, tokens] of Object.entries(config.components)) {
+    const componentKey = componentCssTokenKey(component);
+    for (const [key, value] of flattenThemeTokens(tokens)) {
+      lines.push(`  --${config.prefix}-${componentKey}-${cssTokenKey(key)}: ${String(value)};`);
+    }
+  }
+  return lines;
+}
+
+function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   const { modes, defaultMode } = config.theme;
   return [
     `  --${config.prefix}-config-prefix: ${cssString(config.prefix)};`,
@@ -75,14 +95,15 @@ function rootDeclarations(config: NormalizedTrebiredFrontendConfig): string[] {
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
     ...tokenDeclarations(config.prefix, config.theme.tokens),
+    ...componentTokenDeclarations(config),
     ...paletteSemanticDeclarations(config.palette),
     ...paletteSuffixedDeclarations(config.palette),
   ];
 }
 
 function modeDeclarations(
-  config: NormalizedTrebiredFrontendConfig,
-  mode: NormalizedTrebiredFrontendThemeMode,
+  config: NormalizedFrontendConfig,
+  mode: NormalizedFrontendThemeMode,
 ): string[] {
   const paletteMode = findPaletteMode(config.palette, mode.key);
   return [
@@ -101,7 +122,7 @@ function renderBlock(selector: string, declarations: string[], indent = ""): str
   ];
 }
 
-function renderModeBlocks(config: NormalizedTrebiredFrontendConfig): string[] {
+function renderModeBlocks(config: NormalizedFrontendConfig): string[] {
   return config.theme.modes.flatMap((mode) => [
     "",
     `/* theme mode: ${cssComment(mode.key)} */`,
@@ -110,7 +131,7 @@ function renderModeBlocks(config: NormalizedTrebiredFrontendConfig): string[] {
 }
 
 function renderSystemPreferenceBlock(
-  config: NormalizedTrebiredFrontendConfig,
+  config: NormalizedFrontendConfig,
   scheme: "dark" | "light",
 ): string[] {
   const key = scheme === "dark" ? config.theme.dark : config.theme.light;
@@ -124,7 +145,7 @@ function renderSystemPreferenceBlock(
   ];
 }
 
-function renderThemeCss(config: NormalizedTrebiredFrontendConfig): string[] {
+function renderThemeCss(config: NormalizedFrontendConfig): string[] {
   if (!config.theme.cssVariables) return [];
   return [
     "",
@@ -145,7 +166,7 @@ function renderScalesBody(body: string[]): string[] {
   return ["", ...body];
 }
 
-function renderSystemImports(config: NormalizedTrebiredFrontendConfig): string[] {
+function renderSystemImports(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
   for (const system of SYSTEM_ORDER) {
     const stylePath = SYSTEM_STYLE_FILES[system];
@@ -154,15 +175,15 @@ function renderSystemImports(config: NormalizedTrebiredFrontendConfig): string[]
   return lines;
 }
 
-function generateTrebiredFrontendScss(
-  configInput: TrebiredFrontendConfig | NormalizedTrebiredFrontendConfig,
+function generateFrontendScss(
+  configInput: FrontendConfig | NormalizedFrontendConfig,
 ): string {
   const config = isNormalizedConfig(configInput)
     ? configInput
-    : normalizeTrebiredFrontendConfig(configInput);
+    : normalizeFrontendConfig(configInput);
   const scalesCss = renderScalesCss(config.scales);
   const lines = [
-    "/* Generated by @trebired/frontend. Do not edit directly. */",
+    "/* Generated by frontend package config. Do not edit directly. */",
     `/* prefix: ${cssComment(config.prefix)} */`,
     packageStyleUse("styles/tokens.scss"),
     packageStyleUse("styles/utils.scss"),
@@ -175,4 +196,4 @@ function generateTrebiredFrontendScss(
   return `${lines.join("\n")}\n`;
 }
 
-export { generateTrebiredFrontendScss };
+export { generateFrontendScss };

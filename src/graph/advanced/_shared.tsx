@@ -2,6 +2,7 @@ import { createElement, type ReactNode } from "react";
 
 import { Icon, type IconProps } from "#lbkpzw8nphru";
 import { Button, Card } from "#4woymc9xhupl";
+import { primitiveButtonClassName, type PrimitiveButtonClassOptions } from "#hzrmwbvgt2ax";
 
 type TranslatorVars = Record<string, unknown>;
 type Translator = (key: string, vars?: TranslatorVars) => string;
@@ -70,10 +71,33 @@ function pill(props: { children?: ReactNode }) {
   return <span className="tbf-pill pill">{props.children}</span>;
 }
 
-function button(props: Record<string, unknown> & { children?: ReactNode }) {
-  const { children, className, ...rest } = props;
+function button(props: Record<string, unknown> & PrimitiveButtonClassOptions & { children?: ReactNode }) {
+  const {
+    active,
+    children,
+    className,
+    icon: iconOnly,
+    size,
+    tone,
+    tooltip,
+    transparent,
+    variant,
+    ...rest
+  } = props;
   return (
-    <Button className={joinClassNames(["btn", className])} {...(rest as any)}>
+    <Button
+      className={primitiveButtonClassName({
+        active,
+        className,
+        icon: iconOnly,
+        size,
+        tone,
+        tooltip,
+        transparent,
+        variant,
+      })}
+      {...(rest as any)}
+    >
       {children}
     </Button>
   );

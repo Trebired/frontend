@@ -7,7 +7,17 @@ import type {
   SelectCardsProps,
   attr_map,
 } from "#xb7hv37sq5h5";
+import {
+  primitiveCardRowClassName,
+  primitiveGridClassName,
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+  primitiveTextClassName,
+} from "#0rl8rpgzssot";
+import { InlineRow, Stack } from "#tlkyab3pczjn";
 import { joinClassNames, toText, wrapTriggerHostNode } from "#6mupcizo1mwq";
+
+const CARD_BODY_DIVIDER_CLASS = "card-body-divider";
 
 function stripGapClasses(value: string) {
   return value
@@ -40,15 +50,20 @@ function resolveWidth(props: BodyProps) {
 }
 
 function resolvedTitleClassName(props: BodyProps) {
-  return joinClassNames(
-    "text-break",
-    resolveWidth(props) === "fit" ? "width-fit" : "",
-    props.titleClassName,
-  );
+  return primitiveTextClassName({
+    breakWord: true,
+    className: props.titleClassName,
+    widthFit: resolveWidth(props) === "fit",
+  });
 }
 
 function resolvedSubtitleClassName(props: BodyProps) {
-  return joinClassNames("text-muted", "text-sm", "text-break", props.subtitleClassName);
+  return primitiveTextClassName({
+    breakWord: true,
+    className: props.subtitleClassName,
+    muted: true,
+    size: "sm",
+  });
 }
 
 function titleStyle(titleClassName: string) {
@@ -59,12 +74,15 @@ function titleStyle(titleClassName: string) {
 function card_icon(props: { children?: ReactNode; className?: string }) {
   if (!props.children) return null;
   return (
-    <div
+    <InlineRow
       aria-hidden="true"
-      className={joinClassNames("inline-row", "gap-xs", "no-stretch", "ver-center", "card-icon", props.className)}
+      className={joinClassNames("card-icon", props.className)}
+      gap="xs"
+      noStretch
+      verticalCenter
     >
       {props.children}
-    </div>
+    </InlineRow>
   );
 }
 
@@ -73,7 +91,7 @@ function iconBlock(props: BodyProps, showDivider: boolean) {
   return (
     <>
       {card_icon({ children: props.icon })}
-      {showDivider ? <span aria-hidden="true" className="card-body-divider" /> : null}
+      {showDivider ? <span aria-hidden="true" className={CARD_BODY_DIVIDER_CLASS} /> : null}
     </>
   );
 }
@@ -99,9 +117,12 @@ function titleRow(
   const hasAside = Boolean((showTitleMeta && props.meta) || (showActions && props.actions));
   if (!props.title && !hasAside) return null;
   if (!hasAside) return titleSpan(props, titleClassName);
-  const actionsClassName = toText(props.actionsClassName, "inline-row fit-content gap-xs2");
+  const actionsClassName = toText(
+    props.actionsClassName,
+    primitiveInlineRowClassName({ fit: true, gap: "xs2" }),
+  );
   return (
-    <div className="inline-row gap-xs">
+    <InlineRow gap="xs">
       {titleSpan(props, titleClassName)}
       {showTitleMeta && props.meta ? props.meta : null}
       {showActions && props.actions ? (
@@ -109,7 +130,7 @@ function titleRow(
           <div className={actionsClassName}>{props.actions}</div>
         </div>
       ) : null}
-    </div>
+    </InlineRow>
   );
 }
 
@@ -121,12 +142,12 @@ function contentColumn(
 ) {
   const titleClassName = resolvedTitleClassName(props);
   return (
-    <div className="column gap-xs">
+    <Stack gap="xs">
       {titleRow(props, titleClassName, showTitleMeta, showActions)}
       {props.subtitle ? <div className={resolvedSubtitleClassName(props)}>{props.subtitle}</div> : null}
       {showSegments ? props.segments : null}
       {props.extra}
-    </div>
+    </Stack>
   );
 }
 
@@ -142,7 +163,7 @@ function contentBlock(
   },
 ) {
   return (
-    <div className={`inline-row gap-xs card-body ${bodyClassName}`.trim()}>
+    <div className={primitiveInlineRowClassName({ className: joinClassNames("card-body", bodyClassName), gap: "xs" })}>
       {options.hasIcon ? iconBlock(props, options.showDivider) : null}
       {contentColumn(props, options.showTitleMeta, options.showActions, options.showSegments)}
     </div>
@@ -191,12 +212,11 @@ function bodyState(props: BodyProps) {
   const showIcon = typeConfig.icon !== false;
   const selected = props.select && props.select.selected === true;
   return {
-    baseClassName: joinClassNames(
-      "card-row",
-      selected ? "selected" : "",
-      props.select && !selected ? "excluded" : "",
-      props.className,
-    ),
+    baseClassName: primitiveCardRowClassName({
+      className: props.className,
+      excluded: Boolean(props.select && !selected),
+      selected,
+    }),
     bodyClassName: stripGapClasses(toText(props.bodyClassName)),
     disabled: props.select && props.select.disabled === true,
     options: {
@@ -239,14 +259,16 @@ function card_body(props: BodyProps) {
 }
 
 function selectLayoutClassName(props: SelectCardsProps) {
-  return joinClassNames(props.layout === "column" ? "column" : "grid auto-md", "gap-sm", props.className);
+  return props.layout === "column"
+    ? primitiveStackClassName({ className: props.className, gap: "sm" })
+    : primitiveGridClassName({ auto: "md", className: props.className, gap: "sm" });
 }
 
 function selectExtra(item: SelectCardItem): ReactNode {
   if (!item.details && !item.content) return null;
   return (
     <>
-      {item.details ? <div className="text-muted text-sm">{item.details}</div> : null}
+      {item.details ? <div className={primitiveTextClassName({ muted: true, size: "sm" })}>{item.details}</div> : null}
       {item.content ? <div>{item.content}</div> : null}
     </>
   );

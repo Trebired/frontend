@@ -1,5 +1,9 @@
 import { type CSSProperties, type ReactNode } from "react";
 import { icon, joinClassNames, toString, useRenderCurrentUrl } from "#dqy2d22qyujv";
+import {
+  primitiveInlineRowClassName,
+  primitiveStackClassName,
+} from "#hzrmwbvgt2ax";
 import type {
   tab_panel_props,
   tabs_item,
@@ -7,7 +11,7 @@ import type {
   tabs_props,
 } from "./model.js";
 import { buildTabsModel, routeInitialValue } from "./model.js";
-import "./client";
+import "./client.js";
 
 function renderTabContent(item: tabs_item) {
   return <span className="tab-label">{item.label}</span>;
@@ -117,7 +121,11 @@ function renderTabsRow(
     <div
     key={`tabs_row_${row.row}`}
     className={joinClassNames([
-          "tabs-row inline-row gap-sm ver-center",
+          primitiveInlineRowClassName({
+            className: "tabs-row",
+            gap: "sm",
+            verticalCenter: true,
+          }),
           toString(props.headerClassName),
     ])}
     data-tabs-row=""
@@ -136,7 +144,7 @@ function renderTabsList(props: tabs_props, model: tabs_model) {
   const leadingRow = resolvedLeadingRow(model, rows);
   return (
     <div
-    className="tabs-stack column gap-sm"
+    className={primitiveStackClassName({ className: "tabs-stack", gap: "sm" })}
     data-tabs-stack=""
     {...(model.collapseNestedSpacing ? { style: { gap: "0px" } } : {})}
     >
@@ -147,7 +155,7 @@ function renderTabsList(props: tabs_props, model: tabs_model) {
 
 function familyContent(props: tabs_props, model: tabs_model) {
   const headerClassName = joinClassNames([
-      model.hasHeaderLeading ? "inline-row gap-sm" : "",
+      model.hasHeaderLeading ? primitiveInlineRowClassName({ gap: "sm" }) : "",
       toString(props.headerClassName),
   ]);
   if (model.hasHeaderLeading && model.requestedHeaderLeadingRow <= 0) {

@@ -53,16 +53,16 @@ $tbf-primitive-avatar-sizes: (
 );
 
 $tbf-primitive-tone-colors: (
-  "green": var(--green-600),
-  "success": var(--green-600),
-  "red": var(--red-600),
-  "error": var(--red-600),
-  "yellow": var(--yellow-600),
-  "warning": var(--yellow-600),
-  "blue": var(--blue-600),
-  "info": var(--blue-600),
-  "purple": var(--ruby-600),
-  "cyan": var(--cyan-600),
-  "gray": var(--gray-600),
-  "muted": var(--gray-600),
+  "green": var(--tbf-tone-green, var(--tbf-tone-success, currentColor)),
+  "success": var(--tbf-tone-success, currentColor),
+  "red": var(--tbf-tone-red, var(--tbf-tone-error, currentColor)),
+  "error": var(--tbf-tone-error, currentColor),
+  "yellow": var(--tbf-tone-yellow, var(--tbf-tone-warning, currentColor)),
+  "warning": var(--tbf-tone-warning, currentColor),
+  "blue": var(--tbf-tone-blue, var(--tbf-tone-info, currentColor)),
+  "info": var(--tbf-tone-info, currentColor),
+  "purple": var(--tbf-tone-purple, currentColor),
+  "cyan": var(--tbf-tone-cyan, currentColor),
+  "gray": var(--tbf-tone-gray, var(--tbf-tone-muted, currentColor)),
+  "muted": var(--tbf-tone-muted, currentColor),
 );
