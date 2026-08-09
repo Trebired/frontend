@@ -6,6 +6,11 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.19.4
+
+- Restored legacy primitive card page backgrounds while keeping tabs and inputs on surface backgrounds.
+- Made advanced tabs explicitly inherit the configured sans font so Chromium renders them with the app font instead of native button fallback.
+
 ## 1.19.3
 
 - Restored Inter inheritance for native controls so advanced tabs, buttons, inputs, selects, and textareas keep the app font instead of browser defaults.

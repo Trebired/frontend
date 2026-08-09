@@ -15,27 +15,30 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     padding: 0 14px;
     border: var(--border-width) solid var(--border-surface-1);
     border-radius: var(--radius-sm);
-    background: transparent;
+    color: var(--text-color);
+    background: var(--background-surface-1);
     cursor: pointer;
     transition:
     background 0.15s,
     border-color 0.15s;
+    font-family: var(--tbf-font-sans, "Inter", sans-serif);
     font-size: 14px;
     line-height: calc(34px - (var(--border-width) * 2));
     text-align: left;
 
     &:hover {
-      background: var(--background-surface-1);
+      background: var(--background-surface-2);
       border-color: var(--border-surface-1);
     }
 
     &.active {
-      background: var(--background-surface-1);
+      background: var(--background-surface-2);
       border-color: var(--border-surface-1);
     }
 
     .tab-label {
       display: block;
+      font-family: inherit;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

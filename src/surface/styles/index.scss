@@ -35,6 +35,11 @@
   background: var(--tbf-surface, #fff);
 }
 
+.tbf-card.card,
+.card[data-tbf-card] {
+  background: var(--background-page, var(--tbf-page, #fff));
+}
+
 .tbf-card[data-tbf-interactive="true"]:hover {
   border-color: var(--tbf-focus, #000);
 }

@@ -17,12 +17,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+html,
+.tbf-root,
+[data-tbf-layout-document] {
+  font-family: var(--tbf-font-sans, "Inter", sans-serif);
+}
+
 button,
 input,
 optgroup,
 select,
 textarea {
   font: inherit;
+  font-family: var(--tbf-font-sans, "Inter", sans-serif);
 }
 
 html,
