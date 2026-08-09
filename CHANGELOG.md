@@ -6,6 +6,10 @@ This project follows semantic versioning once published.
 
 ## Unreleased
 
+## 1.16.0
+
+- Added a package-owned runtime dropdown selector for Node.js, Bun, and Deno so ecosystem apps can remove local runtime dropdown wrappers.
+
 ## 1.15.0
 
 - Added package-owned health usage graph presets for CPU, memory, GPU, download, and upload graphs so ecosystem apps can remove local metric graph wrapper components.
