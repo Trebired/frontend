@@ -2,34 +2,44 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { Window } from "happy-dom";
-import { createElement as h } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
+import { verifyFlash } from "./frontend/flash.mjs";
+import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
+import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const distDir = path.join(rootDir, "dist");
 const sourceDir = path.join(rootDir, "src");
-const configDirName = `.${"tre"}bired`;
-const configRelPath = `${configDirName}/frontend/config.ts`;
 
 async function main() {
+  const configDirName = await workspaceConfigDir(rootDir);
+  const context = {
+    configDirName,
+    configRelPath: `${configDirName}/frontend/config.ts`,
+    distDir,
+    importDist,
+    importDistRoot,
+    packageName: await packageName(rootDir),
+    rootDir,
+    sourceDir,
+  };
   installDom();
-  await verifyFrontendConfig();
+  await verifyFrontendConfig(context);
   await verifyCsrfFetch();
-  await verifyIcons();
+  await verifyIcons(context);
   await verifyActionConfetti();
-  await verifyFlash();
+  await verifyFlash(context);
   await verifyTooltip();
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
   await verifySidebar();
   await verifyUpload();
-  await verifyFrontendLogging();
-  await verifyFrontendSource({ distDir, rootDir, sourceDir });
+  await verifyFrontendLogging(context);
+  await verifyFrontendSource(context);
   await verifyFrontendComponents({ importDist, rootDir });
   await verifyFrontendTheme({ importDist, rootDir });
   console.log("Frontend verification succeeded.");
@@ -71,16 +81,16 @@ function installDom() {
   globalThis.CSS = window.CSS;
 }
 
-async function verifyFrontendConfig() {
+async function verifyFrontendConfig(context) {
   const config = await importDist("config");
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config");
   await fs.rm(fixture, { force: true, recursive: true });
-  await fs.mkdir(path.join(fixture, configDirName, "frontend"), { recursive: true });
+  await fs.mkdir(path.join(fixture, context.configDirName, "frontend"), { recursive: true });
 
   const defaults = await config.loadFrontendConfig(fixture);
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
-  assert.equal(defaults.generatedScss.includes(`@${"tre"}bired/frontend/`), false);
+  assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("language/styles/index.scss"));
@@ -88,7 +98,7 @@ async function verifyFrontendConfig() {
   assert.ok(defaults.generatedScss.includes("sidebar/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("fullscreen/styles/index.scss"));
 
-  const configPath = path.join(fixture, configRelPath);
+  const configPath = path.join(fixture, context.configRelPath);
   await fs.writeFile(configPath, [
     "export default {",
     "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
@@ -109,7 +119,7 @@ async function verifyFrontendConfig() {
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
   await assert.rejects(
-    () => fs.access(path.join(fixture, configDirName, "frontend", "generated", "styles.scss")),
+    () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),
     /ENOENT/u,
   );
 
@@ -117,81 +127,6 @@ async function verifyFrontendConfig() {
   await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
   await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
-}
-
-async function verifyIcons() {
-  const iconRuntime = await importDistRoot();
-  const iconServer = await importDist("server");
-  const iconReact = await importDist("react");
-
-  assert.deepEqual(iconRuntime.parseIconSpec("remixicon:add-line"), {
-    icon: "add-line",
-    pack: "remixicon",
-    spec: "remixicon:add-line",
-  });
-  assert.deepEqual(iconRuntime.parseIconSpec("simple-icons github"), {
-    icon: "github",
-    pack: "simple-icons",
-    spec: "simple-icons:github",
-  });
-
-  const remixSvg = iconServer.resolveIconSvg("remixicon:add-line", { rootDir });
-  assert.equal(remixSvg.ok, true);
-  assert.ok(remixSvg.svg.includes("<svg"));
-  const githubSvg = iconServer.resolveIconSvg("simple-icons:github", { rootDir });
-  assert.equal(githubSvg.ok, true);
-  assert.match(iconServer.resolveIconColor("simple-icons:github", { rootDir }), /^#[0-9a-f]{6}$/iu);
-  assert.ok(iconServer.renderIconHtml("remixicon:add-line", {
-    className: "icon md",
-    color: "#123456",
-    label: "Add",
-  }, { rootDir }).includes("--tbf-icon-color: #123456"));
-
-  const response = iconServer.createIconSvgResponse("simple-icons:github", { rootDir });
-  assert.equal(response.status, 200);
-  assert.equal(response.headers["Content-Type"].startsWith("image/svg+xml"), true);
-
-  let sent = "";
-  const middleware = iconServer.createIconMiddleware({ rootDir });
-  middleware(
-    { query: { spec: "remixicon:add-line" } },
-    {
-      set() {},
-      status(value) {
-        assert.equal(value, 200);
-        return this;
-      },
-      type() {
-        return this;
-      },
-      send(body) {
-        sent = body;
-      },
-    },
-  );
-  assert.ok(sent.includes("<svg"));
-
-  let fetchCount = 0;
-  globalThis.fetch = async () => {
-    fetchCount += 1;
-    return new Response('<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>', {
-      headers: { "Content-Type": "image/svg+xml" },
-    });
-  };
-  const host = document.createElement("i");
-  await iconRuntime.renderIconElement(host, "remixicon:add-line", { color: "red", endpoint: "/icons" });
-  assert.equal(host.querySelector("svg") !== null, true);
-  assert.equal(fetchCount, 1);
-  const secondHost = document.createElement("i");
-  await iconRuntime.renderIconElement(secondHost, "remixicon:add-line", { endpoint: "/icons" });
-  assert.equal(fetchCount, 1);
-
-  const renderer = iconServer.createServerIconRenderer({}, { rootDir });
-  const html = iconServer.withIconServerRenderer(renderer, () => {
-    return renderToStaticMarkup(h(iconReact.Icon, { label: "GitHub", spec: "simple-icons:github" }));
-  });
-  assert.ok(html.includes("aria-label=\"GitHub\""));
-  assert.ok(html.includes("<svg"));
 }
 
 async function verifyCsrfFetch() {
@@ -225,59 +160,6 @@ async function verifyActionConfetti() {
   configured.setAttribute("data-tbf-confetti", "true");
   await submitActionButton(configured, undefined, { url: "/ok" });
   assert.equal(count, 1);
-}
-
-async function verifyFlash() {
-  const {
-    confirm,
-    confirmationVariantAttrs,
-    confirmElement,
-    flash,
-    installFlashGlobal,
-    prompt,
-    showFlash,
-    showFlashMessage,
-  } = await importDist("flash");
-  const removedCloseSelector = [".tbf-flash", "close"].join("__");
-  const handle = showFlash.success("Saved", "Done");
-  assert.ok(handle.element.matches("[data-tbf-flash]"));
-  assert.equal(handle.element.querySelector(removedCloseSelector), null);
-  assert.equal(handle.el, handle.element);
-  assert.equal(typeof handle.hide, "function");
-  assert.equal(typeof flash.stickyInfo, "function");
-  assert.equal(typeof flash.liveError, "function");
-  assert.equal(installFlashGlobal(window), flash);
-  assert.equal(window.flash, flash);
-  const live = flash.liveError("Working", "Syncing", { id: "job-1", progressTone: "red" });
-  assert.equal(live.element.getAttribute("data-tbf-progress-tone"), "red");
-  assert.equal(live.element.querySelector(removedCloseSelector), null);
-  const routed = showFlashMessage(flash, "success", "Routed", "Done");
-  assert.equal(routed.element.getAttribute("data-tbf-flash-type"), "success");
-  const confirmPromise = confirm("Confirm");
-  document.querySelector(".tbf-button--strong").click();
-  assert.equal(await confirmPromise, true);
-  const attrs = confirmationVariantAttrs({
-    confirmationText: "repository-a",
-    target: "repository-a",
-    variant: "delete",
-  });
-  const button = document.createElement("button");
-  Object.entries(attrs).forEach(([key, value]) => button.setAttribute(key, value));
-  document.body.appendChild(button);
-  const elementConfirmPromise = confirmElement(button);
-  const confirmInput = document.querySelector(".tbf-flash__body input");
-  confirmInput.value = "repository-a";
-  confirmInput.dispatchEvent(new Event("input", { bubbles: true }));
-  confirmInput.closest(".tbf-flash").querySelector(".tbf-button--strong").click();
-  assert.equal(await elementConfirmPromise, true);
-  const promptPromise = prompt("Name");
-  const input = document.querySelector(".tbf-flash__form input");
-  input.value = "Atlas";
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  document.querySelector(".tbf-flash__form").dispatchEvent(
-    new SubmitEvent("submit", { bubbles: true, cancelable: true }),
-  );
-  assert.equal(await promptPromise, "Atlas");
 }
 
 async function verifyTooltip() {
@@ -434,7 +316,7 @@ function assertUploadMarkup(html) {
   });
 }
 
-async function verifyFrontendLogging() {
+async function verifyFrontendLogging(context) {
   const { bindFrontendRuntime } = await importDistRoot();
   const events = [];
   const adapter = (_source, event) => events.push(event);
@@ -443,7 +325,7 @@ async function verifyFrontendLogging() {
     observe: false,
   });
   assert.equal(events.length, 1);
-  assert.equal(events[0].group, `${organizationName()}.frontend.runtime`);
+  assert.equal(events[0].group, "frontend.runtime");
   events.length = 0;
   bindFrontendRuntime(document, {
     adapters: { logger: {}, loggerAdapter: adapter },
@@ -451,10 +333,6 @@ async function verifyFrontendLogging() {
     observe: false,
   });
   assert.equal(events.length, 0);
-}
-
-function organizationName() {
-  return String.fromCharCode(116, 114, 101, 98, 105, 114, 101, 100);
 }
 
 async function importDistRoot() {

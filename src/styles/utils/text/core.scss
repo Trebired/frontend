@@ -1,0 +1,49 @@
+.width-max {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.width-fit {
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+
+.text-muted {
+  color: var(--tbf-text-muted, #000);
+}
+
+.text-xs {
+  font-size: 12px;
+}
+
+.text-sm,
+.text-small {
+  font-size: 14px;
+}
+
+.text-md {
+  font-size: 16px;
+}
+
+.text-lg {
+  font-size: 20px;
+}
+
+.text-break {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.truncate-1 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}

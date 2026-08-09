@@ -3,8 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-
-const configDirName = `.${"tre"}bired`;
+import { workspaceConfigDir } from "#kdfvp4fq2m77";
 
 async function verifyFrontendTheme(context) {
   await verifyThemeConfigModes(context);
@@ -48,7 +47,7 @@ function tokenSource(sepia) {
 
 async function writeThemeFixture(rootDir, name, sepia) {
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", name);
-  const configDir = path.join(fixture, configDirName, "frontend");
+  const configDir = path.join(fixture, await workspaceConfigDir(rootDir), "frontend");
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(configDir, { recursive: true });
   await fs.writeFile(path.join(configDir, "config.ts"), modeConfigSource());

@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
-
-const configDirName = `.${"tre"}bired`;
-const configRelPath = `${configDirName}/frontend/config.ts`;
+import { packageName, siblingPackageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 
 async function verifyFrontendSource(context) {
   await verifyNoStandaloneWrapUtility(context.sourceDir);
@@ -45,16 +43,39 @@ function assertStructuredExports(packageJson) {
 }
 
 async function verifyBundlerConfigStyles(rootDir, packageJson) {
+  const fixture = await writeBundlerConfigStyleFixture(rootDir, packageJson);
+  const { bundle } = await import(await siblingPackageName(rootDir, "bundler"));
+  const result = await bundle({
+    discover: {
+      dir: "src",
+      rules: [{ key: "client", include: ["**/*.client.ts"], strategy: "entry" }],
+    },
+    outDir: "dist",
+    rootDir: fixture,
+  });
+  await assertBundledFrontendCss(result);
+}
+
+async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config-styles");
-  const packageName = `@${organizationName()}/frontend`;
-  const packageRoot = path.join(fixture, "node_modules", ...packageName.split("/"));
+  const frontendPackageName = await packageName(rootDir);
+  const packageRoot = path.join(fixture, "node_modules", ...frontendPackageName.split("/"));
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(packageRoot, { recursive: true });
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
   await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
-  await writeFile(fixture, configRelPath, [
-    `import { defineFrontendConfig } from "${packageName}/config";`,
+  await writeBundlerConfig(fixture, frontendPackageName, await workspaceConfigDir(rootDir));
+  await writeFile(fixture, "src/screen.client.ts", [
+    "document.documentElement.dataset.verify = \"ready\";",
+    "",
+  ].join("\n"));
+  return fixture;
+}
+
+async function writeBundlerConfig(fixture, frontendPackageName, configDirName) {
+  await writeFile(fixture, `${configDirName}/frontend/config.ts`, [
+    `import { defineFrontendConfig } from "${frontendPackageName}/config";`,
     "",
     "export default defineFrontendConfig({",
     "  prefix: \"verify\",",
@@ -76,19 +97,9 @@ async function verifyBundlerConfigStyles(rootDir, packageJson) {
     "});",
     "",
   ].join("\n"));
-  await writeFile(fixture, "src/screen.client.ts", [
-    "document.documentElement.dataset.verify = \"ready\";",
-    "",
-  ].join("\n"));
-  const { bundle } = await import(`@${organizationName()}/bundler`);
-  const result = await bundle({
-    discover: {
-      dir: "src",
-      rules: [{ key: "client", include: ["**/*.client.ts"], strategy: "entry" }],
-    },
-    outDir: "dist",
-    rootDir: fixture,
-  });
+}
+
+async function assertBundledFrontendCss(result) {
   const cssOutput = result.outputs.find((item) => item.endsWith(".css"));
   assert.ok(cssOutput, "expected bundled frontend SCSS output");
   const css = await fs.readFile(cssOutput, "utf8");
@@ -175,10 +186,6 @@ async function sourceFiles(dir) {
     else if (/\.(ts|tsx|scss|js|d\.ts)$/u.test(entry.name)) out.push(full);
   }
   return out;
-}
-
-function organizationName() {
-  return String.fromCharCode(116, 114, 101, 98, 105, 114, 101, 100);
 }
 
 async function pathExists(filePath) {

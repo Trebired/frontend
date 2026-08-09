@@ -83,25 +83,15 @@
   min-width: 0;
 }
 
-.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__title {
-  color: var(--tbf-flash-success-title-color, var(--tbf-flash-success-color, var(--tbf-flash-title-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__title {
-  color: var(--tbf-flash-error-title-color, var(--tbf-flash-error-color, var(--tbf-flash-title-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__title {
-  color: var(--tbf-flash-warn-title-color, var(--tbf-flash-warn-color, var(--tbf-flash-title-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__title {
-  color: var(--tbf-flash-info-title-color, var(--tbf-flash-info-color, var(--tbf-flash-title-color, currentColor)));
+.tbf-flash__title {
+  color: var(--tbf-flash-title-color, currentColor);
+  text-shadow: none;
 }
 
 .tbf-flash__description {
   color: var(--tbf-flash-description-color, var(--text-color-muted, currentColor));
   font-size: var(--tbf-flash-description-font-size, 0.92rem);
+  text-shadow: none;
 }
 
 .tbf-flash__actions {
@@ -121,22 +111,6 @@
   animation-name: tbf-flash-progress;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-}
-
-.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__progress {
-  background: var(--tbf-flash-error-progress-color, var(--tbf-flash-error-color, var(--tbf-flash-progress-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__progress {
-  background: var(--tbf-flash-warn-progress-color, var(--tbf-flash-warn-color, var(--tbf-flash-progress-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__progress {
-  background: var(--tbf-flash-success-progress-color, var(--tbf-flash-success-color, var(--tbf-flash-progress-color, currentColor)));
-}
-
-.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__progress {
-  background: var(--tbf-flash-info-progress-color, var(--tbf-flash-info-color, var(--tbf-flash-progress-color, currentColor)));
 }
 
 @keyframes tbf-flash-progress {

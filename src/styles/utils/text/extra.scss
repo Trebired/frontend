@@ -1,0 +1,54 @@
+.text-break-word {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+.font-mono {
+  font-family:
+  ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+  "Courier New", monospace;
+  word-break: break-all;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.label {
+  color: var(--tbf-text-muted, #000);
+  font-size: 14px;
+}
+
+.bg-canvas {
+  background: var(--tbf-canvas-bg, var(--dot-grid)) !important;
+}
+
+.pre-wrap {
+  white-space: pre-wrap !important;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-auto {
+  cursor: auto;
+}
+
+.cursor-disabled,
+.disabled,
+[disabled] {
+  cursor: not-allowed;
+}

@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { frontendPackageName } from "./package.js";
 import { invalidConfig } from "./shared.js";
 
 const CONFIG_DEPENDENCY_EXTENSIONS = [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs", ".json"];
@@ -93,7 +94,7 @@ async function buildConfigModuleToUrl(
   }
 
   const digest = await createConfigBuildHash(dependencies);
-  const frontendPackageName = `@${"tre"}bired/frontend`;
+  const packageName = frontendPackageName();
   const outputDir = path.join(projectRoot, "node_modules", ".cache", "frontend", "config", digest);
   const basename = path.basename(filePath, path.extname(filePath)).replace(/[^\w.-]/gu, "_") || "config";
   const outputPath = path.join(outputDir, `${basename}.js`);
@@ -102,7 +103,7 @@ async function buildConfigModuleToUrl(
     await fs.mkdir(outputDir, { recursive: true });
     const result = await Bun.build({
       entrypoints: [filePath],
-      external: [frontendPackageName, `${frontendPackageName}/config`],
+      external: [packageName, `${packageName}/config`],
       format: "esm",
       naming: `${basename}.js`,
       outdir: outputDir,

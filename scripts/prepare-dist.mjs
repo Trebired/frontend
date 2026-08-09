@@ -1,21 +1,22 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { workspaceConfigDir } from "./package-meta.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
-const workspaceConfigDir = `.${"tre"}bired`;
-const aliasMapDir = path.join(rootDir, workspaceConfigDir, "code-discipline", "imports");
 
 async function main() {
-  const aliasTargets = await readAliasMap();
+  const aliasTargets = await readAliasMap(
+    path.join(rootDir, await workspaceConfigDir(rootDir), "code-discipline", "imports"),
+  );
   await promotePublicDistFiles();
   await copyScssFiles();
   await copyVendorScssFiles();
   await rewriteDistAliases(aliasTargets);
 }
 
-async function readAliasMap() {
+async function readAliasMap(aliasMapDir) {
   const aliases = {};
 
   try {

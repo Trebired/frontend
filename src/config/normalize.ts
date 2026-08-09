@@ -4,13 +4,14 @@ import { normalizeFontsConfig } from "./fonts.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig } from "./theme.js";
+import { frontendConfigPath } from "./package.js";
 import type {
   NormalizedFrontendConfig,
   FrontendIconPack,
   FrontendSystemKey,
 } from "./types.js";
 
-const FRONTEND_CONFIG_PATH = `.${"tre"}bired/frontend/config.ts`;
+const FRONTEND_CONFIG_PATH = frontendConfigPath();
 
 /* Must stay in sync with THEME_ATTR exported from the ./theme runtime. */
 const THEME_MODE_ATTRIBUTE = "data-tbf-theme";

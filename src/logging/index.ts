@@ -16,9 +16,8 @@ type FrontendLoggingOptions = {
 
 type FrontendLogger = NormalizedLoggerAdapter;
 
-const ORGANIZATION_NAME = String.fromCharCode(116, 114, 101, 98, 105, 114, 101, 100);
-const FRONTEND_PACKAGE_SOURCE = `@${ORGANIZATION_NAME}/frontend`;
-const FRONTEND_LOG_GROUP = `${ORGANIZATION_NAME}.frontend`;
+const FRONTEND_PACKAGE_SOURCE = "frontend";
+const FRONTEND_LOG_GROUP = "frontend";
 
 function readGlobalQuiet() {
   const global = globalThis as typeof globalThis & {

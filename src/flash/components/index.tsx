@@ -1,6 +1,8 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { flashIconSpec } from "#qdbpux4f2e4m";
 import type { FlashType } from "#33o6e7mug9pg";
+import { Icon } from "#lbkpzw8nphru";
 
 type FlashStackProps = HTMLAttributes<HTMLDivElement> & {
   expanded?: boolean;
@@ -59,7 +61,7 @@ function FlashShell(props: FlashShellProps) {
       data-tbf-progress-tone={type}
       role={type === "error" ? "alert" : "status"}
     >
-      <span className="tbf-flash__icon" aria-hidden="true">{iconText(type)}</span>
+      <Icon className="tbf-flash__icon" spec={flashIconSpec(type)} />
       <div className="tbf-flash__body">
         <strong className="tbf-flash__title">{title}</strong>
         {description ? <span className="tbf-flash__description">{description}</span> : null}
@@ -109,12 +111,6 @@ function FlashLiveRegion(props: HTMLAttributes<HTMLDivElement>) {
       data-tbf-flash-live=""
     />
   );
-}
-
-function iconText(type: FlashType) {
-  if (type === "success") return "OK";
-  if (type === "error") return "!";
-  return "i";
 }
 
 export { ConfirmElement, FlashLiveRegion, FlashShell, FlashStack };

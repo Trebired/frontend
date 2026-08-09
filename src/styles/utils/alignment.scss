@@ -1,0 +1,93 @@
+$tbf-hor-alignments: (
+  left: flex-start,
+  center: center,
+  right: flex-end,
+);
+
+@each $name, $value in $tbf-hor-alignments {
+  .hor-#{$name} {
+    justify-content: $value;
+
+    &.column,
+    &.left-column,
+    &.right-column,
+    &.middle-column {
+      align-items: $value;
+      justify-content: flex-start;
+    }
+  }
+
+  .hor-#{$name}-child {
+    @if $name == left {
+      align-self: flex-start;
+      margin-right: auto;
+    } @else if $name == center {
+      align-self: center;
+      margin-left: auto;
+      margin-right: auto;
+    } @else if $name == right {
+      align-self: flex-end;
+      margin-left: auto;
+    }
+  }
+}
+
+.hor-apart {
+  justify-content: space-between;
+}
+
+.ver-center {
+  display: flex;
+  align-items: center;
+}
+
+.ver-bottom {
+  display: flex;
+  align-items: flex-end;
+}
+
+.ver-center-child {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.ver-bottom-child {
+  margin-top: auto;
+}
+
+.ver-xs {
+  margin-top: var(--tbf-gap-xs2);
+}
+
+.ver-sm {
+  margin-top: var(--tbf-gap-xs);
+}
+
+.ver-md {
+  margin-top: var(--tbf-gap-sm);
+}
+
+.ver-lg {
+  margin-top: var(--tbf-gap-md);
+}
+
+.no-stretch {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: fit-content;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .inline-row.mobile-wrap {
+    flex-wrap: wrap;
+
+    > .column {
+      flex-basis: 100%;
+      width: 100%;
+    }
+  }
+}

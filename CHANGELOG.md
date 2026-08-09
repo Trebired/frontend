@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 4.0.1
+
+- Changed flash defaults to render Remix Icon status glyphs and keep semantic flash coloring scoped to icons only.
+- Removed flash type-color fallbacks from titles and countdown progress bars.
+- Removed source-level brand string construction from config/logging helpers and split oversized utility/verifier files.
+
 ## 4.0.0
 
 - Replaced styled component defaults with neutral structural defaults so app frontend config owns palette and tone values.

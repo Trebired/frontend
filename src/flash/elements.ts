@@ -1,4 +1,6 @@
 import { flashId } from "./duration.js";
+import { renderIconElement } from "#e55z7pkijewq";
+import { flashFallbackIconText, flashIconSpec } from "./icons.js";
 import type { FlashOptions, FlashType } from "./types.js";
 
 function makeButton(label: string, className: string) {
@@ -39,7 +41,8 @@ function flashIcon(type: FlashType) {
   const icon = document.createElement("span");
   icon.className = "tbf-flash__icon";
   icon.setAttribute("aria-hidden", "true");
-  icon.textContent = type === "success" ? "OK" : type === "info" ? "i" : "!";
+  icon.textContent = flashFallbackIconText(type);
+  void renderIconElement(icon, flashIconSpec(type), { className: "tbf-flash__icon" });
   return icon;
 }
 
