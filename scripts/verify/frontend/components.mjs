@@ -5,10 +5,26 @@ import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyFrontendComponents(context) {
+  await verifyLayoutStyles(context.rootDir);
+  await verifyTabsStyles(context.rootDir);
   await verifyReactEntrypoint(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
   await verifyRootImportIsolation(context.rootDir);
+}
+
+async function verifyLayoutStyles(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "index.scss"), "utf8");
+  assert.ok(source.includes("--tbf-layout-bottom-bar-safe-offset: 0px;"));
+  assert.ok(source.includes("--tbf-layout-mobile-bottom-bar-safe-offset: calc("));
+  assert.ok(source.includes("--tbf-layout-bottom-bar-safe-offset: var(--tbf-layout-mobile-bottom-bar-safe-offset);"));
+}
+
+async function verifyTabsStyles(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "inputs", "advanced", "tabs", "styles.scss"), "utf8");
+  assert.ok(source.includes('&[aria-selected="true"]'));
+  assert.ok(source.includes('&[data-tbf-active="true"]'));
+  assert.ok(source.includes("var(--tbf-tabs-active-background"));
 }
 
 async function verifyReactEntrypoint(importDist) {

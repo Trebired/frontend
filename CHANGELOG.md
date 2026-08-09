@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 4.0.3
+
+- Kept flash stacks on the desktop bottom edge by scoping the mobile bottom-bar safe offset to mobile layout.
+- Matched active tab styling to ARIA/data-selected tab markup.
+- Applied flash level icon colors to inline SVG icon variables as well as the icon host.
+
 ## 4.0.2
 
 - Removed remaining flash type-color fallback variables so semantic flash colors apply only through icon color tokens.

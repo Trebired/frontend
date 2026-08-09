@@ -33,7 +33,10 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
       color: var(--tbf-tabs-hover-color, var(--tbf-tabs-color, var(--text-color)));
     }
 
-    &.active {
+    &.active,
+    &[aria-selected="true"],
+    &[data-tbf-active="true"],
+    &[data-active="true"] {
       background: var(--tbf-tabs-active-background, var(--background-surface-1));
       border-color: var(--tbf-tabs-active-border-color, var(--border-surface-1));
       color: var(--tbf-tabs-active-color, var(--tbf-tabs-color, var(--text-color)));

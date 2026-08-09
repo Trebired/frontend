@@ -56,18 +56,22 @@
 
 .tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon {
   color: var(--tbf-flash-success-icon-color, var(--tbf-flash-icon-color, currentColor));
+  --tbf-icon-color: var(--tbf-flash-success-icon-color, var(--tbf-flash-icon-color, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon {
   color: var(--tbf-flash-error-icon-color, var(--tbf-flash-icon-color, currentColor));
+  --tbf-icon-color: var(--tbf-flash-error-icon-color, var(--tbf-flash-icon-color, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon {
   color: var(--tbf-flash-warn-icon-color, var(--tbf-flash-icon-color, currentColor));
+  --tbf-icon-color: var(--tbf-flash-warn-icon-color, var(--tbf-flash-icon-color, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="info"] .tbf-flash__icon {
   color: var(--tbf-flash-info-icon-color, var(--tbf-flash-icon-color, currentColor));
+  --tbf-icon-color: var(--tbf-flash-info-icon-color, var(--tbf-flash-icon-color, currentColor));
 }
 
 .tbf-flash__body,

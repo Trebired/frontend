@@ -6,9 +6,10 @@
   --tbf-layout-mobile-content-padding: 14px 14px 24px;
   --tbf-layout-compact-content-padding: 12px 10px 20px;
   --tbf-layout-bottom-bar-height: 68px;
-  --tbf-layout-bottom-bar-safe-offset: calc(
+  --tbf-layout-mobile-bottom-bar-safe-offset: calc(
     var(--tbf-layout-bottom-bar-height) + env(safe-area-inset-bottom, 0px)
   );
+  --tbf-layout-bottom-bar-safe-offset: 0px;
   --tbf-layout-sidebar-left-active-width: 0px;
   --tbf-layout-sidebar-right-active-width: 0px;
   --tbf-sidebar-width: 220px;
@@ -127,6 +128,7 @@ body[data-tbf-sidebar-right-minimized="true"] {
 
 @media (max-width: 900px) {
   body[data-tbf-layout-mobile="true"] {
+    --tbf-layout-bottom-bar-safe-offset: var(--tbf-layout-mobile-bottom-bar-safe-offset);
     padding-bottom: var(--tbf-layout-bottom-bar-safe-offset);
   }
 
