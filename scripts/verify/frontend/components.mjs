@@ -190,7 +190,8 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.equal(html.includes("data-tbf-theme-button"), false);
   assert.ok(html.includes("tbf-button btn icon has-tooltip tbf-product-shell-theme-control"));
   assert.ok(html.includes("tbf-button btn has-tooltip tbf-product-shell-theme-control"));
-  assert.ok(html.includes("data-tbf-popover-open"));
+  assert.ok(html.includes("data-tbf-popover-trigger"));
+  assert.equal(html.includes("data-tbf-popover-open"), false);
   assert.ok(html.includes("data-tbf-theme-select"));
   assert.ok(html.includes("data-tbf-modal"));
   assert.ok(html.includes("data-tbf-fullscreen-target"));

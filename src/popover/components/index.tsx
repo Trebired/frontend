@@ -35,7 +35,7 @@ function PopoverOpenButton(props: PopoverOpenButtonProps) {
       {...rest}
       className={classNames("tbf-button", className)}
       data-tbf-popover-hover={dataBool(hover)}
-      data-tbf-popover-open=""
+      data-tbf-popover-trigger=""
       aria-controls={controls}
       aria-expanded="false"
       type={type}

@@ -6,7 +6,7 @@ import {
 } from "#ccvonx3uhbte";
 
 const POPOVER_BASE_Z_INDEX = 1040;
-const POPOVER_TRIGGER_SELECTOR = "[data-tbf-popover-open][aria-controls]";
+const POPOVER_TRIGGER_SELECTOR = "[data-tbf-popover-trigger][aria-controls]";
 const POPOVER_CLOSE_SELECTOR = "[data-tbf-popover-close]";
 
 type PopoverEntry = {
@@ -53,6 +53,8 @@ function placePopover(trigger: HTMLElement, popover: HTMLElement) {
 
 function setPopoverExpanded(entry: PopoverEntry, open: boolean) {
   setAriaExpanded(entry.trigger, open);
+  if (open) entry.trigger.setAttribute("data-tbf-popover-open", "true");
+  else entry.trigger.removeAttribute("data-tbf-popover-open");
   entry.popover.setAttribute("aria-hidden", open ? "false" : "true");
 }
 

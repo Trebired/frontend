@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.0.8
+
+- Split popover trigger binding from open state so SSR markup for closed popovers no longer carries an open-state attribute.
+
 ## 5.0.7
 
 - Scoped header runtime and sticky selectors to real header elements so body-level SSR layout attributes do not affect hydration measurements.

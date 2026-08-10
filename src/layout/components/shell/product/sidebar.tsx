@@ -132,7 +132,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
         "aria-haspopup": "menu",
         children: body,
         className: classNames("tbf-product-shell-theme-control", className),
-        "data-tbf-popover-open": "",
+        "data-tbf-popover-trigger": "",
         icon: !children,
         id,
         title: String(label),

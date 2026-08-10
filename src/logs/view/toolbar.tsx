@@ -192,7 +192,7 @@ function exportPopover(model: any) {
           icon: true,
           size: "md",
           tooltip: true,
-          "data-tbf-popover-open": "",
+          "data-tbf-popover-trigger": "",
           children: <>{icon({ spec: "remixicon download-2-line" })}</>,
     })}
     <div

@@ -111,7 +111,7 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
     "aria-haspopup": "menu",
     "aria-expanded": "false",
     "aria-label": translate(current, "label"),
-    "data-tbf-popover-open": "",
+    "data-tbf-popover-trigger": "",
     title: translate(current, "label"),
     children: <Icon spec="remixicon translate-2" />,
   });
