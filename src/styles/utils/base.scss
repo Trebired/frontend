@@ -167,6 +167,10 @@ a {
   text-decoration: none;
 }
 
+:where(a, button, [role="button"], [role="tab"], .btn, .text-link, .popover-item):active:not(:disabled):not([aria-disabled="true"]) {
+  filter: var(--tbf-interaction-active-filter, brightness(0.9));
+}
+
 img {
   -webkit-user-drag: none;
   pointer-events: auto;

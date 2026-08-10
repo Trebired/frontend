@@ -74,10 +74,3 @@
   color: var(--tbf-text, #000);
   background: var(--tbf-surface-muted, #f4f4f4);
 }
-
-.tbf-popover :where(a, button).popover-item:active,
-.tbf-popover > :where(a, button):active,
-[data-tbf-popover] :where(a, button).popover-item:active,
-[data-tbf-popover] > :where(a, button):active {
-  transform: scale(0.97);
-}

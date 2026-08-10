@@ -115,9 +115,19 @@ type FrontendComponentsConfig = {
   tooltip?: FrontendComponentTokens;
 };
 
+type FrontendActiveInteractionConfig = {
+  brightness?: number | string;
+  enabled?: boolean;
+};
+
+type FrontendInteractionsConfig = {
+  active?: FrontendActiveInteractionConfig;
+};
+
 type FrontendConfig = {
   components?: FrontendComponentsConfig;
   fonts?: FrontendFontConfig;
+  interactions?: FrontendInteractionsConfig;
   palette?: FrontendPaletteConfig;
   prefix?: string;
   icons?: {
@@ -198,9 +208,20 @@ type NormalizedFrontendFontConfig = {
 type NormalizedFrontendComponentsConfig =
   Record<keyof FrontendComponentsConfig, FrontendComponentTokens>;
 
+type NormalizedFrontendActiveInteractionConfig = {
+  brightness: string;
+  enabled: boolean;
+  filter: string;
+};
+
+type NormalizedFrontendInteractionsConfig = {
+  active: NormalizedFrontendActiveInteractionConfig;
+};
+
 type NormalizedFrontendConfig = {
   components: NormalizedFrontendComponentsConfig;
   fonts: NormalizedFrontendFontConfig;
+  interactions: NormalizedFrontendInteractionsConfig;
   palette: NormalizedFrontendPaletteConfig;
   prefix: string;
   icons: {
@@ -229,9 +250,11 @@ export type {
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,
   NormalizedFrontendConfig,
+  NormalizedFrontendActiveInteractionConfig,
   NormalizedFrontendComponentsConfig,
   NormalizedFrontendFontConfig,
   NormalizedFrontendFontFamilyConfig,
+  NormalizedFrontendInteractionsConfig,
   NormalizedFrontendPaletteConfig,
   NormalizedFrontendPaletteMode,
   NormalizedFrontendPaletteSemantic,
@@ -240,6 +263,7 @@ export type {
   NormalizedFrontendThemeMode,
   NormalizedFrontendZIndexScaleConfig,
   FrontendConfig,
+  FrontendActiveInteractionConfig,
   FrontendComponentTokens,
   FrontendComponentsConfig,
   FrontendFontConfig,
@@ -247,6 +271,7 @@ export type {
   FrontendFontFamilyConfig,
   FrontendFontStyle,
   FrontendIconPack,
+  FrontendInteractionsConfig,
   FrontendPaletteConfig,
   FrontendPaletteFamilies,
   FrontendPaletteMode,

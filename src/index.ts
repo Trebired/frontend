@@ -220,6 +220,7 @@ export * from "./live/index.js";
 export * from "./logs/index.js";
 export * from "./markdown/index.js";
 export * from "./modal/index.js";
+export * from "./namespace/index.js";
 export * from "./popover/index.js";
 export * from "./primitives/index.js";
 export * from "./progress/index.js";

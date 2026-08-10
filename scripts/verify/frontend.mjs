@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
-import fs from "node:fs/promises";
 import path from "node:path";
 import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
+import { verifyNamespace, verifyPopover } from "./frontend/runtime.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
@@ -28,11 +29,13 @@ async function main() {
   };
   installDom();
   await verifyFrontendConfig(context);
+  await verifyNamespace(context);
   await verifyCsrfFetch();
   await verifyIcons(context);
   await verifyActionConfetti();
   await verifyFlash(context);
   await verifyTooltip();
+  await verifyPopover(context);
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
@@ -79,66 +82,6 @@ function installDom() {
   window.CSS ||= {};
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
-}
-
-async function verifyFrontendConfig(context) {
-  const config = await importDist("config");
-  const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config");
-  await fs.rm(fixture, { force: true, recursive: true });
-  await fs.mkdir(path.join(fixture, context.configDirName, "frontend"), { recursive: true });
-
-  const defaults = await config.loadFrontendConfig(fixture);
-  assert.equal(defaults.configPath, null);
-  assert.equal(defaults.config.prefix, "tbf");
-  assert.equal(defaults.generatedScss.includes(context.packageName), false);
-  assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("theme/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("language/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("logs/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("sidebar/styles/index.scss"));
-  assert.ok(defaults.generatedScss.includes("fullscreen/styles/index.scss"));
-
-  const configPath = path.join(fixture, context.configRelPath);
-  await fs.writeFile(configPath, [
-    "export default {",
-    "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
-    "  prefix: \"app\",",
-    "  components: {",
-    "    progress: { color: \"#111111\" },",
-    "    textLink: { color: \"#222222\", hover: { color: \"#333333\" } },",
-    "  },",
-    "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
-    "  systems: { modal: false, icons: true },",
-    "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
-    "};",
-    "",
-  ].join("\n"));
-
-  const loaded = await config.loadFrontendConfig(fixture);
-  assert.equal(loaded.configPath, configPath);
-  assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
-  assert.equal(loaded.config.fonts.families[0].packageName, "inter");
-  assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
-  assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
-  assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
-  assert.ok(loaded.generatedScss.includes("--app-progress-color: #111111;"));
-  assertFrontendTextLinkConfigCss(loaded.generatedScss);
-  assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
-  await assert.rejects(
-    () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),
-    /ENOENT/u,
-  );
-
-  await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
-  await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
-  await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
-  await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
-}
-
-function assertFrontendTextLinkConfigCss(generatedScss) {
-  assert.ok(generatedScss.includes("--app-text-link-color: #222222;"));
-  assert.ok(generatedScss.includes("--app-text-link-hover-color: #333333;"));
 }
 
 async function verifyCsrfFetch() {

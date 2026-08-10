@@ -94,6 +94,7 @@ function productShellThemeSelect(props: ProductShellThemeSelectProps) {
       dark={props.dark}
       data-tbf-popover=""
       id={props.popoverId}
+      inert={true}
       label={props.label}
       light={props.light}
       modes={props.modes}

@@ -1,6 +1,7 @@
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import { DEFAULT_FRONTEND_COMPONENTS_CONFIG, normalizeComponentsConfig } from "./component-tokens.js";
 import { normalizeFontsConfig } from "./fonts.js";
+import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig } from "./theme.js";
@@ -47,6 +48,13 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
   fonts: Object.freeze({
     families: Object.freeze([]) as NormalizedFrontendConfig["fonts"]["families"],
     sans: "",
+  }),
+  interactions: Object.freeze({
+    active: Object.freeze({
+      brightness: "0.9",
+      enabled: true,
+      filter: "brightness(0.9)",
+    }),
   }),
   palette: Object.freeze({
     modes: Object.freeze([]) as NormalizedFrontendConfig["palette"]["modes"],
@@ -131,6 +139,7 @@ function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig
   return {
     components: normalizeComponentsConfig(source.components),
     fonts: normalizeFontsConfig(source.fonts),
+    interactions: normalizeInteractionsConfig(source.interactions),
     palette: normalizePaletteConfig(source.palette, theme.modes.map((mode) => mode.key)),
     prefix: normalizePrefix(source.prefix),
     icons: {

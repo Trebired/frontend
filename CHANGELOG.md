@@ -2,6 +2,13 @@
 
 All notable package changes are documented here.
 
+## 5.1.0
+
+- Added package-owned bundler prefix config and generated namespace helpers so the runtime prefix comes from config instead of being an implicit source convention.
+- Made theme runtime binding idempotent so mutation-observer rebinding cannot revert a user-selected theme back to SSR/default state.
+- Fixed popover hiding to release focused descendants before applying hidden/inert state.
+- Added global config-driven active press feedback through `interactions.active`.
+
 ## 5.0.11
 
 - Added a configurable `TextLink` primitive backed by `components.textLink` tokens and kept the legacy `text-link` class as the same package-owned style.

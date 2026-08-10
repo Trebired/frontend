@@ -154,6 +154,7 @@ function localePopover(popoverId: string, props: LocaleSwitcherProps) {
       id={popoverId}
       aria-hidden="true"
       data-tbf-popover=""
+      inert={true}
       role="menu"
     >
       {locales.map((entry) => localeOptionButton(entry, current, props))}

@@ -200,6 +200,7 @@ function exportPopover(model: any) {
     id={model.exportPopoverId}
     aria-hidden="true"
     data-tbf-popover=""
+    inert={true}
     >
     {model.exportOptions.map((item: any) => (
           <a

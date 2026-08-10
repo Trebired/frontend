@@ -22,6 +22,7 @@ function PopoverPanel(props: PopoverPanelProps) {
       className={classNames("tbf-popover", className)}
       data-tbf-popover=""
       aria-hidden="true"
+      inert={true}
     >
       {children}
     </div>

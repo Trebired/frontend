@@ -93,6 +93,7 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   return [
     `  --${config.prefix}-config-prefix: ${cssString(config.prefix)};`,
     `  --${config.prefix}-icon-endpoint: ${cssString(config.icons.endpoint)};`,
+    `  --${config.prefix}-interaction-active-filter: ${config.interactions.active.filter};`,
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
     ...tokenDeclarations(config.prefix, config.theme.tokens),

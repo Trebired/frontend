@@ -9,6 +9,7 @@ async function verifyFrontendTheme(context) {
   await verifyThemeConfigModes(context);
   await verifyThemeConfigDependencies(context);
   await verifyThemeRuntimeModes(context);
+  await verifyThemeRuntimeRebind(context);
   await verifyThemeControls(context);
   await verifyThemeComponents(context);
 }
@@ -123,6 +124,23 @@ async function verifyThemeRuntimeModes(context) {
 
   theme.configureThemeModes(null);
   assert.deepEqual(theme.themeModeKeys(), ["dark", "light"]);
+}
+
+async function verifyThemeRuntimeRebind(context) {
+  const theme = await context.importDist("theme");
+  theme.configureThemeModes(null);
+  await theme.bindThemeRuntime(document, { defaultTheme: "dark" });
+  await theme.setTheme("light");
+
+  const scope = document.createElement("section");
+  scope.innerHTML = [
+    '<button data-tbf-theme-button data-tbf-theme-light-label="Light">',
+    '<span data-tbf-theme-label></span>',
+    "</button>",
+  ].join("");
+  await theme.bindThemeRuntime(scope, { defaultTheme: "dark" });
+  assert.equal(document.documentElement.getAttribute("data-tbf-theme"), "light");
+  assert.equal(scope.querySelector("[data-tbf-theme-button]").getAttribute("data-tbf-theme-current"), "light");
 }
 
 async function verifyThemeControls(context) {

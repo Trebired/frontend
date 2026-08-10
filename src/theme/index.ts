@@ -4,13 +4,18 @@ import type { ThemeRuntimeOptions } from "./apply.js";
 import { bindThemeControls } from "./controls.js";
 import { configureThemeModes, hasThemeModeOptions } from "./modes.js";
 
+let themeRuntimeApplied = false;
+
 async function bindThemeRuntime(
   root: BindRoot = document,
   options: ThemeRuntimeOptions = {},
 ): Promise<void> {
   if (hasThemeModeOptions(options)) configureThemeModes(options);
-  const persisted = await readPersistedTheme(options.persistence, options);
-  applyTheme(persisted || normalizeTheme(options.defaultTheme, options), options);
+  if (!themeRuntimeApplied) {
+    themeRuntimeApplied = true;
+    const persisted = await readPersistedTheme(options.persistence, options);
+    applyTheme(persisted || normalizeTheme(options.defaultTheme, options), options);
+  }
   bindThemeControls(root, options);
 }
 

@@ -53,8 +53,13 @@ function placePopover(trigger: HTMLElement, popover: HTMLElement) {
 
 function setPopoverExpanded(entry: PopoverEntry, open: boolean) {
   setAriaExpanded(entry.trigger, open);
-  if (open) entry.trigger.setAttribute("data-tbf-popover-open", "true");
-  else entry.trigger.removeAttribute("data-tbf-popover-open");
+  if (open) {
+    entry.popover.removeAttribute("inert");
+    entry.trigger.setAttribute("data-tbf-popover-open", "true");
+  } else {
+    entry.popover.setAttribute("inert", "");
+    entry.trigger.removeAttribute("data-tbf-popover-open");
+  }
   entry.popover.setAttribute("aria-hidden", open ? "false" : "true");
 }
 
@@ -77,9 +82,20 @@ function hidePopover(popoverOrTrigger?: HTMLElement | null) {
     : openEntry;
   if (!entry) return false;
   entry.popover.removeAttribute("data-tbf-open");
+  releasePopoverFocus(entry);
   setPopoverExpanded(entry, false);
   if (openEntry === entry) openEntry = null;
   return true;
+}
+
+function releasePopoverFocus(entry: PopoverEntry): void {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement) || !entry.popover.contains(active)) return;
+  if (entry.trigger.isConnected) {
+    entry.trigger.focus({ preventScroll: true });
+    return;
+  }
+  active.blur();
 }
 
 function togglePopover(entry: PopoverEntry) {
