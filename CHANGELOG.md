@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.0.2
+
+- Rendered the product shell theme trigger through the generic button primitive so it matches locale switcher button styling.
+- Restored icon-only button icons to the configured button icon color.
+
 ## 5.0.1
 
 - Kept icon-only package buttons aligned with the control text color instead of forcing `--tbf-button-icon-color`.

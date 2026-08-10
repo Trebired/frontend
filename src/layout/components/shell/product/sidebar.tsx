@@ -1,5 +1,6 @@
 import { classNames } from "#ndsvdqv80epr";
 import { Card } from "#4woymc9xhupl";
+import { button } from "#6hfutrhvm6x6";
 import {
   Sidebar,
   SidebarBody,
@@ -95,29 +96,30 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
   const themePopoverId = popoverId || `${id}_menu`;
   return (
     <>
-    <button
-      {...rest}
-      aria-controls={themePopoverId}
-      aria-expanded="false"
-      aria-label={props["aria-label"] || label}
-      aria-haspopup="menu"
-      className={classNames("tbf-product-shell-theme-control", className)}
-      data-tbf-popover-open=""
-      id={id}
-      title={String(label)}
-      type={type}
-    >
-      {children || icon}
-    </button>
-    <ThemeSelect
-      aria-hidden="true"
-      className="popover popover-portaled tbf-theme-switch-popover"
-      id={themePopoverId}
-      label={String(label)}
-      optionClassName="popover-item"
-      value={theme}
-      variant="buttons"
-    />
+      {button({
+        ...rest,
+        "aria-controls": themePopoverId,
+        "aria-expanded": "false",
+        "aria-label": props["aria-label"] || label,
+        "aria-haspopup": "menu",
+        children: children || icon,
+        className: classNames("tbf-product-shell-theme-control", className),
+        "data-tbf-popover-open": "",
+        icon: true,
+        id,
+        title: String(label),
+        tooltip: true,
+        type,
+      })}
+      <ThemeSelect
+        aria-hidden="true"
+        className="popover popover-portaled tbf-theme-switch-popover"
+        id={themePopoverId}
+        label={String(label)}
+        optionClassName="popover-item"
+        value={theme}
+        variant="buttons"
+      />
     </>
   );
 }
