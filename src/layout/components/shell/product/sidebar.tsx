@@ -20,6 +20,12 @@ import type {
   ProductShellThemeToggleProps,
 } from "./types.js";
 
+type ProductShellThemeSelectProps =
+  Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
+    label: string;
+    popoverId: string;
+  };
+
 function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
   const { actions, children, className, ...rest } = props;
   const body = actions ?? children;
@@ -80,12 +86,33 @@ function ProductShellSidebarMinimizeButton(
   );
 }
 
+function productShellThemeSelect(props: ProductShellThemeSelectProps) {
+  return (
+    <ThemeSelect
+      aria-hidden="true"
+      className="popover popover-portaled tbf-theme-switch-popover"
+      dark={props.dark}
+      data-tbf-popover=""
+      id={props.popoverId}
+      label={props.label}
+      light={props.light}
+      modes={props.modes}
+      optionClassName="popover-item"
+      value={props.theme}
+      variant="buttons"
+    />
+  );
+}
+
 function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
   const {
     children,
     className,
+    dark,
     icon,
     labels,
+    light,
+    modes,
     popoverId,
     theme,
     type = "button",
@@ -112,16 +139,14 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
         tooltip: true,
         type,
       })}
-      <ThemeSelect
-        aria-hidden="true"
-        className="popover popover-portaled tbf-theme-switch-popover"
-        data-tbf-popover=""
-        id={themePopoverId}
-        label={String(label)}
-        optionClassName="popover-item"
-        value={theme}
-        variant="buttons"
-      />
+      {productShellThemeSelect({
+        dark,
+        label: String(label),
+        light,
+        modes,
+        popoverId: themePopoverId,
+        theme,
+      })}
     </>
   );
 }

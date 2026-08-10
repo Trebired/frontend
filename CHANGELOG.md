@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.0.7
+
+- Scoped header runtime and sticky selectors to real header elements so body-level SSR layout attributes do not affect hydration measurements.
+- Forwarded configured theme mode keys through product shell theme controls so the active theme option is rendered correctly during SSR.
+
 ## 5.0.6
 
 - Made product shell theme popovers render with popover data attributes during SSR so they are hidden and styled before client binding.

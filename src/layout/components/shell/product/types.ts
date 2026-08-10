@@ -6,6 +6,7 @@ import type {
 } from "react";
 import type { SidebarSide } from "#dyryux7b683c";
 import type { ShellChromeState } from "#boxcxvsyrtdl";
+import type { ThemeModeOptions } from "#zzt5zj380sl9";
 
 type ProductShellLabelKey =
   | "about"
@@ -117,7 +118,7 @@ type ProductShellSidebarMinimizeButtonProps =
   };
 
 type ProductShellThemeToggleProps =
-  ButtonHTMLAttributes<HTMLButtonElement> & {
+  ButtonHTMLAttributes<HTMLButtonElement> & ThemeModeOptions & {
     icon?: ReactNode;
     labels?: ProductShellLabels;
     popoverId?: string;

@@ -11,14 +11,14 @@
   background: var(--tbf-page, var(--background-page, #fff));
 }
 
-[data-tbf-header-primary],
-[data-tbf-header-secondary] {
+[data-tbf-header][data-tbf-header-primary],
+[data-tbf-header][data-tbf-header-secondary] {
   position: sticky;
   inset-block-start: 0;
   z-index: var(--tbf-z-header, 920);
 }
 
-[data-tbf-header-secondary] {
+[data-tbf-header][data-tbf-header-secondary] {
   inset-block-start: var(--tbf-header-height, 0px);
   z-index: var(--tbf-z-secondary-header, 910);
 }

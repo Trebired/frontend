@@ -6,8 +6,8 @@ import {
 } from "#er0dlx1gtbzh";
 
 const HEADER_SELECTOR = "[data-tbf-header]";
-const HEADER_PRIMARY_SELECTOR = "[data-tbf-header-primary]";
-const HEADER_SECONDARY_SELECTOR = "[data-tbf-header-secondary]";
+const HEADER_PRIMARY_SELECTOR = "[data-tbf-header][data-tbf-header-primary]";
+const HEADER_SECONDARY_SELECTOR = "[data-tbf-header][data-tbf-header-secondary]";
 const MOBILE_NAV_SELECTOR = "[data-tbf-mobile-nav]";
 const MOBILE_NAV_PANEL_SELECTOR = "[data-tbf-mobile-nav-panel]";
 const MOBILE_NAV_TOGGLE_SELECTOR = "[data-tbf-mobile-nav-toggle]";
