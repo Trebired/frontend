@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.0.1
+
+- Kept icon-only package buttons aligned with the control text color instead of forcing `--tbf-button-icon-color`.
+
 ## 5.0.0
 
 - Added `components.progress` tokens so top-level progress styling no longer depends on generic theme token overrides.

@@ -44,6 +44,10 @@
   background: var(--tbf-surface-button-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
 }
 
+.tbf-button.icon {
+  --tbf-surface-button-current-icon-color: currentColor;
+}
+
 .tbf-button:disabled,
 .tbf-button[disabled],
 .tbf-button.disabled {

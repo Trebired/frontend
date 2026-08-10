@@ -5,12 +5,22 @@ import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyFrontendComponents(context) {
+  await verifyButtonIconStyles(context.rootDir);
   await verifyLayoutStyles(context.rootDir);
   await verifyTabsStyles(context.rootDir);
   await verifyReactEntrypoint(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
   await verifyRootImportIsolation(context.rootDir);
+}
+
+async function verifyButtonIconStyles(rootDir) {
+  const actions = await fs.readFile(path.join(rootDir, "dist", "actions", "styles", "index.scss"), "utf8");
+  const surface = await fs.readFile(path.join(rootDir, "dist", "surface", "styles", "index.scss"), "utf8");
+  assert.ok(actions.includes(".tbf-button.icon"));
+  assert.ok(actions.includes("--tbf-action-control-current-icon-color: currentColor;"));
+  assert.ok(surface.includes(".tbf-button.icon"));
+  assert.ok(surface.includes("--tbf-surface-button-current-icon-color: currentColor;"));
 }
 
 async function verifyLayoutStyles(rootDir) {
