@@ -1,17 +1,65 @@
 .tbf-tooltip {
   position: fixed;
+  z-index: var(--tbf-z-tooltip, 1100);
+  box-sizing: border-box;
   max-width: min(380px, calc(100vw - 24px));
-  padding: 7px 9px;
-  border-radius: var(--tbf-radius-sm, 0);
-  color: var(--tbf-surface, #fff);
-  background: var(--tbf-text, #000);
-  font-size: 12px;
-  line-height: 1.3;
+  padding: var(--tbf-tooltip-padding, 7px 9px);
+  border: var(--tbf-tooltip-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
+  border-radius: var(--tbf-tooltip-radius, var(--tbf-radius-sm, 0));
+  color: var(--tbf-tooltip-color, var(--tbf-text, #000));
+  background: var(--tbf-tooltip-background, var(--tbf-surface, #fff));
+  font-family: var(--tbf-tooltip-font-family, var(--tbf-font-sans, sans-serif));
+  font-size: var(--tbf-tooltip-font-size, 12px);
+  line-height: var(--tbf-tooltip-line-height, 1.3);
   opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, var(--tbf-tooltip-hidden-y, 4px), 0) scale(var(--tbf-tooltip-hidden-scale, 0.985));
+  transform-origin: var(--tbf-tooltip-transform-origin, center bottom);
   pointer-events: none;
-  transition: opacity 120ms ease;
+  transition:
+    opacity var(--tbf-tooltip-duration, 170ms) var(--tbf-tooltip-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform var(--tbf-tooltip-duration, 170ms) var(--tbf-tooltip-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+    visibility 0s linear var(--tbf-tooltip-duration, 170ms);
+}
+
+.tbf-tooltip::before {
+  --tbf-tooltip-arrow-size-current: var(--tbf-tooltip-arrow-size, 8px);
+
+  content: "";
+  position: absolute;
+  left: clamp(
+    var(--tbf-tooltip-arrow-inset, 10px),
+    var(--tbf-arrow-x, 50%),
+    calc(100% - var(--tbf-tooltip-arrow-inset, 10px))
+  );
+  width: var(--tbf-tooltip-arrow-size-current);
+  height: var(--tbf-tooltip-arrow-size-current);
+  border: inherit;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.tbf-tooltip[data-tbf-placement="top"] {
+  --tbf-tooltip-hidden-y: 4px;
+  --tbf-tooltip-transform-origin: center bottom;
+}
+
+.tbf-tooltip[data-tbf-placement="top"]::before {
+  bottom: calc(var(--tbf-tooltip-arrow-size-current) / -2);
+}
+
+.tbf-tooltip[data-tbf-placement="bottom"] {
+  --tbf-tooltip-hidden-y: -4px;
+  --tbf-tooltip-transform-origin: center top;
+}
+
+.tbf-tooltip[data-tbf-placement="bottom"]::before {
+  top: calc(var(--tbf-tooltip-arrow-size-current) / -2);
 }
 
 .tbf-tooltip[data-tbf-open="true"] {
   opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0s;
 }

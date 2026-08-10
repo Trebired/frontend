@@ -45,6 +45,7 @@ function ensureTooltipLayer() {
   if (tooltipState.layer?.isConnected) return tooltipState.layer;
   const existing = document.getElementById(TOOLTIP_LAYER_ID);
   if (existing instanceof HTMLElement) {
+    existing.setAttribute("role", "tooltip");
     tooltipState.layer = existing;
     portalElement(existing);
     return existing;
@@ -52,6 +53,7 @@ function ensureTooltipLayer() {
   const layer = document.createElement("div");
   layer.id = TOOLTIP_LAYER_ID;
   layer.className = "tbf-tooltip";
+  layer.setAttribute("role", "tooltip");
   layer.setAttribute("aria-hidden", "true");
   layer.setAttribute("data-tbf-tooltip-layer", "");
   portalElement(layer);
@@ -60,6 +62,7 @@ function ensureTooltipLayer() {
 }
 
 function measureLayer(layer: HTMLElement) {
+  const wasOpen = layer.hasAttribute("data-tbf-open");
   const previous = {
     left: layer.style.left,
     opacity: layer.style.opacity,
@@ -76,6 +79,7 @@ function measureLayer(layer: HTMLElement) {
   layer.style.opacity = previous.opacity;
   layer.style.left = previous.left;
   layer.style.top = previous.top;
+  if (!wasOpen) layer.removeAttribute("data-tbf-open");
   return rect;
 }
 

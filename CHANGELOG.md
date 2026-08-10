@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.0.9
+
+- Changed tooltips to use neutral surface/input tone defaults, added configurable tooltip component tokens, and added arrow styling with smoother placement-aware transitions.
+
 ## 5.0.8
 
 - Split popover trigger binding from open state so SSR markup for closed popovers no longer carries an open-state attribute.

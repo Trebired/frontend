@@ -69,6 +69,19 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     paddingInline: "14px",
     radius: "var(--radius-sm, var(--tbf-radius-sm, 0))",
   }),
+  tooltip: Object.freeze({
+    arrow: { size: "8px" },
+    border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
+    duration: "170ms",
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+    font: {
+      family: "var(--tbf-font-sans, sans-serif)",
+      size: "12px",
+    },
+    lineHeight: "1.3",
+    padding: "7px 9px",
+    radius: "var(--tbf-radius-sm, 0)",
+  }),
 } satisfies NormalizedFrontendComponentsConfig);
 
 const COMPONENT_KEYS = Object.keys(

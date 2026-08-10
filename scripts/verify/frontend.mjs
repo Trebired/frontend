@@ -174,11 +174,19 @@ async function verifyTooltip() {
   ].join("");
   bindTooltips(document);
   document.getElementById("tip").dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
-  assert.equal(document.getElementById("tbf_tooltip").textContent, "Hover text");
+  const layer = document.getElementById("tbf_tooltip");
+  assert.equal(layer.textContent, "Hover text");
+  assert.equal(layer.getAttribute("role"), "tooltip");
+  assert.equal(layer.getAttribute("aria-hidden"), "false");
+  assert.equal(layer.getAttribute("data-tbf-placement"), "bottom");
+  assert.ok(layer.style.getPropertyValue("--tbf-arrow-x"));
+  document.getElementById("tip").dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+  assert.equal(layer.getAttribute("aria-hidden"), "true");
+  assert.equal(layer.hasAttribute("data-tbf-open"), false);
   document.getElementById("focus").dispatchEvent(new Event("focusin", { bubbles: true }));
-  assert.equal(document.getElementById("tbf_tooltip").textContent, "Focus text");
+  assert.equal(layer.textContent, "Focus text");
   document.getElementById("status").dispatchEvent(new Event("focusin", { bubbles: true }));
-  assert.equal(document.getElementById("tbf_tooltip").textContent, "Status text");
+  assert.equal(layer.textContent, "Status text");
 }
 
 async function verifyModal() {

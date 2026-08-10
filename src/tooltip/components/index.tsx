@@ -70,6 +70,7 @@ function TooltipLayer(props: HTMLAttributes<HTMLDivElement>) {
       data-tbf-tooltip-layer=""
       id={id}
       aria-hidden="true"
+      role="tooltip"
     />
   );
 }
