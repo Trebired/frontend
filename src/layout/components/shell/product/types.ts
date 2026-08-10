@@ -39,12 +39,17 @@ type ProductShellState = {
   shell: Record<string, unknown>;
 };
 
+type ProductShellHeaderBrandTagAlign = "horizontal" | "vertical";
+
 type ProductShellHeaderProps = {
   actions?: ReactNode;
   brandClassName?: string;
   brandContent?: ReactNode;
   brandHref?: string;
+  brandLogo?: ReactNode;
   brandMeta?: ReactNode;
+  brandTag?: ReactNode;
+  brandTagAlign?: ProductShellHeaderBrandTagAlign;
   className?: string;
   id?: string;
   labels?: ProductShellLabels;
@@ -135,6 +140,7 @@ type ProductShellAboutButtonProps =
 export type {
   ProductShellAboutButtonProps,
   ProductShellBottomBarProps,
+  ProductShellHeaderBrandTagAlign,
   ProductShellHeaderProps,
   ProductShellLabelKey,
   ProductShellLabels,

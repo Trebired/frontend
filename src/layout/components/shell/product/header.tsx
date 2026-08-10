@@ -8,7 +8,28 @@ import { productShellLabel, readProductShellState } from "./state.js";
 import type { ProductShellHeaderProps } from "./types.js";
 
 function headerBrand(props: ProductShellHeaderProps) {
-  if (!props.brandContent && !props.brandMeta) return null;
+  const structuredBrand = props.brandLogo !== undefined || props.brandTag !== undefined;
+  const hasBrandBody = structuredBrand
+    ? props.brandLogo !== undefined || props.brandTag !== undefined
+    : props.brandContent !== undefined && props.brandContent !== null && props.brandContent !== false;
+  if (!hasBrandBody && !props.brandMeta) return null;
+  const brandBody = structuredBrand ? (
+    <span
+      className="tbf-shell-header-brand__identity"
+      data-tbf-brand-tag-align={props.brandTagAlign || "horizontal"}
+    >
+      {props.brandLogo ? (
+        <span className="tbf-shell-header-brand__logo">
+          {props.brandLogo}
+        </span>
+      ) : null}
+      {props.brandTag ? (
+        <span className="tbf-shell-header-brand__tag">
+          {props.brandTag}
+        </span>
+      ) : null}
+    </span>
+  ) : props.brandContent;
   return (
     <HeaderGroup className={classNames("tbf-shell-header-brand", props.brandClassName)}>
       {props.brandHref ? (
@@ -17,14 +38,14 @@ function headerBrand(props: ProductShellHeaderProps) {
           className="tbf-shell-header-brand__link"
           href={props.brandHref}
         >
-          {props.brandContent}
+          {brandBody}
         </a>
       ) : (
         <span className="tbf-shell-header-brand__mark">
-          {props.brandContent}
+          {brandBody}
         </span>
       )}
-      {props.brandMeta ? (
+      {!structuredBrand && props.brandMeta ? (
         <span className="tbf-shell-header-brand__meta">
           {props.brandMeta}
         </span>

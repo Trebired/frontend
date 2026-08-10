@@ -39,7 +39,10 @@ async function verifyReactEntrypoint(importDist) {
   const react = await importDist("react");
   const symbols = [
     "ActionForm",
+    "BootScript",
     "FlashShell",
+    "FrontendBootScript",
+    "FrontendDocument",
     "ProgressRoot",
     "LayerRoot",
     "Layout",
@@ -168,6 +171,18 @@ async function verifyRenderedActions(importDist) {
 async function verifyRenderedLayeredSystems(importDist) {
   const react = await importDist("react");
   const html = [
+    renderToStaticMarkup(h(react.BootScript, {
+      layout: { hasHeader: true, hasLeftSidebar: true },
+      nonce: "n",
+      sidebar: false,
+      theme: "dark",
+    })),
+    renderToStaticMarkup(h(react.BootScript, {
+      layout: false,
+      nonce: "n",
+      sidebar: { sides: ["right"] },
+      theme: false,
+    })),
     renderToStaticMarkup(h(react.FlashShell, { title: "Saved", type: "success" })),
     renderToStaticMarkup(h(react.ProgressRoot, { active: true, value: 0.5 })),
     renderToStaticMarkup(h(react.LayerRoot, null)),
@@ -185,6 +200,10 @@ async function verifyRenderedLayeredSystems(importDist) {
     renderToStaticMarkup(h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null)))),
   ].join("");
   assert.ok(html.includes("data-tbf-status-icon"));
+  assert.ok(html.includes("data-tbf-layout-boot"));
+  assert.ok(html.includes("data-tbf-sidebar-boot"));
+  assert.ok(html.includes("data-tbf-sidebar-right"));
+  assert.ok(html.includes("data-tbf-theme"));
   assert.ok(html.includes("data-tbf-layout-root"));
   assert.ok(html.includes("data-tbf-layout-content"));
   assert.equal(html.includes("data-tbf-theme-button"), false);

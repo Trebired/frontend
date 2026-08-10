@@ -1,4 +1,5 @@
 import React from "react";
+import { resolveFrontendLogger } from "#mhi409n0a05q";
 import type { contribution_summary } from "./types.js";
 
 function logContributionGraph(
@@ -6,38 +7,16 @@ function logContributionGraph(
   message: string,
   metadata: Record<string, unknown>,
 ) {
-  if (typeof globalThis === "undefined") return;
-  const logger = (
-    globalThis as typeof globalThis & {
-      log?: {
-        error?: (
-          scope: string,
-          message: string,
-          metadata?: Record<string, unknown>,
-        ) => void;
-        info?: (
-          scope: string,
-          message: string,
-          metadata?: Record<string, unknown>,
-        ) => void;
-        warn?: (
-          scope: string,
-          message: string,
-          metadata?: Record<string, unknown>,
-        ) => void;
-      };
-    }
-  ).log;
-  const writer =
-  level === "error" && typeof logger?.error === "function"
-  ? logger.error
-  : level === "warn" && typeof logger?.warn === "function"
-  ? logger.warn
-  : typeof logger?.info === "function"
-  ? logger.info
-  : null;
-  if (!writer) return;
-  writer("profile.contributions.graph", message, metadata);
+  try {
+    const logger = resolveFrontendLogger();
+    const writer =
+    level === "error"
+    ? logger.error
+    : level === "warn"
+    ? logger.warn
+    : logger.info;
+    writer("profile.contributions.graph", message, metadata);
+  } catch {}
 }
 
 function useContributionGraphLogging(data: contribution_summary, model: any) {

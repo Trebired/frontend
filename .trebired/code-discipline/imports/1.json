@@ -319,6 +319,7 @@
   "#rkfoqxddyl4k": "./src/surface/styles/index.scss",
   "#rkul1fe6jil1": "./src/inputs/advanced/radio/index.client.ts",
   "#rky4mukal7q2": "./src/actions/confetti.ts",
+  "#rmmv8vkb3dbt": "./src/react/boot.tsx",
   "#rntxe2b9ybvj": "./src/editor/viewer/hooks.ts",
   "#rsbvm1wpfq7m": "./src/layout/styles/chrome.scss",
   "#rzc4srxgt13o": "./src/fullscreen/styles/index.scss",

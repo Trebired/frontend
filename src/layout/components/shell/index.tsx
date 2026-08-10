@@ -19,6 +19,9 @@ type ShellHeaderProps = Omit<AppHeaderProps, "brand"> & {
   brandHref?: string;
   brandLabel?: string;
   brandMeta?: ReactNode;
+  brandLogo?: ReactNode;
+  brandTag?: ReactNode;
+  brandTagAlign?: ShellHeaderBrandTagAlign;
   mobileToggle?: boolean;
   mobileToggleClassName?: string;
   mobileToggleControls?: string;
@@ -26,11 +29,16 @@ type ShellHeaderProps = Omit<AppHeaderProps, "brand"> & {
   mobileToggleLabel?: string;
 };
 
+type ShellHeaderBrandTagAlign = "horizontal" | "vertical";
+
 type ShellHeaderBrandProps = {
   brandContent?: ReactNode;
   brandHref?: string;
   brandLabel?: string;
   brandMeta?: ReactNode;
+  brandLogo?: ReactNode;
+  brandTag?: ReactNode;
+  brandTagAlign?: ShellHeaderBrandTagAlign;
   className?: string;
 };
 
@@ -59,8 +67,34 @@ type ShellMobileNavProps = Omit<MobileNavProps, "children"> & {
 };
 
 function ShellHeaderBrand(props: ShellHeaderBrandProps) {
-  const { brandContent, brandHref, brandLabel, brandMeta, className } = props;
-  if (!brandContent && !brandMeta) return null;
+  const {
+    brandContent,
+    brandHref,
+    brandLabel,
+    brandLogo,
+    brandMeta,
+    brandTag,
+    brandTagAlign = "horizontal",
+    className,
+  } = props;
+  const structuredBrand = brandLogo !== undefined || brandTag !== undefined;
+  const hasBrandBody = structuredBrand
+    ? brandLogo !== undefined || brandTag !== undefined
+    : brandContent !== undefined && brandContent !== null && brandContent !== false;
+  const brandBody = structuredBrand ? (
+    <span
+      className="tbf-shell-header-brand__identity"
+      data-tbf-brand-tag-align={brandTagAlign}
+    >
+      {brandLogo ? (
+        <span className="tbf-shell-header-brand__logo">{brandLogo}</span>
+      ) : null}
+      {brandTag ? (
+        <span className="tbf-shell-header-brand__tag">{brandTag}</span>
+      ) : null}
+    </span>
+  ) : brandContent;
+  if (!hasBrandBody && !brandMeta) return null;
   return (
     <HeaderGroup className={classNames("tbf-shell-header-brand", className)}>
       {brandHref ? (
@@ -69,12 +103,12 @@ function ShellHeaderBrand(props: ShellHeaderBrandProps) {
           className="tbf-shell-header-brand__link"
           href={brandHref}
         >
-          {brandContent}
+          {brandBody}
         </a>
       ) : (
-        <span className="tbf-shell-header-brand__mark">{brandContent}</span>
+        <span className="tbf-shell-header-brand__mark">{brandBody}</span>
       )}
-      {brandMeta ? (
+      {!structuredBrand && brandMeta ? (
         <span className="tbf-shell-header-brand__meta">{brandMeta}</span>
       ) : null}
     </HeaderGroup>
@@ -108,7 +142,10 @@ function shellHeaderBrand(props: ShellHeaderProps) {
         brandContent={props.brandContent}
         brandHref={props.brandHref}
         brandLabel={props.brandLabel}
+        brandLogo={props.brandLogo}
         brandMeta={props.brandMeta}
+        brandTag={props.brandTag}
+        brandTagAlign={props.brandTagAlign}
         className={props.brandClassName}
       />
       {props.mobileToggle ? (
@@ -129,7 +166,10 @@ function ShellHeader(props: ShellHeaderProps) {
     brandContent,
     brandHref,
     brandLabel,
+    brandLogo,
     brandMeta,
+    brandTag,
+    brandTagAlign,
     className,
     mobileToggle,
     mobileToggleClassName,
@@ -146,7 +186,10 @@ function ShellHeader(props: ShellHeaderProps) {
         brandContent,
         brandHref,
         brandLabel,
+        brandLogo,
         brandMeta,
+        brandTag,
+        brandTagAlign,
         mobileToggle,
         mobileToggleClassName,
         mobileToggleControls,
@@ -239,6 +282,7 @@ export * from "./state.js";
 export type {
   ShellHeaderBrandProps,
   ShellHeaderMobileToggleProps,
+  ShellHeaderBrandTagAlign,
   ShellHeaderProps,
   ShellMobileNavProps,
   ShellMobileNavSectionProps,

@@ -173,14 +173,14 @@ async function verifyTooltip() {
     '<span id="status" tabindex="0" data-tbf-status-icon aria-label="Status text"></span>',
   ].join("");
   bindTooltips(document);
-  document.getElementById("tip").dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+  document.getElementById("tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
   const layer = document.getElementById("tbf_tooltip");
   assert.equal(layer.textContent, "Hover text");
   assert.equal(layer.getAttribute("role"), "tooltip");
   assert.equal(layer.getAttribute("aria-hidden"), "false");
   assert.equal(layer.getAttribute("data-tbf-placement"), "bottom");
   assert.ok(layer.style.getPropertyValue("--tbf-arrow-x"));
-  document.getElementById("tip").dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+  document.getElementById("tip").dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
   assert.equal(layer.getAttribute("aria-hidden"), "true");
   assert.equal(layer.hasAttribute("data-tbf-open"), false);
   document.getElementById("focus").dispatchEvent(new Event("focusin", { bubbles: true }));

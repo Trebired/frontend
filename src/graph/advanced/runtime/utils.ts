@@ -37,17 +37,6 @@ function logGraphSwitch(stage, details = null) {
       `graph unit ${String(stage || "unknown")}`,
       payload,
     );
-    return;
-  } catch {}
-
-  try {
-    if (
-      typeof console !== "undefined" &&
-        console &&
-        typeof console.info === "function"
-    ) {
-      console.info("[graph.unit]", stage, payload);
-    }
   } catch {}
 }
 
@@ -65,23 +54,6 @@ function logGraphLifecycle(stage, details = null, level = "info") {
     ? logger.warn
     : logger.info;
     writer("graph", `graph ${String(stage || "unknown")}`, payload);
-    return;
-  } catch {}
-
-  try {
-    const writer =
-    level === "error"
-    ? console.error
-    : level === "warn"
-    ? console.warn
-    : console.info;
-    if (
-      typeof console !== "undefined" &&
-        console &&
-        typeof writer === "function"
-    ) {
-      writer("[frontend.graph]", stage, payload);
-    }
   } catch {}
 }
 

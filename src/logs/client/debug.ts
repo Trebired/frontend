@@ -1,3 +1,4 @@
+import { resolveFrontendLogger } from "#mhi409n0a05q";
 import { safeStr } from "./utils.js";
 
 function configOf(input: unknown) {
@@ -29,9 +30,10 @@ export function debugLogs(
   if (!logsDebugEnabled(input)) return;
 
   try {
-    console.debug(
-      `[logs:${logsDebugLabel(input)}] ${safeStr(event) || "event"}`,
-      detail,
+    resolveFrontendLogger().info(
+      `logs.${logsDebugLabel(input)}`,
+      safeStr(event) || "event",
+      { detail },
     );
   } catch {}
 }

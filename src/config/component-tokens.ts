@@ -70,7 +70,12 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     radius: "var(--radius-sm, var(--tbf-radius-sm, 0))",
   }),
   tooltip: Object.freeze({
-    arrow: { size: "8px" },
+    arrow: {
+      background: "var(--tbf-tooltip-background, var(--tbf-surface, #fff))",
+      borderColor: "var(--tbf-border, #000)",
+      borderWidth: "var(--tbf-border-width, 1px)",
+      size: "8px",
+    },
     border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
     duration: "170ms",
     easing: "cubic-bezier(0.16, 1, 0.3, 1)",

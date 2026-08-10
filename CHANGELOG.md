@@ -2,6 +2,13 @@
 
 All notable package changes are documented here.
 
+## 5.0.10
+
+- Added a combined React boot script component and document alias so apps can emit theme, layout, and sidebar boot scripts from one package API with component-level enable/disable flags.
+- Added package-owned header logo/tag markup with horizontal or vertical tag alignment.
+- Fixed tooltip arrow border rendering and first-frame tooltip positioning stability.
+- Routed remaining source debug logging through the frontend logger adapter with no console fallback, and added verification against direct browser logging.
+
 ## 5.0.9
 
 - Changed tooltips to use neutral surface/input tone defaults, added configurable tooltip component tokens, and added arrow styling with smoother placement-aware transitions.

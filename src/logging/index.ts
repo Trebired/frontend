@@ -61,7 +61,7 @@ function resolveFrontendLogger(options: FrontendLoggingOptions = {}): FrontendLo
   const logger = resolveLogger({
     adapter: options.loggerAdapter,
     defaultLogger: options.defaultLogger,
-    fallback: "console",
+    fallback: "noop",
     logger: options.logger,
     source: FRONTEND_PACKAGE_SOURCE,
   });

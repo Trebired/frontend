@@ -9,6 +9,7 @@ async function verifyFrontendSource(context) {
   await verifyNoCustomElements(context.sourceDir, context.distDir);
   await verifyNoProductNames(context.rootDir, context.sourceDir);
   await verifyRadiusFallbacks(context.sourceDir);
+  await verifyNoDirectBrowserLogging(context.sourceDir);
 }
 
 async function verifyNoStandaloneWrapUtility(sourceDir) {
@@ -174,6 +175,23 @@ async function verifyRadiusFallbacks(sourceDir) {
   for (const file of files.filter((item) => item.endsWith(".scss"))) {
     const source = await fs.readFile(file, "utf8");
     assert.equal(/border-radius:\s*var\(--tbf-radius(?:-sm)?\);/u.test(source), false, `${file} lacks radius fallback.`);
+  }
+}
+
+async function verifyNoDirectBrowserLogging(sourceDir) {
+  const files = await sourceFiles(sourceDir);
+  for (const file of files) {
+    const source = await fs.readFile(file, "utf8");
+    assert.equal(
+      /\bconsole\.(debug|error|info|log|warn)\b/u.test(source),
+      false,
+      `${file} uses direct console logging.`,
+    );
+    assert.equal(
+      /\bglobalThis\s*\.\s*log\b/u.test(source),
+      false,
+      `${file} uses a global log object instead of the logger adapter.`,
+    );
   }
 }
 

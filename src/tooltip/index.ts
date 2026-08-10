@@ -67,8 +67,12 @@ function measureLayer(layer: HTMLElement) {
     left: layer.style.left,
     opacity: layer.style.opacity,
     top: layer.style.top,
+    transform: layer.style.transform,
+    transition: layer.style.transition,
     visibility: layer.style.visibility,
   };
+  layer.style.transition = "none";
+  layer.style.transform = "translate3d(0, 0, 0) scale(1)";
   layer.style.visibility = "hidden";
   layer.style.opacity = "0";
   layer.style.left = "0px";
@@ -79,6 +83,8 @@ function measureLayer(layer: HTMLElement) {
   layer.style.opacity = previous.opacity;
   layer.style.left = previous.left;
   layer.style.top = previous.top;
+  layer.style.transform = previous.transform;
+  layer.style.transition = previous.transition;
   if (!wasOpen) layer.removeAttribute("data-tbf-open");
   return rect;
 }
@@ -110,6 +116,7 @@ function showTooltip(trigger: HTMLElement) {
   if (!text) return false;
   const layer = ensureTooltipLayer();
   layer.textContent = text;
+  if (tooltipState.openTrigger === trigger && tooltipState.shown) return true;
   promoteZIndex(layer, { fallback: TOOLTIP_BASE_Z_INDEX });
   placeTooltip(trigger, layer);
   layer.setAttribute("aria-hidden", "false");
@@ -132,21 +139,17 @@ function hideTooltip() {
 function bindTooltip(trigger: HTMLElement | null) {
   if (!(trigger instanceof HTMLElement) || tooltipCleanups.has(trigger)) return false;
   readTooltipText(trigger);
-  const onMouseOver = () => showTooltip(trigger);
-  const onMouseOut = (event: MouseEvent) => {
-    const next = event.relatedTarget instanceof Node ? event.relatedTarget : null;
-    if (next && trigger.contains(next)) return;
-    hideTooltip();
-  };
+  const onMouseEnter = () => showTooltip(trigger);
+  const onMouseLeave = () => hideTooltip();
   const onFocusIn = () => showTooltip(trigger);
   const onFocusOut = () => hideTooltip();
-  trigger.addEventListener("mouseover", onMouseOver);
-  trigger.addEventListener("mouseout", onMouseOut);
+  trigger.addEventListener("mouseenter", onMouseEnter);
+  trigger.addEventListener("mouseleave", onMouseLeave);
   trigger.addEventListener("focusin", onFocusIn);
   trigger.addEventListener("focusout", onFocusOut);
   tooltipCleanups.set(trigger, () => {
-    trigger.removeEventListener("mouseover", onMouseOver);
-    trigger.removeEventListener("mouseout", onMouseOut);
+    trigger.removeEventListener("mouseenter", onMouseEnter);
+    trigger.removeEventListener("mouseleave", onMouseLeave);
     trigger.removeEventListener("focusin", onFocusIn);
     trigger.removeEventListener("focusout", onFocusOut);
   });
