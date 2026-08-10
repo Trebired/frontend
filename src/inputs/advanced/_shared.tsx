@@ -1,4 +1,4 @@
-import { createElement, useSyncExternalStore, type ReactNode } from "react";
+import { createElement, type ReactNode } from "react";
 
 import {
   requestJson as packageRequestJson,
@@ -14,6 +14,7 @@ import {
 } from "#er0dlx1gtbzh";
 import { Button } from "#4woymc9xhupl";
 import { primitiveButtonClassName, type PrimitiveButtonClassOptions } from "#hzrmwbvgt2ax";
+import { useRenderCurrentUrl } from "#pwuc6i9ku53k";
 
 type TranslatorVars = Record<string, unknown>;
 type Translator = (key: string, vars?: TranslatorVars) => string;
@@ -167,24 +168,6 @@ function button(props: ButtonProps) {
 
 function requestJson(input: RequestInfo | URL, options: JsonRequestOptions = {}) {
   return packageRequestJson(input, options);
-}
-
-function subscribeUrl(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  window.addEventListener("popstate", callback);
-  window.addEventListener("hashchange", callback);
-  return () => {
-    window.removeEventListener("popstate", callback);
-    window.removeEventListener("hashchange", callback);
-  };
-}
-
-function currentUrlSnapshot() {
-  return typeof window === "undefined" ? "" : window.location.href;
-}
-
-function useRenderCurrentUrl() {
-  return useSyncExternalStore(subscribeUrl, currentUrlSnapshot, () => "");
 }
 
 export {

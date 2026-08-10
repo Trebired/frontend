@@ -8,11 +8,13 @@ import { classNames } from "#ndsvdqv80epr";
 import { LayerRoot } from "#4okrafkbueid";
 import { TooltipLayer } from "#8sfk4kby98q6";
 import { createLayoutBootScript, LAYOUT_PORTAL_ROOT_ID, type LayoutBodyState } from "#ieim4iimrwal";
+import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
 
 type LayoutDocumentProps = {
   bodyAttributes?: HTMLAttributes<HTMLBodyElement>;
   children?: ReactNode;
   csrfToken?: string;
+  currentUrl?: string;
   faviconHref?: string;
   head?: ReactNode;
   htmlAttributes?: HtmlHTMLAttributes<HTMLHtmlElement>;
@@ -47,6 +49,7 @@ function LayoutDocument(props: LayoutDocumentProps) {
     bodyAttributes,
     children,
     csrfToken,
+    currentUrl,
     faviconHref,
     head,
     htmlAttributes,
@@ -77,7 +80,9 @@ function LayoutDocument(props: LayoutDocumentProps) {
         data-tbf-layout=""
         data-tbf-theme={theme || bodyAttributes?.["data-tbf-theme"]}
       >
-        {children}
+        <RenderCurrentUrlProvider currentUrl={currentUrl}>
+          {children}
+        </RenderCurrentUrlProvider>
         {scripts}
       </body>
     </html>
@@ -251,6 +256,7 @@ export {
   LayoutMain,
   LayoutPortalRoot,
   LayoutSecondaryHeader,
+  RenderCurrentUrlProvider,
 };
 export * from "./breadcrumb.js";
 export * from "./header.js";

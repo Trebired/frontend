@@ -92,6 +92,7 @@ async function verifyFrontendConfig(context) {
   assert.equal(defaults.config.prefix, "tbf");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("modal/styles/index.scss"));
+  assert.ok(defaults.generatedScss.includes("theme/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("layout/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("language/styles/index.scss"));
   assert.ok(defaults.generatedScss.includes("logs/styles/index.scss"));

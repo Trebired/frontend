@@ -6,8 +6,10 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyFrontendComponents(context) {
   await verifyLayoutStyles(context.rootDir);
+  await verifyThemeStyles(context.rootDir);
   await verifyTabsStyles(context.rootDir);
   await verifyReactEntrypoint(context.importDist);
+  await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
   await verifyRootImportIsolation(context.rootDir);
@@ -27,6 +29,12 @@ async function verifyTabsStyles(rootDir) {
   assert.ok(source.includes("var(--tbf-tabs-active-background"));
 }
 
+async function verifyThemeStyles(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "theme", "styles", "index.scss"), "utf8");
+  assert.ok(source.includes('data-tbf-theme-active="true"'));
+  assert.ok(source.includes("--tbf-theme-current-background"));
+}
+
 async function verifyReactEntrypoint(importDist) {
   const react = await importDist("react");
   const symbols = [
@@ -40,6 +48,7 @@ async function verifyReactEntrypoint(importDist) {
     "LayoutContent",
     "LayoutDocument",
     "LayoutPortalRoot",
+    "RenderCurrentUrlProvider",
     "StatusIcon",
     "PopoverPanel",
     "ModalRoot",
@@ -65,6 +74,38 @@ async function verifyReactEntrypoint(importDist) {
   for (const symbol of symbols) {
     assert.equal(typeof react[symbol], "function", `react entry missing ${symbol}`);
   }
+}
+
+async function verifyAdvancedTabsSsr(importDist) {
+  const react = await importDist("react");
+  const html = renderToStaticMarkup(
+    h(react.LayoutDocument, {
+      currentUrl: "https://example.test/login?tab-auth=backup",
+    },
+    h(react.tabs, {
+      familyKey: "auth",
+      items: [
+        { defaultActive: true, id: "password", label: "Password", route: "password" },
+        { id: "backup", label: "Backup", route: "backup" },
+      ],
+    }),
+    h(react.tab_panel, {
+      defaultActive: true,
+      familyKey: "auth",
+      id: "password",
+      route: "password",
+    }, "Password panel"),
+    h(react.tab_panel, {
+      familyKey: "auth",
+      id: "backup",
+      route: "backup",
+    }, "Backup panel")),
+  );
+
+  assert.ok(html.includes('aria-controls="backup"'));
+  assert.ok(html.includes('aria-selected="true"'));
+  assert.ok(html.includes('id="password" hidden=""'));
+  assert.ok(html.includes('id="backup"'));
 }
 
 async function verifyRenderedUpload(importDist) {

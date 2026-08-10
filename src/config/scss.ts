@@ -42,6 +42,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   progress: "progress/styles/index.scss",
   sidebar: "sidebar/styles/index.scss",
   surface: "surface/styles/index.scss",
+  theme: "theme/styles/index.scss",
   tooltip: "tooltip/styles/index.scss",
   fullscreen: "fullscreen/styles/index.scss",
 };

@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.0.4
+
+- Added selected-option styling for the product shell theme popover.
+- Let layout documents provide the server request URL to advanced tabs so query-string tab state renders correctly in SSR.
+
 ## 5.0.3
 
 - Kept product shell theme triggers on the generic button primitive while only applying icon-button sizing to icon-only triggers.

@@ -1,0 +1,16 @@
+.tbf-theme-switch-popover {
+  min-width: 170px;
+}
+
+.tbf-theme-switch-popover .tbf-theme-select__option {
+  justify-content: flex-start;
+}
+
+.tbf-theme-switch-popover .tbf-theme-select__option[data-tbf-theme-active="true"],
+.tbf-theme-switch-popover .tbf-theme-select__option[aria-checked="true"] {
+  background: var(
+    --tbf-theme-current-background,
+    var(--tbf-language-current-background, var(--background-surface-2, transparent))
+  );
+  color: var(--tbf-theme-current-color, var(--text-color));
+}
