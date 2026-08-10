@@ -111,6 +111,7 @@ type FrontendComponentsConfig = {
   surfaceButton?: FrontendComponentTokens;
   surfaceCard?: FrontendComponentTokens;
   tabs?: FrontendComponentTokens;
+  textLink?: FrontendComponentTokens;
   tooltip?: FrontendComponentTokens;
 };
 

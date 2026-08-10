@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.0.11
+
+- Added a configurable `TextLink` primitive backed by `components.textLink` tokens and kept the legacy `text-link` class as the same package-owned style.
+- Switched product shell support links to render through `TextLink` without overriding link color or decoration in shell-specific CSS.
+
 ## 5.0.10
 
 - Added a combined React boot script component and document alias so apps can emit theme, layout, and sidebar boot scripts from one package API with component-level enable/disable flags.

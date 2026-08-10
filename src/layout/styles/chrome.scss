@@ -214,16 +214,6 @@
   font-weight: 700;
 }
 
-.tbf-shell-support-links__link {
-  color: var(--tbf-link-color, currentColor);
-  text-decoration: none;
-}
-
-.tbf-shell-support-links__link:hover,
-.tbf-shell-support-links__link:focus {
-  text-decoration: underline;
-}
-
 .tbf-product-shell-sidebar-footer {
   display: flex;
   min-width: 0;

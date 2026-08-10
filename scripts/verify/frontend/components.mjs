@@ -69,6 +69,7 @@ async function verifyReactEntrypoint(importDist) {
     "CanvasPanel",
     "Card",
     "Tabs",
+    "TextLink",
     "Search",
     "StatusField",
     "ThemeToggle",
@@ -234,6 +235,7 @@ async function verifyRenderedGenericPrimitives(importDist) {
     renderToStaticMarkup(h(react.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),
     renderToStaticMarkup(h(react.CanvasPanel, { title: "Canvas" }, "Body")),
     renderToStaticMarkup(h(react.Card, null, h(react.CardBody, null, "Body"))),
+    renderToStaticMarkup(h(react.TextLink, { href: "/docs" }, "Docs")),
     renderToStaticMarkup(h(react.SidebarLinkList, { items: [{ href: "/", label: "Home" }] })),
   ].join("");
   [
@@ -247,6 +249,7 @@ async function verifyRenderedGenericPrimitives(importDist) {
     "data-tbf-graph",
     "data-tbf-canvas-panel",
     "data-tbf-card",
+    "data-tbf-text-link",
     "data-tbf-sidebar-link",
   ].forEach((marker) => assert.ok(html.includes(marker), `missing ${marker}`));
   assertNoCustomElementTags(html, "rendered generic primitive components");

@@ -4,6 +4,7 @@ import type {
   ReactNode,
 } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { TextLink } from "#hzrmwbvgt2ax";
 import { shellPageHref } from "./state.js";
 
 type ShellSupportLink = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -47,17 +48,17 @@ function defaultSupportLink(
   link: ShellSupportLink,
   linkClassName: string | undefined,
 ) {
-  const { key, label, ...attrs } = link;
+  const { className, key, label, ...attrs } = link;
   return (
-    <a
+    <TextLink
       {...attrs}
-      className={classNames("text-link", "tbf-shell-support-links__link", linkClassName)}
+      className={classNames("tbf-shell-support-links__link", className, linkClassName)}
       key={key}
       rel={attrs.rel || "noopener noreferrer"}
       target={attrs.target || "_blank"}
     >
       {label}
-    </a>
+    </TextLink>
   );
 }
 

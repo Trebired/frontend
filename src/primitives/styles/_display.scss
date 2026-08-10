@@ -58,20 +58,29 @@
   min-height: 0;
 }
 
+.tbf-text-link,
 .text-link {
-  color: var(--text-color-muted, var(--tbf-text-muted, var(--tbf-text, currentColor)));
-  font-weight: inherit;
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast, var(--tbf-transition-fast, 120ms ease));
+  color: var(
+    --tbf-text-link-color,
+    var(--text-color-muted, var(--tbf-text-muted, var(--tbf-text, currentColor)))
+  );
+  font-weight: var(--tbf-text-link-font-weight, inherit);
+  text-decoration-line: var(--tbf-text-link-text-decoration-line, underline);
+  text-decoration-style: var(--tbf-text-link-text-decoration-style, dotted);
+  text-decoration-thickness: var(--tbf-text-link-text-decoration-thickness, 1px);
+  text-underline-offset: var(--tbf-text-link-text-underline-offset, 3px);
+  transition: var(
+    --tbf-text-link-transition,
+    color var(--transition-fast, var(--tbf-transition-fast, 120ms ease))
+  );
 }
 
+.tbf-text-link:hover,
+.tbf-text-link:focus,
 .text-link:hover,
 .text-link:focus {
-  color: var(--text-color, var(--tbf-text, currentColor));
-  text-decoration-style: solid;
+  color: var(--tbf-text-link-hover-color, var(--text-color, var(--tbf-text, currentColor)));
+  text-decoration-style: var(--tbf-text-link-hover-text-decoration-style, solid);
 }
 
 [data-tbf-table] {

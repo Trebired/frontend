@@ -104,7 +104,10 @@ async function verifyFrontendConfig(context) {
     "export default {",
     "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "  prefix: \"app\",",
-    "  components: { progress: { color: \"#111111\" } },",
+    "  components: {",
+    "    progress: { color: \"#111111\" },",
+    "    textLink: { color: \"#222222\", hover: { color: \"#333333\" } },",
+    "  },",
     "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
     "  systems: { modal: false, icons: true },",
     "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
@@ -120,6 +123,7 @@ async function verifyFrontendConfig(context) {
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.ok(loaded.generatedScss.includes("--app-progress-color: #111111;"));
+  assertFrontendTextLinkConfigCss(loaded.generatedScss);
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
   await assert.rejects(
     () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),
@@ -130,6 +134,11 @@ async function verifyFrontendConfig(context) {
   await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
   await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
+}
+
+function assertFrontendTextLinkConfigCss(generatedScss) {
+  assert.ok(generatedScss.includes("--app-text-link-color: #222222;"));
+  assert.ok(generatedScss.includes("--app-text-link-hover-color: #333333;"));
 }
 
 async function verifyCsrfFetch() {

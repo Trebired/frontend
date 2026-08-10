@@ -69,6 +69,19 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     paddingInline: "14px",
     radius: "var(--radius-sm, var(--tbf-radius-sm, 0))",
   }),
+  textLink: Object.freeze({
+    color: "var(--text-color-muted, var(--tbf-text-muted, var(--tbf-text, currentColor)))",
+    fontWeight: "inherit",
+    hover: {
+      color: "var(--text-color, var(--tbf-text, currentColor))",
+      textDecorationStyle: "solid",
+    },
+    textDecorationLine: "underline",
+    textDecorationStyle: "dotted",
+    textDecorationThickness: "1px",
+    textUnderlineOffset: "3px",
+    transition: "color var(--transition-fast, var(--tbf-transition-fast, 120ms ease))",
+  }),
   tooltip: Object.freeze({
     arrow: {
       background: "var(--tbf-tooltip-background, var(--tbf-surface, #fff))",
