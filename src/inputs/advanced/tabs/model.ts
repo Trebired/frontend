@@ -128,9 +128,11 @@ function routeInitialValue(currentUrl: string, familyKey: string) {
 }
 
 function resolveInitialValue(props: tabs_props, currentUrl: string) {
+  const routeValue = routeInitialValue(currentUrl, toString(props.familyKey));
+  if (routeValue) return routeValue;
   const explicit = toString(props.initialValue);
   if (explicit) return explicit;
-  return routeInitialValue(currentUrl, toString(props.familyKey));
+  return "";
 }
 
 function buildTabsModel(props: tabs_props, currentUrl: string): tabs_model {

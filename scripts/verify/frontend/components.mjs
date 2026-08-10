@@ -84,6 +84,7 @@ async function verifyAdvancedTabsSsr(importDist) {
     },
     h(react.tabs, {
       familyKey: "auth",
+      initialValue: "password",
       items: [
         { defaultActive: true, id: "password", label: "Password", route: "password" },
         { id: "backup", label: "Backup", route: "backup" },

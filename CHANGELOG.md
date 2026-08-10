@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.0.5
+
+- Made advanced tabs prefer URL route state over an explicit default initial value during SSR.
+
 ## 5.0.4
 
 - Added selected-option styling for the product shell theme popover.
