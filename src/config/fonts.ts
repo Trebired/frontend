@@ -1,4 +1,5 @@
 import { assertPlainObject, cssString, invalidConfig } from "./shared.js";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 import type {
   NormalizedFrontendFontConfig,
   NormalizedFrontendFontFamilyConfig,
@@ -174,9 +175,9 @@ function fontsourceFileUrl(
 
 function fontRootDeclarations(config: NormalizedFrontendFontConfig): string[] {
   const lines: string[] = [];
-  if (config.sans) lines.push(`  --tbf-font-sans: ${config.sans};`);
+  if (config.sans) lines.push(`  ${frontendCssVar("font-sans")}: ${config.sans};`);
   for (const family of config.families) {
-    lines.push(`  --tbf-font-family-${family.key}: ${cssString(family.family)};`);
+    lines.push(`  ${frontendCssVar(`font-family-${family.key}`)}: ${cssString(family.family)};`);
   }
   return lines;
 }

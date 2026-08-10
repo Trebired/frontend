@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.0.2
+
+- Routed generated font CSS custom property names through the frontend namespace helper.
+
 ## 6.0.1
 
 - Routed file input button styling through `components.primitives.input.file.button` tokens instead of the removed flat file-input token namespace.
