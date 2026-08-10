@@ -7,7 +7,7 @@ import {
   SidebarMinimizeButton,
   SidebarShell,
 } from "#26uyycr73i6f";
-import { ThemeToggle } from "#wavczpl1zxvg";
+import { ThemeSelect } from "#wavczpl1zxvg";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 import { productShellLabel } from "./state.js";
 import type {
@@ -80,18 +80,45 @@ function ProductShellSidebarMinimizeButton(
 }
 
 function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
-  const { children, className, icon, labels, ...rest } = props;
+  const {
+    children,
+    className,
+    icon,
+    labels,
+    popoverId,
+    theme,
+    type = "button",
+    ...rest
+  } = props;
   const label = productShellLabel(labels, "toggleTheme");
+  const id = String(rest.id || "tbf_product_shell_theme_control");
+  const themePopoverId = popoverId || `${id}_menu`;
   return (
-    <ThemeToggle
+    <>
+    <button
       {...rest}
+      aria-controls={themePopoverId}
+      aria-expanded="false"
       aria-label={props["aria-label"] || label}
+      aria-haspopup="menu"
       className={classNames("tbf-product-shell-theme-control", className)}
-      darkLabel={label}
-      lightLabel={label}
+      data-tbf-popover-open=""
+      id={id}
+      title={String(label)}
+      type={type}
     >
       {children || icon}
-    </ThemeToggle>
+    </button>
+    <ThemeSelect
+      aria-hidden="true"
+      className="popover popover-portaled tbf-theme-switch-popover"
+      id={themePopoverId}
+      label={String(label)}
+      optionClassName="popover-item"
+      value={theme}
+      variant="buttons"
+    />
+    </>
   );
 }
 

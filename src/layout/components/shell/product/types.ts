@@ -120,6 +120,8 @@ type ProductShellThemeToggleProps =
   ButtonHTMLAttributes<HTMLButtonElement> & {
     icon?: ReactNode;
     labels?: ProductShellLabels;
+    popoverId?: string;
+    theme?: string;
   };
 
 type ProductShellAboutButtonProps =

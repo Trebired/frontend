@@ -1,10 +1,10 @@
 .tbf-progress {
   position: fixed;
   inset: 0 0 auto 0;
-  height: 3px;
+  height: var(--tbf-progress-height, 3px);
   --tbf-progress-bar-color: var(
     --tbf-progress-color,
-    var(--progress-color, var(--tbf-focus, currentColor))
+    var(--tbf-focus, currentColor)
   );
   pointer-events: none;
   z-index: var(--tbf-z-progress, 99999);

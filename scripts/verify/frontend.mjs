@@ -103,6 +103,7 @@ async function verifyFrontendConfig(context) {
     "export default {",
     "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "  prefix: \"app\",",
+    "  components: { progress: { color: \"#111111\" } },",
     "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
     "  systems: { modal: false, icons: true },",
     "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
@@ -117,6 +118,7 @@ async function verifyFrontendConfig(context) {
   assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
+  assert.ok(loaded.generatedScss.includes("--app-progress-color: #111111;"));
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
   await assert.rejects(
     () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),

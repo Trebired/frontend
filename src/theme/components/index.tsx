@@ -21,6 +21,7 @@ type ThemeBootScriptProps = ScriptHTMLAttributes<HTMLScriptElement> & ThemeModeO
 type ThemeSelectProps = Omit<HTMLAttributes<HTMLElement>, "defaultValue"> & ThemeModeOptions & {
   label?: string;
   name?: string;
+  optionClassName?: string;
   value?: ThemeValue;
   variant?: "buttons" | "select";
 };
@@ -59,7 +60,7 @@ function ThemeToggle(props: ThemeToggleProps) {
 }
 
 function ThemeSelect(props: ThemeSelectProps) {
-  const { className, dark, label, light, modes, name, value, variant = "select", ...rest } = props;
+  const { className, dark, label, light, modes, name, optionClassName, value, variant = "select", ...rest } = props;
   const registry = getThemeModes({ dark, light, modes });
   const current = normalizeTheme(value, { dark, light, modes });
   if (variant === "buttons") {
@@ -74,7 +75,8 @@ function ThemeSelect(props: ThemeSelectProps) {
         {registry.modes.map((mode) => (
           <button
             aria-checked={mode.key === current}
-            className="tbf-theme-select__option"
+            className={classNames("tbf-theme-select__option", optionClassName)}
+            data-tbf-popover-close=""
             data-tbf-theme-active={mode.key === current ? "true" : "false"}
             data-tbf-theme-value={mode.key}
             key={mode.key}

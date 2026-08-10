@@ -2,6 +2,13 @@
 
 All notable package changes are documented here.
 
+## 5.0.0
+
+- Added `components.progress` tokens so top-level progress styling no longer depends on generic theme token overrides.
+- Changed flash titles from `strong` to `span`, added a title font-weight token, and raised the default flash icon size.
+- Changed product shell theme controls into popover triggers with theme options instead of one-click toggle buttons.
+- Scoped package button active styling to explicit `data-tbf-active="true"` or `aria-pressed="true"` state instead of broad `.active` classes.
+
 ## 4.0.5
 
 - Removed pressed state from command-style theme toggle buttons while keeping current theme sync on explicit data attributes.

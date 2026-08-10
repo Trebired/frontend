@@ -133,6 +133,7 @@ async function verifyRenderedLayeredSystems(importDist) {
       header: h(react.LayoutHeader, null, "Header"),
       leftSidebar: h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null))),
     }, h(react.LayoutContent, null, "Body"))),
+    renderToStaticMarkup(h(react.ProductShellThemeToggle, { id: "theme_control", icon: "Theme" })),
     renderToStaticMarkup(h(react.StatusIcon, { label: "Ready" })),
     renderToStaticMarkup(h(react.PopoverPanel, { id: "p1" }, "Body")),
     renderToStaticMarkup(h(react.ModalRoot, { id: "m1" }, h(react.ModalContent, null, "Body"))),
@@ -143,6 +144,9 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.ok(html.includes("data-tbf-status-icon"));
   assert.ok(html.includes("data-tbf-layout-root"));
   assert.ok(html.includes("data-tbf-layout-content"));
+  assert.equal(html.includes("data-tbf-theme-button"), false);
+  assert.ok(html.includes("data-tbf-popover-open"));
+  assert.ok(html.includes("data-tbf-theme-select"));
   assert.ok(html.includes("data-tbf-modal"));
   assert.ok(html.includes("data-tbf-fullscreen-target"));
   assert.ok(html.includes("data-tbf-sidebar-shell"));

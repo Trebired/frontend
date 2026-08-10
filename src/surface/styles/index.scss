@@ -33,7 +33,8 @@
 }
 
 .tbf-button:hover,
-.tbf-button.active {
+.tbf-button[aria-pressed="true"],
+.tbf-button[data-tbf-active="true"] {
   --tbf-surface-button-current-icon-color: var(
     --tbf-surface-button-hover-icon-color,
     var(--tbf-button-hover-icon-color, currentColor)
@@ -80,7 +81,8 @@
 }
 
 .tbf-button--strong:hover,
-.tbf-button--strong.active {
+.tbf-button--strong[aria-pressed="true"],
+.tbf-button--strong[data-tbf-active="true"] {
   --tbf-surface-button-current-icon-color: var(
     --tbf-surface-button-strong-hover-icon-color,
     var(--tbf-button-tones-highlight-hover-icon-color, currentColor)

@@ -32,6 +32,8 @@ function verifyFlashToast(api) {
   assert.equal(document.body.getAttribute("data-tbf-theme"), "dark");
   assert.ok(handle.element.matches("[data-tbf-flash]"));
   assert.equal(handle.element.querySelector(removedCloseSelector), null);
+  assert.equal(handle.element.querySelector("strong.tbf-flash__title"), null);
+  assert.equal(handle.element.querySelector("span.tbf-flash__title")?.textContent, "Saved");
   assert.equal(handle.element.querySelector(".tbf-flash__icon")?.getAttribute("data-tbf-icon"), "remixicon:checkbox-circle-line");
   assert.equal(handle.el, handle.element);
   assert.equal(typeof handle.hide, "function");

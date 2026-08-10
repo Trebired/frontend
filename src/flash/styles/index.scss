@@ -89,6 +89,7 @@
 
 .tbf-flash__title {
   color: var(--tbf-flash-title-color, currentColor);
+  font-weight: var(--tbf-flash-title-font-weight, 400);
   text-shadow: none;
 }
 

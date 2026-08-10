@@ -52,6 +52,7 @@ function button(props: ButtonProps) {
         transparent,
         variant,
       })}
+      data-tbf-active={active ? "true" : undefined}
       {...actionButtonAttrs(actionButton)}
       {...rest}
     >

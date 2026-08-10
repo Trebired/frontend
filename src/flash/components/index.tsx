@@ -63,7 +63,7 @@ function FlashShell(props: FlashShellProps) {
     >
       <Icon className="tbf-flash__icon" spec={flashIconSpec(type)} />
       <div className="tbf-flash__body">
-        <strong className="tbf-flash__title">{title}</strong>
+        <span className="tbf-flash__title">{title}</span>
         {description ? <span className="tbf-flash__description">{description}</span> : null}
         {actions ? <div className="tbf-flash__actions">{actions}</div> : null}
       </div>

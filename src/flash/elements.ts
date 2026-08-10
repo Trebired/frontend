@@ -49,7 +49,7 @@ function flashIcon(type: FlashType) {
 function flashBody(message: unknown, description: unknown, options: FlashOptions) {
   const body = document.createElement("div");
   body.className = "tbf-flash__body";
-  const title = document.createElement("strong");
+  const title = document.createElement("span");
   title.className = "tbf-flash__title";
   title.textContent = String(message || "");
   body.appendChild(title);
