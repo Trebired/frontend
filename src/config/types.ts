@@ -1,27 +1,6 @@
 type FrontendIconPack = "remixicon" | "simple-icons";
 
-type FrontendSystemKey =
-  | "actions"
-  | "code"
-  | "editor"
-  | "explorer"
-  | "flash"
-  | "fullscreen"
-  | "graph"
-  | "icons"
-  | "inputs"
-  | "layer"
-  | "layout"
-  | "language"
-  | "logs"
-  | "modal"
-  | "popover"
-  | "primitives"
-  | "progress"
-  | "sidebar"
-  | "surface"
-  | "theme"
-  | "tooltip";
+type FrontendSystemKey = "actions" | "code" | "editor" | "explorer" | "flash" | "fullscreen" | "graph" | "icons" | "inputs" | "layer" | "layout" | "language" | "logs" | "modal" | "popover" | "primitives" | "progress" | "sidebar" | "surface" | "theme" | "tooltip";
 
 type FrontendThemeTokens = Record<string, unknown>;
 
@@ -46,14 +25,9 @@ type FrontendPaletteScale = Record<string, string>;
 
 type FrontendPaletteFamilies = Record<string, FrontendPaletteScale>;
 
-type FrontendPaletteMode = {
-  scale: FrontendPaletteFamilies;
-};
+type FrontendPaletteMode = { scale: FrontendPaletteFamilies };
 
-type FrontendPaletteSemanticRef = {
-  family: string;
-  step: string;
-};
+type FrontendPaletteSemanticRef = { family: string; step: string };
 
 type FrontendPaletteConfig = {
   modes?: Record<string, FrontendPaletteMode>;
@@ -82,7 +56,6 @@ type FrontendScalesConfig = {
 };
 
 type FrontendFontDisplay = "auto" | "block" | "fallback" | "optional" | "swap";
-
 type FrontendFontStyle = "italic" | "normal";
 
 type FrontendFontFamilyConfig = {
@@ -100,44 +73,97 @@ type FrontendFontConfig = {
   sans?: string;
 };
 
-type FrontendComponentTokens = FrontendThemeTokens;
-
-type FrontendComponentsConfig = {
-  actionButton?: FrontendComponentTokens;
-  button?: FrontendComponentTokens;
-  card?: FrontendComponentTokens;
-  flash?: FrontendComponentTokens;
-  header?: FrontendComponentTokens;
-  progress?: FrontendComponentTokens;
-  surfaceButton?: FrontendComponentTokens;
-  surfaceCard?: FrontendComponentTokens;
-  tabs?: FrontendComponentTokens;
-  textLink?: FrontendComponentTokens;
-  tooltip?: FrontendComponentTokens;
-};
-
-type FrontendActiveInteractionConfig = {
-  brightness?: number | string;
-  enabled?: boolean;
-};
-
-type FrontendInteractionsConfig = {
-  active?: FrontendActiveInteractionConfig;
-};
-
-type FrontendConfig = {
-  components?: FrontendComponentsConfig;
+type FrontendAssetsConfig = {
   fonts?: FrontendFontConfig;
-  interactions?: FrontendInteractionsConfig;
-  palette?: FrontendPaletteConfig;
-  prefix?: string;
   icons?: {
     endpoint?: string;
     packs?: readonly FrontendIconPack[];
   };
+};
+
+type FrontendComponentTokens = FrontendThemeTokens;
+
+type FrontendPrimitiveComponentsConfig = {
+  actionControl?: FrontendComponentTokens;
+  button?: FrontendComponentTokens;
+  choice?: FrontendComponentTokens;
+  dot?: FrontendComponentTokens;
+  dropdown?: FrontendComponentTokens;
+  input?: FrontendComponentTokens;
+  loader?: FrontendComponentTokens;
+  pill?: FrontendComponentTokens;
+  progress?: FrontendComponentTokens;
+  tabs?: FrontendComponentTokens;
+  textLink?: FrontendComponentTokens;
+  toggle?: FrontendComponentTokens;
+};
+
+type FrontendSurfaceComponentsConfig = {
+  button?: FrontendComponentTokens;
+  card?: FrontendComponentTokens;
+};
+
+type FrontendOverlayComponentsConfig = {
+  modal?: FrontendComponentTokens;
+  popover?: FrontendComponentTokens;
+  tooltip?: FrontendComponentTokens;
+};
+
+type FrontendFeedbackComponentsConfig = {
+  flash?: FrontendComponentTokens;
+};
+
+type FrontendShellComponentsConfig = {
+  header?: FrontendComponentTokens;
+  language?: FrontendComponentTokens;
+  sidebar?: FrontendComponentTokens;
+  theme?: FrontendComponentTokens;
+};
+
+type FrontendDataComponentsConfig = {
+  graph?: FrontendComponentTokens;
+  log?: FrontendComponentTokens;
+};
+
+type FrontendComponentsConfig = {
+  data?: FrontendDataComponentsConfig;
+  feedback?: FrontendFeedbackComponentsConfig;
+  overlays?: FrontendOverlayComponentsConfig;
+  primitives?: FrontendPrimitiveComponentsConfig;
+  shell?: FrontendShellComponentsConfig;
+  surfaces?: FrontendSurfaceComponentsConfig;
+};
+
+type FrontendActivePressInteractionConfig = {
+  brightness?: number | string;
+  enabled?: boolean;
+};
+
+type FrontendDesignInteractionsConfig = {
+  activePress?: FrontendActivePressInteractionConfig;
+};
+
+type FrontendDesignConfig = {
+  interactions?: FrontendDesignInteractionsConfig;
+  palette?: FrontendPaletteConfig;
   scales?: FrontendScalesConfig;
-  systems?: Partial<Record<FrontendSystemKey, boolean>>;
+  semantics?: FrontendThemeTokens;
+};
+
+type FrontendRuntimeConfig = {
+  layer?: FrontendComponentTokens;
+  layout?: FrontendComponentTokens;
+  progress?: FrontendComponentTokens;
   theme?: FrontendThemeConfig;
+};
+
+type FrontendConfig = {
+  assets?: FrontendAssetsConfig;
+  components?: FrontendComponentsConfig;
+  design?: FrontendDesignConfig;
+  prefix?: string;
+  runtime?: FrontendRuntimeConfig;
+  systems?: Partial<Record<FrontendSystemKey, boolean>>;
 };
 
 type NormalizedFrontendThemeMode = {
@@ -206,32 +232,54 @@ type NormalizedFrontendFontConfig = {
   sans: string;
 };
 
-type NormalizedFrontendComponentsConfig =
-  Record<keyof FrontendComponentsConfig, FrontendComponentTokens>;
+type NormalizedFrontendAssetsConfig = {
+  fonts: NormalizedFrontendFontConfig;
+  icons: {
+    endpoint: string;
+    packs: FrontendIconPack[];
+  };
+};
 
-type NormalizedFrontendActiveInteractionConfig = {
+type NormalizedFrontendComponentsConfig = {
+  data: Required<FrontendDataComponentsConfig>;
+  feedback: Required<FrontendFeedbackComponentsConfig>;
+  overlays: Required<FrontendOverlayComponentsConfig>;
+  primitives: Required<FrontendPrimitiveComponentsConfig>;
+  shell: Required<FrontendShellComponentsConfig>;
+  surfaces: Required<FrontendSurfaceComponentsConfig>;
+};
+
+type NormalizedFrontendActivePressInteractionConfig = {
   brightness: string;
   enabled: boolean;
   filter: string;
 };
 
-type NormalizedFrontendInteractionsConfig = {
-  active: NormalizedFrontendActiveInteractionConfig;
+type NormalizedFrontendDesignInteractionsConfig = {
+  activePress: NormalizedFrontendActivePressInteractionConfig;
+};
+
+type NormalizedFrontendDesignConfig = {
+  interactions: NormalizedFrontendDesignInteractionsConfig;
+  palette: NormalizedFrontendPaletteConfig;
+  scales: NormalizedFrontendScalesConfig;
+  semantics: FrontendThemeTokens;
+};
+
+type NormalizedFrontendRuntimeConfig = {
+  layer: FrontendComponentTokens;
+  layout: FrontendComponentTokens;
+  progress: FrontendComponentTokens;
+  theme: NormalizedFrontendThemeConfig;
 };
 
 type NormalizedFrontendConfig = {
+  assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
-  fonts: NormalizedFrontendFontConfig;
-  interactions: NormalizedFrontendInteractionsConfig;
-  palette: NormalizedFrontendPaletteConfig;
+  design: NormalizedFrontendDesignConfig;
   prefix: string;
-  icons: {
-    endpoint: string;
-    packs: FrontendIconPack[];
-  };
-  scales: NormalizedFrontendScalesConfig;
+  runtime: NormalizedFrontendRuntimeConfig;
   systems: Record<FrontendSystemKey, boolean>;
-  theme: NormalizedFrontendThemeConfig;
 };
 
 type LoadedFrontendConfig = {
@@ -251,35 +299,47 @@ export type {
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,
   NormalizedFrontendConfig,
-  NormalizedFrontendActiveInteractionConfig,
+  NormalizedFrontendActivePressInteractionConfig,
+  NormalizedFrontendAssetsConfig,
   NormalizedFrontendComponentsConfig,
+  NormalizedFrontendDesignConfig,
+  NormalizedFrontendDesignInteractionsConfig,
   NormalizedFrontendFontConfig,
   NormalizedFrontendFontFamilyConfig,
-  NormalizedFrontendInteractionsConfig,
   NormalizedFrontendPaletteConfig,
   NormalizedFrontendPaletteMode,
   NormalizedFrontendPaletteSemantic,
+  NormalizedFrontendRuntimeConfig,
   NormalizedFrontendScalesConfig,
   NormalizedFrontendThemeConfig,
   NormalizedFrontendThemeMode,
   NormalizedFrontendZIndexScaleConfig,
   FrontendConfig,
-  FrontendActiveInteractionConfig,
+  FrontendActivePressInteractionConfig,
+  FrontendAssetsConfig,
   FrontendComponentTokens,
   FrontendComponentsConfig,
+  FrontendDataComponentsConfig,
+  FrontendDesignConfig,
+  FrontendDesignInteractionsConfig,
+  FrontendFeedbackComponentsConfig,
   FrontendFontConfig,
   FrontendFontDisplay,
   FrontendFontFamilyConfig,
   FrontendFontStyle,
   FrontendIconPack,
-  FrontendInteractionsConfig,
+  FrontendOverlayComponentsConfig,
   FrontendPaletteConfig,
   FrontendPaletteFamilies,
   FrontendPaletteMode,
   FrontendPaletteScale,
   FrontendPaletteSemanticRef,
+  FrontendPrimitiveComponentsConfig,
+  FrontendRuntimeConfig,
   FrontendScaleSteps,
   FrontendScalesConfig,
+  FrontendShellComponentsConfig,
+  FrontendSurfaceComponentsConfig,
   FrontendSystemKey,
   FrontendThemeConfig,
   FrontendThemeMode,

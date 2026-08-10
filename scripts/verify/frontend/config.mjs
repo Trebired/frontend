@@ -21,7 +21,9 @@ async function verifyFrontendConfig(context) {
 
   await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
   await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
-  await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
+  await fs.writeFile(configPath, "export default { fonts: { families: {} } };\n");
+  await assert.rejects(() => config.loadFrontendConfig(fixture), /not supported/u);
+  await fs.writeFile(configPath, "export default { assets: { fonts: { families: { bad: { package: \"https://bad\" } } } } };\n");
   await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
 }
 
@@ -57,16 +59,20 @@ function assertTokenHelpers(config) {
 function configuredSource() {
   return [
     "export default {",
-    "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "  prefix: \"app\",",
-    "  interactions: { active: { brightness: 0.8, enabled: true } },",
-    "  components: {",
-    "    progress: { color: \"#111111\" },",
-    "    textLink: { color: \"#222222\", hover: { color: \"#333333\" } },",
+    "  assets: {",
+    "    fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
+    "    icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
     "  },",
-    "  icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
+    "  design: {",
+    "    interactions: { activePress: { brightness: 0.8, enabled: true } },",
+    "    semantics: { color: { brand: \"#123456\" } },",
+    "  },",
+    "  components: {",
+    "    primitives: { textLink: { root: { color: \"#222222\" }, states: { hover: { color: \"#333333\" } } } },",
+    "  },",
+    "  runtime: { progress: { color: \"#111111\" } },",
     "  systems: { modal: false, icons: true },",
-    "  theme: { cssVariables: true, tokens: { color: { brand: \"#123456\" } } },",
     "};",
     "",
   ].join("\n");
@@ -75,9 +81,9 @@ function configuredSource() {
 function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
-  assert.equal(defaults.config.interactions.active.enabled, false);
-  assert.equal(defaults.config.interactions.active.brightness, "0.9");
-  assert.equal(defaults.config.interactions.active.filter, "none");
+  assert.equal(defaults.config.design.interactions.activePress.enabled, false);
+  assert.equal(defaults.config.design.interactions.activePress.brightness, "0.9");
+  assert.equal(defaults.config.design.interactions.activePress.filter, "none");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
@@ -87,18 +93,18 @@ function assertDefaultConfig(defaults, context) {
 
 function assertLoadedConfig(loaded, configPath, config) {
   assert.equal(loaded.configPath, configPath);
-  assert.deepEqual(loaded.config.icons.packs, ["simple-icons"]);
-  assert.equal(loaded.config.fonts.families[0].packageName, "inter");
-  assert.equal(loaded.config.interactions.active.filter, "brightness(0.8)");
+  assert.deepEqual(loaded.config.assets.icons.packs, ["simple-icons"]);
+  assert.equal(loaded.config.assets.fonts.families[0].packageName, "inter");
+  assert.equal(loaded.config.design.interactions.activePress.filter, "brightness(0.8)");
   assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.ok(loaded.generatedScss.includes("--app-interaction-active-filter: brightness(0.8);"));
-  assert.ok(loaded.generatedScss.includes("--app-progress-color: #111111;"));
-  assert.ok(loaded.generatedScss.includes("--app-text-link-color: #222222;"));
-  assert.ok(loaded.generatedScss.includes("--app-text-link-hover-color: #333333;"));
-  assert.equal(config.normalizeFrontendConfig({ interactions: { active: { enabled: false } } }).interactions.active.filter, "none");
-  assert.equal(config.normalizeFrontendConfig({ interactions: { active: { enabled: true } } }).interactions.active.filter, "brightness(0.9)");
+  assert.ok(loaded.generatedScss.includes("--app-runtime-progress-color: #111111;"));
+  assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-root-color: #222222;"));
+  assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-states-hover-color: #333333;"));
+  assert.equal(config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: false } } } }).design.interactions.activePress.filter, "none");
+  assert.equal(config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: true } } } }).design.interactions.activePress.filter, "brightness(0.9)");
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
 }
 

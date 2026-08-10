@@ -20,12 +20,14 @@ function modeConfigSource() {
     "",
     "export default {",
     "  prefix: \"app\",",
-    "  theme: {",
-    "    defaultMode: \"sepia\",",
-    "    modes: {",
-    "      dark: { tokens: { color: { surface: surface.dark } } },",
-    "      light: { tokens: { color: { surface: surface.light } } },",
-    "      sepia: { label: \"Sepia\", scheme: \"light\", tokens: { color: { surface: surface.sepia } } },",
+    "  runtime: {",
+    "    theme: {",
+    "      defaultMode: \"sepia\",",
+    "      modes: {",
+    "        dark: { tokens: { color: { surface: surface.dark } } },",
+    "        light: { tokens: { color: { surface: surface.light } } },",
+    "        sepia: { label: \"Sepia\", scheme: \"light\", tokens: { color: { surface: surface.sepia } } },",
+    "      },",
     "    },",
     "  },",
     "};",
@@ -62,10 +64,10 @@ async function verifyThemeConfigModes(context) {
   const loaded = await config.loadFrontendConfig(fixture);
   const scss = loaded.generatedScss;
 
-  assert.deepEqual(loaded.config.theme.modes.map((mode) => mode.key), ["dark", "light", "sepia"]);
-  assert.equal(loaded.config.theme.dark, "dark");
-  assert.equal(loaded.config.theme.light, "light");
-  assert.equal(loaded.config.theme.defaultMode, "sepia");
+  assert.deepEqual(loaded.config.runtime.theme.modes.map((mode) => mode.key), ["dark", "light", "sepia"]);
+  assert.equal(loaded.config.runtime.theme.dark, "dark");
+  assert.equal(loaded.config.runtime.theme.light, "light");
+  assert.equal(loaded.config.runtime.theme.defaultMode, "sepia");
   assert.ok(scss.includes("--app-theme-modes: \"dark light sepia\";"));
   assert.ok(scss.includes("--app-theme-default: \"sepia\";"));
   assert.ok(scss.includes("[data-tbf-theme=\"sepia\"] {"));
@@ -74,11 +76,11 @@ async function verifyThemeConfigModes(context) {
   assert.ok(scss.includes(":root:not([data-tbf-theme]) {"));
   assert.equal(config.THEME_MODE_ATTRIBUTE, "data-tbf-theme");
   assert.throws(
-    () => config.normalizeFrontendConfig({ theme: { modes: { dark: { color: "#000" } } } }),
+    () => config.normalizeFrontendConfig({ runtime: { theme: { modes: { dark: { color: "#000" } } } } }),
     /invalid-config/u,
   );
   assert.throws(
-    () => config.normalizeFrontendConfig({ theme: { dark: "missing", modes: { light: {} } } }),
+    () => config.normalizeFrontendConfig({ runtime: { theme: { dark: "missing", modes: { light: {} } } } }),
     /theme\.dark must name a mode/u,
   );
 }

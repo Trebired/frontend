@@ -16,7 +16,7 @@
   user-select: none;
 
   &:focus-visible {
-    outline: var(--border-width) solid var(--tbf-input-focus-color, var(--tbf-focus, currentColor));
+    outline: var(--border-width) solid var(--tbf-primitives-input-states-focus-color, var(--tbf-focus, currentColor));
     outline-offset: 2px;
   }
 
@@ -27,7 +27,7 @@
   &.is-checked,
   &:has(> .radio-input:checked) {
     border-color: var(--border-surface-1);
-    background: var(--tbf-choice-checked-background, var(--background-surface-1, transparent));
+    background: var(--tbf-primitives-choice-checked-background, var(--background-surface-1, transparent));
   }
 
   &:not(:has(.radio-option-description)) {
@@ -47,9 +47,9 @@
   height: 18px;
   margin-top: 0;
   border-radius: var(--radius-xs);
-  border: var(--border-width) solid var(--tbf-choice-control-border-color, var(--border-surface-1, currentColor));
+  border: var(--border-width) solid var(--tbf-primitives-choice-control-border-color, var(--border-surface-1, currentColor));
   background: var(--background-surface-1);
-  color: var(--tbf-choice-control-color, currentColor);
+  color: var(--tbf-primitives-choice-control-color, currentColor);
   line-height: 0;
   position: relative;
   transition:
@@ -65,7 +65,7 @@
   }
 
   .radio-control-icon.active {
-    color: var(--tbf-choice-control-active-icon-color, currentColor);
+    color: var(--tbf-primitives-choice-control-active-icon-color, currentColor);
   }
 
   .radio-control-icon::before {
@@ -84,9 +84,9 @@
 
 .radio-option:has(> .radio-input:checked) > .radio-control,
 .radio-option.is-checked > .radio-control {
-  border-color: var(--tbf-choice-control-checked-border-color, var(--tbf-focus, currentColor));
-  background: var(--tbf-choice-control-checked-background, var(--tbf-focus, transparent));
-  color: var(--tbf-choice-control-checked-color, var(--background-page, currentColor));
+  border-color: var(--tbf-primitives-choice-control-checked-border-color, var(--tbf-focus, currentColor));
+  background: var(--tbf-primitives-choice-control-checked-background, var(--tbf-focus, transparent));
+  color: var(--tbf-primitives-choice-control-checked-color, var(--background-page, currentColor));
 }
 
 .radio-option:has(> .radio-input:checked)

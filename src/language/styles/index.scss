@@ -9,8 +9,8 @@
 }
 
 .tbf-locale-switch-popover .tbf-locale-option[data-tbf-locale-current="true"] {
-  background: var(--tbf-language-current-background, var(--background-surface-2, transparent));
-  color: var(--text-color);
+  background: var(--tbf-shell-language-option-states-current-background, var(--tbf-overlays-popover-item-states-selected-background, var(--background-surface-2, transparent)));
+  color: var(--tbf-shell-language-option-states-current-color, var(--text-color));
 }
 
 .tbf-locale-code {

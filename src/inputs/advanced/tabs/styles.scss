@@ -4,42 +4,42 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 .tabs {
   display: flex;
   width: 100%;
-  gap: var(--tbf-tabs-gap, var(--tbf-gap-sm));
+  gap: var(--tbf-primitives-tabs-list-gap, var(--tbf-gap-sm));
 
   .tab {
     flex: 1 1 0;
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
-    height: var(--tbf-tabs-height, 34px);
-    padding: 0 var(--tbf-tabs-padding-inline, 14px);
-    border: var(--tbf-tabs-border, var(--border-width) solid var(--border-surface-1));
-    border-radius: var(--tbf-tabs-radius, var(--radius-sm));
-    color: var(--tbf-tabs-color, var(--text-color));
-    background: var(--tbf-tabs-background, transparent);
+    height: var(--tbf-primitives-tabs-root-height, 34px);
+    padding: 0 var(--tbf-primitives-tabs-root-padding-inline, 14px);
+    border: var(--tbf-primitives-tabs-root-border, var(--border-width) solid var(--border-surface-1));
+    border-radius: var(--tbf-primitives-tabs-root-radius, var(--radius-sm));
+    color: var(--tbf-primitives-tabs-root-color, var(--text-color));
+    background: var(--tbf-primitives-tabs-root-background, transparent);
     cursor: pointer;
     transition:
       background 0.15s,
       border-color 0.15s;
-    font-family: var(--tbf-tabs-font-family, var(--tbf-font-sans, "Inter", sans-serif));
-    font-size: var(--tbf-tabs-font-size, 14px);
-    font-weight: var(--tbf-tabs-font-weight, inherit);
-    line-height: calc(var(--tbf-tabs-height, 34px) - (var(--border-width) * 2));
+    font-family: var(--tbf-primitives-tabs-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
+    font-size: var(--tbf-primitives-tabs-root-font-size, 14px);
+    font-weight: var(--tbf-primitives-tabs-root-font-weight, inherit);
+    line-height: calc(var(--tbf-primitives-tabs-root-height, 34px) - (var(--border-width) * 2));
     text-align: left;
 
     &:hover {
-      background: var(--tbf-tabs-hover-background, var(--background-surface-1));
-      border-color: var(--tbf-tabs-hover-border-color, var(--border-surface-1));
-      color: var(--tbf-tabs-hover-color, var(--tbf-tabs-color, var(--text-color)));
+      background: var(--tbf-primitives-tabs-states-hover-background, var(--background-surface-1));
+      border-color: var(--tbf-primitives-tabs-states-hover-border-color, var(--border-surface-1));
+      color: var(--tbf-primitives-tabs-states-hover-color, var(--tbf-primitives-tabs-root-color, var(--text-color)));
     }
 
     &.active,
     &[aria-selected="true"],
     &[data-tbf-active="true"],
     &[data-active="true"] {
-      background: var(--tbf-tabs-active-background, var(--background-surface-1));
-      border-color: var(--tbf-tabs-active-border-color, var(--border-surface-1));
-      color: var(--tbf-tabs-active-color, var(--tbf-tabs-color, var(--text-color)));
+      background: var(--tbf-primitives-tabs-states-active-background, var(--background-surface-1));
+      border-color: var(--tbf-primitives-tabs-states-active-border-color, var(--border-surface-1));
+      color: var(--tbf-primitives-tabs-states-active-color, var(--tbf-primitives-tabs-root-color, var(--text-color)));
     }
 
     .tab-label {
@@ -105,7 +105,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   position: absolute;
   left: var(--tabs-nested-indicator-left, 50%);
   top: 50%;
-  color: var(--tbf-tabs-nested-indicator-color, var(--text-color-muted, currentColor));
+  color: var(--tbf-primitives-tabs-nested-indicator-color, var(--text-color-muted, currentColor));
   font-size: 20px;
   line-height: 1;
   transform: translate(-50%, -50%);
@@ -140,9 +140,9 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
   .tabs .tab {
     flex: 1 1 calc(50% - 8px);
-    height: var(--tbf-tabs-mobile-height, 36px);
-    font-size: var(--tbf-tabs-mobile-font-size, 13px);
-    line-height: calc(var(--tbf-tabs-mobile-height, 36px) - (var(--border-width) * 2));
+    height: var(--tbf-primitives-tabs-responsive-mobile-height, 36px);
+    font-size: var(--tbf-primitives-tabs-responsive-mobile-font-size, 13px);
+    line-height: calc(var(--tbf-primitives-tabs-responsive-mobile-height, 36px) - (var(--border-width) * 2));
   }
 }
 

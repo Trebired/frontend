@@ -33,9 +33,28 @@ import { defineFrontendConfig } from "<package-name>/config";
 
 export default defineFrontendConfig({
   prefix: "tbf",
-  icons: {
-    endpoint: "/__icons/svg",
-    packs: ["remixicon", "simple-icons"],
+  assets: {
+    icons: {
+      endpoint: "/__icons/svg",
+      packs: ["remixicon", "simple-icons"],
+    },
+  },
+  design: {
+    interactions: {
+      activePress: {
+        enabled: false,
+        brightness: 0.9,
+      },
+    },
+  },
+  runtime: {
+    theme: {
+      defaultMode: "dark",
+      modes: {
+        dark: { scheme: "dark" },
+        light: { scheme: "light" },
+      },
+    },
   },
   systems: {
     actions: true,

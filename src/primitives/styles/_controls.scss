@@ -2,30 +2,30 @@
 @use "./variables" as *;
 
 .btn {
-  --button-icon-color: var(--tbf-button-icon-color, currentColor);
+  --button-icon-color: var(--tbf-primitives-button-slots-icon-color, currentColor);
   box-sizing: border-box;
-  height: var(--tbf-button-height, 28px);
-  min-height: var(--tbf-button-height, 28px);
+  height: var(--tbf-primitives-button-root-height, 28px);
+  min-height: var(--tbf-primitives-button-root-height, 28px);
   width: auto;
   max-width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--tbf-button-gap, 8px);
-  padding: var(--tbf-button-padding, 0 12px);
-  padding-block: var(--tbf-button-padding-block, 0);
-  border-radius: var(--tbf-button-radius, var(--radius-md, var(--tbf-radius, 0)));
-  border: var(--tbf-button-border, var(--border-width) solid var(--border-surface-2));
-  background: var(--tbf-button-background, transparent);
-  color: var(--tbf-button-color, var(--text-color));
+  gap: var(--tbf-primitives-button-root-gap, 8px);
+  padding: var(--tbf-primitives-button-root-padding, 0 12px);
+  padding-block: var(--tbf-primitives-button-root-padding-block, 0);
+  border-radius: var(--tbf-primitives-button-root-radius, var(--radius-md, var(--tbf-radius, 0)));
+  border: var(--tbf-primitives-button-root-border, var(--border-width) solid var(--border-surface-2));
+  background: var(--tbf-primitives-button-root-background, transparent);
+  color: var(--tbf-primitives-button-root-color, var(--text-color));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   font-family: inherit;
   white-space: nowrap;
   text-decoration: none;
-  font-size: var(--tbf-button-font-size, 12px);
-  font-weight: var(--tbf-button-font-weight, 600);
+  font-size: var(--tbf-primitives-button-root-font-size, 12px);
+  font-weight: var(--tbf-primitives-button-root-font-weight, 600);
   line-height: 1.15;
   vertical-align: middle;
   transition:
@@ -37,16 +37,16 @@
   &:hover,
   &[aria-pressed="true"],
   &[data-tbf-active="true"] {
-    --button-icon-color: var(--tbf-button-hover-icon-color, currentColor);
-    background: var(--tbf-button-hover-background, var(--tbf-button-background, transparent));
-    border-color: var(--tbf-button-hover-border-color, currentColor);
-    color: var(--tbf-button-hover-color, currentColor);
+    --button-icon-color: var(--tbf-primitives-button-states-hover-icon-color, currentColor);
+    background: var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent));
+    border-color: var(--tbf-primitives-button-states-hover-border-color, currentColor);
+    color: var(--tbf-primitives-button-states-hover-color, currentColor);
   }
 
   &:disabled,
   &[disabled],
   &.disabled {
-    opacity: var(--tbf-button-disabled-opacity, 0.55);
+    opacity: var(--tbf-primitives-button-states-disabled-opacity, 0.55);
     pointer-events: none;
   }
 
@@ -62,67 +62,67 @@
 
     @each $name, $size in $tbf-primitive-button-sizes {
       &.#{$name} {
-        height: var(--tbf-button-sizes-#{$name}-height, #{list.nth($size, 1)});
-        min-height: var(--tbf-button-sizes-#{$name}-height, #{list.nth($size, 1)});
-        padding-inline: var(--tbf-button-sizes-#{$name}-padding-inline, #{list.nth($size, 2)});
+        height: var(--tbf-primitives-button-sizes-#{$name}-height, #{list.nth($size, 1)});
+        min-height: var(--tbf-primitives-button-sizes-#{$name}-height, #{list.nth($size, 1)});
+        padding-inline: var(--tbf-primitives-button-sizes-#{$name}-padding-inline, #{list.nth($size, 2)});
         padding-block: 0;
-        font-size: var(--tbf-button-sizes-#{$name}-font-size, #{list.nth($size, 3)});
+        font-size: var(--tbf-primitives-button-sizes-#{$name}-font-size, #{list.nth($size, 3)});
       }
     }
   }
 
   &.highlight {
-    --button-icon-color: var(--tbf-button-tones-highlight-icon-color, currentColor);
-    background: var(--tbf-button-tones-highlight-background, var(--tbf-button-background, transparent));
-    color: var(--tbf-button-tones-highlight-color, currentColor);
-    border-color: var(--tbf-button-tones-highlight-border-color, currentColor);
+    --button-icon-color: var(--tbf-primitives-button-tones-highlight-icon-color, currentColor);
+    background: var(--tbf-primitives-button-tones-highlight-background, var(--tbf-primitives-button-root-background, transparent));
+    color: var(--tbf-primitives-button-tones-highlight-color, currentColor);
+    border-color: var(--tbf-primitives-button-tones-highlight-border-color, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-button-tones-highlight-hover-icon-color, currentColor);
-      background: var(--tbf-button-tones-highlight-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
-      border-color: var(--tbf-button-tones-highlight-hover-border-color, currentColor);
-      color: var(--tbf-button-tones-highlight-hover-color, currentColor);
+      --button-icon-color: var(--tbf-primitives-button-tones-highlight-states-hover-icon-color, currentColor);
+      background: var(--tbf-primitives-button-tones-highlight-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      border-color: var(--tbf-primitives-button-tones-highlight-states-hover-border-color, currentColor);
+      color: var(--tbf-primitives-button-tones-highlight-states-hover-color, currentColor);
     }
   }
 
   &.red {
-    border-inline-color: var(--tbf-button-tones-red-border-inline-color, currentColor);
+    border-inline-color: var(--tbf-primitives-button-tones-red-border-inline-color, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
-      background: var(--tbf-button-tones-red-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
-      border-color: var(--tbf-button-tones-red-hover-border-color, currentColor);
-      color: var(--tbf-button-tones-red-hover-color, currentColor);
-      --button-icon-color: var(--tbf-button-tones-red-hover-icon-color, currentColor);
+      background: var(--tbf-primitives-button-tones-red-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      border-color: var(--tbf-primitives-button-tones-red-states-hover-border-color, currentColor);
+      color: var(--tbf-primitives-button-tones-red-states-hover-color, currentColor);
+      --button-icon-color: var(--tbf-primitives-button-tones-red-states-hover-icon-color, currentColor);
     }
   }
 
   &.yellow {
-    border-inline-color: var(--tbf-button-tones-yellow-border-inline-color, currentColor);
+    border-inline-color: var(--tbf-primitives-button-tones-yellow-border-inline-color, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-button-tones-yellow-hover-icon-color, currentColor);
-      background: var(--tbf-button-tones-yellow-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
-      border-color: var(--tbf-button-tones-yellow-hover-border-color, currentColor);
-      color: var(--tbf-button-tones-yellow-hover-color, currentColor);
+      --button-icon-color: var(--tbf-primitives-button-tones-yellow-states-hover-icon-color, currentColor);
+      background: var(--tbf-primitives-button-tones-yellow-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      border-color: var(--tbf-primitives-button-tones-yellow-states-hover-border-color, currentColor);
+      color: var(--tbf-primitives-button-tones-yellow-states-hover-color, currentColor);
     }
   }
 
   &.green {
-    border-inline-color: var(--tbf-button-tones-green-border-inline-color, currentColor);
+    border-inline-color: var(--tbf-primitives-button-tones-green-border-inline-color, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-button-tones-green-hover-icon-color, currentColor);
-      background: var(--tbf-button-tones-green-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
-      border-color: var(--tbf-button-tones-green-hover-border-color, currentColor);
-      color: var(--tbf-button-tones-green-hover-color, currentColor);
+      --button-icon-color: var(--tbf-primitives-button-tones-green-states-hover-icon-color, currentColor);
+      background: var(--tbf-primitives-button-tones-green-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      border-color: var(--tbf-primitives-button-tones-green-states-hover-border-color, currentColor);
+      color: var(--tbf-primitives-button-tones-green-states-hover-color, currentColor);
     }
   }
 
@@ -130,13 +130,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--tbf-button-icon-size, 28px);
-    height: var(--tbf-button-icon-size, 28px);
-    min-width: var(--tbf-button-icon-size, 28px);
-    min-height: var(--tbf-button-icon-size, 28px);
+    width: var(--tbf-primitives-button-slots-icon-size, 28px);
+    height: var(--tbf-primitives-button-slots-icon-size, 28px);
+    min-width: var(--tbf-primitives-button-slots-icon-size, 28px);
+    min-height: var(--tbf-primitives-button-slots-icon-size, 28px);
     gap: 0;
     padding: 0;
-    font-size: var(--tbf-button-icon-font-size, 15px);
+    font-size: var(--tbf-primitives-button-slots-icon-font-size, 15px);
     line-height: 1;
     text-align: center;
     position: relative;
@@ -168,11 +168,11 @@
 
     @each $name, $size in $tbf-primitive-icon-sizes {
       &.#{$name} {
-        width: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
-        height: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
-        min-width: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
-        min-height: var(--tbf-button-icon-#{$name}-size, #{list.nth($size, 1)});
-        font-size: var(--tbf-button-icon-#{$name}-font-size, #{list.nth($size, 2)});
+        width: var(--tbf-primitives-button-slots-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
+        height: var(--tbf-primitives-button-slots-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
+        min-width: var(--tbf-primitives-button-slots-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
+        min-height: var(--tbf-primitives-button-slots-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
+        font-size: var(--tbf-primitives-button-slots-icon-sizes-#{$name}-font-size, #{list.nth($size, 2)});
       }
     }
 

@@ -2,6 +2,14 @@
 
 All notable package changes are documented here.
 
+## 6.0.0
+
+- Replaced the flat frontend config shape with structured `assets`, `design`, `runtime`, and grouped `components` sections.
+- Removed legacy top-level config paths such as `fonts`, `icons`, `palette`, `scales`, `theme`, and `interactions`.
+- Reworked component styling tokens into grouped namespaces for primitives, surfaces, overlays, feedback, shell, and data components.
+- Moved active press feedback config to `design.interactions.activePress`, still disabled by default with `0.9` as the default brightness when enabled.
+- Moved progress runtime tokens to `runtime.progress` and flash tokens to `components.feedback.flash`.
+
 ## 5.1.2
 
 - Added `createFrontendTokenHelpers()` for typed frontend config references to palette scale, mode-suffixed palette, semantic variables, CSS variable fallbacks, borders, and color mixes.

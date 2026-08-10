@@ -59,9 +59,9 @@ function packageStyleUse(relativePath: string): string {
 function isNormalizedConfig(value: unknown): value is NormalizedFrontendConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const config = value as Partial<NormalizedFrontendConfig>;
-  return Array.isArray(config.fonts?.families) &&
-    Array.isArray(config.theme?.modes) &&
-    Array.isArray(config.palette?.modes);
+  return Array.isArray(config.assets?.fonts?.families) &&
+    Array.isArray(config.runtime?.theme?.modes) &&
+    Array.isArray(config.design?.palette?.modes);
 }
 
 function tokenDeclarations(prefix: string, tokens: FrontendThemeTokens): string[] {
@@ -72,15 +72,10 @@ function cssTokenKey(value: string): string {
   return value.replace(/([a-z0-9])([A-Z])/gu, "$1-$2").toLowerCase();
 }
 
-function componentCssTokenKey(value: string): string {
-  if (value === "actionButton") return "action-control";
-  return cssTokenKey(value);
-}
-
 function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
-  for (const [component, tokens] of Object.entries(config.components)) {
-    const componentKey = componentCssTokenKey(component);
+  for (const [componentGroup, tokens] of Object.entries(config.components)) {
+    const componentKey = cssTokenKey(componentGroup);
     for (const [key, value] of flattenThemeTokens(tokens)) {
       lines.push(`  --${config.prefix}-${componentKey}-${cssTokenKey(key)}: ${String(value)};`);
     }
@@ -89,17 +84,23 @@ function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] 
 }
 
 function rootDeclarations(config: NormalizedFrontendConfig): string[] {
-  const { modes, defaultMode } = config.theme;
+  const { modes, defaultMode } = config.runtime.theme;
   return [
     `  --${config.prefix}-config-prefix: ${cssString(config.prefix)};`,
-    `  --${config.prefix}-icon-endpoint: ${cssString(config.icons.endpoint)};`,
-    `  --${config.prefix}-interaction-active-filter: ${config.interactions.active.filter};`,
+    `  --${config.prefix}-icon-endpoint: ${cssString(config.assets.icons.endpoint)};`,
+    `  --${config.prefix}-interaction-active-filter: ${config.design.interactions.activePress.filter};`,
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
-    ...tokenDeclarations(config.prefix, config.theme.tokens),
+    ...tokenDeclarations(config.prefix, config.design.semantics),
+    ...tokenDeclarations(config.prefix, config.runtime.theme.tokens),
+    ...tokenDeclarations(`${config.prefix}-runtime`, {
+      layer: config.runtime.layer,
+      layout: config.runtime.layout,
+      progress: config.runtime.progress,
+    }),
     ...componentTokenDeclarations(config),
-    ...paletteSemanticDeclarations(config.palette),
-    ...paletteSuffixedDeclarations(config.palette),
+    ...paletteSemanticDeclarations(config.design.palette),
+    ...paletteSuffixedDeclarations(config.design.palette),
   ];
 }
 
@@ -107,7 +108,7 @@ function modeDeclarations(
   config: NormalizedFrontendConfig,
   mode: NormalizedFrontendThemeMode,
 ): string[] {
-  const paletteMode = findPaletteMode(config.palette, mode.key);
+  const paletteMode = findPaletteMode(config.design.palette, mode.key);
   return [
     `  color-scheme: ${mode.scheme};`,
     ...tokenDeclarations(config.prefix, mode.tokens),
@@ -125,7 +126,7 @@ function renderBlock(selector: string, declarations: string[], indent = ""): str
 }
 
 function renderModeBlocks(config: NormalizedFrontendConfig): string[] {
-  return config.theme.modes.flatMap((mode) => [
+  return config.runtime.theme.modes.flatMap((mode) => [
     "",
     `/* theme mode: ${cssComment(mode.key)} */`,
     ...renderBlock(`[${THEME_MODE_ATTRIBUTE}="${mode.key}"]`, modeDeclarations(config, mode)),
@@ -136,8 +137,8 @@ function renderSystemPreferenceBlock(
   config: NormalizedFrontendConfig,
   scheme: "dark" | "light",
 ): string[] {
-  const key = scheme === "dark" ? config.theme.dark : config.theme.light;
-  const mode = config.theme.modes.find((item) => item.key === key);
+  const key = scheme === "dark" ? config.runtime.theme.dark : config.runtime.theme.light;
+  const mode = config.runtime.theme.modes.find((item) => item.key === key);
   if (!mode) return [];
   return [
     "",
@@ -148,7 +149,7 @@ function renderSystemPreferenceBlock(
 }
 
 function renderThemeCss(config: NormalizedFrontendConfig): string[] {
-  if (!config.theme.cssVariables) return [];
+  if (!config.runtime.theme.cssVariables) return [];
   return [
     "",
     ...renderBlock(":root", rootDeclarations(config)),
@@ -183,14 +184,14 @@ function generateFrontendScss(
   const config = isNormalizedConfig(configInput)
     ? configInput
     : normalizeFrontendConfig(configInput);
-  const scalesCss = renderScalesCss(config.scales);
+  const scalesCss = renderScalesCss(config.design.scales);
   const lines = [
     "/* Generated by frontend package config. Do not edit directly. */",
     `/* prefix: ${cssComment(config.prefix)} */`,
     packageStyleUse("styles/tokens.scss"),
     packageStyleUse("styles/utils.scss"),
     ...renderSystemImports(config),
-    ...renderFontsCss(config.fonts),
+    ...renderFontsCss(config.assets.fonts),
     ...renderThemeCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),

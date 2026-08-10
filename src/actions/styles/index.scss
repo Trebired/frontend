@@ -1,32 +1,32 @@
 .tbf-button {
-  --tbf-action-control-current-icon-color: var(
-    --tbf-action-control-icon-color,
-    var(--tbf-button-icon-color, currentColor)
+  --tbf-primitives-action-control-current-icon-color: var(
+    --tbf-primitives-action-control-slots-icon-color,
+    var(--tbf-primitives-button-slots-icon-color, currentColor)
   );
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--tbf-action-control-gap, var(--tbf-button-gap, 8px));
-  min-height: var(--tbf-action-control-min-height, var(--tbf-action-control-height, var(--tbf-button-height, 28px)));
+  gap: var(--tbf-primitives-action-control-root-gap, var(--tbf-primitives-button-root-gap, 8px));
+  min-height: var(--tbf-primitives-action-control-root-min-height, var(--tbf-primitives-action-control-root-height, var(--tbf-primitives-button-root-height, 28px)));
   box-sizing: border-box;
-  padding: var(--tbf-action-control-padding, var(--tbf-button-padding, 0 12px));
-  padding-block: var(--tbf-action-control-padding-block, var(--tbf-button-padding-block, 0));
+  padding: var(--tbf-primitives-action-control-root-padding, var(--tbf-primitives-button-root-padding, 0 12px));
+  padding-block: var(--tbf-primitives-action-control-root-padding-block, var(--tbf-primitives-button-root-padding-block, 0));
   border: var(
-    --tbf-action-control-border,
-    var(--tbf-button-border, var(--border-width) solid var(--border-surface-2))
+    --tbf-primitives-action-control-root-border,
+    var(--tbf-primitives-button-root-border, var(--border-width) solid var(--border-surface-2))
   );
   border-radius: var(
-    --tbf-action-control-radius,
-    var(--tbf-button-radius, var(--radius-md, var(--tbf-radius, 0)))
+    --tbf-primitives-action-control-root-radius,
+    var(--tbf-primitives-button-root-radius, var(--radius-md, var(--tbf-radius, 0)))
   );
-  color: var(--tbf-action-control-color, var(--tbf-button-color, var(--text-color)));
-  background: var(--tbf-action-control-background, var(--tbf-button-background, transparent));
+  color: var(--tbf-primitives-action-control-root-color, var(--tbf-primitives-button-root-color, var(--text-color)));
+  background: var(--tbf-primitives-action-control-root-background, var(--tbf-primitives-button-root-background, transparent));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  font-family: var(--tbf-action-control-font-family, var(--tbf-font-sans, "Inter", sans-serif));
-  font-size: var(--tbf-action-control-font-size, var(--tbf-button-font-size, 12px));
-  font-weight: var(--tbf-action-control-font-weight, var(--tbf-button-font-weight, 600));
+  font-family: var(--tbf-primitives-action-control-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
+  font-size: var(--tbf-primitives-action-control-root-font-size, var(--tbf-primitives-button-root-font-size, 12px));
+  font-weight: var(--tbf-primitives-action-control-root-font-weight, var(--tbf-primitives-button-root-font-weight, 600));
   line-height: 1.15;
   text-decoration: none;
   white-space: nowrap;
@@ -35,19 +35,19 @@
 .tbf-button:hover,
 .tbf-button[aria-pressed="true"],
 .tbf-button[data-tbf-active="true"] {
-  --tbf-action-control-current-icon-color: var(
-    --tbf-action-control-hover-icon-color,
-    var(--tbf-button-hover-icon-color, currentColor)
+  --tbf-primitives-action-control-current-icon-color: var(
+    --tbf-primitives-action-control-states-hover-icon-color,
+    var(--tbf-primitives-button-states-hover-icon-color, currentColor)
   );
-  border-color: var(--tbf-action-control-hover-border-color, var(--tbf-button-hover-border-color, currentColor));
-  color: var(--tbf-action-control-hover-color, var(--tbf-button-hover-color, currentColor));
-  background: var(--tbf-action-control-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)));
+  border-color: var(--tbf-primitives-action-control-states-hover-border-color, var(--tbf-primitives-button-states-hover-border-color, currentColor));
+  color: var(--tbf-primitives-action-control-states-hover-color, var(--tbf-primitives-button-states-hover-color, currentColor));
+  background: var(--tbf-primitives-action-control-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
 }
 
 .tbf-button:disabled,
 .tbf-button[disabled],
 .tbf-button.disabled {
-  opacity: var(--tbf-action-control-disabled-opacity, var(--tbf-button-disabled-opacity, 0.55));
+  opacity: var(--tbf-primitives-action-control-states-disabled-opacity, var(--tbf-primitives-button-states-disabled-opacity, 0.55));
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -57,47 +57,47 @@
 .tbf-button > i svg,
 .tbf-button > [data-icon],
 .tbf-button > [data-icon] svg {
-  color: var(--tbf-action-control-current-icon-color);
+  color: var(--tbf-primitives-action-control-current-icon-color);
   flex: 0 0 auto;
 }
 
 .tbf-button--strong {
-  --tbf-action-control-current-icon-color: var(
-    --tbf-action-control-strong-icon-color,
-    var(--tbf-button-tones-highlight-icon-color, currentColor)
+  --tbf-primitives-action-control-current-icon-color: var(
+    --tbf-primitives-action-control-tones-highlight-icon-color,
+    var(--tbf-primitives-button-tones-highlight-icon-color, currentColor)
   );
   border-color: var(
-    --tbf-action-control-strong-border-color,
-    var(--tbf-button-tones-highlight-border-color, currentColor)
+    --tbf-primitives-action-control-tones-highlight-border-color,
+    var(--tbf-primitives-button-tones-highlight-border-color, currentColor)
   );
   color: var(
-    --tbf-action-control-strong-color,
-    var(--tbf-button-tones-highlight-color, currentColor)
+    --tbf-primitives-action-control-tones-highlight-color,
+    var(--tbf-primitives-button-tones-highlight-color, currentColor)
   );
   background: var(
-    --tbf-action-control-strong-background,
-    var(--tbf-button-tones-highlight-background, var(--tbf-button-background, transparent))
+    --tbf-primitives-action-control-tones-highlight-background,
+    var(--tbf-primitives-button-tones-highlight-background, var(--tbf-primitives-button-root-background, transparent))
   );
 }
 
 .tbf-button--strong:hover,
 .tbf-button--strong[aria-pressed="true"],
 .tbf-button--strong[data-tbf-active="true"] {
-  --tbf-action-control-current-icon-color: var(
-    --tbf-action-control-strong-hover-icon-color,
-    var(--tbf-button-tones-highlight-hover-icon-color, currentColor)
+  --tbf-primitives-action-control-current-icon-color: var(
+    --tbf-primitives-action-control-tones-highlight-states-hover-icon-color,
+    var(--tbf-primitives-button-tones-highlight-states-hover-icon-color, currentColor)
   );
   border-color: var(
-    --tbf-action-control-strong-hover-border-color,
-    var(--tbf-button-tones-highlight-hover-border-color, currentColor)
+    --tbf-primitives-action-control-tones-highlight-states-hover-border-color,
+    var(--tbf-primitives-button-tones-highlight-states-hover-border-color, currentColor)
   );
   color: var(
-    --tbf-action-control-strong-hover-color,
-    var(--tbf-button-tones-highlight-hover-color, currentColor)
+    --tbf-primitives-action-control-tones-highlight-states-hover-color,
+    var(--tbf-primitives-button-tones-highlight-states-hover-color, currentColor)
   );
   background: var(
-    --tbf-action-control-strong-hover-background,
-    var(--tbf-button-tones-highlight-hover-background, var(--tbf-button-hover-background, var(--tbf-button-background, transparent)))
+    --tbf-primitives-action-control-tones-highlight-states-hover-background,
+    var(--tbf-primitives-button-tones-highlight-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)))
   );
 }
 

@@ -4,11 +4,14 @@ import { normalizeFontsConfig } from "./fonts.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
-import { normalizeThemeConfig } from "./theme.js";
+import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import { frontendConfigPath } from "./package.js";
 import type {
   NormalizedFrontendConfig,
+  FrontendAssetsConfig,
+  FrontendDesignConfig,
   FrontendIconPack,
+  FrontendRuntimeConfig,
   FrontendSystemKey,
 } from "./types.js";
 
@@ -43,49 +46,84 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "graph",
 ];
 
+const TOP_LEVEL_FIELDS = [
+  "assets",
+  "components",
+  "design",
+  "prefix",
+  "runtime",
+  "systems",
+];
+
+const ASSET_FIELDS = ["fonts", "icons"];
+const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
+const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
+
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
-  components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
-  fonts: Object.freeze({
-    families: Object.freeze([]) as NormalizedFrontendConfig["fonts"]["families"],
-    sans: "",
-  }),
-  interactions: Object.freeze({
-    active: Object.freeze({
-      brightness: "0.9",
-      enabled: false,
-      filter: "none",
+  assets: Object.freeze({
+    fonts: Object.freeze({
+      families: Object.freeze([]) as NormalizedFrontendConfig["assets"]["fonts"]["families"],
+      sans: "",
+    }),
+    icons: Object.freeze({
+      endpoint: "/__icons/svg",
+      packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
     }),
   }),
-  palette: Object.freeze({
-    modes: Object.freeze([]) as NormalizedFrontendConfig["palette"]["modes"],
-    semantic: Object.freeze([]) as NormalizedFrontendConfig["palette"]["semantic"],
-    suffixedVariants: true,
+  components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
+  design: Object.freeze({
+    interactions: Object.freeze({
+      activePress: Object.freeze({
+        brightness: "0.9",
+        enabled: false,
+        filter: "none",
+      }),
+    }),
+    palette: Object.freeze({
+      modes: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["modes"],
+      semantic: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["semantic"],
+      suffixedVariants: true,
+    }),
+    scales: Object.freeze({
+      height: Object.freeze({}),
+      lineHeight: Object.freeze({}),
+      padding: Object.freeze({}),
+      radius: Object.freeze({}),
+      spacing: Object.freeze({}),
+      textSize: Object.freeze({}),
+      width: Object.freeze({}),
+      zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
+    }) as NormalizedFrontendConfig["design"]["scales"],
+    semantics: Object.freeze({}),
   }),
   prefix: "tbf",
-  icons: Object.freeze({
-    endpoint: "/__icons/svg",
-    packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
+  runtime: Object.freeze({
+    layer: Object.freeze({}),
+    layout: Object.freeze({}),
+    progress: Object.freeze({ height: "3px" }),
+    theme: Object.freeze({
+      cssVariables: true,
+      dark: "",
+      defaultMode: "",
+      light: "",
+      modes: Object.freeze([]) as NormalizedFrontendConfig["runtime"]["theme"]["modes"],
+      tokens: Object.freeze({}),
+    }),
   }),
-  scales: Object.freeze({
-    height: Object.freeze({}),
-    lineHeight: Object.freeze({}),
-    padding: Object.freeze({}),
-    radius: Object.freeze({}),
-    spacing: Object.freeze({}),
-    textSize: Object.freeze({}),
-    width: Object.freeze({}),
-    zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
-  }) as NormalizedFrontendConfig["scales"],
   systems: Object.freeze(Object.fromEntries(SYSTEM_ORDER.map((key) => [key, true]))) as Record<FrontendSystemKey, boolean>,
-  theme: Object.freeze({
-    cssVariables: true,
-    dark: "",
-    defaultMode: "",
-    light: "",
-    modes: Object.freeze([]) as NormalizedFrontendConfig["theme"]["modes"],
-    tokens: Object.freeze({}),
-  }),
 });
+
+function assertKnownFields(
+  source: Record<string, unknown>,
+  allowed: readonly string[],
+  pathLabel: string,
+) {
+  for (const key of Object.keys(source)) {
+    if (!allowed.includes(key)) {
+      throw invalidConfig(`${pathLabel}.${key} is not supported`);
+    }
+  }
+}
 
 function normalizePrefix(value: unknown): string {
   const prefix = String(value || DEFAULT_FRONTEND_CONFIG.prefix).trim();
@@ -96,16 +134,16 @@ function normalizePrefix(value: unknown): string {
 }
 
 function normalizeEndpoint(value: unknown): string {
-  const endpoint = String(value || DEFAULT_FRONTEND_CONFIG.icons.endpoint).trim();
+  const endpoint = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint).trim();
   if (!endpoint || /[\s"'<>]/u.test(endpoint)) {
-    throw invalidConfig("icons.endpoint must be a URL path without whitespace");
+    throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
   }
   return endpoint;
 }
 
 function normalizeIconPacks(value: unknown): FrontendIconPack[] {
-  const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.icons.packs : value;
-  if (!Array.isArray(raw)) throw invalidConfig("icons.packs must be an array");
+  const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
+  if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
   const packs: FrontendIconPack[] = [];
   for (const item of raw) {
     if (!SUPPORTED_ICON_PACKS.includes(item as FrontendIconPack)) {
@@ -114,6 +152,52 @@ function normalizeIconPacks(value: unknown): FrontendIconPack[] {
     if (!packs.includes(item as FrontendIconPack)) packs.push(item as FrontendIconPack);
   }
   return packs;
+}
+
+function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
+  const source = value === undefined
+    ? {}
+    : assertPlainObject(value, "assets") as FrontendAssetsConfig;
+  assertKnownFields(source, ASSET_FIELDS, "assets");
+  const icons = source.icons === undefined
+    ? {}
+    : assertPlainObject(source.icons, "assets.icons");
+  return {
+    fonts: normalizeFontsConfig(source.fonts),
+    icons: {
+      endpoint: normalizeEndpoint(icons.endpoint),
+      packs: normalizeIconPacks(icons.packs),
+    },
+  };
+}
+
+function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runtime"] {
+  const source = value === undefined
+    ? {}
+    : assertPlainObject(value, "runtime") as FrontendRuntimeConfig;
+  assertKnownFields(source, RUNTIME_FIELDS, "runtime");
+  return {
+    layer: normalizeThemeTokens(source.layer, "runtime.layer"),
+    layout: normalizeThemeTokens(source.layout, "runtime.layout"),
+    progress: normalizeThemeTokens(source.progress, "runtime.progress"),
+    theme: normalizeThemeConfig(source.theme),
+  };
+}
+
+function normalizeDesignConfig(
+  value: unknown,
+  modeKeys: string[],
+): NormalizedFrontendConfig["design"] {
+  const source = value === undefined
+    ? {}
+    : assertPlainObject(value, "design") as FrontendDesignConfig;
+  assertKnownFields(source, DESIGN_FIELDS, "design");
+  return {
+    interactions: normalizeInteractionsConfig(source.interactions),
+    palette: normalizePaletteConfig(source.palette, modeKeys),
+    scales: normalizeScalesConfig(source.scales),
+    semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
+  };
 }
 
 function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
@@ -134,21 +218,15 @@ function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
 
 function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
   const source = assertPlainObject(config, "config");
-  const icons = source.icons === undefined ? {} : assertPlainObject(source.icons, "icons");
-  const theme = normalizeThemeConfig(source.theme);
+  assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
+  const runtime = normalizeRuntimeConfig(source.runtime);
   return {
+    assets: normalizeAssetsConfig(source.assets),
     components: normalizeComponentsConfig(source.components),
-    fonts: normalizeFontsConfig(source.fonts),
-    interactions: normalizeInteractionsConfig(source.interactions),
-    palette: normalizePaletteConfig(source.palette, theme.modes.map((mode) => mode.key)),
+    design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
     prefix: normalizePrefix(source.prefix),
-    icons: {
-      endpoint: normalizeEndpoint(icons.endpoint),
-      packs: normalizeIconPacks(icons.packs),
-    },
-    scales: normalizeScalesConfig(source.scales),
+    runtime,
     systems: normalizeSystems(source.systems),
-    theme,
   };
 }
 

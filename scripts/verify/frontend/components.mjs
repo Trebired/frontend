@@ -26,13 +26,13 @@ async function verifyTabsStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "inputs", "advanced", "tabs", "styles.scss"), "utf8");
   assert.ok(source.includes('&[aria-selected="true"]'));
   assert.ok(source.includes('&[data-tbf-active="true"]'));
-  assert.ok(source.includes("var(--tbf-tabs-active-background"));
+  assert.ok(source.includes("var(--tbf-primitives-tabs-states-active-background"));
 }
 
 async function verifyThemeStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "theme", "styles", "index.scss"), "utf8");
   assert.ok(source.includes('data-tbf-theme-active="true"'));
-  assert.ok(source.includes("--tbf-theme-current-background"));
+  assert.ok(source.includes("--tbf-shell-theme-option-states-current-background"));
 }
 
 async function verifyReactEntrypoint(importDist) {

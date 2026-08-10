@@ -1,9 +1,9 @@
 .tbf-progress {
   position: fixed;
   inset: 0 0 auto 0;
-  height: var(--tbf-progress-height, 3px);
-  --tbf-progress-bar-color: var(
-    --tbf-progress-color,
+  height: var(--tbf-runtime-progress-height, 3px);
+  --tbf-runtime-progress-bar-color: var(
+    --tbf-runtime-progress-color,
     var(--tbf-focus, currentColor)
   );
   pointer-events: none;
@@ -13,7 +13,7 @@
 .tbf-progress__bar {
   display: block;
   height: 100%;
-  background: var(--tbf-progress-bar-color);
+  background: var(--tbf-runtime-progress-bar-color);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--tbf-transition-fast) ease;

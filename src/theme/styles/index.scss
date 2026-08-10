@@ -9,8 +9,8 @@
 .tbf-theme-switch-popover .tbf-theme-select__option[data-tbf-theme-active="true"],
 .tbf-theme-switch-popover .tbf-theme-select__option[aria-checked="true"] {
   background: var(
-    --tbf-theme-current-background,
-    var(--tbf-language-current-background, var(--background-surface-2, transparent))
+    --tbf-shell-theme-option-states-current-background,
+    var(--tbf-overlays-popover-item-states-selected-background, var(--background-surface-2, transparent))
   );
-  color: var(--tbf-theme-current-color, var(--text-color));
+  color: var(--tbf-shell-theme-option-states-current-color, var(--text-color));
 }

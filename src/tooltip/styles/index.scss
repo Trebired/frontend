@@ -3,14 +3,14 @@
   z-index: var(--tbf-z-tooltip, 1100);
   box-sizing: border-box;
   max-width: min(380px, calc(100vw - 24px));
-  padding: var(--tbf-tooltip-padding, 7px 9px);
-  border: var(--tbf-tooltip-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
-  border-radius: var(--tbf-tooltip-radius, var(--tbf-radius-sm, 0));
-  color: var(--tbf-tooltip-color, var(--tbf-text, #000));
-  background: var(--tbf-tooltip-background, var(--tbf-surface, #fff));
-  font-family: var(--tbf-tooltip-font-family, var(--tbf-font-sans, sans-serif));
-  font-size: var(--tbf-tooltip-font-size, 12px);
-  line-height: var(--tbf-tooltip-line-height, 1.3);
+  padding: var(--tbf-overlays-tooltip-panel-padding, 7px 9px);
+  border: var(--tbf-overlays-tooltip-panel-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
+  border-radius: var(--tbf-overlays-tooltip-panel-radius, var(--tbf-radius-sm, 0));
+  color: var(--tbf-overlays-tooltip-panel-color, var(--tbf-text, #000));
+  background: var(--tbf-overlays-tooltip-panel-background, var(--tbf-surface, #fff));
+  font-family: var(--tbf-overlays-tooltip-panel-font-family, var(--tbf-font-sans, sans-serif));
+  font-size: var(--tbf-overlays-tooltip-panel-font-size, 12px);
+  line-height: var(--tbf-overlays-tooltip-panel-line-height, 1.3);
   opacity: 0;
   visibility: hidden;
   isolation: isolate;
@@ -18,17 +18,17 @@
   transform-origin: var(--tbf-tooltip-transform-origin, center bottom);
   pointer-events: none;
   transition:
-    opacity var(--tbf-tooltip-duration, 170ms) var(--tbf-tooltip-easing, cubic-bezier(0.16, 1, 0.3, 1)),
-    transform var(--tbf-tooltip-duration, 170ms) var(--tbf-tooltip-easing, cubic-bezier(0.16, 1, 0.3, 1)),
-    visibility 0s linear var(--tbf-tooltip-duration, 170ms);
+    opacity var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+    visibility 0s linear var(--tbf-overlays-tooltip-motion-duration, 170ms);
 }
 
 .tbf-tooltip::before,
 .tbf-tooltip::after {
-  --tbf-tooltip-arrow-size-current: var(--tbf-tooltip-arrow-size, 8px);
-  --tbf-tooltip-arrow-border-width-current: var(--tbf-tooltip-arrow-border-width, var(--tbf-border-width, 1px));
-  --tbf-tooltip-arrow-border-color-current: var(--tbf-tooltip-arrow-border-color, var(--tbf-border, #000));
-  --tbf-tooltip-arrow-background-current: var(--tbf-tooltip-arrow-background, var(--tbf-tooltip-background, var(--tbf-surface, #fff)));
+  --tbf-overlays-tooltip-arrow-size-current: var(--tbf-overlays-tooltip-arrow-size, 8px);
+  --tbf-overlays-tooltip-arrow-border-width-current: var(--tbf-overlays-tooltip-arrow-border-width, var(--tbf-border-width, 1px));
+  --tbf-overlays-tooltip-arrow-border-color-current: var(--tbf-overlays-tooltip-arrow-border-color, var(--tbf-border, #000));
+  --tbf-overlays-tooltip-arrow-background-current: var(--tbf-overlays-tooltip-arrow-background, var(--tbf-overlays-tooltip-panel-background, var(--tbf-surface, #fff)));
 
   content: "";
   position: absolute;
@@ -51,18 +51,18 @@
 }
 
 .tbf-tooltip[data-tbf-placement="top"]::before {
-  bottom: calc(0px - var(--tbf-tooltip-arrow-size-current));
-  border-width: var(--tbf-tooltip-arrow-size-current) var(--tbf-tooltip-arrow-size-current) 0;
-  border-top-color: var(--tbf-tooltip-arrow-border-color-current);
+  bottom: calc(0px - var(--tbf-overlays-tooltip-arrow-size-current));
+  border-width: var(--tbf-overlays-tooltip-arrow-size-current) var(--tbf-overlays-tooltip-arrow-size-current) 0;
+  border-top-color: var(--tbf-overlays-tooltip-arrow-border-color-current);
 }
 
 .tbf-tooltip[data-tbf-placement="top"]::after {
-  bottom: calc(var(--tbf-tooltip-arrow-border-width-current) - var(--tbf-tooltip-arrow-size-current));
+  bottom: calc(var(--tbf-overlays-tooltip-arrow-border-width-current) - var(--tbf-overlays-tooltip-arrow-size-current));
   border-width:
-    calc(var(--tbf-tooltip-arrow-size-current) - var(--tbf-tooltip-arrow-border-width-current))
-    calc(var(--tbf-tooltip-arrow-size-current) - var(--tbf-tooltip-arrow-border-width-current))
+    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
+    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
     0;
-  border-top-color: var(--tbf-tooltip-arrow-background-current);
+  border-top-color: var(--tbf-overlays-tooltip-arrow-background-current);
 }
 
 .tbf-tooltip[data-tbf-placement="bottom"] {
@@ -71,18 +71,18 @@
 }
 
 .tbf-tooltip[data-tbf-placement="bottom"]::before {
-  top: calc(0px - var(--tbf-tooltip-arrow-size-current));
-  border-width: 0 var(--tbf-tooltip-arrow-size-current) var(--tbf-tooltip-arrow-size-current);
-  border-bottom-color: var(--tbf-tooltip-arrow-border-color-current);
+  top: calc(0px - var(--tbf-overlays-tooltip-arrow-size-current));
+  border-width: 0 var(--tbf-overlays-tooltip-arrow-size-current) var(--tbf-overlays-tooltip-arrow-size-current);
+  border-bottom-color: var(--tbf-overlays-tooltip-arrow-border-color-current);
 }
 
 .tbf-tooltip[data-tbf-placement="bottom"]::after {
-  top: calc(var(--tbf-tooltip-arrow-border-width-current) - var(--tbf-tooltip-arrow-size-current));
+  top: calc(var(--tbf-overlays-tooltip-arrow-border-width-current) - var(--tbf-overlays-tooltip-arrow-size-current));
   border-width:
     0
-    calc(var(--tbf-tooltip-arrow-size-current) - var(--tbf-tooltip-arrow-border-width-current))
-    calc(var(--tbf-tooltip-arrow-size-current) - var(--tbf-tooltip-arrow-border-width-current));
-  border-bottom-color: var(--tbf-tooltip-arrow-background-current);
+    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
+    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current));
+  border-bottom-color: var(--tbf-overlays-tooltip-arrow-background-current);
 }
 
 .tbf-tooltip[data-tbf-open="true"] {

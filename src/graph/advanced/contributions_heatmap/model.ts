@@ -124,12 +124,12 @@ function heatmap_width(columnCount: number) {
 }
 
 function heatmap_fill_color(count: number, maxCount: number) {
-  if (count <= 0 || maxCount <= 0) return "var(--tbf-graph-heatmap-empty, var(--background-surface-2, transparent))";
+  if (count <= 0 || maxCount <= 0) return "var(--tbf-data-graph-heatmap-empty, var(--background-surface-2, transparent))";
   const ratio = count / maxCount;
-  if (ratio >= 0.85) return "var(--tbf-graph-heatmap-level-4, var(--tbf-focus, currentColor))";
-  if (ratio >= 0.55) return "var(--tbf-graph-heatmap-level-3, var(--tbf-focus, currentColor))";
-  if (ratio >= 0.25) return "var(--tbf-graph-heatmap-level-2, var(--tbf-focus, currentColor))";
-  return "var(--tbf-graph-heatmap-level-1, var(--tbf-focus, currentColor))";
+  if (ratio >= 0.85) return "var(--tbf-data-graph-heatmap-level-4, var(--tbf-focus, currentColor))";
+  if (ratio >= 0.55) return "var(--tbf-data-graph-heatmap-level-3, var(--tbf-focus, currentColor))";
+  if (ratio >= 0.25) return "var(--tbf-data-graph-heatmap-level-2, var(--tbf-focus, currentColor))";
+  return "var(--tbf-data-graph-heatmap-level-1, var(--tbf-focus, currentColor))";
 }
 
 function buildMonthLabels(
