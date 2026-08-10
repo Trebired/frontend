@@ -52,8 +52,8 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
   interactions: Object.freeze({
     active: Object.freeze({
       brightness: "0.9",
-      enabled: true,
-      filter: "brightness(0.9)",
+      enabled: false,
+      filter: "none",
     }),
   }),
   palette: Object.freeze({

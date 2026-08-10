@@ -107,6 +107,7 @@ type FrontendComponentsConfig = {
   button?: FrontendComponentTokens;
   card?: FrontendComponentTokens;
   flash?: FrontendComponentTokens;
+  header?: FrontendComponentTokens;
   progress?: FrontendComponentTokens;
   surfaceButton?: FrontendComponentTokens;
   surfaceCard?: FrontendComponentTokens;

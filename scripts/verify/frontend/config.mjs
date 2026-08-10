@@ -29,7 +29,7 @@ function configuredSource() {
     "export default {",
     "  fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "  prefix: \"app\",",
-    "  interactions: { active: { brightness: 0.8 } },",
+    "  interactions: { active: { brightness: 0.8, enabled: true } },",
     "  components: {",
     "    progress: { color: \"#111111\" },",
     "    textLink: { color: \"#222222\", hover: { color: \"#333333\" } },",
@@ -45,9 +45,11 @@ function configuredSource() {
 function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
-  assert.equal(defaults.config.interactions.active.filter, "brightness(0.9)");
+  assert.equal(defaults.config.interactions.active.enabled, false);
+  assert.equal(defaults.config.interactions.active.brightness, "0.9");
+  assert.equal(defaults.config.interactions.active.filter, "none");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
-  assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: brightness(0.9);"));
+  assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
   }
@@ -66,6 +68,7 @@ function assertLoadedConfig(loaded, configPath, config) {
   assert.ok(loaded.generatedScss.includes("--app-text-link-color: #222222;"));
   assert.ok(loaded.generatedScss.includes("--app-text-link-hover-color: #333333;"));
   assert.equal(config.normalizeFrontendConfig({ interactions: { active: { enabled: false } } }).interactions.active.filter, "none");
+  assert.equal(config.normalizeFrontendConfig({ interactions: { active: { enabled: true } } }).interactions.active.filter, "brightness(0.9)");
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
 }
 

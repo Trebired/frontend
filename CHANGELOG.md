@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.1.1
+
+- Made active press brightness opt-in by default while preserving `0.9` as the default brightness value when enabled.
+- Added configurable header brand tag vertical offset tokens for apps that need to tune logo-adjacent tags.
+
 ## 5.1.0
 
 - Added package-owned bundler prefix config and generated namespace helpers so the runtime prefix comes from config instead of being an implicit source convention.

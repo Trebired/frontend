@@ -20,7 +20,7 @@ function normalizeActiveInteraction(value: unknown): NormalizedFrontendInteracti
   const source = value === undefined
     ? {}
     : assertPlainObject(value, "interactions.active") as FrontendActiveInteractionConfig;
-  const enabled = normalizeBoolean(source.enabled, true, "interactions.active.enabled");
+  const enabled = normalizeBoolean(source.enabled, false, "interactions.active.enabled");
   const brightness = normalizeBrightness(source.brightness);
   return {
     brightness,

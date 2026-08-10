@@ -12,7 +12,7 @@ async function verifyNamespace(context) {
   assert.equal(root.frontendDataAttr("popover"), "data-tbf-popover");
   assert.equal(root.frontendDataSelector("popover"), "[data-tbf-popover]");
   const base = await fs.readFile(path.join(context.rootDir, "dist", "styles", "utils", "base.scss"), "utf8");
-  assert.ok(base.includes("var(--tbf-interaction-active-filter, brightness(0.9))"));
+  assert.ok(base.includes("var(--tbf-interaction-active-filter, none)"));
 }
 
 async function verifyPopover(context) {

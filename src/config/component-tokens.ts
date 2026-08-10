@@ -56,6 +56,13 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     radius: "var(--radius-lg, var(--tbf-radius, 0))",
     title: { fontWeight: "400" },
   }),
+  header: Object.freeze({
+    brand: {
+      tag: {
+        offsetY: "0",
+      },
+    },
+  }),
   progress: Object.freeze({
     height: "3px",
   }),
