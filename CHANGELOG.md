@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.1.2
+
+- Added `createFrontendTokenHelpers()` for typed frontend config references to palette scale, mode-suffixed palette, semantic variables, CSS variable fallbacks, borders, and color mixes.
+
 ## 5.1.1
 
 - Made active press brightness opt-in by default while preserving `0.9` as the default brightness value when enabled.

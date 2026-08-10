@@ -37,6 +37,7 @@
   "#2tnhcse5w1g6": "./src/graph/advanced/graph.tsx",
   "#2w72xmq6rvza": "./src/language/types.ts",
   "#2zdl1lzrgn6p": "./src/actions/forms.ts",
+  "#330k9t1x10vd": "./src/config/tokens.ts",
   "#33o6e7mug9pg": "./src/flash/index.ts",
   "#36iuc8ncbccq": "./src/inputs/upload/manager.ts",
   "#3f29p8cywlft": "./src/editor/styles/index.scss",

@@ -13,6 +13,7 @@ async function verifyFrontendConfig(context) {
   await fs.writeFile(configPath, configuredSource());
   const loaded = await config.loadFrontendConfig(fixture);
   assertLoadedConfig(loaded, configPath, config);
+  assertTokenHelpers(config);
   await assert.rejects(
     () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),
     /ENOENT/u,
@@ -22,6 +23,35 @@ async function verifyFrontendConfig(context) {
   await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: { bad: { package: \"https://bad\" } } } };\n");
   await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
+}
+
+function assertTokenHelpers(config) {
+  const helpers = config.createFrontendTokenHelpers({
+    modes: {
+      dark: {
+        scale: {
+          blue: { 400: "#bbd0fb" },
+          gray: { 900: "#1f1f20" },
+        },
+      },
+      light: {
+        scale: {
+          blue: { 400: "#273659" },
+          gray: { 900: "#f3f3f4" },
+        },
+      },
+    },
+    semantic: {
+      "background-surface-1": { family: "gray", step: "900" },
+    },
+  });
+
+  assert.equal(helpers.color("gray", 900), "var(--gray-900)");
+  assert.equal(helpers.modeColor("gray", 900, "dark"), "var(--gray-900-dark)");
+  assert.equal(helpers.semantic("background-surface-1"), "var(--background-surface-1)");
+  assert.equal(helpers.variable("radius-md", helpers.variable("radius", "0")), "var(--radius-md, var(--radius, 0))");
+  assert.equal(helpers.border(helpers.semantic("background-surface-1")), "var(--border-width) solid var(--background-surface-1)");
+  assert.equal(helpers.colorMix(helpers.color("blue", 400), "22%"), "color-mix(in srgb, var(--blue-400) 22%, transparent)");
 }
 
 function configuredSource() {

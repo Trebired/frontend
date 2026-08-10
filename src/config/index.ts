@@ -77,6 +77,7 @@ export {
 } from "./normalize.js";
 export { generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
+export { createFrontendTokenHelpers } from "./tokens.js";
 export { defineFrontendConfig, findFrontendConfig, loadFrontendConfig };
 export type {
   LoadFrontendConfigOptions,
@@ -118,3 +119,13 @@ export type {
   FrontendThemeTokens,
   FrontendZIndexScaleConfig,
 } from "./types.js";
+export type {
+  FrontendConfigTokenHelpers,
+  FrontendConfigVariableHelper,
+  FrontendCssVariable,
+  FrontendCssVariableWithFallback,
+  FrontendPaletteFamily,
+  FrontendPaletteModeKey,
+  FrontendPaletteSemanticToken,
+  FrontendPaletteStep,
+} from "./tokens.js";
