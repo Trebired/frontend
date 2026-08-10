@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.0.1
+
+- Routed file input button styling through `components.primitives.input.file.button` tokens instead of the removed flat file-input token namespace.
+
 ## 6.0.0
 
 - Replaced the flat frontend config shape with structured `assets`, `design`, `runtime`, and grouped `components` sections.

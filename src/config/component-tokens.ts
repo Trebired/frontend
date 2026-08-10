@@ -156,6 +156,13 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
       }),
     }),
     input: Object.freeze({
+      file: {
+        button: {
+          states: {
+            hover: {},
+          },
+        },
+      },
       states: {
         focus: {},
       },
