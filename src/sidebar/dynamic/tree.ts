@@ -4,11 +4,7 @@ import type {
   DynamicSidebarLinkItem,
   DynamicSidebarLiveConfig,
 } from "./types.js";
-
-function textValue(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
-}
+import { toText as textValue } from "#ndsvdqv80epr";
 
 function sidebarCountsTree(sidebar: DynamicSidebarContext | null | undefined) {
   const counts = sidebar?.entity_counts;
@@ -17,9 +13,9 @@ function sidebarCountsTree(sidebar: DynamicSidebarContext | null | undefined) {
 
 function dynamicSidebarTreeValue(tree: unknown, pathInput?: string) {
   const parts = textValue(pathInput)
-    .split(".")
-    .map((part) => textValue(part))
-    .filter(Boolean);
+  .split(".")
+  .map((part) => textValue(part))
+  .filter(Boolean);
   let current: unknown = tree && typeof tree === "object" ? tree : {};
   for (const part of parts) {
     if (!current || typeof current !== "object" || !(part in current)) {
@@ -92,12 +88,12 @@ function isDynamicSidebarDivider(
 
 function normalizeDynamicSidebarItems(items: DynamicSidebarItem[]) {
   const visibleItems = Array.isArray(items)
-    ? items.filter((item) => {
+  ? items.filter((item) => {
       return item && item.show !== false &&
         (isDynamicSidebarDivider(item) ||
           !(item.hideWhenDisabled === true && item.disabled === true));
-    })
-    : [];
+  })
+  : [];
   const out: DynamicSidebarItem[] = [];
   for (const item of visibleItems) {
     if (isDynamicSidebarDivider(item)) {
@@ -116,16 +112,16 @@ function dynamicSidebarLiveConfig(
   sidebar: DynamicSidebarContext | null | undefined,
 ): DynamicSidebarLiveConfig {
   const live = sidebar?.live && typeof sidebar.live === "object"
-    ? sidebar.live
-    : null;
+  ? sidebar.live
+  : null;
   const type = textValue(live?.type, textValue(sidebar?.type));
   if (!type) return {};
   return {
     params: live?.params && typeof live.params === "object" ? live.params : {},
     path: textValue(live?.path),
     rooms: Array.isArray(live?.rooms)
-      ? live.rooms.map((item) => textValue(item)).filter(Boolean)
-      : [],
+    ? live.rooms.map((item) => textValue(item)).filter(Boolean)
+    : [],
     side: textValue(live?.side, "left"),
     type,
   };

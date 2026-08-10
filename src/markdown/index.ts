@@ -1,1 +1,3 @@
-export * from "./article.js";
+export {
+  markdown_article as MarkdownArticle,
+} from "./article.js";

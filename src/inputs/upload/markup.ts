@@ -42,13 +42,21 @@ function uploadConfigPayload(model: ReturnType<typeof uploadModel>) {
 
 function nativeInputs(model: ReturnType<typeof uploadModel>) {
   return [
-    `<input class="tbf-upload__input" data-tbf-upload-slot="native-file" id="${escapeHtml(model.id)}_input" type="file" name="${escapeHtml(model.name)}"${boolAttr("multiple", model.allowMultiple)}${attr("accept", model.accept)}>`,
+    [
+      '<input class="tbf-upload__input" data-tbf-upload-slot="native-file"',
+      `id="${escapeHtml(model.id)}_input" type="file" name="${escapeHtml(model.name)}"`,
+      `${boolAttr("multiple", model.allowMultiple)}${attr("accept", model.accept)}>`,
+    ].join(" "),
     model.allowDirectory || model.allowMixedPicker
-      ? `<input class="tbf-upload__input" data-tbf-upload-slot="native-directory" id="${escapeHtml(model.id)}_directory" type="file" name="${escapeHtml(model.name)}" multiple${directoryPickerAttrs}>`
-      : "",
+    ? [
+      '<input class="tbf-upload__input" data-tbf-upload-slot="native-directory"',
+      `id="${escapeHtml(model.id)}_directory" type="file" name="${escapeHtml(model.name)}"`,
+      `multiple${directoryPickerAttrs}>`,
+    ].join(" ")
+    : "",
     model.name && model.crop
-      ? `<input type="hidden" name="${escapeHtml(model.name)}_crop" value="" data-tbf-upload-slot="crop-field">`
-      : "",
+    ? `<input type="hidden" name="${escapeHtml(model.name)}_crop" value="" data-tbf-upload-slot="crop-field">`
+    : "",
   ].join("");
 }
 
@@ -56,9 +64,19 @@ function preview(model: ReturnType<typeof uploadModel>) {
   if (!model.previewEnabled) return "";
   const src = attr("src", model.previewUrl);
   return [
-    `<div class="tbf-upload__preview" data-tbf-upload-slot="preview" data-tbf-upload-preview-shape="${escapeHtml(model.previewShape)}"${model.previewUrl ? "" : " hidden"}>`,
-    `<img class="tbf-upload__preview-image" data-tbf-upload-slot="preview-image" alt="${escapeHtml(model.previewAlt)}"${src}${model.previewUrl ? "" : " hidden"}>`,
-    `<span class="tbf-upload__preview-empty" data-tbf-upload-slot="preview-empty"${model.previewUrl ? " hidden" : ""}>${escapeHtml(model.previewEmptyText)}</span>`,
+    [
+      '<div class="tbf-upload__preview" data-tbf-upload-slot="preview"',
+      `data-tbf-upload-preview-shape="${escapeHtml(model.previewShape)}"`,
+      `${model.previewUrl ? "" : " hidden"}>`,
+    ].join(" "),
+    [
+      '<img class="tbf-upload__preview-image" data-tbf-upload-slot="preview-image"',
+      `alt="${escapeHtml(model.previewAlt)}"${src}${model.previewUrl ? "" : " hidden"}>`,
+    ].join(" "),
+    [
+      '<span class="tbf-upload__preview-empty" data-tbf-upload-slot="preview-empty"',
+      `${model.previewUrl ? " hidden" : ""}>${escapeHtml(model.previewEmptyText)}</span>`,
+    ].join(" "),
     "</div>",
   ].join("");
 }
@@ -66,16 +84,24 @@ function preview(model: ReturnType<typeof uploadModel>) {
 function triggerButtons(model: ReturnType<typeof uploadModel>) {
   if (model.allowMixedPicker) {
     return [
-      `<button class="tbf-upload__button" type="button" data-tbf-upload-slot="file-trigger">${escapeHtml(model.fileOptionLabel)}</button>`,
-      `<button class="tbf-upload__button" type="button" data-tbf-upload-slot="directory-trigger">${escapeHtml(model.directoryOptionLabel)}</button>`,
-      `<button class="tbf-upload__button" type="button" data-tbf-upload-slot="clear"${model.canClearCurrentPreview ? "" : " hidden"}>${escapeHtml(model.clearLabel)}</button>`,
+      `<button class="btn" type="button" data-tbf-upload-slot="file-trigger">${escapeHtml(model.fileOptionLabel)}</button>`,
+      `<button class="btn" type="button" data-tbf-upload-slot="directory-trigger">${escapeHtml(model.directoryOptionLabel)}</button>`,
+      uploadClearButton(model),
     ].join("");
   }
   const slot = model.allowDirectory ? "directory-trigger" : "trigger";
   return [
-    `<button class="tbf-upload__button" type="button" data-tbf-upload-slot="${slot}">${escapeHtml(model.triggerLabel)}</button>`,
-    `<button class="tbf-upload__button" type="button" data-tbf-upload-slot="clear"${model.canClearCurrentPreview ? "" : " hidden"}>${escapeHtml(model.clearLabel)}</button>`,
+    `<button class="btn" type="button" data-tbf-upload-slot="${slot}">${escapeHtml(model.triggerLabel)}</button>`,
+    uploadClearButton(model),
   ].join("");
+}
+
+function uploadClearButton(model: ReturnType<typeof uploadModel>) {
+  const hidden = model.canClearCurrentPreview ? "" : " hidden";
+  return [
+    '<button class="btn" type="button"',
+    `data-tbf-upload-slot="clear"${hidden}>${escapeHtml(model.clearLabel)}</button>`,
+  ].join(" ");
 }
 
 function helperLines(model: ReturnType<typeof uploadModel>) {
@@ -91,8 +117,8 @@ function helperLines(model: ReturnType<typeof uploadModel>) {
 function emptyToggle(model: ReturnType<typeof uploadModel>) {
   if (!model.emptyToggle?.name) return "";
   const value = model.emptyToggle.checked === true
-    ? toText(model.emptyToggle.value, "1")
-    : "0";
+  ? toText(model.emptyToggle.value, "1")
+  : "0";
   return `<input type="hidden" name="${escapeHtml(model.emptyToggle.name)}" value="${escapeHtml(value)}" data-tbf-upload-slot="empty-toggle">`;
 }
 

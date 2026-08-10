@@ -58,7 +58,7 @@ function controlsRow(props: search_props) {
   );
 }
 
-function search(props: search_props) {
+function searchControls(props: search_props) {
   const familyKey = toText(props.familyKey);
   const description = props.description;
   const attrs = {
@@ -88,8 +88,8 @@ function search(props: search_props) {
     attrs,
     config,
     <div className={primitiveCardClassName({
-      className: primitiveInlineRowClassName({ className: "content-filter-bar", gap: "xs" }),
-      layout: "none",
+          className: primitiveInlineRowClassName({ className: "content-filter-bar", gap: "xs" }),
+          layout: "none",
     })}>
     {controlsRow(props)}
     </div>,
@@ -140,4 +140,4 @@ export type {
   SearchItemProps,
   SearchQueryInputProps,
 } from "./item.js";
-export default search;
+export default searchControls;

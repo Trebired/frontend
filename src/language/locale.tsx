@@ -60,10 +60,10 @@ function normalizeFlagCountry(input: unknown) {
 
 function localeRegionCountry(code: string) {
   return code
-    .replace(/_/g, "-")
-    .split("-")
-    .slice(1)
-    .find((part) => /^[a-z]{2}$/iu.test(part) || /^\d{3}$/u.test(part));
+  .replace(/_/g, "-")
+  .split("-")
+  .slice(1)
+  .find((part) => /^[a-z]{2}$/iu.test(part) || /^\d{3}$/u.test(part));
 }
 
 function localeFlagCountry(option: LocaleOption) {
@@ -85,16 +85,16 @@ function localeOptionIcon(option: LocaleOption) {
   if (flagCountry) {
     return (
       <span
-        aria-hidden="true"
-        className={`tbf-locale-flag flag:${flagCountry}`}
-        data-tbf-locale-flag={flagCountry}
-        title={text(option.flagLabel)}
+      aria-hidden="true"
+      className={`tbf-locale-flag flag:${flagCountry}`}
+      data-tbf-locale-flag={flagCountry}
+      title={text(option.flagLabel)}
       />
     );
   }
   return (
     <span className="tbf-locale-code" aria-hidden="true">
-      {text(option.shortLabel, option.code).slice(0, 3).toUpperCase()}
+    {text(option.shortLabel, option.code).slice(0, 3).toUpperCase()}
     </span>
   );
 }
@@ -102,18 +102,18 @@ function localeOptionIcon(option: LocaleOption) {
 function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitcherProps) {
   const current = normalizedLang(props.lang);
   return button({
-    type: "button",
-    className: props.className,
-    icon: true,
-    tooltip: true,
-    id: triggerId,
-    "aria-controls": popoverId,
-    "aria-haspopup": "menu",
-    "aria-expanded": "false",
-    "aria-label": translate(current, "label"),
-    "data-tbf-popover-trigger": "",
-    title: translate(current, "label"),
-    children: <Icon spec="remixicon translate-2" />,
+      type: "button",
+      className: props.className,
+      icon: true,
+      tooltip: true,
+      id: triggerId,
+      "aria-controls": popoverId,
+      "aria-haspopup": "menu",
+      "aria-expanded": "false",
+      "aria-label": translate(current, "label"),
+      "data-tbf-popover-trigger": "",
+      title: translate(current, "label"),
+      children: <Icon spec="remixicon translate-2" />,
   });
 }
 
@@ -126,19 +126,19 @@ function localeOptionButton(
   const isCurrent = code === current;
   return (
     <button
-      key={code}
-      type="button"
-      className="popover-close popover-item tbf-locale-option"
-      data-tbf-locale-current={isCurrent ? "true" : "false"}
-      data-tbf-locale-endpoint={text(props.endpoint, "/ui/lang/set")}
-      data-tbf-locale-option=""
-      data-tbf-popover-close=""
-      role="menuitemradio"
-      aria-checked={isCurrent ? "true" : "false"}
-      value={code}
+    key={code}
+    type="button"
+    className="popover-close popover-item tbf-locale-option"
+    data-tbf-locale-current={isCurrent ? "true" : "false"}
+    data-tbf-locale-endpoint={text(props.endpoint, "/ui/lang/set")}
+    data-tbf-locale-option=""
+    data-tbf-popover-close=""
+    role="menuitemradio"
+    aria-checked={isCurrent ? "true" : "false"}
+    value={code}
     >
-      {localeOptionIcon(entry)}
-      <span>{localizedLocaleLabel(entry, current)}</span>
+    {localeOptionIcon(entry)}
+    <span>{localizedLocaleLabel(entry, current)}</span>
     </button>
   );
 }
@@ -146,18 +146,18 @@ function localeOptionButton(
 function localePopover(popoverId: string, props: LocaleSwitcherProps) {
   const current = normalizedLang(props.lang);
   const locales = Array.isArray(props.locales) && props.locales.length
-    ? props.locales
-    : DEFAULT_LOCALES;
+  ? props.locales
+  : DEFAULT_LOCALES;
   return (
     <div
-      className="popover popover-portaled tbf-locale-switch-popover"
-      id={popoverId}
-      aria-hidden="true"
-      data-tbf-popover=""
-      inert={true}
-      role="menu"
+    className="popover popover-portaled tbf-locale-switch-popover"
+    id={popoverId}
+    aria-hidden="true"
+    data-tbf-popover=""
+    inert={true}
+    role="menu"
     >
-      {locales.map((entry) => localeOptionButton(entry, current, props))}
+    {locales.map((entry) => localeOptionButton(entry, current, props))}
     </div>
   );
 }
@@ -167,8 +167,8 @@ function locale_switcher(props: LocaleSwitcherProps = {}) {
   const popoverId = `${triggerId}_menu`;
   return (
     <>
-      {localeTrigger(triggerId, popoverId, props)}
-      {localePopover(popoverId, props)}
+    {localeTrigger(triggerId, popoverId, props)}
+    {localePopover(popoverId, props)}
     </>
   );
 }

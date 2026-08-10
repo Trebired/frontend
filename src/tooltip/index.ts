@@ -1,4 +1,4 @@
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { clampNumber, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 
 const TOOLTIP_BASE_Z_INDEX = 1100;
@@ -30,8 +30,8 @@ function readTooltipText(trigger: HTMLElement | null) {
   const configured = String(trigger.getAttribute("data-tbf-tooltip") || "").trim();
   const title = String(trigger.getAttribute("title") || "").trim();
   const status = trigger.hasAttribute("data-tbf-status-icon")
-    ? String(trigger.getAttribute("aria-label") || "").trim()
-    : "";
+  ? String(trigger.getAttribute("aria-label") || "").trim()
+  : "";
   const text = configured || title || status;
   if (title) trigger.removeAttribute("title");
   if (text && !trigger.getAttribute("aria-description")) {
@@ -89,10 +89,6 @@ function measureLayer(layer: HTMLElement) {
   return rect;
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
-}
-
 function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
   const anchor = trigger.getBoundingClientRect();
   const tip = measureLayer(layer);
@@ -102,9 +98,9 @@ function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
   const vh = document.documentElement.clientHeight || window.innerHeight;
   const fitsTop = anchor.top - gap - tip.height >= gutter;
   const top = fitsTop
-    ? anchor.top - gap - tip.height
-    : Math.min(anchor.bottom + gap, vh - tip.height - gutter);
-  const left = clamp(anchor.left + anchor.width / 2 - tip.width / 2, gutter, vw - tip.width - gutter);
+  ? anchor.top - gap - tip.height
+  : Math.min(anchor.bottom + gap, vh - tip.height - gutter);
+  const left = clampNumber(anchor.left + anchor.width / 2 - tip.width / 2, gutter, vw - tip.width - gutter);
   layer.style.top = `${Math.max(gutter, top)}px`;
   layer.style.left = `${left}px`;
   layer.setAttribute("data-tbf-placement", fitsTop ? "top" : "bottom");
@@ -139,19 +135,17 @@ function hideTooltip() {
 function bindTooltip(trigger: HTMLElement | null) {
   if (!(trigger instanceof HTMLElement) || tooltipCleanups.has(trigger)) return false;
   readTooltipText(trigger);
-  const onMouseEnter = () => showTooltip(trigger);
-  const onMouseLeave = () => hideTooltip();
-  const onFocusIn = () => showTooltip(trigger);
-  const onFocusOut = () => hideTooltip();
-  trigger.addEventListener("mouseenter", onMouseEnter);
-  trigger.addEventListener("mouseleave", onMouseLeave);
-  trigger.addEventListener("focusin", onFocusIn);
-  trigger.addEventListener("focusout", onFocusOut);
+  const showBoundTooltip = () => showTooltip(trigger);
+  const hideBoundTooltip = () => hideTooltip();
+  trigger.addEventListener("mouseenter", showBoundTooltip);
+  trigger.addEventListener("mouseleave", hideBoundTooltip);
+  trigger.addEventListener("focusin", showBoundTooltip);
+  trigger.addEventListener("focusout", hideBoundTooltip);
   tooltipCleanups.set(trigger, () => {
-    trigger.removeEventListener("mouseenter", onMouseEnter);
-    trigger.removeEventListener("mouseleave", onMouseLeave);
-    trigger.removeEventListener("focusin", onFocusIn);
-    trigger.removeEventListener("focusout", onFocusOut);
+      trigger.removeEventListener("mouseenter", showBoundTooltip);
+      trigger.removeEventListener("mouseleave", hideBoundTooltip);
+      trigger.removeEventListener("focusin", showBoundTooltip);
+      trigger.removeEventListener("focusout", hideBoundTooltip);
   });
   installTooltipListeners();
   return true;
@@ -165,12 +159,12 @@ function installTooltipListeners() {
   if (listenersInstalled || typeof document === "undefined") return;
   listenersInstalled = true;
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") hideTooltip();
+      if (event.key === "Escape") hideTooltip();
   });
   window.addEventListener("resize", () => {
-    if (tooltipState.shown && tooltipState.openTrigger && tooltipState.layer) {
-      placeTooltip(tooltipState.openTrigger, tooltipState.layer);
-    }
+      if (tooltipState.shown && tooltipState.openTrigger && tooltipState.layer) {
+        placeTooltip(tooltipState.openTrigger, tooltipState.layer);
+      }
   });
 }
 

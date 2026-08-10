@@ -28,8 +28,8 @@ export function readLogsBootData(fallback: Record<string, unknown> = {}) {
   if (typeof document === "undefined") return fallback;
   const element =
   document.querySelector("[data-logs-boot]") ||
-  document.getElementById("__TBF_LOGS_VIEW_DATA__") ||
-  document.getElementById("__DEPLOYMENT_VIEW_DATA__");
+    document.getElementById("__TBF_LOGS_VIEW_DATA__") ||
+    document.getElementById("__DEPLOYMENT_VIEW_DATA__");
   return readJsonElement(element, fallback);
 }
 

@@ -1,6 +1,27 @@
 type FrontendIconPack = "remixicon" | "simple-icons";
 
-type FrontendSystemKey = "actions" | "code" | "editor" | "explorer" | "flash" | "fullscreen" | "graph" | "icons" | "inputs" | "layer" | "layout" | "language" | "logs" | "modal" | "popover" | "primitives" | "progress" | "sidebar" | "surface" | "theme" | "tooltip";
+type FrontendSystemKey =
+| "actions"
+| "code"
+| "editor"
+| "explorer"
+| "flash"
+| "fullscreen"
+| "graph"
+| "icons"
+| "inputs"
+| "layer"
+| "layout"
+| "language"
+| "logs"
+| "modal"
+| "popover"
+| "primitives"
+| "progress"
+| "sidebar"
+| "surface"
+| "theme"
+| "tooltip";
 
 type FrontendThemeTokens = Record<string, unknown>;
 
@@ -96,6 +117,7 @@ type FrontendPrimitiveComponentsConfig = {
   tabs?: FrontendComponentTokens;
   textLink?: FrontendComponentTokens;
   toggle?: FrontendComponentTokens;
+  upload?: FrontendComponentTokens;
 };
 
 type FrontendSurfaceComponentsConfig = {

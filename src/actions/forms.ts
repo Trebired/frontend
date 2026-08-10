@@ -4,6 +4,7 @@ import {
   queryAll,
   readDataJson,
   readElementJson,
+  readTextAttribute as submitterAttr,
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
@@ -19,15 +20,11 @@ import type {
 
 const ACTION_FORM_SELECTOR = "form[data-tbf-action]";
 const ACTION_CONFIG_SELECTOR =
-  'script[type="application/json"][data-tbf-action-config]';
+'script[type="application/json"][data-tbf-action-config]';
 const boundForms = new WeakMap<HTMLFormElement, EventListener>();
 
 function submitterFor(event?: SubmitEvent) {
   return event?.submitter instanceof HTMLElement ? event.submitter : null;
-}
-
-function submitterAttr(submitter: HTMLElement | null, attr: string) {
-  return String(submitter?.getAttribute(attr) || "").trim();
 }
 
 function readActionFormConfig(form: HTMLFormElement) {
@@ -50,14 +47,14 @@ function resolveSubmitAction(form: HTMLFormElement, submitter: HTMLElement | nul
 function resolveSubmitMethod(form: HTMLFormElement, submitter: HTMLElement | null) {
   return (
     submitterAttr(submitter, "formmethod") ||
-    String(form.getAttribute("method") || form.method || "post")
+      String(form.getAttribute("method") || form.method || "post")
   ).toUpperCase();
 }
 
 function resolveSubmitEnctype(form: HTMLFormElement, submitter: HTMLElement | null) {
   return (
     submitterAttr(submitter, "formenctype") ||
-    String(form.getAttribute("enctype") || form.enctype || "")
+      String(form.getAttribute("enctype") || form.enctype || "")
   ).toLowerCase();
 }
 
@@ -65,9 +62,9 @@ function formDataFromSubmit(form: HTMLFormElement, submitter: HTMLElement | null
   const data = new FormData(form);
   if (
     submitter instanceof HTMLButtonElement &&
-    submitter.name &&
-    submitter.value &&
-    !data.has(submitter.name)
+      submitter.name &&
+      submitter.value &&
+      !data.has(submitter.name)
   ) {
     data.append(submitter.name, submitter.value);
   }
@@ -82,8 +79,8 @@ function createSubmitBody(
   const data = formDataFromSubmit(form, submitter);
   if (config.body === "json") return formDataFlatRecord(data);
   return resolveSubmitEnctype(form, submitter) === "multipart/form-data"
-    ? data
-    : formDataSearchParams(data);
+  ? data
+  : formDataSearchParams(data);
 }
 
 function dispatchActionFormEvent(
@@ -93,9 +90,9 @@ function dispatchActionFormEvent(
   cancelable = false,
 ) {
   const event = new CustomEvent(name, {
-    bubbles: true,
-    cancelable,
-    detail: { ...detail, form },
+      bubbles: true,
+      cancelable,
+      detail: { ...detail, form },
   });
   form.dispatchEvent(event);
   return event;
@@ -146,12 +143,12 @@ function formUi(options: SubmitActionFormOptions, config: Record<string, unknown
   return {
     ...(options.ui || {}),
     flashErrorOnly:
-      options.ui?.flashErrorOnly === true ||
+    options.ui?.flashErrorOnly === true ||
       options.ui?.flash_error_only === true ||
       config.flashErrorOnly === true ||
       config.flash_error_only === true,
     ignoreResponseAction:
-      options.ui?.ignoreResponseAction === true ||
+    options.ui?.ignoreResponseAction === true ||
       options.ignoreResponseAction === true ||
       config.ignoreResponseAction === true,
     silent: options.ui?.silent === true || config.silent === true,
@@ -184,17 +181,17 @@ async function submitActionForm(
     dispatchActionFormEvent(form, "tbf:action-submit", { submitter });
     const custom = await resolveCustomActionFormRequest(form, submitter, options);
     const json = custom.handled
-      ? custom.json
-      : await handleJson(
-          resolveSubmitAction(form, submitter),
-          {
-            adapters: options.adapters,
-            body: createSubmitBody(form, submitter, config),
-            method: resolveSubmitMethod(form, submitter),
-            ui,
-          },
-          ui,
-        );
+    ? custom.json
+    : await handleJson(
+      resolveSubmitAction(form, submitter),
+      {
+        adapters: options.adapters,
+        body: createSubmitBody(form, submitter, config),
+        method: resolveSubmitMethod(form, submitter),
+        ui,
+      },
+      ui,
+    );
     const ok = actionResponseOk(json);
     if (ok) {
       maybeFireActionSuccessConfetti(
@@ -214,10 +211,10 @@ async function submitActionForm(
   } catch (error) {
     options.onComplete?.(false, { ok: false });
     dispatchActionFormEvent(form, "tbf:action-complete", {
-      error,
-      json: null,
-      ok: false,
-      submitter,
+        error,
+        json: null,
+        ok: false,
+        submitter,
     });
     throw error;
   } finally {
@@ -231,7 +228,7 @@ function bindActionForm(
 ) {
   if (!(form instanceof HTMLFormElement) || boundForms.has(form)) return false;
   const handler = ((event: SubmitEvent) => {
-    void submitActionForm(form, event, options);
+      void submitActionForm(form, event, options);
   }) as EventListener;
   form.addEventListener("submit", handler, true);
   boundForms.set(form, handler);
@@ -240,7 +237,7 @@ function bindActionForm(
 
 function bindActionForms(root: BindRoot = document, options: SubmitActionFormOptions = {}) {
   queryAll<HTMLFormElement>(root, ACTION_FORM_SELECTOR).forEach((form) => {
-    bindActionForm(form, options);
+      bindActionForm(form, options);
   });
 }
 

@@ -54,9 +54,9 @@ function flattenStaticRows(nodesInput: any, initialOpenState: any, level = 1): a
   const rows: any[] = [];
   const nodes = Array.isArray(nodesInput) ? nodesInput : [];
   nodes.forEach((node) => {
-    const isOpen = isStaticNodeOpen(node, initialOpenState);
-    rows.push({ isOpen, level, node });
-    if (isOpen) rows.push(...flattenStaticRows(node?.children, initialOpenState, level + 1));
+      const isOpen = isStaticNodeOpen(node, initialOpenState);
+      rows.push({ isOpen, level, node });
+      if (isOpen) rows.push(...flattenStaticRows(node?.children, initialOpenState, level + 1));
   });
   return rows;
 }
@@ -77,8 +77,8 @@ function staticRowModel(row: any, highlightedPaths: Set<string>) {
 
 function staticRowBackground(model: ReturnType<typeof staticRowModel>) {
   return model.highlighted
-    ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
-    : "transparent";
+  ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
+  : "transparent";
 }
 
 function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
@@ -86,45 +86,45 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
   const rowLevel = Math.max(1, Number(props.row?.level) || 1);
   return (
     <div
-      role="treeitem"
-      aria-level={rowLevel}
-      aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
-      className={primitiveInlineRowClassName({ verticalCenter: true })}
-      style={{
+    role="treeitem"
+    aria-level={rowLevel}
+    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
+    className={primitiveInlineRowClassName({ verticalCenter: true })}
+    style={{
         borderBottom: "var(--border-width) solid var(--border-surface-1)",
         height: FILE_TREE_ROW_HEIGHT,
         minHeight: FILE_TREE_ROW_HEIGHT,
-      }}
+    }}
     >
-      <button
-        type="button"
-        className={primitiveInlineRowClassName({
+    <button
+    type="button"
+    className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
-            className: "width-max text-left",
-            muted: model.kind !== "dir",
+              className: "width-max text-left",
+              muted: model.kind !== "dir",
           }),
           gap: "xs",
           verticalCenter: true,
-        })}
-        style={{
-          background: staticRowBackground(model),
-          border: "var(--border-width) solid transparent",
-          borderLeft: `calc(var(--border-width) * 2) solid ${fileTreeLeftBorderColor(model)}`,
-          borderRadius: 0,
-          cursor: "default",
-          minHeight: 0,
-          padding: "5px 10px",
-          paddingLeft: 10 + (rowLevel - 1) * FILE_TREE_INDENT,
-          width: "100%",
-        }}
-        aria-disabled="true"
-        tabIndex={-1}
-      >
-        <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />
-        <FileTreeIcon highlighted={model.highlighted} iconSpec={model.iconSpec} />
-        <FileTreeName name={model.name} />
-        <FileTreeCount fileCount={model.fileCount} kind={model.kind} />
-      </button>
+    })}
+    style={{
+        background: staticRowBackground(model),
+        border: "var(--border-width) solid transparent",
+        borderLeft: `calc(var(--border-width) * 2) solid ${fileTreeLeftBorderColor(model)}`,
+        borderRadius: 0,
+        cursor: "default",
+        minHeight: 0,
+        padding: "5px 10px",
+        paddingLeft: 10 + (rowLevel - 1) * FILE_TREE_INDENT,
+        width: "100%",
+    }}
+    aria-disabled="true"
+    tabIndex={-1}
+    >
+    <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />
+    <FileTreeIcon highlighted={model.highlighted} iconSpec={model.iconSpec} />
+    <FileTreeName name={model.name} />
+    <FileTreeCount fileCount={model.fileCount} kind={model.kind} />
+    </button>
     </div>
   );
 }
@@ -150,9 +150,9 @@ function renderStaticFileTreeRow(row: any, index: number, options: StaticFileTre
   const key = nodePath(row?.node) || text(row?.node?.id) || `${row.level}:${index}`;
   return (
     <StaticFileTreeRow
-      key={key}
-      row={row}
-      highlightedPaths={options.highlightedPaths || new Set()}
+    key={key}
+    row={row}
+    highlightedPaths={options.highlightedPaths || new Set()}
     />
   );
 }
@@ -169,21 +169,21 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
   if (!rows.length) {
     return (
       <FileTreeShell {...shellProps}>
-        <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
+      <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
       </FileTreeShell>
     );
   }
   return (
     <FileTreeShell {...shellProps}>
-      {createElement(
+    {createElement(
         "scroll-overflow",
         { style: { display: "contents" } },
         <div className="scroll scroll-min tbf-file-tree-scroll" style={scrollStyleFor(options, rows)}>
-          <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
-            {rows.map((row, index) => renderStaticFileTreeRow(row, index, options))}
-          </div>
+        <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
+        {rows.map((row, index) => renderStaticFileTreeRow(row, index, options))}
+        </div>
         </div>,
-      )}
+    )}
     </FileTreeShell>
   );
 }

@@ -19,8 +19,8 @@ async function mountReactRoot(
     return existing;
   }
   const created = options.hydrate === true
-    ? client.hydrateRoot(root, node as any)
-    : client.createRoot(root);
+  ? client.hydrateRoot(root, node as any)
+  : client.createRoot(root);
   if (options.hydrate !== true) created.render(node as any);
   roots.set(root, created);
   return created;
@@ -39,23 +39,23 @@ function unmountReactRoot(root: Element) {
 }
 
 async function mountLiveIsland(options: {
-  component: (props: any) => ReactNode;
-  initialState?: unknown;
-  root: Element | string | null;
-  stateId?: string;
+    component: (props: any) => ReactNode;
+    initialState?: unknown;
+    root: Element | string | null;
+    stateId?: string;
 }) {
   const target =
-    typeof options.root === "string"
-      ? document.getElementById(options.root.replace(/^#/, ""))
-      : options.root;
+  typeof options.root === "string"
+  ? document.getElementById(options.root.replace(/^#/, ""))
+  : options.root;
   if (!(target instanceof Element)) return null;
   const state = options.stateId
-    ? readJsonScript(options.stateId, {})
-    : options.initialState || {};
+  ? readJsonScript(options.stateId, {})
+  : options.initialState || {};
   const react = await import("react");
   const node = react.createElement(options.component, { initialState: state });
   const root = await mountReactRoot(target, node, {
-    hydrate: target.childNodes.length > 0,
+      hydrate: target.childNodes.length > 0,
   });
   target.setAttribute("data-tbf-live-hydrated", "true");
   return root;
@@ -92,8 +92,8 @@ export * from "#26uyycr73i6f";
 export * from "#4woymc9xhupl";
 export * from "#hu7oo5uup2sj";
 export * from "#e5asmvaq7yj0";
-export * from "#lgfsz3v3hfkp";
-export * from "#olrstm9sd5s2";
+export * from "#dxackjk2l9fx";
+export * from "#njm93vxresgv";
 export * from "#46orcwui6143";
 
 export { default as checkbox } from "#2ne919slwy5h";

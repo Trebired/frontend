@@ -15,14 +15,14 @@ async function verifyIcons(context) {
 
 function verifyIconParsing(iconRuntime) {
   assert.deepEqual(iconRuntime.parseIconSpec("remixicon:add-line"), {
-    icon: "add-line",
-    pack: "remixicon",
-    spec: "remixicon:add-line",
+      icon: "add-line",
+      pack: "remixicon",
+      spec: "remixicon:add-line",
   });
   assert.deepEqual(iconRuntime.parseIconSpec("simple-icons github"), {
-    icon: "github",
-    pack: "simple-icons",
-    spec: "simple-icons:github",
+      icon: "github",
+      pack: "simple-icons",
+      spec: "simple-icons:github",
   });
 }
 
@@ -34,10 +34,10 @@ function verifyIconServer(iconServer, rootDir) {
   assert.equal(githubSvg.ok, true);
   assert.match(iconServer.resolveIconColor("simple-icons:github", { rootDir }), /^#[0-9a-f]{6}$/iu);
   assert.ok(iconServer.renderIconHtml("remixicon:add-line", {
-    className: "icon md",
-    color: "#123456",
-    label: "Add",
-  }, { rootDir }).includes("--tbf-icon-color: #123456"));
+        className: "icon md",
+        color: "#123456",
+        label: "Add",
+      }, { rootDir }).includes("--tbf-icon-color: #123456"));
   verifyIconMiddleware(iconServer, rootDir);
 }
 
@@ -49,7 +49,7 @@ function verifyIconMiddleware(iconServer, rootDir) {
   iconServer.createIconMiddleware({ rootDir })(
     { query: { spec: "remixicon:add-line" } },
     responseCapture((body) => {
-      sent = body;
+        sent = body;
     }),
   );
   assert.ok(sent.includes("<svg"));
@@ -57,7 +57,7 @@ function verifyIconMiddleware(iconServer, rootDir) {
 
 function responseCapture(send) {
   return {
-    set() {},
+    set: ignoreResponseHeader,
     status(value) {
       assert.equal(value, 200);
       return this;
@@ -69,19 +69,25 @@ function responseCapture(send) {
   };
 }
 
+function ignoreResponseHeader(_name, _value) {
+  void _name;
+  void _value;
+  return undefined;
+}
+
 async function verifyIconRuntime(iconRuntime) {
   let fetchCount = 0;
   globalThis.fetch = async () => {
     fetchCount += 1;
     return new Response('<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>', {
-      headers: { "Content-Type": "image/svg+xml" },
+        headers: { "Content-Type": "image/svg+xml" },
     });
   };
   const host = document.createElement("i");
   await iconRuntime.renderIconElement(host, "remixicon:add-line", {
-    className: "component-icon",
-    color: "red",
-    endpoint: "/icons",
+      className: "component-icon",
+      color: "red",
+      endpoint: "/icons",
   });
   assert.equal(host.querySelector("svg") !== null, true);
   assert.equal(host.classList.contains("component-icon"), true);
@@ -96,7 +102,7 @@ async function verifyIconRuntime(iconRuntime) {
 function verifyIconReact(iconReact, iconServer, rootDir) {
   const renderer = iconServer.createServerIconRenderer({}, { rootDir });
   const html = iconServer.withIconServerRenderer(renderer, () => {
-    return renderToStaticMarkup(h(iconReact.Icon, { label: "GitHub", spec: "simple-icons:github" }));
+      return renderToStaticMarkup(h(iconReact.Icon, { label: "GitHub", spec: "simple-icons:github" }));
   });
   assert.ok(html.includes("aria-label=\"GitHub\""));
   assert.ok(html.includes("<svg"));

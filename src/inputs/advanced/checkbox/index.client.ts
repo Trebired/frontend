@@ -1,4 +1,4 @@
-import { isInUnhydratedIsland } from "#dqy2d22qyujv";
+import { isInUnhydratedIsland, noop as defineCheckboxOptionElement } from "#dqy2d22qyujv";
 import {
   dispatchInputChange,
   isInteractiveTarget,
@@ -202,8 +202,6 @@ function bindCheckboxOptions(scope?: Element | Document | null) {
   const root = scope && "querySelectorAll" in scope ? scope : document;
   root.querySelectorAll(CHECKBOX_OPTION_SELECTOR).forEach(bindCheckboxOption);
 }
-
-function defineCheckboxOptionElement() {}
 
 let booted = false;
 

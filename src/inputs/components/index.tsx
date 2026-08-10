@@ -22,45 +22,45 @@ const directoryPickerAttributes = {
   webkitdirectory: "",
 } as Record<string, string>;
 const uploadOptionKeys = new Set([
-  "accept",
-  "aspect",
-  "clearLabel",
-  "crop",
-  "cropFailedMessage",
-  "cropImageOnlyDescription",
-  "cropImageOnlyMessage",
-  "directory",
-  "directoryOptionLabel",
-  "drop",
-  "dropDirectory",
-  "emptyLabel",
-  "emptyToggle",
-  "fileOptionLabel",
-  "formatNotAllowedDescription",
-  "formatNotAllowedMessage",
-  "formats",
-  "helperText",
-  "id",
-  "mixedPicker",
-  "modalDescription",
-  "modalTitle",
-  "multiple",
-  "name",
-  "preview",
-  "previewAlt",
-  "previewShape",
-  "previewUrl",
-  "skipDirs",
-  "triggerLabel",
-  "useImageLabel",
+    "accept",
+    "aspect",
+    "clearLabel",
+    "crop",
+    "cropFailedMessage",
+    "cropImageOnlyDescription",
+    "cropImageOnlyMessage",
+    "directory",
+    "directoryOptionLabel",
+    "drop",
+    "dropDirectory",
+    "emptyLabel",
+    "emptyToggle",
+    "fileOptionLabel",
+    "formatNotAllowedDescription",
+    "formatNotAllowedMessage",
+    "formats",
+    "helperText",
+    "id",
+    "mixedPicker",
+    "modalDescription",
+    "modalTitle",
+    "multiple",
+    "name",
+    "preview",
+    "previewAlt",
+    "previewShape",
+    "previewUrl",
+    "skipDirs",
+    "triggerLabel",
+    "useImageLabel",
 ]);
 
 function splitUploadFieldProps(props: UploadFieldProps) {
   const options: Record<string, unknown> = {};
   const rootProps: Record<string, unknown> = {};
   Object.entries(props).forEach(([key, value]) => {
-    if (uploadOptionKeys.has(key)) options[key] = value;
-    else rootProps[key] = value;
+      if (uploadOptionKeys.has(key)) options[key] = value;
+      else rootProps[key] = value;
   });
   return {
     options: options as UploadFieldOptions,
@@ -74,17 +74,17 @@ function UploadField(props: UploadFieldProps) {
   const model = uploadModel(options);
   return (
     <div
-      {...rest}
-      className={classNames("tbf-upload", className)}
-      data-tbf-upload=""
-      data-tbf-upload-drop={dataBool(model.allowDrop)}
-      data-tbf-upload-empty={model.emptyLabel}
-      id={model.id}
+    {...rest}
+    className={classNames("tbf-upload", className)}
+    data-tbf-upload=""
+    data-tbf-upload-drop={dataBool(model.allowDrop)}
+    data-tbf-upload-empty={model.emptyLabel}
+    id={model.id}
     >
-      <UploadConfigScript model={model} />
-      <UploadNativeInputs model={model} />
-      <UploadSurface model={model}>{children}</UploadSurface>
-      <UploadEmptyToggle model={model} />
+    <UploadConfigScript model={model} />
+    <UploadNativeInputs model={model} />
+    <UploadSurface model={model}>{children}</UploadSurface>
+    <UploadEmptyToggle model={model} />
     </div>
   );
 }
@@ -92,12 +92,12 @@ function UploadField(props: UploadFieldProps) {
 function UploadConfigScript(props: { model: ReturnType<typeof uploadModel> }) {
   return (
     <script
-      data-tbf-upload-config=""
-      hidden
-      type="application/json"
-      dangerouslySetInnerHTML={{
+    data-tbf-upload-config=""
+    hidden
+    type="application/json"
+    dangerouslySetInnerHTML={{
         __html: jsonScript(uploadConfigPayload(props.model)),
-      }}
+    }}
     />
   );
 }
@@ -106,27 +106,27 @@ function UploadNativeInputs(props: { model: ReturnType<typeof uploadModel> }) {
   const { model } = props;
   return (
     <>
-      <input
+    <input
+    className="tbf-upload__input"
+    data-tbf-upload-slot="native-file"
+    id={`${model.id}_input`}
+    type="file"
+    name={model.name}
+    multiple={model.allowMultiple}
+    accept={model.accept || undefined}
+    />
+    {model.allowDirectory || model.allowMixedPicker ? (
+        <input
         className="tbf-upload__input"
-        data-tbf-upload-slot="native-file"
-        id={`${model.id}_input`}
+        data-tbf-upload-slot="native-directory"
+        id={`${model.id}_directory`}
         type="file"
         name={model.name}
-        multiple={model.allowMultiple}
-        accept={model.accept || undefined}
-      />
-      {model.allowDirectory || model.allowMixedPicker ? (
-        <input
-          className="tbf-upload__input"
-          data-tbf-upload-slot="native-directory"
-          id={`${model.id}_directory`}
-          type="file"
-          name={model.name}
-          multiple={true}
-          {...directoryPickerAttributes}
+        multiple={true}
+        {...directoryPickerAttributes}
         />
       ) : null}
-      {model.name && model.crop ? (
+    {model.name && model.crop ? (
         <input type="hidden" name={`${model.name}_crop`} value="" data-tbf-upload-slot="crop-field" />
       ) : null}
     </>
@@ -137,11 +137,11 @@ function UploadSurface(props: { children?: ReactNode; model: ReturnType<typeof u
   const { children, model } = props;
   return (
     <div className="tbf-upload__surface" data-tbf-upload-slot="shell">
-      <UploadPreview model={model} />
-      <div className="tbf-upload__content">
-        <UploadButtons model={model} />
-        <UploadMeta model={model}>{children}</UploadMeta>
-      </div>
+    <UploadPreview model={model} />
+    <div className="tbf-upload__content">
+    <UploadButtons model={model} />
+    <UploadMeta model={model}>{children}</UploadMeta>
+    </div>
     </div>
   );
 }
@@ -151,25 +151,25 @@ function UploadPreview(props: { model: ReturnType<typeof uploadModel> }) {
   if (!model.previewEnabled) return null;
   return (
     <div
-      className="tbf-upload__preview"
-      data-tbf-upload-preview-shape={model.previewShape}
-      data-tbf-upload-slot="preview"
-      hidden={!model.previewUrl}
+    className="tbf-upload__preview"
+    data-tbf-upload-preview-shape={model.previewShape}
+    data-tbf-upload-slot="preview"
+    hidden={!model.previewUrl}
     >
-      <img
-        className="tbf-upload__preview-image"
-        data-tbf-upload-slot="preview-image"
-        alt={model.previewAlt}
-        src={model.previewUrl || undefined}
-        hidden={!model.previewUrl}
-      />
-      <span
-        className="tbf-upload__preview-empty"
-        data-tbf-upload-slot="preview-empty"
-        hidden={Boolean(model.previewUrl)}
-      >
-        {model.previewEmptyText}
-      </span>
+    <img
+    className="tbf-upload__preview-image"
+    data-tbf-upload-slot="preview-image"
+    alt={model.previewAlt}
+    src={model.previewUrl || undefined}
+    hidden={!model.previewUrl}
+    />
+    <span
+    className="tbf-upload__preview-empty"
+    data-tbf-upload-slot="preview-empty"
+    hidden={Boolean(model.previewUrl)}
+    >
+    {model.previewEmptyText}
+    </span>
     </div>
   );
 }
@@ -178,19 +178,19 @@ function UploadButtons(props: { model: ReturnType<typeof uploadModel> }) {
   const { model } = props;
   return (
     <div className="tbf-upload__actions">
-      {model.allowMixedPicker ? (
+    {model.allowMixedPicker ? (
         <>
-          <UploadButton slot="file-trigger">{model.fileOptionLabel}</UploadButton>
-          <UploadButton slot="directory-trigger">{model.directoryOptionLabel}</UploadButton>
+        <UploadButton slot="file-trigger">{model.fileOptionLabel}</UploadButton>
+        <UploadButton slot="directory-trigger">{model.directoryOptionLabel}</UploadButton>
         </>
       ) : (
         <UploadButton slot={model.allowDirectory ? "directory-trigger" : "trigger"}>
-          {model.triggerLabel}
+        {model.triggerLabel}
         </UploadButton>
-      )}
-      <UploadButton slot="clear" hidden={!model.canClearCurrentPreview}>
-        {model.clearLabel}
-      </UploadButton>
+    )}
+    <UploadButton slot="clear" hidden={!model.canClearCurrentPreview}>
+    {model.clearLabel}
+    </UploadButton>
     </div>
   );
 }
@@ -199,12 +199,12 @@ function UploadButton(props: ButtonHTMLAttributes<HTMLButtonElement> & { slot: s
   const { children, className, slot, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-upload__button", className)}
-      data-tbf-upload-slot={slot}
-      type={type}
+    {...rest}
+    className={classNames("btn", className)}
+    data-tbf-upload-slot={slot}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -213,14 +213,14 @@ function UploadMeta(props: { children?: ReactNode; model: ReturnType<typeof uplo
   const { children, model } = props;
   return (
     <div className="tbf-upload__meta">
-      <span className="tbf-upload__filename" data-tbf-upload-slot="filename">
-        {model.emptyLabel}
-      </span>
-      {model.dropHint ? <span className="tbf-upload__hint">{model.dropHint}</span> : null}
-      {model.helperText ? <span className="tbf-upload__hint">{model.helperText}</span> : null}
-      {model.formatsText ? <span className="tbf-upload__hint">{model.formatsText}</span> : null}
-      {children}
-      <ul className="tbf-upload__list" data-tbf-upload-slot="list" />
+    <span className="tbf-upload__filename" data-tbf-upload-slot="filename">
+    {model.emptyLabel}
+    </span>
+    {model.dropHint ? <span className="tbf-upload__hint">{model.dropHint}</span> : null}
+    {model.helperText ? <span className="tbf-upload__hint">{model.helperText}</span> : null}
+    {model.formatsText ? <span className="tbf-upload__hint">{model.formatsText}</span> : null}
+    {children}
+    <ul className="tbf-upload__list" data-tbf-upload-slot="list" />
     </div>
   );
 }
@@ -230,10 +230,10 @@ function UploadEmptyToggle(props: { model: ReturnType<typeof uploadModel> }) {
   if (!toggle?.name) return null;
   return (
     <input
-      type="hidden"
-      name={toggle.name}
-      value={toggle.checked === true ? String(toggle.value || "1") : "0"}
-      data-tbf-upload-slot="empty-toggle"
+    type="hidden"
+    name={toggle.name}
+    value={toggle.checked === true ? String(toggle.value || "1") : "0"}
+    data-tbf-upload-slot="empty-toggle"
     />
   );
 }
@@ -242,12 +242,12 @@ function ClearButton(props: ClearButtonProps) {
   const { children = "Clear", className, controls, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-clear={`#${controls.replace(/^#/u, "")}`}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-clear={`#${controls.replace(/^#/u, "")}`}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -256,14 +256,14 @@ function PasswordToggleButton(props: PasswordToggleProps) {
   const { children, className, controls, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-password-toggle=""
-      aria-controls={controls}
-      aria-pressed="false"
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-password-toggle=""
+    aria-controls={controls}
+    aria-pressed="false"
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }

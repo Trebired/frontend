@@ -2,6 +2,7 @@ import { queryAll, readElementJson, type BindRoot } from "#er0dlx1gtbzh";
 import {
   formatDuration,
   formatWrappedCount,
+  parseDateMsOrNull,
   parseCountValue,
 } from "./components/index.js";
 
@@ -16,23 +17,16 @@ type TimeCounterConfig = {
 
 const TIME_COUNTER_SELECTOR = "[data-tbf-time-counter]";
 const TIME_COUNTER_CONFIG_SELECTOR =
-  'script[type="application/json"][data-tbf-time-counter-config]';
+'script[type="application/json"][data-tbf-time-counter-config]';
 const configs = new WeakMap<HTMLElement, TimeCounterConfig>();
 const positiveRemainingCounters = new WeakSet<HTMLElement>();
 const activeCounters = new Set<HTMLElement>();
 let intervalStarted = false;
 let reloadTriggered = false;
 
-function parseDateMsOrNull(value: unknown) {
-  const text = String(value || "").trim();
-  if (!text) return null;
-  const parsed = Date.parse(text);
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
 function timeCounterTarget(host: HTMLElement) {
   const child = Array.from(host.children).find((entry) => {
-    return entry instanceof HTMLElement && entry.tagName.toLowerCase() !== "script";
+      return entry instanceof HTMLElement && entry.tagName.toLowerCase() !== "script";
   });
   return child instanceof HTMLElement ? child : host;
 }
@@ -61,8 +55,8 @@ function renderRemaining(el: HTMLElement, config: TimeCounterConfig) {
   }
   if (
     positiveRemainingCounters.has(el) &&
-    config.reloadOnZero === true &&
-    !reloadTriggered
+      config.reloadOnZero === true &&
+      !reloadTriggered
   ) {
     reloadTriggered = true;
     window.location.reload();
@@ -90,11 +84,11 @@ function refreshTimeCounter(el: HTMLElement | null) {
 
 function tickActiveCounters() {
   activeCounters.forEach((el) => {
-    if (!el.isConnected) {
-      activeCounters.delete(el);
-      return;
-    }
-    refreshTimeCounter(el);
+      if (!el.isConnected) {
+        activeCounters.delete(el);
+        return;
+      }
+      refreshTimeCounter(el);
   });
 }
 
@@ -133,7 +127,7 @@ function bindTimeCounter(host: HTMLElement | null) {
 
 function bindTimeCounters(root: BindRoot = document) {
   queryAll<HTMLElement>(root, TIME_COUNTER_SELECTOR).forEach((host) => {
-    bindTimeCounter(host);
+      bindTimeCounter(host);
   });
 }
 

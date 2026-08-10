@@ -79,7 +79,7 @@ function bindLayoutRoot(root: HTMLElement | null, options: LayoutRuntimeOptions 
 
 function bindLayouts(root: BindRoot = document, options: LayoutRuntimeOptions = {}) {
   queryAll<HTMLElement>(root, LAYOUT_ROOT_SELECTOR).forEach((layoutRoot) => {
-    bindLayoutRoot(layoutRoot, options);
+      bindLayoutRoot(layoutRoot, options);
   });
   bindHeaders(root, options.header || {});
   bindBreadcrumbs(root);
@@ -99,11 +99,11 @@ function ensureLayoutPortalRoot() {
 
 function createLayoutBootScript(state: Partial<LayoutBodyState> = {}) {
   const payload = JSON.stringify({
-    hasHeader: state.hasHeader === true,
-    hasLeftSidebar: state.hasLeftSidebar === true,
-    hasMobileBottomBar: state.hasMobileBottomBar === true,
-    hasRightSidebar: state.hasRightSidebar === true,
-    hasSecondaryHeader: state.hasSecondaryHeader === true,
+      hasHeader: state.hasHeader === true,
+      hasLeftSidebar: state.hasLeftSidebar === true,
+      hasMobileBottomBar: state.hasMobileBottomBar === true,
+      hasRightSidebar: state.hasRightSidebar === true,
+      hasSecondaryHeader: state.hasSecondaryHeader === true,
   }).replace(/</gu, "\\u003c");
   return [
     "(function(){try{",

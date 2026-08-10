@@ -106,31 +106,31 @@ function bindLoaderScript(
     return;
   }
   script.addEventListener("load", () => {
-    script.setAttribute("data-loaded", "1");
-    resolve();
-  }, { once: true });
+      script.setAttribute("data-loaded", "1");
+      resolve();
+    }, { once: true });
   script.addEventListener("error", () => {
-    reject(new Error("monaco-loader-failed"));
-  }, { once: true });
+      reject(new Error("monaco-loader-failed"));
+    }, { once: true });
 }
 
 function ensureLoaderScript() {
   return new Promise<void>((resolve, reject) => {
-    if (existingMonacoLoaderReady()) {
-      resolve();
-      return;
-    }
-    const existing = document.getElementById(DEFAULT_LOADER_SCRIPT_ID);
-    if (existing instanceof HTMLScriptElement) {
-      bindLoaderScript(existing, resolve, reject);
-      return;
-    }
-    const script = document.createElement("script");
-    script.async = true;
-    script.id = DEFAULT_LOADER_SCRIPT_ID;
-    script.src = DEFAULT_LOADER_SRC;
-    bindLoaderScript(script, resolve, reject);
-    document.head.appendChild(script);
+      if (existingMonacoLoaderReady()) {
+        resolve();
+        return;
+      }
+      const existing = document.getElementById(DEFAULT_LOADER_SCRIPT_ID);
+      if (existing instanceof HTMLScriptElement) {
+        bindLoaderScript(existing, resolve, reject);
+        return;
+      }
+      const script = document.createElement("script");
+      script.async = true;
+      script.id = DEFAULT_LOADER_SCRIPT_ID;
+      script.src = DEFAULT_LOADER_SRC;
+      bindLoaderScript(script, resolve, reject);
+      document.head.appendChild(script);
   });
 }
 
@@ -144,19 +144,19 @@ function loadMonacoMain() {
   const root = window as any;
   if (root.monaco?.editor) return configureMonaco(root.monaco);
   return new Promise((resolve, reject) => {
-    const req = root.require;
-    if (typeof req !== "function" || typeof req.config !== "function") {
-      reject(new Error("monaco-amd-unavailable"));
-      return;
-    }
-    req.config({ paths: { vs: DEFAULT_VS_PATH } });
-    req(["vs/editor/editor.main"], () => {
-      if (!root.monaco?.editor) {
-        reject(new Error("monaco-main-unavailable"));
+      const req = root.require;
+      if (typeof req !== "function" || typeof req.config !== "function") {
+        reject(new Error("monaco-amd-unavailable"));
         return;
       }
-      resolve(configureMonaco(root.monaco));
-    }, reject);
+      req.config({ paths: { vs: DEFAULT_VS_PATH } });
+      req(["vs/editor/editor.main"], () => {
+          if (!root.monaco?.editor) {
+            reject(new Error("monaco-main-unavailable"));
+            return;
+          }
+          resolve(configureMonaco(root.monaco));
+        }, reject);
   });
 }
 

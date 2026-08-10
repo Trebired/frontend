@@ -16,6 +16,7 @@ import {
 } from "#bu1nq95e3k0f";
 import type { IconPack, ParsedIconSpec } from "#bu1nq95e3k0f";
 import type { ServerIconCacheEntry } from "#6o6fqz7svsts";
+
 export { withIconServerRenderer } from "#6o6fqz7svsts";
 
 type IconSvgSuccess = {
@@ -215,7 +216,7 @@ function resolveIconSvg(spec: unknown, options: IconServerOptions = {}): IconSvg
     return failure(parsed, "icon-not-found");
   }
   const svg = normalizeSvgMarkup(source, {
-    preserveSourceColors: shouldPreserveSourceColors(parsed.pack, options),
+      preserveSourceColors: shouldPreserveSourceColors(parsed.pack, options),
   });
   if (!svg) return failure(parsed, "invalid-svg", 500);
   const result: IconSvgSuccess = {
@@ -298,8 +299,8 @@ function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): st
   const color = text(attrs.color);
   if (color) pairs.set("style", `--tbf-icon-color: ${color}; --icon-custom-color: ${color};`);
   return Array.from(pairs.entries())
-    .map(([key, value]) => value === true ? key : `${key}="${escapeHtml(value)}"`)
-    .join(" ");
+  .map(([key, value]) => value === true ? key : `${key}="${escapeHtml(value)}"`)
+  .join(" ");
 }
 
 function renderIconHtml(spec: unknown, attrs: RenderIconHtmlAttrs = {}, options: IconServerOptions = {}): string {
@@ -307,18 +308,18 @@ function renderIconHtml(spec: unknown, attrs: RenderIconHtmlAttrs = {}, options:
   const tag = text(attrs.tag) || "i";
   if (!parsed) return `<${tag} class="tbf-icon icon-glyph" aria-hidden="true"></${tag}>`;
   const svgResult = resolveIconSvg(parsed.spec, {
-    ...options,
-    preserveSourceColors: attrs.preserveSourceColors ?? options.preserveSourceColors,
+      ...options,
+      preserveSourceColors: attrs.preserveSourceColors ?? options.preserveSourceColors,
   });
   const explicitColor = text(attrs.color);
   const brandColor = explicitColor ? "" : resolveIconColor(parsed.spec, options);
   const svg = svgResult.ok
-    ? explicitColor
-      ? applySvgColor(svgResult.svg, explicitColor)
-      : brandColor
-        ? applySvgColor(svgResult.svg, brandColor)
-        : svgResult.svg
-    : "";
+  ? explicitColor
+  ? applySvgColor(svgResult.svg, explicitColor)
+  : brandColor
+  ? applySvgColor(svgResult.svg, brandColor)
+  : svgResult.svg
+  : "";
   return `<${tag} ${renderHostAttrs(attrs, parsed)}>${svg}</${tag}>`;
 }
 

@@ -3,7 +3,7 @@ import { bool, toText } from "./text.js";
 import type { UploadRootConfig } from "./types.js";
 
 const UPLOAD_CONFIG_SELECTOR =
-  'script[type="application/json"][data-tbf-upload-config]';
+'script[type="application/json"][data-tbf-upload-config]';
 
 const DEFAULT_EMPTY_LABEL = "No file selected";
 
@@ -60,8 +60,8 @@ function uploadRootConfig(root: HTMLElement | null) {
 
 function isUploadDropRoot(element: Element | null) {
   return element instanceof HTMLElement
-    ? uploadRootConfig(element).allowDrop === true
-    : false;
+  ? uploadRootConfig(element).allowDrop === true
+  : false;
 }
 
 export {

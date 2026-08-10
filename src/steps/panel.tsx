@@ -22,7 +22,7 @@ type SharedStepsPanelProps = {
 
 function stepsPanelModel(props: SharedStepsPanelProps) {
   const isDisclosure = props.type === "disclosure";
-  const title = stepsLabel(props.lang);
+  const title = defaultStepsPanelLabel(props.lang);
   return {
     attrs:
     props.dataAttrs && typeof props.dataAttrs === "object"
@@ -51,8 +51,8 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
       content: (
         <section
         className={primitiveStackClassName({
-            className: props.className,
-            gap: "sm",
+              className: props.className,
+              gap: "sm",
         })}
         data-steps-panel=""
         data-steps-type={model.isDisclosure ? "disclosure" : "steps"}
@@ -66,13 +66,13 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
         {model.beforeList}
         <div
         className={primitiveStackClassName({
-          className: joinClassNames(
-            "max-height-xl",
-            "scroll",
-            "scroll-min",
-            props.listClassName,
-          ),
-          gap: "xs",
+              className: joinClassNames(
+                "max-height-xl",
+                "scroll",
+                "scroll-min",
+                props.listClassName,
+              ),
+              gap: "xs",
         })}
         data-steps-list=""
         />
@@ -90,7 +90,7 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
 export type { SharedStepsPanelProps };
 export default shared_steps_panel;
 
-function stepsLabel(_lang: string | undefined) {
+function defaultStepsPanelLabel(_lang: string | undefined) {
   return "Steps";
 }
 

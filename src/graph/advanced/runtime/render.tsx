@@ -1,5 +1,6 @@
 import React from "react";
 import { createLocalTranslator, icon } from "#4fte8m1x62rd";
+import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
 import { graphUnitLabel } from "./units.js";
 import { resolveCanvasColor } from "./utils.js";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
@@ -21,10 +22,6 @@ function graphFrameClassName() {
     primitivePaddingClass("xs"),
     GRAPH_FRAME_CHROME_CLASS,
   ].join(" ");
-}
-
-function documentLang() {
-  return typeof document === "undefined" ? undefined : document.documentElement.lang || undefined;
 }
 
 function GraphTitle(props) {
@@ -82,7 +79,7 @@ function GraphHeader(props) {
   );
 }
 
-function GraphCanvas(props) {
+function RuntimeGraphCanvas(props) {
   return React.createElement("canvas", {
       ref: props.canvasRef,
       style: {
@@ -166,7 +163,7 @@ function GraphFrame(props) {
         touchAction: "pan-y pinch-zoom",
       },
     },
-    React.createElement(GraphCanvas, props),
+    React.createElement(RuntimeGraphCanvas, props),
     React.createElement(GraphWarning, props),
     React.createElement(GraphLoader, props),
   );
@@ -185,9 +182,9 @@ function GraphLegendView(props) {
         {
           key: `${String((item && item.label) || "legend")}_${index}`,
           className: primitiveInlineRowClassName({
-            className: primitiveTextClassName({ muted: true, size: "sm" }),
-            fit: true,
-            gap: "xs",
+              className: primitiveTextClassName({ muted: true, size: "sm" }),
+              fit: true,
+              gap: "xs",
           }),
         },
         React.createElement("span", {
@@ -215,8 +212,8 @@ function GraphCardFrame(props) {
     "div",
     {
       className: primitiveStackClassName({
-        className: GRAPH_CARD_ROOT_CLASS,
-        gap: "xs",
+          className: GRAPH_CARD_ROOT_CLASS,
+          gap: "xs",
       }),
       ref: props.rootRef,
       "data-graph-root": props.graphId || "",
@@ -270,8 +267,8 @@ function GraphFrameFallback(props) {
     "div",
     {
       className: primitiveStackClassName({
-        className: GRAPH_CARD_ROOT_CLASS,
-        gap: "xs",
+          className: GRAPH_CARD_ROOT_CLASS,
+          gap: "xs",
       }),
     },
     React.createElement(GraphHeader, props),

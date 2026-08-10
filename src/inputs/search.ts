@@ -20,13 +20,13 @@ function applySearch(root: HTMLElement, query: string): SearchState {
   const normalized = query.trim().toLowerCase();
   let count = 0;
   queryAll<HTMLElement>(root, SEARCH_ITEM_SELECTOR).forEach((item) => {
-    const visible = !normalized || itemText(item).includes(normalized);
-    item.hidden = !visible;
-    item.setAttribute("data-tbf-search-match", visible ? "true" : "false");
-    if (visible) count += 1;
+      const visible = !normalized || itemText(item).includes(normalized);
+      item.hidden = !visible;
+      item.setAttribute("data-tbf-search-match", visible ? "true" : "false");
+      if (visible) count += 1;
   });
   queryAll<HTMLElement>(root, SEARCH_EMPTY_SELECTOR).forEach((empty) => {
-    empty.hidden = count > 0;
+      empty.hidden = count > 0;
   });
   const state = { count, query, root };
   root.dispatchEvent(new CustomEvent(SEARCH_EVENT, { bubbles: true, detail: state }));
@@ -42,7 +42,7 @@ function bindSearch(root: HTMLElement | null) {
   return applySearch(root, input.value);
 }
 
-function bindSearchControls(root: BindRoot = document) {
+function bindStaticSearchControls(root: BindRoot = document) {
   queryAll<HTMLElement>(root, SEARCH_SELECTOR).forEach(bindSearch);
 }
 
@@ -54,6 +54,6 @@ export {
   SEARCH_SELECTOR,
   applySearch,
   bindSearch,
-  bindSearchControls,
+  bindStaticSearchControls as bindSearchControls,
 };
 export type { SearchState };

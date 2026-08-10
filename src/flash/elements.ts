@@ -79,8 +79,8 @@ function createDialogFlash(
   options: FlashOptions = {},
 ) {
   const controls = createFlashElement(type, titleText, descriptionText, flashId("dialog"), {
-    ...options,
-    sticky: true,
+      ...options,
+      sticky: true,
   });
   controls.element.classList.add("tbf-flash--dialog");
   return controls;

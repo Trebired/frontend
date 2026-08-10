@@ -29,10 +29,10 @@
   line-height: 1.15;
   vertical-align: middle;
   transition:
-    color var(--transition-1) ease,
-    background var(--transition-1) ease,
-    border-color var(--transition-1) ease,
-    opacity var(--transition-1) ease;
+  color var(--transition-1) ease,
+  background var(--transition-1) ease,
+  border-color var(--transition-1) ease,
+  opacity var(--transition-1) ease;
 
   &:hover,
   &[aria-pressed="true"],
@@ -81,7 +81,10 @@
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
       --button-icon-color: var(--tbf-primitives-button-tones-highlight-states-hover-icon-color, currentColor);
-      background: var(--tbf-primitives-button-tones-highlight-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      background: var(
+        --tbf-primitives-button-tones-highlight-states-hover-background,
+        var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+      );
       border-color: var(--tbf-primitives-button-tones-highlight-states-hover-border-color, currentColor);
       color: var(--tbf-primitives-button-tones-highlight-states-hover-color, currentColor);
     }
@@ -93,7 +96,10 @@
     &:hover,
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
-      background: var(--tbf-primitives-button-tones-red-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      background: var(
+        --tbf-primitives-button-tones-red-states-hover-background,
+        var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+      );
       border-color: var(--tbf-primitives-button-tones-red-states-hover-border-color, currentColor);
       color: var(--tbf-primitives-button-tones-red-states-hover-color, currentColor);
       --button-icon-color: var(--tbf-primitives-button-tones-red-states-hover-icon-color, currentColor);
@@ -107,7 +113,10 @@
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
       --button-icon-color: var(--tbf-primitives-button-tones-yellow-states-hover-icon-color, currentColor);
-      background: var(--tbf-primitives-button-tones-yellow-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      background: var(
+        --tbf-primitives-button-tones-yellow-states-hover-background,
+        var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+      );
       border-color: var(--tbf-primitives-button-tones-yellow-states-hover-border-color, currentColor);
       color: var(--tbf-primitives-button-tones-yellow-states-hover-color, currentColor);
     }
@@ -120,7 +129,10 @@
     &[aria-pressed="true"],
     &[data-tbf-active="true"] {
       --button-icon-color: var(--tbf-primitives-button-tones-green-states-hover-icon-color, currentColor);
-      background: var(--tbf-primitives-button-tones-green-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+      background: var(
+        --tbf-primitives-button-tones-green-states-hover-background,
+        var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+      );
       border-color: var(--tbf-primitives-button-tones-green-states-hover-border-color, currentColor);
       color: var(--tbf-primitives-button-tones-green-states-hover-color, currentColor);
     }

@@ -14,7 +14,7 @@ import {
   primitiveGapClass,
 } from "#hzrmwbvgt2ax";
 import {
-  actionTrigger,
+  logActionTrigger,
   toString,
   type BindActionOptions,
 } from "#aq4qe9opqpbm";
@@ -61,9 +61,9 @@ function platformToggle(model: any) {
           optionClassName: [
             "logs-platform-toggle",
             primitiveCardClassName({
-              className: "cursor-pointer no-shrink",
-              layout: "none",
-              padding: "xs",
+                className: "cursor-pointer no-shrink",
+                layout: "none",
+                padding: "xs",
             }),
             primitiveGapClass("xs"),
           ].join(" "),
@@ -126,10 +126,10 @@ function toolbarButton(
     const fullscreenProps = {
       ...attrs,
       className: primitiveButtonClassName({
-        className: attrs.className,
-        icon: true,
-        size: "md",
-        tooltip: true,
+          className: attrs.className,
+          icon: true,
+          size: "md",
+          tooltip: true,
       }),
       fullscreenId: String(fullscreen.id || ""),
       group: String(fullscreen.group || "default"),
@@ -144,19 +144,19 @@ function toolbarButton(
       {icon({ spec })}
       </FullscreenOpenButton>
     );
-    return trigger ? actionTrigger(node, trigger) : node;
+    return trigger ? logActionTrigger(node, trigger) : node;
   }
   const node = (
     button({
-      ...attrs,
-      children: icon({ spec }),
-      icon: true,
-      size: "md",
-      tooltip: true,
-      type: "button",
+        ...attrs,
+        children: icon({ spec }),
+        icon: true,
+        size: "md",
+        tooltip: true,
+        type: "button",
     })
   );
-  if (trigger) return actionTrigger(node, trigger);
+  if (trigger) return logActionTrigger(node, trigger);
   return node;
 }
 

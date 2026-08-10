@@ -33,8 +33,8 @@ function disclosureState(root: HTMLElement): DisclosureState {
 
 function dispatchDisclosureChange(state: DisclosureState) {
   state.root.dispatchEvent(new CustomEvent(DISCLOSURE_CHANGE_EVENT, {
-    bubbles: true,
-    detail: state,
+        bubbles: true,
+        detail: state,
   }));
 }
 
@@ -58,13 +58,13 @@ function bindDisclosure(root: HTMLElement | null) {
   root.setAttribute("data-tbf-disclosure-bound", "true");
   const state = setDisclosureOpen(root, readDisclosureOpen(root));
   state.trigger?.addEventListener("click", (event) => {
-    event.preventDefault();
-    toggleDisclosure(root);
+      event.preventDefault();
+      toggleDisclosure(root);
   });
   state.trigger?.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    event.preventDefault();
-    toggleDisclosure(root);
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      toggleDisclosure(root);
   });
   return state;
 }

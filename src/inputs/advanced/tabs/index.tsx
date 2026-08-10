@@ -44,7 +44,7 @@ function renderTabButton(item: tabs_item, activeId: string) {
   );
 }
 
-function tabList(props: tabs_props, model: tabs_model) {
+function renderAdvancedTabList(props: tabs_props, model: tabs_model) {
   return (
     <div
     {...((props.listAttributes || {}) as any)}
@@ -96,7 +96,7 @@ function nestedIndicatorRow(model: tabs_model) {
 
 function tabRows(props: tabs_props, model: tabs_model) {
   const rows: Array<{ content: ReactNode; row: number }> = [
-    { content: tabList(props, model), row: 1 },
+    { content: renderAdvancedTabList(props, model), row: 1 },
   ];
   const nestedRow = nestedIndicatorRow(model);
   if (nestedRow) rows.push({ content: nestedRow, row: rows.length + 1 });
@@ -122,9 +122,9 @@ function renderTabsRow(
     key={`tabs_row_${row.row}`}
     className={joinClassNames([
           primitiveInlineRowClassName({
-            className: "tabs-row",
-            gap: "sm",
-            verticalCenter: true,
+              className: "tabs-row",
+              gap: "sm",
+              verticalCenter: true,
           }),
           toString(props.headerClassName),
     ])}
@@ -209,7 +209,7 @@ function TabsRoot(props: tabs_props) {
   );
 }
 
-function tabs(props: tabs_props) {
+function advancedTabs(props: tabs_props) {
   return <TabsRoot {...props} />;
 }
 
@@ -223,7 +223,7 @@ function useTabPanelHidden(
   return selected ? selected !== toString(route) : !defaultActive;
 }
 
-function TabPanel(props: tab_panel_props) {
+function AdvancedTabPanel(props: tab_panel_props) {
   const hidden =
   props.hidden === true ||
     useTabPanelHidden(
@@ -244,9 +244,9 @@ function TabPanel(props: tab_panel_props) {
 }
 
 function tab_panel(props: tab_panel_props) {
-  return <TabPanel {...props} />;
+  return <AdvancedTabPanel {...props} />;
 }
 
 export { tab_panel };
 export type { tab_panel_props, tabs_item, tabs_props };
-export default tabs;
+export default advancedTabs;

@@ -1,6 +1,7 @@
 import {
   dispatchInputChange,
   isInteractiveTarget,
+  noop as defineRadioGroupElement,
   resolveDocumentTarget,
 } from "#dqy2d22qyujv";
 
@@ -161,8 +162,6 @@ function bindStaticGroups(scope?) {
   const queryRoot = scope && "querySelectorAll" in scope ? scope : document;
   queryRoot.querySelectorAll(RADIO_GROUP_SELECTOR).forEach(bindGroup);
 }
-
-function defineRadioGroupElement() {}
 
 let booted = false;
 

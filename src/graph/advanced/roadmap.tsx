@@ -36,7 +36,7 @@ type roadmap_props = {
   orientation?: "horizontal" | "vertical";
 };
 
-function roadmapItem(
+function renderAdvancedRoadmapItem(
   item: roadmap_item,
   groupIndex: number,
   itemIndex: number,
@@ -110,18 +110,18 @@ function roadmapGroup(group: roadmap_group, groupIndex: number) {
     {group && group.title ? <div>{group.title}</div> : null}
     <ol className={primitiveStackClassName({ className: "tbf-roadmap roadmap-items", gap: "sm" })}>
     {items.map((item, itemIndex) =>
-        roadmapItem(item, groupIndex, itemIndex),
+        renderAdvancedRoadmapItem(item, groupIndex, itemIndex),
     )}
     </ol>
     </Stack>
   );
 }
 
-function roadmap(props: roadmap_props) {
+function advancedRoadmap(props: roadmap_props) {
   const groups = Array.isArray(props.groups) ? props.groups : [];
   const className = primitiveStackClassName({
-    className: props.className,
-    gap: "sm",
+      className: props.className,
+      gap: "sm",
   });
 
   return (
@@ -130,4 +130,4 @@ function roadmap(props: roadmap_props) {
 }
 
 export type { roadmap_group, roadmap_item, roadmap_props };
-export default roadmap;
+export default advancedRoadmap;

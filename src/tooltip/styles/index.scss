@@ -18,9 +18,9 @@
   transform-origin: var(--tbf-tooltip-transform-origin, center bottom);
   pointer-events: none;
   transition:
-    opacity var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
-    transform var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
-    visibility 0s linear var(--tbf-overlays-tooltip-motion-duration, 170ms);
+  opacity var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+  transform var(--tbf-overlays-tooltip-motion-duration, 170ms) var(--tbf-overlays-tooltip-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+  visibility 0s linear var(--tbf-overlays-tooltip-motion-duration, 170ms);
 }
 
 .tbf-tooltip::before,
@@ -28,7 +28,10 @@
   --tbf-overlays-tooltip-arrow-size-current: var(--tbf-overlays-tooltip-arrow-size, 8px);
   --tbf-overlays-tooltip-arrow-border-width-current: var(--tbf-overlays-tooltip-arrow-border-width, var(--tbf-border-width, 1px));
   --tbf-overlays-tooltip-arrow-border-color-current: var(--tbf-overlays-tooltip-arrow-border-color, var(--tbf-border, #000));
-  --tbf-overlays-tooltip-arrow-background-current: var(--tbf-overlays-tooltip-arrow-background, var(--tbf-overlays-tooltip-panel-background, var(--tbf-surface, #fff)));
+  --tbf-overlays-tooltip-arrow-background-current: var(
+    --tbf-overlays-tooltip-arrow-background,
+    var(--tbf-overlays-tooltip-panel-background, var(--tbf-surface, #fff))
+  );
 
   content: "";
   position: absolute;
@@ -59,9 +62,9 @@
 .tbf-tooltip[data-tbf-placement="top"]::after {
   bottom: calc(var(--tbf-overlays-tooltip-arrow-border-width-current) - var(--tbf-overlays-tooltip-arrow-size-current));
   border-width:
-    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
-    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
-    0;
+  calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
+  calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
+  0;
   border-top-color: var(--tbf-overlays-tooltip-arrow-background-current);
 }
 
@@ -79,9 +82,9 @@
 .tbf-tooltip[data-tbf-placement="bottom"]::after {
   top: calc(var(--tbf-overlays-tooltip-arrow-border-width-current) - var(--tbf-overlays-tooltip-arrow-size-current));
   border-width:
-    0
-    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
-    calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current));
+  0
+  calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current))
+  calc(var(--tbf-overlays-tooltip-arrow-size-current) - var(--tbf-overlays-tooltip-arrow-border-width-current));
   border-bottom-color: var(--tbf-overlays-tooltip-arrow-background-current);
 }
 

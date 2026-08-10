@@ -1,3 +1,5 @@
+import { escapeHtml } from "#ndsvdqv80epr";
+
 const INTERACTIVE_TARGET_SELECTOR = [
   "a",
   "button",
@@ -61,8 +63,12 @@ function cssEscape(value: unknown) {
     return CSS.escape(text);
   }
   return text.replace(/[^a-zA-Z0-9_-]/g, (char) => {
-    return `\\${char.charCodeAt(0).toString(16)} `;
+      return `\\${char.charCodeAt(0).toString(16)} `;
   });
+}
+
+function clampNumber(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
 }
 
 function resolveDocumentTarget(target: unknown): HTMLElement | null {
@@ -86,7 +92,7 @@ function resolveDocumentTarget(target: unknown): HTMLElement | null {
 
 function readJsonScript<T>(id: string, fallback: T): T {
   const element =
-    typeof document !== "undefined" ? document.getElementById(id) : null;
+  typeof document !== "undefined" ? document.getElementById(id) : null;
   if (!element) return fallback;
   return parseJsonText<T>(element.textContent || "", fallback);
 }
@@ -100,11 +106,7 @@ function parseJsonText<T>(text: string, fallback: T): T {
   }
 }
 
-function readElementJson<T>(
-  host: Element | null,
-  selector: string,
-  fallback: T,
-): T {
+function readElementJson<T>(host: ParentNode | null, selector: string, fallback: T): T {
   if (!host || typeof host.querySelector !== "function") return fallback;
   const element = host.querySelector(selector);
   return parseJsonText<T>(element?.textContent || "", fallback);
@@ -116,19 +118,51 @@ function readDataJson<T>(
   fallback: T,
 ): T {
   const value =
-    host && typeof host.getAttribute === "function"
-      ? host.getAttribute(attrName)
-      : "";
+  host && typeof host.getAttribute === "function"
+  ? host.getAttribute(attrName)
+  : "";
   return value ? parseJsonText<T>(value, fallback) : fallback;
 }
 
-function escapeHtml(value: unknown) {
-  return String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function readTextAttribute(element: Element | null | undefined, attrName: string) {
+  return String(element?.getAttribute(attrName) || "").trim();
+}
+
+function documentLanguageTag() {
+  return typeof document === "undefined"
+  ? ""
+  : String(document.documentElement.getAttribute("lang") || "").trim();
+}
+
+function browserLocalStorage(): Storage | null {
+  try {
+    return typeof window !== "undefined" ? window.localStorage : null;
+  } catch {
+    return null;
+  }
+}
+
+function connectedElementsFromSet<T extends Element>(set: Set<T> | undefined): T[] {
+  const elements = Array.from(set || []).filter((element) => element.isConnected);
+  if (set) {
+    set.forEach((element) => {
+        if (!element.isConnected) set.delete(element);
+    });
+  }
+  return elements;
+}
+
+function firstNonScriptHTMLElementChild(host: Element) {
+  return Array.from(host.children).find((child) => {
+      return child instanceof HTMLElement && child.tagName.toLowerCase() !== "script";
+  }) as HTMLElement | undefined;
+}
+
+function isInUnhydratedIsland(node: unknown) {
+  const element = node instanceof Element ? node : null;
+  return Boolean(
+    element?.closest("[data-live-island-root][data-live-island-hydrated='false']"),
+  );
 }
 
 function setHidden(element: Element | null | undefined, hidden: boolean) {
@@ -148,8 +182,8 @@ function isInteractiveTarget(target: unknown, extraSelector = "") {
   const element = asElement(target);
   if (!element) return false;
   const selector = extraSelector
-    ? `${INTERACTIVE_TARGET_SELECTOR},${extraSelector}`
-    : INTERACTIVE_TARGET_SELECTOR;
+  ? `${INTERACTIVE_TARGET_SELECTOR},${extraSelector}`
+  : INTERACTIVE_TARGET_SELECTOR;
   return Boolean(element.closest(selector));
 }
 
@@ -166,12 +200,12 @@ function setControlDisabled(element: HTMLElement | null, disabled: boolean) {
 function formDataFlatRecord(data: FormData) {
   const out: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
   data.forEach((value, key) => {
-    const current = out[key];
-    if (current === undefined) {
-      out[key] = value;
-      return;
-    }
-    out[key] = Array.isArray(current) ? [...current, value] : [current, value];
+      const current = out[key];
+      if (current === undefined) {
+        out[key] = value;
+        return;
+      }
+      out[key] = Array.isArray(current) ? [...current, value] : [current, value];
   });
   return out;
 }
@@ -179,7 +213,7 @@ function formDataFlatRecord(data: FormData) {
 function formDataSearchParams(data: FormData) {
   const params = new URLSearchParams();
   data.forEach((value, key) => {
-    if (typeof value === "string") params.append(key, value);
+      if (typeof value === "string") params.append(key, value);
   });
   return params;
 }
@@ -189,19 +223,26 @@ export {
   asElement,
   asHTMLElement,
   bindRoot,
+  browserLocalStorage,
+  clampNumber,
   closestElement,
+  connectedElementsFromSet,
   cssEscape,
+  documentLanguageTag,
   dispatchInputChange,
   escapeHtml,
+  firstNonScriptHTMLElementChild,
   formDataFlatRecord,
   formDataSearchParams,
   isInteractiveTarget,
+  isInUnhydratedIsland,
   onReady,
   parseJsonText,
   queryAll,
   readDataJson,
   readElementJson,
   readJsonScript,
+  readTextAttribute,
   resolveDocumentTarget,
   setAriaExpanded,
   setControlDisabled,

@@ -3,7 +3,7 @@ import path from "node:path";
 
 const metadataCache = new Map();
 
-async function packageMetadata(rootDir) {
+async function readWorkspacePackageMetadata(rootDir) {
   const key = path.resolve(rootDir);
   const cached = metadataCache.get(key);
   if (cached) return cached;
@@ -13,17 +13,18 @@ async function packageMetadata(rootDir) {
 }
 
 async function packageName(rootDir) {
-  const name = String((await packageMetadata(rootDir)).name || "").trim();
+  const name = String((await readWorkspacePackageMetadata(rootDir)).name || "").trim();
   if (!name) throw new Error("missing-package-name");
   return name;
 }
 
-async function organizationName(rootDir) {
-  const metadata = await packageMetadata(rootDir);
+async function readWorkspaceOrganizationName(rootDir) {
+  const metadata = await readWorkspacePackageMetadata(rootDir);
   const configured = String(metadata.config?.organization?.name || "").trim();
   if (configured) return configured;
-  const match = /^@([^/]+)\//u.exec(await packageName(rootDir));
-  if (match?.[1]) return match[1];
+  const name = await packageName(rootDir);
+  const slashIndex = name.indexOf("/");
+  if (name.startsWith("@") && slashIndex > 1) return name.slice(1, slashIndex);
   throw new Error("missing-package-organization");
 }
 
@@ -32,12 +33,12 @@ async function siblingPackageName(rootDir, siblingName) {
 }
 
 async function workspaceConfigDir(rootDir) {
-  return `.${await organizationName(rootDir)}`;
+  return `.${await readWorkspaceOrganizationName(rootDir)}`;
 }
 
 export {
-  organizationName,
-  packageMetadata,
+  readWorkspaceOrganizationName as organizationName,
+  readWorkspacePackageMetadata as packageMetadata,
   packageName,
   siblingPackageName,
   workspaceConfigDir,

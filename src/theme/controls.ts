@@ -22,7 +22,6 @@ function ensureThemeSync(): void {
   registerThemeSync((root) => syncThemeControls(root));
 }
 
-/* Controls sync against the registered modes, so a caller-supplied list has to become the registry. */
 function adoptThemeModes(options: ThemeRuntimeOptions): void {
   if (hasThemeModeOptions(options)) configureThemeModes(options);
 }
@@ -59,7 +58,7 @@ function syncThemeSelect(element: HTMLElement, options: ThemeRuntimeOptions = {}
     return;
   }
   queryAll<HTMLElement>(element, THEME_OPTION_SELECTOR).forEach((option) => {
-    syncThemeOption(option, themeModeKeyOf(option.getAttribute(THEME_VALUE_ATTR)) === key);
+      syncThemeOption(option, themeModeKeyOf(option.getAttribute(THEME_VALUE_ATTR)) === key);
   });
 }
 
@@ -87,8 +86,8 @@ function bindThemeToggle(button: HTMLElement | null, options: ThemeRuntimeOption
   adoptThemeModes(options);
   if (!claimThemeControl(button)) return false;
   button.addEventListener("click", async (event) => {
-    event.preventDefault();
-    await setTheme(nextTheme(options), options);
+      event.preventDefault();
+      await setTheme(nextTheme(options), options);
   });
   syncThemeToggle(button, options);
   return true;
@@ -118,13 +117,13 @@ function bindThemeSelect(element: HTMLElement | null, options: ThemeRuntimeOptio
 
 function bindThemeToggles(root: BindRoot = document, options: ThemeRuntimeOptions = {}): void {
   queryAll<HTMLElement>(root, THEME_TOGGLE_SELECTOR).forEach((button) => {
-    bindThemeToggle(button, options);
+      bindThemeToggle(button, options);
   });
 }
 
 function bindThemeSelects(root: BindRoot = document, options: ThemeRuntimeOptions = {}): void {
   queryAll<HTMLElement>(root, THEME_SELECT_SELECTOR).forEach((element) => {
-    bindThemeSelect(element, options);
+      bindThemeSelect(element, options);
   });
 }
 

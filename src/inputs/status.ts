@@ -11,7 +11,7 @@ type StatusState = {
   root: HTMLElement;
 };
 
-function statusField(root: HTMLElement) {
+function findStaticStatusField(root: HTMLElement) {
   const field = root.querySelector("input,textarea");
   if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) return field;
   return null;
@@ -20,19 +20,19 @@ function statusField(root: HTMLElement) {
 function setStatus(root: HTMLElement, state: "idle" | "checking" | "error" | "success", message = "") {
   root.setAttribute("data-tbf-status-state", state);
   root.querySelectorAll<HTMLElement>(STATUS_MESSAGE_SELECTOR).forEach((slot) => {
-    slot.textContent = message;
-    slot.hidden = !message;
+      slot.textContent = message;
+      slot.hidden = !message;
   });
 }
 
 async function validateStatusField(root: HTMLElement) {
-  const field = statusField(root);
+  const field = findStaticStatusField(root);
   const url = root.getAttribute("data-tbf-status-url");
   if (!field || !url) return null;
   setStatus(root, "checking");
   const { json } = await requestJson(url, {
-    body: { name: field.name, value: field.value },
-    method: root.getAttribute("data-tbf-status-method") || "POST",
+      body: { name: field.name, value: field.value },
+      method: root.getAttribute("data-tbf-status-method") || "POST",
   });
   const ok = Boolean((json as { ok?: boolean }).ok);
   const message = String((json as { message?: string }).message || "");
@@ -45,18 +45,18 @@ async function validateStatusField(root: HTMLElement) {
 function bindStatusField(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-status-bound")) return null;
   root.setAttribute("data-tbf-status-bound", "true");
-  const field = statusField(root);
+  const field = findStaticStatusField(root);
   field?.addEventListener("change", () => {
-    void validateStatusField(root);
+      void validateStatusField(root);
   });
   field?.addEventListener("blur", () => {
-    void validateStatusField(root);
+      void validateStatusField(root);
   });
   setStatus(root, "idle");
   return root;
 }
 
-function bindStatusFields(root: BindRoot = document) {
+function bindStaticStatusFields(root: BindRoot = document) {
   queryAll<HTMLElement>(root, STATUS_FIELD_SELECTOR).forEach(bindStatusField);
 }
 
@@ -65,7 +65,7 @@ export {
   STATUS_FIELD_SELECTOR,
   STATUS_MESSAGE_SELECTOR,
   bindStatusField,
-  bindStatusFields,
+  bindStaticStatusFields as bindStatusFields,
   setStatus,
   validateStatusField,
 };

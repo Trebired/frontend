@@ -1,3 +1,5 @@
+import { interpolateMessage as interpolate } from "#ndsvdqv80epr";
+
 type MessageVars = Record<string, unknown>;
 
 type LanguageMessages = Record<string, string>;
@@ -5,7 +7,7 @@ type LanguageMessages = Record<string, string>;
 const EN_MESSAGES: LanguageMessages = {
   assetsAndConfig: "Assets and config",
   assetsAndConfigDescription:
-    "Assets, configuration, data files, docs, and other supporting files",
+  "Assets, configuration, data files, docs, and other supporting files",
   codeFiles: "Code files",
   codeFilesDescription: "Application and runtime code used by the repository",
   codeLines: "Code lines:",
@@ -14,7 +16,7 @@ const EN_MESSAGES: LanguageMessages = {
   details: "{{name}} details",
   detailsButton: "Details",
   detailsDescription:
-    "Review the repository files and language totals that contributed to this language breakdown.",
+  "Review the repository files and language totals that contributed to this language breakdown.",
   detected: "{{count}} detected",
   detectedSubset: "{{active}} of {{total}} detected",
   en: "English",
@@ -36,7 +38,7 @@ const EN_MESSAGES: LanguageMessages = {
   noMatchingFiles: "No matching files found.",
   noRepositoryTreeAvailable: "No repository tree is available yet.",
   noSupportingFilesInTab:
-    "No assets, config, docs, or other supporting files detected in this tab.",
+  "No assets, config, docs, or other supporting files detected in this tab.",
   none: "None",
   noneExtension: "(none)",
   openDetails: "Open language details for {{name}}",
@@ -67,7 +69,7 @@ const EN_MESSAGES: LanguageMessages = {
 const CS_MESSAGES: LanguageMessages = {
   assetsAndConfig: "Assety a konfigurace",
   assetsAndConfigDescription:
-    "Assety, konfigurace, datove soubory, dokumentace a dalsi podpurne soubory",
+  "Assety, konfigurace, datove soubory, dokumentace a dalsi podpurne soubory",
   codeFiles: "Soubory kodu",
   codeFilesDescription: "Aplikacni a runtime kod pouzivany repozitarem",
   codeLines: "Radky kodu:",
@@ -76,7 +78,7 @@ const CS_MESSAGES: LanguageMessages = {
   details: "Podrobnosti jazyka {{name}}",
   detailsButton: "Podrobnosti",
   detailsDescription:
-    "Zkontrolujte soubory repozitare a jazykove soucty, ktere prispely k tomuto rozpisu jazyku.",
+  "Zkontrolujte soubory repozitare a jazykove soucty, ktere prispely k tomuto rozpisu jazyku.",
   detected: "{{count}} nalezeno",
   detectedSubset: "{{active}} z {{total}} nalezeno",
   en: "Anglictina",
@@ -98,7 +100,7 @@ const CS_MESSAGES: LanguageMessages = {
   noMatchingFiles: "Nebyly nalezeny zadne odpovidajici soubory.",
   noRepositoryTreeAvailable: "Strom repozitare zatim neni dostupny.",
   noSupportingFilesInTab:
-    "V teto zalozce nebyly nalezeny zadne assety, konfigurace, dokumentace ani jine podpurne soubory.",
+  "V teto zalozce nebyly nalezeny zadne assety, konfigurace, dokumentace ani jine podpurne soubory.",
   none: "Zadne",
   noneExtension: "(zadna)",
   openDetails: "Otevrit podrobnosti jazyka {{name}}",
@@ -135,16 +137,6 @@ function normalizeLocale(value: unknown) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw.startsWith("cs")) return "cs";
   return "en";
-}
-
-function interpolate(message: string, vars: MessageVars = {}) {
-  return Object.entries(vars).reduce((next, [key, value]) => {
-    return next
-      .split(`{{${key}}}`)
-      .join(String(value ?? ""))
-      .split(`{${key}}`)
-      .join(String(value ?? ""));
-  }, message);
 }
 
 function sourceLanguageMessage(

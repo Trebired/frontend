@@ -20,13 +20,13 @@ function TextLink(props: TextLinkProps) {
   const resolvedTarget = linkTarget(target, external);
   return (
     <a
-      {...rest}
-      className={joinClassNames("tbf-text-link", "text-link", className)}
-      data-tbf-text-link=""
-      rel={linkRel(rel, resolvedTarget)}
-      target={resolvedTarget}
+    {...rest}
+    className={joinClassNames("tbf-text-link", "text-link", className)}
+    data-tbf-text-link=""
+    rel={linkRel(rel, resolvedTarget)}
+    target={resolvedTarget}
     >
-      {children}
+    {children}
     </a>
   );
 }

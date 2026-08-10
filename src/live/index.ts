@@ -23,12 +23,12 @@ function captureFormState(root: ParentNode) {
   root.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
     "input,select,textarea",
   ).forEach((element) => {
-    const key = element.name || element.id;
-    if (!key) return;
-    state.set(key, {
-      checked: element instanceof HTMLInputElement ? element.checked : false,
-      value: element.value,
-    });
+      const key = element.name || element.id;
+      if (!key) return;
+      state.set(key, {
+          checked: element instanceof HTMLInputElement ? element.checked : false,
+          value: element.value,
+      });
   });
   return state;
 }
@@ -40,19 +40,19 @@ function restoreFormState(
   root.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
     "input,select,textarea",
   ).forEach((element) => {
-    const snapshot = state.get(element.name || element.id);
-    if (!snapshot) return;
-    element.value = snapshot.value;
-    if (element instanceof HTMLInputElement) element.checked = snapshot.checked;
+      const snapshot = state.get(element.name || element.id);
+      if (!snapshot) return;
+      element.value = snapshot.value;
+      if (element instanceof HTMLInputElement) element.checked = snapshot.checked;
   });
 }
 
 function liveRegionKey(element: Element) {
   return (
     element.getAttribute("data-tbf-live-region") ||
-    element.id ||
-    element.getAttribute("data-tbf-live-key") ||
-    ""
+      element.id ||
+      element.getAttribute("data-tbf-live-key") ||
+      ""
   ).trim();
 }
 
@@ -72,16 +72,16 @@ function rehydrate(root: BindRoot = document, options: LiveOptions = {}) {
 function replaceLiveRegions(doc: Document, options: LiveOptions = {}) {
   let changed = false;
   queryAll<HTMLElement>(document, LIVE_REGION_SELECTOR).forEach((current) => {
-    if (shouldSkipLiveElement(current, options)) return;
-    const next = findMatchingRegion(doc, current);
-    if (!(next instanceof HTMLElement)) return;
-    const state = captureFormState(current);
-    current.replaceChildren(...Array.from(next.childNodes).map((node) => {
-      return document.importNode(node, true);
-    }));
-    restoreFormState(current, state);
-    rehydrate(current, options);
-    changed = true;
+      if (shouldSkipLiveElement(current, options)) return;
+      const next = findMatchingRegion(doc, current);
+      if (!(next instanceof HTMLElement)) return;
+      const state = captureFormState(current);
+      current.replaceChildren(...Array.from(next.childNodes).map((node) => {
+            return document.importNode(node, true);
+      }));
+      restoreFormState(current, state);
+      rehydrate(current, options);
+      changed = true;
   });
   return changed;
 }
@@ -92,8 +92,8 @@ async function refreshLive(options: LiveOptions & { url?: string } = {}) {
   const url = options.url || window.location.href;
   try {
     const response = await fetch(url, {
-      credentials: "same-origin",
-      headers: { Accept: "text/html", "X-Requested-With": "tbf-live" },
+        credentials: "same-origin",
+        headers: { Accept: "text/html", "X-Requested-With": "tbf-live" },
     });
     if (!response.ok) return false;
     const html = await response.text();
@@ -106,13 +106,13 @@ async function refreshLive(options: LiveOptions & { url?: string } = {}) {
 
 function bindLiveRefresh(root: BindRoot = document, options: LiveOptions = {}) {
   queryAll<HTMLElement>(root, LIVE_REFRESH_SELECTOR).forEach((trigger) => {
-    if (trigger.hasAttribute("data-tbf-live-bound")) return;
-    trigger.setAttribute("data-tbf-live-bound", "true");
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      const url = trigger.getAttribute("data-tbf-live-url") || undefined;
-      void refreshLive({ ...options, url });
-    });
+      if (trigger.hasAttribute("data-tbf-live-bound")) return;
+      trigger.setAttribute("data-tbf-live-bound", "true");
+      trigger.addEventListener("click", (event) => {
+          event.preventDefault();
+          const url = trigger.getAttribute("data-tbf-live-url") || undefined;
+          void refreshLive({ ...options, url });
+      });
   });
 }
 

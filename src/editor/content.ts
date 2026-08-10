@@ -35,12 +35,12 @@ function editorContentConfig(root: HTMLElement, input: HTMLTextAreaElement) {
 function editorContentChildren(root: HTMLElement) {
   const children = Array.from(root.children);
   const input = children.find((child): child is HTMLTextAreaElement => {
-    return child instanceof HTMLTextAreaElement;
+      return child instanceof HTMLTextAreaElement;
   });
   const host = children.find((child): child is HTMLElement => {
-    return child instanceof HTMLElement &&
-      !(child instanceof HTMLScriptElement) &&
-      !(child instanceof HTMLTextAreaElement);
+      return child instanceof HTMLElement &&
+        !(child instanceof HTMLScriptElement) &&
+        !(child instanceof HTMLTextAreaElement);
   });
   return { host, input };
 }
@@ -54,19 +54,19 @@ function createEditor(
   defineMonacoThemes(monacoRef);
   monacoRef.editor.setTheme(getPreferredMonacoThemeName());
   return monacoRef.editor.create(host, {
-    automaticLayout: true,
-    fontSize: 13,
-    language: config.language,
-    lineNumbers: "on",
-    minimap: { enabled: false },
-    overviewRulerBorder: false,
-    placeholder: config.placeholder,
-    readOnly: config.readOnly,
-    renderLineHighlight: "all",
-    scrollBeyondLastLine: false,
-    tabSize: 2,
-    value: input.value || "",
-    wordWrap: "on",
+      automaticLayout: true,
+      fontSize: 13,
+      language: config.language,
+      lineNumbers: "on",
+      minimap: { enabled: false },
+      overviewRulerBorder: false,
+      placeholder: config.placeholder,
+      readOnly: config.readOnly,
+      renderLineHighlight: "all",
+      scrollBeyondLastLine: false,
+      tabSize: 2,
+      value: input.value || "",
+      wordWrap: "on",
   });
 }
 
@@ -81,7 +81,7 @@ async function bindEditorContent(root: HTMLElement) {
   await activateLanguage(monacoRef, config.language);
   const editor = createEditor(monacoRef, host, input, config);
   editor.onDidChangeModelContent(() => {
-    input.value = String(editor.getValue() || "");
+      input.value = String(editor.getValue() || "");
   });
   bindEditorFormSubmit(root, input);
   states.set(root, { editor, input });
@@ -105,13 +105,13 @@ function layoutEditorContent(root: HTMLElement) {
 
 function scheduleEditorContentLayout(target: HTMLElement | Document = document) {
   window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      roots.forEach((root) => {
-        if (target instanceof Document || target.contains(root)) {
-          layoutEditorContent(root);
-        }
+      window.requestAnimationFrame(() => {
+          roots.forEach((root) => {
+              if (target instanceof Document || target.contains(root)) {
+                layoutEditorContent(root);
+              }
+          });
       });
-    });
   });
 }
 
@@ -119,8 +119,8 @@ function bindEditorFormSubmit(root: HTMLElement, input: HTMLTextAreaElement) {
   const form = input.form || root.closest("form");
   if (!(form instanceof HTMLFormElement)) return null;
   form.addEventListener("submit", () => {
-    syncEditorContent(root);
-  }, true);
+      syncEditorContent(root);
+    }, true);
   return form;
 }
 
@@ -128,20 +128,20 @@ function bindEditorSharedListeners() {
   if (sharedListenersBound) return;
   sharedListenersBound = true;
   document.addEventListener("tabs:change", (event) => {
-    scheduleEditorContentLayout(
-      event.target instanceof HTMLElement ? event.target : document,
-    );
+      scheduleEditorContentLayout(
+        event.target instanceof HTMLElement ? event.target : document,
+      );
   });
 }
 
 function bindEditorContentFields(root: BindRoot = document) {
   queryAll<HTMLElement>(root, "editor-content-field,[data-tbf-editor-content-field]")
-    .forEach((field) => {
+  .forEach((field) => {
       void bindEditorContent(field).catch(() => {
-        field.textContent = field.getAttribute("data-tbf-editor-error") ||
-          "Editor failed to load.";
+          field.textContent = field.getAttribute("data-tbf-editor-error") ||
+            "Editor failed to load.";
       });
-    });
+  });
 }
 
 export {

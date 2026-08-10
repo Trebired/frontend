@@ -24,7 +24,7 @@ type ShellSupportLinksProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> &
   supportLabel?: ReactNode;
 };
 
-function shellSupportLinks(props: ShellSupportLinksProps): ShellSupportLink[] {
+function buildShellSupportLinks(props: ShellSupportLinksProps): ShellSupportLink[] {
   return [
     {
       href: shellPageHref(props.baseHref, "/docs"),
@@ -51,13 +51,13 @@ function defaultSupportLink(
   const { className, key, label, ...attrs } = link;
   return (
     <TextLink
-      {...attrs}
-      className={classNames("tbf-shell-support-links__link", className, linkClassName)}
-      key={key}
-      rel={attrs.rel || "noopener noreferrer"}
-      target={attrs.target || "_blank"}
+    {...attrs}
+    className={classNames("tbf-shell-support-links__link", className, linkClassName)}
+    key={key}
+    rel={attrs.rel || "noopener noreferrer"}
+    target={attrs.target || "_blank"}
     >
-      {label}
+    {label}
     </TextLink>
   );
 }
@@ -76,31 +76,31 @@ function ShellSupportLinks(props: ShellSupportLinksProps) {
     supportLabel,
     ...rest
   } = props;
-  const links = shellSupportLinks({
-    baseHref,
-    docsLabel,
-    feedbackLabel,
-    supportLabel,
+  const links = buildShellSupportLinks({
+      baseHref,
+      docsLabel,
+      feedbackLabel,
+      supportLabel,
   });
   return (
     <div
-      {...rest}
-      className={classNames("tbf-shell-support-links", className)}
-      data-tbf-shell-support-links=""
+    {...rest}
+    className={classNames("tbf-shell-support-links", className)}
+    data-tbf-shell-support-links=""
     >
-      {label ? (
+    {label ? (
         <div className={classNames("tbf-shell-support-links__label", labelClassName)}>
-          {label}
+        {label}
         </div>
       ) : null}
-      <div className={classNames("tbf-shell-support-links__list", listClassName)}>
-        {links.map((link) => renderLink
-          ? renderLink(link)
-          : defaultSupportLink(link, linkClassName))}
-      </div>
+    <div className={classNames("tbf-shell-support-links__list", listClassName)}>
+    {links.map((link) => renderLink
+        ? renderLink(link)
+        : defaultSupportLink(link, linkClassName))}
+    </div>
     </div>
   );
 }
 
-export { ShellSupportLinks, shellSupportLinks };
+export { ShellSupportLinks, buildShellSupportLinks as shellSupportLinks };
 export type { ShellSupportLink, ShellSupportLinksProps };

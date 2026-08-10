@@ -71,28 +71,28 @@ function handleXhrJson(
   const progressApi = adapters.progress || defaultProgress;
   progressApi.begin();
   return new Promise<ActionJson>((resolve) => {
-    const xhr = new XMLHttpRequest();
-    configureXhr(xhr, url);
-    if (xhr.upload && typeof onProgress === "function") {
-      xhr.upload.onprogress = (event) => {
-        onProgress(event);
-        progressApi.setFromProgressEvent(event);
+      const xhr = new XMLHttpRequest();
+      configureXhr(xhr, url);
+      if (xhr.upload && typeof onProgress === "function") {
+        xhr.upload.onprogress = (event) => {
+          onProgress(event);
+          progressApi.setFromProgressEvent(event);
+        };
+      }
+      xhr.onerror = () => {
+        const fail = networkFailure();
+        handleResponseAction(fail, options.ui, adapters);
+        progressApi.end(true);
+        resolve(fail);
       };
-    }
-    xhr.onerror = () => {
-      const fail = networkFailure();
-      handleResponseAction(fail, options.ui, adapters);
-      progressApi.end(true);
-      resolve(fail);
-    };
-    xhr.onabort = xhr.onerror;
-    xhr.onload = () => {
-      const json = readXhrJson(xhr);
-      handleResponseAction(json, options.ui, adapters);
-      progressApi.end();
-      resolve(json);
-    };
-    xhr.send(body);
+      xhr.onabort = xhr.onerror;
+      xhr.onload = () => {
+        const json = readXhrJson(xhr);
+        handleResponseAction(json, options.ui, adapters);
+        progressApi.end();
+        resolve(json);
+      };
+      xhr.send(body);
   });
 }
 

@@ -1,5 +1,4 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import { flash as defaultFlash } from "#33o6e7mug9pg";
 import { uploadRootConfig } from "./config.js";
 import {
   getClear,
@@ -32,16 +31,13 @@ import {
   syncPreview,
 } from "./state.js";
 import type { UploadEntry, UploadRuntimeOptions } from "./types.js";
+import { resolveUploadFlash } from "./runtime.js";
 
 const UPLOAD_SELECTOR = "[data-tbf-upload]";
 const boundUploadRoots = new WeakSet<HTMLElement>();
 const rootOptions = new WeakMap<HTMLElement, UploadRuntimeOptions>();
 let booted = false;
 let documentDropGuardBound = false;
-
-function flashFor(options: UploadRuntimeOptions = {}) {
-  return options.flash || defaultFlash;
-}
 
 function optionsFor(root: HTMLElement, options: UploadRuntimeOptions = {}) {
   const next = { ...(rootOptions.get(root) || {}), ...options };
@@ -56,9 +52,9 @@ function acceptListFor(root: HTMLElement, input: HTMLInputElement | null) {
 function normalizeEntries(root: HTMLElement, entries: UploadEntry[]) {
   const skipped = skippedDirectoryNames(root);
   return entries.filter((entry) => {
-    if (!(entry?.file instanceof File)) return false;
-    const path = String(entry.path || entry.file.name || "").trim();
-    return Boolean(path) && !hasSkippedDirectory(path, skipped);
+      if (!(entry?.file instanceof File)) return false;
+      const path = String(entry.path || entry.file.name || "").trim();
+      return Boolean(path) && !hasSkippedDirectory(path, skipped);
   }).map((entry) => ({ file: entry.file, path: entry.path || entry.file.name }));
 }
 
@@ -73,7 +69,7 @@ function rejectInvalidEntries(
     return false;
   }
   const config = uploadRootConfig(root);
-  flashFor(options).warn?.(config.formatNotAllowedMessage, config.formatNotAllowedDescription);
+  resolveUploadFlash(options).warn?.(config.formatNotAllowedMessage, config.formatNotAllowedDescription);
   restoreNativeInput(root, input);
   return true;
 }
@@ -125,11 +121,11 @@ async function requestCrop(
 ) {
   if (!isImageFileObject(file)) {
     const config = uploadRootConfig(root);
-    flashFor(options).warn?.(config.cropImageOnlyMessage, config.cropImageOnlyDescription);
+    resolveUploadFlash(options).warn?.(config.cropImageOnlyMessage, config.cropImageOnlyDescription);
     restoreNativeInput(root, input);
     return false;
   }
-  const ok = await openUploadCropSession(root, input, file, trigger, options);
+  const ok = await openCropSessionFromManager(root, input, file, trigger, options);
   if (!ok) restoreNativeInput(root, input);
   return ok;
 }
@@ -161,15 +157,15 @@ function bindUploadInputs(root: HTMLElement, options: UploadRuntimeOptions) {
   const trigger = getTrigger(root) || getFileTrigger(root) || getDirectoryTrigger(root);
   input?.addEventListener("change", () => void handleFileSelection(root, input, trigger, options));
   directoryInput?.addEventListener("change", () => {
-    void handleFileSelection(root, directoryInput, getDirectoryTrigger(root) || trigger, options);
+      void handleFileSelection(root, directoryInput, getDirectoryTrigger(root) || trigger, options);
   });
 }
 
 function bindUploadClear(root: HTMLElement) {
   const clear = getClear(root);
   clear?.addEventListener("click", (event) => {
-    event.preventDefault();
-    clearUpload(root, getUploadFileInput(root));
+      event.preventDefault();
+      clearUpload(root, getUploadFileInput(root));
   });
 }
 
@@ -194,7 +190,7 @@ function guardDocumentDrop(event: DragEvent) {
 
 function clearDraggingUploads(root: BindRoot = document) {
   queryAll<HTMLElement>(root, UPLOAD_SELECTOR).forEach((element) => {
-    element.removeAttribute("data-tbf-upload-drag");
+      element.removeAttribute("data-tbf-upload-drag");
   });
 }
 
@@ -204,7 +200,7 @@ function bindUploadDrop(root: HTMLElement, options: UploadRuntimeOptions) {
   root.addEventListener("dragenter", (event) => handleUploadDrag(root, event, true));
   root.addEventListener("dragover", (event) => handleUploadDrag(root, event, true));
   root.addEventListener("dragleave", (event) => {
-    if (!relatedTargetInside(root, event.relatedTarget)) handleUploadDrag(root, event, false);
+      if (!relatedTargetInside(root, event.relatedTarget)) handleUploadDrag(root, event, false);
   });
   root.addEventListener("drop", (event) => void handleUploadDrop(root, event, options));
 }
@@ -246,7 +242,7 @@ function bindUploadRoot(root: HTMLElement | null, options: UploadRuntimeOptions 
 
 function bindUploads(root: BindRoot = document, options: UploadRuntimeOptions = {}) {
   queryAll<HTMLElement>(root, UPLOAD_SELECTOR).forEach((element) => {
-    bindUploadRoot(element, options);
+      bindUploadRoot(element, options);
   });
 }
 
@@ -272,7 +268,7 @@ function setUploadFiles(root: HTMLElement | null, files: File[]) {
   return setManagerEntries(root, files.map((file) => ({ file, path: file.name })));
 }
 
-async function openUploadCropSession(
+async function openCropSessionFromManager(
   root: HTMLElement,
   input: HTMLInputElement | null,
   file: File,
@@ -284,15 +280,15 @@ async function openUploadCropSession(
 }
 
 const uploadManager = Object.freeze({
-  bind: bindUploadRoot,
-  bindAll: bindUploads,
-  boot: bootUploadManager,
-  clear: clearUploadRoot,
-  getEntries: getUploadEntries,
-  getFiles: getUploadFiles,
-  openCrop: openUploadCropSession,
-  setEntries: setManagerEntries,
-  setFiles: setUploadFiles,
+    bind: bindUploadRoot,
+    bindAll: bindUploads,
+    boot: bootUploadManager,
+    clear: clearUploadRoot,
+    getEntries: getUploadEntries,
+    getFiles: getUploadFiles,
+    openCrop: openCropSessionFromManager,
+    setEntries: setManagerEntries,
+    setFiles: setUploadFiles,
 });
 
 export {
@@ -303,7 +299,7 @@ export {
   clearUpload,
   getUploadEntries,
   getUploadFiles,
-  openUploadCropSession,
+  openCropSessionFromManager as openUploadCropSession,
   setSelectedEntries,
   setUploadFiles,
   uploadManager,

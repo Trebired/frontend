@@ -89,11 +89,11 @@ function applyAttrs(element: HTMLElement, input: unknown) {
 
 function fieldClassName(field: { className?: unknown }) {
   return primitiveStackClassName({
-    className: [
-      "key-value-input-field",
-      toString(field && field.className, "grow"),
-    ],
-    gap: "xs",
+      className: [
+        "key-value-input-field",
+        toString(field && field.className, "grow"),
+      ],
+      gap: "xs",
   });
 }
 
@@ -194,14 +194,14 @@ function removeButtonProps(
     ),
   );
   const removeClassName = primitiveButtonClassName({
-    className: [
-      "no-shrink",
-      toString(props.removeClassName),
-      toString((props.removeAttrs as any)?.className),
-    ],
-    icon: true,
-    size: "lg",
-    tone: "red",
+      className: [
+        "no-shrink",
+        toString(props.removeClassName),
+        toString((props.removeAttrs as any)?.className),
+      ],
+      icon: true,
+      size: "lg",
+      tone: "red",
   });
   return { removeClassName, removeLabel };
 }
@@ -213,12 +213,12 @@ function key_value_input(props: key_value_input_props) {
   ? props.fields.filter(Boolean)
   : [];
   const rootClassName = primitiveStackClassName({
-    className: [
-      "key-value-input",
-      toString(props.className),
-      toString((props.rootAttrs as any)?.className),
-    ],
-    gap: "xs",
+      className: [
+        "key-value-input",
+        toString(props.className),
+        toString((props.rootAttrs as any)?.className),
+      ],
+      gap: "xs",
   });
   const { removeClassName, removeLabel } = removeButtonProps(props);
   const labels = hasLabels(fields);
@@ -321,12 +321,12 @@ function createKeyValueInputElement(
   ? props.fields.filter(Boolean)
   : [];
   const rootClassName = primitiveStackClassName({
-    className: [
-      "key-value-input",
-      toString(props.className),
-      toString((props.rootAttrs as any)?.className),
-    ],
-    gap: "xs",
+      className: [
+        "key-value-input",
+        toString(props.className),
+        toString((props.rootAttrs as any)?.className),
+      ],
+      gap: "xs",
   });
   root.className = rootClassName;
   root.setAttribute("data-key-value-input", "");

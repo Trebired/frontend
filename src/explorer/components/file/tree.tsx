@@ -51,20 +51,20 @@ function useTreeScrollFocus(
   setOpenState: any,
 ) {
   useEffect(() => {
-    const firstPath = prioritizedPaths[0];
-    if (!firstPath) return;
-    setOpenState((current: any) => ({
-      ...(current && typeof current === "object" ? current : {}),
-      ...parentOpenStateForPath(firstPath, tree),
-    }));
-    requestAnimationFrame(() => {
-      const scrollRoot = scrollRef.current;
-      const target = scrollRoot instanceof HTMLElement
-        ? scrollRoot.querySelector(`[data-tbf-file-tree-path="${cssEscape(firstPath)}"]`)
-        : null;
-      if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
-    });
-  }, [prioritizedPaths, scrollRef, setOpenState, tree]);
+      const firstPath = prioritizedPaths[0];
+      if (!firstPath) return;
+      setOpenState((current: any) => ({
+            ...(current && typeof current === "object" ? current : {}),
+            ...parentOpenStateForPath(firstPath, tree),
+      }));
+      requestAnimationFrame(() => {
+          const scrollRoot = scrollRef.current;
+          const target = scrollRoot instanceof HTMLElement
+          ? scrollRoot.querySelector(`[data-tbf-file-tree-path="${cssEscape(firstPath)}"]`)
+          : null;
+          if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
+      });
+    }, [prioritizedPaths, scrollRef, setOpenState, tree]);
 }
 
 function useTreeData(props: FileTreeViewProps) {
@@ -74,10 +74,10 @@ function useTreeData(props: FileTreeViewProps) {
     [props.highlightedPaths],
   );
   const prioritizedPaths = useMemo(() => {
-    const preferred = normalizePathList(props.autoExpandPaths);
-    const highlighted = normalizePathList(props.highlightedPaths);
-    return preferred.length ? preferred : highlighted;
-  }, [props.autoExpandPaths, props.highlightedPaths]);
+      const preferred = normalizePathList(props.autoExpandPaths);
+      const highlighted = normalizePathList(props.highlightedPaths);
+      return preferred.length ? preferred : highlighted;
+    }, [props.autoExpandPaths, props.highlightedPaths]);
   return { highlightedPaths, prioritizedPaths, tree };
 }
 
@@ -90,9 +90,9 @@ function flattenTreeRows(nodesInput: any[], openState: any, level = 1): any[] {
   const rows: any[] = [];
   const nodes = Array.isArray(nodesInput) ? nodesInput : [];
   nodes.forEach((node) => {
-    const isOpen = isOpenNode(node, openState);
-    rows.push({ isOpen, level, node });
-    if (isOpen) rows.push(...flattenTreeRows(node?.children, openState, level + 1));
+      const isOpen = isOpenNode(node, openState);
+      rows.push({ isOpen, level, node });
+      if (isOpen) rows.push(...flattenTreeRows(node?.children, openState, level + 1));
   });
   return rows;
 }
@@ -120,19 +120,19 @@ function fileTreeRowKey(row: any, index: number) {
 function renderFileTreeRow(row: any, index: number, options: any) {
   return (
     <FileTreeRow
-      highlightedPaths={options.highlightedPaths}
-      interactive={options.interactive}
-      isOpen={row.isOpen}
-      key={fileTreeRowKey(row, index)}
-      level={row.level}
-      mode={options.mode}
-      node={row.node}
-      onFileOpen={options.props.onFileOpen}
-      onFileSelect={options.props.onFileSelect}
-      onPathOpen={options.props.onPathOpen}
-      onSelectedPathChange={options.setSelectedPath}
-      onToggle={options.togglePath}
-      selectedPath={options.selectedPath}
+    highlightedPaths={options.highlightedPaths}
+    interactive={options.interactive}
+    isOpen={row.isOpen}
+    key={fileTreeRowKey(row, index)}
+    level={row.level}
+    mode={options.mode}
+    node={row.node}
+    onFileOpen={options.props.onFileOpen}
+    onFileSelect={options.props.onFileSelect}
+    onPathOpen={options.props.onPathOpen}
+    onSelectedPathChange={options.setSelectedPath}
+    onToggle={options.togglePath}
+    selectedPath={options.selectedPath}
     />
   );
 }
@@ -142,45 +142,50 @@ function renderInteractiveFileTree(options: any) {
   const rows = flattenTreeRows(options.tree, options.openState);
   return (
     <FileTreeShell
-      hostRef={options.hostRef}
-      scrollbarSize={options.scrollbarSize}
-      scrollbarWidth={options.scrollbarWidth}
+    hostRef={options.hostRef}
+    scrollbarSize={options.scrollbarSize}
+    scrollbarWidth={options.scrollbarWidth}
     >
-      {options.tree.length ? (
+    {options.tree.length ? (
         createElement(
           "scroll-overflow",
           { style: { display: "contents" } },
           <div
-            ref={options.scrollRef}
-            className="scroll scroll-min tbf-file-tree-scroll"
-            style={treeScrollStyle(options.treeHeight, rows)}
+          ref={options.scrollRef}
+          className="scroll scroll-min tbf-file-tree-scroll"
+          style={treeScrollStyle(options.treeHeight, rows)}
           >
-            <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
-              {rows.map((row: any, index: number) => renderFileTreeRow(row, index, options))}
-            </div>
+          <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
+          {rows.map((row: any, index: number) => renderFileTreeRow(row, index, options))}
+          </div>
           </div>,
         )
       ) : (
         <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
-      )}
+    )}
     </FileTreeShell>
   );
 }
 
 function toggleFileTreePath(setOpenState: any, relPath: string) {
   setOpenState((current: any) => ({
-    ...(current && typeof current === "object" ? current : {}),
-    [relPath]: !Boolean(current?.[relPath]),
+        ...(current && typeof current === "object" ? current : {}),
+        [relPath]: !Boolean(current?.[relPath]),
   }));
 }
 
 function useSyncedInitialOpenState(initialOpenState: any, setOpenState: any) {
   useEffect(() => {
-    setOpenState((current: any) => ({
-      ...initialOpenState,
-      ...(current && typeof current === "object" ? current : {}),
-    }));
-  }, [initialOpenState, setOpenState]);
+      setOpenState((current: any) => ({
+            ...initialOpenState,
+            ...(current && typeof current === "object" ? current : {}),
+      }));
+    }, [initialOpenState, setOpenState]);
+}
+
+function initialFileTreeOpenPaths(props: FileTreeViewProps) {
+  if (Array.isArray(props.autoExpandPaths) && props.autoExpandPaths.length) return props.autoExpandPaths;
+  return props.highlightedPaths;
 }
 
 function FileTreeView(props: FileTreeViewProps) {
@@ -193,7 +198,7 @@ function FileTreeView(props: FileTreeViewProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { highlightedPaths, prioritizedPaths, tree } = useTreeData(props);
   const initialOpenState = useMemo(
-    () => buildInitialOpenState(tree, Array.isArray(props.autoExpandPaths) && props.autoExpandPaths.length ? props.autoExpandPaths : props.highlightedPaths),
+    () => buildInitialOpenState(tree, initialFileTreeOpenPaths(props)),
     [props.autoExpandPaths, props.highlightedPaths, tree],
   );
   const [openState, setOpenState] = useState(initialOpenState);
@@ -220,14 +225,14 @@ function FileTreeView(props: FileTreeViewProps) {
   useTreeScrollFocus(scrollRef, tree, prioritizedPaths, setOpenState);
   return interactive ? renderInteractiveFileTree(options) : (
     <StaticFileTreeView
-      highlightedPaths={highlightedPaths}
-      hostRef={hostRef}
-      initialOpenState={initialOpenState}
-      emptyMessage={props.emptyMessage}
-      scrollbarSize={scrollbarSize}
-      scrollbarWidth={scrollbarWidth}
-      tree={tree}
-      treeHeight={treeHeight}
+    highlightedPaths={highlightedPaths}
+    hostRef={hostRef}
+    initialOpenState={initialOpenState}
+    emptyMessage={props.emptyMessage}
+    scrollbarSize={scrollbarSize}
+    scrollbarWidth={scrollbarWidth}
+    tree={tree}
+    treeHeight={treeHeight}
     />
   );
 }

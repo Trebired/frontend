@@ -19,8 +19,8 @@ function CheckboxField(props: ChoiceFieldProps) {
   const { className, label, type: _type, ...rest } = props;
   return (
     <label className={classNames("tbf-choice", className)}>
-      <input {...rest} type="checkbox" />
-      <span>{label}</span>
+    <input {...rest} type="checkbox" />
+    <span>{label}</span>
     </label>
   );
 }
@@ -29,8 +29,8 @@ function CheckboxAllField(props: ChoiceFieldProps) {
   const { className, label, type: _type, ...rest } = props;
   return (
     <label className={classNames("tbf-choice", className)}>
-      <input {...rest} data-tbf-checkbox-all="" type="checkbox" />
-      <span>{label}</span>
+    <input {...rest} data-tbf-checkbox-all="" type="checkbox" />
+    <span>{label}</span>
     </label>
   );
 }
@@ -39,8 +39,8 @@ function RadioField(props: ChoiceFieldProps) {
   const { className, label, type: _type, ...rest } = props;
   return (
     <label className={classNames("tbf-choice", className)}>
-      <input {...rest} type="radio" />
-      <span>{label}</span>
+    <input {...rest} type="radio" />
+    <span>{label}</span>
     </label>
   );
 }
@@ -49,8 +49,8 @@ function ToggleField(props: ChoiceFieldProps) {
   const { className, label, type: _type, ...rest } = props;
   return (
     <label className={classNames("tbf-toggle", className)}>
-      <input {...rest} type="checkbox" />
-      <span>{label}</span>
+    <input {...rest} type="checkbox" />
+    <span>{label}</span>
     </label>
   );
 }

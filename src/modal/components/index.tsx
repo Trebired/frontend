@@ -22,14 +22,14 @@ function ModalRoot(props: ModalRootProps) {
   const { children, className, labelledBy, role = "dialog", ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-modal", className)}
-      data-tbf-modal=""
-      role={role}
-      aria-hidden="true"
-      aria-labelledby={labelledBy}
+    {...rest}
+    className={classNames("tbf-modal", className)}
+    data-tbf-modal=""
+    role={role}
+    aria-hidden="true"
+    aria-labelledby={labelledBy}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -38,11 +38,11 @@ function ModalContent(props: ModalContentProps) {
   const { children, className, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-modal__content", className)}
-      data-tbf-modal-content=""
+    {...rest}
+    className={classNames("tbf-modal__content", className)}
+    data-tbf-modal-content=""
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -51,13 +51,13 @@ function ModalOpenButton(props: ModalOpenButtonProps) {
   const { children, className, controls, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-modal-open=""
-      aria-controls={controls}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-modal-open=""
+    aria-controls={controls}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -66,12 +66,12 @@ function ModalCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { children = "Close", className, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-modal-close=""
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-modal-close=""
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }

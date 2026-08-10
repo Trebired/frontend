@@ -18,13 +18,13 @@ function PopoverPanel(props: PopoverPanelProps) {
   const { children, className, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-popover", className)}
-      data-tbf-popover=""
-      aria-hidden="true"
-      inert={true}
+    {...rest}
+    className={classNames("tbf-popover", className)}
+    data-tbf-popover=""
+    aria-hidden="true"
+    inert={true}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -33,15 +33,15 @@ function PopoverOpenButton(props: PopoverOpenButtonProps) {
   const { children, className, controls, hover, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-popover-hover={dataBool(hover)}
-      data-tbf-popover-trigger=""
-      aria-controls={controls}
-      aria-expanded="false"
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-popover-hover={dataBool(hover)}
+    data-tbf-popover-trigger=""
+    aria-controls={controls}
+    aria-expanded="false"
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -50,12 +50,12 @@ function PopoverCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { children = "Close", className, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-popover-close=""
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-popover-close=""
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }

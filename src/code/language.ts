@@ -2,45 +2,45 @@ const ACTIVATION_TIMEOUT_MS = 2000;
 const ACTIVATION_POLL_MS = 25;
 
 const LANGUAGE_CONTRIBUTION_MODULES: Record<string, string> = Object.freeze({
-  css: "vs/language/css/monaco.contribution",
-  handlebars: "vs/language/html/monaco.contribution",
-  html: "vs/language/html/monaco.contribution",
-  javascript: "vs/language/typescript/monaco.contribution",
-  json: "vs/language/json/monaco.contribution",
-  less: "vs/language/css/monaco.contribution",
-  razor: "vs/language/html/monaco.contribution",
-  scss: "vs/language/css/monaco.contribution",
-  typescript: "vs/language/typescript/monaco.contribution",
+    css: "vs/language/css/monaco.contribution",
+    handlebars: "vs/language/html/monaco.contribution",
+    html: "vs/language/html/monaco.contribution",
+    javascript: "vs/language/typescript/monaco.contribution",
+    json: "vs/language/json/monaco.contribution",
+    less: "vs/language/css/monaco.contribution",
+    razor: "vs/language/html/monaco.contribution",
+    scss: "vs/language/css/monaco.contribution",
+    typescript: "vs/language/typescript/monaco.contribution",
 });
 
 const LANGUAGE_ACTIVATION_SAMPLES: Record<string, string> = Object.freeze({
-  css: "body { color: red; }",
-  handlebars: "{{title}}\n<section>{{count}}</section>",
-  html: '<section data-role="card">hello</section>',
-  javascript: "const total = value + 1;",
-  json: '{ "key": 1, "items": [true, false] }',
-  less: "@accent: red;\nbody { color: @accent; }",
-  razor: "<div>@Model.Title</div>",
-  scss: "$accent: red;\nbody { color: $accent; }",
-  typescript: "type Item = { count: number };\nconst total: number = 1;",
+    css: "body { color: red; }",
+    handlebars: "{{title}}\n<section>{{count}}</section>",
+    html: '<section data-role="card">hello</section>',
+    javascript: "const total = value + 1;",
+    json: '{ "key": 1, "items": [true, false] }',
+    less: "@accent: red;\nbody { color: @accent; }",
+    razor: "<div>@Model.Title</div>",
+    scss: "$accent: red;\nbody { color: $accent; }",
+    typescript: "type Item = { count: number };\nconst total: number = 1;",
 });
 
 const activatedLanguages = new Map<string, Promise<boolean>>();
 
 function wait(ms: number) {
   return new Promise((resolve) => {
-    window.setTimeout(resolve, ms);
+      window.setTimeout(resolve, ms);
   });
 }
 
 function requireAmd(moduleId: string) {
   return new Promise((resolve, reject) => {
-    const req = (window as any).require;
-    if (typeof req !== "function") {
-      reject(new Error("monaco-amd-unavailable"));
-      return;
-    }
-    req([moduleId], resolve, reject);
+      const req = (window as any).require;
+      if (typeof req !== "function") {
+        reject(new Error("monaco-amd-unavailable"));
+        return;
+      }
+      req([moduleId], resolve, reject);
   });
 }
 
@@ -60,7 +60,7 @@ async function waitForLanguageTokenizer(monacoRef: any, languageId: string) {
   const sample = LANGUAGE_ACTIVATION_SAMPLES[languageId] || "token sample";
   while (Date.now() < deadline) {
     const html = await monacoRef.editor.colorize(sample, languageId, {
-      tabSize: 2,
+        tabSize: 2,
     });
     if (hasRealTokenization(html)) return true;
     await wait(ACTIVATION_POLL_MS);

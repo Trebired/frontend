@@ -20,14 +20,14 @@ function overviewSegmentKey(panelBucket: string, languageId: string) {
 function parseOverviewSegments(root: HTMLElement) {
   const segments = new Map<string, HTMLElement>();
   queryAll<HTMLElement>(root, SOURCE_OVERVIEW_SEGMENT_SELECTOR).forEach((segment) => {
-    const languageId = text(segment.getAttribute("data-tbf-source-language-id"));
-    const panelBucket = text(
-      segment
+      const languageId = text(segment.getAttribute("data-tbf-source-language-id"));
+      const panelBucket = text(
+        segment
         .closest(SOURCE_PANEL_SELECTOR)
         ?.getAttribute("data-tbf-source-language-panel-bucket"),
-      "everything",
-    );
-    if (languageId) segments.set(overviewSegmentKey(panelBucket, languageId), segment);
+        "everything",
+      );
+      if (languageId) segments.set(overviewSegmentKey(panelBucket, languageId), segment);
   });
   return segments;
 }
@@ -59,7 +59,7 @@ function parseSourceLanguageRow(
     percentEl,
     progressEl: row.querySelector<HTMLElement>(SOURCE_PROGRESS_SELECTOR),
     overviewSegmentEl:
-      overviewSegments.get(overviewSegmentKey(panelBucket, id)) || null,
+    overviewSegments.get(overviewSegmentKey(panelBucket, id)) || null,
   };
 }
 

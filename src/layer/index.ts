@@ -1,4 +1,9 @@
-import { cssEscape, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import {
+  cssEscape,
+  queryAll,
+  resolveDocumentTarget,
+  type BindRoot,
+} from "#er0dlx1gtbzh";
 
 const LAYER_ROOT_ID = "tbf_layer_root";
 const Z_INDEX_STEP = 10;
@@ -40,15 +45,15 @@ function installFullscreenLayerListener(): void {
   if (fullscreenListenerInstalled || typeof document === "undefined") return;
   fullscreenListenerInstalled = true;
   document.addEventListener("fullscreenchange", () => {
-    const root = document.getElementById(LAYER_ROOT_ID);
-    const container = resolveLayerContainer();
-    if (root instanceof HTMLElement && container && root.parentNode !== container) {
-      container.appendChild(root);
-    }
+      const root = document.getElementById(LAYER_ROOT_ID);
+      const container = resolveLayerContainer();
+      if (root instanceof HTMLElement && container && root.parentNode !== container) {
+        container.appendChild(root);
+      }
   });
 }
 
-function portalElement(element: HTMLElement | null) {
+function mountLayerPortalElement(element: HTMLElement | null) {
   if (!element) return null;
   const root = ensureLayerRoot();
   if (!root || element === root) return root;
@@ -57,7 +62,7 @@ function portalElement(element: HTMLElement | null) {
 }
 
 function moveLayerElementToTop(element: HTMLElement | null) {
-  const root = portalElement(element);
+  const root = mountLayerPortalElement(element);
   if (root && element && element.parentNode === root) root.appendChild(element);
   return root;
 }
@@ -91,20 +96,11 @@ function resolveElementZIndex(element: HTMLElement | null, fallback = null) {
   return attrValue === null ? fallback : attrValue;
 }
 
-function findReferenceElement(value: unknown, current: HTMLElement | null) {
+function findLayerReferenceElement(value: unknown, current: HTMLElement | null) {
   const token = String(value || "").trim();
-  if (!token || typeof document === "undefined") return null;
+  if (!token) return null;
   if (/^(self|this)$/iu.test(token)) return current;
-  if (token.startsWith("#")) return document.getElementById(token.slice(1));
-  if (token.startsWith("[data-")) {
-    try {
-      const element = document.querySelector(token);
-      return element instanceof HTMLElement ? element : null;
-    } catch {
-      return null;
-    }
-  }
-  return document.getElementById(token);
+  return resolveDocumentTarget(token);
 }
 
 function resolveReferenceValue(
@@ -116,7 +112,7 @@ function resolveReferenceValue(
   if (typeof value === "number" && Number.isFinite(value)) return value;
   const numeric = parseNumber(value);
   if (numeric !== null) return numeric;
-  return resolveElementZIndex(findReferenceElement(value, current), fallback);
+  return resolveElementZIndex(findLayerReferenceElement(value, current), fallback);
 }
 
 function resolveZIndexSpec(element: HTMLElement | null, options: ZIndexOptions = {}) {
@@ -175,7 +171,7 @@ function clearZIndex(element: HTMLElement | null) {
 
 function bindPortals(root: BindRoot = document) {
   queryAll<HTMLElement>(root, "[data-tbf-portal]").forEach((element) => {
-    portalElement(element);
+      mountLayerPortalElement(element);
   });
 }
 
@@ -192,7 +188,7 @@ export {
   elementBySafeId,
   ensureLayerRoot,
   moveLayerElementToTop,
-  portalElement,
+  mountLayerPortalElement as portalElement,
   promoteZIndex,
   resolveElementZIndex,
   resolveZIndexSpec,

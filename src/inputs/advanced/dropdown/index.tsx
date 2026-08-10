@@ -192,9 +192,9 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     {model.isSearchable ? (
         <div
         className={primitiveTextClassName({
-          className: "dropdown-empty",
-          muted: true,
-          size: "sm",
+              className: "dropdown-empty",
+              muted: true,
+              size: "sm",
         })}
         data-search-empty-slot=""
         hidden
@@ -222,8 +222,8 @@ function dropdownNode(
     {...mapAttrs(props.rootProps)}
     >
     {dropdownConfigScript(
-          "data-dropdown-root-config",
-          dropdownRootConfigPayload(model),
+        "data-dropdown-root-config",
+        dropdownRootConfigPayload(model),
     )}
     <input
     type="hidden"
@@ -244,7 +244,7 @@ function dropdownNode(
   );
 }
 
-function dropdown(props: dropdown_props) {
+function advancedDropdown(props: dropdown_props) {
   const model = dropdownModel(props);
   const node = dropdownNode(props, model);
   if (!model.labelText) return node;
@@ -257,4 +257,4 @@ function dropdown(props: dropdown_props) {
 }
 
 export type { dropdown_option, dropdown_props };
-export default dropdown;
+export default advancedDropdown;

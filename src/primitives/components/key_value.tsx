@@ -75,27 +75,27 @@ function keyValueRowValueProps(row: key_value_row) {
 function row_value_content(row: key_value_row, valueClassName: string) {
   const valueHtml = typeof row.value_html === "string" ? row.value_html : "";
   const valueNode =
-    row.value_node != null ? row.value_node : isRenderableValueNode(row.value) ? row.value : null;
+  row.value_node != null ? row.value_node : isRenderableValueNode(row.value) ? row.value : null;
   const sharedProps = keyValueRowValueProps(row);
   if (valueHtml) {
     return (
       <div
-        className={valueClassName}
-        {...sharedProps}
-        dangerouslySetInnerHTML={{ __html: valueHtml }}
+      className={valueClassName}
+      {...sharedProps}
+      dangerouslySetInnerHTML={{ __html: valueHtml }}
       />
     );
   }
   if (valueNode != null) {
     return (
       <div className={valueClassName} {...sharedProps}>
-        {valueNode as ReactNode}
+      {valueNode as ReactNode}
       </div>
     );
   }
   return (
     <span className={valueClassName} {...sharedProps}>
-      {formatKeyValueRowValue(row)}
+    {formatKeyValueRowValue(row)}
     </span>
   );
 }
@@ -109,23 +109,23 @@ function key_value_row_item(
 ) {
   return (
     <div
-      className={primitiveInlineRowClassName({
-        className: joinClassNames("lh-xs", rowClassName),
-        fit: layout === "inline",
-        gap: "xs2",
-      })}
-      key={`${String(row.label || "row")}_${index}`}
+    className={primitiveInlineRowClassName({
+          className: joinClassNames("lh-xs", rowClassName),
+          fit: layout === "inline",
+          gap: "xs2",
+    })}
+    key={`${String(row.label || "row")}_${index}`}
     >
-      {layout === "inline" && index > 0 ? (
+    {layout === "inline" && index > 0 ? (
         <span className={primitiveTextClassName({ className: "lh-xs", muted: true })}>•</span>
       ) : null}
-      <span
-        className={primitiveTextClassName({ className: "lh-xs", muted: true })}
-        {...(row.label_attributes ? { "data-label-attrs-html": row.label_attributes } : {})}
-      >
-        {String(row.label || "")}:
-      </span>
-      {row_value_content(row, valueClassName)}
+    <span
+    className={primitiveTextClassName({ className: "lh-xs", muted: true })}
+    {...(row.label_attributes ? { "data-label-attrs-html": row.label_attributes } : {})}
+    >
+    {String(row.label || "")}:
+    </span>
+    {row_value_content(row, valueClassName)}
     </div>
   );
 }
@@ -137,20 +137,20 @@ function key_value_rows(
   const layout = props?.layout === "inline" ? "inline" : "column";
   const rowClassName = toText(props?.rowClassName);
   const valueClassName = primitiveTextClassName({
-    breakWord: true,
-    className: "lh-xs",
-    muted: layout === "inline",
+      breakWord: true,
+      className: "lh-xs",
+      muted: layout === "inline",
   });
   return rows
-    .filter((row) => row && typeof row === "object" && row.label)
-    .map((row, index) => key_value_row_item(row, index, layout, rowClassName, valueClassName));
+  .filter((row) => row && typeof row === "object" && row.label)
+  .map((row, index) => key_value_row_item(row, index, layout, rowClassName, valueClassName));
 }
 
 function keyValueModel(props: key_value_props) {
   const groups = Array.isArray(props.groups) ? props.groups.filter(Boolean) : [];
   const rows = Array.isArray(props.rows) ? props.rows.filter(Boolean) : [];
   const layout: "column" | "inline" =
-    props.layout === "inline" ? "inline" : "column";
+  props.layout === "inline" ? "inline" : "column";
   const separated = props.separated === true || groups.length > 0;
   const wrapInCard = props.card === true || (props.card !== false && separated);
   const className = toText(props.className);
@@ -158,24 +158,24 @@ function keyValueModel(props: key_value_props) {
   const isInlineList = layout === "inline" && !wrapInCard;
   return {
     bodyClassName: isInlineList
-      ? primitiveInlineRowClassName({
-          className: primitiveTextClassName({ className: rowsClassName, muted: true }),
-          gap: "xs2",
-          wrap: true,
-        })
-      : layout === "inline"
-      ? primitiveInlineRowClassName({ className: rowsClassName, gap: "xs2", wrap: true })
-      : primitiveStackClassName({ className: rowsClassName, gap: "xs" }),
+    ? primitiveInlineRowClassName({
+        className: primitiveTextClassName({ className: rowsClassName, muted: true }),
+        gap: "xs2",
+        wrap: true,
+    })
+    : layout === "inline"
+    ? primitiveInlineRowClassName({ className: rowsClassName, gap: "xs2", wrap: true })
+    : primitiveStackClassName({ className: rowsClassName, gap: "xs" }),
     groups,
     layout,
     rowClassName: toText(props.rowClassName),
     rows,
     separated,
     wrapperClassName: isInlineList
-      ? primitiveTextClassName({ className: joinClassNames("card-segments", className), size: "sm" })
-      : wrapInCard
-      ? primitiveCardClassName({ gap: "xs" })
-      : primitiveStackClassName({ className, gap: "xs" }),
+    ? primitiveTextClassName({ className: joinClassNames("card-segments", className), size: "sm" })
+    : wrapInCard
+    ? primitiveCardClassName({ gap: "xs" })
+    : primitiveStackClassName({ className, gap: "xs" }),
   };
 }
 
@@ -184,30 +184,30 @@ function key_value(props: key_value_props) {
   if (model.groups.length) {
     return (
       <div className={primitiveGridClassName({ gap: "sm" })}>
-        {model.groups.map((group, index) => (
-          <div className={model.wrapperClassName} key={`${String(group.title || "group")}_${index}`}>
+      {model.groups.map((group, index) => (
+            <div className={model.wrapperClassName} key={`${String(group.title || "group")}_${index}`}>
             {group.title ? <div className="label lh-xs">{String(group.title)}</div> : null}
             {model.separated ? separator({}) : null}
             <div className={model.bodyClassName}>
-              {key_value_rows(Array.isArray(group.rows) ? group.rows : [], {
-                layout: model.layout,
-                rowClassName: model.rowClassName,
-              })}
+            {key_value_rows(Array.isArray(group.rows) ? group.rows : [], {
+                  layout: model.layout,
+                  rowClassName: model.rowClassName,
+            })}
             </div>
-          </div>
-        ))}
+            </div>
+      ))}
       </div>
     );
   }
   return (
     <div className={model.wrapperClassName}>
-      {model.separated ? separator({}) : null}
-      <div className={model.bodyClassName}>
-        {key_value_rows(model.rows, {
+    {model.separated ? separator({}) : null}
+    <div className={model.bodyClassName}>
+    {key_value_rows(model.rows, {
           layout: model.layout,
           rowClassName: model.rowClassName,
-        })}
-      </div>
+    })}
+    </div>
     </div>
   );
 }

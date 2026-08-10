@@ -18,8 +18,8 @@ function normalizeBrightness(value: unknown): string {
 
 function normalizeActivePressInteraction(value: unknown): NormalizedFrontendDesignInteractionsConfig["activePress"] {
   const source = value === undefined
-    ? {}
-    : assertPlainObject(value, "design.interactions.activePress") as FrontendActivePressInteractionConfig;
+  ? {}
+  : assertPlainObject(value, "design.interactions.activePress") as FrontendActivePressInteractionConfig;
   const enabled = normalizeBoolean(source.enabled, false, "design.interactions.activePress.enabled");
   const brightness = normalizeBrightness(source.brightness);
   return {
@@ -31,8 +31,8 @@ function normalizeActivePressInteraction(value: unknown): NormalizedFrontendDesi
 
 function normalizeInteractionsConfig(value: unknown): NormalizedFrontendDesignInteractionsConfig {
   const source = value === undefined
-    ? {}
-    : assertPlainObject(value, "design.interactions") as FrontendDesignInteractionsConfig;
+  ? {}
+  : assertPlainObject(value, "design.interactions") as FrontendDesignInteractionsConfig;
   return {
     activePress: normalizeActivePressInteraction(source.activePress),
   };

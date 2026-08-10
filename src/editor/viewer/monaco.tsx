@@ -45,17 +45,17 @@ function createReadonlyEditor(monaco: any, host: HTMLElement) {
   defineMonacoThemes(monaco);
   monaco.editor.setTheme(getPreferredMonacoThemeName());
   return monaco.editor.create(host, {
-    automaticLayout: true,
-    fontSize: 13,
-    lineNumbers: "on",
-    minimap: { enabled: false },
-    overviewRulerBorder: false,
-    readOnly: true,
-    renderLineHighlight: "all",
-    scrollBeyondLastLine: false,
-    tabSize: 2,
-    value: "",
-    wordWrap: "on",
+      automaticLayout: true,
+      fontSize: 13,
+      lineNumbers: "on",
+      minimap: { enabled: false },
+      overviewRulerBorder: false,
+      readOnly: true,
+      renderLineHighlight: "all",
+      scrollBeyondLastLine: false,
+      tabSize: 2,
+      value: "",
+      wordWrap: "on",
   });
 }
 
@@ -63,25 +63,25 @@ function createReadonlyDiffEditor(monaco: any, host: HTMLElement) {
   defineMonacoThemes(monaco);
   monaco.editor.setTheme(getPreferredMonacoThemeName());
   return monaco.editor.createDiffEditor(host, {
-    automaticLayout: true,
-    diffCodeLens: false,
-    diffWordWrap: "off",
-    fontSize: 13,
-    hideUnchangedRegions: { enabled: false },
-    minimap: { enabled: false },
-    originalEditable: false,
-    overviewRulerBorder: false,
-    readOnly: true,
-    renderOverviewRuler: false,
-    renderSideBySide: true,
-    renderSideBySideInlineBreakpoint: 0,
-    scrollbar: {
-      alwaysConsumeMouseWheel: false,
-      horizontalScrollbarSize: 10,
-      verticalScrollbarSize: 10,
-    },
-    scrollBeyondLastLine: false,
-    useInlineViewWhenSpaceIsLimited: false,
+      automaticLayout: true,
+      diffCodeLens: false,
+      diffWordWrap: "off",
+      fontSize: 13,
+      hideUnchangedRegions: { enabled: false },
+      minimap: { enabled: false },
+      originalEditable: false,
+      overviewRulerBorder: false,
+      readOnly: true,
+      renderOverviewRuler: false,
+      renderSideBySide: true,
+      renderSideBySideInlineBreakpoint: 0,
+      scrollbar: {
+        alwaysConsumeMouseWheel: false,
+        horizontalScrollbarSize: 10,
+        verticalScrollbarSize: 10,
+      },
+      scrollBeyondLastLine: false,
+      useInlineViewWhenSpaceIsLimited: false,
   });
 }
 
@@ -136,8 +136,8 @@ async function applyReadonlyDiffModels(refs: any, props: any) {
     String(props.modifiedContent || ""),
   );
   refs.editor.current.setModel({
-    original: refs.models.current.original,
-    modified: refs.models.current.modified,
+      original: refs.models.current.original,
+      modified: refs.models.current.modified,
   });
   refs.editor.current.layout?.();
   resetDiffScroll(refs.editor.current);
@@ -184,63 +184,63 @@ function useReadonlyPaneRefs() {
 function ReadonlyMonacoPane(props: any) {
   const refs = useReadonlyPaneRefs();
   useEffect(() => {
-    let active = true;
-    ensureMonaco()
+      let active = true;
+      ensureMonaco()
       .then((monaco: any) => {
-        if (!active || !(refs.host.current instanceof HTMLElement)) return;
-        refs.monaco.current = monaco;
-        refs.editor.current = createReadonlyEditor(monaco, refs.host.current);
-        installThemeChange(refs.host.current, monaco);
-        void applyReadonlyModel(refs, props);
+          if (!active || !(refs.host.current instanceof HTMLElement)) return;
+          refs.monaco.current = monaco;
+          refs.editor.current = createReadonlyEditor(monaco, refs.host.current);
+          installThemeChange(refs.host.current, monaco);
+          void applyReadonlyModel(refs, props);
       })
       .catch((error) => {
-        if (active) showMonacoError(refs.host.current, error, "Editor failed to load.");
+          if (active) showMonacoError(refs.host.current, error, "Editor failed to load.");
       });
-    return () => {
-      active = false;
-      removeThemeChange(refs.host.current as any);
-      refs.editor.current?.dispose();
-      refs.model.current?.dispose();
-      refs.editor.current = null;
-      refs.model.current = null;
-      refs.monaco.current = null;
-    };
-  }, []);
+      return () => {
+        active = false;
+        removeThemeChange(refs.host.current as any);
+        refs.editor.current?.dispose();
+        refs.model.current?.dispose();
+        refs.editor.current = null;
+        refs.model.current = null;
+        refs.monaco.current = null;
+      };
+    }, []);
   useEffect(() => {
-    void applyReadonlyModel(refs, props).catch(() => {});
-  }, [props.content, props.languageName, props.path]);
+      void applyReadonlyModel(refs, props).catch(() => {});
+    }, [props.content, props.languageName, props.path]);
   return <MonacoHost hostRef={refs.host} minHeight={props.minHeight} />;
 }
 
 function ReadonlyMonacoDiffPane(props: any) {
   const refs = useReadonlyDiffRefs();
   useEffect(() => {
-    let active = true;
-    ensureMonaco()
+      let active = true;
+      ensureMonaco()
       .then((monaco: any) => {
-        if (!active || !(refs.host.current instanceof HTMLElement)) return;
-        refs.monaco.current = monaco;
-        refs.editor.current = createReadonlyDiffEditor(monaco, refs.host.current);
-        installThemeChange(refs.host.current, monaco);
-        void applyReadonlyDiffModels(refs, props);
+          if (!active || !(refs.host.current instanceof HTMLElement)) return;
+          refs.monaco.current = monaco;
+          refs.editor.current = createReadonlyDiffEditor(monaco, refs.host.current);
+          installThemeChange(refs.host.current, monaco);
+          void applyReadonlyDiffModels(refs, props);
       })
       .catch((error) => {
-        if (active) showMonacoError(refs.host.current, error, "Diff editor failed to load.");
+          if (active) showMonacoError(refs.host.current, error, "Diff editor failed to load.");
       });
-    return () => {
-      active = false;
-      cleanupReadonlyDiffRefs(refs);
-    };
-  }, []);
+      return () => {
+        active = false;
+        cleanupReadonlyDiffRefs(refs);
+      };
+    }, []);
   useEffect(() => {
-    void applyReadonlyDiffModels(refs, props).catch(() => {});
-  }, [
-    props.languageName,
-    props.modifiedContent,
-    props.modifiedPath,
-    props.originalContent,
-    props.originalPath,
-    props.path,
+      void applyReadonlyDiffModels(refs, props).catch(() => {});
+    }, [
+      props.languageName,
+      props.modifiedContent,
+      props.modifiedPath,
+      props.originalContent,
+      props.originalPath,
+      props.path,
   ]);
   return <MonacoHost hostRef={refs.host} minHeight={props.minHeight} />;
 }
@@ -248,12 +248,12 @@ function ReadonlyMonacoDiffPane(props: any) {
 function MonacoHost(props: any) {
   return (
     <div
-      ref={props.hostRef}
-      className="width-max"
-      style={{
+    ref={props.hostRef}
+    className="width-max"
+    style={{
         height: "100%",
         minHeight: Number.isFinite(props.minHeight) ? Number(props.minHeight) : 520,
-      }}
+    }}
     />
   );
 }

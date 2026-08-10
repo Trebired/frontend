@@ -69,7 +69,7 @@ function bootDropdownManager() {
   return dropdownManager;
 }
 
-function bindDropdown(target: Element | null) {
+function bindDropdownManager(target: Element | null) {
   bootDropdownManager();
   if (target instanceof Element) bindStaticDropdown(target);
   return dropdownManager;
@@ -78,7 +78,7 @@ function bindDropdown(target: Element | null) {
 const dropdownManager = Object.freeze({
     open: openDynamic,
     close: closeDynamic,
-    bind: bindDropdown,
+    bind: bindDropdownManager,
     bindDropdown: bindStaticDropdown,
     boot: bootDropdownManager,
 });

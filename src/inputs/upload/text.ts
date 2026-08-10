@@ -1,7 +1,4 @@
-function toText(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
-}
+import { escapeHtml, jsonScript as jsonScriptPayload, toText } from "#ndsvdqv80epr";
 
 function bool(value: unknown) {
   if (value === true) return true;
@@ -11,22 +8,9 @@ function bool(value: unknown) {
 
 function splitTokens(value: unknown) {
   return String(value ?? "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function escapeHtml(value: unknown) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function jsonScriptPayload(value: unknown) {
-  return JSON.stringify(value).replace(/</g, "\\u003c");
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
 }
 
 export { bool, escapeHtml, jsonScriptPayload, splitTokens, toText };

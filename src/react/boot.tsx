@@ -56,21 +56,21 @@ function BootScript(props: BootScriptProps) {
   if (theme !== false) {
     nodes.push(
       <ThemeBootScript
-        {...scriptProps as ThemeBootScriptProps}
-        dark={dark}
-        key="theme"
-        light={light}
-        modes={modes}
-        theme={theme}
+      {...scriptProps as ThemeBootScriptProps}
+      dark={dark}
+      key="theme"
+      light={light}
+      modes={modes}
+      theme={theme}
       />,
     );
   }
   if (layout !== false) {
     nodes.push(
       <LayoutBootScript
-        {...scriptProps as LayoutBootScriptProps}
-        {...(layout === true ? {} : layout)}
-        key="layout"
+      {...scriptProps as LayoutBootScriptProps}
+      {...(layout === true ? {} : layout)}
+      key="layout"
       />,
     );
   }
@@ -78,9 +78,9 @@ function BootScript(props: BootScriptProps) {
   if (sides.length > 0) {
     nodes.push(
       <SidebarBootScript
-        {...scriptProps as SidebarBootScriptProps}
-        key="sidebar"
-        sides={sides}
+      {...scriptProps as SidebarBootScriptProps}
+      key="sidebar"
+      sides={sides}
       />,
     );
   }

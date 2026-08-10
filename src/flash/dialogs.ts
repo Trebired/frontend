@@ -13,6 +13,7 @@ import type {
   FlashType,
   PromptOptions,
 } from "./types.js";
+import { toText as text } from "#ndsvdqv80epr";
 
 function finishDialog<T>(
   stack: HTMLElement,
@@ -28,30 +29,39 @@ function finishDialog<T>(
   resolve(value);
 }
 
+function createDialogFinisher<T>(
+  stack: HTMLElement,
+  element: HTMLElement,
+  resolve: (value: T) => void,
+  timeoutRef: { id?: number },
+) {
+  return (value: T) => finishDialog(stack, element, resolve, value, timeoutRef.id);
+}
+
 function confirm(message: unknown, description = "", options: ConfirmOptions = {}) {
   const stack = ensureFlashStack();
   if (!stack) return Promise.resolve(false);
   return new Promise<boolean>((resolve) => {
-    const model = buildConfirmModel(message, description, options);
-    const controls = createDialogFlash(model.type, model.title, model.description, {
-      progressTone: model.progressTone,
-    });
-    const body = controls.element.querySelector(".tbf-flash__body");
-    const actions = document.createElement("div");
-    actions.className = "tbf-flash__actions";
-    const cancel = makeButton(model.cancelText, "tbf-button");
-    const ok = makeButton(model.confirmButtonText, "tbf-button tbf-button--strong");
-    const input = createConfirmInput(model, ok);
-    if (input) body?.appendChild(input);
-    actions.append(cancel, ok);
-    body?.appendChild(actions);
-    stack.appendChild(controls.element);
-    let timeoutId: number | undefined;
-    const finish = (value: boolean) => finishDialog(stack, controls.element, resolve, value, timeoutId);
-    bindConfirmControls(controls.element, finish, cancel, ok);
-    timeoutId = window.setTimeout(() => finish(false), FLASH_CONFIRM_TIMEOUT_MS);
-    controls.progress.style.animationDuration = `${FLASH_CONFIRM_TIMEOUT_MS}ms`;
-    revealDialog(stack, controls.element, input);
+      const model = buildConfirmModel(message, description, options);
+      const controls = createDialogFlash(model.type, model.title, model.description, {
+          progressTone: model.progressTone,
+      });
+      const body = controls.element.querySelector(".tbf-flash__body");
+      const actions = document.createElement("div");
+      actions.className = "tbf-flash__actions";
+      const cancel = makeButton(model.cancelText, "tbf-button");
+      const ok = makeButton(model.confirmButtonText, "tbf-button tbf-button--strong");
+      const input = createConfirmInput(model, ok);
+      if (input) body?.appendChild(input);
+      actions.append(cancel, ok);
+      body?.appendChild(actions);
+      stack.appendChild(controls.element);
+      const timeoutRef: { id?: number } = {};
+      const finishConfirmDialog = createDialogFinisher(stack, controls.element, resolve, timeoutRef);
+      bindConfirmControls(controls.element, finishConfirmDialog, cancel, ok);
+      timeoutRef.id = window.setTimeout(() => finishConfirmDialog(false), FLASH_CONFIRM_TIMEOUT_MS);
+      controls.progress.style.animationDuration = `${FLASH_CONFIRM_TIMEOUT_MS}ms`;
+      revealDialog(stack, controls.element, input);
   });
 }
 
@@ -64,7 +74,7 @@ function bindConfirmControls(
   cancel.addEventListener("click", () => finish(false));
   ok.addEventListener("click", () => finish(true));
   element.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") finish(false);
+      if (event.key === "Escape") finish(false);
   });
 }
 
@@ -78,7 +88,7 @@ function createConfirmInput(options: ConfirmModel, ok: HTMLButtonElement) {
   input.autocomplete = "off";
   input.placeholder = options.placeholder || confirmationText;
   input.addEventListener("input", () => {
-    ok.disabled = input.value.trim().toLowerCase() !== confirmationText.toLowerCase();
+      ok.disabled = input.value.trim().toLowerCase() !== confirmationText.toLowerCase();
   });
   return input;
 }
@@ -87,18 +97,18 @@ function prompt(message: unknown, description = "", options: PromptOptions = {})
   const stack = ensureFlashStack();
   if (!stack) return Promise.resolve(null);
   return new Promise<string | null>((resolve) => {
-    const controls = createDialogFlash("info", message, description, {
-      progressTone: options.progressTone || options.progressType || "info",
-    });
-    const form = createPromptForm(options);
-    controls.element.querySelector(".tbf-flash__body")?.appendChild(form);
-    stack.appendChild(controls.element);
-    let timeoutId: number | undefined;
-    const finish = (value: string | null) => finishDialog(stack, controls.element, resolve, value, timeoutId);
-    bindPromptControls(form, finish);
-    timeoutId = window.setTimeout(() => finish(null), FLASH_PROMPT_TIMEOUT_MS);
-    controls.progress.style.animationDuration = `${FLASH_PROMPT_TIMEOUT_MS}ms`;
-    revealDialog(stack, controls.element, form.querySelector("input"));
+      const controls = createDialogFlash("info", message, description, {
+          progressTone: options.progressTone || options.progressType || "info",
+      });
+      const form = createPromptForm(options);
+      controls.element.querySelector(".tbf-flash__body")?.appendChild(form);
+      stack.appendChild(controls.element);
+      const timeoutRef: { id?: number } = {};
+      const finishPromptDialog = createDialogFinisher(stack, controls.element, resolve, timeoutRef);
+      bindPromptControls(form, finishPromptDialog);
+      timeoutRef.id = window.setTimeout(() => finishPromptDialog(null), FLASH_PROMPT_TIMEOUT_MS);
+      controls.progress.style.animationDuration = `${FLASH_PROMPT_TIMEOUT_MS}ms`;
+      revealDialog(stack, controls.element, form.querySelector("input"));
   });
 }
 
@@ -133,22 +143,22 @@ function bindPromptControls(
   const input = form.querySelector<HTMLInputElement>("input");
   const cancel = form.querySelector<HTMLButtonElement>(".tbf-button:not(.tbf-button--strong)");
   form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    finish(input?.value.trim() || null);
+      event.preventDefault();
+      finish(input?.value.trim() || null);
   });
   cancel?.addEventListener("click", () => finish(null));
 }
 
 function revealDialog(stack: HTMLElement, element: HTMLElement, focusTarget: HTMLElement | null) {
   window.requestAnimationFrame(() => {
-    element.setAttribute("data-tbf-visible", "true");
-    focusTarget?.focus();
-    if (focusTarget instanceof HTMLInputElement) focusTarget.select();
-    layoutFlashStack(stack);
+      element.setAttribute("data-tbf-visible", "true");
+      focusTarget?.focus();
+      if (focusTarget instanceof HTMLInputElement) focusTarget.select();
+      layoutFlashStack(stack);
   });
 }
 
-function confirmElement(source: Element | null, fallbackSource: Element | null = null) {
+function confirmFlashElement(source: Element | null, fallbackSource: Element | null = null) {
   const target = hasElementConfirmRequest(source) ? source : fallbackSource;
   if (!hasElementConfirmRequest(target)) return Promise.resolve(true);
   const request = readElementConfirmRequest(target);
@@ -200,14 +210,14 @@ function hasElementConfirmRequest(source: Element | null | undefined) {
   const node = elementNode(source);
   if (!node) return false;
   return Boolean(
-    attr(node, "data-tbf-confirm-variant") ||
-    attr(node, "data-tbf-confirm-title") ||
-    attr(node, "data-tbf-confirm-description") ||
-    attr(node, "data-tbf-confirm-text") ||
-    attr(node, "data-confirmation-variant") ||
-    attr(node, "data-confirmation-title") ||
-    attr(node, "data-confirmation-description") ||
-    attr(node, "data-confirmation-text"),
+    dialogAttr(node, "data-tbf-confirm-variant") ||
+      dialogAttr(node, "data-tbf-confirm-title") ||
+      dialogAttr(node, "data-tbf-confirm-description") ||
+      dialogAttr(node, "data-tbf-confirm-text") ||
+      dialogAttr(node, "data-confirmation-variant") ||
+      dialogAttr(node, "data-confirmation-title") ||
+      dialogAttr(node, "data-confirmation-description") ||
+      dialogAttr(node, "data-confirmation-text"),
   );
 }
 
@@ -216,12 +226,12 @@ function readElementConfirmRequest(source: Element | null | undefined) {
   if (!node) {
     return { description: "", options: {}, title: "" };
   }
-  const variant = attr(node, "data-tbf-confirm-variant") || attr(node, "data-confirmation-variant");
+  const variant = dialogAttr(node, "data-tbf-confirm-variant") || dialogAttr(node, "data-confirmation-variant");
   if (variant) return variantElementConfirmRequest(node, variant);
   return {
-    description: attr(node, "data-tbf-confirm-description") || attr(node, "data-confirmation-description"),
+    description: dialogAttr(node, "data-tbf-confirm-description") || dialogAttr(node, "data-confirmation-description"),
     options: standardElementConfirmOptions(node),
-    title: attr(node, "data-tbf-confirm-title") || attr(node, "data-confirmation-title"),
+    title: dialogAttr(node, "data-tbf-confirm-title") || dialogAttr(node, "data-confirmation-title"),
   };
 }
 
@@ -231,11 +241,11 @@ function buildVariantConfirmModel(options: ConfirmOptions): ConfirmModel | null 
   const subject = text(options.subject, "item");
   const target = text(options.target, subject);
   const confirmMode = normalizeConfirmMode(options.mode || options.confirmType || options.confirmMode || (
-    variant === "delete" ? "text" : "classic"
+      variant === "delete" ? "text" : "classic"
   ));
   const confirmationText = confirmMode === "text"
-    ? text(options.confirmationText, target)
-    : "";
+  ? text(options.confirmationText, target)
+  : "";
   const copy = variantCopy(variant, subject, target);
   return {
     cancelText: text(options.cancelText, "Cancel"),
@@ -252,14 +262,14 @@ function buildVariantConfirmModel(options: ConfirmOptions): ConfirmModel | null 
 }
 
 function variantElementConfirmRequest(node: Element, variant: string) {
-  const mode = attr(node, "data-tbf-confirm-mode") || attr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, "data-tbf-confirm-mode") || dialogAttr(node, "data-confirmation-mode");
   return {
     description: "",
     options: {
-      confirmationText: attr(node, "data-tbf-confirm-text") || attr(node, "data-confirmation-text") || undefined,
+      confirmationText: dialogAttr(node, "data-tbf-confirm-text") || dialogAttr(node, "data-confirmation-text") || undefined,
       mode: mode ? normalizeConfirmMode(mode) : undefined,
-      subject: attr(node, "data-tbf-confirm-subject") || attr(node, "data-confirmation-subject") || undefined,
-      target: attr(node, "data-tbf-confirm-target") || attr(node, "data-confirmation-target") || undefined,
+      subject: dialogAttr(node, "data-tbf-confirm-subject") || dialogAttr(node, "data-confirmation-subject") || undefined,
+      target: dialogAttr(node, "data-tbf-confirm-target") || dialogAttr(node, "data-confirmation-target") || undefined,
       variant,
     },
     title: "",
@@ -267,21 +277,21 @@ function variantElementConfirmRequest(node: Element, variant: string) {
 }
 
 function standardElementConfirmOptions(node: Element): ConfirmOptions {
-  const mode = attr(node, "data-tbf-confirm-mode") || attr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, "data-tbf-confirm-mode") || dialogAttr(node, "data-confirmation-mode");
   return {
-    cancelText: attr(node, "data-tbf-confirm-cancel-text") || attr(node, "data-confirmation-cancel-text") || undefined,
-    confirmButtonText: attr(node, "data-tbf-confirm-confirm-text") ||
-      attr(node, "data-confirmation-confirm-text") ||
+    cancelText: dialogAttr(node, "data-tbf-confirm-cancel-text") || dialogAttr(node, "data-confirmation-cancel-text") || undefined,
+    confirmButtonText: dialogAttr(node, "data-tbf-confirm-confirm-text") ||
+      dialogAttr(node, "data-confirmation-confirm-text") ||
       undefined,
-    confirmationText: attr(node, "data-tbf-confirm-text") || attr(node, "data-confirmation-text") || undefined,
+    confirmationText: dialogAttr(node, "data-tbf-confirm-text") || dialogAttr(node, "data-confirmation-text") || undefined,
     mode: mode ? normalizeConfirmMode(mode) : undefined,
-    placeholder: attr(node, "data-tbf-confirm-placeholder") ||
-      attr(node, "data-confirmation-placeholder") ||
+    placeholder: dialogAttr(node, "data-tbf-confirm-placeholder") ||
+      dialogAttr(node, "data-confirmation-placeholder") ||
       undefined,
-    progressTone: attr(node, "data-tbf-confirm-progress-tone") ||
-      attr(node, "data-confirmation-progress-tone") ||
+    progressTone: dialogAttr(node, "data-tbf-confirm-progress-tone") ||
+      dialogAttr(node, "data-confirmation-progress-tone") ||
       undefined,
-    type: normalizeFlashType(attr(node, "data-tbf-confirm-type") || "warn"),
+    type: normalizeFlashType(dialogAttr(node, "data-tbf-confirm-type") || "warn"),
   };
 }
 
@@ -313,8 +323,8 @@ function variantCopy(variant: ConfirmVariant, subject: string, target: string) {
 function normalizeConfirmVariant(value: unknown): ConfirmVariant | null {
   const variant = text(value).toLowerCase();
   return variant === "archive" || variant === "delete" || variant === "drop"
-    ? variant
-    : null;
+  ? variant
+  : null;
 }
 
 function normalizeConfirmMode(value: unknown): "classic" | "text" {
@@ -325,20 +335,15 @@ function elementNode(source: Element | null | undefined) {
   return source && typeof source.getAttribute === "function" ? source : null;
 }
 
-function attr(node: Element, name: string) {
+function dialogAttr(node: Element, name: string) {
   return text(node.getAttribute(name));
-}
-
-function text(value: unknown, fallback = "") {
-  const out = String(value ?? "").trim();
-  return out || fallback;
 }
 
 export {
   buildConfirmModel,
   confirm,
   confirmationVariantAttrs,
-  confirmElement,
+  confirmFlashElement as confirmElement,
   hasElementConfirmRequest,
   prompt,
   readElementConfirmRequest,

@@ -17,16 +17,16 @@ function ProgressRoot(props: ProgressRootProps) {
   const { active, className, id = "tbf_progress", value = 0, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-progress", className)}
-      data-tbf-progress-active={dataBool(active)}
-      id={id}
-      aria-hidden="true"
+    {...rest}
+    className={classNames("tbf-progress", className)}
+    data-tbf-progress-active={dataBool(active)}
+    id={id}
+    aria-hidden="true"
     >
-      <span
-        className="tbf-progress__bar"
-        style={{ transform: `scaleX(${normalizedProgress(value)})` }}
-      />
+    <span
+    className="tbf-progress__bar"
+    style={{ transform: `scaleX(${normalizedProgress(value)})` }}
+    />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { jsonScript as search_config_json, toText } from "#ndsvdqv80epr";
+
 type search_value =
 | string
 | number
@@ -21,15 +23,6 @@ type search_panel_config = {
 type search_filter_config = {
   attr?: string;
 };
-
-function search_config_json(value: unknown) {
-  return JSON.stringify(value || {}).replace(/</g, "\\u003c");
-}
-
-function toText(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
-}
 
 function searchText(value: unknown) {
   return toText(value)

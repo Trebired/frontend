@@ -133,8 +133,8 @@ function themeModeKeys(options: ThemeModeOptions = {}): string[] {
 function findThemeMode(key: unknown, options: ThemeModeOptions = {}): ThemeMode | undefined {
   const normalized = themeModeKeyOf(key);
   return normalized
-    ? getThemeModes(options).modes.find((mode) => mode.key === normalized)
-    : undefined;
+  ? getThemeModes(options).modes.find((mode) => mode.key === normalized)
+  : undefined;
 }
 
 function isThemeMode(key: unknown, options: ThemeModeOptions = {}): boolean {

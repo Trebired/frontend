@@ -43,9 +43,9 @@ function csrfFetch(input: RequestInfo | URL, init: CsrfFetchOptions = {}) {
   const headerName = init.csrfHeaderName || "X-CSRF-Token";
   if (token) headers.set(headerName, token);
   return fetch(input, {
-    ...init,
-    credentials: init.credentials || "same-origin",
-    headers,
+      ...init,
+      credentials: init.credentials || "same-origin",
+      headers,
   });
 }
 

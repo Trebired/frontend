@@ -30,14 +30,14 @@ function FullscreenTarget(props: FullscreenTargetProps) {
   } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-fullscreen-target", className)}
-      data-tbf-fullscreen-target=""
-      data-tbf-fullscreen-id={fullscreenId}
-      data-tbf-fullscreen-group={group}
-      data-tbf-fullscreen-persist={dataBool(persist)}
+    {...rest}
+    className={classNames("tbf-fullscreen-target", className)}
+    data-tbf-fullscreen-target=""
+    data-tbf-fullscreen-id={fullscreenId}
+    data-tbf-fullscreen-group={group}
+    data-tbf-fullscreen-persist={dataBool(persist)}
     >
-      {children as ReactNode}
+    {children as ReactNode}
     </div>
   );
 }
@@ -56,19 +56,19 @@ function FullscreenButton(props: FullscreenButtonProps) {
   const panel = Boolean(fullscreenId);
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button tbf-fullscreen-button", className)}
-      data-tbf-fullscreen-trigger={panel ? "" : undefined}
-      data-tbf-fullscreen-id={fullscreenId}
-      data-tbf-fullscreen-group={panel ? group : undefined}
-      data-tbf-fullscreen-mode={mode}
-      data-tbf-fullscreen-target={nativeTarget}
-      data-tbf-fullscreen-toggle={!panel && mode === "toggle" ? "" : undefined}
-      data-tbf-fullscreen-enter={!panel && mode === "open" ? "" : undefined}
-      data-tbf-fullscreen-exit={!panel && (mode === "close" || mode === "exit") ? "" : undefined}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button tbf-fullscreen-button", className)}
+    data-tbf-fullscreen-trigger={panel ? "" : undefined}
+    data-tbf-fullscreen-id={fullscreenId}
+    data-tbf-fullscreen-group={panel ? group : undefined}
+    data-tbf-fullscreen-mode={mode}
+    data-tbf-fullscreen-target={nativeTarget}
+    data-tbf-fullscreen-toggle={!panel && mode === "toggle" ? "" : undefined}
+    data-tbf-fullscreen-enter={!panel && mode === "open" ? "" : undefined}
+    data-tbf-fullscreen-exit={!panel && (mode === "close" || mode === "exit") ? "" : undefined}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }

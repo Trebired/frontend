@@ -91,9 +91,9 @@ function setAnimatedText(
   sourceTextTimers.set(
     el,
     window.setTimeout(() => {
-      el.removeAttribute("data-tbf-source-language-updating");
-      sourceTextTimers.delete(el);
-    }, 180),
+        el.removeAttribute("data-tbf-source-language-updating");
+        sourceTextTimers.delete(el);
+      }, 180),
   );
 }
 

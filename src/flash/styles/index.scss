@@ -31,8 +31,8 @@
   pointer-events: auto;
   transform: translateY(var(--tbf-flash-y, 0)) translateX(16px);
   transition:
-    opacity var(--tbf-transition-fast) ease,
-    transform var(--tbf-transition-fast) ease;
+  opacity var(--tbf-transition-fast) ease,
+  transform var(--tbf-transition-fast) ease;
 }
 
 .tbf-flash[data-tbf-visible="true"] {

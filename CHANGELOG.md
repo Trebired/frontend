@@ -2,6 +2,21 @@
 
 All notable package changes are documented here.
 
+## 6.0.5
+
+- Changed upload field trigger, clear, and cropper action buttons to use the normal `btn` primitive class instead of upload-specific button classes.
+- Removed upload-specific button style tokens so upload customization stays scoped to layout, surface, preview, metadata, list, and cropper styling.
+
+## 6.0.4
+
+- Added structured `components.primitives.upload` tokens for upload fields, upload buttons, previews, drag/selected states, and cropper styling.
+- Routed upload and upload cropper SCSS through the new component tokens so apps can customize upload styling from frontend config.
+
+## 6.0.3
+
+- Updated the package Code Discipline config to the platform-aligned rule set, including formatting, redundant path segment cleanup, removable comment checks, structural blank lines, and dry checks.
+- Updated the Code Discipline devDependency and lockfile to the current public `@trebired/code-discipline@^5.3.0`.
+
 ## 6.0.2
 
 - Routed generated font CSS custom property names through the frontend namespace helper.

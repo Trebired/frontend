@@ -19,10 +19,10 @@ function mobileHeaderContent(props: ProductShellMobileNavProps) {
   if (props.headerContent !== undefined) return props.headerContent;
   return (
     <ShellSupportLinks
-      baseHref={props.supportHref}
-      docsLabel={productShellLabel(props.labels, "docs")}
-      feedbackLabel={productShellLabel(props.labels, "feedback")}
-      supportLabel={productShellLabel(props.labels, "support")}
+    baseHref={props.supportHref}
+    docsLabel={productShellLabel(props.labels, "docs")}
+    feedbackLabel={productShellLabel(props.labels, "feedback")}
+    supportLabel={productShellLabel(props.labels, "support")}
     />
   );
 }
@@ -31,8 +31,8 @@ function mobileSection(label: string, content: unknown, hidden: boolean) {
   if (hidden || !content) return null;
   return (
     <section className="tbf-shell-mobile-nav__section">
-      <div className="tbf-shell-mobile-nav__section-label">{label}</div>
-      {content as any}
+    <div className="tbf-shell-mobile-nav__section-label">{label}</div>
+    {content as any}
     </section>
   );
 }
@@ -42,26 +42,26 @@ function ProductShellMobileNav(props: ProductShellMobileNavProps) {
   if (!state.chrome.showMobileNav) return null;
   return (
     <MobileNav
-      className={classNames("tbf-shell-mobile-nav-shell", props.className)}
-      id={props.id || "mobile_nav_shell"}
-      panelLabel={productShellLabel(props.labels, "mobileNavigation")}
+    className={classNames("tbf-shell-mobile-nav-shell", props.className)}
+    id={props.id || "mobile_nav_shell"}
+    panelLabel={productShellLabel(props.labels, "mobileNavigation")}
     >
-      <div className={classNames("tbf-shell-mobile-nav", props.contentClassName)}>
-        <div className="tbf-shell-mobile-nav__head">
-          <span className={classNames("tbf-shell-mobile-nav__title", props.titleClassName)}>
-            {productShellLabel(props.labels, "menu")}
-          </span>
-          <MobileNavCloseButton
-            aria-label={productShellLabel(props.labels, "closeNavigationMenu")}
-            className="tbf-shell-mobile-nav__close"
-          >
-            {props.closeIcon ?? productShellLabel(props.labels, "closeNavigationMenu")}
-          </MobileNavCloseButton>
-        </div>
-        {mobileSection(productShellLabel(props.labels, "navigation"), props.sidebarContent, !state.chrome.showSidebarLinks)}
-        {mobileSection(productShellLabel(props.labels, "more"), mobileHeaderContent(props), !state.chrome.showHeaderLinks)}
-        {mobileSection(productShellLabel(props.labels, "account"), props.accountContent, !state.chrome.showHeaderUserActions)}
-      </div>
+    <div className={classNames("tbf-shell-mobile-nav", props.contentClassName)}>
+    <div className="tbf-shell-mobile-nav__head">
+    <span className={classNames("tbf-shell-mobile-nav__title", props.titleClassName)}>
+    {productShellLabel(props.labels, "menu")}
+    </span>
+    <MobileNavCloseButton
+    aria-label={productShellLabel(props.labels, "closeNavigationMenu")}
+    className="tbf-shell-mobile-nav__close"
+    >
+    {props.closeIcon ?? productShellLabel(props.labels, "closeNavigationMenu")}
+    </MobileNavCloseButton>
+    </div>
+    {mobileSection(productShellLabel(props.labels, "navigation"), props.sidebarContent, !state.chrome.showSidebarLinks)}
+    {mobileSection(productShellLabel(props.labels, "more"), mobileHeaderContent(props), !state.chrome.showHeaderLinks)}
+    {mobileSection(productShellLabel(props.labels, "account"), props.accountContent, !state.chrome.showHeaderUserActions)}
+    </div>
     </MobileNav>
   );
 }
@@ -74,7 +74,7 @@ function bottomBarItem(
 ) {
   return (
     <MobileBottomBarItem className={className} href={href} icon={icon as any}>
-      {label}
+    {label}
     </MobileBottomBarItem>
   );
 }
@@ -94,22 +94,22 @@ function ProductShellBottomBar(props: ProductShellBottomBarProps) {
   } = props;
   return (
     <MobileBottomBar
-      {...rest}
-      aria-label={props["aria-label"] || productShellLabel(labels, "mobilePrimaryNavigation")}
+    {...rest}
+    aria-label={props["aria-label"] || productShellLabel(labels, "mobilePrimaryNavigation")}
     >
-      {bottomBarItem(appsHref, productShellLabel(labels, "apps"), appIcon, itemClassName)}
-      {notifications}
-      {bottomBarItem(profileHref, productShellLabel(labels, "profile"), profileIcon, itemClassName)}
-      <MobileNavToggleButton
-        aria-label={productShellLabel(labels, "menu")}
-        className={classNames(itemClassName, menuToggleClassName)}
-        controls="mobile_nav_shell"
-      >
-        {menuIcon}
-        <span className="tbf-mobile-bottom-bar__label">
-          {productShellLabel(labels, "menu")}
-        </span>
-      </MobileNavToggleButton>
+    {bottomBarItem(appsHref, productShellLabel(labels, "apps"), appIcon, itemClassName)}
+    {notifications}
+    {bottomBarItem(profileHref, productShellLabel(labels, "profile"), profileIcon, itemClassName)}
+    <MobileNavToggleButton
+    aria-label={productShellLabel(labels, "menu")}
+    className={classNames(itemClassName, menuToggleClassName)}
+    controls="mobile_nav_shell"
+    >
+    {menuIcon}
+    <span className="tbf-mobile-bottom-bar__label">
+    {productShellLabel(labels, "menu")}
+    </span>
+    </MobileNavToggleButton>
     </MobileBottomBar>
   );
 }

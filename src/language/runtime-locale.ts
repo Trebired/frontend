@@ -21,8 +21,8 @@ function defaultLocaleEndpoint(button: HTMLButtonElement, options: LocaleRuntime
 
 async function defaultPersistLocale(lang: string, endpoint: string) {
   return requestJsonPayload(endpoint, {
-    method: "POST",
-    body: { lang },
+      method: "POST",
+      body: { lang },
   });
 }
 
@@ -38,8 +38,8 @@ async function applyLocale(
   button?: HTMLButtonElement,
 ) {
   const endpoint = button
-    ? defaultLocaleEndpoint(button, options)
-    : text(options.endpoint, "/ui/lang/set");
+  ? defaultLocaleEndpoint(button, options)
+  : text(options.endpoint, "/ui/lang/set");
   const persist = options.persistLocale || defaultPersistLocale;
   const refresh = options.refresh || defaultRefreshLocale;
   const result: any = await persist(lang, endpoint);
@@ -56,18 +56,18 @@ function bindLocaleOption(
   if (localeButtons.has(button)) return true;
   localeButtons.add(button);
   button.addEventListener("click", async (event) => {
-    if (busyLocaleButtons.has(button)) return;
-    const lang = text(button.value);
-    if (!lang) return;
-    event.preventDefault();
-    busyLocaleButtons.add(button);
-    button.disabled = true;
-    try {
-      await applyLocale(lang, options, button);
-    } finally {
-      busyLocaleButtons.delete(button);
-      button.disabled = false;
-    }
+      if (busyLocaleButtons.has(button)) return;
+      const lang = text(button.value);
+      if (!lang) return;
+      event.preventDefault();
+      busyLocaleButtons.add(button);
+      button.disabled = true;
+      try {
+        await applyLocale(lang, options, button);
+      } finally {
+        busyLocaleButtons.delete(button);
+        button.disabled = false;
+      }
   });
   return true;
 }
@@ -77,7 +77,7 @@ function bindLocaleSwitchers(
   options: LocaleRuntimeOptions = {},
 ) {
   queryAll<HTMLButtonElement>(root, LOCALE_OPTION_SELECTOR).forEach((button) => {
-    bindLocaleOption(button, options);
+      bindLocaleOption(button, options);
   });
 }
 

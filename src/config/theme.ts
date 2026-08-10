@@ -58,7 +58,7 @@ function normalizeThemeModeLabel(value: unknown, key: string): string {
   return value.trim();
 }
 
-function normalizeThemeMode(rawKey: string, source: Record<string, unknown>): NormalizedFrontendThemeMode {
+function normalizeConfiguredThemeMode(rawKey: string, source: Record<string, unknown>): NormalizedFrontendThemeMode {
   const key = normalizeThemeModeKey(rawKey);
   for (const field of Object.keys(source)) {
     if (!THEME_MODE_FIELDS.includes(field)) {
@@ -76,23 +76,23 @@ function normalizeThemeMode(rawKey: string, source: Record<string, unknown>): No
 function themeModeEntries(value: unknown): Array<[string, Record<string, unknown>]> {
   if (!Array.isArray(value)) {
     return Object.entries(assertPlainObject(value, "theme.modes")).map(([key, item]) => {
-      return [key, assertPlainObject(item, `theme.modes.${key}`)];
+        return [key, assertPlainObject(item, `theme.modes.${key}`)];
     });
   }
   return value.map((item, index) => {
-    const { key, ...rest } = assertPlainObject(item, `theme.modes[${index}]`);
-    if (typeof key !== "string" || !key.trim()) {
-      throw invalidConfig(`theme.modes[${index}].key must be a non-empty string`);
-    }
-    return [key, rest];
+      const { key, ...rest } = assertPlainObject(item, `theme.modes[${index}]`);
+      if (typeof key !== "string" || !key.trim()) {
+        throw invalidConfig(`theme.modes[${index}].key must be a non-empty string`);
+      }
+      return [key, rest];
   });
 }
 
-function normalizeThemeModes(value: unknown): NormalizedFrontendThemeMode[] {
+function normalizeConfiguredThemeModes(value: unknown): NormalizedFrontendThemeMode[] {
   if (value === undefined) return [];
   const modes: NormalizedFrontendThemeMode[] = [];
   for (const [key, source] of themeModeEntries(value)) {
-    const mode = normalizeThemeMode(key, source);
+    const mode = normalizeConfiguredThemeMode(key, source);
     if (modes.some((existing) => existing.key === mode.key)) {
       throw invalidConfig(`theme.modes.${mode.key} is declared more than once`);
     }
@@ -127,7 +127,7 @@ function resolveSchemeMode(
 
 function normalizeThemeConfig(value: unknown): NormalizedFrontendThemeConfig {
   const source = value === undefined ? {} : assertPlainObject(value, "theme");
-  const modes = normalizeThemeModes(source.modes);
+  const modes = normalizeConfiguredThemeModes(source.modes);
   return {
     cssVariables: normalizeBoolean(source.cssVariables, true, "theme.cssVariables"),
     dark: resolveSchemeMode(modes, source.dark, "dark", "theme.dark"),

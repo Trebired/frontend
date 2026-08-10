@@ -1,4 +1,5 @@
 import type { WizardHiddenState } from "./step_state.js";
+import { firstNonScriptHTMLElementChild } from "#er0dlx1gtbzh";
 
 function wizardNavControls(root: HTMLElement, tagName: string) {
   return Array.from(root.querySelectorAll(tagName))
@@ -74,9 +75,3 @@ export {
   captureNavState,
   restoreMeasuredNav,
 };
-
-function firstNonScriptHTMLElementChild(host: Element) {
-  return Array.from(host.children).find((child) => {
-    return child instanceof HTMLElement && child.tagName.toLowerCase() !== "script";
-  }) as HTMLElement | undefined;
-}

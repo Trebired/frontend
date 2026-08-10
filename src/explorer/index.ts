@@ -26,15 +26,15 @@ function renderFileTreeExplorer(container: HTMLElement | null, input: any) {
     return;
   }
   root.render(createElement(FileTreeView, {
-    autoExpandPaths: Array.isArray(source.autoExpandPaths) ? source.autoExpandPaths : [],
-    emptyMessage: text(source.emptyMessage),
-    highlightedPaths: Array.isArray(source.highlightedPaths) ? source.highlightedPaths : [],
-    interactive: source.interactive !== false,
-    mode: text(source.mode) || "browse",
-    onFileOpen: typeof source.onFileOpen === "function" ? source.onFileOpen : () => {},
-    onFileSelect: typeof source.onFileSelect === "function" ? source.onFileSelect : () => {},
-    onPathOpen: typeof source.onPathOpen === "function" ? source.onPathOpen : () => {},
-    tree: Array.isArray(source.tree) ? source.tree : [],
+        autoExpandPaths: Array.isArray(source.autoExpandPaths) ? source.autoExpandPaths : [],
+        emptyMessage: text(source.emptyMessage),
+        highlightedPaths: Array.isArray(source.highlightedPaths) ? source.highlightedPaths : [],
+        interactive: source.interactive !== false,
+        mode: text(source.mode) || "browse",
+        onFileOpen: typeof source.onFileOpen === "function" ? source.onFileOpen : () => {},
+        onFileSelect: typeof source.onFileSelect === "function" ? source.onFileSelect : () => {},
+        onPathOpen: typeof source.onPathOpen === "function" ? source.onPathOpen : () => {},
+        tree: Array.isArray(source.tree) ? source.tree : [],
   }));
 }
 

@@ -34,8 +34,9 @@ function organizationName(): string {
   const metadata = packageMetadata();
   const configured = String(metadata.config?.organization?.name || "").trim();
   if (configured) return configured;
-  const match = /^@([^/]+)\//u.exec(frontendPackageName());
-  if (match?.[1]) return match[1];
+  const name = frontendPackageName();
+  const slashIndex = name.indexOf("/");
+  if (name.startsWith("@") && slashIndex > 1) return name.slice(1, slashIndex);
   throw new Error("frontend-package-organization-missing");
 }
 

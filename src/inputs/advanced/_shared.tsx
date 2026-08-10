@@ -1,19 +1,29 @@
-import { createElement, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import {
-  requestJson as packageRequestJson,
-  type JsonRequestOptions,
-} from "#v1p6uw62hhsf";
+import { requestJson as packageRequestJson } from "#v1p6uw62hhsf";
 import { Icon, type IconProps } from "#lbkpzw8nphru";
+import {
+  appendClassName,
+  createTranslatorFactory,
+  defineValue,
+  joinClassNames,
+  jsonScript as stringifyJsonForHtml,
+  toText as toString,
+} from "#ndsvdqv80epr";
 import {
   closestElement,
   dispatchInputChange,
+  firstNonScriptHTMLElementChild,
+  documentLanguageTag as documentLang,
   isInteractiveTarget,
-  parseJsonText,
+  isInUnhydratedIsland,
+  readElementJson as readHostJsonConfig,
   resolveDocumentTarget,
 } from "#er0dlx1gtbzh";
-import { Button } from "#4woymc9xhupl";
-import { primitiveButtonClassName, type PrimitiveButtonClassOptions } from "#hzrmwbvgt2ax";
+import {
+  button as primitiveButton,
+  type PrimitiveButtonClassOptions,
+} from "#hzrmwbvgt2ax";
 import { useRenderCurrentUrl } from "#pwuc6i9ku53k";
 
 type TranslatorVars = Record<string, unknown>;
@@ -54,121 +64,29 @@ const messages: Record<string, string> = {
   "state.unavailable": "Unavailable",
 };
 
-function toString(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
+const defineMessages = defineValue as <T extends Record<string, unknown>>(messagesMap: T) => T;
+const createLocalTranslator = createTranslatorFactory((key) => messages[key] || key) as (
+  _url?: string,
+  _lang?: string,
+) => Translator;
+
+function noop(..._args: unknown[]) {
+  return undefined;
 }
 
-function onlyString(value: unknown, fallback = "") {
-  return toString(value, fallback);
-}
-
-function joinClassNames(values: unknown[]) {
-  return values.map((value) => toString(value)).filter(Boolean).join(" ");
-}
-
-function appendClassName(base: unknown, next: unknown) {
-  return joinClassNames([base, next]);
-}
-
-function stringifyJsonForHtml(value: unknown) {
-  return JSON.stringify(value ?? {}).replace(/</g, "\\u003c");
-}
-
-function documentLang() {
-  return typeof document === "undefined"
-    ? ""
-    : toString(document.documentElement.getAttribute("lang"));
-}
-
-function createLocalTranslator(_url?: string, _lang?: string): Translator {
-  return (key, vars = {}) => {
-    let text = messages[key] || key;
-    Object.entries(vars).forEach(([name, value]) => {
-      text = text.split(`{${name}}`).join(String(value ?? ""));
-    });
-    return text;
-  };
-}
-
-function defineMessages<T extends Record<string, unknown>>(messagesMap: T) {
-  return messagesMap;
-}
-
-function noop() {}
-
-function readHostJsonConfig<T extends Record<string, unknown>>(
-  host: ParentNode | null,
-  selector: string,
-  fallback: T,
-): T {
-  if (!host || typeof host.querySelector !== "function") return fallback;
-  const element = host.querySelector(selector);
-  return parseJsonText<T>(element?.textContent || "", fallback);
-}
-
-function firstNonScriptHTMLElementChild(host: Element) {
-  return Array.from(host.children).find((child) => {
-    return child instanceof HTMLElement && child.tagName.toLowerCase() !== "script";
-  }) as HTMLElement | undefined;
-}
-
-function defineFirstChildElement(
+const defineFirstChildElement = noop as (
   _tagName: string,
   _bind: (child: HTMLElement, host: HTMLElement) => unknown,
-) {}
+) => void;
 
-function defineBoundElement(
+const defineBoundElement = noop as (
   _tagName: string,
   _bind: (host: HTMLElement) => unknown,
-) {}
+) => void;
 
-function isInUnhydratedIsland(node: unknown) {
-  const element = node instanceof Element ? node : null;
-  return Boolean(
-    element?.closest("[data-live-island-root][data-live-island-hydrated='false']"),
-  );
-}
+const icon = Icon as (props: IconProps & { [key: string]: unknown; spec: string }) => ReturnType<typeof Icon>;
 
-function icon(props: IconProps & { [key: string]: unknown; spec: string }) {
-  return createElement(Icon, props as IconProps);
-}
-
-function button(props: ButtonProps) {
-  const {
-    active,
-    children,
-    className,
-    icon: iconOnly,
-    size,
-    tone,
-    tooltip,
-    transparent,
-    variant,
-    ...rest
-  } = props;
-  return (
-    <Button
-      className={primitiveButtonClassName({
-        active,
-        className,
-        icon: iconOnly,
-        size,
-        tone,
-        tooltip,
-        transparent,
-        variant,
-      })}
-      {...(rest as any)}
-    >
-      {children}
-    </Button>
-  );
-}
-
-function requestJson(input: RequestInfo | URL, options: JsonRequestOptions = {}) {
-  return packageRequestJson(input, options);
-}
+const button = primitiveButton as (props: ButtonProps) => ReturnType<typeof primitiveButton>;
 
 export {
   appendClassName,
@@ -186,9 +104,9 @@ export {
   isInUnhydratedIsland,
   joinClassNames,
   noop,
-  onlyString,
+  toString as onlyString,
   readHostJsonConfig,
-  requestJson,
+  packageRequestJson as requestJson,
   resolveDocumentTarget,
   stringifyJsonForHtml,
   toString,

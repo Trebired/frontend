@@ -4,6 +4,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { toText as onlyString } from "#ndsvdqv80epr";
 
 type SharedStepCardInput = {
   actionLabel?: string;
@@ -87,7 +88,7 @@ function groupSharedSteps(stepsInput: unknown) {
   .reverse()
   .forEach((entry, index) => {
       const groupKey = normalizedGroupKey(entry, index);
-      const groupLabel = onlyString(entry.groupLabel) || stepsLabel();
+      const groupLabel = onlyString(entry.groupLabel) || defaultStepsLabel();
       const actionLabel = onlyString(entry.actionLabel);
       let group = byKey.get(groupKey);
       if (!group) {
@@ -117,10 +118,10 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
 
   const row = doc.createElement("div");
   row.className = primitiveCardRowClassName({
-    className: primitiveStackClassName({
-      className: "min-height-fit",
-      gap: "xs",
-    }),
+      className: primitiveStackClassName({
+          className: "min-height-fit",
+          gap: "xs",
+      }),
   });
 
   const header = doc.createElement("div");
@@ -134,9 +135,9 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
 
   const messageEl = doc.createElement("span");
   messageEl.className = primitiveTextClassName({
-    breakWord: true,
-    className: "display-block",
-    size: "sm",
+      breakWord: true,
+      className: "display-block",
+      size: "sm",
   });
   messageEl.textContent = message;
   messageEl.style.flex = "1 1 auto";
@@ -150,10 +151,10 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   if (recordedAtLabel) {
     const timeEl = doc.createElement("span");
     timeEl.className = primitiveTextClassName({
-      breakWord: true,
-      className: "display-block",
-      muted: true,
-      size: "xs",
+        breakWord: true,
+        className: "display-block",
+        muted: true,
+        size: "xs",
     });
     timeEl.textContent = recordedAtLabel;
     timeEl.style.lineHeight = "1.35";
@@ -245,11 +246,6 @@ function renderSharedSteps(
 export type { SharedStepCardInput };
 export { createSharedStepCard, groupSharedSteps, renderSharedSteps };
 
-function onlyString(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
-}
-
-function stepsLabel() {
+function defaultStepsLabel() {
   return "Steps";
 }

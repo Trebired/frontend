@@ -24,7 +24,7 @@ function cssString(value: unknown): string {
 }
 
 function cssComment(value: unknown): string {
-  return String(value || "").replace(/\*\//gu, "* /");
+  return String(value || "").split("*/").join("* /");
 }
 
 export {

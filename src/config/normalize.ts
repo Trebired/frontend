@@ -17,7 +17,6 @@ import type {
 
 const FRONTEND_CONFIG_PATH = frontendConfigPath();
 
-/* Must stay in sync with THEME_ATTR exported from the ./theme runtime. */
 const THEME_MODE_ATTRIBUTE = "data-tbf-theme";
 
 const SUPPORTED_ICON_PACKS: FrontendIconPack[] = ["remixicon", "simple-icons"];
@@ -60,57 +59,57 @@ const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
-  assets: Object.freeze({
-    fonts: Object.freeze({
-      families: Object.freeze([]) as NormalizedFrontendConfig["assets"]["fonts"]["families"],
-      sans: "",
+    assets: Object.freeze({
+        fonts: Object.freeze({
+            families: Object.freeze([]) as NormalizedFrontendConfig["assets"]["fonts"]["families"],
+            sans: "",
+        }),
+        icons: Object.freeze({
+            endpoint: "/__icons/svg",
+            packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
+        }),
     }),
-    icons: Object.freeze({
-      endpoint: "/__icons/svg",
-      packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
+    components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
+    design: Object.freeze({
+        interactions: Object.freeze({
+            activePress: Object.freeze({
+                brightness: "0.9",
+                enabled: false,
+                filter: "none",
+            }),
+        }),
+        palette: Object.freeze({
+            modes: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["modes"],
+            semantic: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["semantic"],
+            suffixedVariants: true,
+        }),
+        scales: Object.freeze({
+            height: Object.freeze({}),
+            lineHeight: Object.freeze({}),
+            padding: Object.freeze({}),
+            radius: Object.freeze({}),
+            spacing: Object.freeze({}),
+            textSize: Object.freeze({}),
+            width: Object.freeze({}),
+            zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
+        }) as NormalizedFrontendConfig["design"]["scales"],
+        semantics: Object.freeze({}),
     }),
-  }),
-  components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
-  design: Object.freeze({
-    interactions: Object.freeze({
-      activePress: Object.freeze({
-        brightness: "0.9",
-        enabled: false,
-        filter: "none",
-      }),
+    prefix: "tbf",
+    runtime: Object.freeze({
+        layer: Object.freeze({}),
+        layout: Object.freeze({}),
+        progress: Object.freeze({ height: "3px" }),
+        theme: Object.freeze({
+            cssVariables: true,
+            dark: "",
+            defaultMode: "",
+            light: "",
+            modes: Object.freeze([]) as NormalizedFrontendConfig["runtime"]["theme"]["modes"],
+            tokens: Object.freeze({}),
+        }),
     }),
-    palette: Object.freeze({
-      modes: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["modes"],
-      semantic: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["semantic"],
-      suffixedVariants: true,
-    }),
-    scales: Object.freeze({
-      height: Object.freeze({}),
-      lineHeight: Object.freeze({}),
-      padding: Object.freeze({}),
-      radius: Object.freeze({}),
-      spacing: Object.freeze({}),
-      textSize: Object.freeze({}),
-      width: Object.freeze({}),
-      zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
-    }) as NormalizedFrontendConfig["design"]["scales"],
-    semantics: Object.freeze({}),
-  }),
-  prefix: "tbf",
-  runtime: Object.freeze({
-    layer: Object.freeze({}),
-    layout: Object.freeze({}),
-    progress: Object.freeze({ height: "3px" }),
-    theme: Object.freeze({
-      cssVariables: true,
-      dark: "",
-      defaultMode: "",
-      light: "",
-      modes: Object.freeze([]) as NormalizedFrontendConfig["runtime"]["theme"]["modes"],
-      tokens: Object.freeze({}),
-    }),
-  }),
-  systems: Object.freeze(Object.fromEntries(SYSTEM_ORDER.map((key) => [key, true]))) as Record<FrontendSystemKey, boolean>,
+    systems: Object.freeze(Object.fromEntries(SYSTEM_ORDER.map((key) => [key, true]))) as Record<FrontendSystemKey, boolean>,
 });
 
 function assertKnownFields(
@@ -136,105 +135,105 @@ function normalizePrefix(value: unknown): string {
 function normalizeEndpoint(value: unknown): string {
   const endpoint = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint).trim();
   if (!endpoint || /[\s"'<>]/u.test(endpoint)) {
-    throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
-  }
-  return endpoint;
-}
+      throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
+      }
+      return endpoint;
+      }
 
-function normalizeIconPacks(value: unknown): FrontendIconPack[] {
-  const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
-  if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
-  const packs: FrontendIconPack[] = [];
-  for (const item of raw) {
-    if (!SUPPORTED_ICON_PACKS.includes(item as FrontendIconPack)) {
+      function normalizeIconPacks(value: unknown): FrontendIconPack[] {
+      const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
+      if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
+      const packs: FrontendIconPack[] = [];
+      for (const item of raw) {
+      if (!SUPPORTED_ICON_PACKS.includes(item as FrontendIconPack)) {
       throw invalidConfig(`unsupported icon pack ${String(item)}`);
-    }
-    if (!packs.includes(item as FrontendIconPack)) packs.push(item as FrontendIconPack);
-  }
-  return packs;
-}
+      }
+      if (!packs.includes(item as FrontendIconPack)) packs.push(item as FrontendIconPack);
+      }
+      return packs;
+      }
 
-function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
-  const source = value === undefined
-    ? {}
-    : assertPlainObject(value, "assets") as FrontendAssetsConfig;
-  assertKnownFields(source, ASSET_FIELDS, "assets");
-  const icons = source.icons === undefined
-    ? {}
-    : assertPlainObject(source.icons, "assets.icons");
-  return {
-    fonts: normalizeFontsConfig(source.fonts),
-    icons: {
+      function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
+      const source = value === undefined
+      ? {}
+      : assertPlainObject(value, "assets") as FrontendAssetsConfig;
+      assertKnownFields(source, ASSET_FIELDS, "assets");
+      const icons = source.icons === undefined
+      ? {}
+      : assertPlainObject(source.icons, "assets.icons");
+      return {
+      fonts: normalizeFontsConfig(source.fonts),
+      icons: {
       endpoint: normalizeEndpoint(icons.endpoint),
       packs: normalizeIconPacks(icons.packs),
-    },
-  };
-}
+      },
+      };
+      }
 
-function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runtime"] {
-  const source = value === undefined
-    ? {}
-    : assertPlainObject(value, "runtime") as FrontendRuntimeConfig;
-  assertKnownFields(source, RUNTIME_FIELDS, "runtime");
-  return {
-    layer: normalizeThemeTokens(source.layer, "runtime.layer"),
-    layout: normalizeThemeTokens(source.layout, "runtime.layout"),
-    progress: normalizeThemeTokens(source.progress, "runtime.progress"),
-    theme: normalizeThemeConfig(source.theme),
-  };
-}
+      function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runtime"] {
+      const source = value === undefined
+      ? {}
+      : assertPlainObject(value, "runtime") as FrontendRuntimeConfig;
+      assertKnownFields(source, RUNTIME_FIELDS, "runtime");
+      return {
+      layer: normalizeThemeTokens(source.layer, "runtime.layer"),
+      layout: normalizeThemeTokens(source.layout, "runtime.layout"),
+      progress: normalizeThemeTokens(source.progress, "runtime.progress"),
+      theme: normalizeThemeConfig(source.theme),
+      };
+      }
 
-function normalizeDesignConfig(
-  value: unknown,
-  modeKeys: string[],
-): NormalizedFrontendConfig["design"] {
-  const source = value === undefined
-    ? {}
-    : assertPlainObject(value, "design") as FrontendDesignConfig;
-  assertKnownFields(source, DESIGN_FIELDS, "design");
-  return {
-    interactions: normalizeInteractionsConfig(source.interactions),
-    palette: normalizePaletteConfig(source.palette, modeKeys),
-    scales: normalizeScalesConfig(source.scales),
-    semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
-  };
-}
+      function normalizeDesignConfig(
+      value: unknown,
+      modeKeys: string[],
+      ): NormalizedFrontendConfig["design"] {
+      const source = value === undefined
+      ? {}
+      : assertPlainObject(value, "design") as FrontendDesignConfig;
+      assertKnownFields(source, DESIGN_FIELDS, "design");
+      return {
+      interactions: normalizeInteractionsConfig(source.interactions),
+      palette: normalizePaletteConfig(source.palette, modeKeys),
+      scales: normalizeScalesConfig(source.scales),
+      semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
+      };
+      }
 
-function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
-  if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.systems };
-  const source = assertPlainObject(value, "systems");
-  const systems = { ...DEFAULT_FRONTEND_CONFIG.systems };
-  for (const [key, enabled] of Object.entries(source)) {
-    if (!SYSTEM_ORDER.includes(key as FrontendSystemKey)) {
+      function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
+      if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.systems };
+      const source = assertPlainObject(value, "systems");
+      const systems = { ...DEFAULT_FRONTEND_CONFIG.systems };
+      for (const [key, enabled] of Object.entries(source)) {
+      if (!SYSTEM_ORDER.includes(key as FrontendSystemKey)) {
       throw invalidConfig(`unsupported system ${key}`);
-    }
-    if (typeof enabled !== "boolean") {
+      }
+      if (typeof enabled !== "boolean") {
       throw invalidConfig(`systems.${key} must be boolean`);
-    }
-    systems[key as FrontendSystemKey] = enabled;
-  }
-  return systems;
-}
+      }
+      systems[key as FrontendSystemKey] = enabled;
+      }
+      return systems;
+      }
 
-function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
-  const source = assertPlainObject(config, "config");
-  assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
-  const runtime = normalizeRuntimeConfig(source.runtime);
-  return {
-    assets: normalizeAssetsConfig(source.assets),
-    components: normalizeComponentsConfig(source.components),
-    design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
-    prefix: normalizePrefix(source.prefix),
-    runtime,
-    systems: normalizeSystems(source.systems),
-  };
-}
+      function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
+      const source = assertPlainObject(config, "config");
+      assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
+      const runtime = normalizeRuntimeConfig(source.runtime);
+      return {
+      assets: normalizeAssetsConfig(source.assets),
+      components: normalizeComponentsConfig(source.components),
+      design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
+      prefix: normalizePrefix(source.prefix),
+      runtime,
+      systems: normalizeSystems(source.systems),
+      };
+      }
 
-export {
-  DEFAULT_FRONTEND_CONFIG,
-  SUPPORTED_ICON_PACKS,
-  SYSTEM_ORDER,
-  THEME_MODE_ATTRIBUTE,
-  FRONTEND_CONFIG_PATH,
-  normalizeFrontendConfig,
-};
+      export {
+      DEFAULT_FRONTEND_CONFIG,
+      SUPPORTED_ICON_PACKS,
+      SYSTEM_ORDER,
+      THEME_MODE_ATTRIBUTE,
+      FRONTEND_CONFIG_PATH,
+      normalizeFrontendConfig,
+      };

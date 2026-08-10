@@ -14,11 +14,11 @@ import { replaceLogsPartialData } from "./replace.js";
 
 function installLogsPartialManager() {
   setLogsPartialManager({
-    bootstrapLogsPartial,
-    bootstrapLogsPartials,
-    disconnectLogsPartial,
-    ingestFrontendLogs,
-    replaceLogsPartialData,
+      bootstrapLogsPartial,
+      bootstrapLogsPartials,
+      disconnectLogsPartial,
+      ingestFrontendLogs,
+      replaceLogsPartialData,
   });
 }
 
@@ -45,7 +45,7 @@ export {
 
 if (typeof document !== "undefined" && document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => bindLogsRuntime(document), {
-    once: true,
+      once: true,
   });
 } else if (typeof document !== "undefined") {
   bindLogsRuntime(document);

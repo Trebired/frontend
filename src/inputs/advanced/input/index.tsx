@@ -12,11 +12,11 @@ function input(props: InputProps) {
   const classes = splitInputClasses(className);
   const node = (
     <input
-      className={joinClassNames(
-      [
-        "input classic",
-        search ? classes.input : className,
-      ],
+    className={joinClassNames(
+        [
+          "input classic",
+          search ? classes.input : className,
+        ],
     )}
     {...rest}
     />

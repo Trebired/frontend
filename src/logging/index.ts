@@ -25,8 +25,8 @@ function readGlobalQuiet() {
   };
   if (typeof global.frontend_quiet === "boolean") return global.frontend_quiet;
   const attr = typeof document === "undefined"
-    ? ""
-    : document.documentElement.getAttribute("data-tbf-frontend-quiet");
+  ? ""
+  : document.documentElement.getAttribute("data-tbf-frontend-quiet");
   if (attr === "true" || attr === "1") return true;
   if (attr === "false" || attr === "0") return false;
   return false;
@@ -47,23 +47,27 @@ function toFrontendLogGroup(group: string) {
   return `${FRONTEND_LOG_GROUP}.${normalized}`;
 }
 
+function quietLoggerMethod() {
+  return undefined;
+}
+
 function quietLogger(): FrontendLogger {
   return {
-    error() {},
-    fail() {},
-    info() {},
-    warn() {},
+    error: quietLoggerMethod,
+    fail: quietLoggerMethod,
+    info: quietLoggerMethod,
+    warn: quietLoggerMethod,
   };
 }
 
 function resolveFrontendLogger(options: FrontendLoggingOptions = {}): FrontendLogger {
   if (isFrontendQuiet(options)) return quietLogger();
   const logger = resolveLogger({
-    adapter: options.loggerAdapter,
-    defaultLogger: options.defaultLogger,
-    fallback: "noop",
-    logger: options.logger,
-    source: FRONTEND_PACKAGE_SOURCE,
+      adapter: options.loggerAdapter,
+      defaultLogger: options.defaultLogger,
+      fallback: "noop",
+      logger: options.logger,
+      source: FRONTEND_PACKAGE_SOURCE,
   });
   return {
     error(group, message, metadata) {

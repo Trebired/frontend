@@ -7,7 +7,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--tbf-primitives-action-control-root-gap, var(--tbf-primitives-button-root-gap, 8px));
-  min-height: var(--tbf-primitives-action-control-root-min-height, var(--tbf-primitives-action-control-root-height, var(--tbf-primitives-button-root-height, 28px)));
+  min-height: var(
+    --tbf-primitives-action-control-root-min-height,
+    var(--tbf-primitives-action-control-root-height, var(--tbf-primitives-button-root-height, 28px))
+  );
   box-sizing: border-box;
   padding: var(--tbf-primitives-action-control-root-padding, var(--tbf-primitives-button-root-padding, 0 12px));
   padding-block: var(--tbf-primitives-action-control-root-padding-block, var(--tbf-primitives-button-root-padding-block, 0));
@@ -41,7 +44,10 @@
   );
   border-color: var(--tbf-primitives-action-control-states-hover-border-color, var(--tbf-primitives-button-states-hover-border-color, currentColor));
   color: var(--tbf-primitives-action-control-states-hover-color, var(--tbf-primitives-button-states-hover-color, currentColor));
-  background: var(--tbf-primitives-action-control-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+  background: var(
+    --tbf-primitives-action-control-states-hover-background,
+    var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+  );
 }
 
 .tbf-button:disabled,
@@ -97,7 +103,10 @@
   );
   background: var(
     --tbf-primitives-action-control-tones-highlight-states-hover-background,
-    var(--tbf-primitives-button-tones-highlight-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)))
+    var(
+      --tbf-primitives-button-tones-highlight-states-hover-background,
+      var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+    )
   );
 }
 

@@ -68,8 +68,8 @@ function descriptorFromRoot(root: HTMLElement): DynamicSidebarDescriptor | null 
     params: config.params && typeof config.params === "object" ? config.params : {},
     path,
     rooms: Array.isArray(config.rooms)
-      ? config.rooms.map((item) => textValue(item)).filter(Boolean)
-      : [],
+    ? config.rooms.map((item) => textValue(item)).filter(Boolean)
+    : [],
     side: textValue(config.side, "left"),
     type,
   };
@@ -110,12 +110,12 @@ function applyDynamicSidebarResponse(itemsInput: unknown) {
   const items = Array.isArray(itemsInput) ? itemsInput : [];
   const countsByKey = new Map<string, unknown>();
   items.forEach((itemInput) => {
-    const item = itemInput && typeof itemInput === "object"
+      const item = itemInput && typeof itemInput === "object"
       ? itemInput as DynamicSidebarResponseItem
       : null;
-    const key = textValue(item?.key);
-    if (!key || item?.resolved !== true) return;
-    countsByKey.set(key, item.entity_counts || {});
+      const key = textValue(item?.key);
+      if (!key || item?.resolved !== true) return;
+      countsByKey.set(key, item.entity_counts || {});
   });
   for (const root of visibleLiveRoots()) {
     const key = descriptorKeyFromConfig(liveConfigs.get(root) || {});
@@ -144,9 +144,9 @@ async function refreshDynamicSidebarLive() {
 function scheduleDynamicSidebarRefresh(delayMs = liveOptions.refreshDelayMs || 120) {
   if (refreshTimer) window.clearTimeout(refreshTimer);
   refreshTimer = window.setTimeout(() => {
-    refreshTimer = 0;
-    void refreshDynamicSidebarLive();
-  }, Math.max(0, delayMs));
+      refreshTimer = 0;
+      void refreshDynamicSidebarLive();
+    }, Math.max(0, delayMs));
 }
 
 function syncDynamicSidebarRooms() {
@@ -155,14 +155,14 @@ function syncDynamicSidebarRooms() {
   if (typeof liveOptions.subscribe !== "function") return;
   const eventName = liveOptions.event || "sidebar";
   unsubscribeRooms = collectDynamicSidebarRooms()
-    .map((room) => liveOptions.subscribe?.(room, (payload) => {
-      if (payload && typeof payload === "object" && "event" in payload &&
-        textValue((payload as { event?: unknown }).event) !== eventName) return;
-      scheduleDynamicSidebarRefresh(liveOptions.refreshDelayMs || 120);
-    }))
-    .filter((cleanup): cleanup is DynamicSidebarCleanup => {
+  .map((room) => liveOptions.subscribe?.(room, (payload) => {
+        if (payload && typeof payload === "object" && "event" in payload &&
+            textValue((payload as { event?: unknown }).event) !== eventName) return;
+        scheduleDynamicSidebarRefresh(liveOptions.refreshDelayMs || 120);
+  }))
+  .filter((cleanup): cleanup is DynamicSidebarCleanup => {
       return typeof cleanup === "function";
-    });
+  });
 }
 
 function bindDynamicSidebarLiveHost(host: HTMLElement) {
@@ -189,7 +189,7 @@ function bindDynamicSidebarLive(
 ) {
   mergeLiveOptions(options);
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_LIVE_SELECTOR)
-    .forEach(bindDynamicSidebarLiveHost);
+  .forEach(bindDynamicSidebarLiveHost);
 }
 
 export {

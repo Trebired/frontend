@@ -13,12 +13,12 @@ function LayerRoot(props: LayerRootProps) {
   const { children, className, id = "tbf_layer_root", ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-layer-root", className)}
-      data-tbf-layer-root=""
-      id={id}
+    {...rest}
+    className={classNames("tbf-layer-root", className)}
+    data-tbf-layer-root=""
+    id={id}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -27,12 +27,12 @@ function PortalElement(props: PortalElementProps) {
   const { children, className, z, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-portal", className)}
-      data-tbf-portal=""
-      data-tbf-z={z}
+    {...rest}
+    className={classNames("tbf-portal", className)}
+    data-tbf-portal=""
+    data-tbf-z={z}
     >
-      {children}
+    {children}
     </div>
   );
 }

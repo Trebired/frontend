@@ -11,9 +11,9 @@ function statsTabs(model: any) {
   return tabs({
       familyClassName: "width-full",
       headerClassName: primitiveInlineRowClassName({
-        className: "logs-stats-header",
-        gap: "sm",
-        verticalCenter: true,
+          className: "logs-stats-header",
+          gap: "sm",
+          verticalCenter: true,
       }),
       headerLeading: (
         <div className="right no-shrink logs-stats-copy">

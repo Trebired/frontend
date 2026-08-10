@@ -1,4 +1,5 @@
 import { dropdownOptionValue } from "#z2c0jqmjqds4";
+import { connectedElementsFromSet } from "#er0dlx1gtbzh";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import type { GraphUnitScale } from "./units.js";
 import {
@@ -15,15 +16,6 @@ function graphLoggingEnabled() {
   .trim()
   .toLowerCase();
   return value === "1" || value === "true" || value === "yes" || value === "on";
-}
-
-function connectedElementsFromSet(nodes: Set<HTMLElement> | undefined) {
-  if (!nodes) return [];
-  return Array.from(nodes).filter((node) => {
-      if (node && node.isConnected) return true;
-      nodes.delete(node);
-      return false;
-  });
 }
 
 function logGraphSwitch(stage, details = null) {

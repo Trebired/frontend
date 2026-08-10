@@ -1,4 +1,5 @@
 import {
+  browserLocalStorage,
   cssEscape,
   queryAll,
   resolveDocumentTarget,
@@ -47,14 +48,6 @@ function storageKey(side: SidebarSide) {
   return `${SIDEBAR_STORAGE_PREFIX}${String(side || "left")}:minimized`;
 }
 
-function browserStorage(): Storage | null {
-  try {
-    return typeof window !== "undefined" ? window.localStorage : null;
-  } catch {
-    return null;
-  }
-}
-
 function normalizeSide(value: unknown): SidebarSide {
   const side = String(value || "left").trim();
   return side || "left";
@@ -65,7 +58,7 @@ function isPersistent(shell: HTMLElement) {
 }
 
 function readSavedMinimized(side: SidebarSide) {
-  const storage = browserStorage();
+  const storage = browserLocalStorage();
   const saved = storage?.getItem(storageKey(side));
   if (saved === "1") return true;
   if (saved === "0") return false;
@@ -73,15 +66,15 @@ function readSavedMinimized(side: SidebarSide) {
 }
 
 function writeSavedMinimized(side: SidebarSide, minimized: boolean) {
-  const storage = browserStorage();
+  const storage = browserLocalStorage();
   if (!storage) return;
   storage.setItem(storageKey(side), minimized ? "1" : "0");
 }
 
 function dispatchSidebarState(state: SidebarState) {
   state.shell.dispatchEvent(new CustomEvent(SIDEBAR_STATE_EVENT, {
-    bubbles: true,
-    detail: { ...state },
+        bubbles: true,
+        detail: { ...state },
   }));
 }
 
@@ -188,8 +181,8 @@ function bindSidebarShell(
   const attrMinimized = shell.getAttribute("data-tbf-sidebar-minimized");
   const minimized = attrMinimized === "true" || (attrMinimized == null && isPersistent(shell) && readSavedMinimized(side));
   const state = applySidebarState(shell, {
-    minimized,
-    open: shell.getAttribute("data-tbf-sidebar-open") === "true",
+      minimized,
+      open: shell.getAttribute("data-tbf-sidebar-open") === "true",
   });
   void options;
   return state;
@@ -214,11 +207,11 @@ function bindSidebarMinimizeButton(
   boundMinimizeButtons.add(button);
   bindSidebarShell(shell, options);
   button.addEventListener("click", (event) => {
-    event.preventDefault();
-    setButtonBusy(button, true);
-    void Promise.resolve(toggleSidebarMinimized(shell, options)).finally(() => {
-      setButtonBusy(button, false);
-    });
+      event.preventDefault();
+      setButtonBusy(button, true);
+      void Promise.resolve(toggleSidebarMinimized(shell, options)).finally(() => {
+          setButtonBusy(button, false);
+      });
   });
   return shell;
 }
@@ -229,8 +222,8 @@ function bindSidebarOpenButton(button: HTMLElement | null, root: BindRoot = docu
   if (!(shell instanceof HTMLElement)) return null;
   boundOpenButtons.add(button);
   button.addEventListener("click", (event) => {
-    event.preventDefault();
-    openSidebar(shell);
+      event.preventDefault();
+      openSidebar(shell);
   });
   return shell;
 }
@@ -241,8 +234,8 @@ function bindSidebarCloseButton(button: HTMLElement | null) {
   if (!(shell instanceof HTMLElement)) return null;
   boundCloseButtons.add(button);
   button.addEventListener("click", (event) => {
-    event.preventDefault();
-    closeSidebar(shell);
+      event.preventDefault();
+      closeSidebar(shell);
   });
   return shell;
 }
@@ -262,21 +255,21 @@ function installSharedSidebarListeners() {
   sharedListenersInstalled = true;
   document.addEventListener("click", closeOpenSidebarFromEvent);
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}[data-tbf-sidebar-open="true"]`)
+      if (event.key !== "Escape") return;
+      queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}[data-tbf-sidebar-open="true"]`)
       .forEach(closeSidebar);
   });
 }
 
 function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions = {}) {
   queryAll<HTMLElement>(root, SIDEBAR_SHELL_SELECTOR).forEach((shell) => {
-    bindSidebarShell(shell, options);
+      bindSidebarShell(shell, options);
   });
   queryAll<HTMLElement>(root, SIDEBAR_MINIMIZE_SELECTOR).forEach((button) => {
-    bindSidebarMinimizeButton(button, root, options);
+      bindSidebarMinimizeButton(button, root, options);
   });
   queryAll<HTMLElement>(root, SIDEBAR_OPEN_SELECTOR).forEach((button) => {
-    bindSidebarOpenButton(button, root);
+      bindSidebarOpenButton(button, root);
   });
   queryAll<HTMLElement>(root, SIDEBAR_CLOSE_SELECTOR).forEach(bindSidebarCloseButton);
   bindSidebarLiveSlots(root);

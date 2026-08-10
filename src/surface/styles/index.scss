@@ -41,7 +41,10 @@
   );
   border-color: var(--tbf-surfaces-button-states-hover-border-color, var(--tbf-primitives-button-states-hover-border-color, currentColor));
   color: var(--tbf-surfaces-button-states-hover-color, var(--tbf-primitives-button-states-hover-color, currentColor));
-  background: var(--tbf-surfaces-button-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)));
+  background: var(
+    --tbf-surfaces-button-states-hover-background,
+    var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+  );
 }
 
 .tbf-button:disabled,
@@ -97,7 +100,10 @@
   );
   background: var(
     --tbf-surfaces-button-tones-highlight-states-hover-background,
-    var(--tbf-primitives-button-tones-highlight-states-hover-background, var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent)))
+    var(
+      --tbf-primitives-button-tones-highlight-states-hover-background,
+      var(--tbf-primitives-button-states-hover-background, var(--tbf-primitives-button-root-background, transparent))
+    )
   );
 }
 

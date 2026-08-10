@@ -1,0 +1,324 @@
+import type { NormalizedFrontendComponentsConfig } from "./types.js";
+
+const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
+    data: Object.freeze({
+        graph: Object.freeze({ download: Object.freeze({}), heatmap: Object.freeze({}), upload: Object.freeze({}) }),
+        log: Object.freeze({ line: Object.freeze({}), selection: Object.freeze({}) }),
+    }),
+    feedback: Object.freeze({
+        flash: Object.freeze({
+            container: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              color: "currentColor",
+              padding: "15px",
+              radius: "0",
+            },
+            intents: { error: {}, info: {}, success: {}, warn: {} },
+            layout: {
+              actionsGap: "8px",
+              bodyGap: "8px",
+              gap: "10px",
+            },
+            placement: {
+              maxWidth: "520px",
+              offset: "18px",
+            },
+            slots: {
+              description: { fontSize: "0.92rem" },
+              icon: { fontWeight: "700", size: "15px" },
+              progress: { height: "4px" },
+              title: { fontWeight: "400" },
+            },
+        }),
+    }),
+    overlays: Object.freeze({
+        modal: Object.freeze({}),
+        popover: Object.freeze({
+            item: {
+              root: {
+                height: "35px",
+                padding: "5px 10px",
+                radius: "0",
+              },
+              states: {
+                hover: {},
+                selected: {},
+              },
+            },
+            panel: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              color: "currentColor",
+              gap: "2px",
+              padding: "8px",
+              radius: "0",
+            },
+        }),
+        tooltip: Object.freeze({
+            arrow: {
+              borderWidth: "1px",
+              size: "8px",
+            },
+            motion: {
+              duration: "170ms",
+              easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+            },
+            panel: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              color: "currentColor",
+              fontFamily: "sans-serif",
+              fontSize: "12px",
+              lineHeight: "1.3",
+              padding: "7px 9px",
+              radius: "0",
+            },
+        }),
+    }),
+    primitives: Object.freeze({
+        actionControl: Object.freeze({}),
+        button: Object.freeze({
+            root: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              color: "currentColor",
+              fontSize: "12px",
+              fontWeight: "600",
+              gap: "8px",
+              height: "28px",
+              padding: "0 12px",
+              paddingBlock: "0",
+              radius: "0",
+            },
+            sizes: {
+              lg: { fontSize: "13px", height: "34px", paddingInline: "14px" },
+              md: { fontSize: "12px", height: "28px", paddingInline: "12px" },
+              sm: { fontSize: "11px", height: "24px", paddingInline: "9px" },
+            },
+            slots: {
+              icon: {
+                fontSize: "15px",
+                size: "28px",
+                sizes: {
+                  lg: { fontSize: "18px", size: "34px" },
+                  md: { fontSize: "16px", size: "30px" },
+                  sm: { fontSize: "14px", size: "26px" },
+                  xs: { fontSize: "12px", size: "22px" },
+                  xs2: { fontSize: "10px", size: "18px" },
+                },
+              },
+            },
+            states: {
+              disabled: { opacity: "0.55" },
+              hover: {},
+            },
+            tones: {
+              green: { states: { hover: {} } },
+              highlight: { states: { hover: {} } },
+              red: { states: { hover: {} } },
+              yellow: { states: { hover: {} } },
+            },
+        }),
+        choice: Object.freeze({
+            checked: Object.freeze({}),
+            control: Object.freeze({}),
+        }),
+        dot: Object.freeze({}),
+        dropdown: Object.freeze({
+            arrow: Object.freeze({}),
+            menu: Object.freeze({}),
+            option: Object.freeze({
+                states: {
+                  hover: {},
+                  selected: {},
+                },
+            }),
+        }),
+        input: Object.freeze({
+            file: {
+              button: {
+                states: {
+                  hover: {},
+                },
+              },
+            },
+            states: {
+              focus: {},
+            },
+        }),
+        loader: Object.freeze({}),
+        pill: Object.freeze({}),
+        progress: Object.freeze({}),
+        tabs: Object.freeze({
+            list: { gap: "8px" },
+            responsive: {
+              mobile: { fontSize: "13px", height: "36px" },
+            },
+            root: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              color: "currentColor",
+              fontFamily: "sans-serif",
+              fontSize: "14px",
+              height: "34px",
+              paddingInline: "14px",
+              radius: "0",
+            },
+            states: { active: {}, hover: {} },
+        }),
+        textLink: Object.freeze({
+            root: {
+              color: "currentColor",
+              fontWeight: "inherit",
+              textDecorationLine: "underline",
+              textDecorationStyle: "dotted",
+              textDecorationThickness: "1px",
+              textUnderlineOffset: "3px",
+              transition: "color 120ms ease",
+            },
+            states: {
+              hover: {
+                textDecorationStyle: "solid",
+              },
+            },
+        }),
+        toggle: Object.freeze({
+            active: Object.freeze({}),
+            thumb: Object.freeze({}),
+            track: Object.freeze({}),
+        }),
+        upload: Object.freeze({
+            actions: { gap: "8px" },
+            content: { gap: "4px" },
+            cropper: {
+              actions: { gap: "8px" },
+              description: { color: "var(--tbf-text-muted, #000)" },
+              header: { gap: "4px" },
+              modal: {
+                maxHeight: "min(90vh, 920px)",
+                width: "min(960px, calc(100vw - 40px))",
+              },
+              stage: {
+                background: "var(--tbf-surface-muted, #fff)",
+                border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
+                faceColor: "rgb(255 255 255 / 14%)",
+                height: "min(62vh, 640px)",
+                lineColor: "#fff",
+                minHeight: "320px",
+                overlayColor: "rgb(0 0 0 / 72%)",
+                pointBackground: "#fff",
+                pointBorder: "var(--tbf-border-width, 1px) solid var(--tbf-text, #000)",
+                pointRadius: "var(--tbf-radius-sm, 0)",
+                pointSize: "12px",
+                radius: "var(--tbf-radius, 0)",
+              },
+            },
+            hint: {
+              color: "var(--tbf-text-muted, #000)",
+              fontSize: "0.92rem",
+            },
+            list: {
+              gap: "4px",
+              paddingLeft: "18px",
+            },
+            preview: {
+              background: "var(--tbf-surface, #fff)",
+              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
+              emptyColor: "var(--tbf-text-muted, #000)",
+              emptyFontSize: "0.82rem",
+              emptyLineHeight: "1.1",
+              emptyPadding: "4px",
+              radius: "var(--tbf-radius, 0)",
+              roundRadius: "var(--tbf-radius-round, 999px)",
+              size: "64px",
+            },
+            responsive: {
+              mobile: {
+                cropperModalMaxHeight: "calc(100vh - 24px)",
+                cropperModalWidth: "calc(100vw - 24px)",
+                cropperStageHeight: "min(52vh, 420px)",
+                cropperStageMinHeight: "260px",
+              },
+            },
+            root: {
+              color: "var(--tbf-text, #000)",
+              gap: "8px",
+            },
+            surface: {
+              background: "var(--tbf-surface-muted, #fff)",
+              border: "var(--tbf-border-width, 1px) dashed var(--tbf-border, #000)",
+              color: "var(--tbf-text, #000)",
+              gap: "12px",
+              minHeight: "72px",
+              padding: "12px",
+              radius: "var(--tbf-radius, 0)",
+              states: {
+                drag: {
+                  background: "var(--tbf-surface, #fff)",
+                  borderColor: "var(--tbf-focus, #000)",
+                },
+                hasFiles: {
+                  borderStyle: "solid",
+                },
+              },
+            },
+        }),
+    }),
+    shell: Object.freeze({
+        header: Object.freeze({
+            brand: {
+              tag: {
+                offsetY: "0",
+              },
+            },
+        }),
+        language: Object.freeze({
+            option: {
+              states: {
+                current: {},
+              },
+            },
+        }),
+        sidebar: Object.freeze({}),
+        theme: Object.freeze({
+            option: {
+              states: {
+                current: {},
+              },
+            },
+        }),
+    }),
+    surfaces: Object.freeze({
+        button: Object.freeze({}),
+        card: Object.freeze({
+            body: {
+              divider: {},
+            },
+            root: {
+              background: "transparent",
+              border: "1px solid currentColor",
+              minHeight: "35px",
+              padding: "14px 14px 12px 14px",
+              radius: "0",
+            },
+            row: {
+              background: "transparent",
+              padding: "9px 12px",
+              radius: "0",
+              states: {
+                excluded: {},
+                hover: {},
+                selected: {},
+              },
+            },
+            title: {
+              fontSize: "15px",
+              fontWeight: "700",
+              margin: "0 0 10px 0",
+            },
+        }),
+    }),
+  } satisfies NormalizedFrontendComponentsConfig);
+
+export { DEFAULT_FRONTEND_COMPONENTS_CONFIG };

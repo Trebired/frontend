@@ -1,1 +1,3 @@
-export * from "./components.js";
+export {
+  FrontendBootScript,
+} from "#rmmv8vkb3dbt";

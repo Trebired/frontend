@@ -84,7 +84,7 @@ function findSlot(root: unknown, selector: string) {
   const progressSlot = progressRoot?.querySelector<HTMLElement>(selector);
   if (progressSlot) return progressSlot;
   return (progressRoot?.parentElement || el.parentElement)
-    ?.querySelector<HTMLElement>(selector) || null;
+  ?.querySelector<HTMLElement>(selector) || null;
 }
 
 function ensureFill(mountEl: HTMLElement) {
@@ -147,11 +147,11 @@ function set(root: unknown, percent: unknown, options: ProgressSetOptions = {}) 
 function setBytes(root: unknown, loaded: unknown, total: unknown, options: ProgressSetOptions = {}) {
   const percent = percentFromBytes(loaded, total);
   const label =
-    typeof options.label === "string"
-      ? options.label
-      : options.showBytes === true
-        ? bytesLabel(loaded, total)
-        : formatPercent(percent);
+  typeof options.label === "string"
+  ? options.label
+  : options.showBytes === true
+  ? bytesLabel(loaded, total)
+  : formatPercent(percent);
   return set(root, percent, { ...options, label });
 }
 
@@ -189,17 +189,17 @@ function progressPercentLabel(percentInput: unknown) {
 }
 
 const progressBars = Object.freeze({
-  bytesLabel,
-  clampPercent,
-  destroy,
-  formatBytes,
-  formatPercent,
-  indeterminate,
-  mount,
-  percentFromBytes,
-  progressPercentLabel,
-  set,
-  setBytes,
+    bytesLabel,
+    clampPercent,
+    destroy,
+    formatBytes,
+    formatPercent,
+    indeterminate,
+    mount,
+    percentFromBytes,
+    progressPercentLabel,
+    set,
+    setBytes,
 });
 
 export {

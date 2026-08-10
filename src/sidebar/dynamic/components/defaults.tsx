@@ -16,7 +16,7 @@ import { textValue } from "#yv4ubgils4dc";
 
 function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
   const spec =
-    textValue(context.item.iconSpec) ||
+  textValue(context.item.iconSpec) ||
     textValue(context.item.iconKey) ||
     "remixicon arrow-right-s-line";
   return <Icon spec={spec} />;
@@ -25,9 +25,9 @@ function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
 function defaultDynamicSidebarCount(context: DynamicSidebarCountContext) {
   if (context.count == null) return null;
   return time_counter({
-    bare: true,
-    count: context.count,
-    mode: "count",
+      bare: true,
+      count: context.count,
+      mode: "count",
   });
 }
 
@@ -35,31 +35,31 @@ function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {
   if (context.repositoryId) {
     if (context.running <= 0 && context.idleCountPath) {
       return context.active && context.idleCount != null
-        ? defaultDynamicSidebarCount({
+      ? defaultDynamicSidebarCount({
           ...context,
           count: context.idleCount,
           path: context.idleCountPath,
-        })
-        : null;
+      })
+      : null;
     }
     return context.running > 0 ? (
       <span className={primitiveInlineRowClassName({
-        className: primitiveTextClassName({ className: "no-select", muted: true }),
-        gap: "xs",
-        verticalCenter: true,
+            className: primitiveTextClassName({ className: "no-select", muted: true }),
+            gap: "xs",
+            verticalCenter: true,
       })}>
-        {circle({ size: "xs" })}
+      {circle({ size: "xs" })}
       </span>
     ) : null;
   }
   if (context.running <= 0) return null;
   return (
     <span className={primitiveInlineRowClassName({
-      className: primitiveTextClassName({ className: "no-select", muted: true }),
-      gap: "xs",
-      verticalCenter: true,
+          className: primitiveTextClassName({ className: "no-select", muted: true }),
+          gap: "xs",
+          verticalCenter: true,
     })}>
-      {circle({ size: "sm" })}
+    {circle({ size: "sm" })}
     </span>
   );
 }
@@ -69,13 +69,13 @@ function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {
   if (!state) return null;
   return (
     <span
-      aria-hidden="true"
-      className={primitiveStatusDotClassName({
-        size: "sm",
-        tone: state === "running" ? "green" : "red",
-      })}
-      data-state={state}
-      data-tbf-sidebar-state-dot=""
+    aria-hidden="true"
+    className={primitiveStatusDotClassName({
+          size: "sm",
+          tone: state === "running" ? "green" : "red",
+    })}
+    data-state={state}
+    data-tbf-sidebar-state-dot=""
     />
   );
 }

@@ -1,4 +1,10 @@
-import { cssEscape, queryAll, setAriaExpanded, type BindRoot } from "#er0dlx1gtbzh";
+import {
+  clampNumber,
+  cssEscape,
+  queryAll,
+  setAriaExpanded,
+  type BindRoot,
+} from "#er0dlx1gtbzh";
 import {
   moveLayerElementToTop,
   portalElement,
@@ -20,10 +26,6 @@ const cleanups = new WeakMap<HTMLElement, () => void>();
 let openEntry: PopoverEntry | null = null;
 let listenersInstalled = false;
 
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
-}
-
 function findPopoverTarget(root: BindRoot, id: string) {
   const scoped = root.querySelector(`#${cssEscape(id)}`);
   if (scoped instanceof HTMLElement) return scoped;
@@ -39,9 +41,9 @@ function placePopover(trigger: HTMLElement, popover: HTMLElement) {
   const vh = window.innerHeight;
   const below = anchor.bottom + gap + rect.height <= vh;
   const top = below
-    ? anchor.bottom + gap
-    : clamp(anchor.top - gap - rect.height, gap, vh - rect.height - gap);
-  const left = clamp(
+  ? anchor.bottom + gap
+  : clampNumber(anchor.top - gap - rect.height, gap, vh - rect.height - gap);
+  const left = clampNumber(
     anchor.left + anchor.width / 2 - rect.width / 2,
     gap,
     vw - rect.width - gap,
@@ -77,9 +79,9 @@ function showPopover(entry: PopoverEntry) {
 
 function hidePopover(popoverOrTrigger?: HTMLElement | null) {
   const entry = popoverOrTrigger
-    ? entries.get(popoverOrTrigger) ||
-      Array.from(entries.values()).find((item) => item.popover === popoverOrTrigger)
-    : openEntry;
+  ? entries.get(popoverOrTrigger) ||
+    Array.from(entries.values()).find((item) => item.popover === popoverOrTrigger)
+  : openEntry;
   if (!entry) return false;
   entry.popover.removeAttribute("data-tbf-open");
   releasePopoverFocus(entry);
@@ -136,8 +138,8 @@ function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = docume
   trigger.addEventListener("click", onClick);
   const closeCleanup = bindPopoverClose(entry);
   cleanups.set(trigger, () => {
-    trigger.removeEventListener("click", onClick);
-    closeCleanup();
+      trigger.removeEventListener("click", onClick);
+      closeCleanup();
   });
   entries.set(trigger, entry);
   installPopoverListeners();
@@ -146,7 +148,7 @@ function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = docume
 
 function bindPopovers(root: BindRoot = document) {
   queryAll<HTMLElement>(root, POPOVER_TRIGGER_SELECTOR).forEach((trigger) => {
-    bindPopoverTrigger(trigger, root);
+      bindPopoverTrigger(trigger, root);
   });
 }
 
@@ -154,16 +156,16 @@ function installPopoverListeners() {
   if (listenersInstalled) return;
   listenersInstalled = true;
   document.addEventListener("click", (event) => {
-    const target = event.target instanceof Node ? event.target : null;
-    if (!openEntry || !target) return;
-    if (openEntry.popover.contains(target) || openEntry.trigger.contains(target)) return;
-    hidePopover();
+      const target = event.target instanceof Node ? event.target : null;
+      if (!openEntry || !target) return;
+      if (openEntry.popover.contains(target) || openEntry.trigger.contains(target)) return;
+      hidePopover();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") hidePopover();
+      if (event.key === "Escape") hidePopover();
   });
   window.addEventListener("resize", () => {
-    if (openEntry) placePopover(openEntry.trigger, openEntry.popover);
+      if (openEntry) placePopover(openEntry.trigger, openEntry.popover);
   });
 }
 

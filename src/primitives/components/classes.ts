@@ -171,10 +171,10 @@ function primitiveTextClassName(options: PrimitiveTextClassOptions = {}) {
 }
 
 function primitiveStatusDotClassName(options: {
-  className?: unknown;
-  size?: string;
-  tone?: string;
-} = {}) {
+    className?: unknown;
+    size?: string;
+    tone?: string;
+  } = {}) {
   return joinClassNames(
     "dot",
     `dot-${toText(options.size, "md").toLowerCase()}`,

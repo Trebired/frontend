@@ -11,14 +11,14 @@ function StatusField(props: StatusFieldProps) {
   const { children, className, method, url, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-status-field", className)}
-      data-tbf-status-field=""
-      data-tbf-status-method={method}
-      data-tbf-status-state="idle"
-      data-tbf-status-url={url}
+    {...rest}
+    className={classNames("tbf-status-field", className)}
+    data-tbf-status-field=""
+    data-tbf-status-method={method}
+    data-tbf-status-state="idle"
+    data-tbf-status-url={url}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -27,7 +27,7 @@ function StatusMessage(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-status-field__message", className)} data-tbf-status-message="">
-      {children}
+    {children}
     </div>
   );
 }

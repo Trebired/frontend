@@ -1,4 +1,5 @@
 import { toString } from "#dqy2d22qyujv";
+import { joinClassNames as classNames } from "#ndsvdqv80epr";
 
 import { type ReactNode } from "react";
 import { DisclosureButton } from "#h6suogfkcg6i";
@@ -22,10 +23,6 @@ type disclosure_props = {
   triggerTag?: "button" | "div";
   triggerClassName?: string;
 };
-
-function classNames(values: string[]) {
-  return values.filter(Boolean).join(" ");
-}
 
 function disclosureModel(props: disclosure_props) {
   const rootId = toString(props.id);
@@ -53,8 +50,8 @@ function disclosureModel(props: disclosure_props) {
     TriggerTag: props.triggerTag === "div" ? "div" : "button",
     triggerClassName: classNames([
         primitiveInlineRowClassName({
-          className: "disclosure-trigger",
-          gap: "xs",
+            className: "disclosure-trigger",
+            gap: "xs",
         }),
         toString(props.triggerClassName),
     ]),
@@ -120,7 +117,7 @@ function disclosurePanel(
   );
 }
 
-function disclosure(props: disclosure_props) {
+function advancedDisclosure(props: disclosure_props) {
   const model = disclosureModel(props);
   return (
     <div
@@ -140,4 +137,4 @@ function disclosure(props: disclosure_props) {
 }
 
 export type { disclosure_props };
-export default disclosure;
+export default advancedDisclosure;

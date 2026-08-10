@@ -301,7 +301,7 @@ function bindStatusFieldHost(host: HTMLElement) {
   }
 }
 
-function bindStatusFields(
+function bindAdvancedStatusFields(
   root: ParentNode | HTMLElement | Document = document,
 ) {
   const scope = root && "querySelectorAll" in root ? root : document;
@@ -316,7 +316,7 @@ function bindStatusFields(
 
 function bootStatusFields() {
   if (typeof document === "undefined") return;
-  bindStatusFields(document);
+  bindAdvancedStatusFields(document);
 }
 
 if (typeof document !== "undefined" && document.readyState === "loading") {
@@ -329,7 +329,7 @@ if (typeof document !== "undefined" && document.readyState === "loading") {
 
 export {
   bindBackendStatusInput,
-  bindStatusFields,
+  bindAdvancedStatusFields as bindStatusFields,
   bindStatusFieldHost,
   bootStatusFields,
   checkBackendStatusInput,

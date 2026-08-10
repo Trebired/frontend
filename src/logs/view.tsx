@@ -40,10 +40,10 @@ function view(props: view_props) {
     {canvas_panel({
           content: content({ ids: model.ids }),
           contentClassName: primitiveStackClassName({
-            className: [
-              primitivePaddingClass("xs"),
-              "log-box-shell",
-            ],
+              className: [
+                primitivePaddingClass("xs"),
+                "log-box-shell",
+              ],
           }),
           extendGroup: model.logsExtendGroup,
           extendId: model.logsInstanceId,

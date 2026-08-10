@@ -282,7 +282,7 @@ function ensureTabSwitchListener() {
   });
 }
 
-function bindTabs(root: HTMLElement | null, options: any = {}) {
+function bindAdvancedTabs(root: HTMLElement | null, options: any = {}) {
   ensureTabSwitchListener();
   if (!(root instanceof HTMLElement)) return null;
   return createTabs(root, options);
@@ -295,7 +295,7 @@ function tabsRootFromHost(host: Element | null) {
 }
 
 function bindTabsHost(host: Element | null, options: any = {}) {
-  return bindTabs(tabsRootFromHost(host), options);
+  return bindAdvancedTabs(tabsRootFromHost(host), options);
 }
 
 function bindOwnedTabs(owner: Element | null, options: any = {}) {
@@ -312,7 +312,7 @@ export {
   activateTabByFamily,
   activateTabByFamily as activateTabByQuery,
   bindOwnedTabs,
-  bindTabs,
+  bindAdvancedTabs as bindTabs,
   bindTabsHost,
   createTabs,
 };

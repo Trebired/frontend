@@ -46,11 +46,11 @@ function fitDimensions(width: number, height: number, maxDimension: number) {
 
 function canvasToBlob(canvas: HTMLCanvasElement, type = "image/png", quality?: number) {
   return new Promise<Blob | null>((resolve) => {
-    try {
-      canvas.toBlob((blob) => resolve(blob || null), type, quality);
-    } catch {
-      resolve(null);
-    }
+      try {
+        canvas.toBlob((blob) => resolve(blob || null), type, quality);
+      } catch {
+        resolve(null);
+      }
   });
 }
 
@@ -113,8 +113,8 @@ async function prepareCropSource(file: File) {
 async function canvasToPreviewUrl(canvas: HTMLCanvasElement, type: string) {
   const size = fitDimensions(canvas.width, canvas.height, MAX_CROP_PREVIEW_DIMENSION);
   const preview = size && (size.width !== canvas.width || size.height !== canvas.height)
-    ? renderResizedCanvas(canvas, size.width, size.height)
-    : canvas;
+  ? renderResizedCanvas(canvas, size.width, size.height)
+  : canvas;
   const blob = preview ? await canvasToBlob(preview, type || "image/png") : null;
   if (!(blob instanceof Blob)) throw new Error("Missing crop preview.");
   return safeObjectUrl(blob);

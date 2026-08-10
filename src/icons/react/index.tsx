@@ -72,30 +72,30 @@ function Icon(props: IconProps) {
   const colorValue = text(cacheEntry?.colorValue);
 
   useEffect(() => {
-    if (!ref.current || !normalizedSpec) return undefined;
-    void renderIconElement(ref.current, normalizedSpec, { color, endpoint });
-    return undefined;
-  }, [color, endpoint, normalizedSpec]);
+      if (!ref.current || !normalizedSpec) return undefined;
+      void renderIconElement(ref.current, normalizedSpec, { color, endpoint });
+      return undefined;
+    }, [color, endpoint, normalizedSpec]);
 
   const elementProps = useMemo(() => {
-    const hidden = label || rest["aria-label"] ? undefined : "true";
-    const out: Record<string, unknown> = {
-      ...rest,
-      "aria-hidden": rest["aria-hidden"] ?? hidden,
-      "aria-label": rest["aria-label"] || label || undefined,
-      className: classNames("tbf-icon", "icon-glyph", className),
-      "data-tbf-icon": normalizedSpec || undefined,
-      ref,
-      style: resolveStyle({ ...props, color }, colorMode, colorValue),
-      title,
-    };
-    if (svgMarkup) {
-      out.dangerouslySetInnerHTML = {
-        __html: color ? applySvgColor(svgMarkup, color) : svgMarkup,
+      const hidden = label || rest["aria-label"] ? undefined : "true";
+      const out: Record<string, unknown> = {
+        ...rest,
+        "aria-hidden": rest["aria-hidden"] ?? hidden,
+        "aria-label": rest["aria-label"] || label || undefined,
+        className: classNames("tbf-icon", "icon-glyph", className),
+        "data-tbf-icon": normalizedSpec || undefined,
+        ref,
+        style: resolveStyle({ ...props, color }, colorMode, colorValue),
+        title,
       };
-    }
-    return out;
-  }, [className, color, colorMode, colorValue, label, normalizedSpec, props, rest, svgMarkup, title]);
+      if (svgMarkup) {
+        out.dangerouslySetInnerHTML = {
+          __html: color ? applySvgColor(svgMarkup, color) : svgMarkup,
+        };
+      }
+      return out;
+    }, [className, color, colorMode, colorValue, label, normalizedSpec, props, rest, svgMarkup, title]);
 
   return createElement(tag, elementProps);
 }

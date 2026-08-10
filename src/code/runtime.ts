@@ -66,9 +66,9 @@ async function renderCodeHost(host: Element, monacoRef: any, themeName: string) 
   await activateLanguage(monacoRef, languageId);
   target.textContent = source;
   await monacoRef.editor.colorizeElement(target, {
-    mimeType: languageId,
-    tabSize: 2,
-    theme: themeName,
+      mimeType: languageId,
+      tabSize: 2,
+      theme: themeName,
   });
   host.setAttribute(DATA_CODE_RENDERED_ATTR, "1");
   codeState.set(host, { languageId, source, themeName });
@@ -112,9 +112,9 @@ function bindCodeThemeRefresh() {
   if (themeRefreshBound) return;
   themeRefreshBound = true;
   window.addEventListener("tbf:themechange", () => {
-    window.requestAnimationFrame(() => {
-      void renderConnectedCodeHosts();
-    });
+      window.requestAnimationFrame(() => {
+          void renderConnectedCodeHosts();
+      });
   });
 }
 

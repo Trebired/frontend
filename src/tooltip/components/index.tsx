@@ -21,12 +21,12 @@ function TooltipButton(props: TooltipButtonProps) {
   const { children, className, tooltip, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-tooltip={tooltip}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-tooltip={tooltip}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -35,12 +35,12 @@ function TooltipText(props: TooltipTextProps) {
   const { children, className, tooltip, ...rest } = props;
   return (
     <span
-      {...rest}
-      className={classNames("tbf-tooltip-text", className)}
-      data-tbf-tooltip={tooltip}
-      tabIndex={props.tabIndex ?? 0}
+    {...rest}
+    className={classNames("tbf-tooltip-text", className)}
+    data-tbf-tooltip={tooltip}
+    tabIndex={props.tabIndex ?? 0}
     >
-      {children}
+    {children}
     </span>
   );
 }
@@ -49,14 +49,14 @@ function StatusIcon(props: StatusIconProps) {
   const { children = "i", className, label, ...rest } = props;
   return (
     <span
-      {...rest}
-      className={classNames("tbf-status-icon", className)}
-      data-tbf-status-icon=""
-      aria-label={label}
-      role="img"
-      tabIndex={props.tabIndex ?? 0}
+    {...rest}
+    className={classNames("tbf-status-icon", className)}
+    data-tbf-status-icon=""
+    aria-label={label}
+    role="img"
+    tabIndex={props.tabIndex ?? 0}
     >
-      {children as ReactNode}
+    {children as ReactNode}
     </span>
   );
 }
@@ -65,12 +65,12 @@ function TooltipLayer(props: HTMLAttributes<HTMLDivElement>) {
   const { className, id = "tbf_tooltip", ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-tooltip", className)}
-      data-tbf-tooltip-layer=""
-      id={id}
-      aria-hidden="true"
-      role="tooltip"
+    {...rest}
+    className={classNames("tbf-tooltip", className)}
+    data-tbf-tooltip-layer=""
+    id={id}
+    aria-hidden="true"
+    role="tooltip"
     />
   );
 }

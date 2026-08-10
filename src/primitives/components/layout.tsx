@@ -12,18 +12,18 @@ import {
 } from "./classes.js";
 
 type StackProps = HTMLAttributes<HTMLDivElement> &
-  Omit<PrimitiveStackClassOptions, "className">;
+Omit<PrimitiveStackClassOptions, "className">;
 
 type InlineRowProps = HTMLAttributes<HTMLDivElement> &
-  Omit<PrimitiveInlineRowClassOptions, "className">;
+Omit<PrimitiveInlineRowClassOptions, "className">;
 
 type GridProps = HTMLAttributes<HTMLDivElement> &
-  Omit<PrimitiveGridClassOptions, "className">;
+Omit<PrimitiveGridClassOptions, "className">;
 
 type TextProps = HTMLAttributes<HTMLSpanElement> &
-  Omit<PrimitiveTextClassOptions, "className"> & {
-    as?: "p" | "span" | "strong";
-  };
+Omit<PrimitiveTextClassOptions, "className"> & {
+  as?: "p" | "span" | "strong";
+};
 
 type TitleDescriptionProps = Omit<StackProps, "title"> & {
   description?: ReactNode;
@@ -36,18 +36,18 @@ function Stack(props: StackProps) {
   const { center, children, className, gap, grow, horizontalCenter, noShrink, verticalCenter, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={primitiveStackClassName({
-        center,
-        className,
-        gap,
-        grow,
-        horizontalCenter,
-        noShrink,
-        verticalCenter,
-      })}
+    {...rest}
+    className={primitiveStackClassName({
+          center,
+          className,
+          gap,
+          grow,
+          horizontalCenter,
+          noShrink,
+          verticalCenter,
+    })}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -56,21 +56,21 @@ function InlineRow(props: InlineRowProps) {
   const { apart, between, children, className, fit, gap, noShrink, noStretch, top, verticalCenter, wrap, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={primitiveInlineRowClassName({
-        apart,
-        between,
-        className,
-        fit,
-        gap,
-        noShrink,
-        noStretch,
-        top,
-        verticalCenter,
-        wrap,
-      })}
+    {...rest}
+    className={primitiveInlineRowClassName({
+          apart,
+          between,
+          className,
+          fit,
+          gap,
+          noShrink,
+          noStretch,
+          top,
+          verticalCenter,
+          wrap,
+    })}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -79,7 +79,7 @@ function Grid(props: GridProps) {
   const { auto, children, className, columns, gap, ...rest } = props;
   return (
     <div {...rest} className={primitiveGridClassName({ auto, className, columns, gap })}>
-      {children}
+    {children}
     </div>
   );
 }
@@ -98,13 +98,13 @@ function Text(props: TextProps) {
     ...rest
   } = props;
   const classNameText = primitiveTextClassName({
-    breakWord,
-    className,
-    muted,
-    right,
-    size,
-    truncate,
-    widthFit,
+      breakWord,
+      className,
+      muted,
+      right,
+      size,
+      truncate,
+      widthFit,
   });
   if (as === "p") return <p {...(rest as HTMLAttributes<HTMLParagraphElement>)} className={classNameText}>{children}</p>;
   if (as === "strong") return <strong {...(rest as HTMLAttributes<HTMLElement>)} className={classNameText}>{children}</strong>;
@@ -116,9 +116,9 @@ function TitleDescription(props: TitleDescriptionProps) {
   const Heading = `h${level}` as "h2" | "h3" | "h4";
   return (
     <Stack {...rest} className={className} gap={gap}>
-      <Heading>{title}</Heading>
-      {description ? <Text as="p" muted size={descriptionSize}>{description}</Text> : null}
-      {children}
+    <Heading>{title}</Heading>
+    {description ? <Text as="p" muted size={descriptionSize}>{description}</Text> : null}
+    {children}
     </Stack>
   );
 }

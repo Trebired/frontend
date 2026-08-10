@@ -13,7 +13,7 @@ type ConfiguredSuccessAction = {
   successTab?: unknown;
 };
 
-function t(adapters: ActionAdapters | undefined, key: string, fallback: string) {
+function translateActionText(adapters: ActionAdapters | undefined, key: string, fallback: string) {
   return adapters?.i18n ? adapters.i18n(key, fallback) : fallback;
 }
 
@@ -26,9 +26,9 @@ function actionResponseOk(json: ActionJson | null | undefined) {
 }
 
 function defaultFeedbackMessage(kind: string, adapters?: ActionAdapters) {
-  if (kind === "noop") return t(adapters, "feedback.noop", "Nothing changed.");
-  if (kind === "success") return t(adapters, "feedback.success", "Saved.");
-  return t(adapters, "feedback.requestFailed", "Request failed.");
+  if (kind === "noop") return translateActionText(adapters, "feedback.noop", "Nothing changed.");
+  if (kind === "success") return translateActionText(adapters, "feedback.success", "Saved.");
+  return translateActionText(adapters, "feedback.requestFailed", "Request failed.");
 }
 
 function machineStatus(value: string, json: ActionJson | null | undefined) {
@@ -46,13 +46,13 @@ function computeFlashMeta(
   const rawMessage = String(json?.message || "").trim();
   const rawDescription = String(json?.details || "").trim();
   const message =
-    rawMessage && !machineStatus(rawMessage, json)
-      ? rawMessage
-      : defaultFeedbackMessage(kind, adapters);
+  rawMessage && !machineStatus(rawMessage, json)
+  ? rawMessage
+  : defaultFeedbackMessage(kind, adapters);
   const description =
-    rawDescription && rawDescription !== message && !machineStatus(rawDescription, json)
-      ? rawDescription
-      : "";
+  rawDescription && rawDescription !== message && !machineStatus(rawDescription, json)
+  ? rawDescription
+  : "";
   return { description, message, type: kind };
 }
 
@@ -61,7 +61,7 @@ function shouldShowFlash(
   kind: "error" | "noop" | "success",
 ) {
   if (ui?.flashErrorOnly === true || ui?.flash_error_only === true)
-    return kind === "error";
+  return kind === "error";
   return ui?.silent !== true;
 }
 
@@ -102,16 +102,16 @@ function normalizeTabSwitches(tab: unknown) {
   }
   if (typeof tab === "string") {
     tab.split("&").forEach((pair) => {
-      const idx = pair.indexOf("=");
-      if (idx > 0) push(pair.slice(0, idx), pair.slice(idx + 1));
+        const idx = pair.indexOf("=");
+        if (idx > 0) push(pair.slice(0, idx), pair.slice(idx + 1));
     });
     return out;
   }
   if (Array.isArray(tab)) {
     tab.forEach((entry) => {
-      if (!entry || typeof entry !== "object") return;
-      const item = entry as Record<string, unknown>;
-      push(item.family || item.key, item.route);
+        if (!entry || typeof entry !== "object") return;
+        const item = entry as Record<string, unknown>;
+        push(item.family || item.key, item.route);
     });
     return out;
   }
@@ -119,7 +119,7 @@ function normalizeTabSwitches(tab: unknown) {
     const item = tab as Record<string, unknown>;
     if (
       (typeof item.family === "string" || typeof item.key === "string") &&
-      typeof item.route === "string"
+        typeof item.route === "string"
     ) {
       push(item.family || item.key, item.route);
       return out;
@@ -150,17 +150,17 @@ function scheduleRedirectOrReload(
   const flashApi = adapters?.flash || defaultFlash;
   const configuredDelay = Number((action as any).redirect_delay_ms);
   const delay = Number.isFinite(configuredDelay)
-    ? Math.max(0, Math.floor(configuredDelay))
-    : flashApi.computeFlashDurationMs?.(meta.message, meta.description) || 1000;
+  ? Math.max(0, Math.floor(configuredDelay))
+  : flashApi.computeFlashDurationMs?.(meta.message, meta.description) || 1000;
   window.setTimeout(() => {
-    if (action.redirect) {
-      if (adapters?.navigation?.navigate) void adapters.navigation.navigate(action.redirect);
-      else window.location.assign(action.redirect);
-      return;
-    }
-    if (adapters?.reload?.reload) void adapters.reload.reload();
-    else window.location.reload();
-  }, delay);
+      if (action.redirect) {
+        if (adapters?.navigation?.navigate) void adapters.navigation.navigate(action.redirect);
+        else window.location.assign(action.redirect);
+        return;
+      }
+      if (adapters?.reload?.reload) void adapters.reload.reload();
+      else window.location.reload();
+    }, delay);
   return true;
 }
 

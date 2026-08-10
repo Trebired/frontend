@@ -54,8 +54,8 @@ function startFlashLifetime(
     controls.progress.hidden = true;
   }
   window.requestAnimationFrame(() => {
-    controls.element.setAttribute("data-tbf-visible", "true");
-    layoutFlashStack(stack);
+      controls.element.setAttribute("data-tbf-visible", "true");
+      layoutFlashStack(stack);
   });
 }
 
@@ -65,16 +65,16 @@ function showFlash(message: unknown, type: FlashType = "info", description = "",
 
 function stickyFlash(type: FlashType, message: unknown, description = "", options = {}) {
   return showFlashImpl(normalizeFlashType(type), message, description, {
-    ...(options as object),
-    sticky: true,
+      ...(options as object),
+      sticky: true,
   });
 }
 
 function liveFlash(type: FlashType, message: unknown, description = "", options = {}) {
   return showFlashImpl(normalizeFlashType(type), message, description, {
-    ...(options as object),
-    sticky: true,
-    update: true,
+      ...(options as object),
+      sticky: true,
+      update: true,
   });
 }
 
@@ -96,8 +96,8 @@ function showFlashMessage(
 
 function attrSelector(name: string, value: string) {
   const escaped = typeof CSS !== "undefined" && typeof CSS.escape === "function"
-    ? CSS.escape(value)
-    : value.replace(/\\/gu, "\\\\").replace(/"/gu, "\\\"");
+  ? CSS.escape(value)
+  : value.replace(/\\/gu, "\\\\").replace(/"/gu, "\\\"");
   return `[${name}="${escaped}"]`;
 }
 

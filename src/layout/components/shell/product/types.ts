@@ -9,26 +9,26 @@ import type { ShellChromeState } from "#boxcxvsyrtdl";
 import type { ThemeModeOptions } from "#zzt5zj380sl9";
 
 type ProductShellLabelKey =
-  | "about"
-  | "account"
-  | "apps"
-  | "closeNavigationMenu"
-  | "docs"
-  | "feedback"
-  | "goHome"
-  | "menu"
-  | "minimize"
-  | "mobileNavigation"
-  | "mobilePrimaryNavigation"
-  | "more"
-  | "navigation"
-  | "navigationSidebarLabel"
-  | "notifications"
-  | "organizationMembers"
-  | "organizationMembersSidebarLabel"
-  | "profile"
-  | "support"
-  | "toggleTheme";
+| "about"
+| "account"
+| "apps"
+| "closeNavigationMenu"
+| "docs"
+| "feedback"
+| "goHome"
+| "menu"
+| "minimize"
+| "mobileNavigation"
+| "mobilePrimaryNavigation"
+| "more"
+| "navigation"
+| "navigationSidebarLabel"
+| "notifications"
+| "organizationMembers"
+| "organizationMembersSidebarLabel"
+| "profile"
+| "support"
+| "toggleTheme";
 
 type ProductShellLabels = Partial<Record<ProductShellLabelKey, string>>;
 
@@ -107,35 +107,35 @@ type ProductShellSidebarFooterProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 type ProductShellSidebarControlsProps =
-  Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
-    about?: ReactNode;
-    language?: ReactNode;
-    minimize?: ReactNode;
-    theme?: ReactNode;
-  };
+Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
+  about?: ReactNode;
+  language?: ReactNode;
+  minimize?: ReactNode;
+  theme?: ReactNode;
+};
 
 type ProductShellSidebarMinimizeButtonProps =
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    controls: string;
-    expandedIcon?: ReactNode;
-    labels?: ProductShellLabels;
-    minimizedIcon?: ReactNode;
-  };
+ButtonHTMLAttributes<HTMLButtonElement> & {
+  controls: string;
+  expandedIcon?: ReactNode;
+  labels?: ProductShellLabels;
+  minimizedIcon?: ReactNode;
+};
 
 type ProductShellThemeToggleProps =
-  ButtonHTMLAttributes<HTMLButtonElement> & ThemeModeOptions & {
-    icon?: ReactNode;
-    labels?: ProductShellLabels;
-    popoverId?: string;
-    theme?: string;
-  };
+ButtonHTMLAttributes<HTMLButtonElement> & ThemeModeOptions & {
+  icon?: ReactNode;
+  labels?: ProductShellLabels;
+  popoverId?: string;
+  theme?: string;
+};
 
 type ProductShellAboutButtonProps =
-  AnchorHTMLAttributes<HTMLAnchorElement> & {
-    icon?: ReactNode;
-    labels?: ProductShellLabels;
-    productName?: string;
-  };
+AnchorHTMLAttributes<HTMLAnchorElement> & {
+  icon?: ReactNode;
+  labels?: ProductShellLabels;
+  productName?: string;
+};
 
 export type {
   ProductShellAboutButtonProps,

@@ -25,7 +25,7 @@ import {
 } from "./classes.js";
 import { actionButtonAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
 
-function button(props: ButtonProps) {
+function primitiveButton(props: ButtonProps) {
   const {
     actionButton,
     actionTrigger,
@@ -42,31 +42,31 @@ function button(props: ButtonProps) {
   } = props;
   return wrapTriggerHostNode(
     <FrontendButton
-      className={primitiveButtonClassName({
-        active,
-        className,
-        icon,
-        size,
-        tone,
-        tooltip,
-        transparent,
-        variant,
-      })}
-      data-tbf-active={active ? "true" : undefined}
-      {...actionButtonAttrs(actionButton)}
-      {...rest}
+    className={primitiveButtonClassName({
+          active,
+          className,
+          icon,
+          size,
+          tone,
+          tooltip,
+          transparent,
+          variant,
+    })}
+    data-tbf-active={active ? "true" : undefined}
+    {...actionButtonAttrs(actionButton)}
+    {...rest}
     >
-      {children}
+    {children}
     </FrontendButton>,
     { action: actionTrigger },
   );
 }
 
-function card(props: CardProps) {
+function primitiveCard(props: CardProps) {
   const { actionTrigger, children, className, gap, layout, padding, scroll, ...rest } = props;
   return wrapTriggerHostNode(
     <FrontendCard className={primitiveCardClassName({ className, gap, layout, padding, scroll })} {...rest}>
-      {children}
+    {children}
     </FrontendCard>,
     { action: actionTrigger },
   );
@@ -86,16 +86,16 @@ function action_form(props: ActionFormProps) {
   } = props;
   return (
     <ActionForm
-      {...rest}
-      action={action}
-      body={body}
-      ignoreResponseAction={ignoreResponseAction}
-      lifecycle={lifecycle}
-      method={method}
-      success={success}
-      successTab={successTab}
+    {...rest}
+    action={action}
+    body={body}
+    ignoreResponseAction={ignoreResponseAction}
+    lifecycle={lifecycle}
+    method={method}
+    success={success}
+    successTab={successTab}
     >
-      {children}
+    {children}
     </ActionForm>
   );
 }
@@ -111,21 +111,21 @@ function avatar(props: AvatarProps) {
   if (props.src) {
     return (
       <img
-        alt={props.alt}
-        className={joinClassNames(`avatar${sizeClass}`, props.className)}
-        height={props.height}
-        referrerPolicy="no-referrer"
-        src={props.src}
-        style={props.style}
-        width={props.width}
+      alt={props.alt}
+      className={joinClassNames(`avatar${sizeClass}`, props.className)}
+      height={props.height}
+      referrerPolicy="no-referrer"
+      src={props.src}
+      style={props.style}
+      width={props.width}
       />
     );
   }
   return (
     <div
-      aria-hidden="true"
-      className={joinClassNames(`avatar${sizeClass} unknown`, props.className)}
-      style={props.style}
+    aria-hidden="true"
+    className={joinClassNames(`avatar${sizeClass} unknown`, props.className)}
+    style={props.style}
     />
   );
 }
@@ -134,7 +134,7 @@ function pill(props: PillProps) {
   const { children, className, ...rest } = props;
   return (
     <span className={joinClassNames("pill", className)} {...rest}>
-      {children}
+    {children}
     </span>
   );
 }
@@ -143,19 +143,19 @@ function separator(props: SeparatorProps = {}) {
   const orientation = props.orientation === "vertical" ? "vertical" : "horizontal";
   const classNameText = toText(props.className);
   const visible =
-    orientation === "vertical" ||
+  orientation === "vertical" ||
     props.visible === true ||
     /\bui-separator-visible\b/u.test(classNameText);
   if (!visible) return null;
   return (
     <div
-      aria-orientation={orientation}
-      className={joinClassNames(
+    aria-orientation={orientation}
+    className={joinClassNames(
         "ui-separator",
         orientation === "vertical" ? "ui-separator-vertical" : "ui-separator-horizontal",
         classNameText,
-      )}
-      role="separator"
+    )}
+    role="separator"
     />
   );
 }
@@ -163,20 +163,20 @@ function separator(props: SeparatorProps = {}) {
 function list<T = unknown>(props: list_props<T>) {
   const items = Array.isArray(props.items) ? props.items : [];
   const className = props.className
-    ? toText(props.className)
-    : primitiveStackClassName({ className: "list", gap: "xs" });
+  ? toText(props.className)
+  : primitiveStackClassName({ className: "list", gap: "xs" });
   const itemClassName = toText(props.itemClassName);
   return (
     <div className={className} style={props.style}>
-      {items.map((item, index) => (
-        <div
+    {items.map((item, index) => (
+          <div
           {...((props.getItemProps ? props.getItemProps(item, index) : {}) as any)}
           className={itemClassName || undefined}
           key={props.getKey ? props.getKey(item, index) : `list_item_${index}`}
-        >
+          >
           {props.renderItem(item, index)}
-        </div>
-      ))}
+          </div>
+    ))}
     </div>
   );
 }
@@ -184,15 +184,15 @@ function list<T = unknown>(props: list_props<T>) {
 function masonry(props: masonry_props) {
   const { columns, gap, ...attrs } = props;
   const safeColumns = Array.isArray(columns)
-    ? columns.filter((column) => column != null && column !== false)
-    : [];
+  ? columns.filter((column) => column != null && column !== false)
+  : [];
   return (
     <div {...attrs} className={primitiveGridClassName({ auto: "lg", className: attrs.className, gap: gap || "sm" })}>
-      {safeColumns.map((column, index) => (
-        <div className={primitiveStackClassName({ gap: gap || "sm" })} key={`masonry_column_${index}`}>
+    {safeColumns.map((column, index) => (
+          <div className={primitiveStackClassName({ gap: gap || "sm" })} key={`masonry_column_${index}`}>
           {column}
-        </div>
-      ))}
+          </div>
+    ))}
     </div>
   );
 }
@@ -201,37 +201,37 @@ function parse_wrapper_attributes(value?: string) {
   const raw = toText(value);
   if (!raw) return {};
   return raw.split(/\s+/).filter(Boolean).reduce((attrs, key) => {
-    attrs[key] = "";
-    return attrs;
-  }, {} as Record<string, string>);
+      attrs[key] = "";
+      return attrs;
+    }, {} as Record<string, string>);
 }
 
 function bar(props: bar_props) {
   const percent = Number.isFinite(Number(props.percent))
-    ? Math.max(0, Math.min(100, Number(props.percent)))
-    : 0;
+  ? Math.max(0, Math.min(100, Number(props.percent)))
+  : 0;
   const className = props.card === true
-    ? primitiveCardClassName({ gap: props.gap || "xs" })
-    : primitiveStackClassName({ gap: props.gap || "xs" });
+  ? primitiveCardClassName({ gap: props.gap || "xs" })
+  : primitiveStackClassName({ gap: props.gap || "xs" });
   return (
     <div className={className} hidden={props.hidden === true} {...parse_wrapper_attributes(props.wrapperAttributes)}>
-      <div className={primitiveInlineRowClassName({ gap: "xs" })}>
-        <span className={primitiveTextClassName({ size: "sm" })} data-progress-meta="">
-          {String(props.meta || "")}
-        </span>
-        <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} data-progress-label="">
-          {String(props.label || "")}
-        </span>
-      </div>
-      <div
-        className="progress"
-        data-progress=""
-        style={{ ["--progress-percent" as any]: `${percent}%` }}
-      >
-        <div data-progress-mount="">
-          <span data-progress-fill="" style={{ width: `${percent}%` }} />
-        </div>
-      </div>
+    <div className={primitiveInlineRowClassName({ gap: "xs" })}>
+    <span className={primitiveTextClassName({ size: "sm" })} data-progress-meta="">
+    {String(props.meta || "")}
+    </span>
+    <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} data-progress-label="">
+    {String(props.label || "")}
+    </span>
+    </div>
+    <div
+    className="progress"
+    data-progress=""
+    style={{ ["--progress-percent" as any]: `${percent}%` }}
+    >
+    <div data-progress-mount="">
+    <span data-progress-fill="" style={{ width: `${percent}%` }} />
+    </div>
+    </div>
     </div>
   );
 }
@@ -239,8 +239,8 @@ function bar(props: bar_props) {
 function circle(props: circle_props) {
   return (
     <div
-      aria-hidden="true"
-      className={`loader-circle ${String(props.size || "md")}`}
+    aria-hidden="true"
+    className={`loader-circle ${String(props.size || "md")}`}
     />
   );
 }
@@ -248,13 +248,13 @@ function circle(props: circle_props) {
 function status_dot(props: StatusDotProps) {
   return (
     <span
-      className={primitiveStatusDotClassName({
-        className: props.className,
-        size: props.size,
-        tone: props.tone,
-      })}
-      {...(props.ariaHidden !== false ? { "aria-hidden": "true" } : {})}
-      {...(props.title ? { title: props.title } : {})}
+    className={primitiveStatusDotClassName({
+          className: props.className,
+          size: props.size,
+          tone: props.tone,
+    })}
+    {...(props.ariaHidden !== false ? { "aria-hidden": "true" } : {})}
+    {...(props.title ? { title: props.title } : {})}
     />
   );
 }
@@ -263,8 +263,8 @@ export {
   action_form,
   avatar,
   bar,
-  button,
-  card,
+  primitiveButton as button,
+  primitiveCard as card,
   circle,
   csrfInput,
   list,

@@ -8,8 +8,7 @@
   background: var(--tbf-surface, #fff);
 }
 
-.tbf-input:focus-visible,
-.tbf-upload__button:focus-visible {
+.tbf-input:focus-visible {
   outline: var(--tbf-border-width, 1px) solid var(--tbf-focus, #000);
   outline-offset: 2px;
 }

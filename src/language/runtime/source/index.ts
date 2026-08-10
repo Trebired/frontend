@@ -28,9 +28,9 @@ function createSourceLanguageController(
   const render = () => renderSourceLanguageState(root, items, excluded, activeBucket, options);
   bindControllerEvents(root, excluded, render, cleanups);
   bindTabEvents(root, (nextBucket) => {
-    activeBucket = nextBucket;
-    render();
-  }, cleanups);
+      activeBucket = nextBucket;
+      render();
+    }, cleanups);
   bindReset(root, excluded, render, cleanups);
   mountSourceLanguageFileTrees(root, options);
   seedSourceLanguageTotals(root);
@@ -57,8 +57,8 @@ function bindControllerEvents(
   root.addEventListener("click", onClick);
   root.addEventListener("keydown", onKeyDown);
   cleanups.push(() => {
-    root.removeEventListener("click", onClick);
-    root.removeEventListener("keydown", onKeyDown);
+      root.removeEventListener("click", onClick);
+      root.removeEventListener("keydown", onKeyDown);
   });
 }
 

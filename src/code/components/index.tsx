@@ -1,5 +1,6 @@
 import { createElement, type ReactNode } from "react";
 import { appendClassName, joinClassNames } from "#6mupcizo1mwq";
+import { objectRecord as objectProps } from "#ndsvdqv80epr";
 
 type CodeBlockProps = {
   children?: ReactNode;
@@ -35,22 +36,22 @@ function code_block(props: CodeBlockProps) {
       style: { display: "contents" },
     },
     <pre
-      className={joinClassNames(
+    className={joinClassNames(
         "code-block card padding-xs bg-canvas",
         scroll ? "scroll scroll-min" : "",
         props.className,
-      )}
-      data-code=""
-      {...preProps}
+    )}
+    data-code=""
+    {...preProps}
     >
-      <code
-        {...(props.id ? { id: String(props.id) } : {})}
-        className={joinClassNames(wrap ? "pre-wrap" : "", props.codeClassName)}
-        data-tbf-code-content=""
-        {...codeProps}
-      >
-        {content}
-      </code>
+    <code
+    {...(props.id ? { id: String(props.id) } : {})}
+    className={joinClassNames(wrap ? "pre-wrap" : "", props.codeClassName)}
+    data-tbf-code-content=""
+    {...codeProps}
+    >
+    {content}
+    </code>
     </pre>,
   );
 }
@@ -70,10 +71,6 @@ function code_text(props: CodeTextProps) {
 
 function CodeText(props: CodeTextProps) {
   return code_text(props);
-}
-
-function objectProps(value: unknown) {
-  return value && typeof value === "object" ? value as Record<string, unknown> : {};
 }
 
 export { CodeBlock, CodeText, code_block, code_text };

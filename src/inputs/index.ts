@@ -54,11 +54,11 @@ function bindClearButton(button: HTMLElement) {
   if (button.hasAttribute("data-tbf-clear-bound")) return false;
   button.setAttribute("data-tbf-clear-bound", "true");
   button.addEventListener("click", () => {
-    const target = resolveDocumentTarget(button.getAttribute("data-tbf-clear"));
-    if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
-      target.value = "";
-      dispatchInputChange(target);
-    }
+      const target = resolveDocumentTarget(button.getAttribute("data-tbf-clear"));
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+        target.value = "";
+        dispatchInputChange(target);
+      }
   });
   return true;
 }
@@ -67,11 +67,11 @@ function bindPasswordToggle(button: HTMLElement) {
   if (button.hasAttribute("data-tbf-password-bound")) return false;
   button.setAttribute("data-tbf-password-bound", "true");
   button.addEventListener("click", () => {
-    const input = resolveDocumentTarget(button.getAttribute("aria-controls"));
-    if (!(input instanceof HTMLInputElement)) return;
-    const show = input.type === "password";
-    input.type = show ? "text" : "password";
-    button.setAttribute("aria-pressed", show ? "true" : "false");
+      const input = resolveDocumentTarget(button.getAttribute("aria-controls"));
+      if (!(input instanceof HTMLInputElement)) return;
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      button.setAttribute("aria-pressed", show ? "true" : "false");
   });
   return true;
 }

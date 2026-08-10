@@ -8,6 +8,7 @@ async function verifyFrontendComponents(context) {
   await verifyLayoutStyles(context.rootDir);
   await verifyThemeStyles(context.rootDir);
   await verifyTabsStyles(context.rootDir);
+  await verifyUploadStyles(context.rootDir);
   await verifyReactEntrypoint(context.importDist);
   await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
@@ -27,6 +28,16 @@ async function verifyTabsStyles(rootDir) {
   assert.ok(source.includes('&[aria-selected="true"]'));
   assert.ok(source.includes('&[data-tbf-active="true"]'));
   assert.ok(source.includes("var(--tbf-primitives-tabs-states-active-background"));
+}
+
+async function verifyUploadStyles(rootDir) {
+  const upload = await fs.readFile(path.join(rootDir, "dist", "inputs", "styles", "upload.scss"), "utf8");
+  const cropper = await fs.readFile(path.join(rootDir, "dist", "inputs", "styles", "cropper.scss"), "utf8");
+  assert.ok(upload.includes("--tbf-primitives-upload-surface-background"));
+  assert.equal(upload.includes("tbf-upload__button"), false);
+  assert.equal(upload.includes("--tbf-primitives-upload-button"), false);
+  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-overlay-color"));
+  assert.ok(cropper.includes("--tbf-primitives-upload-responsive-mobile-cropper-stage-height"));
 }
 
 async function verifyThemeStyles(rootDir) {
@@ -84,27 +95,27 @@ async function verifyAdvancedTabsSsr(importDist) {
   const react = await importDist("react");
   const html = renderToStaticMarkup(
     h(react.LayoutDocument, {
-      currentUrl: "https://example.test/login?tab-auth=backup",
-    },
-    h(react.tabs, {
-      familyKey: "auth",
-      initialValue: "password",
-      items: [
-        { defaultActive: true, id: "password", label: "Password", route: "password" },
-        { id: "backup", label: "Backup", route: "backup" },
-      ],
-    }),
-    h(react.tab_panel, {
-      defaultActive: true,
-      familyKey: "auth",
-      id: "password",
-      route: "password",
-    }, "Password panel"),
-    h(react.tab_panel, {
-      familyKey: "auth",
-      id: "backup",
-      route: "backup",
-    }, "Backup panel")),
+        currentUrl: "https://example.test/login?tab-auth=backup",
+      },
+      h(react.tabs, {
+          familyKey: "auth",
+          initialValue: "password",
+          items: [
+            { defaultActive: true, id: "password", label: "Password", route: "password" },
+            { id: "backup", label: "Backup", route: "backup" },
+          ],
+      }),
+      h(react.tab_panel, {
+          defaultActive: true,
+          familyKey: "auth",
+          id: "password",
+          route: "password",
+        }, "Password panel"),
+      h(react.tab_panel, {
+          familyKey: "auth",
+          id: "backup",
+          route: "backup",
+        }, "Backup panel")),
   );
 
   assert.ok(html.includes('aria-controls="backup"'));
@@ -116,18 +127,18 @@ async function verifyAdvancedTabsSsr(importDist) {
 async function verifyRenderedUpload(importDist) {
   const { UploadField } = await importDist("react");
   const html = renderToStaticMarkup(h(UploadField, {
-    accept: "image/png,.jpg",
-    crop: true,
-    directory: true,
-    drop: true,
-    dropDirectory: true,
-    emptyToggle: { name: "asset_empty", value: "1" },
-    mixedPicker: true,
-    multiple: true,
-    name: "asset",
-    preview: true,
-    previewUrl: "/asset.png",
-    skipDirs: ".git,node_modules",
+        accept: "image/png,.jpg",
+        crop: true,
+        directory: true,
+        drop: true,
+        dropDirectory: true,
+        emptyToggle: { name: "asset_empty", value: "1" },
+        mixedPicker: true,
+        multiple: true,
+        name: "asset",
+        preview: true,
+        previewUrl: "/asset.png",
+        skipDirs: ".git,node_modules",
   }));
   [
     "native-file",
@@ -144,8 +155,10 @@ async function verifyRenderedUpload(importDist) {
     "list",
     "empty-toggle",
   ].forEach((slot) => {
-    assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
+      assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
   });
+  assert.ok(html.includes('class="btn"'));
+  assert.equal(html.includes("tbf-upload__button"), false);
   assertNoWrapClass(html, "rendered upload component");
   assertNoCustomElementTags(html, "rendered upload component");
 }
@@ -173,24 +186,24 @@ async function verifyRenderedLayeredSystems(importDist) {
   const react = await importDist("react");
   const html = [
     renderToStaticMarkup(h(react.BootScript, {
-      layout: { hasHeader: true, hasLeftSidebar: true },
-      nonce: "n",
-      sidebar: false,
-      theme: "dark",
+          layout: { hasHeader: true, hasLeftSidebar: true },
+          nonce: "n",
+          sidebar: false,
+          theme: "dark",
     })),
     renderToStaticMarkup(h(react.BootScript, {
-      layout: false,
-      nonce: "n",
-      sidebar: { sides: ["right"] },
-      theme: false,
+          layout: false,
+          nonce: "n",
+          sidebar: { sides: ["right"] },
+          theme: false,
     })),
     renderToStaticMarkup(h(react.FlashShell, { title: "Saved", type: "success" })),
     renderToStaticMarkup(h(react.ProgressRoot, { active: true, value: 0.5 })),
     renderToStaticMarkup(h(react.LayerRoot, null)),
     renderToStaticMarkup(h(react.Layout, {
-      header: h(react.LayoutHeader, null, "Header"),
-      leftSidebar: h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null))),
-    }, h(react.LayoutContent, null, "Body"))),
+          header: h(react.LayoutHeader, null, "Header"),
+          leftSidebar: h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null))),
+        }, h(react.LayoutContent, null, "Body"))),
     renderToStaticMarkup(h(react.ProductShellThemeToggle, { id: "theme_control", icon: "Theme" })),
     renderToStaticMarkup(h(react.ProductShellThemeToggle, { id: "theme_control_text" }, h("span", null, "Theme"))),
     renderToStaticMarkup(h(react.StatusIcon, { label: "Ready" })),
@@ -225,11 +238,17 @@ async function verifyRenderedGenericPrimitives(importDist) {
     renderToStaticMarkup(h(react.AppHeader, { brand: "App", nav: "Nav" })),
     renderToStaticMarkup(h(react.Breadcrumb, null, h(react.BreadcrumbItem, { current: true }, "Current"))),
     renderToStaticMarkup(h(react.Disclosure, {
-      panel: "Panel",
-      trigger: h(react.DisclosureButton, null, "Open"),
+          panel: "Panel",
+          trigger: h(react.DisclosureButton, null, "Open"),
     })),
-    renderToStaticMarkup(h(react.Tabs, null, h(react.TabList, null, h(react.TabButton, { controls: "p1", value: "one" }, "One")), h(react.TabPanel, { id: "p1", value: "one" }, "Panel"))),
-    renderToStaticMarkup(h(react.Dropdown, { name: "mode", value: "one" }, h(react.DropdownTrigger, null, h(react.DropdownValue, null, "One")), h(react.DropdownMenu, null, h(react.DropdownOption, { value: "one" }, "One")))),
+    renderToStaticMarkup(h(react.Tabs, null,
+        h(react.TabList, null, h(react.TabButton, { controls: "p1", value: "one" }, "One")),
+        h(react.TabPanel, { id: "p1", value: "one" }, "Panel"),
+    )),
+    renderToStaticMarkup(h(react.Dropdown, { name: "mode", value: "one" },
+        h(react.DropdownTrigger, null, h(react.DropdownValue, null, "One")),
+        h(react.DropdownMenu, null, h(react.DropdownOption, { value: "one" }, "One")),
+    )),
     renderToStaticMarkup(h(react.Search, null, h(react.SearchInput, null), h(react.SearchItem, { text: "alpha" }, "Alpha"))),
     renderToStaticMarkup(h(react.StatusField, { url: "/validate" }, h(react.StatusMessage, null))),
     renderToStaticMarkup(h(react.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),

@@ -29,23 +29,23 @@ async function verifyFrontendConfig(context) {
 
 function assertTokenHelpers(config) {
   const helpers = config.createFrontendTokenHelpers({
-    modes: {
-      dark: {
-        scale: {
-          blue: { 400: "#bbd0fb" },
-          gray: { 900: "#1f1f20" },
+      modes: {
+        dark: {
+          scale: {
+            blue: { 400: "#bbd0fb" },
+            gray: { 900: "#1f1f20" },
+          },
+        },
+        light: {
+          scale: {
+            blue: { 400: "#273659" },
+            gray: { 900: "#f3f3f4" },
+          },
         },
       },
-      light: {
-        scale: {
-          blue: { 400: "#273659" },
-          gray: { 900: "#f3f3f4" },
-        },
+      semantic: {
+        "background-surface-1": { family: "gray", step: "900" },
       },
-    },
-    semantic: {
-      "background-surface-1": { family: "gray", step: "900" },
-    },
   });
 
   assert.equal(helpers.color("gray", 900), "var(--gray-900)");
@@ -69,7 +69,10 @@ function configuredSource() {
     "    semantics: { color: { brand: \"#123456\" } },",
     "  },",
     "  components: {",
-    "    primitives: { textLink: { root: { color: \"#222222\" }, states: { hover: { color: \"#333333\" } } } },",
+    "    primitives: {",
+    "      textLink: { root: { color: \"#222222\" }, states: { hover: { color: \"#333333\" } } },",
+    "      upload: { preview: { size: \"88px\" }, surface: { background: \"#eeeeee\" } },",
+    "    },",
     "  },",
     "  runtime: { progress: { color: \"#111111\" } },",
     "  systems: { modal: false, icons: true },",
@@ -86,6 +89,7 @@ function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.config.design.interactions.activePress.filter, "none");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-primitives-upload-preview-size: 64px;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
   }
@@ -103,8 +107,16 @@ function assertLoadedConfig(loaded, configPath, config) {
   assert.ok(loaded.generatedScss.includes("--app-runtime-progress-color: #111111;"));
   assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-root-color: #222222;"));
   assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-states-hover-color: #333333;"));
-  assert.equal(config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: false } } } }).design.interactions.activePress.filter, "none");
-  assert.equal(config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: true } } } }).design.interactions.activePress.filter, "brightness(0.9)");
+  assert.ok(loaded.generatedScss.includes("--app-primitives-upload-preview-size: 88px;"));
+  assert.ok(loaded.generatedScss.includes("--app-primitives-upload-surface-background: #eeeeee;"));
+  assert.equal(
+    config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: false } } } }).design.interactions.activePress.filter,
+    "none"
+  );
+  assert.equal(
+    config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: true } } } }).design.interactions.activePress.filter,
+    "brightness(0.9)"
+  );
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
 }
 

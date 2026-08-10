@@ -20,16 +20,16 @@ function segmentSpan(entry: CardSegment | undefined, rowIndex: number, segmentIn
   if (entry?.kind === "html") {
     return (
       <span
-        className={className}
-        dangerouslySetInnerHTML={{ __html: segmentIndex > 0 ? `• ${text}` : text }}
-        key={`segment_${rowIndex}_${segmentIndex}`}
+      className={className}
+      dangerouslySetInnerHTML={{ __html: segmentIndex > 0 ? `• ${text}` : text }}
+      key={`segment_${rowIndex}_${segmentIndex}`}
       />
     );
   }
   return (
     <span className={className} key={`segment_${rowIndex}_${segmentIndex}`}>
-      {segmentIndex > 0 ? "• " : ""}
-      {entry?.value != null ? entry.value : ""}
+    {segmentIndex > 0 ? "• " : ""}
+    {entry?.value != null ? entry.value : ""}
     </span>
   );
 }
@@ -38,13 +38,13 @@ function segmentRow(row: CardSegmentRow | undefined, rowIndex: number) {
   const segments = Array.isArray(row?.segments) ? row.segments.filter(Boolean) : [];
   return (
     <InlineRow
-      className={primitiveTextClassName({ className: row?.className, muted: true })}
-      gap="xs2"
-      key={`segments_${rowIndex}`}
-      wrap
-      {...((row?.dataAttrs || {}) as attr_map)}
+    className={primitiveTextClassName({ className: row?.className, muted: true })}
+    gap="xs2"
+    key={`segments_${rowIndex}`}
+    wrap
+    {...((row?.dataAttrs || {}) as attr_map)}
     >
-      {segments.map((entry, segmentIndex) => segmentSpan(entry, rowIndex, segmentIndex))}
+    {segments.map((entry, segmentIndex) => segmentSpan(entry, rowIndex, segmentIndex))}
     </InlineRow>
   );
 }
@@ -54,7 +54,7 @@ function card_segments(props: CardSegmentsProps) {
   if (!rows.length) return null;
   return (
     <Stack className={primitiveTextClassName({ className: CARD_SEGMENTS_CLASS, muted: true, size: "sm" })} gap="xs2">
-      {rows.map(segmentRow)}
+    {rows.map(segmentRow)}
     </Stack>
   );
 }
@@ -67,24 +67,24 @@ function card_item(props: CardItemProps) {
     <span dangerouslySetInnerHTML={{ __html: metaParts.join("") }} />
   ) : null;
   return card_body({
-    actionTrigger: props.actionTrigger,
-    className: props.className,
-    dataAttrs: props.dataAttrs,
-    extra: props.extraHtml ? <div dangerouslySetInnerHTML={{ __html: props.extraHtml }} /> : null,
-    meta,
-    search: props.search,
-    segments:
+      actionTrigger: props.actionTrigger,
+      className: props.className,
+      dataAttrs: props.dataAttrs,
+      extra: props.extraHtml ? <div dangerouslySetInnerHTML={{ __html: props.extraHtml }} /> : null,
+      meta,
+      search: props.search,
+      segments:
       Array.isArray(props.segmentRows) && props.segmentRows.length
-        ? card_segments({ rows: props.segmentRows })
-        : null,
-    title: props.title || "",
+      ? card_segments({ rows: props.segmentRows })
+      : null,
+      title: props.title || "",
   });
 }
 
 function titleDescriptionCard(props: { description: ReactNode; title: ReactNode }) {
   return card({
-    children: <TitleDescription className="title-desc" description={props.description} title={props.title} />,
-    gap: "sm",
+      children: <TitleDescription className="title-desc" description={props.description} title={props.title} />,
+      gap: "sm",
   });
 }
 

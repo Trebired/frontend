@@ -86,20 +86,20 @@ function standardActionButton(
 ) {
   const meta = ACTION_META[kind];
   return button({
-    type: props.type || meta.type,
-    className: props.className || meta.className,
-    tone: props.tone || meta.tone,
-    ...(props.disabled ? { disabled: true } : {}),
-    ...(props.form ? { form: props.form } : {}),
-    ...(props.id ? { id: props.id } : {}),
-    ...(props.button_attrs && typeof props.button_attrs === "object"
-      ? props.button_attrs
-      : {}),
-    children: (
-      <>
+      type: props.type || meta.type,
+      className: props.className || meta.className,
+      tone: props.tone || meta.tone,
+      ...(props.disabled ? { disabled: true } : {}),
+      ...(props.form ? { form: props.form } : {}),
+      ...(props.id ? { id: props.id } : {}),
+      ...(props.button_attrs && typeof props.button_attrs === "object"
+        ? props.button_attrs
+        : {}),
+      children: (
+        <>
         <Icon spec={meta.icon} /> {actionLabel(meta.key, props.lang, props.label)}
-      </>
-    ),
+        </>
+      ),
   });
 }
 
@@ -119,8 +119,8 @@ function delete_button(
   props: StandardActionButtonProps & { color?: "red" | "yellow" } = {},
 ) {
   return standardActionButton("delete", {
-    ...props,
-    tone: props.color === "yellow" ? "yellow" : props.tone,
+      ...props,
+      tone: props.color === "yellow" ? "yellow" : props.tone,
   });
 }
 
@@ -156,11 +156,11 @@ function start_button(
   props: StandardActionButtonProps & { confetti?: boolean } = {},
 ) {
   return standardActionButton("start", {
-    ...props,
-    button_attrs: {
-      ...(props.button_attrs || {}),
-      ...(props.confetti ? { "data-tbf-confetti": "true" } : {}),
-    },
+      ...props,
+      button_attrs: {
+        ...(props.button_attrs || {}),
+        ...(props.confetti ? { "data-tbf-confetti": "true" } : {}),
+      },
   });
 }
 
@@ -173,17 +173,17 @@ function save_icon(props: SaveIconButtonProps = {}) {
   const label = actionLabel("save", props.lang, props.label);
   const saveIcon = <Icon spec="remixicon save-3-line" />;
   return button({
-    type: props.type || "submit",
-    ...(props.form ? { form: props.form } : {}),
-    ...(props.id ? { id: props.id } : {}),
-    ...(props.dataAttrs || {}),
-    ...(props.disabled ? { disabled: true } : {}),
-    className: props.className,
-    icon: variant === "icon",
-    size: variant === "icon" ? "lg" : undefined,
-    tooltip: variant === "icon",
-    ...(variant === "icon" ? { title: String(props.tooltip || label) } : {}),
-    children: variant === "icon" ? saveIcon : <>{saveIcon} {label}</>,
+      type: props.type || "submit",
+      ...(props.form ? { form: props.form } : {}),
+      ...(props.id ? { id: props.id } : {}),
+      ...(props.dataAttrs || {}),
+      ...(props.disabled ? { disabled: true } : {}),
+      className: props.className,
+      icon: variant === "icon",
+      size: variant === "icon" ? "lg" : undefined,
+      tooltip: variant === "icon",
+      ...(variant === "icon" ? { title: String(props.tooltip || label) } : {}),
+      children: variant === "icon" ? saveIcon : <>{saveIcon} {label}</>,
   });
 }
 
@@ -196,24 +196,24 @@ function copy_button(props: CopyButtonProps) {
     "copy-button",
     { className: "copy-button-host", style: { display: "contents" } },
     <script data-tbf-copy-config="" hidden type="application/json">
-      {JSON.stringify({
-        iconOnly: !props.children,
-        target,
-        ...(typeof props.value === "string" ? { value: props.value } : {}),
+    {JSON.stringify({
+          iconOnly: !props.children,
+          target,
+          ...(typeof props.value === "string" ? { value: props.value } : {}),
       }).replace(/</g, "\\u003c")}
     </script>,
     button({
-      type: "button",
-      className: props.className,
-      icon: !props.children,
-      size: props.size || "md",
-      tooltip: true,
-      "aria-controls": target,
-      "aria-label": String(props.title || actionLabel("copy", props.lang)),
-      ...(props.attrs || {}),
-      ...(typeof props.value === "string" ? { value: props.value } : {}),
-      title: tooltip,
-      children: props.children || <Icon spec="remixicon clipboard-line" />,
+        type: "button",
+        className: props.className,
+        icon: !props.children,
+        size: props.size || "md",
+        tooltip: true,
+        "aria-controls": target,
+        "aria-label": String(props.title || actionLabel("copy", props.lang)),
+        ...(props.attrs || {}),
+        ...(typeof props.value === "string" ? { value: props.value } : {}),
+        title: tooltip,
+        children: props.children || <Icon spec="remixicon clipboard-line" />,
     }),
   );
 }
@@ -221,19 +221,19 @@ function copy_button(props: CopyButtonProps) {
 function copy_code_card(props: CopyCodeCardProps) {
   return (
     <div className={primitiveCardClassName({ className: props.className, gap: "xs" })}>
-      <div className={primitiveInlineRowClassName({ between: true, gap: "xs", wrap: true })}>
-        <span className="label">{props.label}</span>
-        <div className="right">
-          {copy_button({
-            lang: props.lang,
-            size: "sm",
-            target: `#${props.id}`,
-            value: props.value,
-          })}
-        </div>
-      </div>
-      {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
-      {code_block({ id: props.id, value: props.value, wrap: true })}
+    <div className={primitiveInlineRowClassName({ between: true, gap: "xs", wrap: true })}>
+    <span className="label">{props.label}</span>
+    <div className="right">
+    {copy_button({
+          lang: props.lang,
+          size: "sm",
+          target: `#${props.id}`,
+          value: props.value,
+    })}
+    </div>
+    </div>
+    {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
+    {code_block({ id: props.id, value: props.value, wrap: true })}
     </div>
   );
 }

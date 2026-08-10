@@ -8,13 +8,13 @@ import {
 
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import {
-  documentLang as packageDocumentLang,
   readHostJsonConfig,
   stringifyJsonForHtml,
   toString,
 } from "#dqy2d22qyujv";
+import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
+import { createTranslatorFactory, defineValue, objectRecord as toObject } from "#ndsvdqv80epr";
 
-type MessageVars = Record<string, unknown>;
 type BindActionOptions = BindActionTriggerOptions;
 
 const EN_MESSAGES: Record<string, string> = {
@@ -121,40 +121,16 @@ const CS_MESSAGES: Record<string, string> = {
   waitingForLogs: "Cekam na logy...",
 };
 
+const defineMessages = defineValue as <T extends Record<string, unknown>>(messages: T) => T;
+const createLocalTranslator = createTranslatorFactory((key, lang) => {
+    const table = messageTable(lang || documentLang());
+    return table[key] || key;
+});
+
 function messageTable(lang?: string) {
   return String(lang || "").toLowerCase().startsWith("cs")
-    ? CS_MESSAGES
-    : EN_MESSAGES;
-}
-
-function interpolate(message: string, vars: MessageVars = {}) {
-  let out = message;
-  Object.entries(vars).forEach(([key, value]) => {
-    out = out.split(`{{${key}}}`).join(String(value ?? ""));
-    out = out.split(`{${key}}`).join(String(value ?? ""));
-  });
-  return out;
-}
-
-function createLocalTranslator(_url?: string, lang?: string) {
-  return (key: string, vars: MessageVars = {}) => {
-    const table = messageTable(lang || documentLang());
-    return interpolate(table[key] || key, vars);
-  };
-}
-
-function defineMessages<T extends Record<string, unknown>>(messages: T) {
-  return messages;
-}
-
-function documentLang() {
-  return packageDocumentLang();
-}
-
-function toObject<T = Record<string, unknown>>(value: unknown): T {
-  return value && typeof value === "object" && !Array.isArray(value)
-    ? value as T
-    : {} as T;
+  ? CS_MESSAGES
+  : EN_MESSAGES;
 }
 
 function toArray<T = unknown>(value: unknown): T[] {
@@ -168,12 +144,12 @@ function formatTimestampLabel(value: unknown, fallback = "") {
   if (Number.isNaN(date.getTime())) return raw;
   try {
     return date.toLocaleString(documentLang() || undefined, {
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      month: "2-digit",
-      second: "2-digit",
-      year: "numeric",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        month: "2-digit",
+        second: "2-digit",
+        year: "numeric",
     }) || raw;
   } catch {
     return raw;
@@ -185,19 +161,19 @@ const time = (
   style = "rel_short",
   opts: Record<string, unknown> = {},
 ) => style === "abs_datetime"
-  ? formatTimestampLabel(input, toString(opts.fallback, "unknown"))
-  : formatTimestampLabel(input, toString(opts.fallback, "unknown"));
+? formatTimestampLabel(input, toString(opts.fallback, "unknown"))
+: formatTimestampLabel(input, toString(opts.fallback, "unknown"));
 
 async function fetchJson(url: string, query: Record<string, unknown> = {}, init: RequestInit = {}) {
   const target = new URL(String(url || ""), window.location.origin);
   Object.entries(query || {}).forEach(([key, value]) => {
-    if (value == null || value === "") return;
-    target.searchParams.set(key, String(value));
+      if (value == null || value === "") return;
+      target.searchParams.set(key, String(value));
   });
   const response = await fetch(target.toString(), {
-    credentials: "same-origin",
-    ...init,
-    headers: { Accept: "application/json", ...(init.headers || {}) },
+      credentials: "same-origin",
+      ...init,
+      headers: { Accept: "application/json", ...(init.headers || {}) },
   });
   const json = await response.json().catch(() => null);
   if (!response.ok) {
@@ -220,7 +196,7 @@ function triggerAttrs(options: BindActionOptions = {}) {
   };
 }
 
-function actionTrigger(children: ReactNode, options: BindActionOptions = {}) {
+function logActionTrigger(children: ReactNode, options: BindActionOptions = {}) {
   const attrs = triggerAttrs(options);
   if (isValidElement(children)) {
     return cloneElement(children as ReactElement<Record<string, unknown>>, attrs);
@@ -233,11 +209,11 @@ function actionTrigger(children: ReactNode, options: BindActionOptions = {}) {
 }
 
 export {
-  actionTrigger,
   createLocalTranslator,
   defineMessages,
   documentLang,
   fetchJson,
+  logActionTrigger,
   readHostJsonConfig,
   setTextContent,
   stringifyJsonForHtml,

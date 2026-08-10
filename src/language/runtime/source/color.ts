@@ -14,18 +14,18 @@ function normalizeColor(value: unknown) {
 
 function parseRgbColor(raw: string) {
   const rgbMatch = raw.match(/^rgba?\(([^)]+)\)$/iu);
-  if (!rgbMatch) return "";
-  const parts = text(rgbMatch[1])
-    .split(",")
-    .map((part) => Number(text(part)))
-    .slice(0, 3);
-  if (
-    parts.length !== 3 ||
+if (!rgbMatch) return "";
+const parts = text(rgbMatch[1])
+.split(",")
+.map((part) => Number(text(part)))
+.slice(0, 3);
+if (
+  parts.length !== 3 ||
     parts.some((part) => !Number.isFinite(part) || part < 0 || part > 255)
-  ) {
-    return "";
-  }
-  return `#${parts.map((part) => Math.round(part).toString(16).padStart(2, "0")).join("")}`;
+) {
+  return "";
+}
+return `#${parts.map((part) => Math.round(part).toString(16).padStart(2, "0")).join("")}`;
 }
 
 function collectSvgColors(svg: Element) {
@@ -38,8 +38,8 @@ function collectSvgColors(svg: Element) {
   register(svg.getAttribute("fill"));
   register(svg.getAttribute("stroke"));
   svg.querySelectorAll("[fill], [stroke]").forEach((node) => {
-    register(node.getAttribute("fill"));
-    register(node.getAttribute("stroke"));
+      register(node.getAttribute("fill"));
+      register(node.getAttribute("stroke"));
   });
   return counts;
 }
@@ -50,9 +50,9 @@ function deriveColorFromIcon(row: HTMLElement) {
   let winner = "";
   let winnerCount = -1;
   collectSvgColors(svg).forEach((count, color) => {
-    if (count <= winnerCount) return;
-    winner = color;
-    winnerCount = count;
+      if (count <= winnerCount) return;
+      winner = color;
+      winnerCount = count;
   });
   return winner;
 }

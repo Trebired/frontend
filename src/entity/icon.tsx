@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { Icon } from "#lbkpzw8nphru";
+import { toText as text } from "#ndsvdqv80epr";
 
 type EntityIconProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   alt?: string;
@@ -14,11 +15,6 @@ type EntityIconConfig = {
   label?: string;
   spec: string;
 };
-
-function text(value: unknown, fallback = "") {
-  const out = String(value == null ? "" : value).trim();
-  return out || fallback;
-}
 
 function EntityIcon(props: EntityIconProps) {
   const {

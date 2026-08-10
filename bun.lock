@@ -18,7 +18,7 @@
       },
       "devDependencies": {
         "@trebired/bundler": "^4.6.0",
-        "@trebired/code-discipline": "^4.10.1",
+        "@trebired/code-discipline": "^5.3.0",
         "@types/bun": "^1.3.14",
         "@types/node": "^24.13.3",
         "@types/react": "^19.2.18",
@@ -133,7 +133,7 @@
 
     "@trebired/bundler": ["@trebired/bundler@4.6.0", "", { "dependencies": { "@package/i18n": "npm:@trebired/i18n@^0.4.1", "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.2.12", "@package/result": "npm:@trebired/result@^1.1.6", "esbuild": "^0.28.1", "sass-embedded": "^1.100.0" }, "bin": { "trebired-bundler": "dist/cli.js" } }, "sha512-NXht5YJEfTzvXWIwahS59uXn/Yf41UKRZUpANLG9PsBr76SlyGZWnVoDiDyqyldHS6Wy0bbn5Mow6OnBJlIKmQ=="],
 
-    "@trebired/code-discipline": ["@trebired/code-discipline@4.10.1", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.13", "@package/result": "npm:@trebired/result@^1.1.6", "prettier": "3.9.6", "typescript": "^6.0.3" }, "bin": { "code-discipline": "dist/cli.js" } }, "sha512-KdtygKz96c4SC7T8DkciTqltub6x4rrWQgaVxb+NzAAr793pgjTkysquvOphSk20rA18KOnzR4pbTdpIPX5t6w=="],
+    "@trebired/code-discipline": ["@trebired/code-discipline@5.3.0", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.13", "@package/result": "npm:@trebired/result@^1.1.6", "typescript": "^6.0.3" }, "bin": { "code-discipline": "dist/cli.js" } }, "sha512-NdXsy8Gtt7UNrmpRc9fDrvZsfgY1qKPQzg/tvRY5SgriYlR2p6MbkMcUNmjtoZwIoMxxbEQDFJNZPWSW7B6Ytg=="],
 
     "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
@@ -362,8 +362,6 @@
     "parse-entities": ["parse-entities@4.0.2", "", { "dependencies": { "@types/unist": "^2.0.0", "character-entities-legacy": "^3.0.0", "character-reference-invalid": "^2.0.0", "decode-named-character-reference": "^1.0.0", "is-alphanumerical": "^2.0.0", "is-decimal": "^2.0.0", "is-hexadecimal": "^2.0.0" } }, "sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw=="],
 
     "picomatch": ["picomatch@4.0.5", "", {}, "sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A=="],
-
-    "prettier": ["prettier@3.9.6", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g=="],
 
     "property-information": ["property-information@7.2.0", "", {}, "sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg=="],
 

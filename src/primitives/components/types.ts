@@ -40,8 +40,8 @@ type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
 };
 
 type ActionFormProps = Omit<
-  FormHTMLAttributes<HTMLFormElement>,
-  "action" | "children" | "method"
+FormHTMLAttributes<HTMLFormElement>,
+"action" | "children" | "method"
 > & {
   action: string;
   body?: "json";
@@ -136,18 +136,18 @@ type circle_props = {
 };
 
 type StatusDotTone =
-  | "blue"
-  | "cyan"
-  | "error"
-  | "gray"
-  | "green"
-  | "info"
-  | "muted"
-  | "purple"
-  | "red"
-  | "success"
-  | "warning"
-  | "yellow";
+| "blue"
+| "cyan"
+| "error"
+| "gray"
+| "green"
+| "info"
+| "muted"
+| "purple"
+| "red"
+| "success"
+| "warning"
+| "yellow";
 
 type StatusDotSize = "xs" | "sm" | "md" | "lg";
 

@@ -28,7 +28,7 @@ function fireSuccessConfetti(options: ConfettiOptions = {}) {
   document.body.appendChild(layer);
   document.dispatchEvent(
     new CustomEvent(CONFETTI_EVENT, {
-      detail: { layer, options },
+        detail: { layer, options },
     }),
   );
   window.setTimeout(() => layer.remove(), Number(options.durationMs) || 1400);

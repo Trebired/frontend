@@ -1,5 +1,6 @@
 import type { DynamicSidebarRuntimeRenderContext } from "./types.js";
 import { textValue } from "#yv4ubgils4dc";
+import { firstNonScriptHTMLElementChild as liveRootContent } from "#er0dlx1gtbzh";
 
 function rootDocument(root: HTMLElement) {
   return root.ownerDocument || document;
@@ -30,13 +31,6 @@ function runtimeContext(
     disabled: slotDisabled(slot),
     document: rootDocument(root),
   };
-}
-
-function liveRootContent(host: HTMLElement) {
-  return Array.from(host.children).find((node) => {
-    return node instanceof HTMLElement &&
-      node.tagName.toLowerCase() !== "script";
-  });
 }
 
 export {

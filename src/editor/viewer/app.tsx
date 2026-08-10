@@ -50,27 +50,27 @@ function EditorViewerApp(props: any) {
   const layout = useEditorViewerLayout(props, fileState, fullscreenState);
   return (
     <div ref={rootRef} className={primitiveStackClassName({ gap: "sm", grow: true })} style={rootStyle}>
-      <div
-        className={primitiveInlineRowClassName({ className: "tbf-editor-viewer-layout grow", gap: "sm" })}
-        style={rowStyle}
-      >
-        <ViewerSidebar
-          allowUrlPathSyncRef={allowUrlPathSyncRef}
-          focusedPath={pathState.focusedPath}
-          isFullscreen={fullscreenState.isFullscreen}
-          setFocusedPath={pathState.setFocusedPath}
-          setOpenedFilePath={pathState.setOpenedFilePath}
-          treeHeight={layout.treeHeight}
-          treeState={treeState}
-          labels={viewerLabels(props.labels)}
-        />
-        <ViewerContent
-          contentMinHeight={layout.contentMinHeight}
-          fileState={fileState}
-          imagePreviewUrl={layout.imagePreviewUrl}
-          labels={viewerLabels(props.labels)}
-        />
-      </div>
+    <div
+    className={primitiveInlineRowClassName({ className: "tbf-editor-viewer-layout grow", gap: "sm" })}
+    style={rowStyle}
+    >
+    <ViewerSidebar
+    allowUrlPathSyncRef={allowUrlPathSyncRef}
+    focusedPath={pathState.focusedPath}
+    isFullscreen={fullscreenState.isFullscreen}
+    setFocusedPath={pathState.setFocusedPath}
+    setOpenedFilePath={pathState.setOpenedFilePath}
+    treeHeight={layout.treeHeight}
+    treeState={treeState}
+    labels={viewerLabels(props.labels)}
+    />
+    <ViewerContent
+    contentMinHeight={layout.contentMinHeight}
+    fileState={fileState}
+    imagePreviewUrl={layout.imagePreviewUrl}
+    labels={viewerLabels(props.labels)}
+    />
+    </div>
     </div>
   );
 }
@@ -98,13 +98,13 @@ function viewerLabels(input: any = {}) {
 
 function useEditorViewerLayout(props: any, fileState: any, fullscreenState: any) {
   const imagePreviewUrl = useMemo(() => {
-    if (!isImagePath(fileState.path)) return "";
-    return buildFileApiUrl(props.fileBlobApiUrl, fileState.path);
-  }, [fileState.path, props.fileBlobApiUrl]);
+      if (!isImagePath(fileState.path)) return "";
+      return buildFileApiUrl(props.fileBlobApiUrl, fileState.path);
+    }, [fileState.path, props.fileBlobApiUrl]);
   return {
     contentMinHeight: fullscreenState.isFullscreen
-      ? Math.max(680, fullscreenState.viewportHeight - 220)
-      : 560,
+    ? Math.max(680, fullscreenState.viewportHeight - 220)
+    : 560,
     imagePreviewUrl,
     treeHeight: resolveViewerTreeHeight(
       fullscreenState.isFullscreen,
@@ -116,17 +116,17 @@ function useEditorViewerLayout(props: any, fileState: any, fullscreenState: any)
 function ViewerSidebar(props: any) {
   return (
     <EditorSidebar
-      className={primitiveStackClassName({ gap: "sm", noShrink: true })}
-      description={props.labels.fileTreeDescription}
-      title={props.labels.fileTree}
-      style={{
+    className={primitiveStackClassName({ gap: "sm", noShrink: true })}
+    description={props.labels.fileTreeDescription}
+    title={props.labels.fileTree}
+    style={{
         flex: props.isFullscreen ? "0 0 360px" : "0 0 320px",
         maxWidth: "100%",
         minHeight: 0,
         minWidth: 280,
-      }}
+    }}
     >
-      <ViewerSidebarBody {...props} />
+    <ViewerSidebarBody {...props} />
     </EditorSidebar>
   );
 }
@@ -135,22 +135,22 @@ function ViewerSidebarBody(props: any) {
   if (props.treeState.treeLoading) {
     return (
       <EmptyEditorMessage
-        copy={props.labels.preparingFileBrowserViewMode}
-        minHeight={420}
-        title={props.labels.loadingFileTree}
+      copy={props.labels.preparingFileBrowserViewMode}
+      minHeight={420}
+      title={props.labels.loadingFileTree}
       />
     );
   }
   if (props.treeState.treeError) {
     return card({
-      style: { minHeight: 420 },
-      gap: "sm",
-      children: (
-        <>
+        style: { minHeight: 420 },
+        gap: "sm",
+        children: (
+          <>
           <strong>{props.labels.fileTreeUnavailable}</strong>
           <Text breakWord muted size="sm">{props.treeState.treeError}</Text>
-        </>
-      ),
+          </>
+        ),
     });
   }
   return <ViewerTree {...props} />;
@@ -159,17 +159,17 @@ function ViewerSidebarBody(props: any) {
 function ViewerTree(props: any) {
   return (
     <FileTreeView
-      autoExpandPaths={props.focusedPath ? [props.focusedPath] : []}
-      emptyMessage={props.labels.noFileTreeAvailable}
-      height={props.treeHeight}
-      highlightedPaths={props.focusedPath ? [props.focusedPath] : []}
-      mode="browse"
-      scrollbarSize="md"
-      onFileOpen={(nextPath: string) => selectViewerPath(props, nextPath, "file")}
-      onPathOpen={(nextPath: string, meta: any) => {
+    autoExpandPaths={props.focusedPath ? [props.focusedPath] : []}
+    emptyMessage={props.labels.noFileTreeAvailable}
+    height={props.treeHeight}
+    highlightedPaths={props.focusedPath ? [props.focusedPath] : []}
+    mode="browse"
+    scrollbarSize="md"
+    onFileOpen={(nextPath: string) => selectViewerPath(props, nextPath, "file")}
+    onPathOpen={(nextPath: string, meta: any) => {
         selectViewerPath(props, nextPath, text(meta?.kind).toLowerCase());
-      }}
-      tree={props.treeState.tree}
+    }}
+    tree={props.treeState.tree}
     />
   );
 }
@@ -184,11 +184,11 @@ function selectViewerPath(props: any, nextPath: string, kind: string) {
 function ViewerContent(props: any) {
   return (
     <EditorContent
-      body={<ViewerContentBody {...props} />}
-      className={primitiveStackClassName({ gap: "sm", grow: true })}
-      description={viewerContentDescription(props.fileState, props.labels)}
-      surfaceStyle={{ flex: "1 1 auto", minHeight: props.contentMinHeight }}
-      title={props.fileState.path || props.labels.readonlyFileViewer}
+    body={<ViewerContentBody {...props} />}
+    className={primitiveStackClassName({ gap: "sm", grow: true })}
+    description={viewerContentDescription(props.fileState, props.labels)}
+    surfaceStyle={{ flex: "1 1 auto", minHeight: props.contentMinHeight }}
+    title={props.fileState.path || props.labels.readonlyFileViewer}
     />
   );
 }
@@ -198,9 +198,9 @@ function ViewerContentBody(props: any) {
   if (fileState.loading) {
     return (
       <EmptyEditorMessage
-        copy={props.labels.fetchingLatestFileContents}
-        minHeight={contentMinHeight}
-        title={props.labels.loadingFile}
+      copy={props.labels.fetchingLatestFileContents}
+      minHeight={contentMinHeight}
+      title={props.labels.loadingFile}
       />
     );
   }
@@ -208,9 +208,9 @@ function ViewerContentBody(props: any) {
   if (fileState.path && isImagePath(fileState.path) && imagePreviewUrl) {
     return (
       <ImagePreviewPane
-        minHeight={contentMinHeight}
-        path={fileState.path}
-        src={imagePreviewUrl}
+      minHeight={contentMinHeight}
+      path={fileState.path}
+      src={imagePreviewUrl}
       />
     );
   }
@@ -220,25 +220,25 @@ function ViewerContentBody(props: any) {
 
 function viewerContentError(props: any, contentMinHeight: number) {
   return card({
-    style: { minHeight: contentMinHeight },
-    className: "height-max",
-    gap: "sm",
-    children: (
-      <>
+      style: { minHeight: contentMinHeight },
+      className: "height-max",
+      gap: "sm",
+      children: (
+        <>
         <strong>{props.labels.fileUnavailable}</strong>
         <Text breakWord muted size="sm">{props.fileState.error}</Text>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
 function readonlyFilePane(fileState: any, contentMinHeight: number) {
   return (
     <ReadonlyMonacoPane
-      content={fileState.content}
-      languageName={fileState.languageName}
-      minHeight={contentMinHeight}
-      path={fileState.path}
+    content={fileState.content}
+    languageName={fileState.languageName}
+    minHeight={contentMinHeight}
+    path={fileState.path}
     />
   );
 }
@@ -246,16 +246,16 @@ function readonlyFilePane(fileState: any, contentMinHeight: number) {
 function emptyViewerContent(props: any, contentMinHeight: number) {
   return (
     <div
-      className={primitiveStackClassName({
-        center: true,
-        className: "height-max",
-        gap: "sm",
-        verticalCenter: true,
-      })}
-      style={{ minHeight: contentMinHeight }}
+    className={primitiveStackClassName({
+          center: true,
+          className: "height-max",
+          gap: "sm",
+          verticalCenter: true,
+    })}
+    style={{ minHeight: contentMinHeight }}
     >
-      <strong>{props.labels.noFileSelected}</strong>
-      <Text muted size="sm">{props.labels.chooseFileFromTree}</Text>
+    <strong>{props.labels.noFileSelected}</strong>
+    <Text muted size="sm">{props.labels.chooseFileFromTree}</Text>
     </div>
   );
 }

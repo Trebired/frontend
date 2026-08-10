@@ -30,26 +30,26 @@ function DynamicSidebarLinkList(props: DynamicSidebarLinkListProps) {
   const sidebar = sidebarInput || {};
   const list = (
     <ul
-      {...rest}
-      className={classNames("tbf-sidebar-list", "sidebar-links", className)}
-      data-tbf-sidebar-list=""
-      id={linksId || rest.id}
+    {...rest}
+    className={classNames("tbf-sidebar-list", "sidebar-links", className)}
+    data-tbf-sidebar-list=""
+    id={linksId || rest.id}
     >
-      {normalizeDynamicSidebarItems(items).map((item, index) => {
-        if (isDynamicSidebarDivider(item)) {
-          return <DynamicSidebarDivider index={index} item={item} key={item.key || `divider_${index}`} />;
-        }
-        return (
-          <DynamicSidebarLinkRow
+    {normalizeDynamicSidebarItems(items).map((item, index) => {
+          if (isDynamicSidebarDivider(item)) {
+            return <DynamicSidebarDivider index={index} item={item} key={item.key || `divider_${index}`} />;
+          }
+          return (
+            <DynamicSidebarLinkRow
             currentPath={currentPath}
             index={index}
             item={item}
             key={item.key || `${textValue(item.href)}_${index}`}
             options={props}
             sidebar={sidebar}
-          />
-        );
-      })}
+            />
+          );
+    })}
     </ul>
   );
   const liveConfig: DynamicSidebarLiveConfig = dynamicSidebarLiveConfig(sidebar);

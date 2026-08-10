@@ -17,9 +17,9 @@
   pointer-events: none;
   transform: translateY(8px) scale(0.98);
   transition:
-    opacity var(--tbf-transition-fast) ease,
-    transform var(--tbf-transition-fast) ease,
-    visibility 0s linear var(--tbf-transition-fast);
+  opacity var(--tbf-transition-fast) ease,
+  transform var(--tbf-transition-fast) ease,
+  visibility 0s linear var(--tbf-transition-fast);
 }
 
 .tbf-popover.show,
@@ -29,9 +29,9 @@
   pointer-events: auto;
   transform: translateY(0) scale(1);
   transition:
-    opacity var(--tbf-transition-fast) ease,
-    transform var(--tbf-transition-fast) ease,
-    visibility 0s;
+  opacity var(--tbf-transition-fast) ease,
+  transform var(--tbf-transition-fast) ease,
+  visibility 0s;
 }
 
 .tbf-popover :where(a, button).popover-item,
@@ -58,9 +58,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   transition:
-    color var(--tbf-transition-fast) ease,
-    background var(--tbf-transition-fast) ease,
-    transform var(--tbf-transition-fast) ease;
+  color var(--tbf-transition-fast) ease,
+  background var(--tbf-transition-fast) ease,
+  transform var(--tbf-transition-fast) ease;
 }
 
 .tbf-popover :where(a, button).popover-item:hover,

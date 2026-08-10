@@ -79,17 +79,17 @@ function ShellHeaderBrand(props: ShellHeaderBrandProps) {
   } = props;
   const structuredBrand = brandLogo !== undefined || brandTag !== undefined;
   const hasBrandBody = structuredBrand
-    ? brandLogo !== undefined || brandTag !== undefined
-    : brandContent !== undefined && brandContent !== null && brandContent !== false;
+  ? brandLogo !== undefined || brandTag !== undefined
+  : brandContent !== undefined && brandContent !== null && brandContent !== false;
   const brandBody = structuredBrand ? (
     <span
-      className="tbf-shell-header-brand__identity"
-      data-tbf-brand-tag-align={brandTagAlign}
+    className="tbf-shell-header-brand__identity"
+    data-tbf-brand-tag-align={brandTagAlign}
     >
-      {brandLogo ? (
+    {brandLogo ? (
         <span className="tbf-shell-header-brand__logo">{brandLogo}</span>
       ) : null}
-      {brandTag ? (
+    {brandTag ? (
         <span className="tbf-shell-header-brand__tag">{brandTag}</span>
       ) : null}
     </span>
@@ -97,18 +97,18 @@ function ShellHeaderBrand(props: ShellHeaderBrandProps) {
   if (!hasBrandBody && !brandMeta) return null;
   return (
     <HeaderGroup className={classNames("tbf-shell-header-brand", className)}>
-      {brandHref ? (
+    {brandHref ? (
         <a
-          aria-label={brandLabel}
-          className="tbf-shell-header-brand__link"
-          href={brandHref}
+        aria-label={brandLabel}
+        className="tbf-shell-header-brand__link"
+        href={brandHref}
         >
-          {brandBody}
+        {brandBody}
         </a>
       ) : (
         <span className="tbf-shell-header-brand__mark">{brandBody}</span>
-      )}
-      {!structuredBrand && brandMeta ? (
+    )}
+    {!structuredBrand && brandMeta ? (
         <span className="tbf-shell-header-brand__meta">{brandMeta}</span>
       ) : null}
     </HeaderGroup>
@@ -124,36 +124,36 @@ function ShellHeaderMobileToggle(props: ShellHeaderMobileToggleProps) {
   } = props;
   return (
     <HeaderGroup className="tbf-shell-header-toggle-group">
-      <MobileNavToggleButton
-        aria-label={label}
-        className={classNames("tbf-shell-header-toggle", className)}
-        controls={controls}
-      >
-        {icon ?? label}
-      </MobileNavToggleButton>
+    <MobileNavToggleButton
+    aria-label={label}
+    className={classNames("tbf-shell-header-toggle", className)}
+    controls={controls}
+    >
+    {icon ?? label}
+    </MobileNavToggleButton>
     </HeaderGroup>
   );
 }
 
-function shellHeaderBrand(props: ShellHeaderProps) {
+function renderShellHeaderBrand(props: ShellHeaderProps) {
   return (
     <>
-      <ShellHeaderBrand
-        brandContent={props.brandContent}
-        brandHref={props.brandHref}
-        brandLabel={props.brandLabel}
-        brandLogo={props.brandLogo}
-        brandMeta={props.brandMeta}
-        brandTag={props.brandTag}
-        brandTagAlign={props.brandTagAlign}
-        className={props.brandClassName}
-      />
-      {props.mobileToggle ? (
+    <ShellHeaderBrand
+    brandContent={props.brandContent}
+    brandHref={props.brandHref}
+    brandLabel={props.brandLabel}
+    brandLogo={props.brandLogo}
+    brandMeta={props.brandMeta}
+    brandTag={props.brandTag}
+    brandTagAlign={props.brandTagAlign}
+    className={props.brandClassName}
+    />
+    {props.mobileToggle ? (
         <ShellHeaderMobileToggle
-          className={props.mobileToggleClassName}
-          controls={props.mobileToggleControls}
-          icon={props.mobileToggleIcon}
-          label={props.mobileToggleLabel}
+        className={props.mobileToggleClassName}
+        controls={props.mobileToggleControls}
+        icon={props.mobileToggleIcon}
+        label={props.mobileToggleLabel}
         />
       ) : null}
     </>
@@ -180,24 +180,24 @@ function ShellHeader(props: ShellHeaderProps) {
   } = props;
   return (
     <AppHeader
-      {...rest}
-      brand={shellHeaderBrand({
-        brandClassName,
-        brandContent,
-        brandHref,
-        brandLabel,
-        brandLogo,
-        brandMeta,
-        brandTag,
-        brandTagAlign,
-        mobileToggle,
-        mobileToggleClassName,
-        mobileToggleControls,
-        mobileToggleIcon,
-        mobileToggleLabel,
-      })}
-      className={classNames("tbf-shell-header", className)}
-      data-tbf-shell-header=""
+    {...rest}
+    brand={renderShellHeaderBrand({
+          brandClassName,
+          brandContent,
+          brandHref,
+          brandLabel,
+          brandLogo,
+          brandMeta,
+          brandTag,
+          brandTagAlign,
+          mobileToggle,
+          mobileToggleClassName,
+          mobileToggleControls,
+          mobileToggleIcon,
+          mobileToggleLabel,
+    })}
+    className={classNames("tbf-shell-header", className)}
+    data-tbf-shell-header=""
     />
   );
 }
@@ -208,15 +208,15 @@ function ShellMobileNavSection(props: ShellMobileNavSectionProps) {
   if (hidden || body === null || body === undefined || body === false) return null;
   return (
     <section
-      {...rest}
-      className={classNames("tbf-shell-mobile-nav__section", className)}
+    {...rest}
+    className={classNames("tbf-shell-mobile-nav__section", className)}
     >
-      {label ? (
+    {label ? (
         <div className={classNames("tbf-shell-mobile-nav__section-label", labelClassName)}>
-          {label}
+        {label}
         </div>
       ) : null}
-      {body}
+    {body}
     </section>
   );
 }
@@ -224,10 +224,10 @@ function ShellMobileNavSection(props: ShellMobileNavSectionProps) {
 function shellMobileNavSections(sections: ShellMobileNavSectionProps[] | undefined) {
   if (!Array.isArray(sections)) return null;
   return sections.map((section, index) => (
-    <ShellMobileNavSection
+      <ShellMobileNavSection
       {...section}
       key={section.id || `shell_mobile_nav_section_${index}`}
-    />
+      />
   ));
 }
 
@@ -246,25 +246,25 @@ function ShellMobileNav(props: ShellMobileNavProps) {
   } = props;
   return (
     <MobileNav
-      {...rest}
-      className={classNames("tbf-shell-mobile-nav-shell", className)}
-      panelLabel={panelLabel || String(title || "Menu")}
+    {...rest}
+    className={classNames("tbf-shell-mobile-nav-shell", className)}
+    panelLabel={panelLabel || String(title || "Menu")}
     >
-      <div className={classNames("tbf-shell-mobile-nav", contentClassName)}>
-        <div className="tbf-shell-mobile-nav__head">
-          <span className={classNames("tbf-shell-mobile-nav__title", titleClassName)}>
-            {title}
-          </span>
-          <MobileNavCloseButton
-            aria-label={closeLabel}
-            className="tbf-shell-mobile-nav__close"
-          >
-            {closeIcon ?? closeLabel}
-          </MobileNavCloseButton>
-        </div>
-        {children}
-        {shellMobileNavSections(sections)}
-      </div>
+    <div className={classNames("tbf-shell-mobile-nav", contentClassName)}>
+    <div className="tbf-shell-mobile-nav__head">
+    <span className={classNames("tbf-shell-mobile-nav__title", titleClassName)}>
+    {title}
+    </span>
+    <MobileNavCloseButton
+    aria-label={closeLabel}
+    className="tbf-shell-mobile-nav__close"
+    >
+    {closeIcon ?? closeLabel}
+    </MobileNavCloseButton>
+    </div>
+    {children}
+    {shellMobileNavSections(sections)}
+    </div>
     </MobileNav>
   );
 }

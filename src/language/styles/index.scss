@@ -9,7 +9,10 @@
 }
 
 .tbf-locale-switch-popover .tbf-locale-option[data-tbf-locale-current="true"] {
-  background: var(--tbf-shell-language-option-states-current-background, var(--tbf-overlays-popover-item-states-selected-background, var(--background-surface-2, transparent)));
+  background: var(
+    --tbf-shell-language-option-states-current-background,
+    var(--tbf-overlays-popover-item-states-selected-background, var(--background-surface-2, transparent))
+  );
   color: var(--tbf-shell-language-option-states-current-color, var(--text-color));
 }
 
@@ -54,8 +57,8 @@
   min-width: 0;
   border-radius: inherit;
   transition:
-    width var(--transition-2, 180ms) ease,
-    background var(--transition-2, 180ms) ease;
+  width var(--transition-2, 180ms) ease,
+  background var(--transition-2, 180ms) ease;
 }
 
 .tbf-source-language-distribution {
@@ -72,8 +75,8 @@
   min-width: 0;
   height: 100%;
   transition:
-    width var(--transition-2, 180ms) ease,
-    background var(--transition-2, 180ms) ease;
+  width var(--transition-2, 180ms) ease,
+  background var(--transition-2, 180ms) ease;
 }
 
 [data-tbf-source-language-row] {

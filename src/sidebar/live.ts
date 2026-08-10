@@ -30,8 +30,8 @@ function applySidebarLiveSlot(slot: HTMLElement, value: SidebarLiveSlotValue | u
 function applySidebarLivePayload(root: BindRoot, payload: SidebarLivePayload) {
   const slots = payload.slots || {};
   queryAll<HTMLElement>(root, SIDEBAR_LIVE_SLOT_SELECTOR).forEach((slot) => {
-    const key = slot.getAttribute("data-tbf-sidebar-live-slot") || "";
-    applySidebarLiveSlot(slot, slots[key]);
+      const key = slot.getAttribute("data-tbf-sidebar-live-slot") || "";
+      applySidebarLiveSlot(slot, slots[key]);
   });
 }
 

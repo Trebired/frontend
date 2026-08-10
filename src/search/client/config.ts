@@ -1,4 +1,4 @@
-import { parseJsonText } from "#er0dlx1gtbzh";
+import { readElementJson as readHostJsonConfig } from "#er0dlx1gtbzh";
 import type {
   search_filter_config,
   search_filters,
@@ -73,16 +73,6 @@ function searchFilterValues(filters: search_filters | undefined, key: string) {
 
 function tagName(node: Element | null) {
   return node ? node.tagName.toLowerCase() : "";
-}
-
-function readHostJsonConfig<T>(
-  host: ParentNode | null,
-  selector: string,
-  fallback: T,
-): T {
-  if (!host || typeof host.querySelector !== "function") return fallback;
-  const element = host.querySelector(selector);
-  return parseJsonText<T>(element?.textContent || "", fallback);
 }
 
 export {

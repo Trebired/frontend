@@ -1,6 +1,7 @@
 import {
   queryAll,
   readDataJson,
+  readTextAttribute as readTextAttr,
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
@@ -11,7 +12,7 @@ import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
 import type { ActionJson, SubmitActionButtonOptions } from "./types.js";
 
 const ACTION_BUTTON_SELECTOR =
-  "[data-tbf-submit],[data-tbf-action-url]";
+"[data-tbf-submit],[data-tbf-action-url]";
 const boundButtons = new WeakMap<HTMLElement, EventListener>();
 
 function buttonUrl(button: HTMLElement, options: SubmitActionButtonOptions) {
@@ -33,10 +34,6 @@ function readBooleanAttr(button: HTMLElement, attr: string) {
   return value !== "false" && value !== "0";
 }
 
-function readTextAttr(button: HTMLElement, attr: string) {
-  return String(button.getAttribute(attr) || "").trim();
-}
-
 function dispatchActionButtonEvent(
   button: HTMLElement,
   name: string,
@@ -44,9 +41,9 @@ function dispatchActionButtonEvent(
   cancelable = false,
 ) {
   const event = new CustomEvent(name, {
-    bubbles: true,
-    cancelable,
-    detail: { ...detail, button },
+      bubbles: true,
+      cancelable,
+      detail: { ...detail, button },
   });
   button.dispatchEvent(event);
   return event;
@@ -94,7 +91,7 @@ async function resolveCustomActionButtonRequest(
 function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
   const attrUi = readDataJson<Record<string, unknown>>(button, "data-tbf-action-ui", {});
   const ignoreResponseAction =
-    options.ignoreResponseAction === true ||
+  options.ignoreResponseAction === true ||
     options.ui?.ignoreResponseAction === true ||
     attrUi.ignoreResponseAction === true ||
     readBooleanAttr(button, "data-tbf-ignore-response-action") === true;
@@ -108,10 +105,10 @@ function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
 function buttonSuccessConfig(button: HTMLElement, options: SubmitActionButtonOptions) {
   return {
     success:
-      options.success ||
+    options.success ||
       (readTextAttr(button, "data-tbf-success") === "soft-reload"
-        ? "soft-reload"
-        : undefined),
+      ? "soft-reload"
+      : undefined),
     successTab: options.successTab || readTextAttr(button, "data-tbf-success-tab"),
   };
 }
@@ -136,13 +133,13 @@ async function submitActionButton(
     dispatchActionButtonEvent(button, "tbf:action-submit", {});
     const custom = await resolveCustomActionButtonRequest(button, options);
     json = custom.handled
-      ? custom.json
-      : await handleJson(buttonUrl(button, options), {
-          adapters: options.adapters,
-          body: readButtonBody(button, options),
-          method: buttonMethod(button, options),
-          ui,
-        });
+    ? custom.json
+    : await handleJson(buttonUrl(button, options), {
+        adapters: options.adapters,
+        body: readButtonBody(button, options),
+        method: buttonMethod(button, options),
+        ui,
+    });
     const ok = actionResponseOk(json);
     if (ok) {
       maybeFireActionSuccessConfetti(button, buttonSuccessConfetti(button, options));
@@ -157,9 +154,9 @@ async function submitActionButton(
     return json;
   } catch (error) {
     dispatchActionButtonEvent(button, "tbf:action-complete", {
-      error,
-      json: null,
-      ok: false,
+        error,
+        json: null,
+        ok: false,
     });
     throw error;
   } finally {
@@ -184,7 +181,7 @@ function bindActionButton(
 
 function bindActionButtons(root: BindRoot = document, options: SubmitActionButtonOptions = {}) {
   queryAll<HTMLElement>(root, ACTION_BUTTON_SELECTOR).forEach((button) => {
-    bindActionButton(button, options);
+      bindActionButton(button, options);
   });
 }
 

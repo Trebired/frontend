@@ -8,7 +8,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..",
 const tempRoot = path.join(rootDir, ".tmp", "verify-pack");
 const packageRoot = path.join(tempRoot, "consumer");
 
-async function main() {
+async function verifyPackMain() {
   await resetTempRoot();
   const tarballPath = packPackage();
   try {
@@ -61,28 +61,28 @@ function validatePackedEntrypoints(packageJson, exportEntries, tarballEntries) {
 
 async function validatePackedImports(packageJson, exportEntries, tarballPath) {
   execFileSync("bun", ["add", tarballPath], {
-    cwd: packageRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "inherit"],
+      cwd: packageRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "inherit"],
   });
   execFileSync("bun", ["add", "react@^19.2.0", "react-dom@^19.2.0"], {
-    cwd: packageRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "inherit"],
+      cwd: packageRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "inherit"],
   });
   assert.equal(packageJson.exports["./styles.css"], undefined);
   const imports = runtimeExportSubpaths(exportEntries)
-    .map((subpath) => `await import(${JSON.stringify(exportSpecifier(packageJson.name, subpath))});`)
-    .join("\n");
+  .map((subpath) => `await import(${JSON.stringify(exportSpecifier(packageJson.name, subpath))});`)
+  .join("\n");
   const checkFile = path.join(packageRoot, "check.mjs");
   await fs.writeFile(checkFile, imports);
   execFileSync("bun", [checkFile], {
-    cwd: packageRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "inherit"],
+      cwd: packageRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "inherit"],
   });
   await Promise.all(styleExportTargets(exportEntries).map(async (target) => {
-    await fs.access(path.join(packageRoot, "node_modules", packageJson.name, target));
+        await fs.access(path.join(packageRoot, "node_modules", packageJson.name, target));
   }));
 }
 
@@ -95,14 +95,14 @@ function packageExportEntries(packageJson) {
     assert.equal(key.includes("/components"), false, `${key} exposes component internals.`);
   }
   return Object.entries(packageJson.exports || {})
-    .filter(([_subpath, value]) => value !== null)
-    .map(([subpath, value]) => ({ subpath, value }));
+  .filter(([_subpath, value]) => value !== null)
+  .map(([subpath, value]) => ({ subpath, value }));
 }
 
 function runtimeExportSubpaths(exportEntries) {
   return exportEntries
-    .filter(({ value }) => typeof value?.import === "string")
-    .map(({ subpath }) => subpath);
+  .filter(({ value }) => typeof value?.import === "string")
+  .map(({ subpath }) => subpath);
 }
 
 function exportSpecifier(packageName, subpath) {
@@ -111,9 +111,14 @@ function exportSpecifier(packageName, subpath) {
 
 function styleExportTargets(exportEntries) {
   return exportEntries
-    .flatMap(({ value }) => [value?.sass, value?.style, value?.default])
-    .filter((value, index, list) => typeof value === "string" && value.endsWith(".scss") && list.indexOf(value) === index)
-    .map((value) => String(value).replace(/^\.\//u, ""));
+  .flatMap(({ value }) => [value?.sass, value?.style, value?.default])
+  .filter((value, index, list) => typeof value === "string" && value.endsWith(".scss") && list.indexOf(value) === index)
+  .map((value) => stripRelativePrefix(value));
+}
+
+function stripRelativePrefix(value) {
+  const text = String(value);
+  return text.startsWith("./") ? text.slice(2) : text;
 }
 
 function collectExportTargets(value, targets) {
@@ -125,25 +130,25 @@ function collectExportTargets(value, targets) {
 }
 
 function assertTarEntryExists(tarballEntries, packagePath, message) {
-  const entryPath = `package/${String(packagePath).replace(/^\.\//u, "")}`;
+  const entryPath = `package/${stripRelativePrefix(packagePath)}`;
   assert.equal(tarballEntries.has(entryPath), true, message);
 }
 
 function listTarEntries(tarballPath) {
   return new Set(
     execFileSync("tar", ["-tf", tarballPath], { encoding: "utf8" })
-      .split("\n")
-      .map((entry) => entry.trim())
-      .filter(Boolean),
+    .split("\n")
+    .map((entry) => entry.trim())
+    .filter(Boolean),
   );
 }
 
 function readPackedPackageJson(tarballPath) {
   return JSON.parse(
     execFileSync("tar", ["-xOf", tarballPath, "package/package.json"], {
-      encoding: "utf8",
+        encoding: "utf8",
     }),
   );
 }
 
-await main();
+await verifyPackMain();

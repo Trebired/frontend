@@ -19,11 +19,11 @@ type BreadcrumbState = {
 
 function readBreadcrumbItems(root: HTMLElement): BreadcrumbItemModel[] {
   return Array.from(root.querySelectorAll<HTMLElement>("[data-tbf-breadcrumb-item]")).map((item) => ({
-    current: item.getAttribute("aria-current") === "page" || item.hasAttribute("data-tbf-breadcrumb-current"),
-    href: item.getAttribute("href") || item.querySelector("a")?.getAttribute("href") || undefined,
-    icon: item.getAttribute("data-tbf-breadcrumb-icon") || undefined,
-    key: item.getAttribute("data-tbf-breadcrumb-key") || undefined,
-    label: item.textContent?.trim() || "",
+        current: item.getAttribute("aria-current") === "page" || item.hasAttribute("data-tbf-breadcrumb-current"),
+        href: item.getAttribute("href") || item.querySelector("a")?.getAttribute("href") || undefined,
+        icon: item.getAttribute("data-tbf-breadcrumb-icon") || undefined,
+        key: item.getAttribute("data-tbf-breadcrumb-key") || undefined,
+        label: item.textContent?.trim() || "",
   }));
 }
 
@@ -35,8 +35,8 @@ function applyBreadcrumbCurrent(root: HTMLElement) {
 function dispatchBreadcrumbState(root: HTMLElement) {
   const state = { items: readBreadcrumbItems(root), root };
   root.dispatchEvent(new CustomEvent(BREADCRUMB_EVENT, {
-    bubbles: true,
-    detail: state,
+        bubbles: true,
+        detail: state,
   }));
   return state;
 }

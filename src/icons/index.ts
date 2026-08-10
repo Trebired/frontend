@@ -121,14 +121,14 @@ function fetchSvg(spec: string, endpoint = "/__icons/svg"): Promise<string> {
   const cached = svgFetchCache.get(cacheKey);
   if (cached) return cached;
   const pending = fetch(buildIconUrl(spec, endpoint), {
-    credentials: "same-origin",
-    headers: { Accept: "image/svg+xml,text/plain;q=0.9,*/*;q=0.8" },
+      credentials: "same-origin",
+      headers: { Accept: "image/svg+xml,text/plain;q=0.9,*/*;q=0.8" },
   }).then(async (response) => {
-    if (!response.ok) throw new Error(`tbf-icon-http-${response.status}`);
-    const svg = String(await response.text()).trim();
-    if (!/^<svg\b/iu.test(svg)) throw new Error("tbf-icon-invalid-svg");
-    storeFetchedSvg(spec, svg);
-    return svg;
+      if (!response.ok) throw new Error(`tbf-icon-http-${response.status}`);
+      const svg = String(await response.text()).trim();
+      if (!/^<svg\b/iu.test(svg)) throw new Error("tbf-icon-invalid-svg");
+      storeFetchedSvg(spec, svg);
+      return svg;
   });
   svgFetchCache.set(cacheKey, pending);
   return pending;
@@ -185,8 +185,8 @@ function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions 
   const spec = readHostSpec(host);
   if (!spec) return false;
   void renderIconElement(host, spec, {
-    color: host.getAttribute("data-tbf-icon-color") || "",
-    endpoint: options.endpoint,
+      color: host.getAttribute("data-tbf-icon-color") || "",
+      endpoint: options.endpoint,
   });
   return true;
 }
@@ -196,16 +196,16 @@ function bindIcons(root: BindRoot = document, options: IconRuntimeOptions = {}):
 }
 
 const icons = Object.freeze({
-  append: appendIcon,
-  bind: bindIcon,
-  bindAll: bindIcons,
-  buildUrl: buildIconUrl,
-  createElement: createIconElement,
-  parseSpec: parseIconSpec,
-  readIconCacheEntry,
-  readRenderedSpec,
-  renderElement: renderIconElement,
-  storeIconCacheEntry,
+    append: appendIcon,
+    bind: bindIcon,
+    bindAll: bindIcons,
+    buildUrl: buildIconUrl,
+    createElement: createIconElement,
+    parseSpec: parseIconSpec,
+    readIconCacheEntry,
+    readRenderedSpec,
+    renderElement: renderIconElement,
+    storeIconCacheEntry,
 });
 
 export {

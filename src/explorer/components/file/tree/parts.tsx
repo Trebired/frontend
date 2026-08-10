@@ -20,10 +20,10 @@ function fileTreeLeftBorderColor(model: Pick<FileTreeRowModel, "highlighted">) {
 function FileTreeToggle(props: { isDir: boolean; isOpen: boolean }) {
   return (
     <span
-      className={primitiveInlineRowClassName({ noShrink: true, verticalCenter: true })}
-      style={{ width: 14, fontSize: 11, opacity: props.isDir ? 0.9 : 0.45 }}
+    className={primitiveInlineRowClassName({ noShrink: true, verticalCenter: true })}
+    style={{ width: 14, fontSize: 11, opacity: props.isDir ? 0.9 : 0.45 }}
     >
-      {props.isDir ? (props.isOpen ? "v" : ">") : ""}
+    {props.isDir ? (props.isOpen ? "v" : ">") : ""}
     </span>
   );
 }
@@ -31,14 +31,14 @@ function FileTreeToggle(props: { isDir: boolean; isOpen: boolean }) {
 function FileTreeIcon(props: Pick<FileTreeRowModel, "highlighted" | "iconSpec">) {
   return (
     <span
-      className={primitiveInlineRowClassName({ noShrink: true, verticalCenter: true })}
-      style={{ width: 30, fontSize: 15, opacity: props.highlighted ? 1 : 0.8 }}
+    className={primitiveInlineRowClassName({ noShrink: true, verticalCenter: true })}
+    style={{ width: 30, fontSize: 15, opacity: props.highlighted ? 1 : 0.8 }}
     >
-      {props.iconSpec ? (
+    {props.iconSpec ? (
         <Icon spec={props.iconSpec} className="icon" />
       ) : (
         <span className="icon" aria-hidden="true" />
-      )}
+    )}
     </span>
   );
 }
@@ -46,8 +46,8 @@ function FileTreeIcon(props: Pick<FileTreeRowModel, "highlighted" | "iconSpec">)
 function FileTreeName(props: Pick<FileTreeRowModel, "name">) {
   return (
     <span
-      className={primitiveTextClassName({ breakWord: true })}
-      style={{
+    className={primitiveTextClassName({ breakWord: true })}
+    style={{
         flex: "1 1 auto",
         fontSize: 13,
         lineHeight: 1.2,
@@ -55,9 +55,9 @@ function FileTreeName(props: Pick<FileTreeRowModel, "name">) {
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
-      }}
+    }}
     >
-      {props.name}
+    {props.name}
     </span>
   );
 }
@@ -66,7 +66,7 @@ function FileTreeCount(props: Pick<FileTreeRowModel, "fileCount" | "kind">) {
   if (props.kind !== "dir") return null;
   return (
     <span className={primitiveTextClassName({ className: "no-shrink", muted: true })} style={{ fontSize: 12, lineHeight: 1.2, opacity: 0.9 }}>
-      {props.fileCount}
+    {props.fileCount}
     </span>
   );
 }

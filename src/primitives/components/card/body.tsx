@@ -21,10 +21,10 @@ const CARD_BODY_DIVIDER_CLASS = "card-body-divider";
 
 function stripGapClasses(value: string) {
   return value
-    .split(/\s+/)
-    .filter(Boolean)
-    .filter((token) => !/^gap(?:-[a-z0-9]+)?$/iu.test(token))
-    .join(" ");
+  .split(/\s+/)
+  .filter(Boolean)
+  .filter((token) => !/^gap(?:-[a-z0-9]+)?$/iu.test(token))
+  .join(" ");
 }
 
 function liveCardNode(props: BodyProps, node: ReactNode) {
@@ -33,12 +33,12 @@ function liveCardNode(props: BodyProps, node: ReactNode) {
   if (!kind || !id) return node;
   return (
     <span
-      data-tbf-live-card=""
-      data-tbf-live-id={id}
-      data-tbf-live-kind={kind}
-      style={{ display: "contents" }}
+    data-tbf-live-card=""
+    data-tbf-live-id={id}
+    data-tbf-live-kind={kind}
+    style={{ display: "contents" }}
     >
-      {node}
+    {node}
     </span>
   );
 }
@@ -51,18 +51,18 @@ function resolveWidth(props: BodyProps) {
 
 function resolvedTitleClassName(props: BodyProps) {
   return primitiveTextClassName({
-    breakWord: true,
-    className: props.titleClassName,
-    widthFit: resolveWidth(props) === "fit",
+      breakWord: true,
+      className: props.titleClassName,
+      widthFit: resolveWidth(props) === "fit",
   });
 }
 
 function resolvedSubtitleClassName(props: BodyProps) {
   return primitiveTextClassName({
-    breakWord: true,
-    className: props.subtitleClassName,
-    muted: true,
-    size: "sm",
+      breakWord: true,
+      className: props.subtitleClassName,
+      muted: true,
+      size: "sm",
   });
 }
 
@@ -75,13 +75,13 @@ function card_icon(props: { children?: ReactNode; className?: string }) {
   if (!props.children) return null;
   return (
     <InlineRow
-      aria-hidden="true"
-      className={joinClassNames("card-icon", props.className)}
-      gap="xs"
-      noStretch
-      verticalCenter
+    aria-hidden="true"
+    className={joinClassNames("card-icon", props.className)}
+    gap="xs"
+    noStretch
+    verticalCenter
     >
-      {props.children}
+    {props.children}
     </InlineRow>
   );
 }
@@ -90,8 +90,8 @@ function iconBlock(props: BodyProps, showDivider: boolean) {
   if (!props.icon) return null;
   return (
     <>
-      {card_icon({ children: props.icon })}
-      {showDivider ? <span aria-hidden="true" className={CARD_BODY_DIVIDER_CLASS} /> : null}
+    {card_icon({ children: props.icon })}
+    {showDivider ? <span aria-hidden="true" className={CARD_BODY_DIVIDER_CLASS} /> : null}
     </>
   );
 }
@@ -99,11 +99,11 @@ function iconBlock(props: BodyProps, showDivider: boolean) {
 function titleSpan(props: BodyProps, titleClassName: string) {
   return (
     <span
-      className={titleClassName}
-      style={titleStyle(titleClassName)}
-      {...((props.titleAttrs || {}) as attr_map)}
+    className={titleClassName}
+    style={titleStyle(titleClassName)}
+    {...((props.titleAttrs || {}) as attr_map)}
     >
-      {props.title}
+    {props.title}
     </span>
   );
 }
@@ -123,11 +123,11 @@ function titleRow(
   );
   return (
     <InlineRow gap="xs">
-      {titleSpan(props, titleClassName)}
-      {showTitleMeta && props.meta ? props.meta : null}
-      {showActions && props.actions ? (
+    {titleSpan(props, titleClassName)}
+    {showTitleMeta && props.meta ? props.meta : null}
+    {showActions && props.actions ? (
         <div className="right">
-          <div className={actionsClassName}>{props.actions}</div>
+        <div className={actionsClassName}>{props.actions}</div>
         </div>
       ) : null}
     </InlineRow>
@@ -143,10 +143,10 @@ function contentColumn(
   const titleClassName = resolvedTitleClassName(props);
   return (
     <Stack gap="xs">
-      {titleRow(props, titleClassName, showTitleMeta, showActions)}
-      {props.subtitle ? <div className={resolvedSubtitleClassName(props)}>{props.subtitle}</div> : null}
-      {showSegments ? props.segments : null}
-      {props.extra}
+    {titleRow(props, titleClassName, showTitleMeta, showActions)}
+    {props.subtitle ? <div className={resolvedSubtitleClassName(props)}>{props.subtitle}</div> : null}
+    {showSegments ? props.segments : null}
+    {props.extra}
     </Stack>
   );
 }
@@ -164,8 +164,8 @@ function contentBlock(
 ) {
   return (
     <div className={primitiveInlineRowClassName({ className: joinClassNames("card-body", bodyClassName), gap: "xs" })}>
-      {options.hasIcon ? iconBlock(props, options.showDivider) : null}
-      {contentColumn(props, options.showTitleMeta, options.showActions, options.showSegments)}
+    {options.hasIcon ? iconBlock(props, options.showDivider) : null}
+    {contentColumn(props, options.showTitleMeta, options.showActions, options.showSegments)}
     </div>
   );
 }
@@ -179,21 +179,21 @@ function selectButton(
 ) {
   return (
     <button
-      {...((props.dataAttrs || {}) as attr_map)}
-      aria-disabled={disabled ? "true" : undefined}
-      aria-selected={selected ? "true" : "false"}
-      className={className}
-      data-card-excluded={props.select && !selected ? "true" : undefined}
-      data-card-row=""
-      data-card-selected={selected ? "true" : undefined}
-      data-select-card=""
-      data-value={toText(props.select?.value) || undefined}
-      disabled={disabled}
-      style={{ textAlign: "left", width: "100%" }}
-      type={props.select?.buttonType || "button"}
-      value={toText(props.select?.value) || undefined}
+    {...((props.dataAttrs || {}) as attr_map)}
+    aria-disabled={disabled ? "true" : undefined}
+    aria-selected={selected ? "true" : "false"}
+    className={className}
+    data-card-excluded={props.select && !selected ? "true" : undefined}
+    data-card-row=""
+    data-card-selected={selected ? "true" : undefined}
+    data-select-card=""
+    data-value={toText(props.select?.value) || undefined}
+    disabled={disabled}
+    style={{ textAlign: "left", width: "100%" }}
+    type={props.select?.buttonType || "button"}
+    value={toText(props.select?.value) || undefined}
     >
-      {content}
+    {content}
     </button>
   );
 }
@@ -201,8 +201,8 @@ function selectButton(
 function searchableBodyNode(props: BodyProps, node: ReactNode) {
   return props.search ? (
     <span data-search-item="" style={{ display: "contents" }}>
-      {search_config_script({ config: props.search, kind: "item" })}
-      {node}
+    {search_config_script({ config: props.search, kind: "item" })}
+    {node}
     </span>
   ) : node;
 }
@@ -213,9 +213,9 @@ function bodyState(props: BodyProps) {
   const selected = props.select && props.select.selected === true;
   return {
     baseClassName: primitiveCardRowClassName({
-      className: props.className,
-      excluded: Boolean(props.select && !selected),
-      selected,
+        className: props.className,
+        excluded: Boolean(props.select && !selected),
+        selected,
     }),
     bodyClassName: stripGapClasses(toText(props.bodyClassName)),
     disabled: props.select && props.select.disabled === true,
@@ -233,11 +233,11 @@ function bodyState(props: BodyProps) {
 function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNode) {
   const rendered = (
     <div
-      {...((props.dataAttrs || {}) as attr_map)}
-      className={baseClassName}
-      data-card-row=""
+    {...((props.dataAttrs || {}) as attr_map)}
+    className={baseClassName}
+    data-card-row=""
     >
-      {content}
+    {content}
     </div>
   );
   return liveCardNode(props, wrapTriggerHostNode(rendered, { action: props.actionTrigger }));
@@ -260,16 +260,16 @@ function card_body(props: BodyProps) {
 
 function selectLayoutClassName(props: SelectCardsProps) {
   return props.layout === "column"
-    ? primitiveStackClassName({ className: props.className, gap: "sm" })
-    : primitiveGridClassName({ auto: "md", className: props.className, gap: "sm" });
+  ? primitiveStackClassName({ className: props.className, gap: "sm" })
+  : primitiveGridClassName({ auto: "md", className: props.className, gap: "sm" });
 }
 
 function selectExtra(item: SelectCardItem): ReactNode {
   if (!item.details && !item.content) return null;
   return (
     <>
-      {item.details ? <div className={primitiveTextClassName({ muted: true, size: "sm" })}>{item.details}</div> : null}
-      {item.content ? <div>{item.content}</div> : null}
+    {item.details ? <div className={primitiveTextClassName({ muted: true, size: "sm" })}>{item.details}</div> : null}
+    {item.content ? <div>{item.content}</div> : null}
     </>
   );
 }
@@ -279,34 +279,34 @@ function select(props: SelectCardsProps) {
   const showIcon = props.icon === true;
   return (
     <div className={selectLayoutClassName(props)} {...((props.attrs || {}) as attr_map)}>
-      {items.map((item, index) => {
-        const value = toText(item.value);
-        const key = toText(item.id, value || `select-card-${index}`);
-        const selected = item.selected === true;
-        const disabled = item.disabled === true;
-        return (
-          <span key={key} style={{ display: "contents" }}>
+    {items.map((item, index) => {
+          const value = toText(item.value);
+          const key = toText(item.id, value || `select-card-${index}`);
+          const selected = item.selected === true;
+          const disabled = item.disabled === true;
+          return (
+            <span key={key} style={{ display: "contents" }}>
             {card_body({
-              className: joinClassNames("height-max", item.className),
-              dataAttrs: item.attrs,
-              extra: selectExtra(item),
-              icon: showIcon && item.iconSpec ? <Icon spec={item.iconSpec} /> : null,
-              meta: item.titleMeta,
-              select: {
-                buttonType: item.buttonType,
-                disabled,
-                selected,
-                value,
-              },
-              showDivider: showIcon,
-              subtitle: item.description,
-              title: item.title || "",
-              titleWidthFit: false,
-              width: "full",
+                  className: joinClassNames("height-max", item.className),
+                  dataAttrs: item.attrs,
+                  extra: selectExtra(item),
+                  icon: showIcon && item.iconSpec ? <Icon spec={item.iconSpec} /> : null,
+                  meta: item.titleMeta,
+                  select: {
+                    buttonType: item.buttonType,
+                    disabled,
+                    selected,
+                    value,
+                  },
+                  showDivider: showIcon,
+                  subtitle: item.description,
+                  title: item.title || "",
+                  titleWidthFit: false,
+                  width: "full",
             })}
-          </span>
-        );
-      })}
+            </span>
+          );
+    })}
     </div>
   );
 }

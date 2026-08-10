@@ -28,7 +28,7 @@ function Button(props: ButtonProps) {
   const { children, className, size, tone, type = "button", ...rest } = props;
   return (
     <button {...rest} className={classNames(surfaceClass("tbf-button", { size, tone }), className)} type={type}>
-      {children}
+    {children}
     </button>
   );
 }
@@ -37,12 +37,12 @@ function Card(props: CardProps) {
   const { children, className, interactive, tone, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames(surfaceClass("tbf-card", { tone }), className)}
-      data-tbf-card=""
-      data-tbf-interactive={interactive ? "true" : undefined}
+    {...rest}
+    className={classNames(surfaceClass("tbf-card", { tone }), className)}
+    data-tbf-card=""
+    data-tbf-interactive={interactive ? "true" : undefined}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -66,8 +66,8 @@ function CanvasPanel(props: CanvasPanelProps) {
   const { actions, children, className, fullscreenId, subtitle, title, ...rest } = props;
   const body = (
     <div {...rest} className={classNames("tbf-canvas-panel", className)} data-tbf-canvas-panel="">
-      <CanvasPanelHeader actions={actions} fullscreenId={fullscreenId} subtitle={subtitle} title={title} />
-      <div className="tbf-canvas-panel__body">{children}</div>
+    <CanvasPanelHeader actions={actions} fullscreenId={fullscreenId} subtitle={subtitle} title={title} />
+    <div className="tbf-canvas-panel__body">{children}</div>
     </div>
   );
   return fullscreenId ? <FullscreenTarget fullscreenId={fullscreenId}>{body}</FullscreenTarget> : body;
@@ -77,15 +77,15 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
   if (!props.title && !props.subtitle && !props.actions && !props.fullscreenId) return null;
   return (
     <div className="tbf-canvas-panel__header">
-      <div className="tbf-canvas-panel__titles">
-        {props.title ? <strong>{props.title}</strong> : null}
-        {props.subtitle ? <span>{props.subtitle}</span> : null}
-      </div>
-      <div className="tbf-canvas-panel__actions">
-        {props.actions}
-        {props.fullscreenId ? <FullscreenOpenButton fullscreenId={props.fullscreenId}>Open</FullscreenOpenButton> : null}
-        {props.fullscreenId ? <FullscreenCloseButton fullscreenId={props.fullscreenId}>Close</FullscreenCloseButton> : null}
-      </div>
+    <div className="tbf-canvas-panel__titles">
+    {props.title ? <strong>{props.title}</strong> : null}
+    {props.subtitle ? <span>{props.subtitle}</span> : null}
+    </div>
+    <div className="tbf-canvas-panel__actions">
+    {props.actions}
+    {props.fullscreenId ? <FullscreenOpenButton fullscreenId={props.fullscreenId}>Open</FullscreenOpenButton> : null}
+    {props.fullscreenId ? <FullscreenCloseButton fullscreenId={props.fullscreenId}>Close</FullscreenCloseButton> : null}
+    </div>
     </div>
   );
 }

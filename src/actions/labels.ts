@@ -1,20 +1,22 @@
+import { normalizeLocale as actionLang } from "#2d8f076g07hg";
+
 type ActionLabelKey =
-  | "add"
-  | "cancel"
-  | "copy"
-  | "create"
-  | "delete"
-  | "drop"
-  | "forceStop"
-  | "insert"
-  | "install"
-  | "remove"
-  | "removeItem"
-  | "restart"
-  | "save"
-  | "show"
-  | "start"
-  | "stop";
+| "add"
+| "cancel"
+| "copy"
+| "create"
+| "delete"
+| "drop"
+| "forceStop"
+| "insert"
+| "install"
+| "remove"
+| "removeItem"
+| "restart"
+| "save"
+| "show"
+| "start"
+| "stop";
 
 const ACTION_LABELS: Record<string, Record<ActionLabelKey, string>> = {
   cs: {
@@ -54,12 +56,6 @@ const ACTION_LABELS: Record<string, Record<ActionLabelKey, string>> = {
     stop: "Stop",
   },
 };
-
-function actionLang(lang: unknown) {
-  const normalized = String(lang || "").trim().toLowerCase();
-  if (normalized.startsWith("cs")) return "cs";
-  return "en";
-}
 
 function actionLabel(key: ActionLabelKey, lang?: unknown, fallback?: unknown) {
   const text = String(fallback || "").trim();

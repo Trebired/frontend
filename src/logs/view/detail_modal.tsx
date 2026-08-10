@@ -45,7 +45,7 @@ function detailSummary(model: any) {
 function detailTitle(model: any) {
   return (
     <Stack className="title-desc" gap="sm">
-      <InlineRow gap="sm">
+    <InlineRow gap="sm">
     <h3>{model.t("logEntry")}</h3>
     <div className="right">
     {copyAction(

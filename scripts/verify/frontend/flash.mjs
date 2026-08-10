@@ -62,9 +62,9 @@ async function verifyClassicConfirm(api) {
 
 async function verifyTextConfirm(api) {
   const attrs = api.confirmationVariantAttrs({
-    confirmationText: "repository-a",
-    target: "repository-a",
-    variant: "delete",
+      confirmationText: "repository-a",
+      target: "repository-a",
+      variant: "delete",
   });
   const button = document.createElement("button");
   Object.entries(attrs).forEach(([key, value]) => button.setAttribute(key, value));

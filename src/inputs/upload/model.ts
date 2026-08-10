@@ -8,7 +8,7 @@ function uploadId(id?: string) {
   return toText(id) || `tbf_upload_${Math.random().toString(36).slice(2, 10)}`;
 }
 
-function uploadEmptyToggle(input: UploadEmptyToggle | undefined) {
+function normalizeUploadEmptyToggle(input: UploadEmptyToggle | undefined) {
   return input && typeof input === "object" ? input : null;
 }
 
@@ -17,7 +17,7 @@ function uploadAcceptModel(options: UploadFieldOptions) {
   const items = parseAcceptList(accept);
   const labels = formatLabels(items);
   const previewEnabled =
-    options.preview === true ||
+  options.preview === true ||
     (options.preview !== false && (Boolean(options.previewUrl) || items.some(isImageAcceptItem)));
   return {
     accept,
@@ -60,7 +60,7 @@ function uploadModel(options: UploadFieldOptions) {
   const accept = uploadAcceptModel(options);
   const labels = uploadLabels(options);
   const picker = pickerModel(options);
-  const emptyToggle = uploadEmptyToggle(options.emptyToggle);
+  const emptyToggle = normalizeUploadEmptyToggle(options.emptyToggle);
   return {
     ...accept,
     ...labels,
@@ -69,10 +69,10 @@ function uploadModel(options: UploadFieldOptions) {
     canClearCurrentPreview: Boolean(emptyToggle && options.previewUrl),
     crop: options.crop === true,
     dropHint: picker.allowDrop
-      ? picker.allowDropDirectory || picker.allowDirectory
-        ? "Drop files or folders here"
-        : "Drop files here"
-      : "",
+    ? picker.allowDropDirectory || picker.allowDirectory
+    ? "Drop files or folders here"
+    : "Drop files here"
+    : "",
     emptyToggle,
     helperText: toText(options.helperText),
     id: uploadId(options.id),

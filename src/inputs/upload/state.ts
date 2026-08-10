@@ -83,9 +83,9 @@ function syncList(root: HTMLElement, entries: UploadEntry[]) {
   const list = getListNode(root);
   if (!list) return;
   list.replaceChildren(...entries.map((entry) => {
-    const item = document.createElement("li");
-    item.textContent = entry.path || entry.file.name;
-    return item;
+        const item = document.createElement("li");
+        item.textContent = entry.path || entry.file.name;
+        return item;
   }));
 }
 
@@ -125,12 +125,12 @@ function syncClearAndEmpty(root: HTMLElement) {
 function dispatchUploadChange(root: HTMLElement) {
   const state = getUploadState(root);
   root.dispatchEvent(new CustomEvent("tbf:upload-change", {
-    bubbles: true,
-    detail: {
-      cropData: state.cropData,
-      entries: state.entries.slice(),
-      files: state.entries.map((entry) => entry.file),
-    },
+        bubbles: true,
+        detail: {
+          cropData: state.cropData,
+          entries: state.entries.slice(),
+          files: state.entries.map((entry) => entry.file),
+        },
   }));
 }
 

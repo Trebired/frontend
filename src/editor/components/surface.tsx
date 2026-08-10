@@ -2,6 +2,10 @@ import { Icon } from "#lbkpzw8nphru";
 import { bar as progress_bar } from "#6hfutrhvm6x6";
 import { card } from "#6hfutrhvm6x6";
 import {
+  jsonScript,
+  objectRecord as objectValue,
+} from "#ndsvdqv80epr";
+import {
   InlineRow,
   Stack,
   Text,
@@ -21,25 +25,25 @@ const EDITOR_EXTEND_ID = "editor_surface_panel";
 function editor_body(props: EditorBodyProps) {
   const { mode, ...surfaceProps } = props;
   return editor_surface({
-    ...surfaceProps,
-    ideMode: normalizeEditorMode(mode),
+      ...surfaceProps,
+      ideMode: normalizeEditorMode(mode),
   });
 }
 
 function editor_surface(props: EditorSurfaceProps) {
   const state = readSurfaceState(props);
   const surface = card({
-    gap: "sm",
-    children: (
-      <>
+      gap: "sm",
+      children: (
+        <>
         {editorHeader(state)}
         {state.ideMode === "edit" ? editSurface(state) : viewerSurface(state)}
-      </>
-    ),
+        </>
+      ),
   });
   return (
     <FullscreenTarget fullscreenId={state.extendId} group={state.extendGroup}>
-      {surface}
+    {surface}
     </FullscreenTarget>
   );
 }
@@ -113,20 +117,20 @@ function viewerState(props: EditorSurfaceProps, text: Required<EditorLabels>) {
 function editSurface(state: ReturnType<typeof readSurfaceState>) {
   return (
     <div className="border radius-md overflow-hidden">
-      <script
-        data-editor-launch=""
-        dangerouslySetInnerHTML={jsonHtml(state.ideLaunch)}
-        type="application/json"
-      />
-      {editorLoader(state)}
-      <iframe
-        aria-label={state.labels.editor}
-        className="display-block overflow-hidden width-max height-xl4 bg-transparent border-0"
-        data-editor-frame=""
-        hidden
-        name="editor_frame"
-        src="about:blank"
-      />
+    <script
+    data-editor-launch=""
+    dangerouslySetInnerHTML={jsonHtml(state.ideLaunch)}
+    type="application/json"
+    />
+    {editorLoader(state)}
+    <iframe
+    aria-label={state.labels.editor}
+    className="display-block overflow-hidden width-max height-xl4 bg-transparent border-0"
+    data-editor-frame=""
+    hidden
+    name="editor_frame"
+    src="about:blank"
+    />
     </div>
   );
 }
@@ -134,9 +138,9 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
 function editorLoader(state: ReturnType<typeof readSurfaceState>) {
   return (
     <InlineRow className="height-xl4" data-editor-loader="">
-      <div className="center">
-        <div className="width-fit no-stretch">{editorLoaderContent(state)}</div>
-      </div>
+    <div className="center">
+    <div className="width-fit no-stretch">{editorLoaderContent(state)}</div>
+    </div>
     </InlineRow>
   );
 }
@@ -144,18 +148,18 @@ function editorLoader(state: ReturnType<typeof readSurfaceState>) {
 function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
   return (
     <Stack center gap="sm" horizontalCenter>
-      <strong data-editor-status="">{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
-      <Text breakWord data-editor-detail="" muted size="sm">{state.loading.detail}</Text>
-      <div className="width-md max-width-full text-left">
-        {progress_bar({
+    <strong data-editor-status="">{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
+    <Text breakWord data-editor-detail="" muted size="sm">{state.loading.detail}</Text>
+    <div className="width-md max-width-full text-left">
+    {progress_bar({
           label: state.loading.label,
           meta: state.loading.meta,
           percent: state.loading.percent,
           wrapperAttributes: "data-editor-progress-bar",
-        })}
-      </div>
-      {unavailableMessage(state)}
-      {requestedPath(state)}
+    })}
+    </div>
+    {unavailableMessage(state)}
+    {requestedPath(state)}
     </Stack>
   );
 }
@@ -164,7 +168,7 @@ function unavailableMessage(state: ReturnType<typeof readSurfaceState>) {
   if (state.ideAvailable || !state.ideUnavailableMessage) return null;
   return (
     <Text breakWord data-editor-unavailable="" muted size="sm">
-      {state.ideUnavailableMessage}
+    {state.ideUnavailableMessage}
     </Text>
   );
 }
@@ -173,7 +177,7 @@ function requestedPath(state: ReturnType<typeof readSurfaceState>) {
   if (!state.requestedPath) return null;
   return (
     <Text breakWord muted size="sm">
-      {state.labels.requestedPath(state.requestedPath)}
+    {state.labels.requestedPath(state.requestedPath)}
     </Text>
   );
 }
@@ -181,85 +185,85 @@ function requestedPath(state: ReturnType<typeof readSurfaceState>) {
 function viewerSurface(state: ReturnType<typeof readSurfaceState>) {
   return (
     <>
-      <script
-        id={state.viewer.stateId || undefined}
-        type="application/json"
-        {...{ [state.viewer.stateDataAttr]: "" }}
-        dangerouslySetInnerHTML={jsonHtml(state.viewer.state)}
-      />
-      <Stack
-        id={state.viewer.rootId || undefined}
-        gap="sm"
-        grow
-        {...{ [state.viewer.rootDataAttr]: "" }}
-        style={{ flex: "1 1 auto", minHeight: 0 }}
-      >
-        {viewerLoadingCard(state)}
-      </Stack>
+    <script
+    id={state.viewer.stateId || undefined}
+    type="application/json"
+    {...{ [state.viewer.stateDataAttr]: "" }}
+    dangerouslySetInnerHTML={jsonHtml(state.viewer.state)}
+    />
+    <Stack
+    id={state.viewer.rootId || undefined}
+    gap="sm"
+    grow
+    {...{ [state.viewer.rootDataAttr]: "" }}
+    style={{ flex: "1 1 auto", minHeight: 0 }}
+    >
+    {viewerLoadingCard(state)}
+    </Stack>
     </>
   );
 }
 
 function viewerLoadingCard(state: ReturnType<typeof readSurfaceState>) {
   return card({
-    center: true,
-    gap: "sm",
-    verticalCenter: true,
-    style: { minHeight: 560 },
-    children: (
-      <>
+      center: true,
+      gap: "sm",
+      verticalCenter: true,
+      style: { minHeight: 560 },
+      children: (
+        <>
         <strong>{state.viewer.loadingTitle}</strong>
         <Text breakWord muted size="sm">{state.viewer.loadingText}</Text>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
 function editorHeader(state: ReturnType<typeof readSurfaceState>) {
   return card({
-    className: primitiveInlineRowClassName({
-      className: "width-full padding-sm",
-      gap: "sm",
-      verticalCenter: true,
-    }),
-    layout: "none",
-    children: (
-      <>
+      className: primitiveInlineRowClassName({
+          className: "width-full padding-sm",
+          gap: "sm",
+          verticalCenter: true,
+      }),
+      layout: "none",
+      children: (
+        <>
         <h3>{state.title}</h3>
         <div className="right">
-          <InlineRow gap="xs">
-            {state.actions}
-            {state.ideMode === "edit" ? editorExternalLink(state) : null}
-            {state.ideMode !== "edit" ? fullscreenActions(state) : null}
-          </InlineRow>
+        <InlineRow gap="xs">
+        {state.actions}
+        {state.ideMode === "edit" ? editorExternalLink(state) : null}
+        {state.ideMode !== "edit" ? fullscreenActions(state) : null}
+        </InlineRow>
         </div>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
 function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
   return (
     <>
-      <FullscreenOpenButton
-        aria-label={state.labels.displayFullscreen}
-        className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
-        fullscreenId={state.extendId}
-        group={state.extendGroup}
-        title={state.labels.displayFullscreen}
-      >
-        <Icon spec="remixicon fullscreen-line" />
-      </FullscreenOpenButton>
-      <FullscreenCloseButton
-        aria-label={state.labels.exitFullscreen}
-        className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
-        data-tbf-fullscreen-hidden="true"
-        fullscreenId={state.extendId}
-        group={state.extendGroup}
-        title={state.labels.exitFullscreen}
-      >
-        <Icon spec="remixicon fullscreen-exit-line" />
-      </FullscreenCloseButton>
+    <FullscreenOpenButton
+    aria-label={state.labels.displayFullscreen}
+    className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
+    fullscreenId={state.extendId}
+    group={state.extendGroup}
+    title={state.labels.displayFullscreen}
+    >
+    <Icon spec="remixicon fullscreen-line" />
+    </FullscreenOpenButton>
+    <FullscreenCloseButton
+    aria-label={state.labels.exitFullscreen}
+    className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
+    data-tbf-fullscreen-hidden="true"
+    fullscreenId={state.extendId}
+    group={state.extendGroup}
+    title={state.labels.exitFullscreen}
+    >
+    <Icon spec="remixicon fullscreen-exit-line" />
+    </FullscreenCloseButton>
     </>
   );
 }
@@ -267,12 +271,12 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
 function editorExternalLink(state: ReturnType<typeof readSurfaceState>) {
   return (
     <a
-      className={primitiveButtonClassName({ size: "sm" })}
-      data-editor-external-link=""
-      hidden
-      href={state.fullIdeUrl || undefined}
+    className={primitiveButtonClassName({ size: "sm" })}
+    data-editor-external-link=""
+    hidden
+    href={state.fullIdeUrl || undefined}
     >
-      <Icon spec="remixicon external-link-line" /> {state.labels.openFullIde}
+    <Icon spec="remixicon external-link-line" /> {state.labels.openFullIde}
     </a>
   );
 }
@@ -286,12 +290,8 @@ function readIdeMode(value: unknown) {
   return String(value || "").trim().toLowerCase() === "view" ? "view" : "edit";
 }
 
-function objectValue(value: any) {
-  return value && typeof value === "object" ? value : {};
-}
-
 function jsonHtml(value: unknown) {
-  return { __html: JSON.stringify(value).replace(/</g, "\\u003c") };
+  return { __html: jsonScript(value) };
 }
 
 export { editor_body, editor_surface };

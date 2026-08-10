@@ -77,21 +77,21 @@ type DynamicSidebarStateContext = DynamicSidebarItemContext & {
 };
 
 type DynamicSidebarLinkListProps =
-  Omit<HTMLAttributes<HTMLUListElement>, "children"> & {
-    actionTrigger?: boolean;
-    currentPath?: string;
-    items: DynamicSidebarItem[];
-    linksId?: string;
-    renderCount?: (context: DynamicSidebarCountContext) => ReactNode;
-    renderIcon?: (context: DynamicSidebarItemContext) => ReactNode;
-    renderLoader?: (context: DynamicSidebarLoaderContext) => ReactNode;
-    renderState?: (context: DynamicSidebarStateContext) => ReactNode;
-    sidebar?: DynamicSidebarContext | null;
-    wrapLink?: (
-      node: ReactNode,
-      context: DynamicSidebarItemContext & { href: string },
-    ) => ReactNode;
-  };
+Omit<HTMLAttributes<HTMLUListElement>, "children"> & {
+  actionTrigger?: boolean;
+  currentPath?: string;
+  items: DynamicSidebarItem[];
+  linksId?: string;
+  renderCount?: (context: DynamicSidebarCountContext) => ReactNode;
+  renderIcon?: (context: DynamicSidebarItemContext) => ReactNode;
+  renderLoader?: (context: DynamicSidebarLoaderContext) => ReactNode;
+  renderState?: (context: DynamicSidebarStateContext) => ReactNode;
+  sidebar?: DynamicSidebarContext | null;
+  wrapLink?: (
+    node: ReactNode,
+    context: DynamicSidebarItemContext & { href: string },
+  ) => ReactNode;
+};
 
 type DynamicSidebarLiveRootProps = HTMLAttributes<HTMLDivElement> & {
   config: DynamicSidebarLiveConfig;

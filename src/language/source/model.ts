@@ -6,62 +6,62 @@ import { normalizedLang, text, translate } from "#kv9urtb9dbq5";
 import type { SourceLanguageBucket, SourceLanguageVisualizerProps } from "#2w72xmq6rvza";
 
 const REPOSITORY_LANGUAGE_IDS = new Set([
-  "javascript",
-  "typescript",
-  "jsx",
-  "tsx",
-  "vue",
-  "svelte",
-  "ejs",
-  "pug",
-  "handlebars",
-  "html",
-  "css",
-  "scss",
-  "sass",
-  "less",
-  "stylus",
-  "php",
-  "python",
-  "ruby",
-  "go",
-  "java",
-  "kotlin",
-  "swift",
-  "c",
-  "cpp",
-  "csharp",
-  "rust",
-  "dart",
-  "shell",
-  "sql",
-  "graphql",
+    "javascript",
+    "typescript",
+    "jsx",
+    "tsx",
+    "vue",
+    "svelte",
+    "ejs",
+    "pug",
+    "handlebars",
+    "html",
+    "css",
+    "scss",
+    "sass",
+    "less",
+    "stylus",
+    "php",
+    "python",
+    "ruby",
+    "go",
+    "java",
+    "kotlin",
+    "swift",
+    "c",
+    "cpp",
+    "csharp",
+    "rust",
+    "dart",
+    "shell",
+    "sql",
+    "graphql",
 ]);
 
 const SUPPORTING_LANGUAGE_IDS = new Set([
-  "json",
-  "jsonc",
-  "yaml",
-  "toml",
-  "ini",
-  "xml",
-  "svg",
-  "markdown",
-  "text",
-  "dotenv",
-  "robots-txt",
-  "sitemap",
-  "sitemap-xml",
-  "csv",
-  "tsv",
-  "dockerfile",
-  "gitignore",
-  "git-ignore",
-  "gitattributes",
-  "git-attributes",
-  "editorconfig",
-  "ignore-list",
-  "properties",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml",
+    "ini",
+    "xml",
+    "svg",
+    "markdown",
+    "text",
+    "dotenv",
+    "robots-txt",
+    "sitemap",
+    "sitemap-xml",
+    "csv",
+    "tsv",
+    "dockerfile",
+    "gitignore",
+    "git-ignore",
+    "gitattributes",
+    "git-attributes",
+    "editorconfig",
+    "ignore-list",
+    "properties",
 ]);
 
 function formatScanProgressLabel(
@@ -100,12 +100,12 @@ function translatedScanMessage(input: unknown, lang?: string) {
   const key = text(input);
   if (!key) return "";
   const normalized = key
-    .replace(/^repository-content-scan-failed$/u, "repositoryContentScanFailed")
-    .replace(/^repository-language-scan-complete$/u, "repositoryLanguageScanComplete")
-    .replace(/^repository-language-scan-counting$/u, "repositoryLanguageScanCounting")
-    .replace(/^repository-language-scan-failed$/u, "repositoryLanguageScanFailed")
-    .replace(/^repository-language-scan-queued$/u, "repositoryLanguageScanQueued")
-    .replace(/^repository-language-scan-saving$/u, "repositoryLanguageScanSaving");
+  .replace(/^repository-content-scan-failed$/u, "repositoryContentScanFailed")
+  .replace(/^repository-language-scan-complete$/u, "repositoryLanguageScanComplete")
+  .replace(/^repository-language-scan-counting$/u, "repositoryLanguageScanCounting")
+  .replace(/^repository-language-scan-failed$/u, "repositoryLanguageScanFailed")
+  .replace(/^repository-language-scan-queued$/u, "repositoryLanguageScanQueued")
+  .replace(/^repository-language-scan-saving$/u, "repositoryLanguageScanSaving");
   const translated = translate(lang, normalized);
   return translated === normalized ? "" : translated;
 }
@@ -126,20 +126,20 @@ function scanMessage(scan: any, scanStatus: string, scanFailed: boolean, lang?: 
 
 function normalizeVisualLanguages(scannedLanguages: any[]) {
   return scannedLanguages.map((language: any, index: number) => {
-    const rawId = text(language && (language.id || language.name), `language-${index}`);
-    return {
-      ...(language && typeof language === "object" ? language : {}),
-      viz_id: rawId || `language-${index}`,
-      viz_bucket: classifySourceLanguageBucket(language),
-    };
+      const rawId = text(language && (language.id || language.name), `language-${index}`);
+      return {
+        ...(language && typeof language === "object" ? language : {}),
+        viz_id: rawId || `language-${index}`,
+        viz_bucket: classifySourceLanguageBucket(language),
+      };
   });
 }
 
 function readScanSource(props: SourceLanguageVisualizerProps) {
   const repository =
-    props.repository && typeof props.repository === "object" ? props.repository : {};
+  props.repository && typeof props.repository === "object" ? props.repository : {};
   const content =
-    repository.content && typeof repository.content === "object" ? repository.content : {};
+  repository.content && typeof repository.content === "object" ? repository.content : {};
   const scan = content.scan && typeof content.scan === "object" ? content.scan : {};
   return { repository, scan };
 }
@@ -147,14 +147,14 @@ function readScanSource(props: SourceLanguageVisualizerProps) {
 function readScanProgress(scan: any, scannedLanguages: any[]) {
   const scanStatus = text(scan.status, scannedLanguages.length ? "ready" : "");
   const rawPercent =
-    scan.progress_percent == null ? NaN : Number(scan.progress_percent);
+  scan.progress_percent == null ? NaN : Number(scan.progress_percent);
   return {
     scanStatus,
     scanPending: ["queued", "counting", "scanning", "saving"].includes(scanStatus),
     scanFailed: scanStatus === "failed",
     scanProgressPercent: Number.isFinite(rawPercent)
-      ? Math.max(0, Math.min(100, rawPercent))
-      : NaN,
+    ? Math.max(0, Math.min(100, rawPercent))
+    : NaN,
     scanCountedFiles: safeNumber(scan.counted_files),
     scanTotalFiles: safeNumber(scan.total_files),
   };

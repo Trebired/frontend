@@ -79,7 +79,7 @@ function setNativeInputFiles(input: HTMLInputElement | null, entries: UploadEntr
 
 function clearNativeInputs(root: HTMLElement, except?: HTMLInputElement | null) {
   [getUploadFileInput(root), getDirectoryInput(root)].forEach((input) => {
-    if (input && input !== except) input.value = "";
+      if (input && input !== except) input.value = "";
   });
 }
 

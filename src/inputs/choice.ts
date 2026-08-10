@@ -13,8 +13,8 @@ function syncCheckboxAll(root: HTMLElement) {
   const inputs = checkboxInputs(root);
   const checked = inputs.filter((input) => input.checked).length;
   queryAll<HTMLInputElement>(root, CHECKBOX_ALL_SELECTOR).forEach((input) => {
-    input.checked = inputs.length > 0 && checked === inputs.length;
-    input.indeterminate = checked > 0 && checked < inputs.length;
+      input.checked = inputs.length > 0 && checked === inputs.length;
+      input.indeterminate = checked > 0 && checked < inputs.length;
   });
   root.dispatchEvent(new CustomEvent(CHOICE_EVENT, { bubbles: true, detail: { checked, root, total: inputs.length } }));
 }
@@ -24,13 +24,13 @@ function bindCheckboxGroup(root: HTMLElement | null) {
   root.setAttribute("data-tbf-checkbox-bound", "true");
   checkboxInputs(root).forEach((input) => input.addEventListener("change", () => syncCheckboxAll(root)));
   queryAll<HTMLInputElement>(root, CHECKBOX_ALL_SELECTOR).forEach((input) => {
-    input.addEventListener("change", () => {
-      checkboxInputs(root).forEach((item) => {
-        item.checked = input.checked;
-        item.dispatchEvent(new Event("change", { bubbles: true }));
+      input.addEventListener("change", () => {
+          checkboxInputs(root).forEach((item) => {
+              item.checked = input.checked;
+              item.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+          syncCheckboxAll(root);
       });
-      syncCheckboxAll(root);
-    });
   });
   syncCheckboxAll(root);
   return root;
@@ -50,12 +50,12 @@ function bindRadioGroup(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-radio-bound")) return null;
   root.setAttribute("data-tbf-radio-bound", "true");
   queryAll<HTMLInputElement>(root, "input[type='radio']").forEach((input) => {
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowRight" || event.key === "ArrowDown") moveRadioFocus(root, input, 1);
-      else if (event.key === "ArrowLeft" || event.key === "ArrowUp") moveRadioFocus(root, input, -1);
-      else return;
-      event.preventDefault();
-    });
+      input.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") moveRadioFocus(root, input, 1);
+          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") moveRadioFocus(root, input, -1);
+          else return;
+          event.preventDefault();
+      });
   });
   return root;
 }

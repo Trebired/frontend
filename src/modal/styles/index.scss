@@ -11,8 +11,8 @@
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity var(--tbf-transition-normal) ease,
-    visibility 0s linear var(--tbf-transition-normal);
+  opacity var(--tbf-transition-normal) ease,
+  visibility 0s linear var(--tbf-transition-normal);
 }
 
 [data-tbf-modal][data-tbf-open="true"],
@@ -25,8 +25,8 @@
   opacity: 1;
   pointer-events: auto;
   transition:
-    opacity var(--tbf-transition-normal) ease,
-    visibility 0s;
+  opacity var(--tbf-transition-normal) ease,
+  visibility 0s;
 }
 
 .tbf-modal__content,

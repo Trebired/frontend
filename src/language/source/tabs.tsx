@@ -24,18 +24,18 @@ function matchesBucket(language: any, bucket: SourceLanguageBucket) {
 
 function visualLanguageCards(model: SourceLanguageTabsContentProps) {
   const repository =
-    model.repository && typeof model.repository === "object" ? model.repository : {};
+  model.repository && typeof model.repository === "object" ? model.repository : {};
   const detailsById =
-    repository.languageDetailsById && typeof repository.languageDetailsById === "object"
-      ? repository.languageDetailsById
-      : {};
+  repository.languageDetailsById && typeof repository.languageDetailsById === "object"
+  ? repository.languageDetailsById
+  : {};
   const visualLanguages = Array.isArray(model.visualLanguages)
-    ? model.visualLanguages
-    : [];
+  ? model.visualLanguages
+  : [];
   return visualLanguages.map((language: any) => ({
-    details: detailsById[text(language && language.id).toLowerCase()] || null,
-    language,
-    repository,
+        details: detailsById[text(language && language.id).toLowerCase()] || null,
+        language,
+        repository,
   }));
 }
 
@@ -44,11 +44,11 @@ function bucketedLanguageCards(
   bucket: SourceLanguageBucket,
 ) {
   return visualLanguageCards(model)
-    .filter((entry: any) => matchesBucket(entry.language, bucket))
-    .map((entry: any) => ({
-      ...entry,
-      modalId: `source_language_detail_${safeId(entry.language && entry.language.viz_id)}_${bucket}`,
-    }));
+  .filter((entry: any) => matchesBucket(entry.language, bucket))
+  .map((entry: any) => ({
+        ...entry,
+        modalId: `source_language_detail_${safeId(entry.language && entry.language.viz_id)}_${bucket}`,
+  }));
 }
 
 function distributionSegment(language: any, index: number, lang?: string) {
@@ -59,16 +59,16 @@ function distributionSegment(language: any, index: number, lang?: string) {
   );
   return (
     <span
-      key={`source_language_distribution_${index}`}
-      className="tbf-source-language-distribution-segment"
-      data-tbf-source-language-overview-segment=""
-      data-tbf-source-language-id={text(language && language.viz_id)}
-      data-tbf-source-language-color={text(language && language.color)}
-      title={`${languageName} / ${formatLanguagePercent(percent)}%`}
-      style={{
+    key={`source_language_distribution_${index}`}
+    className="tbf-source-language-distribution-segment"
+    data-tbf-source-language-overview-segment=""
+    data-tbf-source-language-id={text(language && language.viz_id)}
+    data-tbf-source-language-color={text(language && language.color)}
+    title={`${languageName} / ${formatLanguagePercent(percent)}%`}
+    style={{
         width: `${Math.max(0, Math.min(100, percent))}%`,
         background: text(language && language.color, "var(--tbf-language-color, currentColor)"),
-      }}
+    }}
     />
   );
 }
@@ -80,13 +80,13 @@ function languageDistribution(
 ) {
   return (
     <div
-      className="tbf-source-language-distribution"
-      data-tbf-source-language-overview=""
-      data-tbf-source-language-panel-bucket={bucket}
-      role="img"
-      aria-label={translate(lang, "languageSizeDistribution")}
+    className="tbf-source-language-distribution"
+    data-tbf-source-language-overview=""
+    data-tbf-source-language-panel-bucket={bucket}
+    role="img"
+    aria-label={translate(lang, "languageSizeDistribution")}
     >
-      {languages.map((language, index) => distributionSegment(language, index, lang))}
+    {languages.map((language, index) => distributionSegment(language, index, lang))}
     </div>
   );
 }
@@ -94,12 +94,12 @@ function languageDistribution(
 function emptyState(lang: string | undefined, bucket: SourceLanguageBucket, hidden: boolean) {
   return (
     <div
-      data-tbf-source-language-empty-state=""
-      data-tbf-source-language-panel-bucket={bucket}
-      className={primitiveTextClassName({ muted: true })}
-      hidden={hidden}
+    data-tbf-source-language-empty-state=""
+    data-tbf-source-language-panel-bucket={bucket}
+    className={primitiveTextClassName({ muted: true })}
+    hidden={hidden}
     >
-      {translate(lang, "noLanguagesInTab")}
+    {translate(lang, "noLanguagesInTab")}
     </div>
   );
 }
@@ -108,33 +108,33 @@ function languageList(model: SourceLanguageTabsContentProps, bucket: SourceLangu
   const cards = bucketedLanguageCards(model, bucket);
   return (
     <div
-      className="max-height-xl scroll scroll-min"
-      data-tbf-source-language-list=""
-      data-tbf-source-language-panel-bucket={bucket}
+    className="max-height-xl scroll scroll-min"
+    data-tbf-source-language-list=""
+    data-tbf-source-language-panel-bucket={bucket}
     >
-      <Stack gap="sm">
-        {cards.map((entry: any, index: number) => (
+    <Stack gap="sm">
+    {cards.map((entry: any, index: number) => (
           <div key={`source_language_card_${index}`} data-tbf-source-language-list-item="">
-            {source_language_card({ ...entry, lang: model.lang, locale: model.locale })}
+          {source_language_card({ ...entry, lang: model.lang, locale: model.locale })}
           </div>
-        ))}
-      </Stack>
+    ))}
+    </Stack>
     </div>
   );
 }
 
 function languagePanel(model: SourceLanguageTabsContentProps, bucket: SourceLanguageBucket) {
   const visualLanguages = Array.isArray(model.visualLanguages)
-    ? model.visualLanguages
-    : [];
+  ? model.visualLanguages
+  : [];
   const languages = visualLanguages.filter((language: any) =>
     matchesBucket(language, bucket),
   );
   return (
     <Stack gap="sm" data-tbf-source-language-panel-bucket={bucket}>
-      {languageDistribution(languages, bucket, model.lang)}
-      {languageList(model, bucket)}
-      {emptyState(model.lang, bucket, languages.length > 0)}
+    {languageDistribution(languages, bucket, model.lang)}
+    {languageList(model, bucket)}
+    {emptyState(model.lang, bucket, languages.length > 0)}
     </Stack>
   );
 }
@@ -174,40 +174,40 @@ function bucketTabItems(lang?: string) {
 
 function sourceLanguageTabs(model: SourceLanguageTabsContentProps) {
   return tabs({
-    familyKey: "source-language-bucket",
-    items: bucketTabItems(model.lang),
-    listAttributes: { "data-tbf-source-language-bucket-tabs": "" },
-    listClassName: primitiveGapClass("sm"),
-    rootAttributes: { "data-tbf-source-language-bucket-tabs-root": "" },
-    rootClassName: primitiveStackClassName({ gap: "sm" }),
+      familyKey: "source-language-bucket",
+      items: bucketTabItems(model.lang),
+      listAttributes: { "data-tbf-source-language-bucket-tabs": "" },
+      listClassName: primitiveGapClass("sm"),
+      rootAttributes: { "data-tbf-source-language-bucket-tabs-root": "" },
+      rootClassName: primitiveStackClassName({ gap: "sm" }),
   });
 }
 
 function sourceLanguageTabPanels(model: SourceLanguageTabsContentProps) {
   return (["everything", "repository", "supporting"] as SourceLanguageBucket[]).map(
     (bucket) =>
-      tab_panel({
+    tab_panel({
         className: primitiveStackClassName({ gap: "sm" }),
         defaultActive: bucket === "everything",
         familyKey: "source-language-bucket",
         id: sourceLanguageBucketPanelId(bucket),
         route: bucket,
         children: languagePanel(model, bucket),
-      }),
+    }),
   );
 }
 
 function source_language_tabs_content(model: SourceLanguageTabsContentProps) {
   const visualLanguages = Array.isArray(model.visualLanguages)
-    ? model.visualLanguages
-    : [];
+  ? model.visualLanguages
+  : [];
   if (!visualLanguages.length) {
     return <Text muted>{translate(model.lang, "noLanguageScan")}</Text>;
   }
   return (
     <>
-      {sourceLanguageTabs(model)}
-      {sourceLanguageTabPanels(model)}
+    {sourceLanguageTabs(model)}
+    {sourceLanguageTabPanels(model)}
     </>
   );
 }

@@ -24,14 +24,14 @@ function panelForTab(tab: HTMLElement, root: HTMLElement) {
 function setTabActive(root: HTMLElement, tab: HTMLElement) {
   const value = tabValue(tab);
   queryAll<HTMLElement>(root, TAB_SELECTOR).forEach((item) => {
-    const active = item === tab;
-    item.setAttribute("aria-selected", active ? "true" : "false");
-    item.setAttribute("data-tbf-active", active ? "true" : "false");
-    item.tabIndex = active ? 0 : -1;
+      const active = item === tab;
+      item.setAttribute("aria-selected", active ? "true" : "false");
+      item.setAttribute("data-tbf-active", active ? "true" : "false");
+      item.tabIndex = active ? 0 : -1;
   });
   queryAll<HTMLElement>(root, TAB_PANEL_SELECTOR).forEach((panel) => {
-    panel.hidden = true;
-    panel.setAttribute("data-tbf-active", "false");
+      panel.hidden = true;
+      panel.setAttribute("data-tbf-active", "false");
   });
   const panel = panelForTab(tab, root);
   if (panel) {
@@ -62,22 +62,22 @@ function bindTabsRoot(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-tabs-bound")) return null;
   root.setAttribute("data-tbf-tabs-bound", "true");
   queryAll<HTMLElement>(root, TAB_SELECTOR).forEach((tab) => {
-    tab.addEventListener("click", (event) => {
-      event.preventDefault();
-      setTabActive(root, tab);
-    });
-    tab.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowRight") focusSiblingTab(tab, 1);
-      else if (event.key === "ArrowLeft") focusSiblingTab(tab, -1);
-      else return;
-      event.preventDefault();
-    });
+      tab.addEventListener("click", (event) => {
+          event.preventDefault();
+          setTabActive(root, tab);
+      });
+      tab.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowRight") focusSiblingTab(tab, 1);
+          else if (event.key === "ArrowLeft") focusSiblingTab(tab, -1);
+          else return;
+          event.preventDefault();
+      });
   });
   const first = initialTab(root);
   return first ? setTabActive(root, first) : null;
 }
 
-function bindTabs(root: BindRoot = document) {
+function bindStaticTabs(root: BindRoot = document) {
   queryAll<HTMLElement>(root, TABS_SELECTOR).forEach(bindTabsRoot);
 }
 
@@ -86,7 +86,7 @@ export {
   TAB_SELECTOR,
   TABS_CHANGE_EVENT,
   TABS_SELECTOR,
-  bindTabs,
+  bindStaticTabs as bindTabs,
   bindTabsRoot,
   setTabActive,
 };

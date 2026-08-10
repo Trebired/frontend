@@ -57,13 +57,13 @@ function durationCounterState(props: TimeCounterProps, startRaw: string, endRaw:
   const endMs = endRaw ? parseDateMsOrNull(endRaw) : null;
   return {
     initialText:
-      remaining && endMs != null
-        ? formatDuration(endMs - Date.now())
-        : startMs != null && live
-        ? formatDuration(Date.now() - startMs)
-        : startMs != null && endMs != null
-        ? formatDuration(endMs - startMs)
-        : "-",
+    remaining && endMs != null
+    ? formatDuration(endMs - Date.now())
+    : startMs != null && live
+    ? formatDuration(Date.now() - startMs)
+    : startMs != null && endMs != null
+    ? formatDuration(endMs - startMs)
+    : "-",
     live,
     remaining,
     shouldRenderCounter: Boolean((remaining && endRaw) || startRaw),
@@ -94,10 +94,10 @@ function counterConfig(
   return {
     count: config.countMode ? config.countValue : undefined,
     end:
-      !config.countMode &&
+    !config.countMode &&
       ((!config.live && config.endRaw) || (config.remaining && config.endRaw))
-        ? config.endRaw
-        : "",
+    ? config.endRaw
+    : "",
     live: !config.countMode && config.live,
     mode: config.countMode ? "count" : config.remaining ? "remaining" : undefined,
     reloadOnZero: !config.countMode && props.reloadOnZero === true,
@@ -110,30 +110,30 @@ function time_counter(props: TimeCounterProps) {
   const startRaw = toText(props.start);
   const endRaw = toText(props.end);
   const state = countMode
-    ? countCounterState(props)
-    : durationCounterState(props, startRaw, endRaw);
+  ? countCounterState(props)
+  : durationCounterState(props, startRaw, endRaw);
   if (!state.shouldRenderCounter && props.alwaysRender !== true) return null;
   const countValue = "countValue" in state ? state.countValue : null;
   const live = "live" in state ? state.live : false;
   const remaining = "remaining" in state ? state.remaining : false;
   return (
     <span data-tbf-time-counter="" style={{ display: "contents" }}>
-      <script
-        data-tbf-time-counter-config=""
-        hidden
-        type="application/json"
-        dangerouslySetInnerHTML={{
-          __html: jsonScript(counterConfig(props, { countMode, countValue, endRaw, live, remaining, startRaw })),
-        }}
-      />
-      <span
-        {...(props.id ? { id: props.id } : {})}
-        className={counterClassName(props, countMode)}
-      >
-        {state.initialText}
-      </span>
+    <script
+    data-tbf-time-counter-config=""
+    hidden
+    type="application/json"
+    dangerouslySetInnerHTML={{
+        __html: jsonScript(counterConfig(props, { countMode, countValue, endRaw, live, remaining, startRaw })),
+    }}
+    />
+    <span
+    {...(props.id ? { id: props.id } : {})}
+    className={counterClassName(props, countMode)}
+    >
+    {state.initialText}
+    </span>
     </span>
   );
 }
 
-export { formatDuration, formatWrappedCount, parseCountValue, time_counter };
+export { formatDuration, formatWrappedCount, parseCountValue, parseDateMsOrNull, time_counter };

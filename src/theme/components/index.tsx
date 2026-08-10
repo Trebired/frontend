@@ -46,15 +46,15 @@ function ThemeToggle(props: ThemeToggleProps) {
   } = props;
   return (
     <button
-      {...rest}
-      {...themeLabelAttributes(labels)}
-      className={classNames("tbf-theme-button", className)}
-      data-tbf-theme-button=""
-      data-tbf-theme-dark-label={darkLabel}
-      data-tbf-theme-light-label={lightLabel}
-      type={type}
+    {...rest}
+    {...themeLabelAttributes(labels)}
+    className={classNames("tbf-theme-button", className)}
+    data-tbf-theme-button=""
+    data-tbf-theme-dark-label={darkLabel}
+    data-tbf-theme-light-label={lightLabel}
+    type={type}
     >
-      {children || <span data-tbf-theme-label="">{lightLabel}</span>}
+    {children || <span data-tbf-theme-label="">{lightLabel}</span>}
     </button>
   );
 }
@@ -66,14 +66,14 @@ function ThemeSelect(props: ThemeSelectProps) {
   if (variant === "buttons") {
     return (
       <div
-        {...rest}
-        aria-label={label}
-        className={classNames("tbf-theme-select", className)}
-        data-tbf-theme-select=""
-        role="radiogroup"
+      {...rest}
+      aria-label={label}
+      className={classNames("tbf-theme-select", className)}
+      data-tbf-theme-select=""
+      role="radiogroup"
       >
-        {registry.modes.map((mode) => (
-          <button
+      {registry.modes.map((mode) => (
+            <button
             aria-checked={mode.key === current}
             className={classNames("tbf-theme-select__option", optionClassName)}
             data-tbf-popover-close=""
@@ -82,25 +82,25 @@ function ThemeSelect(props: ThemeSelectProps) {
             key={mode.key}
             role="radio"
             type="button"
-          >
+            >
             {mode.label}
-          </button>
-        ))}
+            </button>
+      ))}
       </div>
     );
   }
   return (
     <select
-      {...rest}
-      aria-label={label}
-      className={classNames("tbf-theme-select", className)}
-      data-tbf-theme-select=""
-      defaultValue={current || undefined}
-      name={name}
+    {...rest}
+    aria-label={label}
+    className={classNames("tbf-theme-select", className)}
+    data-tbf-theme-select=""
+    defaultValue={current || undefined}
+    name={name}
     >
-      {registry.modes.map((mode) => (
-        <option key={mode.key} value={mode.key}>{mode.label}</option>
-      ))}
+    {registry.modes.map((mode) => (
+          <option key={mode.key} value={mode.key}>{mode.label}</option>
+    ))}
     </select>
   );
 }
@@ -109,8 +109,8 @@ function ThemeBootScript(props: ThemeBootScriptProps) {
   const { dark, light, modes, theme = "", ...rest } = props;
   return (
     <script
-      {...rest}
-      dangerouslySetInnerHTML={{ __html: createThemeBootScript(theme, { dark, light, modes }) }}
+    {...rest}
+    dangerouslySetInnerHTML={{ __html: createThemeBootScript(theme, { dark, light, modes }) }}
     />
   );
 }

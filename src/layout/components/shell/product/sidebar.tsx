@@ -21,10 +21,10 @@ import type {
 } from "./types.js";
 
 type ProductShellThemeSelectProps =
-  Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
-    label: string;
-    popoverId: string;
-  };
+Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
+  label: string;
+  popoverId: string;
+};
 
 function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
   const { actions, children, className, ...rest } = props;
@@ -32,10 +32,10 @@ function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
   if (!body) return null;
   return (
     <SidebarFooter
-      {...rest}
-      className={classNames("tbf-product-shell-sidebar-footer", className)}
+    {...rest}
+    className={classNames("tbf-product-shell-sidebar-footer", className)}
     >
-      {body}
+    {body}
     </SidebarFooter>
   );
 }
@@ -44,10 +44,10 @@ function ProductShellSidebarControls(props: ProductShellSidebarControlsProps) {
   const { about, className, language, minimize, theme, ...rest } = props;
   return (
     <Card {...rest} className={classNames("tbf-product-shell-sidebar-controls", className)}>
-      {minimize}
-      {theme}
-      {language}
-      {about}
+    {minimize}
+    {theme}
+    {language}
+    {about}
     </Card>
   );
 }
@@ -67,21 +67,21 @@ function ProductShellSidebarMinimizeButton(
   const label = title || productShellLabel(labels, "minimize");
   return (
     <SidebarMinimizeButton
-      {...rest}
-      aria-label={props["aria-label"] || String(label)}
-      className={classNames("tbf-product-shell-sidebar-minimize", className)}
-      title={String(label)}
+    {...rest}
+    aria-label={props["aria-label"] || String(label)}
+    className={classNames("tbf-product-shell-sidebar-minimize", className)}
+    title={String(label)}
     >
-      {children || (
+    {children || (
         <>
-          <span className="tbf-product-shell-sidebar-minimize__collapse">
-            {expandedIcon}
-          </span>
-          <span className="tbf-product-shell-sidebar-minimize__expand">
-            {minimizedIcon}
-          </span>
+        <span className="tbf-product-shell-sidebar-minimize__collapse">
+        {expandedIcon}
+        </span>
+        <span className="tbf-product-shell-sidebar-minimize__expand">
+        {minimizedIcon}
+        </span>
         </>
-      )}
+    )}
     </SidebarMinimizeButton>
   );
 }
@@ -89,18 +89,18 @@ function ProductShellSidebarMinimizeButton(
 function productShellThemeSelect(props: ProductShellThemeSelectProps) {
   return (
     <ThemeSelect
-      aria-hidden="true"
-      className="popover popover-portaled tbf-theme-switch-popover"
-      dark={props.dark}
-      data-tbf-popover=""
-      id={props.popoverId}
-      inert={true}
-      label={props.label}
-      light={props.light}
-      modes={props.modes}
-      optionClassName="popover-item"
-      value={props.theme}
-      variant="buttons"
+    aria-hidden="true"
+    className="popover popover-portaled tbf-theme-switch-popover"
+    dark={props.dark}
+    data-tbf-popover=""
+    id={props.popoverId}
+    inert={true}
+    label={props.label}
+    light={props.light}
+    modes={props.modes}
+    optionClassName="popover-item"
+    value={props.theme}
+    variant="buttons"
     />
   );
 }
@@ -125,29 +125,29 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
   const body = children || icon;
   return (
     <>
-      {button({
-        ...rest,
-        "aria-controls": themePopoverId,
-        "aria-expanded": "false",
-        "aria-label": props["aria-label"] || label,
-        "aria-haspopup": "menu",
-        children: body,
-        className: classNames("tbf-product-shell-theme-control", className),
-        "data-tbf-popover-trigger": "",
-        icon: !children,
-        id,
-        title: String(label),
-        tooltip: true,
-        type,
-      })}
-      {productShellThemeSelect({
-        dark,
-        label: String(label),
-        light,
-        modes,
-        popoverId: themePopoverId,
-        theme,
-      })}
+    {button({
+          ...rest,
+          "aria-controls": themePopoverId,
+          "aria-expanded": "false",
+          "aria-label": props["aria-label"] || label,
+          "aria-haspopup": "menu",
+          children: body,
+          className: classNames("tbf-product-shell-theme-control", className),
+          "data-tbf-popover-trigger": "",
+          icon: !children,
+          id,
+          title: String(label),
+          tooltip: true,
+          type,
+    })}
+    {productShellThemeSelect({
+          dark,
+          label: String(label),
+          light,
+          modes,
+          popoverId: themePopoverId,
+          theme,
+    })}
     </>
   );
 }
@@ -157,13 +157,13 @@ function ProductShellAboutButton(props: ProductShellAboutButtonProps) {
   const label = title || productShellLabel(labels, "about");
   return (
     <a
-      {...rest}
-      aria-label={props["aria-label"] || String(label)}
-      className={classNames("tbf-product-shell-about", className)}
-      href={href}
-      title={String(label)}
+    {...rest}
+    aria-label={props["aria-label"] || String(label)}
+    className={classNames("tbf-product-shell-about", className)}
+    href={href}
+    title={String(label)}
     >
-      {children || icon || label}
+    {children || icon || label}
     </a>
   );
 }
@@ -174,16 +174,16 @@ function ProductShellSidebar(props: ProductShellSidebarProps) {
   const bodyId = props.bodyId || `sidebar_body_${side}`;
   return (
     <SidebarShell className={classNames(String(side), props.className)} id={shellId} persist={props.persist} side={side}>
-      <Sidebar aria-label={props.ariaLabel} className={primitiveStackClassName({ gap: "sm" })}>
-        <SidebarBody className={primitiveStackClassName({ className: props.bodyClassName, gap: "sm" })} id={bodyId}>
-          {props.content ?? props.children}
-        </SidebarBody>
-        {props.showFooter === false ? null : (
-          <ProductShellSidebarFooter actions={props.footerActions}>
-            {props.footer}
-          </ProductShellSidebarFooter>
-        )}
-      </Sidebar>
+    <Sidebar aria-label={props.ariaLabel} className={primitiveStackClassName({ gap: "sm" })}>
+    <SidebarBody className={primitiveStackClassName({ className: props.bodyClassName, gap: "sm" })} id={bodyId}>
+    {props.content ?? props.children}
+    </SidebarBody>
+    {props.showFooter === false ? null : (
+        <ProductShellSidebarFooter actions={props.footerActions}>
+        {props.footer}
+        </ProductShellSidebarFooter>
+    )}
+    </Sidebar>
     </SidebarShell>
   );
 }

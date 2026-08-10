@@ -45,8 +45,8 @@ function requestFrame(callback: () => void): void {
 
 function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
   modal.dispatchEvent(new CustomEvent(name, {
-    bubbles: true,
-    detail: { modal, ...detail },
+        bubbles: true,
+        detail: { modal, ...detail },
   }));
 }
 
@@ -69,7 +69,7 @@ function prepareModal(modal: HTMLElement) {
 
 function focusModal(modal: HTMLElement) {
   const target =
-    modal.querySelector<HTMLElement>("[autofocus]") ||
+  modal.querySelector<HTMLElement>("[autofocus]") ||
     modal.querySelector<HTMLElement>(MODAL_CONTENT_SELECTOR) ||
     modal.querySelector<HTMLElement>(FOCUSABLE_SELECTOR) ||
     modal;
@@ -79,7 +79,7 @@ function focusModal(modal: HTMLElement) {
 
 function focusableModalElements(modal: HTMLElement): HTMLElement[] {
   return Array.from(modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
-    .filter((element) => !element.hasAttribute("disabled") && !element.hasAttribute("inert"));
+  .filter((element) => !element.hasAttribute("disabled") && !element.hasAttribute("inert"));
 }
 
 function trapModalFocus(event: KeyboardEvent): void {
@@ -126,10 +126,10 @@ function lockBodyScroll(lock: boolean) {
 
 function setTopStates() {
   modalStack.forEach((entry, index) => {
-    const top = index === modalStack.length - 1;
-    entry.modal.toggleAttribute("inert", !top);
-    entry.modal.setAttribute("aria-hidden", top ? "false" : "true");
-    entry.modal.setAttribute("data-tbf-top", top ? "true" : "false");
+      const top = index === modalStack.length - 1;
+      entry.modal.toggleAttribute("inert", !top);
+      entry.modal.setAttribute("aria-hidden", top ? "false" : "true");
+      entry.modal.setAttribute("data-tbf-top", top ? "true" : "false");
   });
 }
 
@@ -144,7 +144,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   modalStack.push({ modal, restoreFocus: active, trigger });
   applyZIndex(modal, {
-    fallback: stackZIndex(MODAL_BASE_Z_INDEX, modalStack.length - 1),
+      fallback: stackZIndex(MODAL_BASE_Z_INDEX, modalStack.length - 1),
   });
   modal.setAttribute("data-tbf-opening", "true");
   modal.setAttribute("aria-hidden", "false");
@@ -152,18 +152,18 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   lockBodyScroll(true);
   dispatchModalEvent(modal, "tbf:modal-open", { trigger });
   requestFrame(() => {
-    modal.removeAttribute("data-tbf-opening");
-    modal.setAttribute("data-tbf-open", "true");
-    focusModal(modal);
-    dispatchModalEvent(modal, "tbf:modal-ready", { trigger });
+      modal.removeAttribute("data-tbf-opening");
+      modal.setAttribute("data-tbf-open", "true");
+      focusModal(modal);
+      dispatchModalEvent(modal, "tbf:modal-ready", { trigger });
   });
   return modal;
 }
 
 function closeModal(modalOrSelector?: HTMLElement | string | null) {
   const modal = modalOrSelector
-    ? resolveDocumentTarget(modalOrSelector)
-    : modalStack[modalStack.length - 1]?.modal;
+  ? resolveDocumentTarget(modalOrSelector)
+  : modalStack[modalStack.length - 1]?.modal;
   if (!(modal instanceof HTMLElement)) return false;
   const index = modalStack.findIndex((entry) => entry.modal === modal);
   if (index < 0) return false;
@@ -172,10 +172,10 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
   modal.setAttribute("data-tbf-closing", "true");
   modal.setAttribute("aria-hidden", "true");
   window.setTimeout(() => {
-    modal.removeAttribute("data-tbf-closing");
-    modal.removeAttribute("data-tbf-top");
-    modal.toggleAttribute("inert", true);
-  }, 220);
+      modal.removeAttribute("data-tbf-closing");
+      modal.removeAttribute("data-tbf-top");
+      modal.toggleAttribute("inert", true);
+    }, 220);
   setTopStates();
   lockBodyScroll(false);
   const restoreTarget = entry.trigger || entry.restoreFocus;
@@ -186,8 +186,8 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
 
 function closeAllModals() {
   Array.from(modalStack)
-    .reverse()
-    .forEach((entry) => closeModal(entry.modal));
+  .reverse()
+  .forEach((entry) => closeModal(entry.modal));
 }
 
 function bindModalTrigger(trigger: HTMLElement | null, root: BindRoot = document) {
@@ -211,7 +211,7 @@ function bindModalTrigger(trigger: HTMLElement | null, root: BindRoot = document
 function bindModals(root: BindRoot = document) {
   queryAll<HTMLElement>(root, MODAL_SELECTOR).forEach(prepareModal);
   queryAll<HTMLElement>(root, MODAL_TRIGGER_SELECTOR).forEach((trigger) => {
-    bindModalTrigger(trigger, root);
+      bindModalTrigger(trigger, root);
   });
 }
 
@@ -219,29 +219,29 @@ function installModalListeners() {
   if (listenersInstalled) return;
   listenersInstalled = true;
   document.addEventListener("click", (event) => {
-    const target = event.target instanceof Element ? event.target : null;
-    const closer = target?.closest(MODAL_CLOSE_SELECTOR);
-    if (closer) {
-      closeModal(closer.closest(MODAL_SELECTOR) as HTMLElement | null);
-      return;
-    }
-    const top = modalStack[modalStack.length - 1]?.modal;
-    if (target === top && top.getAttribute("data-tbf-modal-backdrop-close") !== "false") closeModal(top);
+      const target = event.target instanceof Element ? event.target : null;
+      const closer = target?.closest(MODAL_CLOSE_SELECTOR);
+      if (closer) {
+        closeModal(closer.closest(MODAL_SELECTOR) as HTMLElement | null);
+        return;
+      }
+      const top = modalStack[modalStack.length - 1]?.modal;
+      if (target === top && top.getAttribute("data-tbf-modal-backdrop-close") !== "false") closeModal(top);
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      const top = modalStack[modalStack.length - 1]?.modal;
-      if (top?.getAttribute("data-tbf-modal-escape-close") !== "false") closeModal();
-      return;
-    }
-    trapModalFocus(event);
+      if (event.key === "Escape") {
+        const top = modalStack[modalStack.length - 1]?.modal;
+        if (top?.getAttribute("data-tbf-modal-escape-close") !== "false") closeModal();
+        return;
+      }
+      trapModalFocus(event);
   });
 }
 
 function createModal(options: {
-  content?: Node | string;
-  id: string;
-  title?: string;
+    content?: Node | string;
+    id: string;
+    title?: string;
 }) {
   const modal = document.createElement("div");
   modal.id = options.id;

@@ -35,8 +35,8 @@ function progressBar() {
 function setProgress(value: number) {
   const numeric = Number(value);
   const next = Number.isFinite(numeric)
-    ? Math.max(0, Math.min(MAX_UPLOAD_PROGRESS, numeric))
-    : 0;
+  ? Math.max(0, Math.min(MAX_UPLOAD_PROGRESS, numeric))
+  : 0;
   const root = ensureProgressElement();
   const bar = progressBar();
   if (root) root.setAttribute("data-tbf-progress-active", "true");
@@ -61,13 +61,13 @@ function endProgress(force = false) {
     const bar = progressBar();
     if (bar) bar.style.transform = "scaleX(1)";
     window.setTimeout(() => {
-      const root = ensureProgressElement();
-      if (root && activeRequests === 0) {
-        root.removeAttribute("data-tbf-progress-active");
-        const nextBar = progressBar();
-        if (nextBar) nextBar.style.transform = "scaleX(0)";
-      }
-    }, 160);
+        const root = ensureProgressElement();
+        if (root && activeRequests === 0) {
+          root.removeAttribute("data-tbf-progress-active");
+          const nextBar = progressBar();
+          if (nextBar) nextBar.style.transform = "scaleX(0)";
+        }
+      }, 160);
   }
   return activeRequests;
 }
@@ -86,11 +86,11 @@ function bindProgress() {
 }
 
 const progress: ProgressHandle = Object.freeze({
-  begin: beginProgress,
-  boot: ensureProgressElement,
-  end: endProgress,
-  set: setProgress,
-  setFromProgressEvent: setProgressFromEvent,
+    begin: beginProgress,
+    boot: ensureProgressElement,
+    end: endProgress,
+    set: setProgress,
+    setFromProgressEvent: setProgressFromEvent,
 });
 
 export {

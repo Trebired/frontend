@@ -35,9 +35,9 @@ function relatedTargetInside(root: HTMLElement, relatedTarget: EventTarget | nul
 function skippedDirectoryNames(root: HTMLElement) {
   return new Set(
     toText(uploadRootConfig(root).skipDirs)
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean),
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean),
   );
 }
 
@@ -52,7 +52,7 @@ async function readDropEntries(root: HTMLElement, dataTransfer: DataTransfer | n
   const items = Array.from(dataTransfer?.items || []);
   for (const item of items) {
     const entry = (item as DataTransferItem & {
-      webkitGetAsEntry?: () => FileSystemEntryLike | null;
+        webkitGetAsEntry?: () => FileSystemEntryLike | null;
     }).webkitGetAsEntry?.();
     if (entry) entries.push(...await readFileSystemEntry(entry, "", skipped));
     else {
@@ -62,7 +62,7 @@ async function readDropEntries(root: HTMLElement, dataTransfer: DataTransfer | n
   }
   if (!entries.length) {
     Array.from(dataTransfer?.files || []).forEach((file) => {
-      entries.push({ file, path: file.name });
+        entries.push({ file, path: file.name });
     });
   }
   return entries;
@@ -85,26 +85,26 @@ async function readFileSystemEntry(
 
 function readFileEntry(entry: FileSystemEntryLike, path: string) {
   return new Promise<UploadEntry>((resolve, reject) => {
-    entry.file?.((file) => resolve({ file, path: path || file.name }));
-    if (!entry.file) reject(new Error("Missing file entry."));
+      entry.file?.((file) => resolve({ file, path: path || file.name }));
+      if (!entry.file) reject(new Error("Missing file entry."));
   });
 }
 
 function readDirectoryEntries(entry: FileSystemEntryLike) {
   return new Promise<FileSystemEntryLike[]>((resolve) => {
-    const out: FileSystemEntryLike[] = [];
-    const reader = entry.createReader?.();
-    const read = () => {
-      reader?.readEntries((entries) => {
-        if (!entries.length) {
-          resolve(out);
-          return;
-        }
-        out.push(...entries);
-        read();
-      });
-    };
-    read();
+      const out: FileSystemEntryLike[] = [];
+      const reader = entry.createReader?.();
+      const read = () => {
+        reader?.readEntries((entries) => {
+            if (!entries.length) {
+              resolve(out);
+              return;
+            }
+            out.push(...entries);
+            read();
+        });
+      };
+      read();
   });
 }
 

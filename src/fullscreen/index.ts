@@ -1,4 +1,9 @@
-import { queryAll, resolveDocumentTarget, type BindRoot } from "#er0dlx1gtbzh";
+import {
+  browserLocalStorage as storage,
+  queryAll,
+  resolveDocumentTarget,
+  type BindRoot,
+} from "#er0dlx1gtbzh";
 import {
   applyZIndex,
   clearZIndex,
@@ -105,14 +110,6 @@ function targetShouldPersist(target: HTMLElement) {
   return target.getAttribute("data-tbf-fullscreen-persist") === "true";
 }
 
-function storage(): Storage | null {
-  try {
-    return typeof window !== "undefined" ? window.localStorage : null;
-  } catch {
-    return null;
-  }
-}
-
 function readStoredPanelId(group: string) {
   return storage()?.getItem(`${FULLSCREEN_STORAGE_PREFIX}${group}`) || "";
 }
@@ -169,29 +166,29 @@ function createOverlay(id: string, group: string) {
 
 function dispatchPanelEvent(name: string, state: FullscreenPanelState) {
   state.target.dispatchEvent(new CustomEvent(name, {
-    bubbles: true,
-    detail: {
-      group: state.group,
-      id: state.id,
-      overlay: state.overlay,
-      target: state.target,
-      trigger: state.trigger,
-    },
+        bubbles: true,
+        detail: {
+          group: state.group,
+          id: state.id,
+          overlay: state.overlay,
+          target: state.target,
+          trigger: state.trigger,
+        },
   }));
 }
 
 function syncPanelTriggers() {
   const active = panelState;
   queryAll<HTMLElement>(document, "[data-tbf-fullscreen-trigger]").forEach((trigger) => {
-    const id = readPanelId(trigger);
-    const group = readPanelGroup(trigger);
-    const matches = Boolean(active && active.id === id && active.group === group);
-    const mode = readPanelTriggerMode(trigger);
-    trigger.setAttribute("data-tbf-fullscreen-active", matches ? "true" : "false");
-    trigger.setAttribute(
-      "data-tbf-fullscreen-hidden",
-      (mode === "open" && matches) || ((mode === "close" || mode === "exit") && !matches) ? "true" : "false",
-    );
+      const id = readPanelId(trigger);
+      const group = readPanelGroup(trigger);
+      const matches = Boolean(active && active.id === id && active.group === group);
+      const mode = readPanelTriggerMode(trigger);
+      trigger.setAttribute("data-tbf-fullscreen-active", matches ? "true" : "false");
+      trigger.setAttribute(
+        "data-tbf-fullscreen-hidden",
+        (mode === "open" && matches) || ((mode === "close" || mode === "exit") && !matches) ? "true" : "false",
+      );
   });
 }
 
@@ -253,11 +250,11 @@ function openFullscreenTarget(
   if (targetShouldPersist(target)) writeStoredPanelId(group, id);
   overlay.addEventListener("click", () => closeFullscreenTarget(), { once: true });
   window.requestAnimationFrame(() => {
-    if (panelState?.target !== target) return;
-    overlay.setAttribute("data-tbf-open", "true");
-    overlay.setAttribute("aria-hidden", "false");
-    target.setAttribute("data-tbf-fullscreen-full", "true");
-    dispatchPanelEvent("tbf:fullscreen-open", panelState);
+      if (panelState?.target !== target) return;
+      overlay.setAttribute("data-tbf-open", "true");
+      overlay.setAttribute("aria-hidden", "false");
+      target.setAttribute("data-tbf-fullscreen-full", "true");
+      dispatchPanelEvent("tbf:fullscreen-open", panelState);
   });
   syncPanelTriggers();
   installPanelListeners();
@@ -312,26 +309,26 @@ function bindFullscreenTrigger(trigger: HTMLElement | null, options: FullscreenR
   if (!(trigger instanceof HTMLElement) || trigger.hasAttribute("data-tbf-fullscreen-bound")) return false;
   trigger.setAttribute("data-tbf-fullscreen-bound", "true");
   trigger.addEventListener("click", (event) => {
-    event.preventDefault();
-    const id = readPanelId(trigger);
-    const group = readPanelGroup(trigger);
-    const mode = readPanelTriggerMode(trigger);
-    if (id) {
-      if (mode === "close" || mode === "exit") {
-        closeFullscreenTarget();
+      event.preventDefault();
+      const id = readPanelId(trigger);
+      const group = readPanelGroup(trigger);
+      const mode = readPanelTriggerMode(trigger);
+      if (id) {
+        if (mode === "close" || mode === "exit") {
+          closeFullscreenTarget();
+          return;
+        }
+        if (mode === "open") {
+          openFullscreenTarget(id, group, trigger);
+          return;
+        }
+        toggleFullscreenTarget(id, group, trigger);
         return;
       }
-      if (mode === "open") {
-        openFullscreenTarget(id, group, trigger);
-        return;
-      }
-      toggleFullscreenTarget(id, group, trigger);
-      return;
-    }
-    const target = readNativeTriggerTarget(trigger, options.target);
-    if (mode === "exit" || mode === "close") void exitFullscreen();
-    else if (mode === "open") void enterFullscreen(target);
-    else void toggleFullscreen(target);
+      const target = readNativeTriggerTarget(trigger, options.target);
+      if (mode === "exit" || mode === "close") void exitFullscreen();
+      else if (mode === "open") void enterFullscreen(target);
+      else void toggleFullscreen(target);
   });
   boundTriggers.add(trigger);
   return true;
@@ -340,7 +337,7 @@ function bindFullscreenTrigger(trigger: HTMLElement | null, options: FullscreenR
 function bindFullscreen(root: BindRoot = document, options: FullscreenRuntimeOptions = {}): void {
   queryAll<HTMLElement>(root, FULLSCREEN_TARGET_SELECTOR).forEach(registerFullscreenTarget);
   queryAll<HTMLElement>(root, FULLSCREEN_TRIGGER_SELECTOR).forEach((trigger) => {
-    bindFullscreenTrigger(trigger, options);
+      bindFullscreenTrigger(trigger, options);
   });
   syncPanelTriggers();
   installPanelListeners();
@@ -350,7 +347,7 @@ function installPanelListeners() {
   if (panelListenersInstalled || typeof document === "undefined") return;
   panelListenersInstalled = true;
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeFullscreenTarget();
+      if (event.key === "Escape") closeFullscreenTarget();
   });
 }
 

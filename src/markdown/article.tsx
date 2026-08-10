@@ -7,6 +7,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { toText as articleText } from "#ndsvdqv80epr";
 
 type MarkdownArticleProps = {
   className?: string;
@@ -17,51 +18,47 @@ type MarkdownArticleProps = {
   urlTransform?: (url: string) => string;
 };
 
-function articleText(value: unknown) {
-  return String(value == null ? "" : value).trim();
-}
-
 function markdown_article(props: MarkdownArticleProps) {
   const markdown = articleText(props.markdown);
   if (!markdown) {
     return (
       <Text as="p" muted>
-        {props.emptyText || "Nothing to show."}
+      {props.emptyText || "Nothing to show."}
       </Text>
     );
   }
   const linkClassName = articleText(props.linkClassName);
   const components = linkClassName
-    ? {
-        a({ node: _node, className, ...anchorProps }: any) {
-          return (
-            <a
-              {...anchorProps}
-              className={[linkClassName, className].filter(Boolean).join(" ")}
-            />
-          );
-        },
-      }
-    : undefined;
+  ? {
+    a({ node: _node, className, ...anchorProps }: any) {
+      return (
+        <a
+        {...anchorProps}
+        className={[linkClassName, className].filter(Boolean).join(" ")}
+        />
+      );
+    },
+  }
+  : undefined;
   return (
     <div
-      className={articleText(props.className) ||
+    className={articleText(props.className) ||
         primitiveStackClassName({
           className: primitiveTextClassName({
-            breakWord: true,
-            className: "markdown-article",
+              breakWord: true,
+              className: "markdown-article",
           }),
           gap: "sm",
-        })}
+    })}
     >
-      <Markdown
-        components={components}
-        rehypePlugins={[rehypeSanitize]}
-        remarkPlugins={[remarkGfm]}
-        urlTransform={props.urlTransform}
-      >
-        {markdown}
-      </Markdown>
+    <Markdown
+    components={components}
+    rehypePlugins={[rehypeSanitize]}
+    remarkPlugins={[remarkGfm]}
+    urlTransform={props.urlTransform}
+    >
+    {markdown}
+    </Markdown>
     </div>
   );
 }

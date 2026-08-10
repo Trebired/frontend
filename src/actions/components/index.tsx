@@ -70,20 +70,20 @@ function ActionForm(props: ActionFormProps) {
   const config = actionConfig(props);
   return (
     <form
-      {...rest}
-      className={classNames("tbf-form", className)}
-      data-tbf-action=""
-      data-tbf-confirm={dataBool(confirm)}
+    {...rest}
+    className={classNames("tbf-form", className)}
+    data-tbf-action=""
+    data-tbf-confirm={dataBool(confirm)}
     >
-      {Object.keys(config).length ? (
+    {Object.keys(config).length ? (
         <script
-          data-tbf-action-config=""
-          hidden
-          type="application/json"
-          dangerouslySetInnerHTML={{ __html: jsonScript(config) }}
+        data-tbf-action-config=""
+        hidden
+        type="application/json"
+        dangerouslySetInnerHTML={{ __html: jsonScript(config) }}
         />
       ) : null}
-      {children}
+    {children}
     </form>
   );
 }
@@ -105,19 +105,19 @@ function ActionButton(props: ActionButtonProps) {
   } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-action-body={actionBody ? jsonScript(actionBody) : undefined}
-      data-tbf-action-method={actionMethod}
-      data-tbf-action-url={actionUrl}
-      data-tbf-confetti={dataBool(successConfetti)}
-      data-tbf-confirm={dataBool(confirm)}
-      data-tbf-ignore-response-action={dataBool(ignoreResponseAction)}
-      data-tbf-success={success}
-      data-tbf-success-tab={successTab}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-action-body={actionBody ? jsonScript(actionBody) : undefined}
+    data-tbf-action-method={actionMethod}
+    data-tbf-action-url={actionUrl}
+    data-tbf-confetti={dataBool(successConfetti)}
+    data-tbf-confirm={dataBool(confirm)}
+    data-tbf-ignore-response-action={dataBool(ignoreResponseAction)}
+    data-tbf-success={success}
+    data-tbf-success-tab={successTab}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -126,16 +126,16 @@ function ActionTrigger(props: ActionTriggerProps) {
   const { action, children, className, externalHref, href, role, tabIndex, ...rest } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-action-trigger", className)}
-      data-tbf-action-trigger={action}
-      data-tbf-external-href={externalHref}
-      data-tbf-href={href}
-      role={role}
-      tabIndex={tabIndex}
-      type="button"
+    {...rest}
+    className={classNames("tbf-action-trigger", className)}
+    data-tbf-action-trigger={action}
+    data-tbf-external-href={externalHref}
+    data-tbf-href={href}
+    role={role}
+    tabIndex={tabIndex}
+    type="button"
     >
-      {children}
+    {children}
     </button>
   );
 }

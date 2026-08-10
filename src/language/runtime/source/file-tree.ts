@@ -13,8 +13,8 @@ function readFileTreeConfig(root: HTMLElement, options: SourceLanguageRuntimeOpt
     {},
   );
   const highlightedPaths = Array.isArray(config.highlightedPaths)
-    ? config.highlightedPaths.map((entry) => text(entry)).filter(Boolean)
-    : [];
+  ? config.highlightedPaths.map((entry) => text(entry)).filter(Boolean)
+  : [];
   return {
     emptyMessage: text(config.emptyMessage, translate(options.lang, "noMatchingFiles")),
     highlightedPaths,
@@ -44,18 +44,18 @@ function renderSourceLanguageFileTree(
   }
   if (!repositoryTree.length) {
     renderFileTreeExplorer(root, {
-      message: translate(options.lang, "noRepositoryTreeAvailable"),
+        message: translate(options.lang, "noRepositoryTreeAvailable"),
     });
     return;
   }
   renderFileTreeExplorer(root, {
-    autoExpandPaths: config.highlightedPaths,
-    emptyMessage: config.emptyMessage,
-    highlightedPaths: config.highlightedPaths,
-    interactive: false,
-    mode: "browse",
-    onFileOpen: fileOpenHandler(config.repositoryBase, options),
-    tree: repositoryTree,
+      autoExpandPaths: config.highlightedPaths,
+      emptyMessage: config.emptyMessage,
+      highlightedPaths: config.highlightedPaths,
+      interactive: false,
+      mode: "browse",
+      onFileOpen: fileOpenHandler(config.repositoryBase, options),
+      tree: repositoryTree,
   });
 }
 
@@ -64,7 +64,7 @@ function mountSourceLanguageFileTrees(
   options: SourceLanguageRuntimeOptions = {},
 ) {
   queryAll<HTMLElement>(root, SOURCE_FILE_TREE_ROOT_SELECTOR).forEach((treeRoot) => {
-    renderSourceLanguageFileTree(treeRoot, options);
+      renderSourceLanguageFileTree(treeRoot, options);
   });
 }
 

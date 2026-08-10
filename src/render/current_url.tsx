@@ -4,6 +4,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { toText as toCurrentUrl } from "#ndsvdqv80epr";
 
 type RenderCurrentUrlProviderProps = {
   children?: ReactNode;
@@ -12,10 +13,6 @@ type RenderCurrentUrlProviderProps = {
 };
 
 const RenderCurrentUrlContext = createContext("");
-
-function toCurrentUrl(value: unknown) {
-  return String(value ?? "").trim();
-}
 
 function subscribeUrl(callback: () => void) {
   if (typeof window === "undefined") return () => {};
@@ -39,7 +36,7 @@ function RenderCurrentUrlProvider(props: RenderCurrentUrlProviderProps) {
   const currentUrl = toCurrentUrl(props.currentUrl ?? props.value);
   return (
     <RenderCurrentUrlContext.Provider value={currentUrl}>
-      {props.children}
+    {props.children}
     </RenderCurrentUrlContext.Provider>
   );
 }

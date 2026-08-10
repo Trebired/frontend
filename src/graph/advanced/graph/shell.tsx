@@ -183,11 +183,11 @@ function enhancedRootClassName(props: graph_props) {
   return appendClassName(
     enhancedRootClass,
     primitiveStackClassName({
-      className: appendClassName(
-        "graph-shell padding-xs flex-1",
-      props.scroll === true ? "scroll scroll-min" : "",
-    ),
-      gap: "sm",
+        className: appendClassName(
+          "graph-shell padding-xs flex-1",
+          props.scroll === true ? "scroll scroll-min" : "",
+        ),
+        gap: "sm",
     }),
   );
 }

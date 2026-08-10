@@ -7,8 +7,8 @@
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity var(--tbf-transition-normal, 180ms) ease,
-    visibility 0s linear var(--tbf-transition-normal, 180ms);
+  opacity var(--tbf-transition-normal, 180ms) ease,
+  visibility 0s linear var(--tbf-transition-normal, 180ms);
 }
 
 [data-tbf-fullscreen-overlay][data-tbf-open="true"] {
@@ -16,8 +16,8 @@
   visibility: visible;
   pointer-events: auto;
   transition:
-    opacity var(--tbf-transition-normal, 180ms) ease,
-    visibility 0s;
+  opacity var(--tbf-transition-normal, 180ms) ease,
+  visibility 0s;
 }
 
 .tbf-fullscreen-target,

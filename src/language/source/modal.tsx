@@ -21,35 +21,35 @@ import type { SourceLanguageModalProps } from "#2w72xmq6rvza";
 function extensionText(extensions: any[], lang?: string, locale?: string) {
   if (!extensions.length) return translate(lang, "none");
   return extensions
-    .map((entry) => {
+  .map((entry) => {
       const ext = text(entry && entry.ext, translate(lang, "noneExtension"));
       const count = safeNumber(entry && entry.count);
       return `${ext} / ${formatCount(count, locale || lang)}`;
-    })
-    .join(", ");
+  })
+  .join(", ");
 }
 
 function sourceLanguageModalModel(props: SourceLanguageModalProps) {
   const item =
-    props.language && typeof props.language === "object" ? props.language : {};
+  props.language && typeof props.language === "object" ? props.language : {};
   const detail =
-    props.details && typeof props.details === "object" ? props.details : {};
+  props.details && typeof props.details === "object" ? props.details : {};
   const id = text(props.modalId);
   const languageName = text(item.name, translate(props.lang, "unknown"));
   const files = Array.isArray(detail.files) ? detail.files : [];
   const extensions = Array.isArray(detail.extensions) ? detail.extensions : [];
   const repository =
-    props.repository && typeof props.repository === "object" ? props.repository : {};
+  props.repository && typeof props.repository === "object" ? props.repository : {};
   const highlightedPaths = files
-    .map((file: any) => text(file && file.rel_path))
-    .filter(Boolean);
+  .map((file: any) => text(file && file.rel_path))
+  .filter(Boolean);
   return {
     detail,
     extensionText: extensionText(extensions, props.lang, props.locale),
     fileTreeConfig: JSON.stringify({
-      emptyMessage: translate(props.lang, "noMatchingFiles"),
-      highlightedPaths,
-      repositoryBase: text(repository.url),
+        emptyMessage: translate(props.lang, "noMatchingFiles"),
+        highlightedPaths,
+        repositoryBase: text(repository.url),
     }),
     files,
     id,
@@ -60,7 +60,7 @@ function sourceLanguageModalModel(props: SourceLanguageModalProps) {
   };
 }
 
-function summaryRows(
+function sourceLanguageModalRows(
   model: ReturnType<typeof sourceLanguageModalModel>,
   props: SourceLanguageModalProps,
 ) {
@@ -82,21 +82,21 @@ function sourceLanguageModalSummaryCard(
   props: SourceLanguageModalProps,
 ) {
   return card({
-    gap: "sm",
-    children: (
-      <>
+      gap: "sm",
+      children: (
+        <>
         <TitleDescription
-          className="title-desc"
-          description={translate(props.lang, "summaryDescription")}
-          descriptionSize="sm"
-          level={4}
-          title={translate(props.lang, "summary")}
+        className="title-desc"
+        description={translate(props.lang, "summaryDescription")}
+        descriptionSize="sm"
+        level={4}
+        title={translate(props.lang, "summary")}
         />
         <Stack gap="sm">
-          {key_value({ rows: summaryRows(model, props), separated: true })}
+        {key_value({ rows: sourceLanguageModalRows(model, props), separated: true })}
         </Stack>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
@@ -106,20 +106,20 @@ function filesHeader(
 ) {
   return (
     <Stack className="title-desc" gap="sm">
-      <InlineRow gap="sm">
-        <h4>{translate(props.lang, "files")}</h4>
-        {model.matchingPathsText ? (
-          <div className="right">
-            {copy_button({
+    <InlineRow gap="sm">
+    <h4>{translate(props.lang, "files")}</h4>
+    {model.matchingPathsText ? (
+        <div className="right">
+        {copy_button({
               size: "sm",
               target: `#${model.matchingPathsId}`,
               title: translate(props.lang, "copyFilePaths"),
               tooltip: translate(props.lang, "copyFilePaths"),
-            })}
-          </div>
-        ) : null}
-      </InlineRow>
-      <Text as="p" muted size="sm">{translate(props.lang, "filesDescription")}</Text>
+        })}
+        </div>
+      ) : null}
+    </InlineRow>
+    <Text as="p" muted size="sm">{translate(props.lang, "filesDescription")}</Text>
     </Stack>
   );
 }
@@ -129,25 +129,25 @@ function filesCard(
   props: SourceLanguageModalProps,
 ) {
   return card({
-    gap: "sm",
-    children: (
-      <>
+      gap: "sm",
+      children: (
+        <>
         {filesHeader(model, props)}
         {model.matchingPathsText ? <code id={model.matchingPathsId} hidden>{model.matchingPathsText}</code> : null}
         <Stack
-          id={`${model.id}_file_tree`}
-          gap="sm"
-          data-tbf-source-language-file-tree-root=""
-          data-tbf-source-language-file-tree-config={model.fileTreeConfig}
+        id={`${model.id}_file_tree`}
+        gap="sm"
+        data-tbf-source-language-file-tree-root=""
+        data-tbf-source-language-file-tree-config={model.fileTreeConfig}
         >
-          <Text muted size="sm">
-            {model.files.length
-              ? translate(props.lang, "loadingMatchingFiles")
-              : translate(props.lang, "noMatchingFiles")}
-          </Text>
+        <Text muted size="sm">
+        {model.files.length
+          ? translate(props.lang, "loadingMatchingFiles")
+          : translate(props.lang, "noMatchingFiles")}
+        </Text>
         </Stack>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
@@ -156,15 +156,15 @@ function source_language_modal(props: SourceLanguageModalProps) {
   if (!model.id) return null;
   return (
     <ModalRoot id={model.id}>
-      <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
-        <TitleDescription
-          className="title-desc"
-          description={translate(props.lang, "detailsDescription")}
-          title={translate(props.lang, "details", { name: model.languageName })}
-        />
-        {sourceLanguageModalSummaryCard(model, props)}
-        {filesCard(model, props)}
-      </ModalContent>
+    <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
+    <TitleDescription
+    className="title-desc"
+    description={translate(props.lang, "detailsDescription")}
+    title={translate(props.lang, "details", { name: model.languageName })}
+    />
+    {sourceLanguageModalSummaryCard(model, props)}
+    {filesCard(model, props)}
+    </ModalContent>
     </ModalRoot>
   );
 }

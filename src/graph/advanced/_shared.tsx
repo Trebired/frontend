@@ -1,8 +1,20 @@
-import { createElement, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { Icon, type IconProps } from "#lbkpzw8nphru";
-import { Button, Card } from "#4woymc9xhupl";
-import { primitiveButtonClassName, type PrimitiveButtonClassOptions } from "#hzrmwbvgt2ax";
+import { Card } from "#4woymc9xhupl";
+import {
+  button as primitiveButton,
+  pill as primitivePill,
+  type PrimitiveButtonClassOptions,
+} from "#hzrmwbvgt2ax";
+import {
+  appendClassName,
+  createTranslatorFactory,
+  defineValue,
+  joinClassNames,
+  jsonScript as stringifyJsonForHtml,
+  toText as toString,
+} from "#ndsvdqv80epr";
 
 type TranslatorVars = Record<string, unknown>;
 type Translator = (key: string, vars?: TranslatorVars) => string;
@@ -28,87 +40,30 @@ const messages: Record<string, string> = {
   "metrics.uploadSpeed": "Upload speed",
 };
 
-function toString(value: unknown, fallback = "") {
-  const text = String(value ?? "").trim();
-  return text || fallback;
-}
-
-function joinClassNames(values: unknown[]) {
-  return values.map((value) => toString(value)).filter(Boolean).join(" ");
-}
-
-function appendClassName(base: unknown, next: unknown) {
-  return joinClassNames([base, next]);
-}
-
-function stringifyJsonForHtml(value: unknown) {
-  return JSON.stringify(value ?? {}).replace(/</g, "\\u003c");
-}
+const defineMessages = defineValue as <T extends Record<string, unknown>>(messagesMap: T) => T;
+const createLocalTranslator = createTranslatorFactory((key) => messages[key] || key) as (
+  _url?: string,
+  _lang?: string,
+) => Translator;
 
 function truthyArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value.filter(Boolean) as T[]) : [];
 }
 
-function createLocalTranslator(_url?: string, _lang?: string): Translator {
-  return (key, vars = {}) => {
-    let text = messages[key] || key;
-    Object.entries(vars).forEach(([name, value]) => {
-      text = text.split(`{${name}}`).join(String(value ?? ""));
-    });
-    return text;
-  };
-}
+const icon = Icon as (props: IconProps & { spec: string }) => ReturnType<typeof Icon>;
 
-function defineMessages<T extends Record<string, unknown>>(messagesMap: T) {
-  return messagesMap;
-}
+const pill = primitivePill as (props: { children?: ReactNode }) => ReturnType<typeof primitivePill>;
 
-function icon(props: IconProps & { spec: string }) {
-  return createElement(Icon, props);
-}
-
-function pill(props: { children?: ReactNode }) {
-  return <span className="tbf-pill pill">{props.children}</span>;
-}
-
-function button(props: Record<string, unknown> & PrimitiveButtonClassOptions & { children?: ReactNode }) {
-  const {
-    active,
-    children,
-    className,
-    icon: iconOnly,
-    size,
-    tone,
-    tooltip,
-    transparent,
-    variant,
-    ...rest
-  } = props;
-  return (
-    <Button
-      className={primitiveButtonClassName({
-        active,
-        className,
-        icon: iconOnly,
-        size,
-        tone,
-        tooltip,
-        transparent,
-        variant,
-      })}
-      {...(rest as any)}
-    >
-      {children}
-    </Button>
-  );
-}
+const button = primitiveButton as (
+  props: Record<string, unknown> & PrimitiveButtonClassOptions & { children?: ReactNode },
+) => ReturnType<typeof primitiveButton>;
 
 function formatDate(value: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString();
 }
 
-function time(value: string, _format?: string, options: { fallback?: string } = {}) {
+function graphTime(value: string, _format?: string, options: { fallback?: string } = {}) {
   return formatDate(value) || options.fallback || value;
 }
 
@@ -123,7 +78,7 @@ export {
   joinClassNames,
   pill,
   stringifyJsonForHtml,
-  time,
+  graphTime as time,
   toString,
   truthyArray,
 };

@@ -43,9 +43,9 @@ function normalizeSeries(series: GraphSeries): GraphSeries {
     key: String(series.key || ""),
     label: series.label,
     points: Array.isArray(series.points) ? series.points.map((point) => ({
-      label: point.label,
-      x: point.x,
-      y: Number(point.y) || 0,
+          label: point.label,
+          x: point.x,
+          y: Number(point.y) || 0,
     })) : [],
   };
 }
@@ -82,10 +82,10 @@ function drawSeries(
   context.strokeStyle = series.color || `hsl(${(index * 67) % 360} 70% 45%)`;
   context.lineWidth = 2;
   points.forEach((point, pointIndex) => {
-    const x = points.length === 1 ? width / 2 : (pointIndex / (points.length - 1)) * width;
-    const y = height - ((point.y - bounds.min) / (bounds.max - bounds.min)) * height;
-    if (pointIndex === 0) context.moveTo(x, y);
-    else context.lineTo(x, y);
+      const pointX = points.length === 1 ? width / 2 : (pointIndex / (points.length - 1)) * width;
+      const pointY = height - ((point.y - bounds.min) / (bounds.max - bounds.min)) * height;
+      if (pointIndex === 0) context.moveTo(pointX, pointY);
+      else context.lineTo(pointX, pointY);
   });
   context.stroke();
 }
@@ -95,7 +95,7 @@ function bindGraph(root: HTMLElement | null) {
   root.setAttribute("data-tbf-graph-bound", "true");
   const config = graphConfig(root);
   queryAll<HTMLCanvasElement>(root, GRAPH_CANVAS_SELECTOR).forEach((canvas) => {
-    drawGraphCanvas(canvas, config);
+      drawGraphCanvas(canvas, config);
   });
   return config;
 }

@@ -43,8 +43,8 @@ function setOverviewSegmentState(item: SourceLanguageItem, isIncluded: boolean, 
   if (!item.overviewSegmentEl) return;
   applySourceLanguageColor(item);
   item.overviewSegmentEl.style.width = isIncluded
-    ? `${Math.max(0, Math.min(100, nextPercent))}%`
-    : "0%";
+  ? `${Math.max(0, Math.min(100, nextPercent))}%`
+  : "0%";
   item.overviewSegmentEl.hidden = !isIncluded || nextPercent <= 0;
 }
 
@@ -56,9 +56,9 @@ function renderSourceLanguageItem(
 ) {
   const isIncluded = !excluded.has(item.id);
   const nextPercent =
-    isIncluded && stats.includedBytes > 0
-      ? Number(((item.bytes / stats.includedBytes) * 100).toFixed(1))
-      : 0;
+  isIncluded && stats.includedBytes > 0
+  ? Number(((item.bytes / stats.includedBytes) * 100).toFixed(1))
+  : 0;
   item.row.hidden = false;
   if (item.listItemEl !== item.row) item.listItemEl.hidden = false;
   item.row.setAttribute("aria-pressed", isIncluded ? "true" : "false");
@@ -76,8 +76,8 @@ function renderSourceLanguageItem(
 
 function rowTitle(isIncluded: boolean, lang?: string) {
   return isIncluded
-    ? translate(lang, "languageExcludeTooltip")
-    : translate(lang, "languageIncludeTooltip");
+  ? translate(lang, "languageExcludeTooltip")
+  : translate(lang, "languageIncludeTooltip");
 }
 
 function renderSourceLanguageTotals(
@@ -101,8 +101,8 @@ function detectedText(stats: ReturnType<typeof panelStats>, lang?: string, local
     return translate(lang, "detected", { count: formatCount(stats.totalDetected, locale) });
   }
   return translate(lang, "detectedSubset", {
-    active: formatCount(stats.activeDetected, locale),
-    total: formatCount(stats.totalDetected, locale),
+      active: formatCount(stats.activeDetected, locale),
+      total: formatCount(stats.totalDetected, locale),
   });
 }
 
@@ -119,10 +119,10 @@ function renderSourceLanguageControls(
     resetButton.disabled = excluded.size === 0;
   }
   queryAll<HTMLElement>(root, SOURCE_EMPTY_SELECTOR).forEach((emptyEl) => {
-    const bucket = text(emptyEl.getAttribute("data-tbf-source-language-panel-bucket"), "everything");
-    const visible = bucket === activeBucket && stats.totalDetected === 0;
-    emptyEl.hidden = !visible;
-    if (visible) emptyEl.textContent = emptyStateText(activeBucket, options.lang);
+      const bucket = text(emptyEl.getAttribute("data-tbf-source-language-panel-bucket"), "everything");
+      const visible = bucket === activeBucket && stats.totalDetected === 0;
+      emptyEl.hidden = !visible;
+      if (visible) emptyEl.textContent = emptyStateText(activeBucket, options.lang);
   });
 }
 
@@ -148,7 +148,7 @@ function renderSourceLanguageState(
 ) {
   const stats = renderStatsByPanel(items, excluded, activeBucket);
   items.forEach((item) => {
-    renderSourceLanguageItem(item, stats.byPanel[item.panelBucket as keyof typeof stats.byPanel] || stats.active, excluded, options);
+      renderSourceLanguageItem(item, stats.byPanel[item.panelBucket as keyof typeof stats.byPanel] || stats.active, excluded, options);
   });
   renderSourceLanguageTotals(root, stats.active, options);
   renderSourceLanguageControls(root, stats.active, excluded, activeBucket, options);

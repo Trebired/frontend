@@ -30,9 +30,9 @@ function defaultLoaderNode(context: DynamicSidebarRuntimeLoaderContext) {
     if (context.running <= 0) return null;
     const host = context.document.createElement("span");
     host.className = primitiveInlineRowClassName({
-      className: primitiveTextClassName({ className: "no-select", muted: true }),
-      gap: "xs",
-      verticalCenter: true,
+        className: primitiveTextClassName({ className: "no-select", muted: true }),
+        gap: "xs",
+        verticalCenter: true,
     });
     host.appendChild(loaderNode(context.document, "xs"));
     return host;
@@ -40,9 +40,9 @@ function defaultLoaderNode(context: DynamicSidebarRuntimeLoaderContext) {
   if (context.running <= 0) return null;
   const host = context.document.createElement("span");
   host.className = primitiveInlineRowClassName({
-    className: primitiveTextClassName({ className: "no-select", muted: true }),
-    gap: "xs",
-    verticalCenter: true,
+      className: primitiveTextClassName({ className: "no-select", muted: true }),
+      gap: "xs",
+      verticalCenter: true,
   });
   host.appendChild(loaderNode(context.document, "sm"));
   return host;
@@ -53,8 +53,8 @@ function defaultStateNode(context: DynamicSidebarRuntimeStateContext) {
   if (!state) return null;
   const node = context.document.createElement("span");
   node.className = primitiveStatusDotClassName({
-    size: "sm",
-    tone: state === "running" ? "green" : "red",
+      size: "sm",
+      tone: state === "running" ? "green" : "red",
   });
   node.setAttribute("aria-hidden", "true");
   node.setAttribute("data-state", state);

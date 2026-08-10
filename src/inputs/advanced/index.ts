@@ -107,7 +107,7 @@ function bindAdvancedSearch(root?: BindRoot | null) {
   return searchManager.bind(scope as Document | Element);
 }
 
-function bindAdvancedTabs(root?: BindRoot | null) {
+function bindAdvancedTabRoots(root?: BindRoot | null) {
   const scope = scopeFor(root);
   if (!scope) return [];
   bootTabsClient();
@@ -124,7 +124,7 @@ function bindAdvancedInputControllers(root?: BindRoot | null) {
   bindAdvancedDropdowns(scope);
   bindAdvancedRadios(scope);
   bindAdvancedSearch(scope);
-  bindAdvancedTabs(scope);
+  bindAdvancedTabRoots(scope);
   bindStatusFields(scope);
 }
 
@@ -135,7 +135,7 @@ export {
   bindAdvancedInputControllers,
   bindAdvancedRadios,
   bindAdvancedSearch,
-  bindAdvancedTabs,
+  bindAdvancedTabRoots as bindAdvancedTabs,
   bindBackendStatusInput,
   bindCheckboxOption,
   bindCheckboxOptions,

@@ -7,7 +7,6 @@ import {
 } from "react";
 import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
-import { flash as defaultFlash } from "#33o6e7mug9pg";
 import { closeModal, openModal, prepareModal } from "#8rm3pzkj3gge";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import { uploadRootConfig } from "./config.js";
@@ -19,6 +18,7 @@ import {
 } from "./crop.js";
 import { dispatchUploadChange, setUploadFile } from "./state.js";
 import type { UploadRuntimeOptions } from "./types.js";
+import { resolveUploadFlash } from "./runtime.js";
 
 type CropperInstance = InstanceType<typeof Cropper>;
 type CropSession = {
@@ -56,10 +56,6 @@ function loggerFor(options: UploadRuntimeOptions = {}) {
   return resolveFrontendLogger(options.logging as any);
 }
 
-function flashFor(options: UploadRuntimeOptions = {}) {
-  return options.flash || defaultFlash;
-}
-
 function patchSession(patch: Partial<CropSession>) {
   if (!activeSession) return;
   activeSession = { ...activeSession, ...patch };
@@ -68,31 +64,31 @@ function patchSession(patch: Partial<CropSession>) {
 
 function useUploadCropper(props: CropperViewProps, imageRef: RefObject<HTMLImageElement | null>) {
   useEffect(() => {
-    if (!props.imageUrl || !imageRef.current) return undefined;
-    const cropper = new Cropper(imageRef.current, {
-      aspectRatio: Number.isFinite(props.aspectRatio) ? props.aspectRatio : Number.NaN,
-      autoCropArea: 1,
-      background: false,
-      checkOrientation: false,
-      dragMode: "move",
-      guides: true,
-      modal: true,
-      responsive: true,
-      restore: false,
-      toggleDragModeOnDblclick: false,
-      viewMode: 1,
-      zoomable: true,
-      ready() {
-        props.onReadyChange(true);
-      },
-    });
-    props.registerCropper(cropper);
-    return () => {
-      props.onReadyChange(false);
-      props.registerCropper(null);
-      cropper.destroy();
-    };
-  }, [imageRef, props.aspectRatio, props.imageUrl]);
+      if (!props.imageUrl || !imageRef.current) return undefined;
+      const cropper = new Cropper(imageRef.current, {
+          aspectRatio: Number.isFinite(props.aspectRatio) ? props.aspectRatio : Number.NaN,
+          autoCropArea: 1,
+          background: false,
+          checkOrientation: false,
+          dragMode: "move",
+          guides: true,
+          modal: true,
+          responsive: true,
+          restore: false,
+          toggleDragModeOnDblclick: false,
+          viewMode: 1,
+          zoomable: true,
+          ready() {
+            props.onReadyChange(true);
+          },
+      });
+      props.registerCropper(cropper);
+      return () => {
+        props.onReadyChange(false);
+        props.registerCropper(null);
+        cropper.destroy();
+      };
+    }, [imageRef, props.aspectRatio, props.imageUrl]);
 }
 
 function CropperView(props: CropperViewProps) {
@@ -102,30 +98,30 @@ function CropperView(props: CropperViewProps) {
     h("div", { className: "tbf-upload-crop__header" },
       h("h2", { className: "tbf-upload-crop__title" }, props.title),
       props.description
-        ? h("p", { className: "tbf-upload-crop__description" }, props.description)
-        : null,
+      ? h("p", { className: "tbf-upload-crop__description" }, props.description)
+      : null,
     ),
     h("div", { className: "tbf-upload-crop__stage" },
       h("img", {
-        alt: props.title,
-        className: "tbf-upload-crop__image",
-        ref: imageRef,
-        src: props.imageUrl,
+          alt: props.title,
+          className: "tbf-upload-crop__image",
+          ref: imageRef,
+          src: props.imageUrl,
       }),
     ),
     h("div", { className: "tbf-upload-crop__actions" },
       h("button", {
-        className: "tbf-upload__button",
-        disabled: props.busy,
-        onClick: props.onCancel,
-        type: "button",
-      }, "Cancel"),
+          className: "btn",
+          disabled: props.busy,
+          onClick: props.onCancel,
+          type: "button",
+        }, "Cancel"),
       h("button", {
-        className: "tbf-upload__button tbf-upload__button--strong",
-        disabled: props.busy || !props.ready,
-        onClick: props.onConfirm,
-        type: "button",
-      }, props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel),
+          className: "btn",
+          disabled: props.busy || !props.ready,
+          onClick: props.onConfirm,
+          type: "button",
+        }, props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel),
     ),
   );
 }
@@ -160,15 +156,15 @@ function createCropModalHost() {
 function renderCropModal(sync = false) {
   if (!modalRoot || !activeSession) return;
   const node = h(CropperView, {
-    ...activeSession,
-    onCancel: cancelCropSession,
-    onConfirm: () => void confirmCropSession(),
-    onReadyChange(ready: boolean) {
-      patchSession({ ready });
-    },
-    registerCropper(cropper: CropperInstance | null) {
-      activeCropper = cropper;
-    },
+      ...activeSession,
+      onCancel: cancelCropSession,
+      onConfirm: () => void confirmCropSession(),
+      onReadyChange(ready: boolean) {
+        patchSession({ ready });
+      },
+      registerCropper(cropper: CropperInstance | null) {
+        activeCropper = cropper;
+      },
   });
   if (sync) flushSync(() => modalRoot?.render(node));
   else modalRoot.render(node);
@@ -187,11 +183,11 @@ function cancelCropSession() {
 
 function croppedCanvas(cropper: CropperInstance) {
   return cropper.getCroppedCanvas({
-    fillColor: "#fff",
-    imageSmoothingEnabled: true,
-    imageSmoothingQuality: "high",
-    maxHeight: 1024,
-    maxWidth: 1024,
+      fillColor: "#fff",
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: "high",
+      maxHeight: 1024,
+      maxWidth: 1024,
   });
 }
 
@@ -219,10 +215,10 @@ async function confirmCropSession() {
 function reportCropFailure(session: CropSession, error: unknown) {
   const config = uploadRootConfig(session.root);
   loggerFor(session.options).warn("upload.crop", "failed", {
-    error: error instanceof Error ? error.message : String(error),
-    file: session.file.name,
+      error: error instanceof Error ? error.message : String(error),
+      file: session.file.name,
   });
-  flashFor(session.options).error?.(config.cropFailedMessage, "");
+  resolveUploadFlash(session.options).error?.(config.cropFailedMessage, "");
 }
 
 async function openUploadCropSession(

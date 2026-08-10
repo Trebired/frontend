@@ -15,7 +15,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..",
 const distDir = path.join(rootDir, "dist");
 const sourceDir = path.join(rootDir, "src");
 
-async function main() {
+async function verifyFrontendMain() {
   const configDirName = await workspaceConfigDir(rootDir);
   const context = {
     configDirName,
@@ -51,32 +51,32 @@ async function main() {
 function installDom() {
   const window = new Window({ url: "https://example.test/current" });
   Object.assign(globalThis, {
-    Blob: window.Blob,
-    CustomEvent: window.CustomEvent,
-    DOMParser: window.DOMParser,
-    Document: window.Document,
-    DocumentFragment: window.DocumentFragment,
-    Element: window.Element,
-    Event: window.Event,
-    File: window.File,
-    FormData: window.FormData,
-    HTMLButtonElement: window.HTMLButtonElement,
-    HTMLElement: window.HTMLElement,
-    HTMLFormElement: window.HTMLFormElement,
-    HTMLInputElement: window.HTMLInputElement,
-    HTMLTextAreaElement: window.HTMLTextAreaElement,
-    MouseEvent: window.MouseEvent,
-    MutationObserver: window.MutationObserver,
-    Node: window.Node,
-    SVGElement: window.SVGElement,
-    SubmitEvent: window.SubmitEvent,
-    document: window.document,
-    getComputedStyle: window.getComputedStyle.bind(window),
-    history: window.history,
-    location: window.location,
-    navigator: window.navigator,
-    requestAnimationFrame: (callback) => setTimeout(callback, 0),
-    window,
+      Blob: window.Blob,
+      CustomEvent: window.CustomEvent,
+      DOMParser: window.DOMParser,
+      Document: window.Document,
+      DocumentFragment: window.DocumentFragment,
+      Element: window.Element,
+      Event: window.Event,
+      File: window.File,
+      FormData: window.FormData,
+      HTMLButtonElement: window.HTMLButtonElement,
+      HTMLElement: window.HTMLElement,
+      HTMLFormElement: window.HTMLFormElement,
+      HTMLInputElement: window.HTMLInputElement,
+      HTMLTextAreaElement: window.HTMLTextAreaElement,
+      MouseEvent: window.MouseEvent,
+      MutationObserver: window.MutationObserver,
+      Node: window.Node,
+      SVGElement: window.SVGElement,
+      SubmitEvent: window.SubmitEvent,
+      document: window.document,
+      getComputedStyle: window.getComputedStyle.bind(window),
+      history: window.history,
+      location: window.location,
+      navigator: window.navigator,
+      requestAnimationFrame: (callback) => setTimeout(callback, 0),
+      window,
   });
   window.requestAnimationFrame = globalThis.requestAnimationFrame;
   window.CSS ||= {};
@@ -101,11 +101,11 @@ async function verifyActionConfetti() {
   const { submitActionButton } = await importDist("actions");
   let count = 0;
   document.addEventListener("tbf:confetti", () => {
-    count += 1;
+      count += 1;
   });
   globalThis.fetch = async () => {
     return new Response(JSON.stringify({ ok: true, message: "Saved." }), {
-      headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
     });
   };
   const plain = document.createElement("button");
@@ -179,8 +179,10 @@ async function verifyLayout() {
 async function verifyFullscreen() {
   const { bindFullscreen, closeFullscreenTarget } = await importDist("fullscreen");
   document.body.innerHTML = [
-    '<button id="full-open" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" data-tbf-fullscreen-mode="open">Open</button>',
-    '<button id="full-close" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" data-tbf-fullscreen-mode="close">Close</button>',
+    '<button id="full-open" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" ' +
+      'data-tbf-fullscreen-mode="open">Open</button>',
+    '<button id="full-close" data-tbf-fullscreen-trigger data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main" ' +
+      'data-tbf-fullscreen-mode="close">Close</button>',
     '<div id="panel" data-tbf-fullscreen-target data-tbf-fullscreen-id="panel" data-tbf-fullscreen-group="main">Panel</div>',
   ].join("");
   bindFullscreen(document);
@@ -260,52 +262,52 @@ function fullUploadOptions() {
 
 function assertUploadMarkup(html) {
   assert.equal(/class=["'][^"']*\bwrap\b/iu.test(html), false);
-  [
-    "native-file",
-    "native-directory",
-    "crop-field",
-    "preview",
-    "preview-image",
-    "preview-empty",
-    "shell",
-    "file-trigger",
-    "directory-trigger",
-    "clear",
-    "filename",
-    "list",
-    "empty-toggle",
-  ].forEach((slot) => {
-    assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
-  });
-}
+      [
+      "native-file",
+      "native-directory",
+      "crop-field",
+      "preview",
+      "preview-image",
+      "preview-empty",
+      "shell",
+      "file-trigger",
+      "directory-trigger",
+      "clear",
+      "filename",
+      "list",
+      "empty-toggle",
+      ].forEach((slot) => {
+      assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
+      });
+      }
 
-async function verifyFrontendLogging(context) {
-  const { bindFrontendRuntime } = await importDistRoot();
-  const events = [];
-  const adapter = (_source, event) => events.push(event);
-  bindFrontendRuntime(document, {
-    adapters: { logger: {}, loggerAdapter: adapter },
-    observe: false,
-  });
-  assert.equal(events.length, 1);
-  assert.equal(events[0].group, "frontend.runtime");
-  events.length = 0;
-  bindFrontendRuntime(document, {
-    adapters: { logger: {}, loggerAdapter: adapter },
-    frontend_quiet: true,
-    observe: false,
-  });
-  assert.equal(events.length, 0);
-}
+      async function verifyFrontendLogging(context) {
+      const { bindFrontendRuntime } = await importDistRoot();
+      const events = [];
+      const adapter = (_source, event) => events.push(event);
+      bindFrontendRuntime(document, {
+      adapters: { logger: {}, loggerAdapter: adapter },
+      observe: false,
+      });
+      assert.equal(events.length, 1);
+      assert.equal(events[0].group, "frontend.runtime");
+      events.length = 0;
+      bindFrontendRuntime(document, {
+      adapters: { logger: {}, loggerAdapter: adapter },
+      frontend_quiet: true,
+      observe: false,
+      });
+      assert.equal(events.length, 0);
+      }
 
-async function importDistRoot() {
-  const url = pathToFileURL(path.join(rootDir, "dist", "index.js"));
-  return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
-}
+      async function importDistRoot() {
+      const url = pathToFileURL(path.join(rootDir, "dist", "index.js"));
+      return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
+      }
 
-async function importDist(subpath) {
-  const url = pathToFileURL(path.join(rootDir, "dist", subpath, "index.js"));
-  return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
-}
+      async function importDist(subpath) {
+      const url = pathToFileURL(path.join(rootDir, "dist", subpath, "index.js"));
+      return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
+      }
 
-await main();
+      await verifyFrontendMain();

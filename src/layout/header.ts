@@ -50,8 +50,8 @@ function syncHeaderOffsets(root: ParentNode = document) {
 
 function dispatchMobileNavState(state: MobileNavState) {
   state.nav.dispatchEvent(new CustomEvent(MOBILE_NAV_EVENT, {
-    bubbles: true,
-    detail: { nav: state.nav, open: state.open, panel: state.panel },
+        bubbles: true,
+        detail: { nav: state.nav, open: state.open, panel: state.panel },
   }));
 }
 
@@ -62,7 +62,7 @@ function applyMobileNavState(nav: HTMLElement, open: boolean) {
   nav.setAttribute("data-tbf-mobile-nav-open", open ? "true" : "false");
   panel?.setAttribute("aria-hidden", open ? "false" : "true");
   queryAll<HTMLElement>(document, MOBILE_NAV_TOGGLE_SELECTOR).forEach((button) => {
-    if (button.getAttribute("aria-controls") === nav.id) setAriaExpanded(button, open);
+      if (button.getAttribute("aria-controls") === nav.id) setAriaExpanded(button, open);
   });
   document.body?.setAttribute("data-tbf-mobile-nav-open", open ? "true" : "false");
   dispatchMobileNavState(state);
@@ -96,10 +96,10 @@ function bindMobileNav(nav: HTMLElement | null) {
   nav.setAttribute(MOBILE_NAV_BOUND_ATTR, "true");
   applyMobileNavState(nav, nav.getAttribute("data-tbf-mobile-nav-open") === "true");
   nav.querySelectorAll<HTMLElement>(MOBILE_NAV_CLOSE_SELECTOR).forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      closeMobileNav(nav);
-    });
+      button.addEventListener("click", (event) => {
+          event.preventDefault();
+          closeMobileNav(nav);
+      });
   });
   return nav;
 }
@@ -112,8 +112,8 @@ function bindMobileNavToggle(button: HTMLElement | null) {
   if (!nav) return null;
   button.setAttribute("data-tbf-mobile-nav-toggle-bound", "true");
   button.addEventListener("click", (event) => {
-    event.preventDefault();
-    toggleMobileNav(nav);
+      event.preventDefault();
+      toggleMobileNav(nav);
   });
   return nav;
 }
@@ -125,19 +125,19 @@ function installLayoutChromeListeners(root: BindRoot, options: HeaderRuntimeOpti
   const sync = () => {
     if (frame) return;
     frame = requestAnimationFrame(() => {
-      frame = 0;
-      syncHeaderOffsets(document);
+        frame = 0;
+        syncHeaderOffsets(document);
     });
   };
   const observer = typeof ResizeObserver === "function" ? new ResizeObserver(sync) : null;
   queryAll<HTMLElement>(root, `${HEADER_PRIMARY_SELECTOR},${HEADER_SECONDARY_SELECTOR}`).forEach((header) => {
-    observer?.observe(header);
+      observer?.observe(header);
   });
   const media = window.matchMedia?.(options.breakpoint || "(max-width: 900px)");
   const closeOnDesktop = () => {
     if (media && media.matches) return;
     queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}[data-tbf-mobile-nav-open="true"]`)
-      .forEach(closeMobileNav);
+    .forEach(closeMobileNav);
   };
   media?.addEventListener?.("change", closeOnDesktop);
   document.addEventListener("keydown", closeOnEscape);
@@ -153,12 +153,12 @@ function installLayoutChromeListeners(root: BindRoot, options: HeaderRuntimeOpti
 function closeOnEscape(event: KeyboardEvent) {
   if (event.key !== "Escape") return;
   queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}[data-tbf-mobile-nav-open="true"]`)
-    .forEach(closeMobileNav);
+  .forEach(closeMobileNav);
 }
 
 function bindHeaders(root: BindRoot = document, options: HeaderRuntimeOptions = {}) {
   queryAll<HTMLElement>(root, HEADER_SELECTOR).forEach((header) => {
-    header.setAttribute(HEADER_BOUND_ATTR, "true");
+      header.setAttribute(HEADER_BOUND_ATTR, "true");
   });
   queryAll<HTMLElement>(root, MOBILE_NAV_SELECTOR).forEach(bindMobileNav);
   queryAll<HTMLElement>(root, MOBILE_NAV_TOGGLE_SELECTOR).forEach(bindMobileNavToggle);

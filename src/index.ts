@@ -30,7 +30,7 @@ import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
 import { bindTooltips } from "./tooltip/index.js";
 import { bindPortals, ensureLayerRoot } from "./layer/index.js";
 import { bindWizard } from "./wizard/index.js";
-import type { BindRoot, Cleanup } from "./dom/index.js";
+import { bindRoot as resolveRootScope, type BindRoot, type Cleanup } from "./dom/index.js";
 import { flash } from "./flash/index.js";
 import { progress } from "./progress/index.js";
 import {
@@ -63,10 +63,6 @@ type FrontendRuntimeBinding = {
   root: BindRoot;
 };
 
-function rootScope(root: BindRoot | null | undefined): BindRoot {
-  return root && "querySelectorAll" in root ? root : document;
-}
-
 function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
   const adapters = options.adapters || {};
   return {
@@ -77,11 +73,11 @@ function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
 }
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
-  const scope = rootScope(root);
+  const scope = resolveRootScope(root);
   const adapters = actionAdapters(options);
   void bindThemeRuntime(scope, {
-    ...(options.theme || {}),
-    persistence: options.adapters?.themePersistence,
+      ...(options.theme || {}),
+      persistence: options.adapters?.themePersistence,
   });
   bindLayouts(scope, options.layout || {});
   ensureLayerRoot();
@@ -95,12 +91,12 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindCodeBlocks(scope);
   bindEditors(scope);
   bindInputControllers(scope, {
-    flash: adapters.flash,
-    logging: {
-      ...options.adapters,
-      frontend_quiet: options.frontend_quiet,
-      quiet: options.quiet,
-    },
+      flash: adapters.flash,
+      logging: {
+        ...options.adapters,
+        frontend_quiet: options.frontend_quiet,
+        quiet: options.quiet,
+      },
   });
   bindAdvancedInputControllers(scope);
   bindPrimitiveControllers(scope);
@@ -109,8 +105,8 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindPopovers(scope);
   bindModals(scope);
   bindSidebars(scope, {
-    ...(options.sidebar || {}),
-    persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
+      ...(options.sidebar || {}),
+      persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
   });
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
@@ -118,12 +114,12 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindCopyButtons(scope);
   bindFullscreen(scope);
   bindLiveRefresh(scope, {
-    ...(options.live || {}),
-    bind(nextRoot) {
-      bindFrontendRuntimeOnce(nextRoot, options);
-      options.live?.bind?.(nextRoot);
-    },
-    skip: options.adapters?.live,
+      ...(options.live || {}),
+      bind(nextRoot) {
+        bindFrontendRuntimeOnce(nextRoot, options);
+        options.live?.bind?.(nextRoot);
+      },
+      skip: options.adapters?.live,
   });
 }
 
@@ -131,26 +127,26 @@ function bindFrontendRuntime(
   root: BindRoot = document,
   options: FrontendRuntimeOptions = {},
 ): FrontendRuntimeBinding {
-  const scope = rootScope(root);
+  const scope = resolveRootScope(root);
   const logger = resolveFrontendLogger({
-    ...options.adapters,
-    frontend_quiet: options.frontend_quiet,
-    quiet: options.quiet,
+      ...options.adapters,
+      frontend_quiet: options.frontend_quiet,
+      quiet: options.quiet,
   });
   bindFrontendRuntimeOnce(scope, options);
   logger.info("runtime", "bound", {
-    observe: options.observe !== false,
+      observe: options.observe !== false,
   });
   let observer: MutationObserver | null = null;
   if (options.observe !== false && typeof MutationObserver === "function") {
     observer = new MutationObserver((records) => {
-      records.forEach((record) => {
-        record.addedNodes.forEach((node) => {
-          if (node instanceof Element || node instanceof DocumentFragment) {
-            bindFrontendRuntimeOnce(node, options);
-          }
+        records.forEach((record) => {
+            record.addedNodes.forEach((node) => {
+                if (node instanceof Element || node instanceof DocumentFragment) {
+                  bindFrontendRuntimeOnce(node, options);
+                }
+            });
         });
-      });
     });
     const target = scope instanceof Document ? scope.documentElement : scope;
     observer.observe(target, { childList: true, subtree: true });

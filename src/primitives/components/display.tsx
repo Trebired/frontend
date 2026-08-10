@@ -1,6 +1,7 @@
 import { HTMLAttributes, ReactNode } from "react";
 import { CanvasPanel as FrontendCanvasPanel } from "#4woymc9xhupl";
 import { FullscreenTarget } from "#vbkfq413o3u7";
+import { objectRecord as objectAttrs } from "#ndsvdqv80epr";
 import { appendClassName, joinClassNames } from "./shared.js";
 import { card } from "./controls.js";
 import { Grid, Text, TitleDescription } from "./layout.js";
@@ -46,45 +47,45 @@ function table(props: TableProps) {
   const { children, className, ...rest } = props;
   return (
     <table {...rest} className={joinClassNames(className)} data-tbf-table="">
-      {children}
+    {children}
     </table>
   );
 }
 
 function summary_stat_card(stat: SummaryStat) {
   return card({
-    gap: "xs",
-    children: (
-      <>
+      gap: "xs",
+      children: (
+        <>
         <span className="label">{stat.label}</span>
         <strong {...(stat.valueProps || {})}>
-          {String(stat.value == null ? "" : stat.value)}
+        {String(stat.value == null ? "" : stat.value)}
         </strong>
         <Text muted size="sm">{stat.note}</Text>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
 function summary_card(props: SummaryCardProps) {
   const stats = Array.isArray(props.stats) ? props.stats : [];
   return card({
-    gap: "sm",
-    children: (
-      <>
+      gap: "sm",
+      children: (
+        <>
         {titleDescriptionNode(props.title, props.description)}
         <Grid auto="sm" gap="sm">
-          {stats.map((stat) => summary_stat_card(stat))}
+        {stats.map((stat) => summary_stat_card(stat))}
         </Grid>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
 function title_description_card(props: { description: ReactNode; title: ReactNode }) {
   return card({
-    gap: "sm",
-    children: titleDescriptionNode(props.title, props.description),
+      gap: "sm",
+      children: titleDescriptionNode(props.title, props.description),
   });
 }
 
@@ -94,19 +95,19 @@ function canvas_panel(props: CanvasPanelCompatProps) {
   const CanvasPanel = FrontendCanvasPanel as any;
   const panel = (
     <CanvasPanel
-      {...rootAttrs}
-      {...(props.id ? { id: String(props.id) } : {})}
-      actions={props.toolbar === false ? undefined : props.toolbarContent}
-      className={panelClassName(props)}
-      title={props.toolbar === false ? undefined : props.title}
+    {...rootAttrs}
+    {...(props.id ? { id: String(props.id) } : {})}
+    actions={props.toolbar === false ? undefined : props.toolbarContent}
+    className={panelClassName(props)}
+    title={props.toolbar === false ? undefined : props.title}
     >
-      <div className={contentClassName(props)}>{content}</div>
+    <div className={contentClassName(props)}>{content}</div>
     </CanvasPanel>
   );
   if (!props.extendId || !props.extendGroup) return panel;
   return (
     <FullscreenTarget fullscreenId={props.extendId} group={props.extendGroup}>
-      {panel}
+    {panel}
     </FullscreenTarget>
   );
 }
@@ -119,11 +120,11 @@ function panelClassName(props: CanvasPanelCompatProps) {
   return appendClassName(
     appendClassName(
       primitiveStackClassName({
-        className: [
-          "canvas-panel",
-          "overflow-hidden",
-          primitivePaddingClass("xs"),
-        ],
+          className: [
+            "canvas-panel",
+            "overflow-hidden",
+            primitivePaddingClass("xs"),
+          ],
       }),
       String(props.panelClassName || "height-max"),
     ),
@@ -139,12 +140,6 @@ function contentClassName(props: CanvasPanelCompatProps) {
       props.scroll === true ? "scroll scroll-min" : "",
     ),
   );
-}
-
-function objectAttrs(value: unknown) {
-  return value && typeof value === "object"
-    ? value as Record<string, unknown>
-    : {};
 }
 
 export {

@@ -15,12 +15,12 @@ function Breadcrumb(props: BreadcrumbProps) {
   const { children, className, label = "Breadcrumb", ...rest } = props;
   return (
     <nav
-      {...rest}
-      aria-label={label}
-      className={classNames("tbf-breadcrumb", className)}
-      data-tbf-breadcrumb=""
+    {...rest}
+    aria-label={label}
+    className={classNames("tbf-breadcrumb", className)}
+    data-tbf-breadcrumb=""
     >
-      <ol className="tbf-breadcrumb__list">{children}</ol>
+    <ol className="tbf-breadcrumb__list">{children}</ol>
     </nav>
   );
 }
@@ -29,32 +29,32 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
   const { children, className, current, href, icon, itemKey, ...rest } = props;
   const content = (
     <>
-      {icon ? <span className="tbf-breadcrumb__icon" data-tbf-breadcrumb-icon="">{icon}</span> : null}
-      <span className="tbf-breadcrumb__label">{children}</span>
+    {icon ? <span className="tbf-breadcrumb__icon" data-tbf-breadcrumb-icon="">{icon}</span> : null}
+    <span className="tbf-breadcrumb__label">{children}</span>
     </>
   );
   return (
     <li className="tbf-breadcrumb__item">
-      {href && !current ? (
+    {href && !current ? (
         <a
-          {...rest}
-          className={classNames("tbf-breadcrumb__link", className)}
-          data-tbf-breadcrumb-item=""
-          data-tbf-breadcrumb-key={itemKey}
-          href={href}
+        {...rest}
+        className={classNames("tbf-breadcrumb__link", className)}
+        data-tbf-breadcrumb-item=""
+        data-tbf-breadcrumb-key={itemKey}
+        href={href}
         >
-          {content}
+        {content}
         </a>
       ) : (
         <span
-          className={classNames("tbf-breadcrumb__current", className)}
-          data-tbf-breadcrumb-current={current ? "" : undefined}
-          data-tbf-breadcrumb-item=""
-          data-tbf-breadcrumb-key={itemKey}
+        className={classNames("tbf-breadcrumb__current", className)}
+        data-tbf-breadcrumb-current={current ? "" : undefined}
+        data-tbf-breadcrumb-item=""
+        data-tbf-breadcrumb-key={itemKey}
         >
-          {content}
+        {content}
         </span>
-      )}
+    )}
     </li>
   );
 }

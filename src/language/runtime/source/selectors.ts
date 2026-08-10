@@ -5,21 +5,21 @@ const SOURCE_PANEL_SELECTOR = "[data-tbf-source-language-panel-bucket]";
 const SOURCE_PERCENT_SELECTOR = "[data-tbf-source-language-percent]";
 const SOURCE_PROGRESS_SELECTOR = "[data-tbf-source-language-progress]";
 const SOURCE_OVERVIEW_SEGMENT_SELECTOR =
-  "[data-tbf-source-language-overview-segment]";
+"[data-tbf-source-language-overview-segment]";
 const SOURCE_BUCKET_TAB_SELECTOR = "[data-tbf-source-language-bucket-tab]";
 const SOURCE_BUCKET_TABS_ROOT_SELECTOR =
-  "[data-tbf-source-language-bucket-tabs-root]";
+"[data-tbf-source-language-bucket-tabs-root]";
 const SOURCE_RESET_SELECTOR = "[data-tbf-source-language-reset]";
 const SOURCE_DETECTED_SELECTOR = "[data-tbf-source-language-detected-count]";
 const SOURCE_SUMMARY_BYTES_SELECTOR =
-  "[data-tbf-source-language-summary-total-bytes]";
+"[data-tbf-source-language-summary-total-bytes]";
 const SOURCE_SUMMARY_LINES_SELECTOR =
-  "[data-tbf-source-language-summary-total-lines]";
+"[data-tbf-source-language-summary-total-lines]";
 const SOURCE_EMPTY_SELECTOR = "[data-tbf-source-language-empty-state]";
 const SOURCE_FILE_TREE_ROOT_SELECTOR =
-  "[data-tbf-source-language-file-tree-root]";
+"[data-tbf-source-language-file-tree-root]";
 const SOURCE_FILE_TREE_CONFIG_ATTR =
-  "data-tbf-source-language-file-tree-config";
+"data-tbf-source-language-file-tree-config";
 
 export {
   SOURCE_BUCKET_TAB_SELECTOR,

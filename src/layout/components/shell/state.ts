@@ -25,8 +25,8 @@ type ShellChromeState = {
 function normalizeShellHeaderType(value: unknown): ShellHeaderType {
   const type = String(value || "").toLowerCase();
   return type === "app" || type === "login" || type === "platform"
-    ? type
-    : "platform";
+  ? type
+  : "platform";
 }
 
 function shellHeaderPartialType(type: ShellHeaderType): ShellHeaderPartialType {

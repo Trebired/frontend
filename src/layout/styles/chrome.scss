@@ -103,8 +103,8 @@
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity var(--tbf-transition-normal, 180ms) ease,
-    visibility 0s linear var(--tbf-transition-normal, 180ms);
+  opacity var(--tbf-transition-normal, 180ms) ease,
+  visibility 0s linear var(--tbf-transition-normal, 180ms);
 }
 
 [data-tbf-mobile-nav][data-tbf-mobile-nav-open="true"] {
@@ -112,8 +112,8 @@
   visibility: visible;
   pointer-events: auto;
   transition:
-    opacity var(--tbf-transition-normal, 180ms) ease,
-    visibility 0s;
+  opacity var(--tbf-transition-normal, 180ms) ease,
+  visibility 0s;
 }
 
 .tbf-mobile-nav__scrim {
@@ -241,9 +241,9 @@
 }
 
 [data-tbf-sidebar-minimized="true"]
-  .tbf-product-shell-sidebar-minimize__collapse,
+.tbf-product-shell-sidebar-minimize__collapse,
 [data-tbf-sidebar-minimized="false"]
-  .tbf-product-shell-sidebar-minimize__expand {
+.tbf-product-shell-sidebar-minimize__expand {
   display: none;
 }
 

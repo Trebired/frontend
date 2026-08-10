@@ -7,13 +7,13 @@ import {
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
 
-function keyValueRowValueProps(row: key_value_row) {
+function graphDetailValueProps(row: key_value_row) {
   return row.value_attrs && typeof row.value_attrs === "object"
   ? row.value_attrs
   : {};
 }
 
-function formatKeyValueRowValue(row: key_value_row) {
+function formatGraphDetailValue(row: key_value_row) {
   const value = row.value;
   if (value === null || value === undefined) return "";
   const formatted = String(value);
@@ -28,7 +28,7 @@ function renderDetailValue(row: key_value_row, index: number) {
       <div
       key={`graph_detail_value_html_${index}`}
       className={primitiveTextClassName({ breakWord: true })}
-      {...keyValueRowValueProps(row)}
+      {...graphDetailValueProps(row)}
       dangerouslySetInnerHTML={{ __html: valueHtml }}
       />
     );
@@ -38,9 +38,9 @@ function renderDetailValue(row: key_value_row, index: number) {
     <div
     key={`graph_detail_value_${index}`}
     className={primitiveTextClassName({ breakWord: true })}
-    {...keyValueRowValueProps(row)}
+    {...graphDetailValueProps(row)}
     >
-    {formatKeyValueRowValue(row)}
+    {formatGraphDetailValue(row)}
     </div>
   );
 }

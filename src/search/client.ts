@@ -16,7 +16,13 @@ import {
   tagName,
   type SearchFilterDef,
 } from "./client/config.js";
-import { registerFamilyElement, registeredSearchControls, registeredSearchPanels, searchControlsByFamily, searchPanelsByFamily } from "./client/registry.js";
+import {
+  registerFamilyElement,
+  registeredSearchControls,
+  registeredSearchPanels,
+  searchControlsByFamily,
+  searchPanelsByFamily,
+} from "./client/registry.js";
 import {
   SEARCH_CONTROLS_SELECTOR,
   SEARCH_PANEL_SELECTOR,
@@ -295,7 +301,7 @@ function bind(target: BindRoot = document) {
   return searchPanelHostsFromNode(target).map(bindSearchPanel).filter(Boolean);
 }
 
-function bindRoot(root: HTMLElement | null) {
+function bindSearchRoot(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement)) return null;
   const config = readSearchPanelConfig(root);
   const familyKey = toText(config.familyKey);
@@ -327,7 +333,7 @@ function bootSearchManager() {
 const searchManager = Object.freeze({
     bind,
     bindControls: bindSearchControls,
-    bindRoot,
+    bindRoot: bindSearchRoot,
     bindPanel: bindSearchPanel,
     boot: bootSearchManager,
     refreshSearchResults,
@@ -337,7 +343,7 @@ export {
   SEARCH_CONTROLS_SELECTOR,
   SEARCH_PANEL_SELECTOR,
   bind,
-  bindRoot,
+  bindSearchRoot as bindRoot,
   bindSearchControls,
   bindSearchPanel,
   bootSearchManager as boot,

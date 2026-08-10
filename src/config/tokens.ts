@@ -2,20 +2,20 @@ import type { FrontendPaletteConfig } from "./types.js";
 
 type FrontendPaletteModes<Palette extends FrontendPaletteConfig> = NonNullable<Palette["modes"]>;
 type FrontendPaletteModeKey<Palette extends FrontendPaletteConfig> =
-  keyof FrontendPaletteModes<Palette> & string;
+keyof FrontendPaletteModes<Palette> & string;
 type FrontendPaletteModeValue<Palette extends FrontendPaletteConfig> =
-  FrontendPaletteModes<Palette>[FrontendPaletteModeKey<Palette>];
+FrontendPaletteModes<Palette>[FrontendPaletteModeKey<Palette>];
 type FrontendPaletteFamily<Palette extends FrontendPaletteConfig> =
-  keyof FrontendPaletteModeValue<Palette>["scale"] & string;
+keyof FrontendPaletteModeValue<Palette>["scale"] & string;
 type FrontendPaletteStep<
-  Palette extends FrontendPaletteConfig,
-  Family extends FrontendPaletteFamily<Palette>,
+Palette extends FrontendPaletteConfig,
+Family extends FrontendPaletteFamily<Palette>,
 > = Extract<
-  keyof FrontendPaletteModeValue<Palette>["scale"][Family],
-  string | number
+keyof FrontendPaletteModeValue<Palette>["scale"][Family],
+string | number
 >;
 type FrontendPaletteSemanticToken<Palette extends FrontendPaletteConfig> =
-  keyof NonNullable<Palette["semantic"]> & string;
+keyof NonNullable<Palette["semantic"]> & string;
 type FrontendCssVariable<Name extends string> = `var(--${Name})`;
 type FrontendCssVariableWithFallback<Name extends string> = `var(--${Name}, ${string})`;
 
@@ -27,17 +27,17 @@ type FrontendConfigVariableHelper = {
 type FrontendConfigTokenHelpers<Palette extends FrontendPaletteConfig> = {
   border: (color: string, width?: string) => string;
   color: <
-    Family extends FrontendPaletteFamily<Palette>,
-    Step extends FrontendPaletteStep<Palette, Family>,
+  Family extends FrontendPaletteFamily<Palette>,
+  Step extends FrontendPaletteStep<Palette, Family>,
   >(
     family: Family,
     step: Step,
   ) => FrontendCssVariable<`${Family}-${Step}`>;
   colorMix: (color: string, amount: string, target?: string) => string;
   modeColor: <
-    Family extends FrontendPaletteFamily<Palette>,
-    Step extends FrontendPaletteStep<Palette, Family>,
-    Mode extends FrontendPaletteModeKey<Palette>,
+  Family extends FrontendPaletteFamily<Palette>,
+  Step extends FrontendPaletteStep<Palette, Family>,
+  Mode extends FrontendPaletteModeKey<Palette>,
   >(
     family: Family,
     step: Step,
@@ -64,16 +64,16 @@ function createFrontendTokenHelpers<const Palette extends FrontendPaletteConfig>
   }
 
   function color<
-    Family extends FrontendPaletteFamily<Palette>,
-    Step extends FrontendPaletteStep<Palette, Family>,
+  Family extends FrontendPaletteFamily<Palette>,
+  Step extends FrontendPaletteStep<Palette, Family>,
   >(family: Family, step: Step): FrontendCssVariable<`${Family}-${Step}`> {
     return variable(`${family}-${String(step)}` as `${Family}-${Step}`);
   }
 
   function modeColor<
-    Family extends FrontendPaletteFamily<Palette>,
-    Step extends FrontendPaletteStep<Palette, Family>,
-    Mode extends FrontendPaletteModeKey<Palette>,
+  Family extends FrontendPaletteFamily<Palette>,
+  Step extends FrontendPaletteStep<Palette, Family>,
+  Mode extends FrontendPaletteModeKey<Palette>,
   >(family: Family, step: Step, mode: Mode): FrontendCssVariable<`${Family}-${Step}-${Mode}`> {
     return variable(
       `${family}-${String(step)}-${mode}` as `${Family}-${Step}-${Mode}`,

@@ -16,7 +16,7 @@ function Tabs(props: TabsProps) {
   const { children, className, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-tabs", className)} data-tbf-tabs="">
-      {children}
+    {children}
     </div>
   );
 }
@@ -25,7 +25,7 @@ function TabList(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-tabs__list", className)} role="tablist">
-      {children}
+    {children}
     </div>
   );
 }
@@ -34,15 +34,15 @@ function TabButton(props: TabButtonProps) {
   const { children, className, controls, type = "button", value, ...rest } = props;
   return (
     <button
-      {...rest}
-      aria-controls={controls}
-      aria-selected={props["aria-selected"] ?? false}
-      className={classNames("tbf-tabs__tab", className)}
-      data-tbf-tab={value}
-      role="tab"
-      type={type}
+    {...rest}
+    aria-controls={controls}
+    aria-selected={props["aria-selected"] ?? false}
+    className={classNames("tbf-tabs__tab", className)}
+    data-tbf-tab={value}
+    role="tab"
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -51,12 +51,12 @@ function TabPanel(props: TabPanelProps) {
   const { children, className, value, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-tabs__panel", className)}
-      data-tbf-tab-panel={value}
-      role="tabpanel"
+    {...rest}
+    className={classNames("tbf-tabs__panel", className)}
+    data-tbf-tab-panel={value}
+    role="tabpanel"
     >
-      {children}
+    {children}
     </div>
   );
 }

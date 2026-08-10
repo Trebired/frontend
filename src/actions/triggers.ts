@@ -52,7 +52,7 @@ function dispatchAction(
   if (!parsed.action) return false;
   const handlers = registry.get(parsed.action) || [];
   handlers.forEach((handler) => {
-    handler({ action: parsed.action, event, kind, trigger, value: parsed.value });
+      handler({ action: parsed.action, event, kind, trigger, value: parsed.value });
   });
   return handlers.length > 0;
 }
@@ -75,9 +75,9 @@ function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
 function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOptions) {
   const hasHref = Boolean(
     options.href ||
-    options.externalHref ||
-    trigger.getAttribute("data-tbf-href") ||
-    trigger.getAttribute("data-tbf-external-href"),
+      options.externalHref ||
+      trigger.getAttribute("data-tbf-href") ||
+      trigger.getAttribute("data-tbf-external-href"),
   );
   if (!parseAction(trigger, options).action && !hasHref) return;
   if (trigger.matches("button,a,input,select,textarea")) return;
@@ -116,8 +116,8 @@ function bindActionTrigger(
   trigger.addEventListener("click", onClick);
   trigger.addEventListener("keydown", onKey);
   triggerBindings.set(trigger, () => {
-    trigger.removeEventListener("click", onClick);
-    trigger.removeEventListener("keydown", onKey);
+      trigger.removeEventListener("click", onClick);
+      trigger.removeEventListener("keydown", onKey);
   });
   return true;
 }
@@ -133,7 +133,7 @@ function unbindActionTrigger(trigger: HTMLElement | null) {
 
 function bindActionTriggers(root: BindRoot = document, options: BindActionTriggerOptions = {}) {
   queryAll<HTMLElement>(root, ACTION_TRIGGER_SELECTOR).forEach((trigger) => {
-    bindActionTrigger(trigger, options);
+      bindActionTrigger(trigger, options);
   });
 }
 

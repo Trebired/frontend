@@ -19,8 +19,8 @@ function formatCompactBytes(value: unknown, locale?: string) {
   }
   const digits = amount >= 10 ? 1 : 2;
   return `${amount.toLocaleString(locale || undefined, {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: 0,
+  maximumFractionDigits: digits,
+  minimumFractionDigits: 0,
   })} ${units[unitIndex]}`;
 }
 

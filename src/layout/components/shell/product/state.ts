@@ -1,4 +1,5 @@
 import { readShellChromeState } from "#boxcxvsyrtdl";
+import { objectRecord } from "#ndsvdqv80epr";
 import type {
   ProductShellLabelKey,
   ProductShellLabels,
@@ -35,12 +36,6 @@ function productShellLabel(
   return labels?.[key] || defaultLabels[key];
 }
 
-function objectRecord(value: unknown): Record<string, unknown> {
-  return value && typeof value === "object"
-    ? value as Record<string, unknown>
-    : {};
-}
-
 function shellUi(shell: Record<string, unknown>) {
   return objectRecord(shell.ui);
 }
@@ -52,8 +47,8 @@ function shellSidebars(ui: Record<string, unknown>) {
 function shellLeftSidebar(ui: Record<string, unknown>) {
   const sidebars = shellSidebars(ui);
   return Object.keys(objectRecord(sidebars.left)).length
-    ? objectRecord(sidebars.left)
-    : objectRecord(ui.sidebar);
+  ? objectRecord(sidebars.left)
+  : objectRecord(ui.sidebar);
 }
 
 function shellHeaderType(ui: Record<string, unknown>) {
@@ -74,9 +69,9 @@ function readProductShellState(shellInput: unknown): ProductShellState {
   const type = shellHeaderType(ui);
   return {
     chrome: readShellChromeState({
-      hasMobileBottomBar: type === "platform" || type === "app",
-      hasSidebarLinks: sidebarIsVisible(leftSidebar),
-      type,
+        hasMobileBottomBar: type === "platform" || type === "app",
+        hasSidebarLinks: sidebarIsVisible(leftSidebar),
+        type,
     }),
     leftSidebar,
     rightSidebar,

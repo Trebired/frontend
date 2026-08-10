@@ -28,8 +28,8 @@
   color: var(--tbf-text, #000);
   background: var(--tbf-page, #fff);
   transition:
-    width var(--tbf-transition-normal, 180ms) ease,
-    transform var(--tbf-transition-normal, 180ms) ease;
+  width var(--tbf-transition-normal, 180ms) ease,
+  transform var(--tbf-transition-normal, 180ms) ease;
 }
 
 [data-tbf-sidebar-shell][data-tbf-sidebar-side="right"] [data-tbf-sidebar] {
@@ -88,10 +88,10 @@
   background: transparent;
   cursor: pointer;
   transition:
-    color var(--tbf-transition-fast, 120ms) ease,
-    background var(--tbf-transition-fast, 120ms) ease,
-    border-color var(--tbf-transition-fast, 120ms) ease,
-    transform var(--tbf-transition-fast, 120ms) ease;
+  color var(--tbf-transition-fast, 120ms) ease,
+  background var(--tbf-transition-fast, 120ms) ease,
+  border-color var(--tbf-transition-fast, 120ms) ease,
+  transform var(--tbf-transition-fast, 120ms) ease;
 }
 
 [data-tbf-sidebar-link]:hover {

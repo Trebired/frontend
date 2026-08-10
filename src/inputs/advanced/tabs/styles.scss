@@ -19,8 +19,8 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     background: var(--tbf-primitives-tabs-root-background, transparent);
     cursor: pointer;
     transition:
-      background 0.15s,
-      border-color 0.15s;
+    background 0.15s,
+    border-color 0.15s;
     font-family: var(--tbf-primitives-tabs-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
     font-size: var(--tbf-primitives-tabs-root-font-size, 14px);
     font-weight: var(--tbf-primitives-tabs-root-font-weight, inherit);

@@ -4,17 +4,17 @@ import { ReadonlyMonacoDiffPane, ReadonlyMonacoPane } from "./monaco.js";
 
 function EmptyEditorMessage(props: any) {
   return card({
-    style: { minHeight: props.minHeight },
-    center: true,
-    className: "height-max",
-    gap: "sm",
-    verticalCenter: true,
-    children: (
-      <>
+      style: { minHeight: props.minHeight },
+      center: true,
+      className: "height-max",
+      gap: "sm",
+      verticalCenter: true,
+      children: (
+        <>
         <strong>{props.title}</strong>
         <Text muted size="sm">{props.copy}</Text>
-      </>
-    ),
+        </>
+      ),
   });
 }
 
@@ -26,18 +26,18 @@ function ReadonlyEditorContentApp(props: any) {
   if (!content.trim()) {
     return (
       <EmptyEditorMessage
-        copy="No content is available for this file."
-        minHeight={minHeight}
-        title="No content"
+      copy="No content is available for this file."
+      minHeight={minHeight}
+      title="No content"
       />
     );
   }
   return (
     <ReadonlyMonacoPane
-      content={content}
-      languageName={languageName}
-      minHeight={minHeight}
-      path={path}
+    content={content}
+    languageName={languageName}
+    minHeight={minHeight}
+    path={path}
     />
   );
 }
@@ -51,30 +51,30 @@ function ReadonlyEditorDiffApp(props: any) {
   if (props.originalBinary === true || props.modifiedBinary === true) {
     return (
       <EmptyEditorMessage
-        copy="Binary files cannot be displayed as text diffs."
-        minHeight={minHeight}
-        title="Diff unavailable"
+      copy="Binary files cannot be displayed as text diffs."
+      minHeight={minHeight}
+      title="Diff unavailable"
       />
     );
   }
   if (!originalContent.trim() && !modifiedContent.trim()) {
     return (
       <EmptyEditorMessage
-        copy="No diff content is available."
-        minHeight={minHeight}
-        title="No diff content"
+      copy="No diff content is available."
+      minHeight={minHeight}
+      title="No diff content"
       />
     );
   }
   return (
     <ReadonlyMonacoDiffPane
-      languageName={languageName}
-      minHeight={minHeight}
-      modifiedContent={modifiedContent}
-      modifiedPath={normalizePath(props.modifiedPath || props.path || "modified.txt")}
-      originalContent={originalContent}
-      originalPath={normalizePath(props.originalPath || props.path || "original.txt")}
-      path={diffPath}
+    languageName={languageName}
+    minHeight={minHeight}
+    modifiedContent={modifiedContent}
+    modifiedPath={normalizePath(props.modifiedPath || props.path || "modified.txt")}
+    originalContent={originalContent}
+    originalPath={normalizePath(props.originalPath || props.path || "original.txt")}
+    path={diffPath}
     />
   );
 }

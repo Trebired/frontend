@@ -95,10 +95,10 @@ function radioDescription(option: radio_option) {
   if (!option || !option.description) return null;
   return (
     <span className={primitiveTextClassName({
-      breakWord: true,
-      className: "radio-option-description",
-      muted: true,
-      size: "sm",
+          breakWord: true,
+          className: "radio-option-description",
+          muted: true,
+          size: "sm",
     })}>
     {option.description}
     </span>

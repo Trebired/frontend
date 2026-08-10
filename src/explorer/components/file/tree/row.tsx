@@ -69,8 +69,8 @@ function readRowModel(props: FileTreeRowProps): FileTreeRowModel & {
 function rowBackground(model: ReturnType<typeof readRowModel>) {
   if (model.isInteractive && model.selected) return "var(--background-surface-2, transparent)";
   return model.highlighted
-    ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
-    : "transparent";
+  ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
+  : "transparent";
 }
 
 function activateFile(props: FileTreeRowProps, model: ReturnType<typeof readRowModel>) {
@@ -104,43 +104,43 @@ function FileTreeRow(props: FileTreeRowProps) {
   };
   return (
     <div
-      role="treeitem"
-      aria-level={model.rowLevel}
-      aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
-      data-tbf-file-tree-path={model.relPath || undefined}
-      style={rowStyle}
-      className={primitiveInlineRowClassName({ verticalCenter: true })}
+    role="treeitem"
+    aria-level={model.rowLevel}
+    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
+    data-tbf-file-tree-path={model.relPath || undefined}
+    style={rowStyle}
+    className={primitiveInlineRowClassName({ verticalCenter: true })}
     >
-      <button
-        type="button"
-        className={primitiveInlineRowClassName({
+    <button
+    type="button"
+    className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
-            className: "width-max text-left",
-            muted: !(model.canActivateFile || model.kind === "dir"),
+              className: "width-max text-left",
+              muted: !(model.canActivateFile || model.kind === "dir"),
           }),
           gap: "xs",
           verticalCenter: true,
-        })}
-        style={{
-          background: rowBackground(model),
-          border: "var(--border-width) solid transparent",
-          borderLeft: `calc(var(--border-width) * 2) solid ${fileTreeLeftBorderColor(model)}`,
-          borderRadius: 0,
-          cursor: cursorFor(model),
-          minHeight: 0,
-          padding: "5px 10px",
-          paddingLeft: 10 + (model.rowLevel - 1) * 18,
-          width: "100%",
-        }}
-        aria-disabled={model.isInteractive ? undefined : true}
-        tabIndex={model.isInteractive ? undefined : -1}
-        onClick={() => handleRowClick(props, model)}
-      >
-        <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />
-        <FileTreeIcon highlighted={model.highlighted} iconSpec={model.iconSpec} />
-        <FileTreeName name={model.name} />
-        <FileTreeCount fileCount={model.fileCount} kind={model.kind} />
-      </button>
+    })}
+    style={{
+        background: rowBackground(model),
+        border: "var(--border-width) solid transparent",
+        borderLeft: `calc(var(--border-width) * 2) solid ${fileTreeLeftBorderColor(model)}`,
+        borderRadius: 0,
+        cursor: cursorFor(model),
+        minHeight: 0,
+        padding: "5px 10px",
+        paddingLeft: 10 + (model.rowLevel - 1) * 18,
+        width: "100%",
+    }}
+    aria-disabled={model.isInteractive ? undefined : true}
+    tabIndex={model.isInteractive ? undefined : -1}
+    onClick={() => handleRowClick(props, model)}
+    >
+    <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />
+    <FileTreeIcon highlighted={model.highlighted} iconSpec={model.iconSpec} />
+    <FileTreeName name={model.name} />
+    <FileTreeCount fileCount={model.fileCount} kind={model.kind} />
+    </button>
     </div>
   );
 }

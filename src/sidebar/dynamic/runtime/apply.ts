@@ -29,21 +29,21 @@ function applyDynamicSidebarCountSlots(
   renderers: DynamicSidebarRuntimeRenderers = {},
 ) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_COUNT_SLOT_SELECTOR)
-    .forEach((slot) => {
+  .forEach((slot) => {
       const path = textValue(slot.getAttribute("data-tbf-sidebar-count-path"));
       const count = dynamicSidebarNumber(counts, path);
       if (!path || slotDisabled(slot) ||
-        !slotActive(slot, "data-tbf-sidebar-count-visibility") || count == null) {
+          !slotActive(slot, "data-tbf-sidebar-count-visibility") || count == null) {
         clearChildren(slot);
         return;
       }
       const node = (renderers.count || defaultCountNode)({
-        ...runtimeContext(root, counts, slot),
-        count,
-        path,
+          ...runtimeContext(root, counts, slot),
+          count,
+          path,
       });
       slot.replaceChildren(...(node ? [node] : []));
-    });
+  });
 }
 
 function applyDynamicSidebarStateSlots(
@@ -52,18 +52,18 @@ function applyDynamicSidebarStateSlots(
   renderers: DynamicSidebarRuntimeRenderers = {},
 ) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR)
-    .forEach((slot) => {
+  .forEach((slot) => {
       const path = textValue(slot.getAttribute("data-tbf-sidebar-state-path"));
       const state = dynamicSidebarText(counts, path);
       const node = path && !slotDisabled(slot)
-        ? (renderers.state || defaultStateNode)({
+      ? (renderers.state || defaultStateNode)({
           ...runtimeContext(root, counts, slot),
           path,
           state,
-        })
-        : null;
+      })
+      : null;
       slot.replaceChildren(...(node ? [node] : []));
-    });
+  });
 }
 
 function applyRepositoryIdleLoader(
@@ -83,9 +83,9 @@ function applyRepositoryIdleLoader(
     return true;
   }
   const node = (renderers.count || defaultCountNode)({
-    ...runtimeContext(root, counts, slot),
-    count: idleCount,
-    path: idleCountPath,
+      ...runtimeContext(root, counts, slot),
+      count: idleCount,
+      path: idleCountPath,
   });
   slot.replaceChildren(...(node ? [node] : []));
   return true;
@@ -114,14 +114,14 @@ function applyDynamicSidebarLoaderSlot(
     if (applyRepositoryIdleLoader(slot, root, counts, idleCountPath, renderers)) return;
   }
   const node = (renderers.loader || defaultLoaderNode)({
-    ...runtimeContext(root, counts, slot),
-    idleCount: idleCountPath ? dynamicSidebarNumber(counts, idleCountPath) : null,
-    idleCountPath,
-    lastStatus: dynamicSidebarText(counts, statusPath),
-    loaderPath,
-    repositoryId,
-    running,
-    statusPath,
+      ...runtimeContext(root, counts, slot),
+      idleCount: idleCountPath ? dynamicSidebarNumber(counts, idleCountPath) : null,
+      idleCountPath,
+      lastStatus: dynamicSidebarText(counts, statusPath),
+      loaderPath,
+      repositoryId,
+      running,
+      statusPath,
   });
   slot.replaceChildren(...(node ? [node] : []));
 }
@@ -132,9 +132,9 @@ function applyDynamicSidebarLoaderSlots(
   renderers: DynamicSidebarRuntimeRenderers = {},
 ) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_LOADER_SLOT_SELECTOR)
-    .forEach((slot) => {
+  .forEach((slot) => {
       applyDynamicSidebarLoaderSlot(root, counts, slot, renderers);
-    });
+  });
 }
 
 function setDynamicSidebarLinkDisabled(link: HTMLElement, disabled: boolean) {
@@ -152,23 +152,23 @@ function setDynamicSidebarLinkDisabled(link: HTMLElement, disabled: boolean) {
     link.removeAttribute("tabindex");
   }
   link.querySelectorAll([
-    DYNAMIC_SIDEBAR_COUNT_SLOT_SELECTOR,
-    DYNAMIC_SIDEBAR_LOADER_SLOT_SELECTOR,
-    DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR,
-  ].join(",")).forEach((slot) => {
-    if (slot instanceof HTMLElement) {
-      slot.setAttribute("data-tbf-sidebar-disabled", disabled ? "1" : "0");
-    }
+      DYNAMIC_SIDEBAR_COUNT_SLOT_SELECTOR,
+      DYNAMIC_SIDEBAR_LOADER_SLOT_SELECTOR,
+      DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR,
+    ].join(",")).forEach((slot) => {
+      if (slot instanceof HTMLElement) {
+        slot.setAttribute("data-tbf-sidebar-disabled", disabled ? "1" : "0");
+      }
   });
 }
 
 function applyDynamicSidebarDisabledLinks(root: HTMLElement, counts: unknown) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_DYNAMIC_LINK_SELECTOR)
-    .forEach((link) => {
+  .forEach((link) => {
       const path = textValue(link.getAttribute("data-tbf-sidebar-disabled-path"));
       const disabled = !path || (dynamicSidebarNumber(counts, path) || 0) <= 0;
       setDynamicSidebarLinkDisabled(link, disabled);
-    });
+  });
 }
 
 function applyDynamicSidebarCounts(

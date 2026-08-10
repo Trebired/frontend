@@ -10,44 +10,44 @@ import type { ProductShellHeaderProps } from "./types.js";
 function headerBrand(props: ProductShellHeaderProps) {
   const structuredBrand = props.brandLogo !== undefined || props.brandTag !== undefined;
   const hasBrandBody = structuredBrand
-    ? props.brandLogo !== undefined || props.brandTag !== undefined
-    : props.brandContent !== undefined && props.brandContent !== null && props.brandContent !== false;
+  ? props.brandLogo !== undefined || props.brandTag !== undefined
+  : props.brandContent !== undefined && props.brandContent !== null && props.brandContent !== false;
   if (!hasBrandBody && !props.brandMeta) return null;
   const brandBody = structuredBrand ? (
     <span
-      className="tbf-shell-header-brand__identity"
-      data-tbf-brand-tag-align={props.brandTagAlign || "horizontal"}
+    className="tbf-shell-header-brand__identity"
+    data-tbf-brand-tag-align={props.brandTagAlign || "horizontal"}
     >
-      {props.brandLogo ? (
+    {props.brandLogo ? (
         <span className="tbf-shell-header-brand__logo">
-          {props.brandLogo}
+        {props.brandLogo}
         </span>
       ) : null}
-      {props.brandTag ? (
+    {props.brandTag ? (
         <span className="tbf-shell-header-brand__tag">
-          {props.brandTag}
+        {props.brandTag}
         </span>
       ) : null}
     </span>
   ) : props.brandContent;
   return (
     <HeaderGroup className={classNames("tbf-shell-header-brand", props.brandClassName)}>
-      {props.brandHref ? (
+    {props.brandHref ? (
         <a
-          aria-label={productShellLabel(props.labels, "goHome")}
-          className="tbf-shell-header-brand__link"
-          href={props.brandHref}
+        aria-label={productShellLabel(props.labels, "goHome")}
+        className="tbf-shell-header-brand__link"
+        href={props.brandHref}
         >
-          {brandBody}
+        {brandBody}
         </a>
       ) : (
         <span className="tbf-shell-header-brand__mark">
-          {brandBody}
+        {brandBody}
         </span>
-      )}
-      {!structuredBrand && props.brandMeta ? (
+    )}
+    {!structuredBrand && props.brandMeta ? (
         <span className="tbf-shell-header-brand__meta">
-          {props.brandMeta}
+        {props.brandMeta}
         </span>
       ) : null}
     </HeaderGroup>
@@ -60,13 +60,13 @@ function headerMobileToggle(props: ProductShellHeaderProps) {
   const label = productShellLabel(props.labels, "menu");
   return (
     <HeaderGroup className="tbf-shell-header-toggle-group">
-      <MobileNavToggleButton
-        aria-label={label}
-        className={classNames("tbf-shell-header-toggle", props.mobileToggleClassName)}
-        controls={props.mobileToggleControls || "mobile_nav_shell"}
-      >
-        {props.mobileToggleIcon ?? label}
-      </MobileNavToggleButton>
+    <MobileNavToggleButton
+    aria-label={label}
+    className={classNames("tbf-shell-header-toggle", props.mobileToggleClassName)}
+    controls={props.mobileToggleControls || "mobile_nav_shell"}
+    >
+    {props.mobileToggleIcon ?? label}
+    </MobileNavToggleButton>
     </HeaderGroup>
   );
 }
@@ -75,20 +75,20 @@ function ProductShellHeader(props: ProductShellHeaderProps) {
   const state = readProductShellState(props.shell);
   return (
     <>
-      <AppHeader
-        actions={props.actions}
-        brand={(
-          <>
-            {headerBrand(props)}
-            {headerMobileToggle(props)}
-          </>
-        )}
-        className={classNames("tbf-shell-header", props.className)}
-        data-tbf-shell-header=""
-        id={props.id || "primary_header"}
-        nav={state.chrome.showHeaderLinks ? props.nav : null}
-      />
-      {props.overlays}
+    <AppHeader
+    actions={props.actions}
+    brand={(
+        <>
+        {headerBrand(props)}
+        {headerMobileToggle(props)}
+        </>
+    )}
+    className={classNames("tbf-shell-header", props.className)}
+    data-tbf-shell-header=""
+    id={props.id || "primary_header"}
+    nav={state.chrome.showHeaderLinks ? props.nav : null}
+    />
+    {props.overlays}
     </>
   );
 }

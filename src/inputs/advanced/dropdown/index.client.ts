@@ -1,4 +1,5 @@
 import dropdown from "./manager.js";
+import { noop as defineDropdownElement } from "#dqy2d22qyujv";
 import {
   readDropdownRootConfigScript,
   registerDropdownOptions,
@@ -12,7 +13,5 @@ function bindDropdownElement(root: HTMLElement | null) {
   dropdown.bind(root);
   return root;
 }
-
-function defineDropdownElement() {}
 
 export { bindDropdownElement, defineDropdownElement };

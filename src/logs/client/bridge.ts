@@ -8,7 +8,7 @@ function setLogsPartialManager(manager: any) {
 function pushFrontendLogBatch(batch: any) {
   if (
     logsPartialManager &&
-    typeof logsPartialManager.ingestFrontendLogs === "function"
+      typeof logsPartialManager.ingestFrontendLogs === "function"
   ) {
     logsPartialManager.ingestFrontendLogs(batch);
     return;
@@ -27,11 +27,11 @@ function flushBufferedFrontendLogs(
   let consumed = 0;
 
   pending.forEach(function (item) {
-    if (ingestFrontendLogs(item)) {
-      consumed += 1;
-      return;
-    }
-    frontendLogsBuffer.push(item);
+      if (ingestFrontendLogs(item)) {
+        consumed += 1;
+        return;
+      }
+      frontendLogsBuffer.push(item);
   });
 
   return consumed;

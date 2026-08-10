@@ -13,7 +13,7 @@ function Search(props: SearchProps) {
   const { children, className, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-search", className)} data-tbf-search="">
-      {children}
+    {children}
     </div>
   );
 }
@@ -22,10 +22,10 @@ function SearchInput(props: SearchInputProps) {
   const { className, type = "search", ...rest } = props;
   return (
     <input
-      {...rest}
-      className={classNames("tbf-input tbf-search__input", className)}
-      data-tbf-search-input=""
-      type={type}
+    {...rest}
+    className={classNames("tbf-input tbf-search__input", className)}
+    data-tbf-search-input=""
+    type={type}
     />
   );
 }
@@ -34,7 +34,7 @@ function SearchItem(props: SearchItemProps) {
   const { children, className, text, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-search__item", className)} data-tbf-search-item="" data-tbf-search-text={text}>
-      {children}
+    {children}
     </div>
   );
 }
@@ -43,7 +43,7 @@ function SearchEmpty(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
     <div {...rest} className={classNames("tbf-search__empty", className)} data-tbf-search-empty="">
-      {children}
+    {children}
     </div>
   );
 }

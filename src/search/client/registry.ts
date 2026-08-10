@@ -1,4 +1,5 @@
 import { toText } from "#yrscdg72qcm6";
+import { connectedElementsFromSet } from "#er0dlx1gtbzh";
 
 const searchControlsByFamily = new Map<string, Set<HTMLElement>>();
 const searchPanelsByFamily = new Map<string, Set<HTMLElement>>();
@@ -50,7 +51,3 @@ export {
   searchControlsByFamily,
   searchPanelsByFamily,
 };
-
-function connectedElementsFromSet(set: Set<HTMLElement> | undefined) {
-  return Array.from(set || []).filter((element) => element.isConnected);
-}

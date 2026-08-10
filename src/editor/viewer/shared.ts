@@ -18,15 +18,15 @@ function languageMatchesRequest(entry: any, requested: string) {
   if (requested && id === requested) return true;
   const aliases = Array.isArray(entry?.aliases) ? entry.aliases : [];
   return requested
-    ? aliases.some((alias: unknown) => text(alias).toLowerCase() === requested)
-    : false;
+  ? aliases.some((alias: unknown) => text(alias).toLowerCase() === requested)
+  : false;
 }
 
 function languageMatchesExtension(entry: any, ext: string) {
   const extensions = Array.isArray(entry?.extensions) ? entry.extensions : [];
   return ext
-    ? extensions.some((extension: unknown) => text(extension).toLowerCase() === `.${ext}`)
-    : false;
+  ? extensions.some((extension: unknown) => text(extension).toLowerCase() === `.${ext}`)
+  : false;
 }
 
 function fallbackLanguage(ext: string, requested: string) {
@@ -56,9 +56,9 @@ function editorFileLanguage(monacoRef: any, pathInput: unknown, languageNameInpu
   const requested = text(languageNameInput).toLowerCase();
   const ext = extensionFromName(normalizePath(pathInput));
   const catalog =
-    monacoRef?.languages && typeof monacoRef.languages.getLanguages === "function"
-      ? monacoRef.languages.getLanguages()
-      : [];
+  monacoRef?.languages && typeof monacoRef.languages.getLanguages === "function"
+  ? monacoRef.languages.getLanguages()
+  : [];
   const byName = catalog.find((entry: any) => languageMatchesRequest(entry, requested));
   if (byName && text(byName.id)) return text(byName.id);
   const byExtension = catalog.find((entry: any) => languageMatchesExtension(entry, ext));
@@ -148,9 +148,9 @@ function upsertReadonlyModel(
   if (!monacoRef?.editor || !monacoRef.Uri) return null;
   const uri = monacoRef.Uri.parse(uriText);
   const existingModel =
-    typeof monacoRef.editor.getModel === "function"
-      ? monacoRef.editor.getModel(uri)
-      : null;
+  typeof monacoRef.editor.getModel === "function"
+  ? monacoRef.editor.getModel(uri)
+  : null;
   const model = existingModel || monacoRef.editor.createModel("", languageId, uri);
   if (currentModel && currentModel !== model && typeof currentModel.dispose === "function") {
     currentModel.dispose();

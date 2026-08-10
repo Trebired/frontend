@@ -12,23 +12,23 @@ type CopyButtonOptions = {
 
 const COPY_SELECTOR = "[data-tbf-copy],copy-button";
 const COPY_CONFIG_SELECTOR =
-  'script[type="application/json"][data-copy-button-config],script[type="application/json"][data-tbf-copy-config]';
+'script[type="application/json"][data-copy-button-config],script[type="application/json"][data-tbf-copy-config]';
 const copyBindings = new WeakSet<HTMLElement>();
 
 function normalizeClipboardText(value: unknown) {
   return String(value == null ? "" : value)
-    .replace(/\r\n/gu, "\n")
-    .replace(/\r/gu, "\n")
-    .replace(/[\u00A0\u2007\u202F]/gu, " ")
-    .trim();
+  .replace(/\r\n/gu, "\n")
+  .replace(/\r/gu, "\n")
+  .replace(/[\u00A0\u2007\u202F]/gu, " ")
+  .trim();
 }
 
 function readTargetValue(target: Element | null) {
   if (!target) return "";
   if (
     target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
   ) {
     return normalizeClipboardText(target.value);
   }
@@ -38,8 +38,8 @@ function readTargetValue(target: Element | null) {
 async function writeClipboard(text: string) {
   if (
     typeof navigator !== "undefined" &&
-    navigator.clipboard &&
-    typeof navigator.clipboard.writeText === "function"
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
   ) {
     await navigator.clipboard.writeText(text);
     return true;
@@ -81,8 +81,8 @@ function resolveCopyTarget(target: CopyButtonOptions["target"]) {
 function firstCopyButton(host: HTMLElement) {
   if (host.matches("button,a,[role='button']")) return host;
   return Array.from(host.children).find((child): child is HTMLElement => {
-    return child instanceof HTMLElement &&
-      child.tagName.toLowerCase() !== "script";
+      return child instanceof HTMLElement &&
+        child.tagName.toLowerCase() !== "script";
   }) || null;
 }
 
@@ -96,7 +96,7 @@ function buttonValue(button: HTMLElement, options: CopyButtonOptions) {
   );
   if (direct) return direct;
   const target =
-    options.target ||
+  options.target ||
     button.getAttribute("data-tbf-copy-target") ||
     button.getAttribute("aria-controls") ||
     "";
@@ -148,13 +148,13 @@ function bindCopyButton(
   options: CopyButtonOptions = {},
 ) {
   const button = target && target.matches("copy-button")
-    ? firstCopyButton(target)
-    : target;
+  ? firstCopyButton(target)
+  : target;
   if (!(button instanceof HTMLElement) || copyBindings.has(button)) return false;
   const merged = { ...options };
   copyBindings.add(button);
   button.addEventListener("click", (event) => {
-    void runCopyButton(button, event, merged);
+      void runCopyButton(button, event, merged);
   });
   return true;
 }
@@ -167,10 +167,10 @@ function bindCopyHost(host: HTMLElement) {
 
 function bindCopyButtons(root: BindRoot = document) {
   queryAll<HTMLElement>(root, COPY_SELECTOR).forEach((host) => {
-    if (host.matches("copy-button")) bindCopyHost(host);
-    else bindCopyButton(host, {
-      target: host.getAttribute("data-tbf-copy-target") || undefined,
-    });
+      if (host.matches("copy-button")) bindCopyHost(host);
+      else bindCopyButton(host, {
+          target: host.getAttribute("data-tbf-copy-target") || undefined,
+      });
   });
 }
 

@@ -78,10 +78,10 @@ function checkboxDescription(description: ReactNode) {
   if (!description) return null;
   return (
     <span className={primitiveTextClassName({
-      breakWord: true,
-      className: "checkbox-option-description",
-      muted: true,
-      size: "sm",
+          breakWord: true,
+          className: "checkbox-option-description",
+          muted: true,
+          size: "sm",
     })}>
     {description}
     </span>
@@ -100,10 +100,10 @@ function checkbox(props: checkbox_props) {
         : {})}
     >
     {props.all === true ? (
-      <script data-checkbox-option-config="" hidden type="application/json">
-      {JSON.stringify({ all: true })}
-      </script>
-    ) : null}
+        <script data-checkbox-option-config="" hidden type="application/json">
+        {JSON.stringify({ all: true })}
+        </script>
+      ) : null}
     {checkboxInput(props, model)}
     {checkboxControl()}
     <span className={model.optionBodyClassName}>

@@ -29,13 +29,13 @@ function FlashStack(props: FlashStackProps) {
   const { children, className, expanded = false, id = "tbf_flash_stack", ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-flash-stack", className)}
-      data-tbf-expanded={expanded ? "true" : "false"}
-      data-tbf-flash-stack=""
-      id={id}
+    {...rest}
+    className={classNames("tbf-flash-stack", className)}
+    data-tbf-expanded={expanded ? "true" : "false"}
+    data-tbf-flash-stack=""
+    id={id}
     >
-      {children}
+    {children}
     </div>
   );
 }
@@ -53,21 +53,21 @@ function FlashShell(props: FlashShellProps) {
   } = props;
   return (
     <section
-      {...rest}
-      className={classNames("tbf-flash", className)}
-      data-tbf-flash=""
-      data-tbf-flash-id={id}
-      data-tbf-flash-type={type}
-      data-tbf-progress-tone={type}
-      role={type === "error" ? "alert" : "status"}
+    {...rest}
+    className={classNames("tbf-flash", className)}
+    data-tbf-flash=""
+    data-tbf-flash-id={id}
+    data-tbf-flash-type={type}
+    data-tbf-progress-tone={type}
+    role={type === "error" ? "alert" : "status"}
     >
-      <Icon className="tbf-flash__icon" spec={flashIconSpec(type)} />
-      <div className="tbf-flash__body">
-        <span className="tbf-flash__title">{title}</span>
-        {description ? <span className="tbf-flash__description">{description}</span> : null}
-        {actions ? <div className="tbf-flash__actions">{actions}</div> : null}
-      </div>
-      <span className="tbf-flash__progress" aria-hidden="true" hidden={!progress} />
+    <Icon className="tbf-flash__icon" spec={flashIconSpec(type)} />
+    <div className="tbf-flash__body">
+    <span className="tbf-flash__title">{title}</span>
+    {description ? <span className="tbf-flash__description">{description}</span> : null}
+    {actions ? <div className="tbf-flash__actions">{actions}</div> : null}
+    </div>
+    <span className="tbf-flash__progress" aria-hidden="true" hidden={!progress} />
     </section>
   );
 }
@@ -86,17 +86,17 @@ function ConfirmElement(props: ConfirmElementProps) {
   } = props;
   return (
     <button
-      {...rest}
-      className={classNames("tbf-button", className)}
-      data-tbf-confirm=""
-      data-tbf-confirm-description={confirmDescription}
-      data-tbf-confirm-mode={confirmMode}
-      data-tbf-confirm-text={confirmText}
-      data-tbf-confirm-title={confirmTitle}
-      data-tbf-confirm-type={confirmType}
-      type={type}
+    {...rest}
+    className={classNames("tbf-button", className)}
+    data-tbf-confirm=""
+    data-tbf-confirm-description={confirmDescription}
+    data-tbf-confirm-mode={confirmMode}
+    data-tbf-confirm-text={confirmText}
+    data-tbf-confirm-title={confirmTitle}
+    data-tbf-confirm-type={confirmType}
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }
@@ -105,10 +105,10 @@ function FlashLiveRegion(props: HTMLAttributes<HTMLDivElement>) {
   const { className, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-flash-live", className)}
-      aria-live="polite"
-      data-tbf-flash-live=""
+    {...rest}
+    className={classNames("tbf-flash-live", className)}
+    aria-live="polite"
+    data-tbf-flash-live=""
     />
   );
 }

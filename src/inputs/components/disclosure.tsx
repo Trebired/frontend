@@ -13,20 +13,20 @@ function Disclosure(props: DisclosureProps) {
   const { children, className, defaultOpen, panel, trigger, ...rest } = props;
   return (
     <div
-      {...rest}
-      className={classNames("tbf-disclosure", className)}
-      data-tbf-disclosure=""
-      data-tbf-disclosure-open={defaultOpen ? "true" : "false"}
+    {...rest}
+    className={classNames("tbf-disclosure", className)}
+    data-tbf-disclosure=""
+    data-tbf-disclosure-open={defaultOpen ? "true" : "false"}
     >
-      {trigger}
-      <div
-        className="tbf-disclosure__panel"
-        data-tbf-disclosure-panel=""
-        hidden={!defaultOpen}
-      >
-        {panel}
-      </div>
-      {children}
+    {trigger}
+    <div
+    className="tbf-disclosure__panel"
+    data-tbf-disclosure-panel=""
+    hidden={!defaultOpen}
+    >
+    {panel}
+    </div>
+    {children}
     </div>
   );
 }
@@ -35,13 +35,13 @@ function DisclosureButton(props: DisclosureButtonProps) {
   const { children, className, type = "button", ...rest } = props;
   return (
     <button
-      {...rest}
-      aria-expanded={props["aria-expanded"] ?? false}
-      className={classNames("tbf-disclosure__trigger", className)}
-      data-tbf-disclosure-trigger=""
-      type={type}
+    {...rest}
+    aria-expanded={props["aria-expanded"] ?? false}
+    className={classNames("tbf-disclosure__trigger", className)}
+    data-tbf-disclosure-trigger=""
+    type={type}
     >
-      {children}
+    {children}
     </button>
   );
 }

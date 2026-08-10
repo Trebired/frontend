@@ -8,27 +8,27 @@ type DynamicSidebarRuntimeRenderContext = {
 };
 
 type DynamicSidebarRuntimeCountContext =
-  DynamicSidebarRuntimeRenderContext & {
-    count: number;
-    path: string;
-  };
+DynamicSidebarRuntimeRenderContext & {
+  count: number;
+  path: string;
+};
 
 type DynamicSidebarRuntimeLoaderContext =
-  DynamicSidebarRuntimeRenderContext & {
-    idleCount: number | null;
-    idleCountPath: string;
-    lastStatus: string;
-    loaderPath: string;
-    repositoryId: string;
-    running: number;
-    statusPath: string;
-  };
+DynamicSidebarRuntimeRenderContext & {
+  idleCount: number | null;
+  idleCountPath: string;
+  lastStatus: string;
+  loaderPath: string;
+  repositoryId: string;
+  running: number;
+  statusPath: string;
+};
 
 type DynamicSidebarRuntimeStateContext =
-  DynamicSidebarRuntimeRenderContext & {
-    path: string;
-    state: string;
-  };
+DynamicSidebarRuntimeRenderContext & {
+  path: string;
+  state: string;
+};
 
 type DynamicSidebarRuntimeRenderers = {
   count?: (context: DynamicSidebarRuntimeCountContext) => Node | null;
@@ -50,9 +50,9 @@ type DynamicSidebarLiveOptions = {
   request?: (
     descriptors: DynamicSidebarDescriptor[],
   ) => Promise<DynamicSidebarResponseItem[] | null | undefined> |
-    DynamicSidebarResponseItem[] |
-    null |
-    undefined;
+  DynamicSidebarResponseItem[] |
+  null |
+  undefined;
   subscribe?: DynamicSidebarSubscribe;
 };
 

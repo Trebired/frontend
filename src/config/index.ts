@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { defineValue } from "#ndsvdqv80epr";
 import { collectConfigDependencies, importConfigModule, pathExists } from "./module.js";
 import { FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
 import { generateFrontendScss } from "./scss.js";
@@ -9,9 +10,7 @@ import type {
   FrontendConfig,
 } from "./types.js";
 
-function defineFrontendConfig<T extends FrontendConfig>(config: T): T {
-  return config;
-}
+const defineFrontendConfig = defineValue as <T extends FrontendConfig>(config: T) => T;
 
 async function findFrontendConfig(
   startDir: string = process.cwd(),
@@ -43,8 +42,8 @@ async function loadFrontendConfig(
 ): Promise<LoadedFrontendConfig> {
   const root = path.resolve(projectRoot);
   const resolvedPath = options.configPath
-    ? path.resolve(root, options.configPath)
-    : await findFrontendConfig(options.searchFrom || root);
+  ? path.resolve(root, options.configPath)
+  : await findFrontendConfig(options.searchFrom || root);
 
   if (!resolvedPath) {
     if (options.defaultIfMissing === false) {
