@@ -69,6 +69,9 @@ function configuredSource() {
     "    semantics: { color: { brand: \"#123456\" } },",
     "  },",
     "  components: {",
+    "    overlays: {",
+    "      modal: { content: { background: \"#111111\" }, motion: { initialScale: \"0.92\" } },",
+    "    },",
     "    primitives: {",
     "      textLink: { root: { color: \"#222222\" }, states: { hover: { color: \"#333333\" } } },",
     "      upload: { preview: { size: \"88px\" }, surface: { background: \"#eeeeee\" } },",
@@ -89,6 +92,7 @@ function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.config.design.interactions.activePress.filter, "none");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-overlays-modal-content-width: min(720px, calc(100vw - 48px));"));
   assert.ok(defaults.generatedScss.includes("--tbf-primitives-upload-preview-size: 64px;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
@@ -104,6 +108,8 @@ function assertLoadedConfig(loaded, configPath, config) {
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.ok(loaded.generatedScss.includes("--app-interaction-active-filter: brightness(0.8);"));
+  assert.ok(loaded.generatedScss.includes("--app-overlays-modal-content-background: #111111;"));
+  assert.ok(loaded.generatedScss.includes("--app-overlays-modal-motion-initial-scale: 0.92;"));
   assert.ok(loaded.generatedScss.includes("--app-runtime-progress-color: #111111;"));
   assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-root-color: #222222;"));
   assert.ok(loaded.generatedScss.includes("--app-primitives-text-link-states-hover-color: #333333;"));

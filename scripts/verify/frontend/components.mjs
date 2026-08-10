@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyFrontendComponents(context) {
   await verifyLayoutStyles(context.rootDir);
+  await verifyModalStyles(context.rootDir);
   await verifyThemeStyles(context.rootDir);
   await verifyTabsStyles(context.rootDir);
   await verifyUploadStyles(context.rootDir);
@@ -30,14 +31,24 @@ async function verifyTabsStyles(rootDir) {
   assert.ok(source.includes("var(--tbf-primitives-tabs-states-active-background"));
 }
 
+async function verifyModalStyles(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "modal", "styles", "index.scss"), "utf8");
+  assert.ok(source.includes("--tbf-overlays-modal-backdrop-background"));
+  assert.ok(source.includes("--tbf-overlays-modal-content-background"));
+  assert.ok(source.includes("--tbf-overlays-modal-motion-initial-scale"));
+}
+
 async function verifyUploadStyles(rootDir) {
   const upload = await fs.readFile(path.join(rootDir, "dist", "inputs", "styles", "upload.scss"), "utf8");
   const cropper = await fs.readFile(path.join(rootDir, "dist", "inputs", "styles", "cropper.scss"), "utf8");
+  const cropperRuntime = await fs.readFile(path.join(rootDir, "dist", "inputs", "upload", "crop-session.js"), "utf8");
   assert.ok(upload.includes("--tbf-primitives-upload-surface-background"));
   assert.equal(upload.includes("tbf-upload__button"), false);
   assert.equal(upload.includes("--tbf-primitives-upload-button"), false);
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-overlay-color"));
   assert.ok(cropper.includes("--tbf-primitives-upload-responsive-mobile-cropper-stage-height"));
+  assert.ok(cropperRuntime.includes("remixicon close-line"));
+  assert.ok(cropperRuntime.includes("remixicon checkbox-circle-line"));
 }
 
 async function verifyThemeStyles(rootDir) {

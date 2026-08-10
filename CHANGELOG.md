@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.0.6
+
+- Added configurable `components.overlays.modal` tokens for modal backdrop, content, and motion styling.
+- Added Remixicon close and checkbox icons to upload cropper Cancel and Use image actions while keeping the normal `btn` class.
+
 ## 6.0.5
 
 - Changed upload field trigger, clear, and cropper action buttons to use the normal `btn` primitive class instead of upload-specific button classes.

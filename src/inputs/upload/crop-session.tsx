@@ -7,6 +7,7 @@ import {
 } from "react";
 import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
+import { Icon } from "#lbkpzw8nphru";
 import { closeModal, openModal, prepareModal } from "#8rm3pzkj3gge";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import { uploadRootConfig } from "./config.js";
@@ -94,6 +95,7 @@ function useUploadCropper(props: CropperViewProps, imageRef: RefObject<HTMLImage
 function CropperView(props: CropperViewProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   useUploadCropper(props, imageRef);
+  const useImageLabel = props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel;
   return h("div", { className: "tbf-upload-crop" },
     h("div", { className: "tbf-upload-crop__header" },
       h("h2", { className: "tbf-upload-crop__title" }, props.title),
@@ -115,13 +117,13 @@ function CropperView(props: CropperViewProps) {
           disabled: props.busy,
           onClick: props.onCancel,
           type: "button",
-        }, "Cancel"),
+        }, h(Icon, { spec: "remixicon close-line" }), h("span", null, "Cancel")),
       h("button", {
           className: "btn",
           disabled: props.busy || !props.ready,
           onClick: props.onConfirm,
           type: "button",
-        }, props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel),
+        }, h(Icon, { spec: "remixicon checkbox-circle-line" }), h("span", null, useImageLabel)),
     ),
   );
 }

@@ -33,7 +33,29 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
     }),
     overlays: Object.freeze({
-        modal: Object.freeze({}),
+        modal: Object.freeze({
+            backdrop: {
+              background: "var(--tbf-overlay, rgb(0 0 0 / 48%))",
+              opacity: "1",
+              padding: "24px",
+            },
+            content: {
+              background: "var(--tbf-surface, #fff)",
+              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
+              color: "var(--tbf-text, #000)",
+              maxHeight: "min(80vh, 720px)",
+              padding: "20px",
+              radius: "var(--tbf-radius, 0)",
+              shadow: "var(--tbf-shadow, 0 0 0 1px #000)",
+              width: "min(720px, calc(100vw - 48px))",
+            },
+            motion: {
+              duration: "var(--tbf-transition-normal)",
+              easing: "ease",
+              initialScale: "0.96",
+              openScale: "1",
+            },
+        }),
         popover: Object.freeze({
             item: {
               root: {
