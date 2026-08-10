@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 5.0.6
+
+- Made product shell theme popovers render with popover data attributes during SSR so they are hidden and styled before client binding.
+- Added SSR body/header layout state for primary and secondary headers so initial layout offsets no longer start from zero and then correct after boot.
+
 ## 5.0.5
 
 - Made advanced tabs prefer URL route state over an explicit default initial value during SSR.

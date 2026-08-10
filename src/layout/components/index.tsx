@@ -225,9 +225,11 @@ function LayoutBottomBar(props: HTMLAttributes<HTMLElement>) {
 
 function LayoutBootScript(props: LayoutBootScriptProps) {
   const {
+    hasHeader,
     hasLeftSidebar,
     hasMobileBottomBar,
     hasRightSidebar,
+    hasSecondaryHeader,
     ...rest
   } = props;
   return (
@@ -236,9 +238,11 @@ function LayoutBootScript(props: LayoutBootScriptProps) {
       data-tbf-layout-boot=""
       dangerouslySetInnerHTML={{
         __html: createLayoutBootScript({
+          hasHeader,
           hasLeftSidebar,
           hasMobileBottomBar,
           hasRightSidebar,
+          hasSecondaryHeader,
         }),
       }}
     />

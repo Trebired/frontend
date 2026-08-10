@@ -115,6 +115,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
       <ThemeSelect
         aria-hidden="true"
         className="popover popover-portaled tbf-theme-switch-popover"
+        data-tbf-popover=""
         id={themePopoverId}
         label={String(label)}
         optionClassName="popover-item"

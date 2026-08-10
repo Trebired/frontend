@@ -20,6 +20,24 @@
   --tbf-secondary-header-height: 0px;
 }
 
+body[data-tbf-header-primary="true"] {
+  --tbf-header-height: var(--tbf-header-min-height, 67px);
+  --tbf-layout-top-offset: var(--tbf-header-height);
+}
+
+body[data-tbf-header-secondary="true"] {
+  --tbf-secondary-header-height: var(
+    --tbf-secondary-header-min-height,
+    var(--tbf-header-min-height, 67px)
+  );
+}
+
+body[data-tbf-header-primary="true"][data-tbf-header-secondary="true"] {
+  --tbf-layout-top-offset: calc(
+    var(--tbf-header-height) + var(--tbf-secondary-header-height)
+  );
+}
+
 body[data-tbf-sidebar-left="true"] {
   --tbf-layout-sidebar-left-active-width: var(
     --tbf-sidebar-left-width,

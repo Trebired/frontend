@@ -1,6 +1,11 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { bindBreadcrumbs } from "./breadcrumb.js";
-import { bindHeaders, type HeaderRuntimeOptions } from "./header.js";
+import {
+  HEADER_PRIMARY_SELECTOR,
+  HEADER_SECONDARY_SELECTOR,
+  bindHeaders,
+  type HeaderRuntimeOptions,
+} from "./header.js";
 
 const LAYOUT_ROOT_SELECTOR = "[data-tbf-layout-root]";
 const LAYOUT_MAIN_SELECTOR = "[data-tbf-layout-main]";
@@ -13,9 +18,11 @@ const LAYOUT_MOBILE_BODY_ATTRIBUTE = "data-tbf-layout-mobile";
 type LayoutSide = "left" | "right";
 
 type LayoutBodyState = {
+  hasHeader: boolean;
   hasLeftSidebar: boolean;
   hasMobileBottomBar: boolean;
   hasRightSidebar: boolean;
+  hasSecondaryHeader: boolean;
 };
 
 type LayoutRuntimeOptions = {
@@ -33,9 +40,11 @@ function hasSidebar(root: ParentNode, side: LayoutSide) {
 
 function readLayoutBodyState(root: ParentNode = document): LayoutBodyState {
   return {
+    hasHeader: Boolean(root.querySelector(HEADER_PRIMARY_SELECTOR)),
     hasLeftSidebar: hasSidebar(root, "left"),
     hasMobileBottomBar: Boolean(root.querySelector("[data-tbf-layout-bottom-bar]")),
     hasRightSidebar: hasSidebar(root, "right"),
+    hasSecondaryHeader: Boolean(root.querySelector(HEADER_SECONDARY_SELECTOR)),
   };
 }
 
@@ -43,6 +52,11 @@ function applyLayoutBodyState(state: LayoutBodyState, options: LayoutRuntimeOpti
   const body = typeof document !== "undefined" ? document.body : null;
   if (!body) return state;
   body.setAttribute(LAYOUT_BODY_ATTRIBUTE, "true");
+  body.setAttribute("data-tbf-header-primary", state.hasHeader ? "true" : "false");
+  body.setAttribute(
+    "data-tbf-header-secondary",
+    state.hasSecondaryHeader ? "true" : "false",
+  );
   body.setAttribute("data-tbf-sidebar-left", state.hasLeftSidebar ? "true" : "false");
   body.setAttribute("data-tbf-sidebar-right", state.hasRightSidebar ? "true" : "false");
   body.setAttribute(
@@ -85,9 +99,11 @@ function ensureLayoutPortalRoot() {
 
 function createLayoutBootScript(state: Partial<LayoutBodyState> = {}) {
   const payload = JSON.stringify({
+    hasHeader: state.hasHeader === true,
     hasLeftSidebar: state.hasLeftSidebar === true,
     hasMobileBottomBar: state.hasMobileBottomBar === true,
     hasRightSidebar: state.hasRightSidebar === true,
+    hasSecondaryHeader: state.hasSecondaryHeader === true,
   }).replace(/</gu, "\\u003c");
   return [
     "(function(){try{",
@@ -95,6 +111,8 @@ function createLayoutBootScript(state: Partial<LayoutBodyState> = {}) {
     "var body=document.body;",
     "if(!body)return;",
     "body.setAttribute('data-tbf-layout','true');",
+    "body.setAttribute('data-tbf-header-primary',state.hasHeader?'true':'false');",
+    "body.setAttribute('data-tbf-header-secondary',state.hasSecondaryHeader?'true':'false');",
     "body.setAttribute('data-tbf-sidebar-left',state.hasLeftSidebar?'true':'false');",
     "body.setAttribute('data-tbf-sidebar-right',state.hasRightSidebar?'true':'false');",
     "body.setAttribute('data-tbf-layout-mobile',state.hasMobileBottomBar?'true':'false');",

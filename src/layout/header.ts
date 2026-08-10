@@ -39,7 +39,9 @@ function syncHeaderOffsets(root: ParentNode = document) {
   const secondary = root.querySelector(HEADER_SECONDARY_SELECTOR) || document.querySelector(HEADER_SECONDARY_SELECTOR);
   const primaryHeight = elementHeight(primary);
   const secondaryHeight = elementHeight(secondary);
-  const target = document.documentElement;
+  const target = document.body || document.documentElement;
+  target.setAttribute("data-tbf-header-primary", primary ? "true" : "false");
+  target.setAttribute("data-tbf-header-secondary", secondary ? "true" : "false");
   target.style.setProperty("--tbf-header-height", `${primaryHeight}px`);
   target.style.setProperty("--tbf-secondary-header-height", `${secondaryHeight}px`);
   target.style.setProperty("--tbf-layout-top-offset", `${primaryHeight + secondaryHeight}px`);
