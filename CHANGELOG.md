@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 5.0.3
+
+- Kept product shell theme triggers on the generic button primitive while only applying icon-button sizing to icon-only triggers.
+
 ## 5.0.2
 
 - Rendered the product shell theme trigger through the generic button primitive so it matches locale switcher button styling.

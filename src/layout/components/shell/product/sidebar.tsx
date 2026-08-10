@@ -94,6 +94,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
   const label = productShellLabel(labels, "toggleTheme");
   const id = String(rest.id || "tbf_product_shell_theme_control");
   const themePopoverId = popoverId || `${id}_menu`;
+  const body = children || icon;
   return (
     <>
       {button({
@@ -102,10 +103,10 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
         "aria-expanded": "false",
         "aria-label": props["aria-label"] || label,
         "aria-haspopup": "menu",
-        children: children || icon,
+        children: body,
         className: classNames("tbf-product-shell-theme-control", className),
         "data-tbf-popover-open": "",
-        icon: true,
+        icon: !children,
         id,
         title: String(label),
         tooltip: true,
