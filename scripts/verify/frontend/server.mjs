@@ -115,6 +115,7 @@ async function verifyIconServerAttachment(server) {
       packs: ["remixicon"],
   });
   assert.equal(app.locals.icons.save, "remixicon:save-3-line");
+  assert.equal(app.locals.icons.close, "remixicon:close-line");
   assert.equal(typeof app.locals.icon, "function");
   assert.equal(attached.route, "/__icons/svg");
   assert.equal(app.routes[0].path, "/__icons/svg");
@@ -122,6 +123,7 @@ async function verifyIconServerAttachment(server) {
   app.middlewares[0]({}, res, () => {});
   app.middlewares[1]({}, res, () => {});
   assert.equal(res.locals.icons.save, "remixicon:save-3-line");
+  assert.equal(res.locals.icons.close, "remixicon:close-line");
   assert.ok(res.locals.icon("remixicon:save-3-line").includes("tbf-icon"));
   await app.routes[0].handler(
     { query: { spec: "remixicon:save-3-line" } },

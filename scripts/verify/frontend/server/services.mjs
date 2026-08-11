@@ -45,10 +45,7 @@ function verifyBoundServerFactories(server) {
 async function verifyFrontendServerServices(server) {
   const app = appCapture();
   const attached = server.attachFrontendServerServices(app, {
-      icons: {
-        aliases: { save: "remixicon:save-3-line" },
-        route: false,
-      },
+      icons: true,
       language: {
         options: { allowedLanguages: ["en", "cs"], defaultLanguage: "en" },
         respond: ({ lang }) => ({ lang }),
@@ -73,7 +70,8 @@ async function verifyFrontendServerServices(server) {
   assert.equal(attached.theme, true);
   assert.equal(attached.language, true);
   assert.equal(attached.sidebar, true);
-  assert.equal(attached.icons.route, "");
+  assert.equal(attached.icons.route, "/__icons/svg");
+  assert.equal(app.locals.icons.save, "remixicon:save-3-line");
   assert.deepEqual(
     app.posts.map((route) => route.path),
     ["/ui/theme/toggle", "/ui/lang/set", "/ui/sidebar/toggle"],

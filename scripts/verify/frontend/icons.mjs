@@ -124,7 +124,8 @@ function verifyIconAliasLocals(iconServer) {
   const aliases = iconServer.attachIconAliasLocals(app, {
       add: "remixicon add-line",
   });
-  assert.deepEqual(aliases, { add: "remixicon:add-line" });
+  assert.equal(aliases.add, "remixicon:add-line");
+  assert.equal(aliases.close, "remixicon:close-line");
   assert.deepEqual(app.locals.icons, aliases);
   const res = { locals: {} };
   middlewares[0]({}, res, () => {});

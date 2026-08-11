@@ -1,7 +1,12 @@
-import { normalizeIconAliasMap } from "#rqcj8y6keks2";
+import {
+  defaultIconAliases,
+  mergeIconAliases,
+  normalizeIconAliasMap,
+} from "#rqcj8y6keks2";
 import { createIconMiddleware } from "#d9gbd4jkefih";
 import { text } from "#bu1nq95e3k0f";
 import { renderIconHtml } from "./index.js";
+import { createIconServerOptions } from "./defaults.js";
 import type { IconServerOptions, RenderIconHtmlAttrs } from "./types.js";
 
 type IconServerAttachment = {
@@ -14,6 +19,7 @@ type AttachIconServerOptions = IconServerOptions& {
   aliases?: unknown;
   iconLocalKey?: string;
   iconsLocalKey?: string;
+  includeDefaultAliases?: boolean;
   route?: string | false;
 };
 
@@ -24,21 +30,34 @@ type IconServerApp = {
 };
 
 function iconServerOptions(options: AttachIconServerOptions): IconServerOptions {
-  return {
-    packageRoot: options.packageRoot,
-    packageRoots: options.packageRoots,
-    packs: options.packs,
-    preserveSourceColors: options.preserveSourceColors,
-    rootDir: options.rootDir,
-  };
+  return createIconServerOptions({
+      packageRoot: options.packageRoot,
+      packageRoots: options.packageRoots,
+      packs: options.packs,
+      preserveSourceColors: options.preserveSourceColors,
+      rootDir: options.rootDir,
+  });
+}
+
+function normalizeServerIconAliases(
+  aliases: unknown,
+  includeDefaultAliases = true,
+) {
+  return includeDefaultAliases
+  ? mergeIconAliases(defaultIconAliases, aliases)
+  : normalizeIconAliasMap(aliases);
 }
 
 function attachIconAliasLocals(
   app: any,
   aliases: unknown,
   localKey = "icons",
+  options: { includeDefaultAliases?: boolean } = {},
 ) {
-  const normalizedAliases = normalizeIconAliasMap(aliases);
+  const normalizedAliases = normalizeServerIconAliases(
+    aliases,
+    options.includeDefaultAliases !== false,
+  );
   if (!app || typeof app.use !== "function") return normalizedAliases;
   if (app.locals && typeof app.locals === "object") {
     app.locals[localKey] = normalizedAliases;
@@ -82,6 +101,7 @@ function attachIconServer(
     app,
     options.aliases,
     text(options.iconsLocalKey) || "icons",
+    { includeDefaultAliases: options.includeDefaultAliases !== false },
   );
   attachIconRendererLocals(app, icon, text(options.iconLocalKey) || "icon");
   if (route && typeof app.get === "function") {
@@ -90,5 +110,5 @@ function attachIconServer(
   return { aliases, icon, route };
 }
 
-export { attachIconAliasLocals, attachIconServer };
+export { attachIconAliasLocals, attachIconServer, normalizeServerIconAliases };
 export type { AttachIconServerOptions, IconServerAttachment };

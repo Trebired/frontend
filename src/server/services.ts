@@ -71,7 +71,7 @@ SidebarToggleHandlerOptions& {
 
 type FrontendServerServicesOptions = {
   favicon?: false | ThemedFaviconOptions;
-  icons?: false | AttachIconServerOptions;
+  icons?: OptionalService<AttachIconServerOptions>;
   language?: OptionalService<FrontendLanguageServiceOptions>;
   locale?: OptionalService<LocaleMiddlewareOptions>;
   monaco?: OptionalService<Partial<PackageStaticRouteOptions>>;
@@ -180,7 +180,9 @@ function attachFrontendServerServices(
     attachThemedFaviconRoutes(app, options.favicon);
     attached.favicon = true;
   }
-  if (options.icons) attached.icons = attachIconServer(app, options.icons);
+  if (serviceEnabled(options.icons)) {
+    attached.icons = attachIconServer(app, serviceConfig(options.icons));
+  }
   if (serviceEnabled(options.monaco)) {
     attached.monaco = attachMonacoStaticRoute(
       app,

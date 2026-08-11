@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.11.1
+
+- Applied default icon aliases and icon server pack defaults when attaching icon server services.
+- Allowed `attachFrontendServerServices({ icons: true })` so apps can enable package-owned icon services without local alias plumbing.
+
 ## 6.11.0
 
 - Added shared default icon aliases for common ecosystem actions, entities, and status states.
