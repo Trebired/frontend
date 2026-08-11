@@ -1,19 +1,12 @@
 import { normalizeSpace } from "#bu1nq95e3k0f";
 import { createIconSvgResponse } from "#wwj1o2wv6dor";
 import type { IconServerOptions } from "#wwj1o2wv6dor";
+import { sendExpressResponse } from "./response.js";
+import type { ExpressLikeResponse } from "./response.js";
 
 type ExpressLikeRequest = {
   query?: Record<string, unknown>;
   url?: string;
-};
-
-type ExpressLikeResponse = {
-  setHeader?: (name: string, value: string) => void;
-  set?: (headers: Record<string, string>) => unknown;
-  status?: (status: number) => ExpressLikeResponse;
-  type?: (type: string) => ExpressLikeResponse;
-  send?: (body: string) => unknown;
-  end?: (body?: string) => unknown;
 };
 
 type ExpressNext = (error?: unknown) => void;
@@ -27,21 +20,6 @@ function readRequestSpec(req: ExpressLikeRequest): string {
   } catch {
     return "";
   }
-}
-
-function sendExpressResponse(res: ExpressLikeResponse, response: ReturnType<typeof createIconSvgResponse>): unknown {
-  if (typeof res.status === "function") res.status(response.status);
-  if (typeof res.set === "function") res.set(response.headers);
-  else {
-    for (const [key, value] of Object.entries(response.headers)) {
-      res.setHeader?.(key, value);
-    }
-  }
-  if (typeof res.type === "function" && response.headers["Content-Type"]) {
-    res.type(response.headers["Content-Type"]);
-  }
-  if (typeof res.send === "function") return res.send(response.body);
-  return res.end?.(response.body);
 }
 
 function createIconMiddleware(options: IconServerOptions = {}) {

@@ -1,6 +1,6 @@
 {
   "name": "@trebired/frontend",
-  "version": "6.8.0",
+  "version": "6.9.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,

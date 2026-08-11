@@ -8,6 +8,7 @@ async function verifyFrontendServer(context) {
   verifySecurityServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
+  await verifyIconServerAttachment(server);
   verifyRootNavigation(root);
   verifySeoServer(server);
   await verifyAssetServer(server);
@@ -83,6 +84,12 @@ function verifyNavigationServer(server) {
   const decorated = state.decorate('<li><a href="/apps/example">App</a></li>');
   assert.ok(decorated.includes('class="is-active"'));
   assert.ok(decorated.includes('aria-current="page"'));
+  const app = appCapture();
+  server.attachNavigationMiddleware(app);
+  const res = serverResponseProbe();
+  app.middlewares[0]({ originalUrl: "/settings/profile?tab=account" }, res, () => {});
+  assert.equal(res.locals.navigation.current.path, "/settings/profile");
+  assert.equal(res.locals.navigation.isCurrent("/settings"), true);
 }
 
 function verifyRootNavigation(root) {
@@ -96,6 +103,30 @@ function verifySecurityServer(server) {
   const state = server.applySecurityToLocals(res);
   assert.deepEqual(state, { csrfToken: "csrf-a", nonce: "nonce-a" });
   assert.deepEqual(res.locals.security, state);
+}
+
+async function verifyIconServerAttachment(server) {
+  const app = appCapture();
+  const attached = server.attachIconServer(app, {
+      aliases: { save: "remixicon:save-3-line" },
+      packs: ["remixicon"],
+  });
+  assert.equal(app.locals.icons.save, "remixicon:save-3-line");
+  assert.equal(typeof app.locals.icon, "function");
+  assert.equal(attached.route, "/__icons/svg");
+  assert.equal(app.routes[0].path, "/__icons/svg");
+  const res = serverResponseProbe();
+  app.middlewares[0]({}, res, () => {});
+  app.middlewares[1]({}, res, () => {});
+  assert.equal(res.locals.icons.save, "remixicon:save-3-line");
+  assert.ok(res.locals.icon("remixicon:save-3-line").includes("tbf-icon"));
+  await app.routes[0].handler(
+    { query: { spec: "remixicon:save-3-line" } },
+    res,
+  );
+  assert.equal(res.headers["Content-Type"], "image/svg+xml; charset=utf-8");
+  assert.equal(res.statusCode, 200);
+  assert.ok(String(res.body).includes("<svg"));
 }
 
 async function verifyRenderModeServer(server) {
@@ -299,9 +330,14 @@ function writeProbeHeader(probe, name, value) {
 
 function appCapture() {
   return {
+    locals: {},
+    middlewares: [],
     routes: [],
     get(path, handler) {
       this.routes.push({ handler, path });
+    },
+    use(handler) {
+      this.middlewares.push(handler);
     },
   };
 }

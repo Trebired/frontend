@@ -14,6 +14,10 @@ type DecorateOptions = CurrentMatchOptions& {
   liClass?: string;
 };
 
+type NavigationMiddlewareOptions = {
+  localsKey?: string;
+};
+
 const EMPTY_CURRENT: CurrentNavigation = {
   path: "/",
   url: "/",
@@ -232,9 +236,55 @@ function addClassAttr(tag: string, className: string) {
         };
         }
 
+        function applyNavigationToLocals(
+        req: ServerRequestLike | null | undefined,
+        res: { locals?: Record<string, unknown> } | null | undefined,
+        options: NavigationMiddlewareOptions = {},
+        ) {
+        if (!res) return null;
+        if (!res.locals || typeof res.locals !== "object") res.locals = {};
+        const request = req as (ServerRequestLike& {
+        originalUrl?: unknown;
+        path?: unknown;
+        url?: unknown;
+        }) | null | undefined;
+        const current = {
+        path: normalizeRequestPath(req),
+        url: String((request && (request.originalUrl || request.url || request.path)) || "/"),
+        };
+        const state = createNavigationState(current);
+        res.locals[options.localsKey || "navigation"] = state;
+        return state;
+        }
+
+        function createNavigationMiddleware(options: NavigationMiddlewareOptions = {}) {
+        return function navigationMiddleware(
+        req: ServerRequestLike,
+        res: { locals?: Record<string, unknown> },
+        next: () => unknown,
+        ) {
+        applyNavigationToLocals(req, res, options);
+        return next();
+        };
+        }
+
+        function attachNavigationMiddleware(
+        app: unknown,
+        options: NavigationMiddlewareOptions = {},
+        ) {
+        if (app && typeof (app as { use?: unknown }).use === "function") {
+        (app as { use: (handler: unknown) => unknown }).use(
+        createNavigationMiddleware(options),
+        );
+        }
+        }
+
         const defaultNavigationState = createNavigationState(EMPTY_CURRENT);
 
         export {
+        applyNavigationToLocals,
+        attachNavigationMiddleware,
+        createNavigationMiddleware,
         createNavigationState,
         decorateActiveLink,
         defaultNavigationState,
@@ -244,4 +294,9 @@ function addClassAttr(tag: string, className: string) {
         normalizeNavigationPath,
         normalizeRequestPath,
         };
-        export type { CurrentMatchOptions, CurrentNavigation, DecorateOptions };
+        export type {
+        CurrentMatchOptions,
+        CurrentNavigation,
+        DecorateOptions,
+        NavigationMiddlewareOptions,
+        };

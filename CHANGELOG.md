@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.9.0
+
+- Added server helpers for attaching current-navigation locals and the full icon server system.
+- Added `attachIconServer()` so apps can configure icon aliases, icon HTML locals, and the icon SVG route from package APIs.
+
 ## 6.8.0
 
 - Added config-owned icon aliases under `assets.icons.aliases` so apps can define reusable icon names without local duplicate maps.
