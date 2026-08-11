@@ -35,6 +35,13 @@ function onReady(callback: () => void) {
   callback();
 }
 
+function requestDomFrame(callback: () => void): void {
+  const frame =
+  typeof window !== "undefined" ? window.requestAnimationFrame : null;
+  if (typeof frame === "function") frame(callback);
+  else setTimeout(callback, 0);
+}
+
 function queryAll<T extends Element = Element>(
   root: BindRoot | null | undefined,
   selector: string,
@@ -295,6 +302,7 @@ export {
   readTextAttribute,
   readViewerId,
   resolveDocumentTarget,
+  requestDomFrame,
   setAriaExpanded,
   setControlDisabled,
   setHidden,

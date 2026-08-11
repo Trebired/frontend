@@ -2,6 +2,7 @@ import {
   cssEscape,
   queryAll,
   resolveDocumentTarget,
+  requestDomFrame,
   type BindRoot,
 } from "#er0dlx1gtbzh";
 import {
@@ -36,12 +37,6 @@ const triggerBindings = new WeakMap<HTMLElement, () => void>();
 let listenersInstalled = false;
 let originalBodyOverflow = "";
 let originalBodyPaddingRight = "";
-
-function requestFrame(callback: () => void): void {
-  const frame = typeof window !== "undefined" ? window.requestAnimationFrame : null;
-  if (typeof frame === "function") frame(callback);
-  else setTimeout(callback, 0);
-}
 
 function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
   modal.dispatchEvent(new CustomEvent(name, {
@@ -151,7 +146,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   setTopStates();
   lockBodyScroll(true);
   dispatchModalEvent(modal, "tbf:modal-open", { trigger });
-  requestFrame(() => {
+  requestDomFrame(() => {
       modal.removeAttribute("data-tbf-opening");
       modal.setAttribute("data-tbf-open", "true");
       focusModal(modal);

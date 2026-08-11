@@ -4,6 +4,7 @@ import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { workspaceConfigDir } from "#kdfvp4fq2m77";
+import { settleDom } from "./timing.mjs";
 
 async function verifyFrontendTheme(context) {
   await verifyThemeConfigModes(context);
@@ -196,13 +197,13 @@ async function verifyThemeControls(context) {
 
   select.value = "sepia";
   select.dispatchEvent(new Event("change", { bubbles: true }));
-  await settle();
+  await settleDom();
   assert.equal(document.documentElement.getAttribute("data-tbf-theme"), "sepia");
   assert.equal(button.getAttribute("data-tbf-theme-current"), "sepia");
   assert.equal(button.querySelector("[data-tbf-theme-label]").textContent, "Sepia");
 
   button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  await settle();
+  await settleDom();
   assert.equal(document.documentElement.getAttribute("data-tbf-theme"), "dark");
   assert.equal(select.value, "dark");
   theme.configureThemeModes(null);
@@ -226,10 +227,6 @@ async function verifyThemeComponents(context) {
   const bootHtml = renderToStaticMarkup(h(ThemeBootScript, { modes, theme: "sepia" }));
   assert.ok(bootHtml.includes("sepia"));
   assert.equal(/<script[^>]*>[^]*<[a-z]/u.test(bootHtml.replace("</script>", "")), false);
-}
-
-function settle() {
-  return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 export { verifyFrontendTheme };

@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.14.0
+
+- Added package-owned live overlay state helpers for preserving modal scroll, active tabs, portaled popovers, and portaled dropdowns around live DOM updates.
+
 ## 6.13.0
 
 - Added package-owned live Socket.IO server helpers for resource rooms, room authorization, broadcasting, and sidebar live sync.

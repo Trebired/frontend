@@ -20,6 +20,7 @@ export type { LiveOptions };
 export * from "./cards.js";
 export * from "./connections.js";
 export * from "./infinite.js";
+export * from "./overlays.js";
 export * from "./regions.js";
 export * from "./router.js";
 export * from "./scroll-overflow.js";

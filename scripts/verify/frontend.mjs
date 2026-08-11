@@ -6,6 +6,7 @@ import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
+import { verifyLiveOverlays } from "./frontend/live.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyNamespace, verifyPopover } from "./frontend/runtime.mjs";
@@ -40,6 +41,7 @@ async function verifyFrontendMain() {
   await verifyFlash(context);
   await verifyTooltip();
   await verifyPopover(context);
+  await verifyLiveOverlays(context);
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
@@ -65,6 +67,7 @@ function installDom() {
       Event: window.Event,
       File: window.File,
       FormData: window.FormData,
+      HTMLAnchorElement: window.HTMLAnchorElement,
       HTMLButtonElement: window.HTMLButtonElement,
       HTMLElement: window.HTMLElement,
       HTMLFormElement: window.HTMLFormElement,
@@ -76,6 +79,7 @@ function installDom() {
       SVGElement: window.SVGElement,
       SubmitEvent: window.SubmitEvent,
       document: window.document,
+      cancelAnimationFrame: (frame) => clearTimeout(frame),
       getComputedStyle: window.getComputedStyle.bind(window),
       history: window.history,
       location: window.location,
@@ -84,6 +88,7 @@ function installDom() {
       window,
   });
   window.requestAnimationFrame = globalThis.requestAnimationFrame;
+  window.cancelAnimationFrame = globalThis.cancelAnimationFrame;
   window.CSS ||= {};
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
