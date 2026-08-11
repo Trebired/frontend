@@ -3,6 +3,7 @@ import { appCapture, serverResponseProbe } from "./server/probe.mjs";
 import { verifyFrontendServerFramework } from "./server/services.mjs";
 import { verifyFallbackServer } from "./server/fallback.mjs";
 import { verifyLiveSocketServer } from "./server/live-socket.mjs";
+import { verifyPermissionStateServer } from "./server/permissions.mjs";
 import { verifySecurityPolicyServer } from "./server/security-policy.mjs";
 
 async function verifyFrontendServer(context) {
@@ -26,6 +27,7 @@ async function verifyFrontendServer(context) {
   verifyLocaleServer(server);
   await verifyPageTaskServer(server);
   verifyReactRenderServer(server);
+  verifyPermissionStateServer(server);
   await verifyFallbackServer(server);
 }
 

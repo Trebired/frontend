@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.15.0
+
+- Added a configurable server React permission-state builder so apps can keep permission scope policy in config while the package owns render-shell serialization.
+
 ## 6.14.1
 
 - Closed stale package modals and popovers before removing portaled overlay nodes during live DOM updates so overlay runtime state stays consistent.

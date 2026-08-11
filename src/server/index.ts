@@ -14,6 +14,7 @@ export * from "./live-socket.js";
 export * from "./navigation.js";
 export * from "./page-task.js";
 export * from "#f7tqndj2qq9o";
+export * from "./react/permissions.js";
 export * from "./render/mode.js";
 export * from "./render/mode-toolkit.js";
 export * from "./security.js";
