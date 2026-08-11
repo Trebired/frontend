@@ -8,6 +8,9 @@ type ProgressHandle = {
   set: (value: number) => number;
   setFromProgressEvent: (event: ProgressEvent) => number;
 };
+type PageLoadProgressOptions = {
+  minVisibleMs?: number;
+};
 
 let activeRequests = 0;
 
@@ -85,6 +88,48 @@ function bindProgress() {
   return progress;
 }
 
+function bootPageLoadProgress(options: PageLoadProgressOptions = {}) {
+  if (typeof document === "undefined" || typeof window === "undefined") {
+    return false;
+  }
+  const minVisibleMs = Math.max(0, Number(options.minVisibleMs) || 0);
+  let startedAtMs = 0;
+  let started = false;
+  let settled = false;
+
+  function finishPageLoadProgress() {
+    if (!started || settled) return;
+    settled = true;
+    const elapsedMs = Math.max(0, Date.now() - startedAtMs);
+    const delayMs = Math.max(0, minVisibleMs - elapsedMs);
+    window.setTimeout(() => {
+        progress.end();
+      }, delayMs);
+  }
+
+  function startPageLoadProgress() {
+    if (started) return;
+    if (!document.body || !document.documentElement) return;
+    started = true;
+    startedAtMs = Date.now();
+    progress.begin();
+    if (document.readyState === "complete") {
+      window.setTimeout(finishPageLoadProgress, 0);
+      return;
+    }
+    window.addEventListener("load", finishPageLoadProgress, { once: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startPageLoadProgress, {
+        once: true,
+    });
+  } else {
+    startPageLoadProgress();
+  }
+  return true;
+}
+
 const progress: ProgressHandle = Object.freeze({
     begin: beginProgress,
     boot: ensureProgressElement,
@@ -98,10 +143,11 @@ export {
   PROGRESS_ID,
   beginProgress,
   bindProgress,
+  bootPageLoadProgress,
   endProgress,
   progress,
   setProgress,
   setProgressFromEvent,
 };
-export type { ProgressHandle };
+export type { PageLoadProgressOptions, ProgressHandle };
 export * from "./bars.js";

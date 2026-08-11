@@ -19,7 +19,13 @@ import { bindIcons } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
-import { bindLiveRefresh, rehydrate, type LiveOptions } from "./live/index.js";
+import {
+  bindLiveCards,
+  bindLiveRefresh,
+  bindScrollOverflows,
+  rehydrate,
+  type LiveOptions,
+} from "./live/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -72,9 +78,7 @@ function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
   };
 }
 
-function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
-  const scope = resolveRootScope(root);
-  const adapters = actionAdapters(options);
+function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
   void bindThemeRuntime(scope, {
       ...(options.theme || {}),
       persistence: options.adapters?.themePersistence,
@@ -82,6 +86,17 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindLayouts(scope, options.layout || {});
   ensureLayerRoot();
   bindPortals(scope);
+  bindSidebars(scope, {
+      ...(options.sidebar || {}),
+      persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
+  });
+}
+
+function bindFrontendWidgets(
+  scope: BindRoot,
+  options: FrontendRuntimeOptions,
+  adapters: ActionAdapters,
+) {
   bindProgress();
   bindIcons(scope);
   bindLocaleSwitchers(scope, options.locale || {});
@@ -101,18 +116,21 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   bindAdvancedInputControllers(scope);
   bindPrimitiveControllers(scope);
   bindWizard(scope);
+  bindScrollOverflows();
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
-  bindSidebars(scope, {
-      ...(options.sidebar || {}),
-      persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
-  });
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });
   bindCopyButtons(scope);
   bindFullscreen(scope);
+  if (options.live?.cards !== false) {
+    bindLiveCards(scope, options.live?.cards || {});
+  }
+}
+
+function bindFrontendLive(scope: BindRoot, options: FrontendRuntimeOptions) {
   bindLiveRefresh(scope, {
       ...(options.live || {}),
       bind(nextRoot) {
@@ -121,6 +139,14 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
       },
       skip: options.adapters?.live,
   });
+}
+
+function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
+  const scope = resolveRootScope(root);
+  const adapters = actionAdapters(options);
+  bindFrontendShell(scope, options);
+  bindFrontendWidgets(scope, options, adapters);
+  bindFrontendLive(scope, options);
 }
 
 function bindFrontendRuntime(
@@ -173,6 +199,25 @@ export * from "./dom/index.js";
 export * from "./editor/index.js";
 export * from "./entity/index.js";
 export * from "./explorer/index.js";
+export {
+  createAnimationFrameQueue,
+  dataTokenGroups,
+  dataTokens,
+  formatLocaleDateTime,
+  json,
+  normalize,
+  objectApi,
+  onlyString,
+  parseElementObject,
+  parseJson,
+  separatorSymbol,
+  toString,
+  typography,
+} from "./data/index.js";
+export {
+  fileObjectExtension,
+  isImageFileObject,
+} from "./files/index.js";
 export * from "./flash/index.js";
 export * from "./fullscreen/index.js";
 export * from "./graph/index.js";
@@ -217,6 +262,7 @@ export * from "./layout/index.js";
 export * from "./live/index.js";
 export * from "./logs/index.js";
 export * from "./markdown/index.js";
+export * from "./media/index.js";
 export * from "./modal/index.js";
 export * from "./namespace/index.js";
 export * from "./popover/index.js";
@@ -224,6 +270,7 @@ export * from "./primitives/index.js";
 export * from "./progress/index.js";
 export * from "./runtime/index.js";
 export * from "./sidebar/index.js";
+export * from "./socket/index.js";
 export * from "./surface/index.js";
 export * from "./theme/index.js";
 export * from "./tooltip/index.js";

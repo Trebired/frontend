@@ -26,6 +26,7 @@ type ActionAdapters = {
   i18n?: (key: string, fallback: string) => string;
   navigation?: {
     navigate?: (url: string) => Promise<unknown> | unknown;
+    shouldFullReload?: (trigger: HTMLElement, url: string) => boolean;
   };
   progress?: ProgressHandle;
   reload?: {
@@ -34,10 +35,22 @@ type ActionAdapters = {
 };
 
 type ActionRequestUi = {
+  busyScope?: unknown;
   flashErrorOnly?: boolean;
   flash_error_only?: boolean;
   ignoreResponseAction?: boolean;
+  onAbort?: (json: ActionJson) => unknown;
+  onFail?: (json: ActionJson) => unknown;
+  onNoop?: (json: ActionJson) => unknown;
+  onOk?: (json: ActionJson) => unknown;
+  onXhr?: (xhr: XMLHttpRequest) => void;
+  on_abort?: (json: ActionJson) => unknown;
+  on_fail?: (json: ActionJson) => unknown;
+  on_noop?: (json: ActionJson) => unknown;
+  on_ok?: (json: ActionJson) => unknown;
+  on_xhr?: (xhr: XMLHttpRequest) => void;
   silent?: boolean;
+  steps?: unknown;
 };
 
 type SubmitActionFormOptions = {

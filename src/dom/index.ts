@@ -154,6 +154,12 @@ function browserLocalStorage(): Storage | null {
   }
 }
 
+function readViewerId() {
+  if (typeof document === "undefined") return "";
+  const meta = document.querySelector('meta[name="viewer-id"]');
+  return String(meta?.getAttribute("content") || "").trim();
+}
+
 function connectedElementsFromSet<T extends Element>(set: Set<T> | undefined): T[] {
   const elements = Array.from(set || []).filter((element) => element.isConnected);
   if (set) {
@@ -287,6 +293,7 @@ export {
   readElementJson,
   readJsonScript,
   readTextAttribute,
+  readViewerId,
   resolveDocumentTarget,
   setAriaExpanded,
   setControlDisabled,

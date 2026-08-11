@@ -2,6 +2,13 @@
 
 All notable package changes are documented here.
 
+## 6.1.0
+
+- Added public action form/button request APIs, lifecycle events, response-action helpers, and action payload helpers so apps can drop local action runtime wrappers.
+- Added package-owned live navigation, rehydration, live card, live region, socket, sidebar sync, scroll-overflow, and live field refresh helpers.
+- Added generic save-policy, data, media, file, viewer, socket, and React asset helpers for ecosystem apps.
+- Exposed page-load progress boot helpers through the package progress API.
+
 ## 6.0.8
 
 - Added generic selector binding helpers, DOM element helpers, paged JSON fetching, and infinite observer utilities to the root frontend API.

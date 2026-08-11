@@ -1,6 +1,7 @@
 import { isInteractiveTarget, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 
 const ACTION_TRIGGER_SELECTOR = "[data-tbf-action-trigger]";
+const ACTION_FULL_RELOAD_SELECTOR = "[data-tbf-full-reload]";
 const registry = new Map<string, Array<(payload: ActionPayload) => void>>();
 const triggerBindings = new WeakMap<HTMLElement, () => void>();
 
@@ -14,9 +15,11 @@ type ActionPayload = {
 type BindActionTriggerOptions = {
   action?: string;
   externalHref?: string;
+  fullReloadSelector?: string;
   href?: string;
   navigation?: {
     navigate?: (url: string) => unknown;
+    shouldFullReload?: (trigger: HTMLElement, url: string) => boolean;
   };
 };
 
@@ -57,6 +60,34 @@ function dispatchAction(
   return handlers.length > 0;
 }
 
+function encodeActionPayload(payload: unknown) {
+  return encodeURIComponent(JSON.stringify(payload || {}));
+}
+
+function decodeActionPayload(value: unknown) {
+  try {
+    const decoded = decodeURIComponent(String(value || ""));
+    const parsed = decoded ? JSON.parse(decoded) : null;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function shouldNavigateWithFullReload(
+  trigger: HTMLElement,
+  href: string,
+  options: BindActionTriggerOptions,
+) {
+  if (options.navigation?.shouldFullReload?.(trigger, href) === true) {
+    return true;
+  }
+  const selector = String(
+    options.fullReloadSelector || ACTION_FULL_RELOAD_SELECTOR,
+  ).trim();
+  return Boolean(selector && trigger.closest(selector));
+}
+
 function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
   const externalHref = String(
     options.externalHref || trigger.getAttribute("data-tbf-external-href") || "",
@@ -67,8 +98,14 @@ function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
   }
   const href = String(options.href || trigger.getAttribute("data-tbf-href") || "").trim();
   if (!href) return false;
-  if (options.navigation?.navigate) void options.navigation.navigate(href);
-  else window.location.assign(href);
+  if (
+    options.navigation?.navigate &&
+      !shouldNavigateWithFullReload(trigger, href, options)
+  ) {
+    void options.navigation.navigate(href);
+  } else {
+    window.location.assign(href);
+  }
   return true;
 }
 
@@ -138,11 +175,15 @@ function bindActionTriggers(root: BindRoot = document, options: BindActionTrigge
 }
 
 export {
+  ACTION_FULL_RELOAD_SELECTOR,
   ACTION_TRIGGER_SELECTOR,
   bindActionTrigger,
   bindActionTriggers,
+  decodeActionPayload,
   dispatchAction,
+  encodeActionPayload,
   on,
+  parseAction,
   unbindActionTrigger,
 };
 export type { ActionPayload, BindActionTriggerOptions };

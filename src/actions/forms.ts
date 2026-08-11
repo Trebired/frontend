@@ -24,8 +24,15 @@ const ACTION_CONFIG_SELECTOR =
 'script[type="application/json"][data-tbf-action-config]';
 const boundForms = new WeakMap<HTMLFormElement, EventListener>();
 
-function submitterFor(event?: SubmitEvent) {
-  return event?.submitter instanceof HTMLElement ? event.submitter : null;
+function submitterFor(
+  formOrEvent?: HTMLFormElement | SubmitEvent,
+  event?: SubmitEvent,
+) {
+  const submitEvent =
+  formOrEvent && "submitter" in formOrEvent ? formOrEvent : event;
+  if (submitEvent?.submitter instanceof HTMLElement) return submitEvent.submitter;
+  const form = formOrEvent instanceof HTMLFormElement ? formOrEvent : null;
+  return form?.querySelector<HTMLElement>('button[type="submit"],input[type="submit"]') || null;
 }
 
 function readActionFormConfig(form: HTMLFormElement) {
@@ -171,7 +178,7 @@ async function submitActionForm(
 ) {
   event?.preventDefault();
   event?.stopImmediatePropagation();
-  const submitter = submitterFor(event);
+  const submitter = submitterFor(form, event);
   syncDropdownHiddenInputs(form);
   if (!(await confirmActionForm(form, submitter, options))) return null;
   const config = readActionFormConfig(form);
@@ -249,5 +256,6 @@ export {
   bindActionForm,
   bindActionForms,
   readActionFormConfig,
+  submitterFor,
   submitActionForm,
 };

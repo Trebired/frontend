@@ -17,6 +17,25 @@ function translateActionText(adapters: ActionAdapters | undefined, key: string, 
   return adapters?.i18n ? adapters.i18n(key, fallback) : fallback;
 }
 
+function runResponseCallback(
+  kind: "error" | "noop" | "success",
+  json: ActionJson,
+  ui?: ActionRequestUi,
+) {
+  const callback =
+  kind === "success"
+  ? ui?.onOk || ui?.on_ok
+  : kind === "noop"
+  ? ui?.onNoop || ui?.on_noop
+  : ui?.onFail || ui?.on_fail;
+  if (typeof callback !== "function") return null;
+  try {
+    return callback(json);
+  } catch {
+    return null;
+  }
+}
+
 function isNoop(json: ActionJson | null | undefined) {
   return Boolean(json && json.noop === true);
 }
@@ -91,6 +110,11 @@ function pickResponseAction(json: ActionJson | null | undefined) {
     tab: json.tab,
     ...(Number.isFinite(redirectDelay) ? { redirect_delay_ms: redirectDelay } : {}),
   };
+}
+
+function pickAction(value: unknown) {
+  if (!value || typeof value !== "object") return null;
+  return pickResponseAction(value as ActionJson);
 }
 
 function normalizeTabSwitches(tab: unknown) {
@@ -199,9 +223,12 @@ function handleResponseAction(
   const kind = isNoop(json) ? "noop" : json.ok === true ? "success" : "error";
   const meta = computeFlashMeta(kind, json, adapters);
   if (shouldShowFlash(ui, kind)) showResponseFlash(kind, json, adapters);
-  if (kind !== "error" && ui?.ignoreResponseAction !== true) {
-    scheduleRedirectOrReload(pickResponseAction(json), meta, adapters);
-  }
+  const callbackAction = pickAction(runResponseCallback(kind, json, ui));
+  const responseAction =
+  kind !== "error" && ui?.ignoreResponseAction !== true
+  ? pickResponseAction(json)
+  : null;
+  scheduleRedirectOrReload(callbackAction || responseAction, meta, adapters);
   return { kind, meta };
 }
 

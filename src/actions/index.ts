@@ -30,17 +30,23 @@ export {
   bindActionForm,
   bindActionForms,
   readActionFormConfig,
+  submitterFor,
   submitActionForm,
 } from "./forms.js";
 export {
+  ACTION_FULL_RELOAD_SELECTOR,
   ACTION_TRIGGER_SELECTOR,
   bindActionTrigger,
   bindActionTriggers,
+  decodeActionPayload,
   dispatchAction,
+  encodeActionPayload,
   on,
+  parseAction,
   unbindActionTrigger,
 } from "./triggers.js";
 export {
+  actionRequest,
   handleJson,
   handleXhrJson,
   networkFailure,

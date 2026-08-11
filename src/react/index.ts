@@ -4,6 +4,19 @@ import { readJsonScript } from "#er0dlx1gtbzh";
 type ReactRootOptions = {
   hydrate?: boolean;
 };
+type LiveIslandMountOptions = {
+  component: (props: any) => ReactNode;
+  hydratedAttr?: string;
+  hydratedEvent?: string;
+  initialState?: unknown;
+  onMounted?: (root: Element, initialState: unknown) => void;
+  root: Element | string | null;
+  stateId?: string;
+  wrap?: (node: ReactNode, context: {
+      initialState: unknown;
+      root: Element;
+  }) => ReactNode;
+};
 
 const roots = new WeakMap<Element, { render: (node: ReactNode) => void; unmount: () => void }>();
 
@@ -38,12 +51,7 @@ function unmountReactRoot(root: Element) {
   return true;
 }
 
-async function mountLiveIsland(options: {
-    component: (props: any) => ReactNode;
-    initialState?: unknown;
-    root: Element | string | null;
-    stateId?: string;
-}) {
+async function mountLiveIsland(options: LiveIslandMountOptions) {
   const target =
   typeof options.root === "string"
   ? document.getElementById(options.root.replace(/^#/, ""))
@@ -53,11 +61,21 @@ async function mountLiveIsland(options: {
   ? readJsonScript(options.stateId, {})
   : options.initialState || {};
   const react = await import("react");
-  const node = react.createElement(options.component, { initialState: state });
+  const child = react.createElement(options.component, { initialState: state });
+  const node = options.wrap
+  ? options.wrap(child, { initialState: state, root: target })
+  : child;
   const root = await mountReactRoot(target, node, {
       hydrate: target.childNodes.length > 0,
   });
-  target.setAttribute("data-tbf-live-hydrated", "true");
+  target.setAttribute(options.hydratedAttr || "data-tbf-live-hydrated", "true");
+  target.dispatchEvent(
+    new CustomEvent(options.hydratedEvent || "tbf:live-island-hydrated", {
+        bubbles: true,
+        detail: { initialState: state, root: target },
+    }),
+  );
+  options.onMounted?.(target, state);
   return root;
 }
 
@@ -68,8 +86,9 @@ export {
   renderReactRoot,
   unmountReactRoot,
 };
-export type { ReactRootOptions };
+export type { LiveIslandMountOptions, ReactRootOptions };
 
+export * from "./assets.js";
 export * from "./boot.js";
 export * from "#c55llzkpl4ob";
 export * from "#ft8e49grjdee";
