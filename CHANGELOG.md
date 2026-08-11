@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.11.2
+
+- Added generic product identity helpers for slug-derived frontend names, theme sync channels, theme headers, progress IDs, workflow paths, and repository IDE message types.
+
 ## 6.11.1
 
 - Applied default icon aliases and icon server pack defaults when attaching icon server services.

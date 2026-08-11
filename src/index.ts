@@ -223,6 +223,7 @@ export * from "./fullscreen/index.js";
 export * from "./graph/index.js";
 export * from "./http/index.js";
 export * from "./icons/index.js";
+export * from "./product/identity.js";
 export {
   createNavigationState,
   defaultNavigationState,

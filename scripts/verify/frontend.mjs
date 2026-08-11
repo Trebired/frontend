@@ -6,6 +6,7 @@ import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
+import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyNamespace, verifyPopover } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
@@ -32,6 +33,7 @@ async function verifyFrontendMain() {
   await verifyFrontendConfig(context);
   await verifyNamespace(context);
   await verifyCsrfFetch();
+  await verifyProductIdentity(context);
   await verifyIcons(context);
   await verifyActionConfetti();
   await verifyFlash(context);
