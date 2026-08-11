@@ -36,6 +36,45 @@ type LanguageSetHandlerOptions = {
   respond?: (context: LanguageSetContext) => unknown;
 };
 
+type LanguageServer = {
+  applyToLocals: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+  ) => ReturnType<typeof applyLanguageToLocals>;
+  attachMiddleware: (app: unknown) => ReturnType<typeof attachLanguageMiddleware>;
+  attachRoutes: (
+    app: unknown,
+    config?: Omit<LanguageSetHandlerOptions, "options">,
+  ) => ReturnType<typeof attachLanguageRoutes>;
+  browserPreferred: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof browserPreferredLanguage>;
+  current: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof currentLanguage>;
+  defaultKey: () => ReturnType<typeof defaultLanguage>;
+  effective: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof effectiveLanguage>;
+  isAllowed: (value: unknown) => ReturnType<typeof languageIsAllowed>;
+  keys: () => ReturnType<typeof allowedLanguageKeys>;
+  match: (value: unknown) => ReturnType<typeof matchAllowedLanguage>;
+  options: LanguageServerOptions;
+  setCookie: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    lang: unknown,
+  ) => ReturnType<typeof setLanguageCookie>;
+  setLanguage: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    lang: unknown,
+  ) => ReturnType<typeof setServerLanguage>;
+  setHandler: (
+    config?: Omit<LanguageSetHandlerOptions, "options">,
+  ) => ReturnType<typeof createLanguageSetHandler>;
+};
+
 function normalizeLanguageToken(value: unknown) {
   const token = String(value == null ? "" : value)
   .trim()
@@ -220,6 +259,30 @@ function attachLanguageRoutes(app: unknown, config: LanguageSetHandlerOptions = 
   }
 }
 
+function createLanguageServer(options: LanguageServerOptions = {}): LanguageServer {
+  const serverOptions = { ...options };
+  return {
+    applyToLocals: (req, res) => applyLanguageToLocals(req, res, serverOptions),
+    attachMiddleware: (app) => attachLanguageMiddleware(app, serverOptions),
+    attachRoutes: (app, config = {}) =>
+    attachLanguageRoutes(app, { ...config, options: serverOptions }),
+    browserPreferred: (req) => browserPreferredLanguage(req, serverOptions),
+    current: (req) => currentLanguage(req, serverOptions),
+    defaultKey: () => defaultLanguage(serverOptions),
+    effective: (req) => effectiveLanguage(req, serverOptions),
+    isAllowed: (value) => languageIsAllowed(value, serverOptions),
+    keys: () => allowedLanguageKeys(serverOptions),
+    match: (value) => matchAllowedLanguage(value, serverOptions),
+    options: serverOptions,
+    setCookie: (req, res, lang) =>
+    setLanguageCookie(req, res, lang, serverOptions),
+    setHandler: (config = {}) =>
+    createLanguageSetHandler({ ...config, options: serverOptions }),
+    setLanguage: (req, res, lang) =>
+    setServerLanguage(req, res, lang, serverOptions),
+  };
+}
+
 export {
   DEFAULT_LANGUAGE_COOKIE_NAME,
   DEFAULT_LANGUAGE_KEYS,
@@ -229,6 +292,7 @@ export {
   attachLanguageRoutes,
   browserPreferredLanguage,
   createLanguageMiddleware,
+  createLanguageServer,
   createLanguageSetHandler,
   currentLanguage,
   defaultLanguage,
@@ -242,4 +306,9 @@ export {
   setServerLanguage,
   setServerLanguage as setLanguage,
 };
-export type { LanguageServerOptions, LanguageSetContext, LanguageSetHandlerOptions };
+export type {
+  LanguageServer,
+  LanguageServerOptions,
+  LanguageSetContext,
+  LanguageSetHandlerOptions,
+};

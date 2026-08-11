@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.10.0
+
+- Added bound theme, language, and sidebar server factories so apps configure frontend server state once and use package-owned helpers from that config.
+- Added `attachFrontendServerServices()` for package-owned attachment of frontend security, navigation, locale, SEO, theme, language, sidebar, favicon, icon, Monaco, and static package routes.
+- Added generic static directory and package static route helpers for frontend assets such as Monaco without app-owned Express/static wrapper logic.
+
 ## 6.9.0
 
 - Added server helpers for attaching current-navigation locals and the full icon server system.

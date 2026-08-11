@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
+import { appCapture, serverResponseProbe } from "./server/probe.mjs";
+import { verifyFrontendServerFramework } from "./server/services.mjs";
 
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
   const root = await context.importDistRoot();
   await verifyThemeServer(server);
   await verifyLanguageServer(server);
+  await verifyFrontendServerFramework(server);
   verifySecurityServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
@@ -289,57 +292,6 @@ function verifyReactRenderServer(server) {
   assert.equal(renderer.renderFragment((props) => `<span>${props.label}</span>`, {
         label: "A",
     }), "<span>A</span>");
-}
-
-function serverResponseProbe() {
-  const probe = {
-    body: null,
-    cookies: {},
-    headers: {},
-    cookie(name, value, options) {
-      this.cookies[name] = { options, value };
-      return this;
-    },
-    redirect(status, url) {
-      this.statusCode = status;
-      this.headers.Location = url;
-      return this;
-    },
-    status(status) {
-      this.statusCode = status;
-      return this;
-    },
-  };
-  probe.end = (body) => writeProbeBody(probe, body, false);
-  probe.json = (body) => writeProbeBody(probe, body, true);
-  probe.send = (body) => writeProbeBody(probe, body, false);
-  probe.set = (name, value) => writeProbeHeader(probe, name, value);
-  probe.setHeader = (name, value) => writeProbeHeader(probe, name, value);
-  return probe;
-}
-
-function writeProbeBody(probe, body, passthrough) {
-  probe.body = body;
-  return passthrough ? body : probe;
-}
-
-function writeProbeHeader(probe, name, value) {
-  probe.headers[name] = value;
-  return probe;
-}
-
-function appCapture() {
-  return {
-    locals: {},
-    middlewares: [],
-    routes: [],
-    get(path, handler) {
-      this.routes.push({ handler, path });
-    },
-    use(handler) {
-      this.middlewares.push(handler);
-    },
-  };
 }
 
 export { verifyFrontendServer };

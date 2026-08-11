@@ -34,6 +34,36 @@ type SidebarToggleHandlerOptions = {
   respond?: (context: SidebarToggleContext) => unknown;
 };
 
+type SidebarServer = {
+  attachRoutes: (
+    app: unknown,
+    config?: Omit<SidebarToggleHandlerOptions, "options">,
+  ) => ReturnType<typeof attachSidebarRoutes>;
+  cookieName: (side: unknown) => ReturnType<typeof sidebarCookieName>;
+  currentMinimized: (
+    req: ServerRequestLike | null | undefined,
+    side: unknown,
+  ) => ReturnType<typeof currentSidebarMinimized>;
+  normalizeMinimized: (value: unknown) => ReturnType<typeof normalizeMinimized>;
+  normalizeSide: (value: unknown) => ReturnType<typeof normalizeSidebarSide>;
+  options: SidebarServerOptions;
+  setCookie: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    side: unknown,
+    minimized: unknown,
+  ) => ReturnType<typeof setSidebarMinimizedCookie>;
+  setMinimized: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    side: unknown,
+    minimized: unknown,
+  ) => ReturnType<typeof setServerSidebarMinimized>;
+  toggleHandler: (
+    config?: Omit<SidebarToggleHandlerOptions, "options">,
+  ) => ReturnType<typeof createSidebarToggleHandler>;
+};
+
 function normalizeSidebarSide(value: unknown, options: SidebarServerOptions = {}) {
   const side = String(value == null ? "" : value)
   .trim()
@@ -161,12 +191,33 @@ function attachSidebarRoutes(app: unknown, config: SidebarToggleHandlerOptions =
   }
 }
 
+function createSidebarServer(options: SidebarServerOptions = {}): SidebarServer {
+  const serverOptions = { ...options };
+  return {
+    attachRoutes: (app, config = {}) =>
+    attachSidebarRoutes(app, { ...config, options: serverOptions }),
+    cookieName: (side) => sidebarCookieName(side, serverOptions),
+    currentMinimized: (req, side) =>
+    currentSidebarMinimized(req, side, serverOptions),
+    normalizeMinimized,
+    normalizeSide: (value) => normalizeSidebarSide(value, serverOptions),
+    options: serverOptions,
+    setCookie: (req, res, side, minimized) =>
+    setSidebarMinimizedCookie(req, res, side, minimized, serverOptions),
+    setMinimized: (req, res, side, minimized) =>
+    setServerSidebarMinimized(req, res, side, minimized, serverOptions),
+    toggleHandler: (config = {}) =>
+    createSidebarToggleHandler({ ...config, options: serverOptions }),
+  };
+}
+
 export {
   DEFAULT_SIDEBAR_COOKIE_PREFIX,
   DEFAULT_SIDEBAR_COOKIE_SUFFIX,
   DEFAULT_SIDEBAR_SIDES,
   attachSidebarRoutes,
   createSidebarToggleHandler,
+  createSidebarServer,
   currentSidebarMinimized,
   normalizeMinimized,
   normalizeSidebarSide,
@@ -176,4 +227,9 @@ export {
   sidebarCookieName,
   sidebarTogglePayload,
 };
-export type { SidebarServerOptions, SidebarToggleContext, SidebarToggleHandlerOptions };
+export type {
+  SidebarServer,
+  SidebarServerOptions,
+  SidebarToggleContext,
+  SidebarToggleHandlerOptions,
+};

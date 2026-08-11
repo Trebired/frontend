@@ -39,6 +39,48 @@ type ThemeToggleHandlerOptions = {
   respond?: (context: ThemeToggleContext) => unknown;
 };
 
+type ThemeServer = {
+  applyToLocals: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+  ) => ReturnType<typeof applyThemeToLocals>;
+  attachMiddleware: (app: unknown) => ReturnType<typeof attachThemeMiddleware>;
+  attachRoutes: (
+    app: unknown,
+    config?: Omit<ThemeToggleHandlerOptions, "options">,
+  ) => ReturnType<typeof attachThemeRoutes>;
+  browserPreferred: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof browserPreferredTheme>;
+  className: (theme: unknown) => ReturnType<typeof themeClass>;
+  current: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof currentTheme>;
+  defaultKey: () => ReturnType<typeof defaultThemeKey>;
+  effectiveCookie: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof effectiveThemeCookie>;
+  effectiveKey: (
+    req: ServerRequestLike | null | undefined,
+  ) => ReturnType<typeof effectiveThemeKey>;
+  isAllowed: (value: unknown) => ReturnType<typeof themeIsAllowed>;
+  keys: () => ReturnType<typeof allowedThemeKeys>;
+  options: ThemeServerOptions;
+  setCookie: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    theme: unknown,
+  ) => ReturnType<typeof setThemeCookie>;
+  setTheme: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+    theme: unknown,
+  ) => ReturnType<typeof setServerTheme>;
+  toggleHandler: (
+    config?: Omit<ThemeToggleHandlerOptions, "options">,
+  ) => ReturnType<typeof createThemeToggleHandler>;
+};
+
 function normalizeThemeToken(value: unknown) {
   const token = String(value == null ? "" : value)
   .trim()
@@ -224,6 +266,30 @@ function attachThemeRoutes(app: unknown, config: ThemeToggleHandlerOptions = {})
   }
 }
 
+function createThemeServer(options: ThemeServerOptions = {}): ThemeServer {
+  const serverOptions = { ...options };
+  return {
+    applyToLocals: (req, res) => applyThemeToLocals(req, res, serverOptions),
+    attachMiddleware: (app) => attachThemeMiddleware(app, serverOptions),
+    attachRoutes: (app, config = {}) =>
+    attachThemeRoutes(app, { ...config, options: serverOptions }),
+    browserPreferred: (req) => browserPreferredTheme(req, serverOptions),
+    className: (theme) => themeClass(theme, serverOptions),
+    current: (req) => currentTheme(req, serverOptions),
+    defaultKey: () => defaultThemeKey(serverOptions),
+    effectiveCookie: (req) => effectiveThemeCookie(req, serverOptions),
+    effectiveKey: (req) => effectiveThemeKey(req, serverOptions),
+    isAllowed: (value) => themeIsAllowed(value, serverOptions),
+    keys: () => allowedThemeKeys(serverOptions),
+    options: serverOptions,
+    setCookie: (req, res, theme) =>
+    setThemeCookie(req, res, theme, serverOptions),
+    setTheme: (req, res, theme) => setServerTheme(req, res, theme, serverOptions),
+    toggleHandler: (config = {}) =>
+    createThemeToggleHandler({ ...config, options: serverOptions }),
+  };
+}
+
 export {
   DEFAULT_EFFECTIVE_THEME_COOKIE_NAME,
   DEFAULT_THEME_CLASSES,
@@ -234,6 +300,7 @@ export {
   attachThemeMiddleware,
   attachThemeRoutes,
   browserPreferredTheme,
+  createThemeServer,
   createThemeMiddleware,
   createThemeToggleHandler,
   currentTheme,
@@ -250,4 +317,9 @@ export {
   themeIsAllowed,
   themeTogglePayload,
 };
-export type { ThemeServerOptions, ThemeToggleContext, ThemeToggleHandlerOptions };
+export type {
+  ThemeServer,
+  ThemeServerOptions,
+  ThemeToggleContext,
+  ThemeToggleHandlerOptions,
+};
