@@ -3,6 +3,7 @@ export * from "#wwj1o2wv6dor";
 export * from "#6o6fqz7svsts";
 export * from "#bu1nq95e3k0f";
 export * from "./favicon.js";
+export * from "./fallback.js";
 export * from "./framework.js";
 export * from "./http.js";
 export * from "./assets.js";

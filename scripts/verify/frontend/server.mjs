@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { appCapture, serverResponseProbe } from "./server/probe.mjs";
 import { verifyFrontendServerFramework } from "./server/services.mjs";
+import { verifyFallbackServer } from "./server/fallback.mjs";
 
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
@@ -21,6 +22,7 @@ async function verifyFrontendServer(context) {
   verifyLocaleServer(server);
   await verifyPageTaskServer(server);
   verifyReactRenderServer(server);
+  await verifyFallbackServer(server);
 }
 
 async function verifyThemeServer(server) {
@@ -176,6 +178,7 @@ async function verifyRenderModeServer(server) {
   toolkit.applyUi(applyRes, "app", { header: { compact: true } });
   assert.equal(applyRes.locals.ui.header.type, "app");
   assert.equal(applyRes.locals.ui.header.compact, true);
+  assert.equal(server.currentRenderModePath(res), "app.detail");
 }
 
 function verifySeoServer(server) {

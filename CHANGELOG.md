@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.12.1
+
+- Added server fallback helpers for HTML document detection, current render-mode path selection, and document-vs-JSON fallback dispatch.
+- Reused package-owned sidebar-live route and protocol helpers so apps keep only their live room mapping and data resolvers.
+
 ## 6.12.0
 
 - Added adjustable SEO defaults for indexability, robots directives, canonical URLs, social preview tags, verification tags, alternates, and JSON-LD structured data.
