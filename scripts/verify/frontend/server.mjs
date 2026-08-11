@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { appCapture, serverResponseProbe } from "./server/probe.mjs";
 import { verifyFrontendServerFramework } from "./server/services.mjs";
 import { verifyFallbackServer } from "./server/fallback.mjs";
+import { verifyLiveSocketServer } from "./server/live-socket.mjs";
+import { verifySecurityPolicyServer } from "./server/security-policy.mjs";
 
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
@@ -10,6 +12,8 @@ async function verifyFrontendServer(context) {
   await verifyLanguageServer(server);
   await verifyFrontendServerFramework(server);
   verifySecurityServer(server);
+  await verifySecurityPolicyServer(server);
+  await verifyLiveSocketServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
   await verifyIconServerAttachment(server);

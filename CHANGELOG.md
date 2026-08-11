@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.13.0
+
+- Added package-owned live Socket.IO server helpers for resource rooms, room authorization, broadcasting, and sidebar live sync.
+- Added reusable server security policy helpers for nonce middleware, security headers, content security policy, and CORS option delegation.
+- Added verification coverage for the new live socket and security policy server APIs.
+
 ## 6.12.1
 
 - Added server fallback helpers for HTML document detection, current render-mode path selection, and document-vs-JSON fallback dispatch.

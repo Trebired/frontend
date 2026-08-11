@@ -1,4 +1,9 @@
 import type { ServerResponseLike } from "./http.js";
+import {
+  attachUseMiddleware,
+  responseLocals,
+  securityText,
+} from "./security/helpers.js";
 
 type SecurityState = {
   csrfToken: string | null;
@@ -10,16 +15,6 @@ type SecurityMiddlewareOptions = {
   localsKey?: string;
   nonceLocalKey?: string;
 };
-
-function securityText(value: unknown) {
-  return value == null ? null : String(value);
-}
-
-function responseLocals(res: ServerResponseLike | null | undefined) {
-  if (!res) return null;
-  if (!res.locals || typeof res.locals !== "object") res.locals = {};
-  return res.locals;
-}
 
 function createSecurityState(
   res: ServerResponseLike | null | undefined,
@@ -58,11 +53,7 @@ function attachSecurityMiddleware(
   app: unknown,
   options: SecurityMiddlewareOptions = {},
 ) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
-    (app as { use: (handler: unknown) => unknown }).use(
-      createSecurityMiddleware(options),
-    );
-  }
+  attachUseMiddleware(app, createSecurityMiddleware(options));
 }
 
 export {
