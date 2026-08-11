@@ -12,6 +12,7 @@ import {
 } from "#bu1nq95e3k0f";
 import type { ParsedIconSpec } from "#bu1nq95e3k0f";
 import type { ServerIconCacheEntry } from "#6o6fqz7svsts";
+import { normalizeIconAliasMap } from "#rqcj8y6keks2";
 import {
   buildPackIndex,
   listSvgFiles,
@@ -226,7 +227,23 @@ function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
   };
 }
 
+function attachIconAliasLocals(app: any, aliases: unknown) {
+  const normalizedAliases = normalizeIconAliasMap(aliases);
+  if (!app || typeof app.use !== "function") return normalizedAliases;
+  if (app.locals && typeof app.locals === "object") {
+    app.locals.icons = normalizedAliases;
+  }
+  app.use(function attachIconAliasesToResponse(_req: any, res: any, next: any) {
+      if (res && res.locals && typeof res.locals === "object") {
+        res.locals.icons = normalizedAliases;
+      }
+      next();
+  });
+  return normalizedAliases;
+}
+
 export {
+  attachIconAliasLocals,
   allowedIconPacks,
   buildPackIndex,
   buildRenderedIconCacheEntry,

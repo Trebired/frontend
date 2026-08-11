@@ -11,9 +11,26 @@ async function verifyIcons(context) {
   const iconReact = await context.importDist("react");
 
   verifyIconParsing(iconRuntime);
+  verifyIconAliases(iconRuntime);
   verifyIconServer(iconServer, context.rootDir);
   await verifyIconRuntime(iconRuntime);
   verifyIconReact(iconReact, iconServer, context.rootDir);
+}
+
+function verifyIconAliases(iconRuntime) {
+  const aliases = iconRuntime.normalizeIconAliasMap({
+      add: "remixicon add-line",
+      github: { pack: "simpleicons", icon: "github" },
+  });
+  assert.deepEqual(aliases, {
+      add: "remixicon:add-line",
+      github: "simple-icons:github",
+  });
+  assert.equal(iconRuntime.resolveIconAlias(aliases, "add"), "remixicon:add-line");
+  assert.equal(
+    iconRuntime.icons.resolveAlias(aliases, "missing", "remixicon close-line"),
+    "remixicon:close-line",
+  );
 }
 
 function verifyIconParsing(iconRuntime) {
@@ -51,7 +68,26 @@ function verifyIconServer(iconServer, rootDir) {
         label: "Add",
       }, { rootDir }).includes("--tbf-icon-color: #123456"));
   verifyIconMiddleware(iconServer, rootDir);
+  verifyIconAliasLocals(iconServer);
   verifyCustomIconPack(iconServer);
+}
+
+function verifyIconAliasLocals(iconServer) {
+  const middlewares = [];
+  const app = {
+    locals: {},
+    use(handler) {
+      middlewares.push(handler);
+    },
+  };
+  const aliases = iconServer.attachIconAliasLocals(app, {
+      add: "remixicon add-line",
+  });
+  assert.deepEqual(aliases, { add: "remixicon:add-line" });
+  assert.deepEqual(app.locals.icons, aliases);
+  const res = { locals: {} };
+  middlewares[0]({}, res, () => {});
+  assert.deepEqual(res.locals.icons, aliases);
 }
 
 function verifyCustomIconPack(iconServer) {

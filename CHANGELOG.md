@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.8.0
+
+- Added config-owned icon aliases under `assets.icons.aliases` so apps can define reusable icon names without local duplicate maps.
+- Added root icon alias normalization/resolution helpers and a server helper for attaching icon aliases to app/response locals.
+
 ## 6.7.1
 
 - Exported `iconSpec` and shared icon normalizers from the browser/root icon API for app-owned icon spec maps.

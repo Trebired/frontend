@@ -1,5 +1,12 @@
 type FrontendIconPack = string;
 
+type FrontendIconAliasValue = string | {
+  icon?: string;
+  name?: string;
+  pack?: string;
+  spec?: string;
+};
+
 type FrontendSystemKey =
 | "actions"
 | "code"
@@ -97,6 +104,7 @@ type FrontendFontConfig = {
 type FrontendAssetsConfig = {
   fonts?: FrontendFontConfig;
   icons?: {
+    aliases?: Record<string, FrontendIconAliasValue>;
     endpoint?: string;
     packs?: readonly FrontendIconPack[];
   };
@@ -257,6 +265,7 @@ type NormalizedFrontendFontConfig = {
 type NormalizedFrontendAssetsConfig = {
   fonts: NormalizedFrontendFontConfig;
   icons: {
+    aliases: Record<string, string>;
     endpoint: string;
     packs: FrontendIconPack[];
   };
@@ -350,6 +359,7 @@ export type {
   FrontendFontFamilyConfig,
   FrontendFontStyle,
   FrontendIconPack,
+  FrontendIconAliasValue,
   FrontendOverlayComponentsConfig,
   FrontendPaletteConfig,
   FrontendPaletteFamilies,

@@ -110,6 +110,7 @@ export type {
   FrontendFontDisplay,
   FrontendFontFamilyConfig,
   FrontendFontStyle,
+  FrontendIconAliasValue,
   FrontendIconPack,
   FrontendOverlayComponentsConfig,
   FrontendPaletteConfig,

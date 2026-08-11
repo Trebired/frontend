@@ -6,6 +6,10 @@ import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import { frontendConfigPath } from "./package.js";
+import {
+  normalizeIconAliasKey,
+  normalizeIconAliasSpec,
+} from "#rqcj8y6keks2";
 import type {
   NormalizedFrontendConfig,
   FrontendAssetsConfig,
@@ -55,6 +59,7 @@ const TOP_LEVEL_FIELDS = [
 ];
 
 const ASSET_FIELDS = ["fonts", "icons"];
+const ICON_FIELDS = ["aliases", "endpoint", "packs"];
 const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
@@ -65,6 +70,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             sans: "",
         }),
         icons: Object.freeze({
+            aliases: Object.freeze({}),
             endpoint: "/__icons/svg",
             packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
         }),
@@ -160,6 +166,20 @@ function normalizeEndpoint(value: unknown): string {
       return packs;
       }
 
+      function normalizeIconAliases(value: unknown): Record<string, string> {
+      if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.assets.icons.aliases };
+      const source = assertPlainObject(value, "assets.icons.aliases");
+      const aliases: Record<string, string> = {};
+      for (const [rawKey, rawSpec] of Object.entries(source)) {
+      const key = normalizeIconAliasKey(rawKey);
+      if (!key) throw invalidConfig(`assets.icons.aliases has invalid key ${rawKey}`);
+      const spec = normalizeIconAliasSpec(rawSpec);
+      if (!spec) throw invalidConfig(`assets.icons.aliases.${rawKey} must be a valid icon spec`);
+      aliases[key] = spec;
+      }
+      return aliases;
+      }
+
       function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
       const source = value === undefined
       ? {}
@@ -168,9 +188,11 @@ function normalizeEndpoint(value: unknown): string {
       const icons = source.icons === undefined
       ? {}
       : assertPlainObject(source.icons, "assets.icons");
+      assertKnownFields(icons, ICON_FIELDS, "assets.icons");
       return {
       fonts: normalizeFontsConfig(source.fonts),
       icons: {
+      aliases: normalizeIconAliases(icons.aliases),
       endpoint: normalizeEndpoint(icons.endpoint),
       packs: normalizeIconPacks(icons.packs),
       },

@@ -9,7 +9,15 @@ import {
   SUPPORTED_ICON_PACKS,
   text,
 } from "./shared.js";
+import {
+  mergeIconAliases,
+  normalizeIconAliasKey,
+  normalizeIconAliasMap,
+  normalizeIconAliasSpec,
+  resolveIconAlias,
+} from "./catalog.js";
 import type { ParsedIconSpec } from "./shared.js";
+import type { IconAliasMap, IconAliasValue } from "./catalog.js";
 
 type IconCacheEntry = {
   colorMode?: string;
@@ -210,10 +218,14 @@ const icons = Object.freeze({
     bindAll: bindIcons,
     buildUrl: buildIconUrl,
     createElement: createIconElement,
+    mergeAliases: mergeIconAliases,
+    normalizeAliasKey: normalizeIconAliasKey,
+    normalizeAliases: normalizeIconAliasMap,
     parseSpec: parseIconSpec,
     readIconCacheEntry,
     readRenderedSpec,
     renderElement: renderIconElement,
+    resolveAlias: resolveIconAlias,
     storeIconCacheEntry,
 });
 
@@ -227,6 +239,10 @@ export {
   createIconElement,
   icons,
   iconSpec,
+  mergeIconAliases,
+  normalizeIconAliasKey,
+  normalizeIconAliasMap,
+  normalizeIconAliasSpec,
   normalizeIconName,
   normalizeIconPack,
   normalizeSpace,
@@ -234,8 +250,16 @@ export {
   readIconCacheEntry,
   readRenderedSpec,
   renderIconElement,
+  resolveIconAlias,
   SUPPORTED_ICON_PACKS,
   storeIconCacheEntry,
 };
-export type { IconCacheEntry, IconRuntimeOptions, ParsedIconSpec, RenderIconElementAttrs };
+export type {
+  IconAliasMap,
+  IconAliasValue,
+  IconCacheEntry,
+  IconRuntimeOptions,
+  ParsedIconSpec,
+  RenderIconElementAttrs,
+};
 export default icons;

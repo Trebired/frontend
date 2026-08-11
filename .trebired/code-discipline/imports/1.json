@@ -367,6 +367,7 @@
   "#rky4mukal7q2": "./src/actions/confetti.ts",
   "#rmmv8vkb3dbt": "./src/react/boot.tsx",
   "#rntxe2b9ybvj": "./src/editor/viewer/hooks.ts",
+  "#rqcj8y6keks2": "./src/icons/catalog.ts",
   "#rsbvm1wpfq7m": "./src/layout/styles/chrome.scss",
   "#rzc4srxgt13o": "./src/fullscreen/styles/index.scss",
   "#s2gusqvj0iyq": "./src/explorer/components/file/tree.tsx",

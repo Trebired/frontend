@@ -62,7 +62,11 @@ function configuredSource() {
     "  prefix: \"app\",",
     "  assets: {",
     "    fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
-    "    icons: { packs: [\"simple-icons\"], endpoint: \"/icons/svg\" },",
+    "    icons: {",
+    "      aliases: { add: \"remixicon:add-line\", github: { pack: \"simple-icons\", name: \"github\" } },",
+    "      packs: [\"simple-icons\"],",
+    "      endpoint: \"/icons/svg\",",
+    "    },",
     "  },",
     "  design: {",
     "    interactions: { activePress: { brightness: 0.8, enabled: true } },",
@@ -101,6 +105,10 @@ function assertDefaultConfig(defaults, context) {
 
 function assertLoadedConfig(loaded, configPath, config) {
   assert.equal(loaded.configPath, configPath);
+  assert.deepEqual(loaded.config.assets.icons.aliases, {
+      add: "remixicon:add-line",
+      github: "simple-icons:github",
+  });
   assert.deepEqual(loaded.config.assets.icons.packs, ["simple-icons"]);
   assert.equal(loaded.config.assets.fonts.families[0].packageName, "inter");
   assert.equal(loaded.config.design.interactions.activePress.filter, "brightness(0.8)");
