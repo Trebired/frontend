@@ -1,6 +1,7 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
 import { THEME_ATTR, THEME_CHANGE_EVENT } from "./constants.js";
 import { findThemeMode, getThemeModes, themeModeKeyOf } from "./modes.js";
+import type { ThemeBrowserSyncOptions } from "./browser-sync.js";
 import type { ThemeModeOptions, ThemeModeScheme } from "./modes.js";
 
 type ThemeValue = string;
@@ -13,6 +14,7 @@ type ThemePersistenceAdapter = {
 type ThemeRuntimeOptions = ThemeModeOptions & {
   defaultTheme?: ThemeValue;
   persistence?: ThemePersistenceAdapter;
+  sync?: ThemeBrowserSyncOptions;
 };
 
 type ThemeSyncListener = (root: BindRoot) => void;

@@ -9,6 +9,7 @@ async function verifyFrontendTheme(context) {
   await verifyThemeConfigModes(context);
   await verifyThemeConfigDependencies(context);
   await verifyThemeRuntimeModes(context);
+  await verifyThemeBrowserSync(context);
   await verifyThemeRuntimeRebind(context);
   await verifyThemeControls(context);
   await verifyThemeComponents(context);
@@ -126,6 +127,21 @@ async function verifyThemeRuntimeModes(context) {
 
   theme.configureThemeModes(null);
   assert.deepEqual(theme.themeModeKeys(), ["dark", "light"]);
+}
+
+async function verifyThemeBrowserSync(context) {
+  const theme = await context.importDist("theme");
+  document.head.innerHTML = '<link id="app_favicon" rel="icon" href="/favicon.svg">';
+  theme.configureThemeBrowserSync({
+      effectiveCookie: { name: "theme_effective" },
+      favicon: { href: (key) => `/favicon.svg?theme=${key}` },
+  });
+  theme.applyTheme("light");
+  assert.ok(document.cookie.includes("theme_effective=light"));
+  assert.equal(
+    document.getElementById("app_favicon").getAttribute("href"),
+    "/favicon.svg?theme=light",
+  );
 }
 
 async function verifyThemeRuntimeRebind(context) {

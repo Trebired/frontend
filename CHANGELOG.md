@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.3.0
+
+- Added public server helpers for theme cookies, theme toggle handlers, sidebar preference handlers, themed favicon routes, and live-request detection.
+- Added theme runtime browser sync options for effective-theme cookies and themed favicon href updates.
+
 ## 6.2.1
 
 - Added a generic React fallback title boot script helper for apps using live navigation without owning local document-title boot code.

@@ -1,6 +1,7 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
 import { applyTheme, normalizeTheme, readPersistedTheme } from "./apply.js";
 import type { ThemeRuntimeOptions } from "./apply.js";
+import { configureThemeBrowserSync } from "./browser-sync.js";
 import { bindThemeControls } from "./controls.js";
 import { configureThemeModes, hasThemeModeOptions } from "./modes.js";
 
@@ -11,6 +12,7 @@ async function bindThemeRuntime(
   options: ThemeRuntimeOptions = {},
 ): Promise<void> {
   if (hasThemeModeOptions(options)) configureThemeModes(options);
+  if (options.sync !== undefined) configureThemeBrowserSync(options.sync, options);
   if (!themeRuntimeApplied) {
     themeRuntimeApplied = true;
     const persisted = await readPersistedTheme(options.persistence, options);
@@ -64,6 +66,7 @@ export {
   syncThemeToggles,
 } from "./controls.js";
 export { createThemeBootScript } from "./boot.js";
+export { configureThemeBrowserSync, syncThemeBrowserState } from "./browser-sync.js";
 export { bindThemeRuntime };
 export type {
   ThemeMode,
@@ -74,3 +77,8 @@ export type {
   ThemeModeScheme,
 } from "./modes.js";
 export type { ThemePersistenceAdapter, ThemeRuntimeOptions, ThemeValue } from "./apply.js";
+export type {
+  ThemeBrowserSyncOptions,
+  ThemeEffectiveCookieSyncOptions,
+  ThemeFaviconSyncOptions,
+} from "./browser-sync.js";

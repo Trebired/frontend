@@ -7,6 +7,7 @@ import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyNamespace, verifyPopover } from "./frontend/runtime.mjs";
+import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
@@ -43,6 +44,7 @@ async function verifyFrontendMain() {
   await verifyUpload();
   await verifyFrontendLogging(context);
   await verifyFrontendSource(context);
+  await verifyFrontendServer(context);
   await verifyFrontendComponents({ importDist, rootDir });
   await verifyFrontendTheme({ importDist, rootDir });
   console.log("Frontend verification succeeded.");
