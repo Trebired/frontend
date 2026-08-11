@@ -65,6 +65,7 @@ function assertMovedBackBeforeUpdate() {
 
 async function verifyLiveOverlays(context) {
   const { createLiveOverlayState } = await context.importDist("live");
+  const modalRuntime = await context.importDist("modal");
   document.body.innerHTML = '<div id="live-root"></div><div id="tbf_layer_root"></div>';
   const liveRoot = document.getElementById("live-root");
   liveRoot.innerHTML = rootMarkup("before");
@@ -86,11 +87,19 @@ async function verifyLiveOverlays(context) {
   await settleDom();
   await settleDom();
 
-  const modal = document.getElementById("live-modal");
-  assert.equal(modal.getAttribute("data-marker"), "after");
-  assert.equal(modal.getAttribute("data-tbf-open"), "true");
-  assert.equal(modal.querySelector("[data-tbf-modal-content]").scrollTop, 24);
-  assert.equal(selectedTab(modal).getAttribute("aria-controls"), "live-tab-b");
+  const restoredModal = document.getElementById("live-modal");
+  assert.equal(restoredModal.getAttribute("data-marker"), "after");
+  assert.equal(restoredModal.getAttribute("data-tbf-open"), "true");
+  assert.equal(
+    restoredModal.querySelector("[data-tbf-modal-content]").scrollTop,
+    24,
+  );
+  assert.equal(
+    selectedTab(restoredModal).getAttribute("aria-controls"),
+    "live-tab-b",
+  );
+  modalRuntime.closeModal(restoredModal);
+  assert.equal(document.body.style.overflow, "");
 }
 
 export { verifyLiveOverlays };

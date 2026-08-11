@@ -461,6 +461,7 @@
   "#wf2q34bnji7a": "./src/config/scales-css.ts",
   "#wi9q25odclpm": "./src/media/index.ts",
   "#wjd615zt8wgb": "./src/progress/styles/index.scss",
+  "#wpe0w4ty6zqd": "./src/live/overlay-dom.ts",
   "#wrlkuaz0a8kf": "./scripts/verify/frontend/timing.mjs",
   "#wrr67ni04a0u": "./src/layout/breadcrumb.ts",
   "#wso7lezzvd90": "./src/logs/client/dropdowns.ts",

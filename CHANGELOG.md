@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.14.1
+
+- Closed stale package modals and popovers before removing portaled overlay nodes during live DOM updates so overlay runtime state stays consistent.
+
 ## 6.14.0
 
 - Added package-owned live overlay state helpers for preserving modal scroll, active tabs, portaled popovers, and portaled dropdowns around live DOM updates.

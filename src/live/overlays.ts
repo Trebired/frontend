@@ -4,8 +4,6 @@ import {
   createTabs,
   dropdownRootConfig,
 } from "#z2c0jqmjqds4";
-import { LAYOUT_PORTAL_ROOT_ID } from "#ieim4iimrwal";
-import { LAYER_ROOT_ID } from "#ccvonx3uhbte";
 import {
   MODAL_CONTENT_SELECTOR,
   MODAL_SELECTOR,
@@ -13,6 +11,11 @@ import {
 } from "#8rm3pzkj3gge";
 import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { POPOVER_TRIGGER_SELECTOR } from "#knbi1qla9fbx";
+import {
+  overlayPortalRoots,
+  queryElements,
+  removeStalePortaledOverlaysFromRoot,
+} from "./overlay-dom.js";
 import { rehydrate } from "./regions.js";
 
 type LiveOverlayRoot =
@@ -82,36 +85,6 @@ function liveOverlayRoot(options: LiveOverlayStateOptions, fallback?: BindRoot) 
   const base = fallback || defaultRoot();
   if (!base) return null;
   return resolveConfiguredRoot(options.root, base);
-}
-
-function resolveLayoutPortalElement() {
-  if (typeof document === "undefined") return null;
-  const root = document.getElementById(LAYOUT_PORTAL_ROOT_ID);
-  return root instanceof HTMLElement ? root : null;
-}
-
-function resolveLayerRootElement() {
-  if (typeof document === "undefined") return null;
-  const root = document.getElementById(LAYER_ROOT_ID);
-  return root instanceof HTMLElement ? root : null;
-}
-
-function overlayPortalRoots() {
-  const roots = [resolveLayoutPortalElement(), resolveLayerRootElement()].filter(
-    (root): root is HTMLElement => root instanceof HTMLElement,
-  );
-  return Array.from(new Set(roots));
-}
-
-function queryElements(root: ParentNode | null | undefined, selector: string) {
-  const value = String(selector || "").trim();
-  if (!root || !value || typeof root.querySelectorAll !== "function") return [];
-  try {
-    return Array.from(root.querySelectorAll(value))
-    .filter((node): node is HTMLElement => node instanceof HTMLElement);
-  } catch {
-    return [];
-  }
 }
 
 function modalOpenSelector(selector: string) {
@@ -226,26 +199,12 @@ function restoreLiveOverlayState(snapshot: LiveOverlaySnapshot | null | undefine
   return true;
 }
 
-function normalizeSelectorList(selector: string | string[] | undefined) {
-  return (Array.isArray(selector) ? selector : [selector || ""])
-  .map((item) => String(item || "").trim())
-  .filter(Boolean)
-  .join(", ");
-}
-
 function removeStalePortaledOverlays(
   options: LiveOverlayStateOptions = {},
   rootInput?: ParentNode,
 ) {
-  const selector = normalizeSelectorList(options.portaledSelector);
-  if (!selector) return;
   const root = rootInput || liveOverlayRoot(options);
-  if (!(root instanceof HTMLElement)) return;
-  overlayPortalRoots().forEach((portal) => {
-      queryElements(portal, selector).forEach((node) => {
-          if (!root.contains(node)) node.remove();
-      });
-  });
+  removeStalePortaledOverlaysFromRoot(options, root);
 }
 
 function restoreMovedDropdowns(root: ParentNode | null | undefined) {
