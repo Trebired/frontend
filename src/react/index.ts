@@ -90,6 +90,7 @@ export type { LiveIslandMountOptions, ReactRootOptions };
 
 export * from "./assets.js";
 export * from "./boot.js";
+export * from "./product-shell.js";
 export * from "#c55llzkpl4ob";
 export * from "#ft8e49grjdee";
 export * from "#nn6lx6ueg6es";

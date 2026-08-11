@@ -1,6 +1,8 @@
 import { classNames } from "#ndsvdqv80epr";
 import { Card } from "#4woymc9xhupl";
 import { button } from "#6hfutrhvm6x6";
+import { Icon } from "#lbkpzw8nphru";
+import { locale_switcher } from "#wvgfyq72vfgf";
 import {
   Sidebar,
   SidebarBody,
@@ -14,6 +16,7 @@ import { productShellLabel } from "./state.js";
 import type {
   ProductShellAboutButtonProps,
   ProductShellSidebarControlsProps,
+  ProductShellSidebarDefaultControlsProps,
   ProductShellSidebarFooterProps,
   ProductShellSidebarMinimizeButtonProps,
   ProductShellSidebarProps,
@@ -52,6 +55,18 @@ function ProductShellSidebarControls(props: ProductShellSidebarControlsProps) {
   );
 }
 
+function productShellControlIcon(spec: string) {
+  return <Icon spec={spec} />;
+}
+
+function productShellThemeIcon(theme: unknown) {
+  return productShellControlIcon(
+    String(theme || "").toLowerCase() === "light"
+    ? "remixicon moon-line"
+    : "remixicon sun-line",
+  );
+}
+
 function ProductShellSidebarMinimizeButton(
   props: ProductShellSidebarMinimizeButtonProps,
 ) {
@@ -83,6 +98,69 @@ function ProductShellSidebarMinimizeButton(
         </>
     )}
     </SidebarMinimizeButton>
+  );
+}
+
+function ProductShellSidebarDefaultControls(
+  props: ProductShellSidebarDefaultControlsProps,
+) {
+  const {
+    aboutHref,
+    buttonClassName = "btn icon has-tooltip",
+    controlsId,
+    dark,
+    idPrefix,
+    labels,
+    lang,
+    light,
+    modes,
+    productName,
+    side = "left",
+    theme,
+    ...rest
+  } = props;
+  const prefix = idPrefix || `product_shell_sidebar_${side}`;
+  const minimizeLabel = productShellLabel(labels, "minimize");
+  const themeLabel = productShellLabel(labels, "toggleTheme");
+  const aboutLabel = productShellLabel(labels, "about");
+  return (
+    <ProductShellSidebarControls
+    {...rest}
+    minimize={(
+        <ProductShellSidebarMinimizeButton
+        controls={controlsId}
+        className={buttonClassName}
+        expandedIcon={productShellControlIcon("remixicon arrow-left-s-line")}
+        labels={labels}
+        minimizedIcon={productShellControlIcon("remixicon arrow-right-s-line")}
+        title={minimizeLabel}
+        />
+    )}
+    theme={(
+        <ProductShellThemeToggle
+        dark={dark}
+        id={`${prefix}_theme_toggle_btn`}
+        light={light}
+        modes={modes}
+        className={buttonClassName}
+        data-tbf-tooltip={themeLabel}
+        icon={productShellThemeIcon(theme)}
+        labels={labels}
+        theme={theme}
+        />
+    )}
+    language={locale_switcher({ id: `${prefix}_lang_switch_btn`, lang })}
+    about={(
+        <ProductShellAboutButton
+        href={aboutHref}
+        className={buttonClassName}
+        icon={productShellControlIcon("remixicon information-2-line")}
+        labels={labels}
+        productName={productName}
+        title={aboutLabel}
+        />
+    )}
+    />
   );
 }
 
@@ -192,6 +270,7 @@ export {
   ProductShellAboutButton,
   ProductShellSidebar,
   ProductShellSidebarControls,
+  ProductShellSidebarDefaultControls,
   ProductShellSidebarFooter,
   ProductShellSidebarMinimizeButton,
   ProductShellThemeToggle,

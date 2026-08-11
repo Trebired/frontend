@@ -107,6 +107,7 @@
   "#7k0vu4e6ja8v": "./src/inputs/advanced/key/value/i18n/cs.ts",
   "#7k5l8ya2kc7a": "./src/flash/components/index.tsx",
   "#7qhlvomvsrzw": "./src/logs/client/metadata.ts",
+  "#7radqgyjgob2": "./src/react/product-shell.tsx",
   "#7s29knrkzyin": "./src/graph/advanced/graph/details.tsx",
   "#7xsqb2bbtamg": "./src/inputs/advanced/disclosure/index.tsx",
   "#7yo06l20dfgo": "./src/actions/types.ts",

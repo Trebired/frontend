@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.2.0
+
+- Added generic React `ProductShellLayout` and `ProductShellDocument` APIs so apps can pass product-specific render callbacks instead of owning layout/sidebar boot orchestration.
+- Added `readProductShellLayoutState()` and `productShellCurrentPath()` for package-owned shell visibility, sidebar side, theme, and current-path state.
+- Added package-owned default product-shell sidebar controls for minimize, theme, language, and about actions.
+
 ## 6.1.1
 
 - Exported save-policy APIs from the root package entry.

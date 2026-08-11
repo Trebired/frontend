@@ -39,6 +39,33 @@ type ProductShellState = {
   shell: Record<string, unknown>;
 };
 
+type ProductShellLayoutState = ProductShellState & {
+  currentPath: string;
+  hasMobileBottomBar: boolean;
+  showHeader: boolean;
+  showLeftSidebar: boolean;
+  showRightSidebar: boolean;
+  showSecondaryHeader: boolean;
+  sidebarSides: SidebarSide[];
+  theme: string;
+  themeKey: string;
+  ui: Record<string, unknown>;
+};
+
+type ProductShellStateOptions = {
+  currentPath?: unknown;
+  defaultTheme?: string;
+  theme?: unknown;
+  themeKey?: unknown;
+};
+
+type ProductShellLayoutRenderContext = ProductShellLayoutState;
+
+type ProductShellSidebarRenderContext = ProductShellLayoutState & {
+  side: SidebarSide;
+  sidebar: Record<string, unknown>;
+};
+
 type ProductShellHeaderBrandTagAlign = "horizontal" | "vertical";
 
 type ProductShellHeaderProps = {
@@ -87,6 +114,20 @@ type ProductShellBottomBarProps = HTMLAttributes<HTMLElement> & {
   profileIcon?: ReactNode;
 };
 
+type ProductShellLayoutProps =
+Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
+  body?: ReactNode;
+  children?: ReactNode | ((context: ProductShellLayoutRenderContext) => ReactNode);
+  currentPath?: unknown;
+  mainId?: string;
+  renderBottomBar?: (context: ProductShellLayoutRenderContext) => ReactNode;
+  renderHeader?: (context: ProductShellLayoutRenderContext) => ReactNode;
+  renderMobileNav?: (context: ProductShellLayoutRenderContext) => ReactNode;
+  renderSecondaryHeader?: (context: ProductShellLayoutRenderContext) => ReactNode;
+  renderSidebar?: (context: ProductShellSidebarRenderContext) => ReactNode;
+  shell?: unknown;
+};
+
 type ProductShellSidebarProps = {
   ariaLabel?: string;
   bodyClassName?: string;
@@ -112,6 +153,20 @@ Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
   language?: ReactNode;
   minimize?: ReactNode;
   theme?: ReactNode;
+};
+
+type ProductShellSidebarDefaultControlsProps =
+Omit<ProductShellSidebarControlsProps, "about" | "language" | "minimize" | "theme"> &
+Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes"> & {
+  aboutHref?: string;
+  buttonClassName?: string;
+  controlsId: string;
+  idPrefix?: string;
+  labels?: ProductShellLabels;
+  lang?: string;
+  productName?: string;
+  side?: SidebarSide;
+  theme?: string;
 };
 
 type ProductShellSidebarMinimizeButtonProps =
@@ -144,11 +199,17 @@ export type {
   ProductShellHeaderProps,
   ProductShellLabelKey,
   ProductShellLabels,
+  ProductShellLayoutProps,
+  ProductShellLayoutRenderContext,
+  ProductShellLayoutState,
   ProductShellMobileNavProps,
   ProductShellSidebarControlsProps,
+  ProductShellSidebarDefaultControlsProps,
   ProductShellSidebarFooterProps,
   ProductShellSidebarMinimizeButtonProps,
   ProductShellSidebarProps,
+  ProductShellSidebarRenderContext,
   ProductShellState,
+  ProductShellStateOptions,
   ProductShellThemeToggleProps,
 };
