@@ -29,6 +29,8 @@ import {
   getDropdownOptions,
   getHidden,
   resolveNamedDropdownInput,
+  syncDropdownHiddenInput,
+  syncDropdownHiddenInputs,
   updateEmptyState,
 } from "./dropdown/shared.js";
 import { bindStaticDropdown } from "./dropdown/static/bind.js";
@@ -177,6 +179,8 @@ export {
   setInputStatusIcon,
   switchDisclosureEntry,
   syncCheckboxOption,
+  syncDropdownHiddenInput,
+  syncDropdownHiddenInputs,
   syncFromHidden,
   updateDropdownRootConfig,
   updateEmptyState,

@@ -128,3 +128,4 @@ export {
   shouldSkipLiveElement,
 };
 export type { LiveOptions, LiveSkipAdapter };
+export * from "./infinite.js";

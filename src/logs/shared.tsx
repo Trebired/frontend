@@ -12,7 +12,10 @@ import {
   stringifyJsonForHtml,
   toString,
 } from "#dqy2d22qyujv";
-import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
+import {
+  documentLanguageTag as documentLang,
+  setTextContent,
+} from "#er0dlx1gtbzh";
 import { createTranslatorFactory, defineValue, objectRecord as toObject } from "#ndsvdqv80epr";
 
 type BindActionOptions = BindActionTriggerOptions;
@@ -181,11 +184,6 @@ async function fetchJson(url: string, query: Record<string, unknown> = {}, init:
     throw new Error(message);
   }
   return json && typeof json === "object" && "data" in json ? (json as any).data : json;
-}
-
-function setTextContent(element: Element | null, value: unknown, options: { fallback?: unknown } = {}) {
-  if (!element) return;
-  element.textContent = toString(value, String(options.fallback ?? ""));
 }
 
 function triggerAttrs(options: BindActionOptions = {}) {

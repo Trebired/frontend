@@ -1,7 +1,11 @@
 import { flash } from "#33o6e7mug9pg";
 import { MODAL_CONTENT_SELECTOR } from "#8rm3pzkj3gge";
 import { closestElement } from "#dqy2d22qyujv";
-import { dropdownRootConfig } from "./registry.js";
+import {
+  dropdownOptionSelected,
+  dropdownOptionValue,
+  dropdownRootConfig,
+} from "./registry.js";
 
 const CLOSE_ANIMATION_MS = 240;
 
@@ -124,6 +128,44 @@ function dispatchChange(drop) {
   hidden.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
+function selectedDropdownValues(options: HTMLElement, multiple: boolean) {
+  return Array.from(options.querySelectorAll("[data-dropdown-option]"))
+  .filter((item) =>
+    item instanceof HTMLElement ? dropdownOptionSelected(item) : false,
+  )
+  .map((item) =>
+    item instanceof HTMLElement ? dropdownOptionValue(item) : "",
+  )
+  .filter(Boolean)
+  .reduce<string[]>((values, value) => {
+      if (multiple || values.length === 0) values.push(value);
+      return values;
+    }, []);
+}
+
+function syncDropdownHiddenInput(drop: HTMLElement | null) {
+  if (!(drop instanceof HTMLElement)) return false;
+  const hidden = getHidden(drop);
+  const options = getDropdownOptions(drop);
+  if (!isDropdownInput(hidden) || hidden.disabled || !options) return false;
+  const multiple = dropdownRootConfig(drop).multiple === true;
+  const values = selectedDropdownValues(options, multiple);
+  hidden.value = multiple ? JSON.stringify(values) : values[0] || "";
+  return true;
+}
+
+function syncDropdownHiddenInputs(root: ParentNode | null | undefined) {
+  if (!root || typeof root.querySelectorAll !== "function") return 0;
+  let count = 0;
+  if (root instanceof HTMLElement && root.matches("[data-dropdown-root]")) {
+    count += syncDropdownHiddenInput(root) ? 1 : 0;
+  }
+  root.querySelectorAll("[data-dropdown-root]").forEach((node) => {
+      count += syncDropdownHiddenInput(node as HTMLElement) ? 1 : 0;
+  });
+  return count;
+}
+
 function repaintNearestModal(drop) {
   const modalContent =
   drop && drop.closest ? drop.closest(MODAL_CONTENT_SELECTOR) : null;
@@ -153,5 +195,7 @@ export {
   repaintNearestModal,
   resolveNamedDropdownInput,
   showWarning,
+  syncDropdownHiddenInput,
+  syncDropdownHiddenInputs,
   updateEmptyState,
 };

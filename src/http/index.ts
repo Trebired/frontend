@@ -128,3 +128,4 @@ export {
   requestJson,
 };
 export type { CsrfFetchOptions, JsonRequestOptions };
+export * from "./paged.js";

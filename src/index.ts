@@ -205,6 +205,8 @@ export {
   setDropdownOptionConfig,
   switchDisclosureEntry,
   syncCheckboxOption,
+  syncDropdownHiddenInput,
+  syncDropdownHiddenInputs,
   syncFromHidden,
   updateDropdownRootConfig,
   updateEmptyState,

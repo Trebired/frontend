@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.0.8
+
+- Added generic selector binding helpers, DOM element helpers, paged JSON fetching, and infinite observer utilities to the root frontend API.
+- Moved dropdown hidden-input synchronization into the package action form runtime so apps no longer need local form-submit wrappers for package dropdowns.
+- Reused the shared DOM helpers in logs/sidebar internals and kept the package free of custom-element registration behavior.
+
 ## 6.0.7
 
 - Moved generated font-face CSS before package component styles so configured webfonts are discoverable before the first styled paint.

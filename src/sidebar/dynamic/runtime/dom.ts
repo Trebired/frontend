@@ -1,13 +1,12 @@
 import type { DynamicSidebarRuntimeRenderContext } from "./types.js";
 import { textValue } from "#yv4ubgils4dc";
-import { firstNonScriptHTMLElementChild as liveRootContent } from "#er0dlx1gtbzh";
+import {
+  clearChildren,
+  firstNonScriptHTMLElementChild as liveRootContent,
+} from "#er0dlx1gtbzh";
 
 function rootDocument(root: HTMLElement) {
   return root.ownerDocument || document;
-}
-
-function clearChildren(node: Element) {
-  node.replaceChildren();
 }
 
 function slotActive(slot: HTMLElement, visibilityAttr: string) {

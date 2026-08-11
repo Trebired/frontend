@@ -90,11 +90,21 @@ function resolveDocumentTarget(target: unknown): HTMLElement | null {
   return null;
 }
 
+function jsonElementText(element: HTMLElement) {
+  if (
+    typeof HTMLTemplateElement !== "undefined" &&
+      element instanceof HTMLTemplateElement
+  ) {
+    return element.content?.textContent || "";
+  }
+  return element.textContent || "";
+}
+
 function readJsonScript<T>(id: string, fallback: T): T {
   const element =
   typeof document !== "undefined" ? document.getElementById(id) : null;
   if (!element) return fallback;
-  return parseJsonText<T>(element.textContent || "", fallback);
+  return parseJsonText<T>(jsonElementText(element), fallback);
 }
 
 function parseJsonText<T>(text: string, fallback: T): T {
@@ -109,7 +119,9 @@ function parseJsonText<T>(text: string, fallback: T): T {
 function readElementJson<T>(host: ParentNode | null, selector: string, fallback: T): T {
   if (!host || typeof host.querySelector !== "function") return fallback;
   const element = host.querySelector(selector);
-  return parseJsonText<T>(element?.textContent || "", fallback);
+  return element instanceof HTMLElement
+  ? parseJsonText<T>(jsonElementText(element), fallback)
+  : fallback;
 }
 
 function readDataJson<T>(
@@ -210,6 +222,35 @@ function formDataFlatRecord(data: FormData) {
   return out;
 }
 
+function formDataRecord(data: FormData): Record<string, string | string[]> {
+  const out: Record<string, string | string[]> = {};
+  data.forEach((value, key) => {
+      const next =
+      typeof value === "string" ? value : String(value == null ? "" : value);
+      const current = out[key];
+      if (current === undefined) {
+        out[key] = next;
+        return;
+      }
+      out[key] = Array.isArray(current) ? current.concat(next) : [current, next];
+  });
+  return out;
+}
+
+function formDataStringRecord(data: FormData): Record<string, string | string[]> {
+  const out: Record<string, string | string[]> = {};
+  data.forEach((value, key) => {
+      const next = typeof value === "string" ? value : "";
+      const current = out[key];
+      if (current === undefined) {
+        out[key] = next;
+        return;
+      }
+      out[key] = Array.isArray(current) ? current.concat(next) : [current, next];
+  });
+  return out;
+}
+
 function formDataSearchParams(data: FormData) {
   const params = new URLSearchParams();
   data.forEach((value, key) => {
@@ -228,12 +269,15 @@ export {
   closestElement,
   connectedElementsFromSet,
   cssEscape,
+  cssEscape as cssEscapeId,
   documentLanguageTag,
   dispatchInputChange,
   escapeHtml,
   firstNonScriptHTMLElementChild,
   formDataFlatRecord,
+  formDataRecord,
   formDataSearchParams,
+  formDataStringRecord,
   isInteractiveTarget,
   isInUnhydratedIsland,
   onReady,
@@ -249,3 +293,5 @@ export {
   setHidden,
 };
 export type { BindRoot, Cleanup };
+export * from "./binding.js";
+export * from "./element-helpers.js";

@@ -8,6 +8,7 @@ import {
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { syncDropdownHiddenInputs } from "#c0ew0jlb0c87";
 import { ensureFormCsrfToken } from "#v1p6uw62hhsf";
 import { flash as defaultFlash } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
@@ -171,6 +172,7 @@ async function submitActionForm(
   event?.preventDefault();
   event?.stopImmediatePropagation();
   const submitter = submitterFor(event);
+  syncDropdownHiddenInputs(form);
   if (!(await confirmActionForm(form, submitter, options))) return null;
   const config = readActionFormConfig(form);
   const ui = formUi(options, config);
