@@ -1,171 +1,48 @@
 import fs from "node:fs";
-import path from "node:path";
-import { createRequire } from "node:module";
 
 import {
   applySvgColor,
+  applySvgRootAttrs,
   classNames,
   derivePrimarySvgColor,
   escapeHtml,
   normalizeHexColor,
-  normalizeIconName,
-  normalizeIconPack,
   normalizeSvgMarkup,
-  parseIconSpec,
   text,
 } from "#bu1nq95e3k0f";
-import type { IconPack, ParsedIconSpec } from "#bu1nq95e3k0f";
+import type { ParsedIconSpec } from "#bu1nq95e3k0f";
 import type { ServerIconCacheEntry } from "#6o6fqz7svsts";
+import {
+  buildPackIndex,
+  listSvgFiles,
+  shouldPreserveSourceColors,
+  simpleIconColor,
+} from "./packs.js";
+import {
+  allowedIconPacks,
+  isIconPackAllowed,
+  normalizeIconPackList,
+  parseServerIconSpec,
+  resolveIconPackRoot,
+} from "./options.js";
+import type {
+  IconServerOptions,
+  IconSvgFailure,
+  IconSvgResult,
+  IconSvgSuccess,
+  RenderIconHtmlAttrs,
+} from "./types.js";
 
 export { withIconServerRenderer } from "#6o6fqz7svsts";
+export * from "./material.js";
 
-type IconSvgSuccess = {
-  file?: string;
-  icon: string;
-  ok: true;
-  pack: IconPack;
-  spec: string;
-  statusCode: "success";
-  svg: string;
-};
-
-type IconSvgFailure = {
-  icon?: string;
-  ok: false;
-  pack?: string;
-  spec: string;
-  status: number;
-  statusCode: "duplicate-icon-name" | "icon-not-found" | "invalid-spec" | "invalid-svg" | "pack-not-found";
-};
-
-type IconSvgResult = IconSvgSuccess | IconSvgFailure;
-
-type IconServerOptions = {
-  packageRoot?: string;
-  preserveSourceColors?: boolean | readonly string[];
-  rootDir?: string;
-};
-
-type RenderIconHtmlAttrs = Record<string, unknown> & {
-  class?: string;
-  className?: string;
-  color?: string;
-  label?: string;
-  preserveSourceColors?: boolean;
-  tag?: "i" | "span" | "div";
-  title?: string;
-};
-
-type IconPackIndex = {
-  byName: Map<string, string>;
-  duplicates: Map<string, string[]>;
-  packRoot: string;
-};
-
-const packIndexCache = new Map<string, IconPackIndex | null>();
 const svgMarkupCache = new Map<string, IconSvgResult>();
-let simpleIconColorCache: Map<string, string> | null = null;
 
-function listSvgFiles(rootDir: string): string[] {
-  const out: string[] = [];
-  const stack = [rootDir];
-  while (stack.length) {
-    const current = stack.pop()!;
-    let entries: fs.Dirent[] = [];
-    try {
-      entries = fs.readdirSync(current, { withFileTypes: true });
-    } catch {
-      entries = [];
-    }
-    for (const entry of entries) {
-      const abs = path.join(current, entry.name);
-      if (entry.isDirectory()) stack.push(abs);
-      else if (entry.isFile() && entry.name.toLowerCase().endsWith(".svg")) out.push(abs);
-    }
-  }
-  return out.sort((a, b) => a.localeCompare(b));
-}
-
-function findPackageRootFromResolvedFile(filePath: string, pack: string): string | null {
-  let current = path.dirname(filePath);
-  for (;;) {
-    const packageJsonPath = path.join(current, "package.json");
-    if (fs.existsSync(packageJsonPath)) {
-      try {
-        const parsed = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-        if (parsed?.name === pack) return current;
-      } catch {}
-    }
-    const parent = path.dirname(current);
-    if (parent === current) return null;
-    current = parent;
-  }
-}
-
-function resolveIconPackRoot(pack: unknown, options: IconServerOptions = {}): string {
-  const normalizedPack = normalizeIconPack(pack);
-  if (!normalizedPack) return "";
-  if (options.packageRoot) return path.resolve(options.packageRoot);
-
-  const roots = [options.rootDir, process.cwd()].filter(Boolean) as string[];
-  for (const root of roots) {
-    const requireFromRoot = createRequire(path.join(path.resolve(root), "package.json"));
-    try {
-      const packageJsonPath = requireFromRoot.resolve(`${normalizedPack}/package.json`);
-      return path.dirname(packageJsonPath);
-    } catch {}
-    try {
-      const resolved = requireFromRoot.resolve(normalizedPack);
-      const packageRoot = findPackageRootFromResolvedFile(resolved, normalizedPack);
-      if (packageRoot) return packageRoot;
-    } catch {}
-  }
-
-  const requireFromPackage = createRequire(import.meta.url);
-  try {
-    return path.dirname(requireFromPackage.resolve(`${normalizedPack}/package.json`));
-  } catch {}
-  try {
-    const resolved = requireFromPackage.resolve(normalizedPack);
-    return findPackageRootFromResolvedFile(resolved, normalizedPack) || "";
-  } catch {
-    return "";
-  }
-}
-
-function buildPackIndex(pack: IconPack, options: IconServerOptions = {}): IconPackIndex | null {
-  const cacheKey = `${pack}:${options.packageRoot || options.rootDir || ""}`;
-  if (packIndexCache.has(cacheKey)) return packIndexCache.get(cacheKey) || null;
-  const packRoot = resolveIconPackRoot(pack, options);
-  if (!packRoot || !fs.existsSync(packRoot) || !fs.statSync(packRoot).isDirectory()) {
-    packIndexCache.set(cacheKey, null);
-    return null;
-  }
-  const byName = new Map<string, string>();
-  const duplicates = new Map<string, string[]>();
-  for (const filePath of listSvgFiles(packRoot)) {
-    const icon = normalizeIconName(path.basename(filePath));
-    if (!icon) continue;
-    const existing = byName.get(icon);
-    if (existing) {
-      if (!duplicates.has(icon)) duplicates.set(icon, [existing]);
-      duplicates.get(icon)!.push(filePath);
-      continue;
-    }
-    byName.set(icon, filePath);
-  }
-  const index = { byName, duplicates, packRoot };
-  packIndexCache.set(cacheKey, index);
-  return index;
-}
-
-function shouldPreserveSourceColors(pack: IconPack, options: IconServerOptions = {}): boolean {
-  if (options.preserveSourceColors === true) return true;
-  if (Array.isArray(options.preserveSourceColors)) return options.preserveSourceColors.includes(pack);
-  return false;
-}
-
-function failure(parsed: ParsedIconSpec | null, statusCode: IconSvgFailure["statusCode"], status = 404): IconSvgFailure {
+function failure(
+  parsed: ParsedIconSpec | null,
+  statusCode: IconSvgFailure["statusCode"],
+  status = 404,
+): IconSvgFailure {
   return {
     icon: parsed?.icon,
     ok: false,
@@ -176,37 +53,24 @@ function failure(parsed: ParsedIconSpec | null, statusCode: IconSvgFailure["stat
   };
 }
 
-function readSimpleIconColorMap(options: IconServerOptions = {}): Map<string, string> {
-  if (simpleIconColorCache) return simpleIconColorCache;
-  const colors = new Map<string, string>();
-  const packRoot = resolveIconPackRoot("simple-icons", options);
-  const dataPath = path.join(packRoot, "data", "simple-icons.json");
-  try {
-    const parsed = JSON.parse(fs.readFileSync(dataPath, "utf8"));
-    const entries = Array.isArray(parsed) ? parsed : [];
-    for (const entry of entries) {
-      const slug = normalizeIconName(entry?.slug);
-      const color = normalizeHexColor(entry?.hex);
-      if (slug && color && color.toLowerCase() !== "#000000") colors.set(slug, color);
-    }
-  } catch {}
-  simpleIconColorCache = colors;
-  return colors;
-}
-
-function simpleIconColor(icon: unknown, options: IconServerOptions = {}): string {
-  return readSimpleIconColorMap(options).get(normalizeIconName(icon)) || "";
-}
-
-function resolveIconSvg(spec: unknown, options: IconServerOptions = {}): IconSvgResult {
-  const parsed = parseIconSpec(spec);
+function resolveIconSvg(
+  spec: unknown,
+  options: IconServerOptions = {},
+): IconSvgResult {
+  const parsed = parseServerIconSpec(spec, options);
   if (!parsed) return failure(null, "invalid-spec", 400);
-  const cacheKey = `${parsed.spec}:${JSON.stringify(options.preserveSourceColors || false)}`;
+  const cacheKey = [
+    parsed.spec,
+    resolveIconPackRoot(parsed.pack, options),
+    JSON.stringify(options.preserveSourceColors || null),
+  ].join(":");
   const cached = svgMarkupCache.get(cacheKey);
   if (cached) return cached;
   const index = buildPackIndex(parsed.pack, options);
   if (!index) return failure(parsed, "pack-not-found");
-  if (index.duplicates.has(parsed.icon)) return failure(parsed, "duplicate-icon-name", 409);
+  if (index.duplicates.has(parsed.icon)) {
+    return failure(parsed, "duplicate-icon-name", 409);
+  }
   const file = index.byName.get(parsed.icon);
   if (!file) return failure(parsed, "icon-not-found");
   let source = "";
@@ -232,8 +96,11 @@ function resolveIconSvg(spec: unknown, options: IconServerOptions = {}): IconSvg
   return result;
 }
 
-function resolveIconColor(spec: unknown, options: IconServerOptions = {}): string {
-  const parsed = parseIconSpec(spec);
+function resolveIconColor(
+  spec: unknown,
+  options: IconServerOptions = {},
+): string {
+  const parsed = parseServerIconSpec(spec, options);
   if (!parsed) return "";
   if (parsed.pack === "simple-icons") return simpleIconColor(parsed.icon, options);
   const svg = resolveIconSvg(parsed.spec, options);
@@ -248,13 +115,17 @@ function resolveIconColor(spec: unknown, options: IconServerOptions = {}): strin
 function classifyIconColorMode(value: unknown): "" | "brand" | "monochrome" {
   const color = normalizeHexColor(value);
   if (!color) return "";
-  const rgb = [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)].map((part) => parseInt(part, 16));
+  const rgb = [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)]
+  .map((part) => parseInt(part, 16));
   const spread = Math.max(...rgb) - Math.min(...rgb);
   return spread <= 24 ? "monochrome" : "brand";
 }
 
-function buildRenderedIconCacheEntry(spec: unknown, options: IconServerOptions = {}): (ServerIconCacheEntry & { normalizedSpec: string }) | null {
-  const parsed = parseIconSpec(spec);
+function buildRenderedIconCacheEntry(
+  spec: unknown,
+  options: IconServerOptions = {},
+): (ServerIconCacheEntry & { normalizedSpec: string }) | null {
+  const parsed = parseServerIconSpec(spec, options);
   if (!parsed) return null;
   const svg = resolveIconSvg(parsed.spec, options);
   if (!svg.ok) return null;
@@ -267,8 +138,11 @@ function buildRenderedIconCacheEntry(spec: unknown, options: IconServerOptions =
   };
 }
 
-function createServerIconRenderer(cache: Record<string, ServerIconCacheEntry> = {}, options: IconServerOptions = {}) {
-  return function renderServerIcon(spec: string): (ServerIconCacheEntry & { normalizedSpec: string }) | null {
+function createServerIconRenderer(
+  cache: Record<string, ServerIconCacheEntry> = {},
+  options: IconServerOptions = {},
+) {
+  return function renderServerIcon(spec: string) {
     const entry = buildRenderedIconCacheEntry(spec, options);
     if (!entry) return null;
     cache[entry.normalizedSpec] = {
@@ -303,8 +177,12 @@ function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): st
   .join(" ");
 }
 
-function renderIconHtml(spec: unknown, attrs: RenderIconHtmlAttrs = {}, options: IconServerOptions = {}): string {
-  const parsed = parseIconSpec(spec);
+function renderIconHtml(
+  spec: unknown,
+  attrs: RenderIconHtmlAttrs = {},
+  options: IconServerOptions = {},
+): string {
+  const parsed = parseServerIconSpec(spec, options);
   const tag = text(attrs.tag) || "i";
   if (!parsed) return `<${tag} class="tbf-icon icon-glyph" aria-hidden="true"></${tag}>`;
   const svgResult = resolveIconSvg(parsed.spec, {
@@ -333,8 +211,13 @@ function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
     };
   }
   const color = resolveIconColor(svgResult.spec, options);
+  const colorMode = classifyIconColorMode(color);
+  const svg = color ? applySvgColor(svgResult.svg, color) : svgResult.svg;
   return {
-    body: color ? applySvgColor(svgResult.svg, color) : svgResult.svg,
+    body: applySvgRootAttrs(svg, {
+        "data-tbf-icon-color-mode": colorMode || undefined,
+        "data-tbf-icon-color-value": color || undefined,
+    }),
     headers: {
       "Cache-Control": "public, max-age=3600",
       "Content-Type": "image/svg+xml; charset=utf-8",
@@ -344,14 +227,21 @@ function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
 }
 
 export {
+  allowedIconPacks,
   buildPackIndex,
   buildRenderedIconCacheEntry,
+  classifyIconColorMode,
   createIconSvgResponse,
   createServerIconRenderer,
+  isIconPackAllowed,
+  listSvgFiles,
+  normalizeIconPackList,
+  parseServerIconSpec,
   renderIconHtml,
   resolveIconColor,
   resolveIconPackRoot,
   resolveIconSvg,
+  shouldPreserveSourceColors,
   simpleIconColor,
 };
 export type {
@@ -359,5 +249,6 @@ export type {
   IconSvgFailure,
   IconSvgResult,
   IconSvgSuccess,
+  MaterialFileIconOptions,
   RenderIconHtmlAttrs,
-};
+} from "./types.js";

@@ -4,7 +4,7 @@ import {
   toText as text,
 } from "#ndsvdqv80epr";
 
-type IconPack = "remixicon" | "simple-icons";
+type IconPack = string;
 
 type ParsedIconSpec = {
   icon: string;
@@ -27,7 +27,9 @@ function normalizeIconName(value: unknown): string {
 function normalizeIconPack(value: unknown): IconPack | "" {
   const pack = text(value).toLowerCase().replace(/_/gu, "-");
   if (pack === "simpleicons") return "simple-icons";
-  return SUPPORTED_ICON_PACKS.includes(pack as IconPack) ? pack as IconPack : "";
+  return /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/u.test(pack)
+  ? pack
+  : "";
 }
 
 function iconSpec(pack: unknown, name: unknown): string {
@@ -126,6 +128,29 @@ function derivePrimarySvgColor(source: unknown): string {
       });
       }
 
+      function applySvgRootAttrs(
+      svgMarkup: unknown,
+      attrs: Record<string, unknown> = {},
+      ): string {
+      const svg = String(svgMarkup || "").trim();
+      if (!svg || !/^<svg\b/iu.test(svg)) return svg;
+      const pairs: string[] = [];
+      for (const [keyRaw, value] of Object.entries(attrs || {})) {
+      const key = text(keyRaw);
+      if (!key || value == null || value === false) continue;
+      if (value === true) {
+      pairs.push(key);
+      continue;
+      }
+      pairs.push(`${key}="${escapeHtml(value)}"`);
+      }
+      if (!pairs.length) return svg;
+      return svg.replace(
+      /^<svg\b([^>]*)>/iu,
+      (_match, openAttrs) => `<svg${String(openAttrs || "")} ${pairs.join(" ")}>`,
+      );
+      }
+
       function normalizeSvgMarkup(
       svgMarkup: unknown,
       options: {
@@ -166,6 +191,7 @@ function derivePrimarySvgColor(source: unknown): string {
       export {
       SUPPORTED_ICON_PACKS,
       applySvgColor,
+      applySvgRootAttrs,
       buildIconUrl,
       classNames,
       derivePrimarySvgColor,

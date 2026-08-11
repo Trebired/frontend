@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.7.0
+
+- Added configurable server icon packs so apps can opt into custom SVG packages such as `material-icon-theme`.
+- Added Material Icon Theme helpers for resolving file, folder, language, and file-entry icon specs from package metadata.
+- Loosened frontend icon config and runtime parsing to normalize custom icon pack specs while keeping server responses limited to configured packs.
+
 ## 6.6.1
 
 - Re-exported React server renderer option/context types from `@trebired/frontend/server`.

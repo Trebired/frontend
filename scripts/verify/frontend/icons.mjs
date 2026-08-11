@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -24,6 +27,11 @@ function verifyIconParsing(iconRuntime) {
       pack: "simple-icons",
       spec: "simple-icons:github",
   });
+  assert.deepEqual(iconRuntime.parseIconSpec("material-icon-theme javascript"), {
+      icon: "javascript",
+      pack: "material-icon-theme",
+      spec: "material-icon-theme:javascript",
+  });
 }
 
 function verifyIconServer(iconServer, rootDir) {
@@ -39,6 +47,79 @@ function verifyIconServer(iconServer, rootDir) {
         label: "Add",
       }, { rootDir }).includes("--tbf-icon-color: #123456"));
   verifyIconMiddleware(iconServer, rootDir);
+  verifyCustomIconPack(iconServer);
+}
+
+function verifyCustomIconPack(iconServer) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "tbf-custom-icons-"));
+  const packRoot = path.join(tmp, "custom-icons");
+  fs.mkdirSync(path.join(packRoot, "icons"), { recursive: true });
+  fs.writeFileSync(
+    path.join(packRoot, "package.json"),
+    JSON.stringify({ name: "custom-icons", version: "1.0.0" }),
+  );
+  fs.writeFileSync(
+    path.join(packRoot, "icons", "logo.svg"),
+    '<svg viewBox="0 0 1 1"><path fill="#abcdef" d="M0 0h1v1H0z"/></svg>',
+  );
+  assert.equal(iconServer.resolveIconSvg("custom-icons:logo").ok, false);
+  const options = {
+    packageRoots: { "custom-icons": packRoot },
+    packs: ["remixicon", "simple-icons", "custom-icons"],
+  };
+  const svg = iconServer.resolveIconSvg("custom-icons logo", options);
+  assert.equal(svg.ok, true);
+  assert.equal(svg.spec, "custom-icons:logo");
+  assert.ok(iconServer.renderIconHtml("custom-icons:logo", {}, options).includes("data-tbf-icon=\"custom-icons:logo\""));
+  assert.equal(iconServer.createIconSvgResponse("custom-icons:logo", options).status, 200);
+  verifyMaterialIconHelpers(iconServer, tmp);
+}
+
+function verifyMaterialIconHelpers(iconServer, tmp) {
+  const packRoot = path.join(tmp, "material-icon-theme");
+  fs.mkdirSync(path.join(packRoot, "dist"), { recursive: true });
+  fs.mkdirSync(path.join(packRoot, "icons"), { recursive: true });
+  fs.writeFileSync(
+    path.join(packRoot, "package.json"),
+    JSON.stringify({ name: "material-icon-theme", version: "1.0.0" }),
+  );
+  fs.writeFileSync(
+    path.join(packRoot, "icons", "javascript.svg"),
+    '<svg viewBox="0 0 1 1"><path fill="#f7df1e" d="M0 0h1v1H0z"/></svg>',
+  );
+  fs.writeFileSync(
+    path.join(packRoot, "icons", "folder-src.svg"),
+    '<svg viewBox="0 0 1 1"><path fill="#90a4ae" d="M0 0h1v1H0z"/></svg>',
+  );
+  fs.writeFileSync(
+    path.join(packRoot, "dist", "material-icons.json"),
+    JSON.stringify({
+        iconDefinitions: {
+          javascript: { iconPath: "./../icons/javascript.svg" },
+          "folder-src": { iconPath: "./../icons/folder-src.svg" },
+        },
+        fileExtensions: { js: "javascript" },
+        folder: "folder-src",
+        folderNames: { src: "folder-src" },
+        languageIds: { javascript: "javascript" },
+    }),
+  );
+  const options = {
+    packageRoots: { "material-icon-theme": packRoot },
+    packs: ["material-icon-theme"],
+  };
+  assert.equal(
+    iconServer.resolveMaterialThemeIconSpec("javascript", options),
+    "material-icon-theme:javascript",
+  );
+  assert.equal(
+    iconServer.resolveMaterialFileIconSpec("index.js", "", options),
+    "material-icon-theme:javascript",
+  );
+  assert.equal(
+    iconServer.resolveMaterialFolderIconSpec("src", options),
+    "material-icon-theme:folder-src",
+  );
 }
 
 function verifyIconMiddleware(iconServer, rootDir) {

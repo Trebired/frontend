@@ -1,4 +1,4 @@
-type FrontendIconPack = "remixicon" | "simple-icons";
+type FrontendIconPack = string;
 
 type FrontendSystemKey =
 | "actions"

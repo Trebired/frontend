@@ -140,15 +140,22 @@ function normalizeEndpoint(value: unknown): string {
       return endpoint;
       }
 
+      function normalizeConfigIconPack(value: unknown): FrontendIconPack {
+      const pack = String(value || "").trim().toLowerCase().replace(/_/gu, "-");
+      if (pack === "simpleicons") return "simple-icons";
+      if (!/^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/u.test(pack)) {
+      throw invalidConfig(`invalid icon pack ${String(value)}`);
+      }
+      return pack;
+      }
+
       function normalizeIconPacks(value: unknown): FrontendIconPack[] {
       const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
       if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
       const packs: FrontendIconPack[] = [];
       for (const item of raw) {
-      if (!SUPPORTED_ICON_PACKS.includes(item as FrontendIconPack)) {
-      throw invalidConfig(`unsupported icon pack ${String(item)}`);
-      }
-      if (!packs.includes(item as FrontendIconPack)) packs.push(item as FrontendIconPack);
+      const pack = normalizeConfigIconPack(item);
+      if (!packs.includes(pack)) packs.push(pack);
       }
       return packs;
       }
