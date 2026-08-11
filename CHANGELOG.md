@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.6.0
+
+- Added server framework helpers for asset responses, locale locals, page task timeouts, and adapter-based React document rendering.
+- Exposed React SSR shell assembly hooks so apps supply product data, permission state, component resolution, and title rules without owning document orchestration.
+- Added verification coverage for asset compression/cache behavior, locale middleware, page task fallback results, and React document rendering.
+
 ## 6.5.0
 
 - Added public server helpers for frontend security locals and render-mode UI composition.

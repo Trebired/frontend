@@ -10,9 +10,13 @@ async function verifyFrontendServer(context) {
   verifyNavigationServer(server);
   verifyRootNavigation(root);
   verifySeoServer(server);
+  await verifyAssetServer(server);
   await verifyRenderModeServer(server);
   await verifyFaviconServer(server);
   verifyLiveServer(server);
+  verifyLocaleServer(server);
+  await verifyPageTaskServer(server);
+  verifyReactRenderServer(server);
 }
 
 async function verifyThemeServer(server) {
@@ -174,6 +178,86 @@ function verifyLiveServer(server) {
     "region",
   );
   assert.equal(server.frontendRequestMode({ headers: {} }), "document");
+}
+
+async function verifyAssetServer(server) {
+  const req = {
+    headers: { "accept-encoding": "br" },
+    path: "/js/app-0123456789abcdef.js",
+  };
+  const res = serverResponseProbe();
+  const asset = server.prepareAsset({
+      body: "const value = 1;".repeat(200),
+      contentType: "text/javascript; charset=utf-8",
+      etag: '"asset-a"',
+  });
+  server.sendAsset(req, res, asset);
+  assert.equal(res.headers["Cache-Control"], "public, max-age=31536000, immutable");
+  assert.equal(res.headers["Content-Type"], "text/javascript; charset=utf-8");
+  assert.equal(res.headers.ETag, '"asset-a"');
+  assert.ok(Number(res.headers["Content-Length"]) > 0);
+  assert.equal(server.cacheControlForPercent(0).immutable, false);
+  assert.equal(server.cacheControlForPercent(100).immutable, true);
+}
+
+function verifyLocaleServer(server) {
+  const req = {
+    headers: { "accept-language": "cs-CZ, en;q=0.5" },
+    viewer: { locale: "" },
+  };
+  const res = serverResponseProbe();
+  res.locals = {};
+  const state = server.applyLocaleToLocals(req, res);
+  assert.equal(state.request, "cs-CZ");
+  assert.equal(state.effective, "cs-CZ");
+  assert.deepEqual(res.locals.locale, state);
+}
+
+async function verifyPageTaskServer(server) {
+  const ok = await server.runPageTask(async() => ({ ok: true }), {
+      operation: "profile",
+      page: "account",
+  });
+  assert.deepEqual(ok, { ok: true });
+  const failed = await server.runPageTask(
+    async() => {
+      const error = new Error("boom");
+      error.status = 418;
+      error.status_code = "short-code";
+      throw error;
+    },
+    { operation: "profile", page: "account" },
+  );
+  assert.equal(failed.ok, false);
+  assert.equal(failed.status, 418);
+  assert.equal(failed.status_code, "short-code");
+}
+
+function verifyReactRenderServer(server) {
+  const renderer = server.createFrontendReactRenderer({
+      buildAssetLinks: (entryIds) => ({
+          cssLinks: `<link data-count="${entryIds.length}">`,
+          jsLinks: "<script></script>",
+      }),
+      createElement: (component, props) => component(props),
+      renderToStaticMarkup: (node) => String(node),
+      renderToString: (node) => String(node),
+      resolvePageComponent: (pageId) => (props) =>
+      `<main data-page="${pageId}">${props.lang}</main>`,
+      resolveRootDocument: () => (props) =>
+      `<html><head>${props.jsLinks}</head><body>${props.body}</body></html>`,
+      resolveTitle: (context) => `${context.pageTitle} | Test`,
+  });
+  const res = serverResponseProbe();
+  res.locals = { lang: "cs", nonce: "nonce-a", seo: { title: "Home" } };
+  renderer.renderPage(res, "platform/home", {});
+  assert.ok(String(res.body).startsWith("<!DOCTYPE html>"));
+  assert.ok(String(res.body).includes('nonce="nonce-a"'));
+  assert.ok(String(res.body).includes('data-page="platform/home"'));
+  assert.equal(res.locals.reactPageProps.lang, "cs");
+  assert.equal(renderer.renderFragment((props) => `<span>${props.label}</span>`, {
+        label: "A",
+    }), "<span>A</span>");
 }
 
 function serverResponseProbe() {
