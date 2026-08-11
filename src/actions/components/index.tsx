@@ -4,7 +4,12 @@ import type {
   HTMLAttributes,
   ReactNode,
 } from "react";
+import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import { classNames, dataBool, jsonScript } from "#ndsvdqv80epr";
+import {
+  actionTriggerAttrs,
+  wrapTriggerHostNode,
+} from "#6mupcizo1mwq";
 
 type ActionFormProps = FormHTMLAttributes<HTMLFormElement> & {
   actionConfig?: Record<string, unknown>;
@@ -36,6 +41,7 @@ type ActionTriggerProps = HTMLAttributes<HTMLButtonElement> & {
   externalHref?: string;
   href?: string;
 };
+type ActionTriggerHostOptions = BindActionTriggerOptions;
 
 function actionConfig(props: ActionFormProps) {
   return {
@@ -124,13 +130,12 @@ function ActionButton(props: ActionButtonProps) {
 
 function ActionTrigger(props: ActionTriggerProps) {
   const { action, children, className, externalHref, href, role, tabIndex, ...rest } = props;
+  const triggerAttrs = actionTriggerAttrs({ action, externalHref, href });
   return (
     <button
     {...rest}
     className={classNames("tbf-action-trigger", className)}
-    data-tbf-action-trigger={action}
-    data-tbf-external-href={externalHref}
-    data-tbf-href={href}
+    {...triggerAttrs}
     role={role}
     tabIndex={tabIndex}
     type="button"
@@ -140,8 +145,18 @@ function ActionTrigger(props: ActionTriggerProps) {
   );
 }
 
-export { ActionButton, ActionForm, ActionTrigger };
-export type { ActionButtonProps, ActionFormProps, ActionTriggerProps };
+export {
+  ActionButton,
+  ActionForm,
+  ActionTrigger,
+  wrapTriggerHostNode as actionTrigger,
+};
+export type {
+  ActionButtonProps,
+  ActionFormProps,
+  ActionTriggerHostOptions,
+  ActionTriggerProps,
+};
 export {
   add_button,
   cancel_button,

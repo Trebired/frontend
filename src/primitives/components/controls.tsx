@@ -58,7 +58,7 @@ function primitiveButton(props: ButtonProps) {
     >
     {children}
     </FrontendButton>,
-    { action: actionTrigger },
+    actionTrigger,
   );
 }
 
@@ -68,7 +68,7 @@ function primitiveCard(props: CardProps) {
     <FrontendCard className={primitiveCardClassName({ className, gap, layout, padding, scroll })} {...rest}>
     {children}
     </FrontendCard>,
-    { action: actionTrigger },
+    actionTrigger,
   );
 }
 

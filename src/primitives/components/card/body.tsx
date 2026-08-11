@@ -240,7 +240,7 @@ function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNo
     {content}
     </div>
   );
-  return liveCardNode(props, wrapTriggerHostNode(rendered, { action: props.actionTrigger }));
+  return liveCardNode(props, wrapTriggerHostNode(rendered, props.actionTrigger));
 }
 
 function card_body(props: BodyProps) {
@@ -251,7 +251,7 @@ function card_body(props: BodyProps) {
       props,
       wrapTriggerHostNode(
         selectButton(props, state.baseClassName, content, state.selected, Boolean(state.disabled)),
-        { action: props.actionTrigger },
+        props.actionTrigger,
       ),
     );
   }

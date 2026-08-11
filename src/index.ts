@@ -270,6 +270,7 @@ export * from "./primitives/index.js";
 export * from "./progress/index.js";
 export * from "./runtime/index.js";
 export * from "./sidebar/index.js";
+export * from "./settings/index.js";
 export * from "./socket/index.js";
 export * from "./surface/index.js";
 export * from "./theme/index.js";

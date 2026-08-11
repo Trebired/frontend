@@ -12,7 +12,7 @@ type ActionRequestOptions = Omit<RequestInit, "body"> & {
   adapters?: ActionAdapters;
   body?: BodyInit | Record<string, unknown> | null;
   ui?: ActionRequestUi;
-};
+} & ActionRequestUi;
 
 function networkFailure(): ActionJson {
   return {
@@ -39,7 +39,7 @@ function abortFailure(adapters?: ActionAdapters): ActionJson {
 }
 
 function mergedUi(options: ActionRequestOptions, ui: ActionRequestUi = {}) {
-  return { ...ui, ...(options.ui || {}) };
+  return { ...options, ...ui, ...(options.ui || {}) };
 }
 
 function setActionBusy(ui: ActionRequestUi | undefined, busy: boolean) {

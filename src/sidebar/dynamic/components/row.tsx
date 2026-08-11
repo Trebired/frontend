@@ -131,7 +131,7 @@ function wrapDynamicSidebarLink(
   }
   if (options.wrapLink) return options.wrapLink(node, { ...context, href });
   return href && href !== "#" && context.item.navIgnore !== true && options.actionTrigger !== false
-  ? wrapTriggerHostNode(node, { action: { href } })
+  ? wrapTriggerHostNode(node, { href })
   : node;
 }
 

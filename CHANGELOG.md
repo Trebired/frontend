@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.1.1
+
+- Exported save-policy APIs from the root package entry.
+- Added generic React `actionTrigger()` host markup for apps replacing local action-trigger wrappers.
+- Loosened action request and decoded payload types for existing typed app callbacks while preserving package-owned event names.
+
 ## 6.1.0
 
 - Added public action form/button request APIs, lifecycle events, response-action helpers, and action payload helpers so apps can drop local action runtime wrappers.

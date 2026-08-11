@@ -35,11 +35,13 @@ function actionTriggerAttrs(options?: BindActionTriggerOptions) {
   };
 }
 
-function wrapTriggerHostNode(children: ReactNode, options: { action?: BindActionTriggerOptions }) {
-  if (!options.action) return children;
+function wrapTriggerHostNode(children: ReactNode, options?: BindActionTriggerOptions) {
+  if (!options || (!options.action && !options.href && !options.externalHref)) {
+    return children;
+  }
   return (
     <span
-    {...actionTriggerAttrs(options.action)}
+    {...actionTriggerAttrs(options)}
     className="action-trigger-host"
     style={{ display: "contents" }}
     >

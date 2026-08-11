@@ -7,6 +7,7 @@ const triggerBindings = new WeakMap<HTMLElement, () => void>();
 
 type ActionPayload = {
   action: string;
+  actionValue: string;
   event: Event;
   kind: "click" | "keydown";
   trigger: HTMLElement;
@@ -55,7 +56,14 @@ function dispatchAction(
   if (!parsed.action) return false;
   const handlers = registry.get(parsed.action) || [];
   handlers.forEach((handler) => {
-      handler({ action: parsed.action, event, kind, trigger, value: parsed.value });
+      handler({
+          action: parsed.action,
+          actionValue: parsed.value,
+          event,
+          kind,
+          trigger,
+          value: parsed.value,
+      });
   });
   return handlers.length > 0;
 }
@@ -64,13 +72,15 @@ function encodeActionPayload(payload: unknown) {
   return encodeURIComponent(JSON.stringify(payload || {}));
 }
 
-function decodeActionPayload(value: unknown) {
+function decodeActionPayload<T extends Record<string, any> = Record<string, any>>(
+  value: unknown,
+): T {
   try {
     const decoded = decodeURIComponent(String(value || ""));
     const parsed = decoded ? JSON.parse(decoded) : null;
-    return parsed && typeof parsed === "object" ? parsed : {};
+    return (parsed && typeof parsed === "object" ? parsed : {}) as T;
   } catch {
-    return {};
+    return {} as T;
   }
 }
 
