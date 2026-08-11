@@ -114,6 +114,7 @@ async function verifyNoStandaloneWrapUtility(sourceDir) {
         assert.equal(css.includes('font-family: "Inter"'), true);
         assert.equal(css.includes("--tbf-font-family-sans"), true);
         assert.equal(css.includes(".inline-row"), true);
+        assert.ok(css.indexOf("@font-face") < css.indexOf(".inline-row"));
         assert.equal(css.includes(".inline-row.wrap"), true);
         assert.equal(css.includes(".gap-xs2"), true);
         assert.equal(css.includes(".bg-canvas"), true);

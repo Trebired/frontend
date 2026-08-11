@@ -104,7 +104,13 @@ function assertLoadedConfig(loaded, configPath, config) {
   assert.deepEqual(loaded.config.assets.icons.packs, ["simple-icons"]);
   assert.equal(loaded.config.assets.fonts.families[0].packageName, "inter");
   assert.equal(loaded.config.design.interactions.activePress.filter, "brightness(0.8)");
+  assert.ok(loaded.generatedScss.includes('@use "sass:meta";'));
+  assert.ok(loaded.generatedScss.includes("@include meta.load-css("));
   assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
+  assert.ok(
+    loaded.generatedScss.indexOf("@fontsource/inter/files/inter-latin-400-normal.woff2") <
+    loaded.generatedScss.indexOf("styles/tokens.scss"),
+  );
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
   assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
   assert.ok(loaded.generatedScss.includes("--app-interaction-active-filter: brightness(0.8);"));

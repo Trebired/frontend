@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.0.7
+
+- Moved generated font-face CSS before package component styles so configured webfonts are discoverable before the first styled paint.
+
 ## 6.0.6
 
 - Added configurable `components.overlays.modal` tokens for modal backdrop, content, and motion styling.
