@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.15.1
+
+- Fixed package static route resolution in runtimes that require `import.meta.resolve` to be called on `import.meta`.
+- Kept wizard SSR sizing active until a real client measurement is available so early initialization cannot collapse the page before a later load pass corrects it.
+
 ## 6.15.0
 
 - Added a configurable server React permission-state builder so apps can keep permission scope policy in config while the package owns render-shell serialization.

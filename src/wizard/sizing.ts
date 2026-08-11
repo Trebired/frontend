@@ -81,6 +81,7 @@ function syncWizardStepSize(
   root.style.setProperty("--wizard-step-min-height", `${maxHeight}px`);
   if (maxWidth > 0)
   root.style.setProperty("--wizard-step-width", `${maxWidth}px`);
+  return maxHeight > 0 && maxWidth > 0;
 }
 
 function bindWizardSizing(
@@ -90,17 +91,27 @@ function bindWizardSizing(
   nextButtons: HTMLElement[],
   finalOnlyEls: HTMLElement[],
   lastIndex: number,
+  onMeasured?: () => void,
 ) {
-  const sync = () =>
-  syncWizardStepSize(
-    root,
-    steps,
-    prevButtons,
-    nextButtons,
-    finalOnlyEls,
-    lastIndex,
-  );
+  const sync = () => {
+    if (
+      syncWizardStepSize(
+        root,
+        steps,
+        prevButtons,
+        nextButtons,
+        finalOnlyEls,
+        lastIndex,
+      )
+    ) {
+      onMeasured?.();
+    }
+  };
   window.addEventListener("resize", sync);
+  if (typeof ResizeObserver === "function") {
+    const observer = new ResizeObserver(sync);
+    observer.observe(root);
+  }
   if (document.readyState !== "complete") {
     window.addEventListener("load", sync, { once: true });
   }
@@ -127,7 +138,22 @@ function initializeWizardStep(
     0,
     steps.findIndex((step) => !step.hidden),
   );
-  syncWizardStepSize(
+  let ready = false;
+  const showReadyStep = () => {
+    if (ready) return;
+    ready = true;
+    showWizardStep(steps, currentIndex);
+    updateWizardNav(
+      prevButtons,
+      nextButtons,
+      finalOnlyEls,
+      currentIndex,
+      lastIndex,
+      stepIsValid(steps[currentIndex]),
+    );
+    markWizardReady(root);
+  };
+  const measured = syncWizardStepSize(
     root,
     steps,
     prevButtons,
@@ -135,7 +161,8 @@ function initializeWizardStep(
     finalOnlyEls,
     lastIndex,
   );
-  showWizardStep(steps, currentIndex);
+  if (measured) showReadyStep();
+  else
   updateWizardNav(
     prevButtons,
     nextButtons,
@@ -144,7 +171,6 @@ function initializeWizardStep(
     lastIndex,
     stepIsValid(steps[currentIndex]),
   );
-  markWizardReady(root);
   bindWizardSizing(
     root,
     steps,
@@ -152,6 +178,7 @@ function initializeWizardStep(
     nextButtons,
     finalOnlyEls,
     lastIndex,
+    showReadyStep,
   );
   return currentIndex;
 }

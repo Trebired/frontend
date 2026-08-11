@@ -40,4 +40,42 @@ async function verifyPopover(context) {
   assert.equal(document.activeElement, trigger);
 }
 
-export { verifyNamespace, verifyPopover };
+async function verifyWizard(context) {
+  const { bindWizardRoot } = await context.importDist("wizard");
+  document.body.innerHTML = [
+    '<wizard-root id="setup" class="wizard">',
+    '<wizard-step id="setup_a" data-wizard-step-state="active">A<wizard-next-button><button ' +
+      'type="button">Next</button></wizard-next-button></wizard-step>',
+    '<wizard-step id="setup_b" aria-hidden="true" inert>B<wizard-previous-button><button type="button" ' +
+      'hidden>Back</button></wizard-previous-button></wizard-step>',
+    "</wizard-root>",
+  ].join("");
+  const root = document.getElementById("setup");
+  const steps = Array.from(root.querySelectorAll("wizard-step"));
+  let ready = false;
+  steps.forEach((step, index) => {
+      step.getBoundingClientRect = () => ({
+          bottom: 0,
+          height: ready ? 40 + index * 30 : 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: ready ? 320 : 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+      });
+  });
+  bindWizardRoot(root);
+  assert.equal(root.hasAttribute("data-wizard-ready"), false);
+  assert.equal(steps[1].hidden, false);
+  ready = true;
+  window.dispatchEvent(new Event("resize"));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(root.style.getPropertyValue("--wizard-step-min-height"), "70px");
+  assert.equal(root.style.getPropertyValue("--wizard-step-width"), "320px");
+  assert.equal(steps[1].hidden, true);
+  assert.equal(root.getAttribute("data-wizard-ready"), "true");
+}
+
+export { verifyNamespace, verifyPopover, verifyWizard };

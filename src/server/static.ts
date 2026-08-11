@@ -154,8 +154,9 @@ function attachStaticDirectory(
 }
 
 function defaultPackageResolver(specifier: string) {
-  const resolver = (import.meta as { resolve?: (specifier: string) => string }).resolve;
-  return typeof resolver === "function" ? resolver(specifier) : "";
+  return typeof import.meta.resolve === "function"
+  ? import.meta.resolve(specifier)
+  : "";
 }
 
 function safePackageSubpath(value: unknown) {

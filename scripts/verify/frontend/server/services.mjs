@@ -147,6 +147,7 @@ function verifyStaticServer(server) {
   const attached = server.attachStaticDirectory(app, "/assets", root);
   assert.equal(attached.attached, true);
   assert.equal(app.staticRoutes[0].path, "/assets");
+  assert.ok(server.resolvePackageDirectory({ packageName: "remixicon" }).endsWith("remixicon"));
 }
 
 export { verifyFrontendServerFramework };
