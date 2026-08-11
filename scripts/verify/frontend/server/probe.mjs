@@ -45,8 +45,12 @@ function appCapture() {
     get(pathInput, handler) {
       this.routes.push({ handler, path: pathInput });
     },
-    post(pathInput, handler) {
-      this.posts.push({ handler, path: pathInput });
+    post(pathInput, ...handlers) {
+      this.posts.push({
+          handler: handlers[handlers.length - 1],
+          handlers,
+          path: pathInput,
+      });
     },
     use(pathOrHandler, maybeHandler) {
       if (typeof pathOrHandler === "string") {

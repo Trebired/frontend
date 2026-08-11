@@ -86,6 +86,48 @@ async function verifyFrontendServerServices(server) {
       }, themeRes),
     { theme: "light" },
   );
+  await verifyFrontendSeoRoutes(server);
+  await verifyFrontendFrameworkAttach(server);
+}
+
+async function verifyFrontendSeoRoutes(server) {
+  const routeApp = appCapture();
+  server.attachFrontendServerServices(routeApp, {
+      seo: {
+        defaults: { contentLanguage: "en" },
+        routes: {
+          robots: { disallow: ["/admin"] },
+          sitemap: { urls: [{ loc: "https://example.test/" }] },
+        },
+      },
+  });
+  assert.deepEqual(
+    routeApp.routes.map((route) => route.path),
+    ["/robots.txt", "/sitemap.xml"],
+  );
+  const robotRes = serverResponseProbe();
+  routeApp.routes[0].handler({}, robotRes);
+  assert.ok(String(robotRes.body).includes("Disallow: /admin"));
+}
+
+async function verifyFrontendFrameworkAttach(server) {
+  const app = appCapture();
+  const attached = server.attachFrontendFramework(app, {
+      navigation: true,
+      sidebarLive: {
+        resolve: ({ items }) => items.map((item) => ({ key: item.key })),
+        roomsForType: (type) => [`room:${type}`],
+      },
+  });
+  assert.equal(attached.services.navigation, true);
+  assert.equal(attached.sidebarLive, true);
+  assert.deepEqual(app.posts.map((route) => route.path), ["/ui/sidebar/live"]);
+  const res = serverResponseProbe();
+  const body = {
+    sidebars: [{ path: "/apps/1", side: "left", type: "app" }],
+  };
+  await app.posts[0].handler({ body }, res);
+  assert.equal(res.body.data.sidebars[0].key.startsWith("left:app:/apps/1"), true);
 }
 
 function verifyStaticServer(server) {

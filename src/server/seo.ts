@@ -1,79 +1,197 @@
 import {
+  serverObject,
   serverString,
   setResponseHeader,
   type ServerRequestLike,
   type ServerResponseLike,
 } from "./http.js";
-
-const ROBOTS_NOINDEX_CONTENT = "noindex, nofollow, noarchive";
-
-type SeoConfig = {
-  canonicalUrl?: string;
-  contentLanguage?: string;
-  googlebotContent?: string;
-  htmlLang?: string;
-  index?: boolean;
-  metaDescription?: string;
-  metaKeywords?: string;
-  ogDescription?: string;
-  ogImage?: string;
-  ogLocale?: string;
-  ogTitle?: string;
-  ogType?: string;
-  robotsContent?: string;
-  title?: string;
-  titleSuffix?: string;
-  twitterCard?: string;
-  twitterSite?: string;
-};
-
-type SeoMiddlewareOptions = {
-  defaults?: SeoConfig;
-  getSeo?: () => SeoConfig;
-};
-
-type SeoStoreOptions = {
-  defaults?: SeoConfig;
-  logger?: { info?: (scope: string, message: string, metadata?: Record<string, unknown>) => unknown };
-};
+import {
+  ROBOTS_NOINDEX_CONTENT,
+  botRobotsContent,
+  robotsContent,
+} from "./seo/robots.js";
+import { firstSeoText } from "./seo/text.js";
+import type {
+  SeoAlternateLink,
+  SeoConfig,
+  SeoMiddlewareOptions,
+  SeoRobotsConfig,
+  SeoSocialConfig,
+  SeoStoreOptions,
+  SeoStructuredData,
+  SeoVerificationConfig,
+} from "./seo/types.js";
 
 const DEFAULT_SEO: SeoConfig = Object.freeze({
-    titleSuffix: "",
-    metaDescription: "",
-    metaKeywords: "",
-    htmlLang: "en",
     contentLanguage: "en",
-    ogLocale: "en_US",
-    ogTitle: "",
-    ogDescription: "",
-    ogType: "website",
-    ogImage: "",
-    twitterCard: "summary_large_image",
-    twitterSite: "",
+    htmlLang: "en",
     index: false,
+    ogLocale: "en_US",
+    ogType: "website",
+    robots: { archive: false, follow: false, index: false },
+    twitterCard: "summary_large_image",
 });
 
-function robotsContent(config: SeoConfig = {}) {
-  return serverString(config.robotsContent || ROBOTS_NOINDEX_CONTENT);
+function firstArray<T>(...values: unknown[]) {
+  for (const value of values) {
+    if (Array.isArray(value)) return value as T[];
+    if (value != null) return [value as T];
+  }
+  return [] as T[];
+}
+
+function mergeRecord(...values: unknown[]) {
+  return Object.assign({}, ...values.map(serverObject));
+}
+
+function booleanFallback(value: unknown, fallback: unknown) {
+  return typeof value === "boolean" ? value : fallback === true;
+}
+
+function defaultRobotsForIndex(index: boolean) {
+  return index
+  ? { follow: true, index: true }
+  : { archive: false, follow: false, index: false };
+}
+
+function resolvedSeoRobots(body: SeoConfig, base: SeoConfig, index: boolean) {
+  return body.robots ??
+  ("index"in body
+    ? defaultRobotsForIndex(index)
+    : base.robots ?? defaultRobotsForIndex(index));
+}
+
+function createBaseSeoFields(context: {
+    base: SeoConfig;
+    body: SeoConfig;
+    description: string;
+    index: boolean;
+    openGraph: SeoSocialConfig;
+    robots: SeoConfig["robots"];
+    title: string;
+    twitter: SeoSocialConfig;
+}): SeoConfig {
+  const { base, body, description, index, openGraph, robots, title, twitter } =
+  context;
+  return {
+    alternates: firstArray<SeoAlternateLink>(body.alternates, base.alternates),
+    applicationName: firstSeoText(body.applicationName, base.applicationName),
+    bingbot: body.bingbot ?? base.bingbot,
+    canonicalUrl: firstSeoText(body.canonicalUrl, base.canonicalUrl),
+    colorScheme: firstSeoText(body.colorScheme, base.colorScheme),
+    contentLanguage: firstSeoText(body.contentLanguage, base.contentLanguage),
+    googlebot: body.googlebot ?? base.googlebot,
+    htmlLang: firstSeoText(body.htmlLang, base.htmlLang),
+    index,
+    manifestHref: firstSeoText(body.manifestHref, base.manifestHref),
+    metaDescription: description,
+    metaKeywords: firstSeoText(body.metaKeywords, base.metaKeywords),
+    openGraph,
+    referrer: firstSeoText(body.referrer, base.referrer),
+    robots,
+    siteName: firstSeoText(body.siteName, base.siteName, openGraph.siteName),
+    structuredData: firstArray<SeoStructuredData>(
+      body.structuredData,
+      body.jsonLd,
+      base.structuredData,
+      base.jsonLd,
+    ),
+    themeColor: firstSeoText(body.themeColor, base.themeColor),
+    title,
+    titleSuffix: firstSeoText(body.titleSuffix, base.titleSuffix),
+    twitter,
+    verification: mergeRecord(base.verification, body.verification) as SeoVerificationConfig,
+  };
+}
+
+function applyOpenGraphSeo(
+  next: SeoConfig,
+  body: SeoConfig,
+  base: SeoConfig,
+  openGraph: SeoSocialConfig,
+) {
+  next.ogTitle = firstSeoText(body.ogTitle, openGraph.title, base.ogTitle, next.title);
+  next.ogDescription = firstSeoText(
+    body.ogDescription,
+    openGraph.description,
+    next.metaDescription,
+    base.ogDescription,
+  );
+  next.ogType = firstSeoText(body.ogType, openGraph.type, base.ogType, "website");
+  next.ogImage = firstSeoText(body.ogImage, openGraphImage(openGraph.image), base.ogImage);
+  next.ogUrl = firstSeoText(body.ogUrl, openGraph.url, base.ogUrl, next.canonicalUrl);
+  next.ogLocale = firstSeoText(body.ogLocale, openGraph.locale, base.ogLocale);
+  next.ogSiteName = firstSeoText(
+    body.ogSiteName,
+    openGraph.siteName,
+    base.ogSiteName,
+    next.siteName,
+  );
+}
+
+function applyTwitterSeo(
+  next: SeoConfig,
+  body: SeoConfig,
+  base: SeoConfig,
+  twitter: SeoSocialConfig,
+) {
+  next.twitterCard = firstSeoText(body.twitterCard, twitter.card, base.twitterCard);
+  next.twitterTitle = firstSeoText(
+    body.twitterTitle,
+    twitter.title,
+    base.twitterTitle,
+    next.ogTitle,
+  );
+  next.twitterDescription = firstSeoText(
+    body.twitterDescription,
+    twitter.description,
+    base.twitterDescription,
+    next.ogDescription,
+  );
+  next.twitterImage = firstSeoText(
+    body.twitterImage,
+    openGraphImage(twitter.image),
+    base.twitterImage,
+    next.ogImage,
+  );
+  next.twitterSite = firstSeoText(body.twitterSite, twitter.site, base.twitterSite);
+  next.twitterCreator = firstSeoText(
+    body.twitterCreator,
+    twitter.creator,
+    base.twitterCreator,
+  );
+}
+
+function applyBotSeo(next: SeoConfig) {
+  next.robotsContent = robotsContent(next);
+  next.googlebotContent = botRobotsContent(next, "googlebot");
+  next.bingbotContent = botRobotsContent(next, "bingbot");
 }
 
 function pickSeo(body: SeoConfig = {}, defaults: SeoConfig = {}) {
   const base = { ...DEFAULT_SEO, ...defaults };
-  return {
-    titleSuffix: serverString(body.titleSuffix || base.titleSuffix),
-    metaDescription: serverString(body.metaDescription || base.metaDescription),
-    metaKeywords: serverString(body.metaKeywords || base.metaKeywords),
-    htmlLang: serverString(body.htmlLang || base.htmlLang),
-    contentLanguage: serverString(body.contentLanguage || base.contentLanguage),
-    ogLocale: serverString(body.ogLocale || base.ogLocale),
-    ogTitle: serverString(body.ogTitle || base.ogTitle),
-    ogDescription: serverString(body.ogDescription || base.ogDescription),
-    ogType: serverString(body.ogType || base.ogType),
-    ogImage: serverString(body.ogImage || base.ogImage),
-    twitterCard: serverString(body.twitterCard || base.twitterCard),
-    twitterSite: serverString(body.twitterSite || base.twitterSite),
-    index: false,
-  };
+  const index = booleanFallback(body.index, base.index);
+  const openGraph = mergeRecord(base.openGraph, body.openGraph) as SeoSocialConfig;
+  const twitter = mergeRecord(base.twitter, body.twitter) as SeoSocialConfig;
+  const next = createBaseSeoFields({
+      base,
+      body,
+      description: firstSeoText(body.metaDescription, base.metaDescription),
+      index,
+      openGraph,
+      robots: resolvedSeoRobots(body, base, index),
+      title: firstSeoText(body.title, base.title),
+      twitter,
+  });
+  applyOpenGraphSeo(next, body, base, openGraph);
+  applyTwitterSeo(next, body, base, twitter);
+  applyBotSeo(next);
+  return next;
+}
+
+function openGraphImage(input: unknown) {
+  const first = Array.isArray(input) ? input[0] : input;
+  return typeof first === "string" ? first : firstSeoText((serverObject(first) as any).url);
 }
 
 function requestGetter(req: ServerRequestLike, name: string) {
@@ -82,60 +200,41 @@ function requestGetter(req: ServerRequestLike, name: string) {
 }
 
 function buildCanonical(req: ServerRequestLike) {
-  const headers = req && req.headers && typeof req.headers === "object" ? req.headers : {};
-  const xfProto = serverString(headers["x-forwarded-proto"]).split(",")[0].trim();
-  const proto = xfProto || serverString((req as { protocol?: unknown }).protocol) || "https";
-  const xfHost = serverString(headers["x-forwarded-host"]).split(",")[0].trim();
-  let host = xfHost || requestGetter(req, "host") || serverString(headers.host);
-  if ((proto === "https" && /:443$/.test(host)) || (proto === "http" && /:80$/.test(host))) {
-    host = host.replace(/:(80|443)$/, "");
+  const headers = serverObject(req && req.headers);
+  const proto = firstSeoText(serverString(headers["x-forwarded-proto"]).split(",")[0], (req as any)?.protocol, "https");
+  let host = firstSeoText(
+    serverString(headers["x-forwarded-host"]).split(",")[0],
+    requestGetter(req, "host"),
+    headers.host,
+  );
+  if (
+    (proto === "https" && /:443$/u.test(host)) ||
+      (proto === "http" && /:80$/u.test(host))
+  ) {
+    host = host.replace(/:(80|443)$/u, "");
   }
-  const path = serverString((req as { path?: unknown }).path || "/").replace(/\/+$/, "") || "/";
-  return `${proto}://${host}${path}`;
+  const path = firstSeoText((req as any)?.path, "/").replace(/\/+$/u, "") || "/";
+  return host ? `${proto}://${host}${path}` : path;
 }
 
 function humanizeFromPath(path: unknown) {
-  const segments = serverString(path || "/")
-  .split("/")
-  .filter(Boolean);
-  const last = segments.pop() || "";
-  if (!last) return "";
-  return last
-  .replace(/-/g, " ")
-  .split(" ")
-  .map((word) => (/^[a-z]/.test(word) ? word.charAt(0).toUpperCase() + word.slice(1) : word))
-  .join(" ");
+  const last = firstSeoText(path, "/").split("/").filter(Boolean).pop() || "";
+  return last.replace(/[-_]+/gu, " ").replace(/\b[a-z]/gu, (char) => char.toUpperCase());
 }
 
 function getRobotsTagContent(config: SeoConfig = {}) {
-  return robotsContent(config);
+  return robotsContent(pickSeo(config));
 }
 
 function buildSeoBase(req: ServerRequestLike, seo: SeoConfig) {
-  return {
-    title: humanizeFromPath((req as { path?: unknown }).path) || "",
-    titleSuffix: seo.titleSuffix,
-    canonicalUrl: buildCanonical(req),
-    metaDescription: seo.metaDescription,
-    metaKeywords: seo.metaKeywords,
-    htmlLang: seo.htmlLang,
-    contentLanguage: seo.contentLanguage,
-    ogLocale: seo.ogLocale,
-    ogTitle: seo.ogTitle,
-    ogDescription: seo.ogDescription,
-    ogType: seo.ogType,
-    ogImage: seo.ogImage,
-    twitterCard: seo.twitterCard,
-    twitterSite: seo.twitterSite,
-    index: false,
-    robotsContent: getRobotsTagContent(seo),
-    googlebotContent: getRobotsTagContent(seo),
-  };
+  const title = firstSeoText(seo.title, humanizeFromPath((req as any)?.path));
+  return pickSeo({ ...seo, canonicalUrl: firstSeoText(seo.canonicalUrl, buildCanonical(req)), title }, seo);
 }
 
 function applySeoHeaders(res: ServerResponseLike | null | undefined, seo: SeoConfig) {
-  setResponseHeader(res, "X-Robots-Tag", getRobotsTagContent(seo));
-  if (seo.contentLanguage) setResponseHeader(res, "Content-Language", serverString(seo.contentLanguage));
+  const normalized = pickSeo(seo);
+  if (normalized.robotsContent) setResponseHeader(res, "X-Robots-Tag", normalized.robotsContent);
+  if (normalized.contentLanguage) setResponseHeader(res, "Content-Language", normalized.contentLanguage);
 }
 
 function applySeo(
@@ -145,14 +244,8 @@ function applySeo(
 ) {
   const locals = (res as { locals?: Record<string, unknown> } | null | undefined)?.locals;
   if (!locals) return;
-  const current = (locals.seo && typeof locals.seo === "object" ? locals.seo : {}) as SeoConfig;
-  const nextSeo = {
-    ...current,
-    ...overrides,
-    index: false,
-    robotsContent: getRobotsTagContent(options.defaults),
-    googlebotContent: getRobotsTagContent(options.defaults),
-  };
+  const current = serverObject(locals.seo) as SeoConfig;
+  const nextSeo = pickSeo(overrides, pickSeo(current, options.defaults || {}));
   locals.seo = nextSeo;
   applySeoHeaders(res, nextSeo);
 }
@@ -161,11 +254,7 @@ function createSeoStore(options: SeoStoreOptions = {}) {
   let current = pickSeo({}, options.defaults || {});
   return {
     getSeo() {
-      return {
-        ...current,
-        robotsContent: getRobotsTagContent(current),
-        googlebotContent: getRobotsTagContent(current),
-      };
+      return pickSeo(current);
     },
     updateSeo(body: SeoConfig = {}) {
       current = pickSeo(body, options.defaults || {});
@@ -176,11 +265,7 @@ function createSeoStore(options: SeoStoreOptions = {}) {
 }
 
 function createSeoMiddleware(options: SeoMiddlewareOptions = {}) {
-  return function seoMiddleware(
-    req: ServerRequestLike,
-    res: ServerResponseLike,
-    next: () => unknown,
-  ) {
+  return function seoMiddleware(req: ServerRequestLike, res: ServerResponseLike, next: () => unknown) {
     const seo = options.getSeo ? options.getSeo() : pickSeo({}, options.defaults || {});
     const baseSeo = buildSeoBase(req, seo);
     const locals = (res as { locals?: Record<string, unknown> }).locals;
@@ -196,17 +281,40 @@ function attachSeoMiddleware(app: unknown, options: SeoMiddlewareOptions = {}) {
   }
 }
 
+function createProductSeoDefaults(product: Record<string, unknown> = {}, options: SeoConfig = {}) {
+  const name = firstSeoText(product.name, options.siteName, "Product");
+  return pickSeo({
+      ...options,
+      applicationName: firstSeoText(options.applicationName, name),
+      ogSiteName: firstSeoText(options.ogSiteName, options.siteName, name),
+      siteName: firstSeoText(options.siteName, name),
+      titleSuffix: options.titleSuffix === "" ? "" : firstSeoText(options.titleSuffix, ` | ${name}`),
+  });
+}
+
 export {
   DEFAULT_SEO,
   ROBOTS_NOINDEX_CONTENT,
   applySeo,
+  applySeoHeaders,
   attachSeoMiddleware,
   buildCanonical,
   buildSeoBase,
+  createProductSeoDefaults,
   createSeoMiddleware,
   createSeoStore,
   getRobotsTagContent,
   humanizeFromPath,
   pickSeo,
+  robotsContent,
 };
-export type { SeoConfig, SeoMiddlewareOptions, SeoStoreOptions };
+export type {
+  SeoAlternateLink,
+  SeoConfig,
+  SeoMiddlewareOptions,
+  SeoRobotsConfig,
+  SeoSocialConfig,
+  SeoStoreOptions,
+  SeoStructuredData,
+  SeoVerificationConfig,
+};

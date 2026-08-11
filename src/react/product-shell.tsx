@@ -10,6 +10,7 @@ import {
   type LayoutDocumentProps,
 } from "#qsb4858ln9g5";
 import { BootScript } from "./boot.js";
+import { SeoHeadTags } from "./seo.js";
 import { readProductShellLayoutState } from "#etloxyxm9hhu";
 import type {
   ProductShellLayoutProps,
@@ -46,6 +47,7 @@ LayoutDocumentProps,
   headBeforeTheme?: ProductShellDocumentNode;
   htmlAttributes?: ProductShellDocumentAttributes<HtmlHTMLAttributes<HTMLHtmlElement>>;
   nonce?: string;
+  seo?: Record<string, unknown> | null;
   scripts?: ProductShellDocumentNode;
   shell?: unknown;
   theme?: string;
@@ -167,6 +169,7 @@ function productShellDocumentHead(
   return (
     <>
     {resolveProductShellValue(props.headBeforeTheme, state)}
+    {props.seo ? <SeoHeadTags nonce={props.nonce} seo={props.seo} /> : null}
     {boot.theme ? (
         <BootScript nonce={props.nonce} theme={state.themeKey} />
       ) : null}
@@ -208,6 +211,31 @@ function productShellDocumentBody(
   );
 }
 
+function productShellSeoText(props: ProductShellDocumentProps, key: string) {
+  const seo = props.seo && typeof props.seo === "object" ? props.seo : {};
+  const value = seo[key];
+  if (typeof value !== "string") return "";
+  return key === "titleSuffix" ? value : value.trim();
+}
+
+function productShellDocumentHtmlAttributes(
+  props: ProductShellDocumentProps,
+  state: ProductShellLayoutState,
+) {
+  const attrs = {
+    ...resolveProductShellValue(props.htmlAttributes, state),
+  } as HtmlHTMLAttributes<HTMLHtmlElement>;
+  const lang = productShellSeoText(props, "htmlLang");
+  return lang && !attrs.lang ? { ...attrs, lang } : attrs;
+}
+
+function productShellDocumentTitle(props: ProductShellDocumentProps) {
+  if (typeof props.title === "string" && props.title.trim()) return props.title;
+  const title = productShellSeoText(props, "title");
+  const suffix = productShellSeoText(props, "titleSuffix");
+  return title ? `${title}${suffix.trim() ? suffix : ""}` : undefined;
+}
+
 function ProductShellDocument(props: ProductShellDocumentProps) {
   const {
     bodyAttributes: _bodyAttributes,
@@ -217,12 +245,14 @@ function ProductShellDocument(props: ProductShellDocumentProps) {
     head: _head,
     headAfterTheme: _headAfterTheme,
     headBeforeTheme: _headBeforeTheme,
-    htmlAttributes,
+    htmlAttributes: _htmlAttributes,
     nonce: _nonce,
+    seo: _seo,
     scripts,
     shell,
     theme,
     themeKey,
+    title: _title,
     ...rest
   } = props;
   const state = readProductShellLayoutState(shell, {
@@ -235,10 +265,11 @@ function ProductShellDocument(props: ProductShellDocumentProps) {
     <LayoutDocument
     {...rest}
     bodyAttributes={productShellBodyAttributes(props, state)}
-    htmlAttributes={resolveProductShellValue(htmlAttributes, state)}
+    htmlAttributes={productShellDocumentHtmlAttributes(props, state)}
     head={productShellDocumentHead(props, state, resolvedBoot)}
     scripts={resolveProductShellValue(scripts, state)}
     theme={state.themeKey}
+    title={productShellDocumentTitle(props)}
     >
     {productShellDocumentBody(props, state, resolvedBoot)}
     </LayoutDocument>

@@ -2,6 +2,13 @@
 
 All notable package changes are documented here.
 
+## 6.12.0
+
+- Added adjustable SEO defaults for indexability, robots directives, canonical URLs, social preview tags, verification tags, alternates, and JSON-LD structured data.
+- Added package-owned SSR SEO head rendering for product-shell documents.
+- Added optional robots.txt and sitemap.xml route helpers.
+- Added backend framework helpers for frontend service attachment, sidebar-live routes, and render-mode UI application.
+
 ## 6.11.5
 
 - Aligned browser logger transport writer types with logger transport return values.

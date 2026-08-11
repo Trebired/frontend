@@ -26,6 +26,10 @@ import {
   type SeoMiddlewareOptions,
 } from "./seo.js";
 import {
+  attachSeoRoutes,
+  type SeoRouteOptions,
+} from "./seo/routes.js";
+import {
   attachSidebarRoutes,
   type SidebarServerOptions,
   type SidebarToggleHandlerOptions,
@@ -69,6 +73,12 @@ SidebarToggleHandlerOptions& {
   routes?: boolean;
 };
 
+type FrontendSeoServiceOptions =
+SeoMiddlewareOptions& {
+  middleware?: boolean;
+  routes?: false | SeoRouteOptions;
+};
+
 type FrontendServerServicesOptions = {
   favicon?: false | ThemedFaviconOptions;
   icons?: OptionalService<AttachIconServerOptions>;
@@ -77,7 +87,7 @@ type FrontendServerServicesOptions = {
   monaco?: OptionalService<Partial<PackageStaticRouteOptions>>;
   navigation?: OptionalService<NavigationMiddlewareOptions>;
   security?: OptionalService<SecurityMiddlewareOptions>;
-  seo?: OptionalService<SeoMiddlewareOptions>;
+  seo?: OptionalService<FrontendSeoServiceOptions>;
   sidebar?: OptionalService<FrontendSidebarServiceOptions>;
   statics?: false | PackageStaticRouteOptions | readonly PackageStaticRouteOptions[];
   theme?: OptionalService<FrontendThemeServiceOptions>;
@@ -140,6 +150,17 @@ function attachSidebarService(
   return true;
 }
 
+function attachSeoService(
+  app: unknown,
+  input: OptionalService<FrontendSeoServiceOptions>,
+) {
+  if (!serviceEnabled(input)) return false;
+  const config = serviceConfig<FrontendSeoServiceOptions>(input);
+  if (config.middleware !== false) attachSeoMiddleware(app, config);
+  if (config.routes) attachSeoRoutes(app, config.routes);
+  return true;
+}
+
 function isStaticRouteArray(
   input: StaticRoutesInput,
 ): input is readonly PackageStaticRouteOptions[] {
@@ -169,10 +190,7 @@ function attachFrontendServerServices(
     attachLocaleMiddleware(app, serviceConfig(options.locale));
     attached.locale = true;
   }
-  if (serviceEnabled(options.seo)) {
-    attachSeoMiddleware(app, serviceConfig(options.seo));
-    attached.seo = true;
-  }
+  if (attachSeoService(app, options.seo)) attached.seo = true;
   if (attachThemeService(app, options.theme)) attached.theme = true;
   if (attachLanguageService(app, options.language)) attached.language = true;
   if (attachSidebarService(app, options.sidebar)) attached.sidebar = true;
@@ -199,6 +217,7 @@ function attachFrontendServerServices(
 export {
   attachFrontendServerServices,
   attachLanguageService,
+  attachSeoService,
   attachSidebarService,
   attachThemeService,
 };
@@ -206,6 +225,7 @@ export type {
   FrontendLanguageServiceOptions,
   FrontendServerServicesAttachment,
   FrontendServerServicesOptions,
+  FrontendSeoServiceOptions,
   FrontendSidebarServiceOptions,
   FrontendThemeServiceOptions,
 };

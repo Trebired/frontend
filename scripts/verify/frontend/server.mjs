@@ -167,15 +167,41 @@ async function verifyRenderModeServer(server) {
   assert.equal(res.locals.renderMode.app, true);
   assert.equal(res.locals.renderMode["app.detail"], true);
   assert.deepEqual(res.locals.ui.header_secondary.breadcrumb_entities, ["home"]);
+  const toolkit = server.createFrontendRenderModeToolkit({
+      baseUi: { header: {}, sidebars: { left: {}, right: {} } },
+      modes,
+  });
+  const applyRes = serverResponseProbe();
+  applyRes.locals = { ui: { header: {}, sidebars: { left: {}, right: {} } } };
+  toolkit.applyUi(applyRes, "app", { header: { compact: true } });
+  assert.equal(applyRes.locals.ui.header.type, "app");
+  assert.equal(applyRes.locals.ui.header.compact, true);
 }
 
 function verifySeoServer(server) {
   const store = server.createSeoStore({
-      defaults: { contentLanguage: "cs", titleSuffix: " | App" },
+      defaults: {
+        contentLanguage: "cs",
+        siteName: "App",
+        titleSuffix: " | App",
+      },
   });
   assert.equal(store.getSeo().contentLanguage, "cs");
   store.updateSeo({ metaDescription: "About" });
   assert.equal(store.getSeo().metaDescription, "About");
+  const publicSeo = server.pickSeo({
+      canonicalUrl: "https://example.test/about",
+      index: true,
+      metaDescription: "Public page",
+      structuredData: [{ "@context": "https://schema.org", "@type": "WebSite" }],
+      title: "About",
+      verification: { google: "verify-token" },
+    }, store.getSeo());
+  assert.equal(publicSeo.robotsContent, "index, follow");
+  assert.equal(publicSeo.ogTitle, "About");
+  assert.equal(publicSeo.ogDescription, "Public page");
+  assert.equal(publicSeo.ogUrl, "https://example.test/about");
+  assert.equal(publicSeo.verification.google, "verify-token");
   const req = {
     headers: { host: "example.test", "x-forwarded-proto": "https" },
     path: "/platform/settings",
@@ -188,6 +214,12 @@ function verifySeoServer(server) {
   assert.equal(res.headers["X-Robots-Tag"], server.ROBOTS_NOINDEX_CONTENT);
   server.applySeo(res, { contentLanguage: "en" });
   assert.equal(res.headers["Content-Language"], "en");
+  const robots = server.robotsTxtContent({
+      disallow: ["/private"],
+      sitemapUrl: "https://example.test/sitemap.xml",
+  });
+  assert.ok(robots.includes("Disallow: /private"));
+  assert.ok(robots.includes("Sitemap: https://example.test/sitemap.xml"));
 }
 
 async function verifyFaviconServer(server) {

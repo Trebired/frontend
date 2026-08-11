@@ -2,7 +2,7 @@ import {
   serverObject,
   type ServerRequestLike,
   type ServerResponseLike,
-} from "./http.js";
+} from "#hf241ii8z71i";
 
 type RenderModeRecord = Record<string, any>;
 

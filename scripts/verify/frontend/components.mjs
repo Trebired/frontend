@@ -96,6 +96,8 @@ async function verifyReactEntrypoint(importDist) {
     "StatusField",
     "ThemeToggle",
     "LiveRegion",
+    "ProductShellDocument",
+    "SeoHeadTags",
   ];
   for (const symbol of symbols) {
     assert.equal(typeof react[symbol], "function", `react entry missing ${symbol}`);
@@ -177,6 +179,7 @@ async function verifyRenderedUpload(importDist) {
 async function verifyRenderedSystems(importDist) {
   await verifyRenderedActions(importDist);
   await verifyRenderedLayeredSystems(importDist);
+  await verifyRenderedSeoDocument(importDist);
   await verifyRenderedGenericPrimitives(importDist);
   await verifyRenderedThemeLive(importDist);
 }
@@ -241,6 +244,28 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.ok(html.includes("data-tbf-fullscreen-target"));
   assert.ok(html.includes("data-tbf-sidebar-shell"));
   assertNoCustomElementTags(html, "rendered layered components");
+}
+
+async function verifyRenderedSeoDocument(importDist) {
+  const react = await importDist("react");
+  const html = renderToStaticMarkup(h(react.ProductShellDocument, {
+        seo: {
+          canonicalUrl: "https://example.test/",
+          htmlLang: "cs",
+          metaDescription: "Landing page",
+          robotsContent: "index, follow",
+          structuredData: { "@context": "https://schema.org", "@type": "WebSite" },
+          title: "Home",
+          titleSuffix: " | App",
+        },
+      }, "Body"));
+  assert.ok(html.includes('<html lang="cs"'));
+  assert.ok(html.includes("<title>Home | App</title>"));
+  assert.ok(html.includes('name="description" content="Landing page"'));
+  assert.ok(html.includes('name="robots" content="index, follow"'));
+  assert.ok(html.includes('rel="canonical" href="https://example.test/"'));
+  assert.ok(html.includes('type="application/ld+json"'));
+  assertNoCustomElementTags(html, "rendered SEO document");
 }
 
 async function verifyRenderedGenericPrimitives(importDist) {
