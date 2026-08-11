@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.6.1
+
+- Re-exported React server renderer option/context types from `@trebired/frontend/server`.
+
 ## 6.6.0
 
 - Added server framework helpers for asset responses, locale locals, page task timeouts, and adapter-based React document rendering.

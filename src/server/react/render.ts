@@ -146,3 +146,10 @@ export {
   renderPage as renderFrontendReactPage,
   sendDocument as sendFrontendReactDocument,
 };
+export type {
+  FrontendAssetLinkSet,
+  FrontendDocumentContext,
+  FrontendReactRendererOptions,
+  FrontendRenderShell,
+  RenderReactPageOptions,
+} from "#phikqix8e831";
