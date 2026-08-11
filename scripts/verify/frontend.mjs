@@ -6,6 +6,7 @@ import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
+import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyNamespace, verifyPopover } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
@@ -283,25 +284,6 @@ function assertUploadMarkup(html) {
       ].forEach((slot) => {
       assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
       });
-      }
-
-      async function verifyFrontendLogging(context) {
-      const { bindFrontendRuntime } = await importDistRoot();
-      const events = [];
-      const adapter = (_source, event) => events.push(event);
-      bindFrontendRuntime(document, {
-      adapters: { logger: {}, loggerAdapter: adapter },
-      observe: false,
-      });
-      assert.equal(events.length, 1);
-      assert.equal(events[0].group, "frontend.runtime");
-      events.length = 0;
-      bindFrontendRuntime(document, {
-      adapters: { logger: {}, loggerAdapter: adapter },
-      frontend_quiet: true,
-      observe: false,
-      });
-      assert.equal(events.length, 0);
       }
 
       async function importDistRoot() {

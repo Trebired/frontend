@@ -269,6 +269,7 @@ export * from "./layer/index.js";
 export * from "./language/index.js";
 export * from "./layout/index.js";
 export * from "./live/index.js";
+export * from "./logging/index.js";
 export * from "./logs/index.js";
 export * from "./markdown/index.js";
 export * from "./media/index.js";

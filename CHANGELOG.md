@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.11.3
+
+- Added a generic browser frontend logger factory so apps provide only boot-data/config callbacks and the concrete logger creator while the package owns browser error binding and frontend log batch transport.
+
 ## 6.11.2
 
 - Added generic product identity helpers for slug-derived frontend names, theme sync channels, theme headers, progress IDs, workflow paths, and repository IDE message types.

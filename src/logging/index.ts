@@ -93,3 +93,4 @@ export {
   toFrontendLogGroup,
 };
 export type { FrontendLogger, FrontendLoggingOptions };
+export * from "./browser.js";
