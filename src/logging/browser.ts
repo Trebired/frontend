@@ -17,7 +17,7 @@ type FrontendBrowserLogFactoryOptions = {
   source?: string;
   transports?: Array<"console" | {
     name: string;
-    write: (entries: unknown[]) => unknown;
+    write: (entries: unknown[]) => Promise<void> | void;
   }>;
 };
 

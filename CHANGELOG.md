@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.11.5
+
+- Aligned browser logger transport writer types with logger transport return values.
+
 ## 6.11.4
 
 - Preserved the concrete browser logger return type from `createLog` in the browser frontend logger factory.
