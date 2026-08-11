@@ -7,6 +7,8 @@ export * from "./http.js";
 export * from "./language.js";
 export * from "./live.js";
 export * from "./navigation.js";
+export * from "./render-mode.js";
+export * from "./security.js";
 export * from "./seo.js";
 export * from "./sidebar.js";
 export * from "./theme.js";

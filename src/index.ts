@@ -223,6 +223,14 @@ export * from "./fullscreen/index.js";
 export * from "./graph/index.js";
 export * from "./http/index.js";
 export * from "./icons/index.js";
+export {
+  createNavigationState,
+  defaultNavigationState,
+  matchesCurrentPath,
+  normalizeNavigationHref,
+  normalizeNavigationHref as normalizeHref,
+  normalizeNavigationPath,
+} from "./server/navigation.js";
 export * from "./inputs/index.js";
 export {
   bindAdvancedCheckboxes,

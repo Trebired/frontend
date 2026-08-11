@@ -2,11 +2,15 @@ import assert from "node:assert/strict";
 
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
+  const root = await context.importDistRoot();
   await verifyThemeServer(server);
   await verifyLanguageServer(server);
+  verifySecurityServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
+  verifyRootNavigation(root);
   verifySeoServer(server);
+  await verifyRenderModeServer(server);
   await verifyFaviconServer(server);
   verifyLiveServer(server);
 }
@@ -75,6 +79,54 @@ function verifyNavigationServer(server) {
   const decorated = state.decorate('<li><a href="/apps/example">App</a></li>');
   assert.ok(decorated.includes('class="is-active"'));
   assert.ok(decorated.includes('aria-current="page"'));
+}
+
+function verifyRootNavigation(root) {
+  assert.equal(root.normalizeNavigationPath("/apps/one?tab=x"), "/apps/one");
+  assert.equal(root.matchesCurrentPath("/apps/one/settings", "/apps/one"), true);
+}
+
+function verifySecurityServer(server) {
+  const res = serverResponseProbe();
+  res.locals = { csrfToken: "csrf-a", nonce: "nonce-a" };
+  const state = server.applySecurityToLocals(res);
+  assert.deepEqual(state, { csrfToken: "csrf-a", nonce: "nonce-a" });
+  assert.deepEqual(res.locals.security, state);
+}
+
+async function verifyRenderModeServer(server) {
+  const modes = {
+    default: {},
+    app: {
+      header: { show: true, type: "app" },
+      sidebars: { left: { show: { value: true }, type: "main" } },
+    },
+    "app.detail": {
+      page: { dense: true },
+      sidebars: { right: { show: { value: true }, type: "meta" } },
+    },
+  };
+  const api = server.createRenderModeApi({
+      afterApply({ ui }) {
+        ui.header_secondary = { breadcrumb_entities: ["home"] };
+      },
+      baseUi: { header: {}, header_secondary: {}, sidebars: { left: {}, right: {} } },
+      hydrateSidebar({ sidebar }) {
+        return { ...sidebar, entity_counts: { all: 2 } };
+      },
+      modes,
+  });
+  const req = {};
+  const res = serverResponseProbe();
+  await api("app.detail")(req, res, (error) => {
+      if (error) throw error;
+  });
+  assert.equal(res.locals.ui.header.type, "app");
+  assert.equal(res.locals.ui.sidebars.left.entity_counts.all, 2);
+  assert.equal(res.locals.ui.sidebars.right.type, "meta");
+  assert.equal(res.locals.renderMode.app, true);
+  assert.equal(res.locals.renderMode["app.detail"], true);
+  assert.deepEqual(res.locals.ui.header_secondary.breadcrumb_entities, ["home"]);
 }
 
 function verifySeoServer(server) {

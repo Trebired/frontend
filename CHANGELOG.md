@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.5.0
+
+- Added public server helpers for frontend security locals and render-mode UI composition.
+- Exported shared current-navigation matching helpers from the root package for browser and SSR chrome.
+- Added verification coverage for security locals and framework render-mode middleware hooks.
+
 ## 6.4.0
 
 - Added public server helpers for UI language cookies, language routes, SSR current-navigation state, and SEO/head middleware.
