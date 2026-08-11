@@ -15,7 +15,7 @@ type FrontendBrowserLogFactoryOptions = {
   metadata?: Record<string, unknown>;
   quiet?: boolean;
   source?: string;
-  transports?: Array<string | {
+  transports?: Array<"console" | {
     name: string;
     write: (entries: unknown[]) => unknown;
   }>;
@@ -38,7 +38,9 @@ type FrontendBrowserLogBatch = {
 
 type FrontendBrowserLoggerOptions = {
   bindWindowErrors?: boolean;
-  createLog: (options: FrontendBrowserLogFactoryOptions) => FrontendBrowserLogInstance;
+  createLog: (
+    options: FrontendBrowserLogFactoryOptions,
+  ) => FrontendBrowserLogInstance;
   fallbackInstanceId?: string;
   pushBatch?: (batch: FrontendBrowserLogBatch) => unknown;
   readConfig?: () => unknown;
@@ -167,7 +169,15 @@ function pushBrowserEntries(entries: unknown[], options: FrontendBrowserLoggerOp
   pushBatch({ config: config || {}, entries, instanceId });
 }
 
-function createFrontendBrowserLogger(options: FrontendBrowserLoggerOptions) {
+type FrontendBrowserLoggerTypedOptions<
+TLog extends FrontendBrowserLogInstance,
+> = Omit<FrontendBrowserLoggerOptions, "createLog"> & {
+  createLog: (options: FrontendBrowserLogFactoryOptions) => TLog;
+};
+
+function createFrontendBrowserLogger<TLog extends FrontendBrowserLogInstance>(
+  options: FrontendBrowserLoggerTypedOptions<TLog>,
+): TLog {
   const config = readBrowserLogConfig(options);
   return options.createLog({
       console: true,
@@ -186,14 +196,17 @@ function createFrontendBrowserLogger(options: FrontendBrowserLoggerOptions) {
   });
 }
 
-function frontendBrowserLogger(options: FrontendBrowserLoggerOptions) {
-  if (frontendBrowserLog) return frontendBrowserLog;
-  frontendBrowserLog = createFrontendBrowserLogger(options);
-  if (options.bindWindowErrors !== false) bindWindowErrorLogging(frontendBrowserLog);
-  frontendBrowserLog
+function frontendBrowserLogger<TLog extends FrontendBrowserLogInstance>(
+  options: FrontendBrowserLoggerTypedOptions<TLog>,
+): TLog {
+  if (frontendBrowserLog) return frontendBrowserLog as TLog;
+  const log = createFrontendBrowserLogger(options);
+  frontendBrowserLog = log;
+  if (options.bindWindowErrors !== false) bindWindowErrorLogging(log);
+  log
   .withScope?.(BROWSER_LOG_SOURCE, "frontend.logger")
   ?.info?.("Frontend logger initialized");
-  return frontendBrowserLog;
+  return log;
 }
 
 export {
@@ -205,5 +218,6 @@ export type {
   FrontendBrowserLogConfig,
   FrontendBrowserLogFactoryOptions,
   FrontendBrowserLogInstance,
+  FrontendBrowserLoggerTypedOptions,
   FrontendBrowserLoggerOptions,
 };

@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.11.4
+
+- Preserved the concrete browser logger return type from `createLog` in the browser frontend logger factory.
+
 ## 6.11.3
 
 - Added a generic browser frontend logger factory so apps provide only boot-data/config callbacks and the concrete logger creator while the package owns browser error binding and frontend log batch transport.
