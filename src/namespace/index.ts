@@ -22,10 +22,17 @@ function frontendCssVar(name: string): string {
   return `--${prefixedName(name)}`;
 }
 
+function frontendEventName(name: string): string {
+  const normalized = String(name || "").trim();
+  if (!normalized) throw new Error("frontend event name must be non-empty");
+  return FRONTEND_PREFIX ? `${FRONTEND_PREFIX}:${normalized}` : normalized;
+}
+
 export {
   FRONTEND_PREFIX,
   frontendClassName,
   frontendCssVar,
   frontendDataAttr,
   frontendDataSelector,
+  frontendEventName,
 };

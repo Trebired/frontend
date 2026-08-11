@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.2.1
+
+- Added a generic React fallback title boot script helper for apps using live navigation without owning local document-title boot code.
+- Added a namespace event helper so package-generated event names come from the frontend prefix configuration.
+
 ## 6.2.0
 
 - Added generic React `ProductShellLayout` and `ProductShellDocument` APIs so apps can pass product-specific render callbacks instead of owning layout/sidebar boot orchestration.
