@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.4.0
+
+- Added public server helpers for UI language cookies, language routes, SSR current-navigation state, and SEO/head middleware.
+- Added verification coverage for language selection, active navigation, and SEO response headers.
+
 ## 6.3.0
 
 - Added public server helpers for theme cookies, theme toggle handlers, sidebar preference handlers, themed favicon routes, and live-request detection.

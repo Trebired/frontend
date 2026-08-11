@@ -11,15 +11,21 @@ type CookieOptions = {
 type ServerRequestLike = {
   body?: unknown;
   cookies?: Record<string, unknown>;
+  get?: (name: string) => unknown;
   headers?: HeaderMap;
+  originalUrl?: unknown;
+  path?: unknown;
+  protocol?: unknown;
   query?: Record<string, unknown>;
   secure?: boolean;
+  url?: unknown;
 };
 
 type ServerResponseLike = {
   cookie?: (name: string, value: string, options?: CookieOptions) => unknown;
   end?: (body?: unknown) => unknown;
   json?: (body: unknown) => unknown;
+  locals?: Record<string, unknown>;
   redirect?: (status: number, url: string) => unknown;
   send?: (body: unknown) => unknown;
   set?: (name: string, value: string) => unknown;

@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
   await verifyThemeServer(server);
+  await verifyLanguageServer(server);
   verifySidebarServer(server);
+  verifyNavigationServer(server);
+  verifySeoServer(server);
   await verifyFaviconServer(server);
   verifyLiveServer(server);
 }
@@ -27,6 +30,27 @@ async function verifyThemeServer(server) {
   assert.deepEqual(await handler(req, res), { theme: "light" });
 }
 
+async function verifyLanguageServer(server) {
+  const req = {
+    body: { lang: "cs" },
+    cookies: {},
+    headers: { "accept-language": "cs-CZ, en;q=0.8" },
+    query: {},
+    secure: true,
+  };
+  const res = serverResponseProbe();
+  const options = { allowedLanguages: ["en", "cs"], defaultLanguage: "en" };
+  assert.equal(server.browserPreferredLanguage(req, options), "cs");
+  assert.equal(server.setServerLanguage(req, res, "cs", options), "cs");
+  assert.equal(req.cookies.ui_lang, "cs");
+  assert.equal(res.cookies.ui_lang.value, "cs");
+  const handler = server.createLanguageSetHandler({
+      options,
+      respond: ({ lang }) => ({ lang }),
+  });
+  assert.deepEqual(await handler(req, res), { lang: "cs" });
+}
+
 function verifySidebarServer(server) {
   const req = { body: { minimized: true, side: "right" }, cookies: {} };
   const res = serverResponseProbe();
@@ -38,6 +62,40 @@ function verifySidebarServer(server) {
       allowedSides: ["left"],
   });
   assert.deepEqual(leftOnly, { minimized: false, side: "" });
+}
+
+function verifyNavigationServer(server) {
+  const state = server.createNavigationState({
+      path: "/apps/example/settings?tab=general",
+      url: "/apps/example/settings?tab=general",
+  });
+  assert.equal(state.isCurrent("/apps/example"), true);
+  assert.equal(state.linkAttrs("/apps/example/settings"), ' class="is-active" aria-current="page"');
+  assert.equal(server.normalizeRequestPath({ originalUrl: "/apps/one?tab=x" }), "/apps/one");
+  const decorated = state.decorate('<li><a href="/apps/example">App</a></li>');
+  assert.ok(decorated.includes('class="is-active"'));
+  assert.ok(decorated.includes('aria-current="page"'));
+}
+
+function verifySeoServer(server) {
+  const store = server.createSeoStore({
+      defaults: { contentLanguage: "cs", titleSuffix: " | App" },
+  });
+  assert.equal(store.getSeo().contentLanguage, "cs");
+  store.updateSeo({ metaDescription: "About" });
+  assert.equal(store.getSeo().metaDescription, "About");
+  const req = {
+    headers: { host: "example.test", "x-forwarded-proto": "https" },
+    path: "/platform/settings",
+  };
+  const res = serverResponseProbe();
+  res.locals = {};
+  const middleware = server.createSeoMiddleware({ getSeo: store.getSeo });
+  middleware(req, res, () => {});
+  assert.equal(res.locals.seo.title, "Settings");
+  assert.equal(res.headers["X-Robots-Tag"], server.ROBOTS_NOINDEX_CONTENT);
+  server.applySeo(res, { contentLanguage: "en" });
+  assert.equal(res.headers["Content-Language"], "en");
 }
 
 async function verifyFaviconServer(server) {
