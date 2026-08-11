@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.11.0
+
+- Added shared default icon aliases for common ecosystem actions, entities, and status states.
+- Added default icon server option builders for Remix Icon, Simple Icons, and Material Icon Theme file icons.
+- Added generic entity-key and entity-icon alias helpers so apps keep only their entity registry data.
+
 ## 6.10.0
 
 - Added bound theme, language, and sidebar server factories so apps configure frontend server state once and use package-owned helpers from that config.

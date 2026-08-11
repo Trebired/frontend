@@ -7,6 +7,7 @@ import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import { frontendConfigPath } from "./package.js";
 import {
+  defaultIconAliases,
   normalizeIconAliasKey,
   normalizeIconAliasSpec,
 } from "#rqcj8y6keks2";
@@ -70,7 +71,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             sans: "",
         }),
         icons: Object.freeze({
-            aliases: Object.freeze({}),
+            aliases: Object.freeze({ ...defaultIconAliases }),
             endpoint: "/__icons/svg",
             packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
         }),

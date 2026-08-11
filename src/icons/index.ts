@@ -10,6 +10,7 @@ import {
   text,
 } from "./shared.js";
 import {
+  defaultIconAliases,
   mergeIconAliases,
   normalizeIconAliasKey,
   normalizeIconAliasMap,
@@ -237,6 +238,7 @@ export {
   bindIcons,
   buildIconUrl,
   createIconElement,
+  defaultIconAliases,
   icons,
   iconSpec,
   mergeIconAliases,

@@ -12,12 +12,15 @@ async function verifyIcons(context) {
 
   verifyIconParsing(iconRuntime);
   verifyIconAliases(iconRuntime);
+  verifyEntityIconAliases(iconRuntime);
   verifyIconServer(iconServer, context.rootDir);
   await verifyIconRuntime(iconRuntime);
   verifyIconReact(iconReact, iconServer, context.rootDir);
 }
 
 function verifyIconAliases(iconRuntime) {
+  assert.equal(iconRuntime.defaultIconAliases.save, "remixicon:save-3-line");
+  assert.equal(iconRuntime.defaultIconAliases.error, "remixicon:error-warning-line");
   const aliases = iconRuntime.normalizeIconAliasMap({
       add: "remixicon add-line",
       github: { pack: "simpleicons", icon: "github" },
@@ -30,6 +33,37 @@ function verifyIconAliases(iconRuntime) {
   assert.equal(
     iconRuntime.icons.resolveAlias(aliases, "missing", "remixicon close-line"),
     "remixicon:close-line",
+  );
+}
+
+function verifyEntityIconAliases(iconRuntime) {
+  const registry = {
+    repositories: {
+      aliases: ["repo"],
+      icon: "remixicon git-repository-line",
+    },
+    user: {
+      aliases: ["people"],
+      icon: "remixicon user-line",
+    },
+  };
+  assert.deepEqual(iconRuntime.entityKeyCandidates("repository"), [
+      "repository",
+      "repositorys",
+      "repositoryes",
+      "repositories",
+  ]);
+  assert.equal(
+    iconRuntime.resolveEntityRegistryName(registry, "repo"),
+    "repositories",
+  );
+  assert.equal(
+    iconRuntime.resolveEntityIconSpec(registry, "repositories"),
+    "remixicon:git-repository-line",
+  );
+  assert.equal(
+    iconRuntime.mergeEntityIconAliases(registry, { repository: "remixicon archive-line" }).repository,
+    "remixicon:archive-line",
   );
 }
 
@@ -56,6 +90,13 @@ function verifyIconParsing(iconRuntime) {
 }
 
 function verifyIconServer(iconServer, rootDir) {
+  const defaults = iconServer.createIconServerOptions({ rootDir });
+  assert.deepEqual(defaults.packs, [
+      "remixicon",
+      "simple-icons",
+      "material-icon-theme",
+  ]);
+  assert.deepEqual(defaults.preserveSourceColors, ["material-icon-theme"]);
   const remixSvg = iconServer.resolveIconSvg("remixicon:add-line", { rootDir });
   assert.equal(remixSvg.ok, true);
   assert.ok(remixSvg.svg.includes("<svg"));

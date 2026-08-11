@@ -36,6 +36,7 @@ import type {
 export { withIconServerRenderer } from "#6o6fqz7svsts";
 export { attachIconAliasLocals, attachIconServer } from "./attachment.js";
 export type { AttachIconServerOptions, IconServerAttachment } from "./attachment.js";
+export * from "./defaults.js";
 export * from "./material.js";
 
 const svgMarkupCache = new Map<string, IconSvgResult>();
