@@ -17,6 +17,10 @@ async function verifyIcons(context) {
 }
 
 function verifyIconParsing(iconRuntime) {
+  assert.equal(
+    iconRuntime.iconSpec("material-icon-theme", "javascript"),
+    "material-icon-theme:javascript",
+  );
   assert.deepEqual(iconRuntime.parseIconSpec("remixicon:add-line"), {
       icon: "add-line",
       pack: "remixicon",

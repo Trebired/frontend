@@ -1,5 +1,14 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import { buildIconUrl, normalizeSpace, parseIconSpec, text } from "./shared.js";
+import {
+  buildIconUrl,
+  iconSpec,
+  normalizeIconName,
+  normalizeIconPack,
+  normalizeSpace,
+  parseIconSpec,
+  SUPPORTED_ICON_PACKS,
+  text,
+} from "./shared.js";
 import type { ParsedIconSpec } from "./shared.js";
 
 type IconCacheEntry = {
@@ -217,10 +226,15 @@ export {
   buildIconUrl,
   createIconElement,
   icons,
+  iconSpec,
+  normalizeIconName,
+  normalizeIconPack,
+  normalizeSpace,
   parseIconSpec,
   readIconCacheEntry,
   readRenderedSpec,
   renderIconElement,
+  SUPPORTED_ICON_PACKS,
   storeIconCacheEntry,
 };
 export type { IconCacheEntry, IconRuntimeOptions, ParsedIconSpec, RenderIconElementAttrs };

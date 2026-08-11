@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.7.1
+
+- Exported `iconSpec` and shared icon normalizers from the browser/root icon API for app-owned icon spec maps.
+
 ## 6.7.0
 
 - Added configurable server icon packs so apps can opt into custom SVG packages such as `material-icon-theme`.
