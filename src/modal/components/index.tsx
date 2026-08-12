@@ -3,6 +3,7 @@ import type {
   HTMLAttributes,
   ReactNode,
 } from "react";
+import { renderCloseButton } from "#5e51rp1mtb3n";
 import { classNames } from "#ndsvdqv80epr";
 
 type ModalRootProps = HTMLAttributes<HTMLDivElement> & {
@@ -63,17 +64,7 @@ function ModalOpenButton(props: ModalOpenButtonProps) {
 }
 
 function ModalCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
-  const { children = "Close", className, type = "button", ...rest } = props;
-  return (
-    <button
-    {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-modal-close=""
-    type={type}
-    >
-    {children}
-    </button>
-  );
+  return renderCloseButton({ closeAttribute: "data-tbf-modal-close", props });
 }
 
 export { ModalCloseButton, ModalContent, ModalOpenButton, ModalRoot };

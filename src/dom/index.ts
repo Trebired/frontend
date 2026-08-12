@@ -147,6 +147,12 @@ function readTextAttribute(element: Element | null | undefined, attrName: string
   return String(element?.getAttribute(attrName) || "").trim();
 }
 
+function readBooleanAttribute(element: Element | null | undefined, attrName: string) {
+  if (!element?.hasAttribute(attrName)) return undefined;
+  const value = readTextAttribute(element, attrName);
+  return value !== "false" && value !== "0";
+}
+
 function documentLanguageTag() {
   return typeof document === "undefined"
   ? ""
@@ -296,6 +302,7 @@ export {
   onReady,
   parseJsonText,
   queryAll,
+  readBooleanAttribute,
   readDataJson,
   readElementJson,
   readJsonScript,

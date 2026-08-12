@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.15.4
+
+- Adopted the external `@trebired/code-discipline-config` preset and updated Code Discipline tooling to `@trebired/code-discipline@^6.0.9`.
+- Consolidated repeated frontend runtime helpers for boolean data attributes, close buttons, icon response locals, and React root caching.
+
 ## 6.15.3
 
 - Updated the Code Discipline devDependency and lockfile to public `@trebired/code-discipline@^5.5.2`.

@@ -1,6 +1,5 @@
-import { createRoot } from "react-dom/client";
-
 import { activateLanguage } from "#xf0nky7w9fvx";
+import { deleteReactRoot, getOrCreateReactRoot, type ReactRootCache } from "#e1sxybsnyea2";
 import {
   extensionFromName,
   findFirstFilePath,
@@ -10,7 +9,7 @@ import {
   text,
 } from "#zgttxcjd88sc";
 
-const roots = new WeakMap<HTMLElement, ReturnType<typeof createRoot>>();
+const roots: ReactRootCache = new WeakMap();
 let editorViewerModelInstanceId = 0;
 
 function languageMatchesRequest(entry: any, requested: string) {
@@ -67,17 +66,11 @@ function editorFileLanguage(monacoRef: any, pathInput: unknown, languageNameInpu
 }
 
 function getEditorViewerRoot(container: HTMLElement | null) {
-  if (!(container instanceof HTMLElement)) return null;
-  let root = roots.get(container);
-  if (!root) {
-    root = createRoot(container);
-    roots.set(container, root);
-  }
-  return root;
+  return getOrCreateReactRoot(roots, container);
 }
 
 function deleteRoot(container: HTMLElement | null) {
-  if (container instanceof HTMLElement) roots.delete(container);
+  deleteReactRoot(roots, container);
 }
 
 function buildFileApiUrl(baseUrlInput: unknown, pathInput: unknown) {

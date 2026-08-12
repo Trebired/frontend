@@ -1,20 +1,14 @@
 import { createElement } from "react";
-import { createRoot } from "react-dom/client";
 
 import { FileTreeView } from "./components/index.js";
 import { text } from "./tree.js";
+import { getOrCreateReactRoot, type ReactRootCache } from "#e1sxybsnyea2";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 
-const fileTreeRoots = new WeakMap<HTMLElement, ReturnType<typeof createRoot>>();
+const fileTreeRoots: ReactRootCache = new WeakMap();
 
 function getFileTreeRoot(container: HTMLElement | null) {
-  if (!(container instanceof HTMLElement)) return null;
-  let root = fileTreeRoots.get(container);
-  if (!root) {
-    root = createRoot(container);
-    fileTreeRoots.set(container, root);
-  }
-  return root;
+  return getOrCreateReactRoot(fileTreeRoots, container);
 }
 
 function renderFileTreeExplorer(container: HTMLElement | null, input: any) {

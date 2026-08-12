@@ -1,9 +1,9 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import {
   key_value,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { getOrCreateReactRoot, type ReactRootCache } from "#e1sxybsnyea2";
 import { entryMatchesConfig } from "./identity.js";
 import {
   getFilteredLoadedLogs,
@@ -14,18 +14,10 @@ import { logsT } from "./utils.js";
 import type { LogsStatsSummary } from "./types.js";
 import type { FilteredLogItem, LogsPage } from "./types.js";
 
-const statsRoots = new WeakMap();
+const statsRoots: ReactRootCache = new WeakMap();
 
 function getStatsRoot(container: HTMLElement | null) {
-  if (!(container instanceof HTMLElement)) return null;
-
-  let root = statsRoots.get(container);
-  if (!root) {
-    root = createRoot(container);
-    statsRoots.set(container, root);
-  }
-
-  return root;
+  return getOrCreateReactRoot(statsRoots, container);
 }
 
 function buildCountMap(

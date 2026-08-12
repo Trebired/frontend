@@ -2,6 +2,7 @@ import {
   formDataFlatRecord,
   formDataSearchParams,
   queryAll,
+  readBooleanAttribute,
   readDataJson,
   readElementJson,
   readTextAttribute as submitterAttr,
@@ -40,12 +41,6 @@ function readActionFormConfig(form: HTMLFormElement) {
     ...readElementJson<Record<string, unknown>>(form, ACTION_CONFIG_SELECTOR, {}),
     ...readDataJson<Record<string, unknown>>(form, "data-tbf-action-config", {}),
   };
-}
-
-function truthyAttr(element: HTMLElement, attr: string) {
-  if (!element.hasAttribute(attr)) return false;
-  const value = String(element.getAttribute(attr) || "").trim();
-  return value !== "false" && value !== "0";
 }
 
 function resolveSubmitAction(form: HTMLFormElement, submitter: HTMLElement | null) {
@@ -111,7 +106,7 @@ async function confirmActionForm(
   submitter: HTMLElement | null,
   options: SubmitActionFormOptions,
 ) {
-  const configured = options.confirm === true || truthyAttr(form, "data-tbf-confirm");
+  const configured = options.confirm === true || readBooleanAttribute(form, "data-tbf-confirm") === true;
   if (options.confirm === false) return true;
   if (!configured && !form.hasAttribute("data-tbf-confirm-title")) return true;
   const detail: any = { confirm: null, form, submitter };

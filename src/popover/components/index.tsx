@@ -3,6 +3,7 @@ import type {
   HTMLAttributes,
   ReactNode,
 } from "react";
+import { renderCloseButton } from "#5e51rp1mtb3n";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 
 type PopoverPanelProps = HTMLAttributes<HTMLDivElement> & {
@@ -47,17 +48,7 @@ function PopoverOpenButton(props: PopoverOpenButtonProps) {
 }
 
 function PopoverCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
-  const { children = "Close", className, type = "button", ...rest } = props;
-  return (
-    <button
-    {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-popover-close=""
-    type={type}
-    >
-    {children}
-    </button>
-  );
+  return renderCloseButton({ closeAttribute: "data-tbf-popover-close", props });
 }
 
 export { PopoverCloseButton, PopoverOpenButton, PopoverPanel };

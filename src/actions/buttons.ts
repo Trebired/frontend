@@ -1,5 +1,6 @@
 import {
   queryAll,
+  readBooleanAttribute,
   readDataJson,
   readTextAttribute as readTextAttr,
   setControlDisabled,
@@ -28,12 +29,6 @@ function readButtonBody(button: HTMLElement, options: SubmitActionButtonOptions)
   return readDataJson<Record<string, unknown>>(button, "data-tbf-action-body", {});
 }
 
-function readBooleanAttr(button: HTMLElement, attr: string) {
-  if (!button.hasAttribute(attr)) return undefined;
-  const value = String(button.getAttribute(attr) || "").trim();
-  return value !== "false" && value !== "0";
-}
-
 function dispatchActionButtonEvent(
   button: HTMLElement,
   name: string,
@@ -54,7 +49,7 @@ async function confirmActionButton(
   options: SubmitActionButtonOptions,
 ) {
   if (options.confirm === false) return true;
-  const configured = options.confirm === true || readBooleanAttr(button, "data-tbf-confirm") === true;
+  const configured = options.confirm === true || readBooleanAttribute(button, "data-tbf-confirm") === true;
   if (!configured && !button.hasAttribute("data-tbf-confirm-title")) return true;
   const detail: any = { button, confirm: null };
   const event = dispatchActionButtonEvent(button, "tbf:action-confirm", detail, true);
@@ -94,7 +89,7 @@ function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
   options.ignoreResponseAction === true ||
     options.ui?.ignoreResponseAction === true ||
     attrUi.ignoreResponseAction === true ||
-    readBooleanAttr(button, "data-tbf-ignore-response-action") === true;
+    readBooleanAttribute(button, "data-tbf-ignore-response-action") === true;
   return {
     ...attrUi,
     ...(options.ui || {}),
@@ -114,7 +109,7 @@ function buttonSuccessConfig(button: HTMLElement, options: SubmitActionButtonOpt
 }
 
 function buttonSuccessConfetti(button: HTMLElement, options: SubmitActionButtonOptions) {
-  return options.successConfetti === true || readBooleanAttr(button, "data-tbf-confetti") === true;
+  return options.successConfetti === true || readBooleanAttribute(button, "data-tbf-confetti") === true;
 }
 
 async function submitActionButton(

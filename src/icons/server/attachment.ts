@@ -62,14 +62,18 @@ function attachIconAliasLocals(
   if (app.locals && typeof app.locals === "object") {
     app.locals[localKey] = normalizedAliases;
   }
-  app.use(function attachIconAliasesToResponse(_req: any, res: any, next: any) {
+  attachIconResponseLocal(app, localKey, normalizedAliases);
+  return normalizedAliases;
+}
+
+function attachIconResponseLocal(app: IconServerApp, localKey: string, value: unknown) {
+  app.use?.(function attachIconLocalToResponse(_req: any, res: any, next: any) {
       if (res) {
         if (!res.locals || typeof res.locals !== "object") res.locals = {};
-        res.locals[localKey] = normalizedAliases;
+        res.locals[localKey] = value;
       }
       next();
   });
-  return normalizedAliases;
 }
 
 function attachIconRendererLocals(
@@ -79,13 +83,7 @@ function attachIconRendererLocals(
 ) {
   if (app.locals && typeof app.locals === "object") app.locals[localKey] = icon;
   if (typeof app.use !== "function") return;
-  app.use(function attachIconRendererToResponse(_req: any, res: any, next: any) {
-      if (res) {
-        if (!res.locals || typeof res.locals !== "object") res.locals = {};
-        res.locals[localKey] = icon;
-      }
-      next();
-  });
+  attachIconResponseLocal(app, localKey, icon);
 }
 
 function attachIconServer(
