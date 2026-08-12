@@ -86,7 +86,7 @@ function isTrackedField(node: Element | null, primaryFormIds: string[]) {
 
 function serializeFieldValue(field: TrackedField) {
   if (field instanceof HTMLInputElement) {
-    const type = String(field.type || "").trim().toLowerCase();
+    const type = String(field.type ||"").trim().toLowerCase();
     if (type === "checkbox" || type === "radio") {
       return field.checked ? "1" : "0";
     }

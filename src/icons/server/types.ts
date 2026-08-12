@@ -29,7 +29,7 @@ type IconServerOptions = {
   rootDir?: string;
 };
 
-type RenderIconHtmlAttrs = Record<string, unknown> & {
+type RenderIconHtmlAttrs = Record<string, unknown>& {
   class?: string;
   className?: string;
   color?: string;
@@ -45,7 +45,7 @@ type IconPackIndex = {
   packRoot: string;
 };
 
-type MaterialFileIconOptions = IconServerOptions & {
+type MaterialFileIconOptions = IconServerOptions& {
   canonicalExtensionForLanguage?: (language: unknown, id?: unknown) => string;
   normalizeLanguageId?: (language: unknown) => string;
 };

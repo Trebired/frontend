@@ -39,7 +39,7 @@ async function refreshSidebarLive(root: HTMLElement) {
   const url = root.getAttribute("data-tbf-sidebar-live-url");
   if (!url || typeof fetch !== "function") return null;
   const response = await fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } });
-  const payload = normalizeLivePayload(await response.json().catch(() => null));
+  const payload = normalizeLivePayload(await response.json().catch (() => null));
   applySidebarLivePayload(root, payload);
   return payload;
 }

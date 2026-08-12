@@ -8,13 +8,13 @@ type DynamicSidebarRuntimeRenderContext = {
 };
 
 type DynamicSidebarRuntimeCountContext =
-DynamicSidebarRuntimeRenderContext & {
+DynamicSidebarRuntimeRenderContext& {
   count: number;
   path: string;
 };
 
 type DynamicSidebarRuntimeLoaderContext =
-DynamicSidebarRuntimeRenderContext & {
+DynamicSidebarRuntimeRenderContext& {
   idleCount: number | null;
   idleCountPath: string;
   lastStatus: string;
@@ -25,7 +25,7 @@ DynamicSidebarRuntimeRenderContext & {
 };
 
 type DynamicSidebarRuntimeStateContext =
-DynamicSidebarRuntimeRenderContext & {
+DynamicSidebarRuntimeRenderContext& {
   path: string;
   state: string;
 };
@@ -49,7 +49,7 @@ type DynamicSidebarLiveOptions = {
   renderers?: DynamicSidebarRuntimeRenderers;
   request?: (
     descriptors: DynamicSidebarDescriptor[],
-  ) => Promise<DynamicSidebarResponseItem[] | null | undefined> |
+  ) => Promise<DynamicSidebarResponseItem[]|null|undefined>|
   DynamicSidebarResponseItem[] |
   null |
   undefined;

@@ -53,9 +53,9 @@ liveFlash("error", message, description, options);
 (showFlash as any).confirmElement = confirmElement;
 (showFlash as any).computeFlashDurationMs = computeFlashDurationMs;
 
-const flash = showFlash as typeof showFlash & Record<string, any>;
+const flash = showFlash as typeof showFlash&Record<string, any>;
 
-function installFlashGlobal(target?: Window & typeof globalThis) {
+function installFlashGlobal(target?: Window&typeof globalThis) {
   const host = target || (typeof window !== "undefined" ? window : null);
   if (!host) return flash;
   (host as any).flash = flash;

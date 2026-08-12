@@ -64,7 +64,7 @@ const RADIO_HOST_SELECTOR = "[data-tbf-radio-group]";
 const TABS_ROOT_SELECTOR = "[data-tabs-root]";
 
 function scopeFor(root?: BindRoot | null) {
-  if (root && "querySelectorAll" in root) return root;
+  if (root && "querySelectorAll"in root) return root;
   return typeof document === "undefined" ? null : document;
 }
 

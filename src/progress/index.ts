@@ -150,4 +150,4 @@ export {
   setProgressFromEvent,
 };
 export type { PageLoadProgressOptions, ProgressHandle };
-export * from "./bars.js";
+export *from "./bars.js";

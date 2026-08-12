@@ -245,13 +245,13 @@ function createLanguageMiddleware(options: LanguageServerOptions = {}) {
 }
 
 function attachLanguageMiddleware(app: unknown, options: LanguageServerOptions = {}) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
     (app as { use: (handler: unknown) => unknown }).use(createLanguageMiddleware(options));
   }
 }
 
 function attachLanguageRoutes(app: unknown, config: LanguageSetHandlerOptions = {}) {
-  if (app && typeof (app as { post?: unknown }).post === "function") {
+  if (app && typeof(app as { post?: unknown }).post === "function") {
     (app as { post: (path: string, handler: unknown) => unknown }).post(
       config.path || "/ui/lang/set",
       createLanguageSetHandler(config),

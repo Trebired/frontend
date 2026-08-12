@@ -154,7 +154,7 @@ async function verifyThemeRuntimeRebind(context) {
   const scope = document.createElement("section");
   scope.innerHTML = [
     '<button data-tbf-theme-button data-tbf-theme-light-label="Light">',
-    '<span data-tbf-theme-label></span>',
+    "<span data-tbf-theme-label></span>",
     "</button>",
   ].join("");
   await theme.bindThemeRuntime(scope, { defaultTheme: "dark" });
@@ -167,7 +167,7 @@ async function verifyThemeControls(context) {
   theme.configureThemeModes(null);
   document.body.innerHTML = [
     '<button data-tbf-theme-button aria-pressed="true" data-tbf-theme-dark-label="Dark">',
-    '<span data-tbf-theme-label></span>',
+    "<span data-tbf-theme-label></span>",
     "</button>",
   ].join("");
   theme.applyTheme("dark");
@@ -179,9 +179,9 @@ async function verifyThemeControls(context) {
   theme.configureThemeModes({ modes: ["dark", "light", "sepia"] });
   document.body.innerHTML = [
     '<button data-tbf-theme-button data-tbf-theme-sepia-label="Sepia">',
-    '<span data-tbf-theme-label></span>',
+    "<span data-tbf-theme-label></span>",
     "</button>",
-    '<select data-tbf-theme-select>',
+    "<select data-tbf-theme-select>",
     '<option value="dark">Dark</option>',
     '<option value="light">Light</option>',
     '<option value="sepia">Sepia</option>',

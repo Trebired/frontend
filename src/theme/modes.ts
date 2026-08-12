@@ -31,7 +31,7 @@ type ThemeModeRegistry = {
 const DEFAULT_THEME_MODE_KEYS: readonly string[] = ["dark", "light"];
 const THEME_MODE_KEY_RE = /^[a-z0-9][a-z0-9_-]*$/u;
 const DARK_KEY_RE = /(^|[-_])dark([-_]|$)/u;
-const registryHolderKey = Symbol.for(THEME_MODES_GLOBAL_KEY);
+const registryHolderKey = Symbol.for (THEME_MODES_GLOBAL_KEY);
 
 let cachedSource: unknown = null;
 let cachedRegistry: ThemeModeRegistry | null = null;

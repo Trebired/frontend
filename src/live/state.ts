@@ -19,7 +19,7 @@ function formFieldKey(
 
 function captureFormState(root: ParentNode) {
   const state = new Map<string, LiveFormSnapshot>();
-  root.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+  root.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>(
     "input,select,textarea",
   ).forEach((element) => {
       const key = formFieldKey(element);
@@ -36,7 +36,7 @@ function restoreFormState(
   root: ParentNode,
   state: Map<string, LiveFormSnapshot>,
 ) {
-  root.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+  root.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>(
     "input,select,textarea",
   ).forEach((element) => {
       const snapshot = state.get(formFieldKey(element));

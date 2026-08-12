@@ -56,12 +56,12 @@ type DynamicSidebarItemContext = {
   sidebar: DynamicSidebarContext;
 };
 
-type DynamicSidebarCountContext = DynamicSidebarItemContext & {
+type DynamicSidebarCountContext = DynamicSidebarItemContext& {
   count: number | null;
   path: string;
 };
 
-type DynamicSidebarLoaderContext = DynamicSidebarItemContext & {
+type DynamicSidebarLoaderContext = DynamicSidebarItemContext& {
   idleCount: number | null;
   idleCountPath: string;
   lastStatus: string;
@@ -71,13 +71,13 @@ type DynamicSidebarLoaderContext = DynamicSidebarItemContext & {
   statusPath: string;
 };
 
-type DynamicSidebarStateContext = DynamicSidebarItemContext & {
+type DynamicSidebarStateContext = DynamicSidebarItemContext& {
   path: string;
   state: string;
 };
 
 type DynamicSidebarLinkListProps =
-Omit<HTMLAttributes<HTMLUListElement>, "children"> & {
+Omit<HTMLAttributes<HTMLUListElement>, "children">& {
   actionTrigger?: boolean;
   currentPath?: string;
   items: DynamicSidebarItem[];
@@ -89,11 +89,11 @@ Omit<HTMLAttributes<HTMLUListElement>, "children"> & {
   sidebar?: DynamicSidebarContext | null;
   wrapLink?: (
     node: ReactNode,
-    context: DynamicSidebarItemContext & { href: string },
+    context: DynamicSidebarItemContext& { href: string },
   ) => ReactNode;
 };
 
-type DynamicSidebarLiveRootProps = HTMLAttributes<HTMLDivElement> & {
+type DynamicSidebarLiveRootProps = HTMLAttributes<HTMLDivElement>& {
   config: DynamicSidebarLiveConfig;
 };
 

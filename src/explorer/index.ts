@@ -44,6 +44,6 @@ function clearFileTreeExplorer(container: HTMLElement | null, message = "") {
   root.render(createElement("div", { className: primitiveTextClassName({ muted: true }) }, text(message, "No file tree selected.")));
 }
 
-export * from "./components/index.js";
-export * from "./tree.js";
+export *from "./components/index.js";
+export *from "./tree.js";
 export { clearFileTreeExplorer, getFileTreeRoot, renderFileTreeExplorer };

@@ -1,6 +1,6 @@
 type FlashType = "error" | "info" | "success" | "warn";
 type FlashStackPriority = "high" | "low" | "normal";
-type FlashProgressTone = FlashType | "accent" | "muted" | (string & {});
+type FlashProgressTone = FlashType | "accent" | "muted" | (string& {});
 type FlashOptions = {
   description?: string;
   id?: string;
@@ -39,7 +39,7 @@ type ConfirmOptions = {
   subject?: string;
   target?: string;
   type?: FlashType;
-  variant?: ConfirmVariant | (string & {});
+  variant?: ConfirmVariant | (string& {});
 };
 type ConfirmModel = {
   cancelText: string;

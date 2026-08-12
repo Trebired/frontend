@@ -19,7 +19,7 @@ type PrimitiveAttrs = {
   [key: string]: unknown;
 };
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & PrimitiveAttrs & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>&PrimitiveAttrs& {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
   active?: boolean;
@@ -31,7 +31,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & PrimitiveAttrs & {
   variant?: PrimitiveButtonTone | "classic" | "default";
 };
 
-type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
+type CardProps = HTMLAttributes<HTMLDivElement>&PrimitiveAttrs& {
   actionTrigger?: BindActionTriggerOptions;
   gap?: PrimitiveGap;
   layout?: "column" | "none";
@@ -42,7 +42,7 @@ type CardProps = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
 type ActionFormProps = Omit<
 FormHTMLAttributes<HTMLFormElement>,
 "action" | "children" | "method"
-> & {
+>& {
   action: string;
   body?: "json";
   children?: ReactNode;
@@ -51,7 +51,7 @@ FormHTMLAttributes<HTMLFormElement>,
   method?: string;
   success?: "soft-reload";
   successTab?: string;
-} & PrimitiveAttrs;
+} &PrimitiveAttrs;
 
 type CsrfInputProps = {
   optional?: boolean;
@@ -68,7 +68,7 @@ type AvatarProps = {
   width?: string | number;
 };
 
-type PillProps = HTMLAttributes<HTMLSpanElement> & PrimitiveAttrs & {
+type PillProps = HTMLAttributes<HTMLSpanElement>&PrimitiveAttrs& {
   children?: ReactNode;
 };
 
@@ -78,7 +78,7 @@ type SeparatorProps = {
   visible?: boolean;
 };
 
-type list_props<T = unknown> = {
+type list_props<T=unknown> = {
   className?: string;
   getItemProps?: (item: T, index: number) => Record<string, unknown>;
   getKey?: (item: T, index: number) => string | number;
@@ -116,7 +116,7 @@ type key_value_props = {
   separated?: boolean;
 };
 
-type masonry_props = HTMLAttributes<HTMLDivElement> & PrimitiveAttrs & {
+type masonry_props = HTMLAttributes<HTMLDivElement>&PrimitiveAttrs& {
   columns?: ReactNode[];
   gap?: PrimitiveGap;
 };
@@ -136,18 +136,18 @@ type circle_props = {
 };
 
 type StatusDotTone =
-| "blue"
-| "cyan"
-| "error"
-| "gray"
-| "green"
-| "info"
-| "muted"
-| "purple"
-| "red"
-| "success"
-| "warning"
-| "yellow";
+|"blue"
+|"cyan"
+|"error"
+|"gray"
+|"green"
+|"info"
+|"muted"
+|"purple"
+|"red"
+|"success"
+|"warning"
+|"yellow";
 
 type StatusDotSize = "xs" | "sm" | "md" | "lg";
 

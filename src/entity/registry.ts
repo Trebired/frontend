@@ -9,7 +9,7 @@ type EntityRegistryEntry = {
   icon?: unknown;
 };
 
-type EntityRegistryInput = Record<string, EntityRegistryEntry | null | undefined>;
+type EntityRegistryInput = Record<string, EntityRegistryEntry|null|undefined>;
 
 function normalizeEntityKey(value: unknown) {
   return String(value == null ? "" : value)

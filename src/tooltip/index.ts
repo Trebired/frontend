@@ -21,7 +21,7 @@ const tooltipState: TooltipState = {
   shown: false,
 };
 const tooltipTexts = new WeakMap<HTMLElement, string>();
-const tooltipCleanups = new WeakMap<HTMLElement, () => void>();
+const tooltipCleanups = new WeakMap<HTMLElement, ()=>void>();
 let listenersInstalled = false;
 
 function readTooltipText(trigger: HTMLElement | null) {

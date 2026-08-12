@@ -20,7 +20,7 @@ type ThemedFaviconOptions = {
   themeQueryName?: string;
 };
 
-function themedFaviconHref(themeKey: unknown, options: Pick<ThemedFaviconOptions, "route" | "themeQueryName"> = {}) {
+function themedFaviconHref(themeKey: unknown, options: Pick<ThemedFaviconOptions, "route"|"themeQueryName"> = {}) {
   const route = String(options.route || "/favicon.svg").trim() || "/favicon.svg";
   const queryName = String(options.themeQueryName || "theme").trim() || "theme";
   const theme = encodeURIComponent(String(themeKey == null ? "" : themeKey).trim());
@@ -99,7 +99,7 @@ function createFaviconRedirectHandler(options: ThemedFaviconOptions) {
 }
 
 function attachThemedFaviconRoutes(app: unknown, options: ThemedFaviconOptions) {
-  if (!(app && typeof (app as { get?: unknown }).get === "function")) return;
+  if (!(app && typeof(app as { get?: unknown }).get === "function")) return;
   const route = options.route || "/favicon.svg";
   const get = (app as { get: (path: string, handler: unknown) => unknown }).get.bind(app);
   get(route, createThemedFaviconHandler({ ...options, route }));

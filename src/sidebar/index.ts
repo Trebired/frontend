@@ -30,7 +30,7 @@ type SidebarState = {
   side: SidebarSide;
 };
 
-type SidebarPersistenceAdapter = (state: SidebarState) => Promise<unknown> | unknown;
+type SidebarPersistenceAdapter = (state: SidebarState) => Promise<unknown>|unknown;
 
 type SidebarRuntimeOptions = {
   dynamicLive?: DynamicSidebarLiveOptions;
@@ -96,7 +96,7 @@ function syncSidebarButtons(shell: HTMLElement, state: SidebarState) {
 
 function applySidebarState(
   shell: HTMLElement,
-  next: Partial<Pick<SidebarState, "minimized" | "open">>,
+  next: Partial<Pick<SidebarState, "minimized"|"open">>,
 ) {
   const current = shellStates.get(shell) || {
     minimized: false,
@@ -311,6 +311,6 @@ export {
   setSidebarOpen,
   toggleSidebarMinimized,
 };
-export * from "./live.js";
-export * from "./dynamic/index.js";
+export *from "./live.js";
+export *from "./dynamic/index.js";
 export type { SidebarPersistenceAdapter, SidebarRuntimeOptions, SidebarSide, SidebarState };

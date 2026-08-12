@@ -60,15 +60,15 @@ function resolveConnectionHandlers(handlers: LogsHandlers) {
     renderPage:
     typeof handlers.renderPage === "function"
     ? handlers.renderPage
-    : function () {},
+    : function() {},
     syncGroupSelect:
     typeof handlers.syncGroupSelect === "function"
     ? handlers.syncGroupSelect
-    : function () {},
+    : function() {},
     syncLevelSelect:
     typeof handlers.syncLevelSelect === "function"
     ? handlers.syncLevelSelect
-    : function () {},
+    : function() {},
   };
 }
 
@@ -144,7 +144,7 @@ function createLogsSocket(context) {
 }
 
 function startBootstrapTimer(context) {
-  context.bootstrapTimer = setTimeout(function () {
+  context.bootstrapTimer = setTimeout(function() {
       if (context.state.didBootstrap) return;
       context.state.didBootstrap = true;
       context.state.socketMessage = "";
@@ -190,10 +190,10 @@ function logAcceptedBootstrap(context, data, incomingLogs, matchingLogs) {
       expected_config_key: safeStr(context.config.config_key),
       total_logs: incomingLogs.length,
       matching_logs: matchingLogs.length,
-      sample_entry_config_keys: incomingLogs.slice(0, 5).map(function (entry) {
+      sample_entry_config_keys: incomingLogs.slice(0, 5).map(function(entry) {
           return safeStr(entry && entry.config_key);
       }),
-      sample_messages: incomingLogs.slice(0, 3).map(function (entry) {
+      sample_messages: incomingLogs.slice(0, 3).map(function(entry) {
           return safeStr(entry && entry.message);
       }),
   });
@@ -223,7 +223,7 @@ function handleLogsBootstrap(context, data) {
   clearBootstrapTimer(context);
   context.state.didBootstrap = true;
   const incomingLogs = Array.isArray(data.logs) ? data.logs : [];
-  const matchingLogs = incomingLogs.filter(function (entry) {
+  const matchingLogs = incomingLogs.filter(function(entry) {
       return entryMatchesConfig(entry, context.config);
   });
   logAcceptedBootstrap(context, data, incomingLogs, matchingLogs);
@@ -295,7 +295,7 @@ function handleConnectError(context) {
 }
 
 function bindLogsSocketEvents(context, socket) {
-  socket.on("connect", function () {
+  socket.on("connect", function() {
       debugLogs(context.page, "socket:connect", {
           namespace: context.config.socketNamespace,
           config_key: context.config.config_key,

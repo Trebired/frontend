@@ -82,7 +82,7 @@ function dynamicSidebarLinkActive(
 
 function isDynamicSidebarDivider(
   item: DynamicSidebarItem,
-): item is Extract<DynamicSidebarItem, { kind: "divider" }> {
+): item is Extract<DynamicSidebarItem, {kind:"divider"}> {
   return item.kind === "divider";
 }
 

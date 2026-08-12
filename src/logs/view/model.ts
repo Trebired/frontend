@@ -3,7 +3,7 @@ import { primitiveGridClassName } from "#hzrmwbvgt2ax";
 
 type view_props = {
   extendGroup?: string;
-  exportOptions?: Array<{ href?: string; label?: string }>;
+  exportOptions?: Array<{href?:string;label?:string}>;
   allowPlatformToggle?: boolean;
   hidePlatformToggle?: boolean;
   hideStats?: boolean;

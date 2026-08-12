@@ -276,7 +276,7 @@ function createSeoMiddleware(options: SeoMiddlewareOptions = {}) {
 }
 
 function attachSeoMiddleware(app: unknown, options: SeoMiddlewareOptions = {}) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
     (app as { use: (handler: unknown) => unknown }).use(createSeoMiddleware(options));
   }
 }

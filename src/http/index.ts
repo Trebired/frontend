@@ -1,10 +1,10 @@
-type CsrfFetchOptions = RequestInit & {
+type CsrfFetchOptions = RequestInit& {
   csrfHeaderName?: string;
   csrfMetaName?: string;
 };
 
-type JsonRequestOptions = Omit<CsrfFetchOptions, "body"> & {
-  body?: BodyInit | Record<string, unknown> | null;
+type JsonRequestOptions = Omit<CsrfFetchOptions, "body">& {
+  body?: BodyInit | Record<string, unknown>|null;
 };
 
 function readCsrfToken(metaName = "csrf-token") {
@@ -53,8 +53,8 @@ function isFormDataBody(value: unknown): value is FormData {
   return Boolean(
     value &&
       typeof FormData !== "undefined" &&
-      typeof (value as FormData).append === "function" &&
-      typeof (value as FormData).get === "function",
+      typeof(value as FormData).append === "function" &&
+      typeof(value as FormData).get === "function",
   );
 }
 
@@ -128,4 +128,4 @@ export {
   requestJson,
 };
 export type { CsrfFetchOptions, JsonRequestOptions };
-export * from "./paged.js";
+export *from "./paged.js";

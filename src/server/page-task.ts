@@ -17,7 +17,7 @@ type PageTaskFailureContext = {
   timeoutMs: number;
 };
 
-type PageTaskOptions<TFailure = PageTaskFailure> = {
+type PageTaskOptions<TFailure=PageTaskFailure> = {
   entityId?: unknown;
   fail?: (context: PageTaskFailureContext) => TFailure;
   failureMessage?: (context: {
@@ -67,7 +67,7 @@ function defaultFailureMessage(status: number, operation: string) {
 
 function pageTaskErrorMessage(
   error: unknown,
-  context: Pick<PageTaskFailureContext, "operation" | "status" | "statusCode">,
+  context: Pick<PageTaskFailureContext, "operation"|"status"|"statusCode">,
   options: PageTaskOptions<unknown>,
 ) {
   return (
@@ -117,10 +117,10 @@ function createPageTaskTimeout(operation: string) {
   return error;
 }
 
-async function runPageTask<T, TFailure = PageTaskFailure>(
+async function runPageTask<T, TFailure=PageTaskFailure>(
   task: () => Promise<T>,
   options: PageTaskOptions<TFailure>,
-): Promise<T | TFailure> {
+): Promise<T|TFailure> {
   const operation = toText(options.operation, "page task");
   const timeoutMs = pageTaskTimeoutMs(options.timeoutMs);
   let timer: ReturnType<typeof setTimeout>|null = null;

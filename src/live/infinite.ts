@@ -11,7 +11,7 @@ type InfiniteObserverState = {
   handleVisibilityChange?: () => void;
   mutationObserver: MutationObserver | null;
   observer: IntersectionObserver | null;
-  onReachEnd: () => Promise<unknown> | unknown;
+  onReachEnd: () => Promise<unknown>|unknown;
   resizeObserver: ResizeObserver | null;
   root: Element | null;
   scrollTarget: EventTarget | null;
@@ -126,7 +126,7 @@ function disconnectInfiniteObserver(state: InfiniteObserverState) {
 function createInfiniteObserver(
   root: Element | null,
   sentinel: HTMLElement | null,
-  onReachEnd: (() => Promise<unknown> | unknown) | null,
+  onReachEnd: (() => Promise<unknown>|unknown) | null,
   options: InfiniteObserverConfig | null = null,
 ) {
   if (!sentinel || typeof IntersectionObserver !== "function" || !onReachEnd) {

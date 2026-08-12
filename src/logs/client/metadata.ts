@@ -3,7 +3,7 @@ import type { LogEntry } from "./types.js";
 
 export function getEntryMetadata(
   entry: LogEntry | null,
-): Record<string, unknown> | null {
+): Record<string, unknown>|null {
   if (
     entry &&
       entry.metadata &&

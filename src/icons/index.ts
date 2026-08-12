@@ -30,7 +30,7 @@ type IconRuntimeOptions = {
   endpoint?: string;
 };
 
-type RenderIconElementAttrs = Record<string, unknown> & {
+type RenderIconElementAttrs = Record<string, unknown>& {
   class?: string;
   className?: string;
   color?: string;
@@ -87,7 +87,7 @@ function uniqueClassName(...values: string[]): string {
 }
 
 function applyElementAttrs(host: Element, attrs: RenderIconElementAttrs = {}): void {
-  const requestedClassName = text(attrs.class || attrs.className);
+  const requestedClassName = text(attrs.class ||attrs.className);
   const className = uniqueClassName(
     "tbf-icon",
     "icon-glyph",
@@ -141,7 +141,7 @@ function fetchSvg(spec: string, endpoint = "/__icons/svg"): Promise<string> {
   const pending = fetch(buildIconUrl(spec, endpoint), {
       credentials: "same-origin",
       headers: { Accept: "image/svg+xml,text/plain;q=0.9,*/*;q=0.8" },
-  }).then(async (response) => {
+  }).then(async(response) => {
       if (!response.ok) throw new Error(`tbf-icon-http-${response.status}`);
       const svg = String(await response.text()).trim();
       if (!/^<svg\b/iu.test(svg)) throw new Error("tbf-icon-invalid-svg");
@@ -156,7 +156,7 @@ async function renderIconElement(
   host: Element | null | undefined,
   spec: unknown,
   attrs: RenderIconElementAttrs = {},
-): Promise<Element | null> {
+): Promise<Element|null> {
   if (!host || typeof host.getAttribute !== "function") return null;
   const parsed = parseIconSpec(spec);
   const normalizedSpec = parsed ? parsed.spec : normalizeSpace(spec);

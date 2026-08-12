@@ -19,14 +19,14 @@ function initDropdownManager() {
     const target = event && event.target;
     if (target && closest(target, "[data-dropdown-options]")) return;
 
-    openedStaticDropdowns().forEach(function (drop) {
+    openedStaticDropdowns().forEach(function(drop) {
         positionStaticOptions(drop);
     });
   }
 
   document.addEventListener(
     "pointerdown",
-    function (e) {
+    function(e) {
       const activeDynamicWrap = getActiveDynamicWrap();
       if (activeDynamicWrap) {
         const inside = closest(e.target, "[data-dropdown-root]");
@@ -42,7 +42,7 @@ function initDropdownManager() {
     true,
   );
 
-  document.addEventListener("keydown", function (e) {
+  document.addEventListener("keydown", function(e) {
       if (e.key === "Escape" && getActiveDynamicWrap()) {
         closeDynamic();
       }

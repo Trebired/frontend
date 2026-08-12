@@ -62,7 +62,7 @@ type EditorSurfaceProps = {
   viewerStateId?: string;
 };
 
-type EditorBodyProps = Omit<EditorSurfaceProps, "ideMode"> & {
+type EditorBodyProps = Omit<EditorSurfaceProps, "ideMode">& {
   mode?: "edit" | "editor" | "view" | "viewer";
 };
 

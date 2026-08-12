@@ -37,7 +37,7 @@ function mergeLogEntries(existing: LogEntry[], incoming: LogEntry[]) {
   const merged: LogEntry[] = [];
   const seen = new Set<string>();
 
-  const push = function (entry) {
+  const push = function(entry) {
     if (!entry || typeof entry !== "object") return;
 
     const key = makeEntryMergeKey(entry);
@@ -49,7 +49,7 @@ function mergeLogEntries(existing: LogEntry[], incoming: LogEntry[]) {
   (Array.isArray(existing) ? existing : []).forEach(push);
   (Array.isArray(incoming) ? incoming : []).forEach(push);
 
-  merged.sort(function (a, b) {
+  merged.sort(function(a, b) {
       const ta = Date.parse(safeStr(a && a.recorded_at)) || 0;
       const tb = Date.parse(safeStr(b && b.recorded_at)) || 0;
       return ta - tb;

@@ -54,7 +54,7 @@ type SeoVerificationConfig = {
   yandex?: string;
 };
 
-type SeoStructuredData = Record<string, unknown> | readonly unknown[] | string;
+type SeoStructuredData = Record<string, unknown>|readonly unknown[] | string;
 
 type SeoConfig = {
   alternates?: readonly SeoAlternateLink[];

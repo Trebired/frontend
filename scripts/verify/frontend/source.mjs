@@ -19,131 +19,131 @@ async function verifyNoStandaloneWrapUtility(sourceDir) {
     assert.equal(/(^|[^\w&-])\.wrap\b/u.test(source), false, `${file} defines a standalone wrap utility.`);
     assert.equal(
       /\bclass(Name)?\s*=\s*["'`][^"'`]*\bwrap\b/u.test(source),
-        false,
-        `${file} references a wrap utility.`,
-        );
-        }
-        }
+      false,
+      `${file} references a wrap utility.`,
+    );
+  }
+}
 
-        async function verifyStylePackaging(rootDir) {
-        assert.equal(await verifySourcePathExists(path.join(rootDir, "src", "styles.css")), false);
-        const packageJson = JSON.parse(await fs.readFile(path.join(rootDir, "package.json"), "utf8"));
-        assertStructuredExports(packageJson);
-        await verifyBundlerConfigStyles(rootDir, packageJson);
-        }
+async function verifyStylePackaging(rootDir) {
+  assert.equal(await verifySourcePathExists(path.join(rootDir, "src", "styles.css")), false);
+  const packageJson = JSON.parse(await fs.readFile(path.join(rootDir, "package.json"), "utf8"));
+  assertStructuredExports(packageJson);
+  await verifyBundlerConfigStyles(rootDir, packageJson);
+}
 
-        function assertStructuredExports(packageJson) {
-        const exportKeys = Object.keys(packageJson.exports || {}).sort();
-        assert.deepEqual(exportKeys, [".", "./config", "./react", "./server"]);
-        for (const key of exportKeys) {
-        assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
-        assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);
-        assert.equal(key.includes("/components"), false, `${key} exposes component internals.`);
-        }
-        assert.equal(packageJson.exports["./styles.css"], undefined);
-        }
+function assertStructuredExports(packageJson) {
+  const exportKeys = Object.keys(packageJson.exports || {}).sort();
+  assert.deepEqual(exportKeys, [".", "./config", "./react", "./server"]);
+  for (const key of exportKeys) {
+    assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
+    assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);
+    assert.equal(key.includes("/components"), false, `${key} exposes component internals.`);
+  }
+  assert.equal(packageJson.exports["./styles.css"], undefined);
+}
 
-        async function verifyBundlerConfigStyles(rootDir, packageJson) {
-        const fixture = await writeBundlerConfigStyleFixture(rootDir, packageJson);
-        const { bundle } = await import(await siblingPackageName(rootDir, "bundler"));
-        const result = await bundle({
-        discover: {
+async function verifyBundlerConfigStyles(rootDir, packageJson) {
+  const fixture = await writeBundlerConfigStyleFixture(rootDir, packageJson);
+  const { bundle } = await import(await siblingPackageName(rootDir, "bundler"));
+  const result = await bundle({
+      discover: {
         dir: "src",
         rules: [{ key: "client", include: ["**/*.client.ts"], strategy: "entry" }],
-        },
-        outDir: "dist",
-        rootDir: fixture,
-        });
-        await assertBundledFrontendCss(result);
-        }
+      },
+      outDir: "dist",
+      rootDir: fixture,
+  });
+  await assertBundledFrontendCss(result);
+}
 
-        async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
-        const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config-styles");
-        const frontendPackageName = await packageName(rootDir);
-        const packageRoot = path.join(fixture, "node_modules", ...frontendPackageName.split("/"));
-        await fs.rm(fixture, { force: true, recursive: true });
-        await fs.mkdir(packageRoot, { recursive: true });
-        await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
-        await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
-        await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
-        await writeBundlerConfig(fixture, frontendPackageName, await workspaceConfigDir(rootDir));
-        await writeFile(fixture, "src/screen.client.ts", [
-        "document.documentElement.dataset.verify = \"ready\";",
-        "",
-        ].join("\n"));
-        return fixture;
-        }
+async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
+  const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config-styles");
+  const frontendPackageName = await packageName(rootDir);
+  const packageRoot = path.join(fixture, "node_modules", ...frontendPackageName.split("/"));
+  await fs.rm(fixture, { force: true, recursive: true });
+  await fs.mkdir(packageRoot, { recursive: true });
+  await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
+  await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
+  await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
+  await writeBundlerConfig(fixture, frontendPackageName, await workspaceConfigDir(rootDir));
+  await writeFile(fixture, "src/screen.client.ts", [
+      "document.documentElement.dataset.verify = \"ready\";",
+      "",
+    ].join("\n"));
+  return fixture;
+}
 
-        async function writeBundlerConfig(fixture, frontendPackageName, configDirName) {
-        await writeFile(fixture, `${configDirName}/frontend/config.ts`, [
-        `import { defineFrontendConfig } from "${frontendPackageName}/config";`,
-        "",
-        "export default defineFrontendConfig({",
-        "  prefix: \"verify\",",
-        "  assets: {",
-        "    fonts: {",
-        "      families: {",
-        "        sans: {",
-        "          package: \"inter\",",
-        "          family: \"Inter\",",
-        "          subsets: [\"latin\", \"latin-ext\"],",
-        "          weights: [400, 700],",
-        "          styles: [\"normal\", \"italic\"],",
-        "        },",
-        "      },",
-        "      sans: \"\\\"Inter\\\", system-ui, sans-serif\",",
-        "    },",
-        "  },",
-        "  design: {",
-        "    scales: { spacing: { xs2: 4, xs: 8, sm: 12, md: 24, lg: 40 } },",
-        "    semantics: { color: { brand: \"#123456\" } },",
-        "  },",
-        "  systems: { flash: true, inputs: true, modal: false },",
-        "});",
-        "",
-        ].join("\n"));
-        }
+async function writeBundlerConfig(fixture, frontendPackageName, configDirName) {
+  await writeFile(fixture, `${configDirName}/frontend/config.ts`, [
+      `import { defineFrontendConfig } from "${frontendPackageName}/config";`,
+      "",
+      "export default defineFrontendConfig({",
+      "  prefix: \"verify\",",
+      "  assets: {",
+      "    fonts: {",
+      "      families: {",
+      "        sans: {",
+      "          package: \"inter\",",
+      "          family: \"Inter\",",
+      "          subsets: [\"latin\", \"latin-ext\"],",
+      "          weights: [400, 700],",
+      "          styles: [\"normal\", \"italic\"],",
+      "        },",
+      "      },",
+      "      sans: \"\\\"Inter\\\", system-ui, sans-serif\",",
+      "    },",
+      "  },",
+      "  design: {",
+      "    scales: { spacing: { xs2: 4, xs: 8, sm: 12, md: 24, lg: 40 } },",
+      "    semantics: { color: { brand: \"#123456\" } },",
+      "  },",
+      "  systems: { flash: true, inputs: true, modal: false },",
+      "});",
+      "",
+    ].join("\n"));
+}
 
-        async function assertBundledFrontendCss(result) {
-        const cssOutput = result.outputs.find((item) => item.endsWith(".css"));
-        assert.ok(cssOutput, "expected bundled frontend SCSS output");
-        const css = await fs.readFile(cssOutput, "utf8");
-        assert.equal(css.includes("--tbf-radius"), true);
-        assert.equal(css.includes("--verify-color-brand: #123456;"), true);
-        assert.equal(css.includes("@font-face"), true);
-        assert.equal(css.includes('font-family: "Inter"'), true);
-        assert.equal(css.includes("--tbf-font-family-sans"), true);
-        assert.equal(css.includes(".inline-row"), true);
-        assert.ok(css.indexOf("@font-face") < css.indexOf(".inline-row"));
-        assert.equal(css.includes(".inline-row.wrap"), true);
-        assert.equal(css.includes(".gap-xs2"), true);
-        assert.equal(css.includes(".bg-canvas"), true);
-        assert.equal(css.includes(".tbf-layout"), true);
-        assert.match(css, /\.tbf-layout,\s*\[data-tbf-layout-root\]\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*100%;/su);
-        assert.match(css, /\[data-tbf-layout-root\]\s*>\s*\[data-tbf-layout-main\]\s*\{[^}]*grid-column:\s*2;/su);
-        assert.equal(css.includes(".tbf-flash"), true);
-        assert.equal(css.includes(".tbf-upload"), true);
-        assert.equal(css.includes(".tbf-sidebar-shell"), true);
-        assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
-        assert.equal(css.includes(".tbf-graph"), true);
-        assert.equal(css.includes(".tbf-card"), true);
-        assert.equal(css.includes(".card-row"), true);
-        assert.equal(css.includes(".pill"), true);
-        assert.equal(css.includes(".tbf-disclosure"), true);
-        assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
-        assert.equal(css.includes("assets/assets/"), false);
-        assert.equal(css.includes("/../assets/"), false);
-        }
+async function assertBundledFrontendCss(result) {
+  const cssOutput = result.outputs.find((item) => item.endsWith(".css"));
+  assert.ok(cssOutput, "expected bundled frontend SCSS output");
+  const css = await fs.readFile(cssOutput, "utf8");
+  assert.equal(css.includes("--tbf-radius"), true);
+  assert.equal(css.includes("--verify-color-brand: #123456;"), true);
+  assert.equal(css.includes("@font-face"), true);
+  assert.equal(css.includes('font-family: "Inter"'), true);
+  assert.equal(css.includes("--tbf-font-family-sans"), true);
+  assert.equal(css.includes(".inline-row"), true);
+  assert.ok(css.indexOf("@font-face") < css.indexOf(".inline-row"));
+  assert.equal(css.includes(".inline-row.wrap"), true);
+  assert.equal(css.includes(".gap-xs2"), true);
+  assert.equal(css.includes(".bg-canvas"), true);
+  assert.equal(css.includes(".tbf-layout"), true);
+  assert.match(css, /\.tbf-layout,\s*\[data-tbf-layout-root\]\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*100%;/su);
+  assert.match(css, /\[data-tbf-layout-root\]\s*>\s*\[data-tbf-layout-main\]\s*\{[^}]*grid-column:\s*2;/su);
+  assert.equal(css.includes(".tbf-flash"), true);
+  assert.equal(css.includes(".tbf-upload"), true);
+  assert.equal(css.includes(".tbf-sidebar-shell"), true);
+  assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
+  assert.equal(css.includes(".tbf-graph"), true);
+  assert.equal(css.includes(".tbf-card"), true);
+  assert.equal(css.includes(".card-row"), true);
+  assert.equal(css.includes(".pill"), true);
+  assert.equal(css.includes(".tbf-disclosure"), true);
+  assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
+  assert.equal(css.includes("assets/assets/"), false);
+  assert.equal(css.includes("/../assets/"), false);
+}
 
-        async function verifyNoCustomElements(sourceDir, distDir) {
-        const files = [
-        ...await sourceFiles(sourceDir),
-        ...await sourceFiles(distDir),
-        ];
-        const banned = [
-        /customElements/u,
-        /extends\s+HTMLElement/u,
-      /document\.createElement\(["'`][a-z]+-[a-z0-9-]+["'`]\)/u,
+async function verifyNoCustomElements(sourceDir, distDir) {
+  const files = [
+    ...await sourceFiles(sourceDir),
+    ...await sourceFiles(distDir),
+  ];
+  const banned = [
+    /customElements/u,
+    /extends\s+HTMLElement/u,
+    /document\.createElement\(["'`][a-z]+-[a-z0-9-]+["'`]\)/u,
     /<\s*[a-z]+-[a-z0-9-]+/u,
     /\b(action-form|action-button|tooltip-trigger|modal-trigger|theme-toggle)\b/u,
   ];

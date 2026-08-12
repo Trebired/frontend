@@ -252,13 +252,13 @@ function createThemeMiddleware(options: ThemeServerOptions = {}) {
 }
 
 function attachThemeMiddleware(app: unknown, options: ThemeServerOptions = {}) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
     (app as { use: (handler: unknown) => unknown }).use(createThemeMiddleware(options));
   }
 }
 
 function attachThemeRoutes(app: unknown, config: ThemeToggleHandlerOptions = {}) {
-  if (app && typeof (app as { post?: unknown }).post === "function") {
+  if (app && typeof(app as { post?: unknown }).post === "function") {
     (app as { post: (path: string, handler: unknown) => unknown }).post(
       config.path || "/ui/theme/toggle",
       createThemeToggleHandler(config),

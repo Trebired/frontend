@@ -44,7 +44,7 @@ const LIGHT_TOKEN_RULES = [
   { token: "regexp", foreground: "811F3F" },
 ];
 
-let monacoPromise: Promise<any> | null = null;
+let monacoPromise: Promise<any>|null = null;
 
 function darkThemeActive() {
   return String(getEffectiveTheme() || "").toLowerCase() !== "light";

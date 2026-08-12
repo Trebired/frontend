@@ -1,12 +1,12 @@
 import { jsonScript as search_config_json, toText } from "#ndsvdqv80epr";
 
 type search_value =
-| string
-| number
-| boolean
-| null
-| undefined
-| Array<string | number | boolean | null | undefined>;
+|string
+|number
+|boolean
+|null
+|undefined
+|Array<string|number|boolean|null|undefined>;
 
 type search_filters = Record<string, search_value>;
 

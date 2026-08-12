@@ -185,7 +185,7 @@ function restoreWindowScroll(snapshot: LiveOverlaySnapshot) {
   requestDomFrame(() => {
       if (Math.abs(window.scrollY - snapshot.windowScrollY!) <= 1) return;
       window.scrollTo({
-          behavior: "instant" as ScrollBehavior,
+          behavior: "instant"as ScrollBehavior,
           left: window.scrollX,
           top: snapshot.windowScrollY!,
       });

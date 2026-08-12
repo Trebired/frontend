@@ -5,7 +5,7 @@ import { text } from "./shared.js";
 type LocaleRuntimeOptions = {
   endpoint?: string;
   persistLocale?: (lang: string, endpoint: string) => Promise<unknown>;
-  refresh?: (lang: string) => Promise<unknown> | unknown;
+  refresh?: (lang: string) => Promise<unknown>|unknown;
 };
 
 const LOCALE_OPTION_SELECTOR = "[data-tbf-locale-option]";
@@ -55,7 +55,7 @@ function bindLocaleOption(
   if (!(button instanceof HTMLButtonElement)) return false;
   if (localeButtons.has(button)) return true;
   localeButtons.add(button);
-  button.addEventListener("click", async (event) => {
+  button.addEventListener("click", async(event) => {
       if (busyLocaleButtons.has(button)) return;
       const lang = text(button.value);
       if (!lang) return;

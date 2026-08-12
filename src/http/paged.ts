@@ -1,4 +1,4 @@
-type FetchPagedJsonQuery = Record<string, unknown> | URLSearchParams | null;
+type FetchPagedJsonQuery = Record<string, unknown>|URLSearchParams | null;
 
 function appendPagedQuery(target: URL, query: FetchPagedJsonQuery) {
   if (!query) return;
@@ -33,9 +33,9 @@ async function fetchPagedJson(
       ...options,
       headers: { Accept: "application/json", ...(options.headers || {}) },
   });
-  const json = await response.json().catch(() => null);
+  const json = await response.json().catch (() => null);
   if (!response.ok) throw new Error(pagedJsonMessage(json, "Request failed"));
-  return json && typeof json === "object" && "data" in json
+  return json && typeof json === "object" && "data"in json
   ? (json as { data: unknown }).data
   : json;
 }

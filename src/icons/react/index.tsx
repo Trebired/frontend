@@ -46,6 +46,13 @@ function resolveStyle(
   return Object.keys(base).length ? base : undefined;
 }
 
+function resolveIconCache(normalizedSpec: string) {
+  const serverRenderer = getActiveIconServerRenderer();
+  const serverEntry = normalizedSpec && serverRenderer ? serverRenderer(normalizedSpec) : null;
+  const browserEntry = normalizedSpec ? readIconCacheEntry(normalizedSpec) : null;
+  return serverEntry || browserEntry;
+}
+
 function Icon(props: IconProps) {
   const {
     className,
@@ -63,10 +70,7 @@ function Icon(props: IconProps) {
   const resolvedSpec = resolveSpec(props);
   const parsed = parseIconSpec(resolvedSpec);
   const normalizedSpec = parsed ? parsed.spec : normalizeSpace(resolvedSpec);
-  const serverRenderer = getActiveIconServerRenderer();
-  const serverEntry = normalizedSpec && serverRenderer ? serverRenderer(normalizedSpec) : null;
-  const browserEntry = normalizedSpec ? readIconCacheEntry(normalizedSpec) : null;
-  const cacheEntry = serverEntry || browserEntry;
+  const cacheEntry = resolveIconCache(normalizedSpec);
   const svgMarkup = text(cacheEntry?.svg);
   const colorMode = text(cacheEntry?.colorMode);
   const colorValue = text(cacheEntry?.colorValue);

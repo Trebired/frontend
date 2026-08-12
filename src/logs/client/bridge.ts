@@ -26,7 +26,7 @@ function flushBufferedFrontendLogs(
   const pending = frontendLogsBuffer.splice(0, frontendLogsBuffer.length);
   let consumed = 0;
 
-  pending.forEach(function (item) {
+  pending.forEach(function(item) {
       if (ingestFrontendLogs(item)) {
         consumed += 1;
         return;

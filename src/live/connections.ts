@@ -15,7 +15,7 @@ type LiveFieldsOptions = {
   room?: string;
   subscribe?: typeof subscribeRoom;
 };
-type LiveRefreshOptions = LiveOptions & {
+type LiveRefreshOptions = LiveOptions& {
   anchor?: string;
   event?: LiveEventFilter;
   room?: string;
@@ -55,8 +55,8 @@ function liveConnect(
   });
 }
 
-function useLive<T = unknown>(room: string, options: UseLiveOptions<T> = {}) {
-  const [value, setValue] = React.useState<T | null>(
+function useLive<T=unknown>(room: string, options: UseLiveOptions<T> = {}) {
+  const [value, setValue] = React.useState<T|null>(
     options.initialData ?? null,
   );
   const onUpdateRef = React.useRef(options.onUpdate);
@@ -120,7 +120,7 @@ function connectLiveFields(options: LiveFieldsOptions = {}) {
 
 function liveRefreshTarget(root: Document | ParentNode, anchor: unknown) {
   const value = String(anchor || "").trim();
-  if (!value || !("querySelector" in root)) return null;
+  if (!value || !("querySelector"in root)) return null;
   if (value.startsWith("#")) {
     const id = value.slice(1);
     return root instanceof Document

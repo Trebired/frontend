@@ -48,7 +48,7 @@ function isLogFilterTarget(page: LogsPage, target: Element) {
 
 function bindFilterEvents(page: LogsPage, handlers: EventHandlers) {
   const { ui, state } = page;
-  ui.root.addEventListener("change", function (event) {
+  ui.root.addEventListener("change", function(event) {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
       if (!isLogFilterTarget(page, target)) return;
@@ -59,7 +59,7 @@ function bindFilterEvents(page: LogsPage, handlers: EventHandlers) {
   });
 
   if (ui.togglePlatform) {
-    ui.togglePlatform.addEventListener("change", function () {
+    ui.togglePlatform.addEventListener("change", function() {
         forceBottomOnFilterChange(page);
         if (state.socket && state.socket.connected) {
           subscribe(page, { bootstrap: false });
@@ -72,14 +72,14 @@ function bindFilterEvents(page: LogsPage, handlers: EventHandlers) {
 function bindLogsSearchEvents(page: LogsPage, handlers: EventHandlers) {
   const { ui, state } = page;
   if (ui.searchInput) {
-    ui.searchInput.addEventListener("input", function () {
+    ui.searchInput.addEventListener("input", function() {
         forceBottomOnFilterChange(page);
         handlers.renderLogs(page);
     });
   }
 
   if (ui.searchButton) {
-    ui.searchButton.addEventListener("click", function () {
+    ui.searchButton.addEventListener("click", function() {
         state.focusSearchOnFullscreen = true;
         handlers.focusSearchInputAfterFullscreenRequest(page);
     });
@@ -89,7 +89,7 @@ function bindLogsSearchEvents(page: LogsPage, handlers: EventHandlers) {
 function bindLogsDetailModeButtons(page: LogsPage, handlers: EventHandlers) {
   const { ui, state } = page;
   if (ui.metadataButton) {
-    ui.metadataButton.addEventListener("click", function () {
+    ui.metadataButton.addEventListener("click", function() {
         state.showMetadata = !state.showMetadata;
         forceBottomOnFilterChange(page);
         handlers.syncMetadataButton(page);
@@ -98,7 +98,7 @@ function bindLogsDetailModeButtons(page: LogsPage, handlers: EventHandlers) {
   }
 
   if (ui.rawModeButton) {
-    ui.rawModeButton.addEventListener("click", function () {
+    ui.rawModeButton.addEventListener("click", function() {
         state.rawMode = !state.rawMode;
         forceBottomOnFilterChange(page);
         handlers.renderLogs(page);
@@ -109,7 +109,7 @@ function bindLogsDetailModeButtons(page: LogsPage, handlers: EventHandlers) {
 function bindViewportButtons(page: LogsPage, handlers: EventHandlers) {
   const { ui } = page;
   if (ui.jumpToBottomButton) {
-    ui.jumpToBottomButton.addEventListener("click", function () {
+    ui.jumpToBottomButton.addEventListener("click", function() {
         handlers.forceViewportToBottom(page);
         handlers.renderLogs(page);
     });

@@ -33,7 +33,7 @@ type ModalEntry = {
 };
 
 const modalStack: ModalEntry[] = [];
-const triggerBindings = new WeakMap<HTMLElement, () => void>();
+const triggerBindings = new WeakMap<HTMLElement, ()=>void>();
 let listenersInstalled = false;
 let originalBodyOverflow = "";
 let originalBodyPaddingRight = "";

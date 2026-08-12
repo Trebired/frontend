@@ -25,7 +25,7 @@ type tabs_props = {
   hoistFamilyToParent?: boolean;
   id?: string;
   initialValue?: string;
-  items: Array<tabs_item | null | undefined | false>;
+  items: Array<tabs_item|null|undefined|false>;
   listAttributes?: Record<string, unknown>;
   listClassName?: string;
   rootAttributes?: Record<string, unknown>;
@@ -57,8 +57,8 @@ type tabs_model = {
 };
 
 function mergeStyle(
-  baseStyle: Record<string, unknown> | undefined,
-  extraStyle: Record<string, unknown> | undefined,
+  baseStyle: Record<string, unknown>|undefined,
+  extraStyle: Record<string, unknown>|undefined,
 ) {
   if (!baseStyle && !extraStyle) return undefined;
   return {

@@ -139,7 +139,7 @@ function buildMonthLabels(
   columnCount: number,
   t: ContributionTranslator,
 ) {
-  const labels: Array<{ key: string; label: string; x: number }> = [];
+  const labels: Array<{key:string;label:string;x:number}> = [];
   let previousMonth = -1;
   for (let column = 0; column < columnCount; column += 1) {
     let firstVisibleDate: Date | null = null;

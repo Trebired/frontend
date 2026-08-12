@@ -117,12 +117,12 @@ export {
   uploadFieldHtml,
   uploadManager,
 };
-export * from "./choice.js";
-export * from "./disclosure.js";
-export * from "./dropdown.js";
-export * from "./search.js";
-export * from "./status.js";
-export * from "./tabs.js";
+export *from "./choice.js";
+export *from "./disclosure.js";
+export *from "./dropdown.js";
+export *from "./search.js";
+export *from "./status.js";
+export *from "./tabs.js";
 export type {
   UploadEmptyToggle,
   UploadEntry,

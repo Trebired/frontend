@@ -141,8 +141,8 @@ function normalizeThemeConfig(value: unknown): NormalizedFrontendThemeConfig {
 function flattenThemeTokens(
   tokens: FrontendThemeTokens,
   prefix: string[] = [],
-): Array<[string, string | number]> {
-  const out: Array<[string, string | number]> = [];
+): Array<[string, string|number]> {
+  const out: Array<[string, string|number]> = [];
   for (const [key, value] of Object.entries(tokens).sort(([a], [b]) => a.localeCompare(b))) {
     if (isPlainObject(value)) {
       out.push(...flattenThemeTokens(value, [...prefix, key]));

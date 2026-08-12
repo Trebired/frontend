@@ -19,7 +19,7 @@ export interface LogEntry {
   level?: unknown;
   group?: unknown;
   message?: unknown;
-  metadata?: Record<string, unknown> | null;
+  metadata?: Record<string, unknown>|null;
 }
 
 export interface LogStyle {
@@ -127,7 +127,7 @@ export interface LogsConfig {
   logStyle?: LogStyle | null;
   totalStats?: LogsStatsSummary | null;
   socketNamespace?: unknown;
-  socketOptions?: Record<string, unknown> | null;
+  socketOptions?: Record<string, unknown>|null;
   subscribeEvent?: unknown;
   platformLogs?: boolean;
   platformLogsDefaultOff?: boolean;
@@ -150,7 +150,7 @@ export interface LogsConfig {
   subscribePayload?: (
     page: LogsPage,
     options?: unknown,
-  ) => Record<string, unknown> | null;
+  ) => Record<string, unknown>|null;
 }
 
 export interface NormalizedLogsConfig {
@@ -167,7 +167,7 @@ export interface NormalizedLogsConfig {
   logStyle: LogStyle | null;
   totalStats: LogsStatsSummary | null;
   socketNamespace: string;
-  socketOptions?: Record<string, unknown> | null;
+  socketOptions?: Record<string, unknown>|null;
   subscribeEvent: string;
   platformLogs: boolean;
   platformLogsDefaultOff: boolean;
@@ -183,7 +183,7 @@ export interface NormalizedLogsConfig {
   subscribePayload?: (
     page: LogsPage,
     options?: unknown,
-  ) => Record<string, unknown> | null;
+  ) => Record<string, unknown>|null;
 }
 
 export interface LogsPage {

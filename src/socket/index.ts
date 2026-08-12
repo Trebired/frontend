@@ -5,7 +5,7 @@ import {
   io as socketIo,
 } from "socket.io-client";
 
-type SocketIoFactory = typeof socketIo & {
+type SocketIoFactory = typeof socketIo& {
   Manager: typeof Manager;
   Socket: typeof Socket;
   connect: typeof connect;

@@ -152,7 +152,7 @@ function setUploadFile(
   root: HTMLElement,
   input: HTMLInputElement | null,
   file: File | null,
-  options: { cropData?: Record<string, number> | null; previewUrl?: string } = {},
+  options: { cropData?: Record<string, number>|null; previewUrl?: string } = {},
 ) {
   const state = getUploadState(root);
   revokePreviewUrl(state);
@@ -172,7 +172,7 @@ function setUploadFile(
   syncClearAndEmpty(root);
 }
 
-function syncCropField(root: HTMLElement, cropData: Record<string, number> | null) {
+function syncCropField(root: HTMLElement, cropData: Record<string, number>|null) {
   const cropField = getCropField(root);
   if (cropField) cropField.value = cropData ? JSON.stringify(cropData) : "";
 }

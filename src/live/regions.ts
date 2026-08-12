@@ -99,7 +99,7 @@ function replaceLiveRegions(doc: Document, options: LiveOptions = {}) {
   return changed;
 }
 
-async function refreshLive(options: LiveOptions & { url?: string } = {}) {
+async function refreshLive(options: LiveOptions& { url?: string } = {}) {
   if (refreshInflight || typeof window === "undefined") return false;
   refreshInflight = true;
   const url = options.url || window.location.href;

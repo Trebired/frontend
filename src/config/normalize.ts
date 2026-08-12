@@ -142,128 +142,128 @@ function normalizePrefix(value: unknown): string {
 function normalizeEndpoint(value: unknown): string {
   const endpoint = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint).trim();
   if (!endpoint || /[\s"'<>]/u.test(endpoint)) {
-      throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
-      }
-      return endpoint;
-      }
+    throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
+  }
+  return endpoint;
+}
 
-      function normalizeConfigIconPack(value: unknown): FrontendIconPack {
-      const pack = String(value || "").trim().toLowerCase().replace(/_/gu, "-");
-      if (pack === "simpleicons") return "simple-icons";
-      if (!/^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/u.test(pack)) {
-      throw invalidConfig(`invalid icon pack ${String(value)}`);
-      }
-      return pack;
-      }
+function normalizeConfigIconPack(value: unknown): FrontendIconPack {
+  const pack = String(value || "").trim().toLowerCase().replace(/_/gu, "-");
+  if (pack === "simpleicons") return "simple-icons";
+  if (!/^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/u.test(pack)) {
+    throw invalidConfig(`invalid icon pack ${String(value)}`);
+  }
+  return pack;
+}
 
-      function normalizeIconPacks(value: unknown): FrontendIconPack[] {
-      const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
-      if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
-      const packs: FrontendIconPack[] = [];
-      for (const item of raw) {
-      const pack = normalizeConfigIconPack(item);
-      if (!packs.includes(pack)) packs.push(pack);
-      }
-      return packs;
-      }
+function normalizeIconPacks(value: unknown): FrontendIconPack[] {
+  const raw = value === undefined ? DEFAULT_FRONTEND_CONFIG.assets.icons.packs : value;
+  if (!Array.isArray(raw)) throw invalidConfig("assets.icons.packs must be an array");
+  const packs: FrontendIconPack[] = [];
+  for (const item of raw) {
+    const pack = normalizeConfigIconPack(item);
+    if (!packs.includes(pack)) packs.push(pack);
+  }
+  return packs;
+}
 
-      function normalizeIconAliases(value: unknown): Record<string, string> {
-      if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.assets.icons.aliases };
-      const source = assertPlainObject(value, "assets.icons.aliases");
-      const aliases: Record<string, string> = {};
-      for (const [rawKey, rawSpec] of Object.entries(source)) {
-      const key = normalizeIconAliasKey(rawKey);
-      if (!key) throw invalidConfig(`assets.icons.aliases has invalid key ${rawKey}`);
-      const spec = normalizeIconAliasSpec(rawSpec);
-      if (!spec) throw invalidConfig(`assets.icons.aliases.${rawKey} must be a valid icon spec`);
-      aliases[key] = spec;
-      }
-      return aliases;
-      }
+function normalizeIconAliases(value: unknown): Record<string, string> {
+  if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.assets.icons.aliases };
+  const source = assertPlainObject(value, "assets.icons.aliases");
+  const aliases: Record<string, string> = {};
+  for (const [rawKey, rawSpec] of Object.entries(source)) {
+    const key = normalizeIconAliasKey(rawKey);
+    if (!key) throw invalidConfig(`assets.icons.aliases has invalid key ${rawKey}`);
+    const spec = normalizeIconAliasSpec(rawSpec);
+    if (!spec) throw invalidConfig(`assets.icons.aliases.${rawKey} must be a valid icon spec`);
+    aliases[key] = spec;
+  }
+  return aliases;
+}
 
-      function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
-      const source = value === undefined
-      ? {}
-      : assertPlainObject(value, "assets") as FrontendAssetsConfig;
-      assertKnownFields(source, ASSET_FIELDS, "assets");
-      const icons = source.icons === undefined
-      ? {}
-      : assertPlainObject(source.icons, "assets.icons");
-      assertKnownFields(icons, ICON_FIELDS, "assets.icons");
-      return {
-      fonts: normalizeFontsConfig(source.fonts),
-      icons: {
+function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
+  const source = value === undefined
+  ? {}
+  : assertPlainObject(value, "assets") as FrontendAssetsConfig;
+  assertKnownFields(source, ASSET_FIELDS, "assets");
+  const icons = source.icons === undefined
+  ? {}
+  : assertPlainObject(source.icons, "assets.icons");
+  assertKnownFields(icons, ICON_FIELDS, "assets.icons");
+  return {
+    fonts: normalizeFontsConfig(source.fonts),
+    icons: {
       aliases: normalizeIconAliases(icons.aliases),
       endpoint: normalizeEndpoint(icons.endpoint),
       packs: normalizeIconPacks(icons.packs),
-      },
-      };
-      }
+    },
+  };
+}
 
-      function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runtime"] {
-      const source = value === undefined
-      ? {}
-      : assertPlainObject(value, "runtime") as FrontendRuntimeConfig;
-      assertKnownFields(source, RUNTIME_FIELDS, "runtime");
-      return {
-      layer: normalizeThemeTokens(source.layer, "runtime.layer"),
-      layout: normalizeThemeTokens(source.layout, "runtime.layout"),
-      progress: normalizeThemeTokens(source.progress, "runtime.progress"),
-      theme: normalizeThemeConfig(source.theme),
-      };
-      }
+function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runtime"] {
+  const source = value === undefined
+  ? {}
+  : assertPlainObject(value, "runtime") as FrontendRuntimeConfig;
+  assertKnownFields(source, RUNTIME_FIELDS, "runtime");
+  return {
+    layer: normalizeThemeTokens(source.layer, "runtime.layer"),
+    layout: normalizeThemeTokens(source.layout, "runtime.layout"),
+    progress: normalizeThemeTokens(source.progress, "runtime.progress"),
+    theme: normalizeThemeConfig(source.theme),
+  };
+}
 
-      function normalizeDesignConfig(
-      value: unknown,
-      modeKeys: string[],
-      ): NormalizedFrontendConfig["design"] {
-      const source = value === undefined
-      ? {}
-      : assertPlainObject(value, "design") as FrontendDesignConfig;
-      assertKnownFields(source, DESIGN_FIELDS, "design");
-      return {
-      interactions: normalizeInteractionsConfig(source.interactions),
-      palette: normalizePaletteConfig(source.palette, modeKeys),
-      scales: normalizeScalesConfig(source.scales),
-      semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
-      };
-      }
+function normalizeDesignConfig(
+  value: unknown,
+  modeKeys: string[],
+): NormalizedFrontendConfig["design"] {
+  const source = value === undefined
+  ? {}
+  : assertPlainObject(value, "design") as FrontendDesignConfig;
+  assertKnownFields(source, DESIGN_FIELDS, "design");
+  return {
+    interactions: normalizeInteractionsConfig(source.interactions),
+    palette: normalizePaletteConfig(source.palette, modeKeys),
+    scales: normalizeScalesConfig(source.scales),
+    semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
+  };
+}
 
-      function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
-      if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.systems };
-      const source = assertPlainObject(value, "systems");
-      const systems = { ...DEFAULT_FRONTEND_CONFIG.systems };
-      for (const [key, enabled] of Object.entries(source)) {
-      if (!SYSTEM_ORDER.includes(key as FrontendSystemKey)) {
+function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
+  if (value === undefined) return { ...DEFAULT_FRONTEND_CONFIG.systems };
+  const source = assertPlainObject(value, "systems");
+  const systems = { ...DEFAULT_FRONTEND_CONFIG.systems };
+  for (const [key, enabled] of Object.entries(source)) {
+    if (!SYSTEM_ORDER.includes(key as FrontendSystemKey)) {
       throw invalidConfig(`unsupported system ${key}`);
-      }
-      if (typeof enabled !== "boolean") {
+    }
+    if (typeof enabled !== "boolean") {
       throw invalidConfig(`systems.${key} must be boolean`);
-      }
-      systems[key as FrontendSystemKey] = enabled;
-      }
-      return systems;
-      }
+    }
+    systems[key as FrontendSystemKey] = enabled;
+  }
+  return systems;
+}
 
-      function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
-      const source = assertPlainObject(config, "config");
-      assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
-      const runtime = normalizeRuntimeConfig(source.runtime);
-      return {
-      assets: normalizeAssetsConfig(source.assets),
-      components: normalizeComponentsConfig(source.components),
-      design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
-      prefix: normalizePrefix(source.prefix),
-      runtime,
-      systems: normalizeSystems(source.systems),
-      };
-      }
+function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
+  const source = assertPlainObject(config, "config");
+  assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
+  const runtime = normalizeRuntimeConfig(source.runtime);
+  return {
+    assets: normalizeAssetsConfig(source.assets),
+    components: normalizeComponentsConfig(source.components),
+    design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
+    prefix: normalizePrefix(source.prefix),
+    runtime,
+    systems: normalizeSystems(source.systems),
+  };
+}
 
-      export {
-      DEFAULT_FRONTEND_CONFIG,
-      SUPPORTED_ICON_PACKS,
-      SYSTEM_ORDER,
-      THEME_MODE_ATTRIBUTE,
-      FRONTEND_CONFIG_PATH,
-      normalizeFrontendConfig,
-      };
+export {
+  DEFAULT_FRONTEND_CONFIG,
+  SUPPORTED_ICON_PACKS,
+  SYSTEM_ORDER,
+  THEME_MODE_ATTRIBUTE,
+  FRONTEND_CONFIG_PATH,
+  normalizeFrontendConfig,
+};

@@ -8,11 +8,11 @@ import { handleResponseAction } from "./response.js";
 import stepsController from "#jdm7qktkge73";
 import type { ActionAdapters, ActionJson, ActionRequestUi } from "./types.js";
 
-type ActionRequestOptions = Omit<RequestInit, "body"> & {
+type ActionRequestOptions = Omit<RequestInit, "body">& {
   adapters?: ActionAdapters;
-  body?: BodyInit | Record<string, unknown> | null;
+  body?: BodyInit | Record<string, unknown>|null;
   ui?: ActionRequestUi;
-} & ActionRequestUi;
+} &ActionRequestUi;
 
 function networkFailure(): ActionJson {
   return {

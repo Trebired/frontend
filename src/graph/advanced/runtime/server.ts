@@ -1,6 +1,6 @@
 type ServerGraphRoot = {
   render(props: any): void;
-  resize?(): void;
+  resize ? () : void;
 };
 
 function takeLastItems<T>(items: T[] | null | undefined, limitInput: unknown): T[] {
@@ -103,7 +103,7 @@ function setServerGraphUnavailable(
 }
 
 function setServerGraphsLoading(
-  targets: Array<ServerGraphRoot | null | undefined>,
+  targets: Array<ServerGraphRoot|null|undefined>,
   loading: boolean,
 ): void {
   (Array.isArray(targets) ? targets : []).forEach((target) => {
@@ -112,7 +112,7 @@ function setServerGraphsLoading(
 }
 
 function setServerGraphsUnavailable(
-  targets: Array<ServerGraphRoot | null | undefined>,
+  targets: Array<ServerGraphRoot|null|undefined>,
   message: string,
 ): void {
   (Array.isArray(targets) ? targets : []).forEach((target) => {

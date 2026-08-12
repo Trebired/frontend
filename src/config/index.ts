@@ -10,15 +10,15 @@ import type {
   FrontendConfig,
 } from "./types.js";
 
-const defineFrontendConfig = defineValue as <T extends FrontendConfig>(config: T) => T;
+const defineFrontendConfig = defineValue as <T extends FrontendConfig > (config: T) => T;
 
 async function findFrontendConfig(
   startDir: string = process.cwd(),
   boundaryDir?: string,
-): Promise<string | null> {
+): Promise<string|null> {
   const boundary = path.resolve(boundaryDir || path.parse(path.resolve(startDir)).root);
   let current = path.resolve(startDir);
-  for (;;) {
+  for (;; ) {
     const candidate = path.join(current, FRONTEND_CONFIG_PATH);
     if (await pathExists(candidate)) return candidate;
     if (current === boundary || current === path.dirname(current)) return null;

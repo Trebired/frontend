@@ -11,7 +11,7 @@ import { normalizeIconPackList, resolveIconPackRoot } from "./options.js";
 import type { IconPackIndex, IconServerOptions } from "./types.js";
 
 const SOURCE_COLOR_ICON_PACKS = ["material-icon-theme"];
-const packIndexCache = new Map<string, IconPackIndex | null>();
+const packIndexCache = new Map<string, IconPackIndex|null>();
 const simpleIconColorCache = new Map<string, Map<string, string>>();
 
 function buildPackIndex(

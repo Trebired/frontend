@@ -2,7 +2,7 @@ import { objectRecord, toText as text } from "#ndsvdqv80epr";
 
 type FileTreeNodeInput = Record<string, unknown>;
 
-type FileTreeNode = FileTreeNodeInput & {
+type FileTreeNode = FileTreeNodeInput& {
   children: FileTreeNode[];
   file_count: number;
   icon: string;

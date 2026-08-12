@@ -32,7 +32,7 @@ function useForceBottom(
   useLayoutEffect(() => {
       if (!scrollBox) return undefined;
 
-      const frame = window.requestAnimationFrame(function () {
+      const frame = window.requestAnimationFrame(function() {
           const canForce = canForceBottomRef.current;
           if (typeof canForce === "function" && !canForce()) return;
           scrollBox.scrollTop = Math.max(
@@ -54,7 +54,7 @@ function useScrollCallback(scrollBox, onViewportScrollRef) {
       let frame = 0;
       function handleScroll() {
         if (frame) return;
-        frame = window.requestAnimationFrame(function () {
+        frame = window.requestAnimationFrame(function() {
             frame = 0;
             const onScroll = onViewportScrollRef.current;
             if (typeof onScroll === "function") onScroll();

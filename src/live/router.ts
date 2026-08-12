@@ -8,7 +8,7 @@ import {
   restoreWizardSteps,
 } from "./state.js";
 
-type LiveNavigationOptions = LiveOptions & {
+type LiveNavigationOptions = LiveOptions& {
   history?: "none" | "push" | "replace";
   preserveState?: boolean;
   push?: boolean;
@@ -35,7 +35,7 @@ function injectNewScripts(doc: Document) {
       if (!src || loadedScriptSrcs.has(src)) return;
       loadedScriptSrcs.add(src);
       const fresh = document.createElement("script");
-      fresh.type = script.type || "module";
+      fresh.type = script.type ||"module";
       fresh.src = src;
       document.body.appendChild(fresh);
   });

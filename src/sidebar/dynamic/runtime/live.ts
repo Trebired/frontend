@@ -62,7 +62,7 @@ function descriptorFromRoot(root: HTMLElement): DynamicSidebarDescriptor | null 
   const config = liveConfigs.get(root) || {};
   const type = textValue(config.type);
   const path = textValue(config.path);
-  if (!type || !path) return null;
+  if (!type ||!path) return null;
   return {
     key: descriptorKeyFromConfig(config),
     params: config.params && typeof config.params === "object" ? config.params : {},
@@ -156,7 +156,7 @@ function syncDynamicSidebarRooms() {
   const eventName = liveOptions.event || "sidebar";
   unsubscribeRooms = collectDynamicSidebarRooms()
   .map((room) => liveOptions.subscribe?.(room, (payload) => {
-        if (payload && typeof payload === "object" && "event" in payload &&
+        if (payload && typeof payload === "object" && "event"in payload &&
             textValue((payload as { event?: unknown }).event) !== eventName) return;
         scheduleDynamicSidebarRefresh(liveOptions.refreshDelayMs || 120);
   }))

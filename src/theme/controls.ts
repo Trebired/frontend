@@ -85,7 +85,7 @@ function claimThemeControl(element: HTMLElement | null): element is HTMLElement 
 function bindThemeToggle(button: HTMLElement | null, options: ThemeRuntimeOptions = {}): boolean {
   adoptThemeModes(options);
   if (!claimThemeControl(button)) return false;
-  button.addEventListener("click", async (event) => {
+  button.addEventListener("click", async(event) => {
       event.preventDefault();
       await setTheme(nextTheme(options), options);
   });
@@ -103,7 +103,7 @@ function resolveOptionValue(element: HTMLElement, event: Event): string {
 function bindThemeSelect(element: HTMLElement | null, options: ThemeRuntimeOptions = {}): boolean {
   adoptThemeModes(options);
   if (!claimThemeControl(element)) return false;
-  const handle = async (event: Event) => {
+  const handle = async(event: Event) => {
     const value = resolveOptionValue(element, event);
     if (!value) return;
     if (event.type === "click") event.preventDefault();

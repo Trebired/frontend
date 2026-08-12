@@ -9,26 +9,26 @@ import type { ShellChromeState } from "#boxcxvsyrtdl";
 import type { ThemeModeOptions } from "#zzt5zj380sl9";
 
 type ProductShellLabelKey =
-| "about"
-| "account"
-| "apps"
-| "closeNavigationMenu"
-| "docs"
-| "feedback"
-| "goHome"
-| "menu"
-| "minimize"
-| "mobileNavigation"
-| "mobilePrimaryNavigation"
-| "more"
-| "navigation"
-| "navigationSidebarLabel"
-| "notifications"
-| "organizationMembers"
-| "organizationMembersSidebarLabel"
-| "profile"
-| "support"
-| "toggleTheme";
+|"about"
+|"account"
+|"apps"
+|"closeNavigationMenu"
+|"docs"
+|"feedback"
+|"goHome"
+|"menu"
+|"minimize"
+|"mobileNavigation"
+|"mobilePrimaryNavigation"
+|"more"
+|"navigation"
+|"navigationSidebarLabel"
+|"notifications"
+|"organizationMembers"
+|"organizationMembersSidebarLabel"
+|"profile"
+|"support"
+|"toggleTheme";
 
 type ProductShellLabels = Partial<Record<ProductShellLabelKey, string>>;
 
@@ -39,7 +39,7 @@ type ProductShellState = {
   shell: Record<string, unknown>;
 };
 
-type ProductShellLayoutState = ProductShellState & {
+type ProductShellLayoutState = ProductShellState& {
   currentPath: string;
   hasMobileBottomBar: boolean;
   showHeader: boolean;
@@ -61,7 +61,7 @@ type ProductShellStateOptions = {
 
 type ProductShellLayoutRenderContext = ProductShellLayoutState;
 
-type ProductShellSidebarRenderContext = ProductShellLayoutState & {
+type ProductShellSidebarRenderContext = ProductShellLayoutState& {
   side: SidebarSide;
   sidebar: Record<string, unknown>;
 };
@@ -102,7 +102,7 @@ type ProductShellMobileNavProps = {
   titleClassName?: string;
 };
 
-type ProductShellBottomBarProps = HTMLAttributes<HTMLElement> & {
+type ProductShellBottomBarProps = HTMLAttributes<HTMLElement>& {
   appIcon?: ReactNode;
   appsHref?: string;
   itemClassName?: string;
@@ -115,7 +115,7 @@ type ProductShellBottomBarProps = HTMLAttributes<HTMLElement> & {
 };
 
 type ProductShellLayoutProps =
-Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
+Omit<HTMLAttributes<HTMLDivElement>, "children">& {
   body?: ReactNode;
   children?: ReactNode | ((context: ProductShellLayoutRenderContext) => ReactNode);
   currentPath?: unknown;
@@ -143,12 +143,12 @@ type ProductShellSidebarProps = {
   side?: SidebarSide;
 };
 
-type ProductShellSidebarFooterProps = HTMLAttributes<HTMLDivElement> & {
+type ProductShellSidebarFooterProps = HTMLAttributes<HTMLDivElement>& {
   actions?: ReactNode;
 };
 
 type ProductShellSidebarControlsProps =
-Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
+Omit<HTMLAttributes<HTMLDivElement>, "about">& {
   about?: ReactNode;
   language?: ReactNode;
   minimize?: ReactNode;
@@ -156,8 +156,8 @@ Omit<HTMLAttributes<HTMLDivElement>, "about"> & {
 };
 
 type ProductShellSidebarDefaultControlsProps =
-Omit<ProductShellSidebarControlsProps, "about" | "language" | "minimize" | "theme"> &
-Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes"> & {
+Omit<ProductShellSidebarControlsProps, "about"|"language"|"minimize"|"theme">&
+Pick<ProductShellThemeToggleProps, "dark"|"light"|"modes">& {
   aboutHref?: string;
   buttonClassName?: string;
   controlsId: string;
@@ -170,7 +170,7 @@ Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes"> & {
 };
 
 type ProductShellSidebarMinimizeButtonProps =
-ButtonHTMLAttributes<HTMLButtonElement> & {
+ButtonHTMLAttributes<HTMLButtonElement>& {
   controls: string;
   expandedIcon?: ReactNode;
   labels?: ProductShellLabels;
@@ -178,7 +178,7 @@ ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 type ProductShellThemeToggleProps =
-ButtonHTMLAttributes<HTMLButtonElement> & ThemeModeOptions & {
+ButtonHTMLAttributes<HTMLButtonElement>&ThemeModeOptions& {
   icon?: ReactNode;
   labels?: ProductShellLabels;
   popoverId?: string;
@@ -186,7 +186,7 @@ ButtonHTMLAttributes<HTMLButtonElement> & ThemeModeOptions & {
 };
 
 type ProductShellAboutButtonProps =
-AnchorHTMLAttributes<HTMLAnchorElement> & {
+AnchorHTMLAttributes<HTMLAnchorElement>& {
   icon?: ReactNode;
   labels?: ProductShellLabels;
   productName?: string;

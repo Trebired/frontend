@@ -10,7 +10,7 @@ function resetDropdownSearch(drop) {
 
   options
   .querySelectorAll("search-query-input input")
-  .forEach(function (input) {
+  .forEach(function(input) {
       input.value = "";
       input.dispatchEvent(new Event("input", { bubbles: true }));
   });
@@ -34,6 +34,23 @@ function finishStaticClose(drop, options, token) {
   resetDropdownSearch(drop);
 }
 
+function dropdownViewport() {
+  const root = document.documentElement;
+  return {
+    height: root ? root.clientHeight : window.innerHeight,
+    width: root ? root.clientWidth : window.innerWidth,
+  };
+}
+
+function measureStaticOptions(options) {
+  const wasMeasuring =
+  options.getAttribute("data-dropdown-measuring") === "true";
+  options.setAttribute("data-dropdown-measuring", "true");
+  const rect = options.getBoundingClientRect();
+  if (!wasMeasuring) options.removeAttribute("data-dropdown-measuring");
+  return rect;
+}
+
 function positionStaticOptions(drop) {
   const options = getDropdownOptions(drop);
   if (drop instanceof Element && !drop.isConnected) {
@@ -48,9 +65,7 @@ function positionStaticOptions(drop) {
   return;
 
   const rect = drop.getBoundingClientRect();
-  const root = document.documentElement;
-  const vw = root ? root.clientWidth : window.innerWidth;
-  const vh = root ? root.clientHeight : window.innerHeight;
+  const viewport = dropdownViewport();
   const edge = 8;
   const gap = 4;
 
@@ -62,22 +77,16 @@ function positionStaticOptions(drop) {
   options.style.boxSizing = "border-box";
   options.style.width = `${Math.max(140, Math.round(rect.width))}px`;
   options.style.minWidth = `${Math.max(140, Math.round(rect.width))}px`;
-  options.style.maxWidth = `${Math.max(140, vw - edge * 2)}px`;
+  options.style.maxWidth = `${Math.max(140, viewport.width - edge * 2)}px`;
 
-  const wasMeasuring =
-  options.getAttribute("data-dropdown-measuring") === "true";
-  options.setAttribute("data-dropdown-measuring", "true");
-  const panelRect = options.getBoundingClientRect();
-  if (!wasMeasuring) {
-    options.removeAttribute("data-dropdown-measuring");
-  }
+  const panelRect = measureStaticOptions(options);
   const nextLeft = Math.max(
     edge,
-    Math.min(rect.left, vw - panelRect.width - edge),
+    Math.min(rect.left, viewport.width - panelRect.width - edge),
   );
 
   let nextTop = rect.bottom + gap;
-  if (nextTop + panelRect.height > vh - edge) {
+  if (nextTop + panelRect.height > viewport.height - edge) {
     nextTop = Math.max(edge, rect.top - gap - panelRect.height);
   }
   const position = nextTop < rect.top ? "above" : "below";
@@ -128,7 +137,7 @@ function closeStatic(drop) {
 
   options.setAttribute("data-dropdown-closing", "true");
   options.removeAttribute("data-dropdown-show");
-  const onDone = function (event) {
+  const onDone = function(event) {
     if (event && event.target !== options) return;
     options.removeEventListener("transitionend", onDone);
     if (drop._dropdownCloseTimer) {
@@ -139,7 +148,7 @@ function closeStatic(drop) {
   };
 
   options.addEventListener("transitionend", onDone);
-  drop._dropdownCloseTimer = window.setTimeout(function () {
+  drop._dropdownCloseTimer = window.setTimeout(function() {
       options.removeEventListener("transitionend", onDone);
       drop._dropdownCloseTimer = 0;
       finishStaticClose(drop, options, token);
@@ -155,14 +164,14 @@ function openStatic(drop) {
   if (drop instanceof Element) openStaticDropdowns.add(drop);
   portalStaticOptions(drop);
   options.removeAttribute("data-dropdown-closing");
-  requestAnimationFrame(function () {
+  requestAnimationFrame(function() {
       positionStaticOptions(drop);
       promoteZIndex(options, { fallback: DROPDOWN_BASE_Z_INDEX });
       options.setAttribute("data-dropdown-show", "true");
 
       const searchInput = options.querySelector("search-query-input input");
       if (searchInput && typeof searchInput.focus === "function") {
-        window.setTimeout(function () {
+        window.setTimeout(function() {
             searchInput.focus();
           }, 50);
       }

@@ -36,8 +36,8 @@ import type {
 export { withIconServerRenderer } from "#6o6fqz7svsts";
 export { attachIconAliasLocals, attachIconServer } from "./attachment.js";
 export type { AttachIconServerOptions, IconServerAttachment } from "./attachment.js";
-export * from "./defaults.js";
-export * from "./material.js";
+export *from "./defaults.js";
+export *from "./material.js";
 
 const svgMarkupCache = new Map<string, IconSvgResult>();
 
@@ -127,7 +127,7 @@ function classifyIconColorMode(value: unknown): "" | "brand" | "monochrome" {
 function buildRenderedIconCacheEntry(
   spec: unknown,
   options: IconServerOptions = {},
-): (ServerIconCacheEntry & { normalizedSpec: string }) | null {
+): (ServerIconCacheEntry& { normalizedSpec: string }) | null {
   const parsed = parseServerIconSpec(spec, options);
   if (!parsed) return null;
   const svg = resolveIconSvg(parsed.spec, options);
@@ -158,8 +158,8 @@ function createServerIconRenderer(
 }
 
 function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): string {
-  const pairs = new Map<string, string | true>();
-  const className = classNames("tbf-icon", "icon-glyph", text(attrs.class || attrs.className));
+  const pairs = new Map<string, string|true>();
+  const className = classNames("tbf-icon", "icon-glyph", text(attrs.class ||attrs.className));
   pairs.set("class", className);
   pairs.set("data-tbf-icon", parsed.spec);
   const label = text(attrs.label || attrs["aria-label"]);

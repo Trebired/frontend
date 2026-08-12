@@ -17,7 +17,7 @@ export {
   memory_graph,
   upload_graph,
 } from "./presets.js";
-export * from "./runtime/index.js";
+export *from "./runtime/index.js";
 export type {
   contribution_day,
   contribution_summary,

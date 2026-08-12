@@ -8,7 +8,7 @@ import {
   readHostJsonConfig,
 } from "#dqy2d22qyujv";
 
-type CheckboxOptionRoot = Element & {
+type CheckboxOptionRoot = Element& {
   blur?: () => void;
 };
 
@@ -158,7 +158,7 @@ function bindCheckboxOption(option: Element | null) {
 
   const input = getCheckboxInput(option);
   if (!input) return;
-  const config = readHostJsonConfig<{ all?: boolean }>(
+  const config = readHostJsonConfig<{all?:boolean}>(
     option,
     CHECKBOX_CONFIG_SELECTOR,
     {},
@@ -199,7 +199,7 @@ function bindCheckboxOption(option: Element | null) {
 function bindCheckboxOptions(scope?: Element | Document | null) {
   const option = scope instanceof Element ? getOptionRoot(scope) : null;
   if (option) bindCheckboxOption(option);
-  const root = scope && "querySelectorAll" in scope ? scope : document;
+  const root = scope && "querySelectorAll"in scope ? scope : document;
   root.querySelectorAll(CHECKBOX_OPTION_SELECTOR).forEach(bindCheckboxOption);
 }
 

@@ -40,7 +40,7 @@ function robotsContent(config: SeoConfig = {}) {
 }
 
 function botRobotsContent(config: SeoConfig, key: "bingbot" | "googlebot") {
-  const explicit = firstSeoText(config[`${key}Content` as keyof SeoConfig]);
+  const explicit = firstSeoText(config[`${key}Content`as keyof SeoConfig]);
   if (explicit) return explicit;
   return robotsRuleContent(config[key]) || robotsContent(config);
 }

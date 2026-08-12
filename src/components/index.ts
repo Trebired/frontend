@@ -4,7 +4,7 @@ function classNameParts(values: unknown[]): string[] {
   .filter(Boolean);
 }
 
-function classNames(...values: Array<string | false | null | undefined>) {
+function classNames(...values: Array<string|false|null|undefined>) {
   return joinClassNames(...values);
 }
 
@@ -21,7 +21,7 @@ function toText(value: unknown, fallback = "") {
   return text || fallback;
 }
 
-function objectRecord<T = Record<string, unknown>>(value: unknown): T {
+function objectRecord<T=Record<string, unknown>>(value: unknown): T {
   return value && typeof value === "object" && !Array.isArray(value)
   ? value as T
   : {} as T;
@@ -65,19 +65,19 @@ function escapeHtml(value: unknown) {
   .replace(/</g, "&lt;")
   .replace(/>/g, "&gt;")
   .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-    }
+  .replace(/'/g, "&#39;");
+}
 
-    export {
-    appendClassName,
-    classNames,
-    dataBool,
-    defineValue,
-    escapeHtml,
-    createTranslatorFactory,
-    joinClassNames,
-    jsonScript,
-    interpolateMessage,
-    objectRecord,
-    toText,
-    };
+export {
+  appendClassName,
+  classNames,
+  dataBool,
+  defineValue,
+  escapeHtml,
+  createTranslatorFactory,
+  joinClassNames,
+  jsonScript,
+  interpolateMessage,
+  objectRecord,
+  toText,
+};

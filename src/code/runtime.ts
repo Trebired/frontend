@@ -19,7 +19,7 @@ const codeState = new WeakMap<Element, {
   languageId: string;
   source: string;
   themeName: string;
-}>();
+}> ();
 
 const codeHosts = new Set<Element>();
 let themeRefreshBound = false;
@@ -128,7 +128,7 @@ function renderConnectedCodeHosts() {
 function bindCodeBlocks(root: BindRoot = document) {
   bindRoot(root);
   bindCodeThemeRefresh();
-  void renderCodeWithin(root).catch(() => {});
+  void renderCodeWithin(root).catch (() => {});
 }
 
 export { bindCodeBlocks, renderCodeHost, renderCodeWithin };

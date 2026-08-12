@@ -74,5 +74,5 @@ export type {
   SubmitActionFormOptions,
 } from "./types.js";
 export type { CopyButtonOptions } from "./clipboard.js";
-export * from "./labels.js";
-export * from "./standard-buttons.js";
+export *from "./labels.js";
+export *from "./standard-buttons.js";

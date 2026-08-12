@@ -25,12 +25,12 @@ type ActionAdapters = {
   };
   i18n?: (key: string, fallback: string) => string;
   navigation?: {
-    navigate?: (url: string) => Promise<unknown> | unknown;
+    navigate?: (url: string) => Promise<unknown>|unknown;
     shouldFullReload?: (trigger: HTMLElement, url: string) => boolean;
   };
   progress?: ProgressHandle;
   reload?: {
-    reload?: () => Promise<unknown> | unknown;
+    reload?: () => Promise<unknown>|unknown;
   };
 };
 
@@ -63,7 +63,7 @@ type SubmitActionFormOptions = {
   request?: (
     form: HTMLFormElement,
     submitter: HTMLElement | null,
-  ) => Promise<ActionJson> | ActionJson;
+  ) => Promise<ActionJson>|ActionJson;
   success?: "soft-reload";
   successTab?: string;
   ui?: ActionRequestUi;
@@ -71,12 +71,12 @@ type SubmitActionFormOptions = {
 
 type SubmitActionButtonOptions = {
   adapters?: ActionAdapters;
-  body?: BodyInit | Record<string, unknown> | null;
+  body?: BodyInit | Record<string, unknown>|null;
   confirm?: boolean;
   ignoreResponseAction?: boolean;
   keepDisabled?: (json: ActionJson | null) => boolean;
   method?: string;
-  request?: () => Promise<ActionJson> | ActionJson;
+  request?: () => Promise<ActionJson>|ActionJson;
   success?: "soft-reload";
   successConfetti?: boolean;
   successTab?: string;

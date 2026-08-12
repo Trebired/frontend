@@ -23,8 +23,8 @@ type SecurityHeadersOptions = {
   dnsPrefetchControl?: string | false;
   frameOptions?: string | false;
   hsts?:
-  | false
-  | string
+  |false
+  |string
   | {
     header?: string;
     shouldSend?: (req: ServerRequestLike) => boolean;
@@ -37,8 +37,8 @@ type SecurityHeadersOptions = {
 
 type ContentSecurityPolicyOptions = {
   directives?:
-  | readonly string[]
-  | ((context: ContentSecurityPolicyContext) => readonly string[]);
+  |readonly string[]
+  |((context: ContentSecurityPolicyContext) => readonly string[]);
   nonceLocalKey?: string;
   shouldUpgradeInsecureRequests?: (req: ServerRequestLike) => boolean;
 };

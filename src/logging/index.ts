@@ -20,7 +20,7 @@ const FRONTEND_PACKAGE_SOURCE = "frontend";
 const FRONTEND_LOG_GROUP = "frontend";
 
 function readGlobalQuiet() {
-  const global = globalThis as typeof globalThis & {
+  const global = globalThis as typeof globalThis& {
     frontend_quiet?: unknown;
   };
   if (typeof global.frontend_quiet === "boolean") return global.frontend_quiet;
@@ -93,4 +93,4 @@ export {
   toFrontendLogGroup,
 };
 export type { FrontendLogger, FrontendLoggingOptions };
-export * from "./browser.js";
+export *from "./browser.js";

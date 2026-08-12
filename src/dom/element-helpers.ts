@@ -15,7 +15,7 @@ function simpleDataSelector(selector: unknown) {
 
 function scopedElementById(root: ParentNode | null | undefined, id: unknown) {
   const safeId = String(id || "").trim();
-  if (!safeId || !root || !("querySelector" in root)) return null;
+  if (!safeId || !root || !("querySelector"in root)) return null;
   if (root instanceof Document) return root.getElementById(safeId);
   const matches = root.querySelectorAll("[id]");
   return Array.from(matches).find((element) => element.id === safeId) || null;
@@ -23,7 +23,7 @@ function scopedElementById(root: ParentNode | null | undefined, id: unknown) {
 
 function scopedSelectorElements(root: ParentNode | null | undefined, selector: string) {
   const value = String(selector || "").trim();
-  if (!root || !("querySelectorAll" in root)) return [];
+  if (!root || !("querySelectorAll"in root)) return [];
   if (value.startsWith("#")) {
     const element = scopedElementById(root, value.slice(1));
     return element ? [element] : [];
@@ -92,7 +92,7 @@ function clearChildren(element: Element | null | undefined) {
 
 function setFormControlsDisabled(root: ParentNode | null | undefined, disabled: boolean) {
   root?.querySelectorAll?.("input, select, textarea, button").forEach((control) => {
-      if ("disabled" in control) (control as HTMLButtonElement).disabled = disabled;
+      if ("disabled"in control)(control as HTMLButtonElement).disabled = disabled;
   });
 }
 

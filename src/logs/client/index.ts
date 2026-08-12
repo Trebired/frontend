@@ -24,7 +24,7 @@ function installLogsPartialManager() {
 
 function bindLogsRuntime(root: BindRoot = document) {
   if (typeof document === "undefined") return [];
-  const scope = root && "querySelectorAll" in root ? root : document;
+  const scope = root && "querySelectorAll"in root ? root : document;
   bindCodeBlocks(scope);
   installLogsPartialManager();
   return queryAll<HTMLElement>(scope, "[data-tbf-logs-partial]").map((partialRoot) =>

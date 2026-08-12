@@ -22,7 +22,7 @@ type PopoverEntry = {
 };
 
 const entries = new Map<HTMLElement, PopoverEntry>();
-const cleanups = new WeakMap<HTMLElement, () => void>();
+const cleanups = new WeakMap<HTMLElement, ()=>void>();
 let openEntry: PopoverEntry | null = null;
 let listenersInstalled = false;
 

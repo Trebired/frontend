@@ -67,7 +67,7 @@ export function buildFrontendScopedEntries(page: LogsPage, entries: any[]) {
       : {}),
   };
 
-  return safeEntries.map(function (entry) {
+  return safeEntries.map(function(entry) {
       const src = entry && typeof entry === "object" ? entry : {};
       const origin =
       src.origin && typeof src.origin === "object" ? src.origin : {};
@@ -106,7 +106,7 @@ export function appendLogsToPage(
   },
 ) {
   const incoming = buildFrontendScopedEntries(page, entries).filter(
-    function (entry) {
+    function(entry) {
       return entryMatchesConfig(entry, page.config);
     },
   );
@@ -164,7 +164,7 @@ export function forceViewportToBottom(page: LogsPage) {
   const box = ui.box;
   if (box) {
     box.scrollTop = Math.max(0, box.scrollHeight - box.clientHeight);
-    window.requestAnimationFrame(function () {
+    window.requestAnimationFrame(function() {
         const nextBox = refreshLogDom(page).box;
         if (!nextBox) return;
         nextBox.scrollTop = Math.max(
@@ -221,7 +221,7 @@ export function focusSearchInput(page: LogsPage, attempt = 0) {
 
   const isVisible = input.getClientRects().length > 0;
   if (!isVisible && attempt < 5) {
-    window.requestAnimationFrame(function () {
+    window.requestAnimationFrame(function() {
         focusSearchInput(page, attempt + 1);
     });
     return;
@@ -264,7 +264,7 @@ export function focusSearchInputAfterFullscreenRequest(
   }
 
   if (attempt >= 30) return;
-  window.requestAnimationFrame(function () {
+  window.requestAnimationFrame(function() {
       focusSearchInputAfterFullscreenRequest(page, attempt + 1);
   });
 }
@@ -272,8 +272,8 @@ export function focusSearchInputAfterFullscreenRequest(
 export function focusSearchInputAfterFullscreenOpen(page: LogsPage) {
   const delays = [0, 16, 40, 90, 160, 260, 400];
 
-  delays.forEach(function (delay) {
-      window.setTimeout(function () {
+  delays.forEach(function(delay) {
+      window.setTimeout(function() {
           syncSearchAffix(page);
           if (tryFocusSearchInput(page)) return;
           focusSearchInput(page);
@@ -297,7 +297,7 @@ export function focusSearchInputWhenAvailable(page: LogsPage, attempt = 0) {
   }
 
   if (attempt >= 12) return;
-  window.requestAnimationFrame(function () {
+  window.requestAnimationFrame(function() {
       focusSearchInputWhenAvailable(page, attempt + 1);
   });
 }

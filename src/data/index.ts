@@ -24,7 +24,7 @@ function dataTokenGroups(root: Element | null | undefined, attr: string) {
   return groups.length ? groups : [""];
 }
 
-function parseJson<T = unknown>(text: unknown, fallback: T): T {
+function parseJson<T=unknown>(text: unknown, fallback: T): T {
   try {
     const parsed = JSON.parse(toString(text) || "{}");
     return parsed && typeof parsed === "object" ? parsed as T : fallback;
@@ -33,7 +33,7 @@ function parseJson<T = unknown>(text: unknown, fallback: T): T {
   }
 }
 
-function parseElementObject<T = unknown>(id: unknown, fallback: T): T {
+function parseElementObject<T=unknown>(id: unknown, fallback: T): T {
   const key = toString(id);
   if (!key || typeof document === "undefined") return fallback;
   const element = document.getElementById(key);
@@ -72,7 +72,7 @@ const json = Object.freeze({
 });
 
 const objectApi = Object.freeze({
-    asObject<T = Record<string, unknown>>(value: unknown, fallback = {} as T) {
+    asObject<T=Record<string, unknown>>(value: unknown, fallback = {} as T) {
       return isPlainObject(value) ? value as T : fallback;
     },
     isObject: isPlainObject,

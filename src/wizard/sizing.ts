@@ -116,7 +116,7 @@ function bindWizardSizing(
     window.addEventListener("load", sync, { once: true });
   }
   if (document.fonts && typeof document.fonts.ready?.then === "function") {
-    document.fonts.ready.then(sync).catch(() => {});
+    document.fonts.ready.then(sync).catch (() => {});
   }
 }
 

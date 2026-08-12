@@ -137,7 +137,7 @@ function bindEditorSharedListeners() {
 function bindEditorContentFields(root: BindRoot = document) {
   queryAll<HTMLElement>(root, "editor-content-field,[data-tbf-editor-content-field]")
   .forEach((field) => {
-      void bindEditorContent(field).catch(() => {
+      void bindEditorContent(field).catch (() => {
           field.textContent = field.getAttribute("data-tbf-editor-error") ||
             "Editor failed to load.";
       });

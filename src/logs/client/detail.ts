@@ -30,7 +30,7 @@ function refreshDetailCodeBlocks(modal: HTMLElement) {
     }
   }
 
-  void renderCodeWithin(modal).catch(() => {});
+  void renderCodeWithin(modal).catch (() => {});
 }
 
 export function openLogDetail(

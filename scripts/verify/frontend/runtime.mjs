@@ -47,7 +47,7 @@ async function verifyWizard(context) {
     '<wizard-step id="setup_a" data-wizard-step-state="active">A<wizard-next-button><button ' +
       'type="button">Next</button></wizard-next-button></wizard-step>',
     '<wizard-step id="setup_b" aria-hidden="true" inert>B<wizard-previous-button><button type="button" ' +
-      'hidden>Back</button></wizard-previous-button></wizard-step>',
+      "hidden>Back</button></wizard-previous-button></wizard-step>",
     "</wizard-root>",
   ].join("");
   const root = document.getElementById("setup");

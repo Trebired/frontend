@@ -1,10 +1,14 @@
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import type { BindRoot } from "#er0dlx1gtbzh";
 import { searchText, toText } from "./model.js";
 import {
   firstNonScriptHTMLElementChild,
   isInUnhydratedIsland,
-  scopeRoot,
 } from "./client/dom.js";
+import {
+  searchControlHostsFromNode,
+  searchPanelHostFromNode,
+  searchPanelHostsFromNode,
+} from "./client/hosts.js";
 import {
   firstFormControl,
   normalizeSearchKey,
@@ -13,8 +17,8 @@ import {
   readSearchItemConfig,
   readSearchPanelConfig,
   searchFilterValues,
-  tagName,
   type SearchFilterDef,
+  tagName,
 } from "./client/config.js";
 import {
   registerFamilyElement,
@@ -32,31 +36,6 @@ import {
   panelToken,
   type SearchPanelBinding,
 } from "./client/state.js";
-
-function searchPanelHostFromNode(target: unknown) {
-  if (!(target instanceof Element)) return null;
-  if (tagName(target) === SEARCH_PANEL_SELECTOR) return target as HTMLElement;
-  const closest =
-  typeof target.closest === "function"
-  ? target.closest(SEARCH_PANEL_SELECTOR)
-  : null;
-  if (closest instanceof HTMLElement) return closest;
-  const nested =
-  typeof target.querySelector === "function"
-  ? target.querySelector(SEARCH_PANEL_SELECTOR)
-  : null;
-  return nested instanceof HTMLElement ? nested : null;
-}
-
-function searchPanelHostsFromNode(target: unknown) {
-  const root = scopeRoot(target);
-  return root ? queryAll<HTMLElement>(root, SEARCH_PANEL_SELECTOR) : [];
-}
-
-function searchControlHostsFromNode(target: unknown) {
-  const root = scopeRoot(target);
-  return root ? queryAll<HTMLElement>(root, SEARCH_CONTROLS_SELECTOR) : [];
-}
 
 function panelBindingFromRoot(root: unknown) {
   if (!(root instanceof HTMLElement)) return null;

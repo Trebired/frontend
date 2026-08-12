@@ -70,7 +70,7 @@ function normalizeIconAliasKey(value: unknown): string {
 function normalizeIconAliasSpec(value: unknown): string {
   if (typeof value === "string") return parseIconSpec(value)?.spec || "";
   if (!value || typeof value !== "object" || Array.isArray(value)) return "";
-  const source = value as IconAliasValue & Record<string, unknown>;
+  const source = value as IconAliasValue&Record<string, unknown>;
   if (source.spec !== undefined) return parseIconSpec(source.spec)?.spec || "";
   return iconSpec(source.pack, source.name ?? source.icon);
 }

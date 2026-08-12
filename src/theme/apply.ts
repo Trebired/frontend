@@ -7,11 +7,11 @@ import type { ThemeModeOptions, ThemeModeScheme } from "./modes.js";
 type ThemeValue = string;
 
 type ThemePersistenceAdapter = {
-  get?: () => Promise<string | null | undefined> | string | null | undefined;
-  set?: (theme: ThemeValue) => Promise<unknown> | unknown;
+  get?: () => Promise<string|null|undefined>|string | null | undefined;
+  set?: (theme: ThemeValue) => Promise<unknown>|unknown;
 };
 
-type ThemeRuntimeOptions = ThemeModeOptions & {
+type ThemeRuntimeOptions = ThemeModeOptions& {
   defaultTheme?: ThemeValue;
   persistence?: ThemePersistenceAdapter;
   sync?: ThemeBrowserSyncOptions;

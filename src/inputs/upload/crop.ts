@@ -45,7 +45,7 @@ function fitDimensions(width: number, height: number, maxDimension: number) {
 }
 
 function canvasToBlob(canvas: HTMLCanvasElement, type = "image/png", quality?: number) {
-  return new Promise<Blob | null>((resolve) => {
+  return new Promise<Blob|null>((resolve) => {
       try {
         canvas.toBlob((blob) => resolve(blob || null), type, quality);
       } catch {
@@ -97,7 +97,7 @@ async function prepareCropSource(file: File) {
       return cropSourceResult(fallbackUrl);
     }
     const canvas = renderResizedCanvas(bitmap, size.width, size.height);
-    const blob = canvas ? await canvasToBlob(canvas, file.type || "image/png") : null;
+    const blob = canvas ? await canvasToBlob(canvas, file.type ||"image/png") : null;
     if (!(blob instanceof Blob)) return cropSourceResult(fallbackUrl);
     if (fallbackUrl && typeof URL.revokeObjectURL === "function") URL.revokeObjectURL(fallbackUrl);
     return cropSourceResult(
@@ -115,7 +115,7 @@ async function canvasToPreviewUrl(canvas: HTMLCanvasElement, type: string) {
   const preview = size && (size.width !== canvas.width || size.height !== canvas.height)
   ? renderResizedCanvas(canvas, size.width, size.height)
   : canvas;
-  const blob = preview ? await canvasToBlob(preview, type || "image/png") : null;
+  const blob = preview ? await canvasToBlob(preview, type ||"image/png") : null;
   if (!(blob instanceof Blob)) throw new Error("Missing crop preview.");
   return safeObjectUrl(blob);
 }

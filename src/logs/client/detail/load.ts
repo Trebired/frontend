@@ -146,7 +146,7 @@ function restoreScrollPosition(
   previousScrollTop: number,
   previousScrollHeight: number,
 ) {
-  window.requestAnimationFrame(function () {
+  window.requestAnimationFrame(function() {
       const nextBox = refreshLogDom(page).box;
       if (!nextBox) return;
 

@@ -69,7 +69,7 @@ type UploadRootConfig = {
 };
 
 type UploadState = {
-  cropData: Record<string, number> | null;
+  cropData: Record<string, number>|null;
   currentPreviewClearable: boolean;
   currentPreviewUrl: string;
   emptySelected: boolean;

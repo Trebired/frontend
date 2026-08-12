@@ -56,7 +56,7 @@ function shellLeftSidebar(ui: Record<string, unknown>) {
 
 function shellHeaderType(ui: Record<string, unknown>) {
   const header = objectRecord(ui.header);
-  return String(header.type || "").toLowerCase();
+  return String(header.type ||"").toLowerCase();
 }
 
 function sidebarIsVisible(sidebar: Record<string, unknown>) {

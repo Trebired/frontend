@@ -171,7 +171,7 @@ function repaintNearestModal(drop) {
   drop && drop.closest ? drop.closest(MODAL_CONTENT_SELECTOR) : null;
   if (!modalContent) return;
 
-  requestAnimationFrame(function () {
+  requestAnimationFrame(function() {
       modalContent.style.outline = "var(--border-width) solid transparent";
       void modalContent.offsetHeight;
       modalContent.style.outline = "";

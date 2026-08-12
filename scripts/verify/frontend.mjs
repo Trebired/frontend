@@ -99,7 +99,7 @@ async function verifyCsrfFetch() {
   const { csrfFetch } = await importDist("http");
   document.head.innerHTML = '<meta name="csrf-token" content="token-a">';
   let captured = null;
-  globalThis.fetch = async (_input, init) => {
+  globalThis.fetch = async(_input, init) => {
     captured = init;
     return new Response("{}", { headers: { "Content-Type": "application/json" } });
   };
@@ -114,7 +114,7 @@ async function verifyActionConfetti() {
   document.addEventListener("tbf:confetti", () => {
       count += 1;
   });
-  globalThis.fetch = async () => {
+  globalThis.fetch = async() => {
     return new Response(JSON.stringify({ ok: true, message: "Saved." }), {
         headers: { "Content-Type": "application/json" },
     });
@@ -171,11 +171,11 @@ async function verifyModal() {
 async function verifyLayout() {
   const { bindLayouts, createLayoutBootScript, ensureLayoutPortalRoot } = await importDist("layout");
   document.body.innerHTML = [
-    '<div data-tbf-layout-root>',
+    "<div data-tbf-layout-root>",
     '<div data-tbf-sidebar-shell data-tbf-sidebar-side="left"></div>',
-    '<main data-tbf-layout-main><div data-tbf-layout-content>Body</div></main>',
-    '<nav data-tbf-layout-bottom-bar></nav>',
-    '</div>',
+    "<main data-tbf-layout-main><div data-tbf-layout-content>Body</div></main>",
+    "<nav data-tbf-layout-bottom-bar></nav>",
+    "</div>",
   ].join("");
   bindLayouts(document);
   assert.equal(document.body.getAttribute("data-tbf-layout"), "true");
@@ -214,10 +214,10 @@ async function verifySidebar() {
     '<button id="sidebar-min" data-tbf-sidebar-minimize aria-controls="side">Toggle</button>',
     '<button id="sidebar-open" data-tbf-sidebar-open aria-controls="side">Open</button>',
     '<div id="side" data-tbf-sidebar-shell data-tbf-sidebar-side="left">',
-    '<aside data-tbf-sidebar>',
+    "<aside data-tbf-sidebar>",
     '<button id="sidebar-close" data-tbf-sidebar-close>Close</button>',
-    '</aside>',
-    '</div>',
+    "</aside>",
+    "</div>",
   ].join("");
   bindSidebars(document);
   const shell = document.getElementById("side");
@@ -273,33 +273,33 @@ function fullUploadOptions() {
 
 function assertUploadMarkup(html) {
   assert.equal(/class=["'][^"']*\bwrap\b/iu.test(html), false);
-      [
-      "native-file",
-      "native-directory",
-      "crop-field",
-      "preview",
-      "preview-image",
-      "preview-empty",
-      "shell",
-      "file-trigger",
-      "directory-trigger",
-      "clear",
-      "filename",
-      "list",
-      "empty-toggle",
-      ].forEach((slot) => {
+  [
+    "native-file",
+    "native-directory",
+    "crop-field",
+    "preview",
+    "preview-image",
+    "preview-empty",
+    "shell",
+    "file-trigger",
+    "directory-trigger",
+    "clear",
+    "filename",
+    "list",
+    "empty-toggle",
+  ].forEach((slot) => {
       assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
-      });
-      }
+  });
+}
 
-      async function importDistRoot() {
-      const url = pathToFileURL(path.join(rootDir, "dist", "index.js"));
-      return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
-      }
+async function importDistRoot() {
+  const url = pathToFileURL(path.join(rootDir, "dist", "index.js"));
+  return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
+}
 
-      async function importDist(subpath) {
-      const url = pathToFileURL(path.join(rootDir, "dist", subpath, "index.js"));
-      return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
-      }
+async function importDist(subpath) {
+  const url = pathToFileURL(path.join(rootDir, "dist", subpath, "index.js"));
+  return import(`${url.href}?v=${Date.now()}-${Math.random()}`);
+}
 
-      await verifyFrontendMain();
+await verifyFrontendMain();

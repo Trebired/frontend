@@ -183,7 +183,7 @@ function createSidebarToggleHandler(config: SidebarToggleHandlerOptions = {}) {
 }
 
 function attachSidebarRoutes(app: unknown, config: SidebarToggleHandlerOptions = {}) {
-  if (app && typeof (app as { post?: unknown }).post === "function") {
+  if (app && typeof(app as { post?: unknown }).post === "function") {
     (app as { post: (path: string, handler: unknown) => unknown }).post(
       config.path || "/ui/sidebar/toggle",
       createSidebarToggleHandler(config),

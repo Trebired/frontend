@@ -76,7 +76,7 @@ function stripImagePrefix(item: string) {
 function inputEntries(input: HTMLInputElement | null) {
   if (!input?.files?.length) return [];
   return Array.from(input.files).map((file) => {
-      const path = toText((file as File & { webkitRelativePath?: string }).webkitRelativePath, file.name);
+      const path = toText((file as File& { webkitRelativePath?: string }).webkitRelativePath, file.name);
       return { file, path };
   });
 }

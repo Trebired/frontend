@@ -108,7 +108,7 @@ export function getGroupsFromLogs(page: LogsPage): string[] {
     if (entryMatchesConfig(entry, config)) set.add(group);
   }
 
-  return Array.from(set.size ? set : fallbackSet).sort(function (a, b) {
+  return Array.from(set.size ? set : fallbackSet).sort(function(a, b) {
       return a.localeCompare(b);
   });
 }
@@ -124,7 +124,7 @@ export function getLevelsFromLogs(page: LogsPage): string[] {
     if (entryMatchesConfig(entry, config)) set.add(level);
   }
 
-  return Array.from(set.size ? set : fallbackSet).sort(function (a, b) {
+  return Array.from(set.size ? set : fallbackSet).sort(function(a, b) {
       return a.localeCompare(b);
   });
 }
@@ -162,7 +162,7 @@ export function getFilteredLogs(page: LogsPage): FilteredLogItem[] {
         reason: "entries-failed-config-match",
         fallback_count: fallback.length,
         config_key: safeStr(config && config.config_key),
-        sample_entry_config_keys: fallback.slice(0, 5).map(function (item) {
+        sample_entry_config_keys: fallback.slice(0, 5).map(function(item) {
             return safeStr(item && item.entry && item.entry.config_key);
         }),
     });
@@ -201,7 +201,7 @@ export function getFilteredLoadedLogs(page: LogsPage): FilteredLogItem[] {
         reason: "loaded-entries-failed-config-match",
         fallback_count: fallback.length,
         config_key: safeStr(config && config.config_key),
-        sample_entry_config_keys: fallback.slice(0, 5).map(function (item) {
+        sample_entry_config_keys: fallback.slice(0, 5).map(function(item) {
             return safeStr(item && item.entry && item.entry.config_key);
         }),
     });

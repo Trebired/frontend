@@ -2,6 +2,14 @@
 
 All notable package changes are documented here.
 
+## 6.15.3
+
+- Updated the Code Discipline devDependency and lockfile to public `@trebired/code-discipline@^5.5.2`.
+## 6.15.2
+
+- Adopted the shared Trebired Code Discipline preset so package configs only keep repo-specific policy.
+- Updated the Code Discipline devDependency and lockfile to public `@trebired/code-discipline@^5.5.1`.
+
 ## 6.15.1
 
 - Fixed package static route resolution in runtimes that require `import.meta.resolve` to be called on `import.meta`.

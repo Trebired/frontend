@@ -14,9 +14,9 @@ function ingestFrontendLogs(
     instanceId?: string;
     config?: LogsConfig | null;
   }
-  | any[]
-  | null
-  | undefined,
+  |any[]
+  |null
+  |undefined,
 ) {
   const batch = Array.isArray(input)
   ? normalizeFrontendLogBatch({ entries: input })
@@ -65,7 +65,7 @@ function bufferFallbackLogs(batch: any) {
 
 function buildFallbackEntries(entries: any[], fallbackConfig: any) {
   if (!safeStr(fallbackConfig.config_key)) return [];
-  return entries.map(function (entry) {
+  return entries.map(function(entry) {
       const src = entry && typeof entry === "object" ? entry : {};
       return {
         ...src,

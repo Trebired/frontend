@@ -73,7 +73,7 @@ function normalizeSidebarLiveItem(
   const item = serverObject(input);
   const type = serverString(item.type).trim();
   const path = normalizeSidebarLivePath(item.path);
-  if (!type || !path) return null;
+  if (!type ||!path) return null;
   const params = normalizeSidebarLiveParams(item.params);
   const side = normalizeSidebarLiveSide(item.side);
   return {
@@ -143,7 +143,7 @@ function sidebarLiveMiddlewareList(options: SidebarLiveRouteOptions) {
 }
 
 function attachSidebarLiveRoute(app: unknown, options: SidebarLiveRouteOptions) {
-  if (!(app && typeof (app as { post?: unknown }).post === "function")) return false;
+  if (!(app && typeof(app as { post?: unknown }).post === "function")) return false;
   const post = (app as { post: (...args: unknown[]) => unknown }).post.bind(app);
   post(
     options.path || "/ui/sidebar/live",

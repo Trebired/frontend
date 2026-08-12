@@ -44,10 +44,10 @@ function buildCountMap(
 
 function toCountRows(counts: Record<string, number>) {
   return Object.entries(counts)
-  .sort(function (a, b) {
+  .sort(function(a, b) {
       return a[0].localeCompare(b[0]);
   })
-  .map(function ([key, count]) {
+  .map(function([key, count]) {
       return {
         label: key,
         value: String(count),
@@ -88,12 +88,12 @@ function copyTextForSection(
   const src: typeof input =
   input && typeof input === "object" ? input : ({} as typeof input);
   const levelEntries = Object.entries(src.levelCounts || {}).sort(
-    function (a, b) {
+    function(a, b) {
       return a[0].localeCompare(b[0]);
     },
   );
   const groupEntries = Object.entries(src.groupCounts || {}).sort(
-    function (a, b) {
+    function(a, b) {
       return a[0].localeCompare(b[0]);
     },
   );
@@ -116,7 +116,7 @@ function copyTextForSection(
   lines.push("", logsT("levels"));
 
   if (levelEntries.length) {
-    levelEntries.forEach(function ([key, count]) {
+    levelEntries.forEach(function([key, count]) {
         lines.push(key + ": " + String(count));
     });
   } else {
@@ -125,7 +125,7 @@ function copyTextForSection(
 
   lines.push("", logsT("groups"));
   if (groupEntries.length) {
-    groupEntries.forEach(function ([key, count]) {
+    groupEntries.forEach(function([key, count]) {
         lines.push(key + ": " + String(count));
     });
   } else {
@@ -138,10 +138,10 @@ function copyTextForSection(
 function buildStatsSummaryFromItems(
   items: FilteredLogItem[],
 ): LogsStatsSummary {
-  const levelCounts = buildCountMap(items, function (item) {
+  const levelCounts = buildCountMap(items, function(item) {
       return getLogEntryLevelKey(item && item.entry);
   });
-  const groupCounts = buildCountMap(items, function (item) {
+  const groupCounts = buildCountMap(items, function(item) {
       return getLogEntryGroupKey(item && item.entry);
   });
 
@@ -183,10 +183,10 @@ function fallbackTotalSummary(page: LogsPage) {
 
   return buildStatsSummaryFromItems(
     (Array.isArray(state.allLogs) ? state.allLogs : [])
-    .filter(function (entry) {
+    .filter(function(entry) {
         return entryMatchesConfig(entry, config);
     })
-    .map(function (entry, index) {
+    .map(function(entry, index) {
         return { entry, sourceIndex: index };
     }),
   );

@@ -48,7 +48,7 @@ type PrimitiveGridClassOptions = {
   gap?: PrimitiveGap;
 };
 
-type PrimitiveCardClassOptions = PrimitiveStackClassOptions & {
+type PrimitiveCardClassOptions = PrimitiveStackClassOptions& {
   layout?: "column" | "none";
   padding?: PrimitivePadding;
   scroll?: boolean;

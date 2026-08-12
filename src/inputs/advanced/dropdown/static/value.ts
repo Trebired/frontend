@@ -79,7 +79,7 @@ function parseMultiHiddenValue(hidden) {
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed)
     ? parsed
-    .map(function (value) {
+    .map(function(value) {
         return String(value || "").trim();
     })
     .filter(Boolean)
@@ -99,7 +99,7 @@ function updateMultiClearButtons(drop, values) {
   if (!options) return;
 
   const hasSelection = Array.isArray(values) && values.length > 0;
-  options.querySelectorAll("[data-dropdown-clear]").forEach(function (button) {
+  options.querySelectorAll("[data-dropdown-clear]").forEach(function(button) {
       button.style.display = hasSelection ? "" : "none";
   });
 }
@@ -112,17 +112,17 @@ function setLiSelected(li, selected) {
 function getMultiLabels(drop, values) {
   const wanted = new Set(
     (Array.isArray(values) ? values : [])
-    .map(function (value) {
+    .map(function(value) {
         return String(value || "").trim();
     })
     .filter(Boolean),
   );
 
   return getValueLis(drop)
-  .filter(function (li) {
+  .filter(function(li) {
       return wanted.has(dropdownOptionValue(li));
   })
-  .map(function (li) {
+  .map(function(li) {
       return dropdownOptionLabel(li);
   })
   .filter(Boolean);
@@ -144,7 +144,7 @@ function getMultiSummary(drop, labels) {
   return `${list.length} ${suffix}`;
 }
 
-function setDropdownLabel(drop, text, html?) {
+function setDropdownLabel(drop, text, html ? ) {
   const next = String(text == null ? "" : text).trim();
   const labelHost = getLabelHost(drop);
 
@@ -171,7 +171,7 @@ function applyValue(drop, value, labelText, labelHtml) {
   const nextValue = String(value || "");
   if (hidden) hidden.value = nextValue;
 
-  getValueLis(drop).forEach(function (li) {
+  getValueLis(drop).forEach(function(li) {
       const liValue = dropdownOptionValue(li);
       setLiSelected(li, liValue === nextValue);
   });
@@ -183,7 +183,7 @@ function clearSingleValue(drop) {
   const hidden = getHidden(drop);
   if (hidden) hidden.value = "";
 
-  getValueLis(drop).forEach(function (li) {
+  getValueLis(drop).forEach(function(li) {
       setLiSelected(li, false);
   });
 
@@ -195,7 +195,7 @@ function applyMultiValue(drop, values) {
   const max = getMultiMax(drop);
   const nextValues = Array.isArray(values)
   ? values
-  .map(function (value) {
+  .map(function(value) {
       return String(value || "").trim();
   })
   .filter(Boolean)
@@ -206,7 +206,7 @@ function applyMultiValue(drop, values) {
   updateMultiClearButtons(drop, cappedValues);
 
   const selectedSet = new Set(cappedValues);
-  getValueLis(drop).forEach(function (li) {
+  getValueLis(drop).forEach(function(li) {
       const value = dropdownOptionValue(li);
       setLiSelected(li, selectedSet.has(value));
   });
@@ -228,7 +228,7 @@ function syncFromHidden(drop) {
 
   const value = String(hidden.value || "").trim();
   if (!value) {
-    getValueLis(drop).forEach(function (li) {
+    getValueLis(drop).forEach(function(li) {
         setLiSelected(li, false);
     });
     setDropdownLabel(drop, "");
@@ -240,7 +240,7 @@ function syncFromHidden(drop) {
 
   if (hit) applyValue(drop, value, hit.innerText, hit.innerHTML);
   else {
-    getValueLis(drop).forEach(function (li) {
+    getValueLis(drop).forEach(function(li) {
         setLiSelected(li, false);
     });
     setDropdownLabel(drop, "");

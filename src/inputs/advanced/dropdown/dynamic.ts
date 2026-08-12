@@ -28,7 +28,7 @@ function closeDynamic(immediate = false) {
     removeDynamicRequest(req);
   } else {
     wrap.removeAttribute("data-dropdown-open");
-    window.setTimeout(function () {
+    window.setTimeout(function() {
         removeDynamicRequest(req);
       }, CLOSE_ANIMATION_MS);
   }
@@ -94,7 +94,7 @@ function createDynamicItem(opts, item) {
     bindTooltip(li);
   }
 
-  li.addEventListener("click", function (e) {
+  li.addEventListener("click", function(e) {
       e.preventDefault();
       e.stopPropagation();
       closeDynamic();
@@ -130,7 +130,7 @@ function openDynamic(opts) {
     onClose: opts.onClose || null,
   };
 
-  requestAnimationFrame(function () {
+  requestAnimationFrame(function() {
       wrap.setAttribute("data-dropdown-open", "true");
   });
 }

@@ -9,6 +9,10 @@ import {
   graphUnitLabel,
   normalizeGraphUnitScale,
 } from "./units.js";
+import {
+  graphIsWaitingForModal,
+  waitForStableGraphModal,
+} from "./modal.js";
 
 function graphLoggingEnabled() {
   if (typeof document === "undefined") return false;
@@ -173,16 +177,16 @@ function resolveCanvasColor(value, fallback) {
   if (!text.startsWith("var(")) return text;
 
   const match = /^var\((--[^)]+)\)$/i.exec(text);
-if (!match || !match[1]) return fallback;
+  if (!match || !match[1]) return fallback;
 
-try {
-  const resolved = getComputedStyle(document.documentElement)
-  .getPropertyValue(match[1])
-  .trim();
-  return resolved || fallback;
-} catch {
-  return fallback;
-}
+  try {
+    const resolved = getComputedStyle(document.documentElement)
+    .getPropertyValue(match[1])
+    .trim();
+    return resolved || fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function updateGraphUnitRows(graphId, unit, scale, precision) {
@@ -288,50 +292,6 @@ function renderGraphRenderState(graph, props, loading = false) {
 
 function getDefaultWarningIcon() {
   return "remixicon error-warning-line";
-}
-
-function graphModalForNode(node) {
-  if (!(node instanceof Element)) return null;
-  const modal = node.closest("[data-tbf-modal]");
-  return modal instanceof HTMLElement ? modal : null;
-}
-
-function graphModalReady(modal) {
-  if (!modal) return true;
-  return (
-    modal.hasAttribute("data-tbf-open") &&
-      !modal.hasAttribute("data-tbf-opening") &&
-      modal.getAttribute("aria-hidden") !== "true"
-  );
-}
-
-function graphIsWaitingForModal(node) {
-  const modal = graphModalForNode(node);
-  return Boolean(modal && !graphModalReady(modal));
-}
-
-function waitForStableGraphModal(node, callback, waitingCallback) {
-  const modal = graphModalForNode(node);
-
-  if (!modal) {
-    if (typeof waitingCallback === "function") waitingCallback(false);
-    callback();
-    return () => {};
-  }
-
-  if (graphModalReady(modal)) {
-    if (typeof waitingCallback === "function") waitingCallback(false);
-    callback();
-    return () => {};
-  }
-
-  if (typeof waitingCallback === "function") waitingCallback(true);
-  const onReady = () => {
-    if (typeof waitingCallback === "function") waitingCallback(false);
-    callback();
-  };
-  modal.addEventListener("tbf:modal-ready", onReady, { once: true });
-  return () => modal.removeEventListener("tbf:modal-ready", onReady);
 }
 
 export {

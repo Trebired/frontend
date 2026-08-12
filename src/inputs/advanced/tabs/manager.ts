@@ -263,7 +263,7 @@ function ensureTabSwitchListener() {
   if (tabSwitchListenerBound || typeof document === "undefined") return;
   tabSwitchListenerBound = true;
 
-  document.addEventListener("tabs:switch", function (event: CustomEvent) {
+  document.addEventListener("tabs:switch", function(event: CustomEvent) {
       const detail =
       event && event.detail && typeof event.detail === "object"
       ? event.detail

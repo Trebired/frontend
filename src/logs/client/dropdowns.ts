@@ -90,7 +90,7 @@ function optionLabelForValue(value: string) {
 function getDropdownLabelHtml(listEl: HTMLElement, value: string) {
   const item = Array.from(
     listEl.querySelectorAll<HTMLElement>("[data-dropdown-option]"),
-  ).find(function (li) {
+  ).find(function(li) {
       return dropdownOptionValue(li) === value;
   });
 
@@ -122,7 +122,7 @@ function cleanDropdownValues(values: string[]) {
 function existingDropdownValues(listEl: HTMLElement) {
   return Array.from(
     listEl.querySelectorAll<HTMLLIElement>("[data-dropdown-option]"),
-  ).map(function (li) {
+  ).map(function(li) {
       return dropdownOptionValue(li);
   });
 }

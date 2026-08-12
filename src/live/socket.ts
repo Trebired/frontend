@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-type LiveSocketPayload = Record<string, unknown> & {
+type LiveSocketPayload = Record<string, unknown>& {
   data?: unknown;
   event?: string;
   room?: string;
@@ -22,11 +22,11 @@ type LiveSocketClientOptions = {
 };
 
 type LiveSocketClient = {
-  emitAck: <T = unknown>(
+  emitAck: <T = unknown > (
     event: string,
     payload?: unknown,
     timeoutMs?: number,
-  ) => Promise<T | null>;
+  ) => Promise<T|null>;
   socket: () => ReturnType<typeof io>;
   subscribeRoom: (
     room: string,
@@ -54,11 +54,11 @@ function createLiveSocketClient(
   options: LiveSocketClientOptions = {},
 ): LiveSocketClient {
   const normalized = liveSocketOptions(options);
-  let socket: ReturnType<typeof io> | null = null;
+  let socket: ReturnType<typeof io>|null = null;
   const roomCounts = new Map<string, number>();
   const listeners = new Map<
   string,
-  Set<(payload: LiveSocketPayload) => void>
+  Set<(payload:LiveSocketPayload)=>void>
   >();
 
   function ensureSocket() {
@@ -126,13 +126,13 @@ function createLiveSocketClient(
     };
   }
 
-  function emitAck<T = unknown>(
+  function emitAck<T=unknown>(
     event: string,
     payload?: unknown,
     timeoutMs = normalized.ackTimeoutMs,
   ) {
     const activeSocket = ensureSocket();
-    return new Promise<T | null>((resolve) => {
+    return new Promise<T|null>((resolve) => {
         let settled = false;
         const finish = (value: T | null) => {
           if (settled) return;
@@ -168,7 +168,7 @@ function subscribeRoom(
   return defaultLiveSocketClient.subscribeRoom(room, onChange);
 }
 
-function emitLiveSocketAck<T = unknown>(
+function emitLiveSocketAck<T=unknown>(
   event: string,
   payload?: unknown,
   timeoutMs?: number,

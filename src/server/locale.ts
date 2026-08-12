@@ -54,7 +54,7 @@ function readRequestLocale(
 
 function defaultUserLocale(req: ServerRequestLike, res: ServerResponseLike) {
   const viewer =
-  (req as any)?.viewer && typeof (req as any).viewer === "object"
+  (req as any)?.viewer && typeof(req as any).viewer === "object"
   ? (req as any).viewer
   : res?.locals?.viewer && typeof res.locals.viewer === "object"
   ? res.locals.viewer
@@ -102,7 +102,7 @@ function createLocaleMiddleware(options: LocaleMiddlewareOptions = {}) {
 }
 
 function attachLocaleMiddleware(app: unknown, options: LocaleMiddlewareOptions = {}) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
     (app as { use: (handler: unknown) => unknown }).use(createLocaleMiddleware(options));
   }
 }

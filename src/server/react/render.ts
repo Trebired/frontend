@@ -89,7 +89,7 @@ function sendDocument(
     ),
     options,
   );
-  if (typeof (res as any).type === "function") (res as any).type("html");
+  if (typeof(res as any).type === "function")(res as any).type("html");
   return res.send?.(`<!DOCTYPE html>${applyScriptNonce(html, context.shell.nonce)}`);
 }
 

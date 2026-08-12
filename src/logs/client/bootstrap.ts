@@ -142,9 +142,9 @@ function disconnectLogsPartial(
     root?: HTMLElement | string | null;
     instanceId?: string;
   }
-  | HTMLElement
-  | string
-  | null = null,
+  |HTMLElement
+  |string
+  |null = null,
 ) {
   const src: any =
   target && typeof target === "object" && !(target instanceof HTMLElement)

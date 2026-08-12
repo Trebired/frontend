@@ -143,25 +143,28 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   messageEl.style.flex = "1 1 auto";
   messageEl.style.lineHeight = "1.4";
 
-  const recordedAtLabel = onlyString(input && input.recordedAtLabel);
   header.appendChild(badge);
   header.appendChild(messageEl);
   row.appendChild(header);
 
-  if (recordedAtLabel) {
-    const timeEl = doc.createElement("span");
-    timeEl.className = primitiveTextClassName({
-        breakWord: true,
-        className: "display-block",
-        muted: true,
-        size: "xs",
-    });
-    timeEl.textContent = recordedAtLabel;
-    timeEl.style.lineHeight = "1.35";
-    row.appendChild(timeEl);
-  }
+  appendStepRecordedAt(doc, row, input && input.recordedAtLabel);
 
   return row;
+}
+
+function appendStepRecordedAt(doc: Document, row: HTMLElement, value: unknown) {
+  const recordedAtLabel = onlyString(value);
+  if (!recordedAtLabel) return;
+  const timeEl = doc.createElement("span");
+  timeEl.className = primitiveTextClassName({
+      breakWord: true,
+      className: "display-block",
+      muted: true,
+      size: "xs",
+  });
+  timeEl.textContent = recordedAtLabel;
+  timeEl.style.lineHeight = "1.35";
+  row.appendChild(timeEl);
 }
 
 function createSharedStepGroup(doc: Document, group: SharedStepGroup) {

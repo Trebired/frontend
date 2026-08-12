@@ -154,4 +154,4 @@ export {
   setTimeCounterConfig,
 };
 export type { TimeCounterConfig };
-export * from "./components/index.js";
+export *from "./components/index.js";

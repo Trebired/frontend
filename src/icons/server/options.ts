@@ -52,7 +52,7 @@ function findPackageRootFromResolvedFile(
   pack: string,
 ): string | null {
   let current = path.dirname(filePath);
-  for (;;) {
+  for (;; ) {
     const packageJsonPath = path.join(current, "package.json");
     if (fs.existsSync(packageJsonPath)) {
       try {

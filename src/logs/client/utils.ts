@@ -100,7 +100,7 @@ export function normalizeScopeIds(input: unknown): Record<string, unknown> {
   : {};
   const out: Record<string, unknown> = {};
 
-  Object.entries(src).forEach(function ([key, value]) {
+  Object.entries(src).forEach(function([key, value]) {
       const nextKey: any = safeStr(key);
       const nextValue: any = safeStr(value);
       if (!nextKey || !nextValue) return;
@@ -117,7 +117,7 @@ function normalizeCountMap(input: unknown): Record<string, number> {
   ? (input as Record<string, unknown>)
   : {};
   const out: Record<string, number> = {};
-  Object.entries(src).forEach(function ([key, value]) {
+  Object.entries(src).forEach(function([key, value]) {
       const count = Number(value);
       if (!Number.isFinite(count) || count < 0) return;
       const label = safeStr(key);
@@ -127,7 +127,7 @@ function normalizeCountMap(input: unknown): Record<string, number> {
 }
 
 function hasStatsSummaryFields(src: Record<string, unknown>) {
-  return "total" in src || "levelCounts" in src || "groupCounts" in src;
+  return "total"in src || "levelCounts"in src || "groupCounts"in src;
 }
 
 function normalizeStatsSummary(input: unknown) {
@@ -206,7 +206,7 @@ export function normalizeLogsConfig(
       status === "running",
     deploymentLogs,
     logStyle:
-    (cfg as any).logStyle && typeof (cfg as any).logStyle === "object"
+    (cfg as any).logStyle && typeof(cfg as any).logStyle === "object"
     ? (cfg as any).logStyle
     : null,
     totalStats: normalizeStatsSummary(
@@ -217,7 +217,7 @@ export function normalizeLogsConfig(
     safeStr((cfg as any).socketNamespace) || "/deployments/logs",
     socketOptions:
     (cfg as any).socketOptions &&
-      typeof (cfg as any).socketOptions === "object" &&
+      typeof(cfg as any).socketOptions === "object" &&
       !Array.isArray((cfg as any).socketOptions)
     ? { ...((cfg as any).socketOptions as Record<string, unknown>) }
     : null,
@@ -239,7 +239,7 @@ export function normalizeLogsConfig(
       defaultFullscreenGroup(fullscreenId),
     fullscreenId,
     subscribePayload:
-    typeof (cfg as any).subscribePayload === "function"
+    typeof(cfg as any).subscribePayload === "function"
     ? (cfg as any).subscribePayload
     : undefined,
   };

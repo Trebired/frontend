@@ -51,7 +51,7 @@ async function readDropEntries(root: HTMLElement, dataTransfer: DataTransfer | n
   const skipped = skippedDirectoryNames(root);
   const items = Array.from(dataTransfer?.items || []);
   for (const item of items) {
-    const entry = (item as DataTransferItem & {
+    const entry = (item as DataTransferItem& {
         webkitGetAsEntry?: () => FileSystemEntryLike | null;
     }).webkitGetAsEntry?.();
     if (entry) entries.push(...await readFileSystemEntry(entry, "", skipped));

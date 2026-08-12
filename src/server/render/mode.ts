@@ -30,7 +30,7 @@ type RenderModeAppliedContext = {
 type RenderModeOptions = {
   afterApply?: (context: RenderModeAppliedContext) => unknown | Promise<unknown>;
   baseUi: RenderModeRecord | (() => RenderModeRecord);
-  clone?: <T>(value: T) => T;
+  clone?: <T > (value: T) => T;
   hydrateSidebar?: (
     context: RenderModeSidebarContext,
   ) => RenderModeRecord | Promise<RenderModeRecord>;
@@ -114,7 +114,7 @@ function applyRenderModeConditionalFields(
         typeof fieldSpec === "boolean"
     ) {
       out[fieldName] = fieldSpec;
-    } else if (fieldSpec && typeof fieldSpec === "object" && "value" in fieldSpec) {
+    } else if (fieldSpec && typeof fieldSpec === "object" && "value"in fieldSpec) {
       out[fieldName] = requirementPasses(fieldSpec, res) ? fieldSpec.value : false;
     }
   }

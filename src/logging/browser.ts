@@ -1,6 +1,6 @@
 import { pushFrontendLogBatch } from "#a0gi42ggclip";
 
-type FrontendBrowserLogConfig = Record<string, unknown> & {
+type FrontendBrowserLogConfig = Record<string, unknown>& {
   allowFrontendLogs?: boolean;
   config_key?: string;
   configKey?: string;
@@ -17,7 +17,7 @@ type FrontendBrowserLogFactoryOptions = {
   source?: string;
   transports?: Array<"console" | {
     name: string;
-    write: (entries: unknown[]) => Promise<void> | void;
+    write: (entries: unknown[]) => Promise<void>|void;
   }>;
 };
 
@@ -171,7 +171,7 @@ function pushBrowserEntries(entries: unknown[], options: FrontendBrowserLoggerOp
 
 type FrontendBrowserLoggerTypedOptions<
 TLog extends FrontendBrowserLogInstance,
-> = Omit<FrontendBrowserLoggerOptions, "createLog"> & {
+> = Omit<FrontendBrowserLoggerOptions, "createLog">& {
   createLog: (options: FrontendBrowserLogFactoryOptions) => TLog;
 };
 

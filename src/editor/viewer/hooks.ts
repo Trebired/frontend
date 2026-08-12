@@ -58,7 +58,7 @@ function fetchTree(
       setTreeLoaded(true);
       setTree(Array.isArray(payload?.data?.tree) ? payload.data.tree : []);
   })
-  .catch((error) => {
+  .catch ((error) => {
       if (!active) return;
       setTreeLoaded(true);
       setTreeError(text(error?.message, loadFailed));
@@ -73,7 +73,7 @@ function fetchTree(
 
 function readJsonOrThrow(defaultMessage: string) {
   return async function readJsonResponse(response: Response) {
-    const payload = await response.json().catch(() => null);
+    const payload = await response.json().catch (() => null);
     if (!response.ok) {
       throw new Error(text(payload?.message || payload?.error, defaultMessage));
     }
@@ -107,7 +107,7 @@ function useFileState(initialFile: any) {
 }
 
 function useInitialFileCache(initialFile: any) {
-  const fileCacheRef = useRef<Map<string, { content: string; languageName: string; path: string }>>(new Map());
+  const fileCacheRef = useRef<Map<string, {content:string;languageName:string;path:string}>>(new Map());
   useEffect(() => {
       const initialPath = normalizePath(initialFile?.path);
       if (!initialFile || !initialPath) return;
@@ -196,7 +196,7 @@ function fetchFile(fileApiUrlInput: unknown, relPath: string, fileCacheRef: any,
   .then((payload) => {
       if (active) applyLoadedFile(payload, relPath, fileCacheRef, setFileState);
   })
-  .catch((error) => {
+  .catch ((error) => {
       if (active) {
         setFileState({
             content: "",

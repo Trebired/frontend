@@ -79,7 +79,7 @@ function liveFlash(type: FlashType, message: unknown, description = "", options 
 }
 
 function showFlashMessage(
-  flashApi: Record<string, any> | null | undefined,
+  flashApi: Record<string, any>|null | undefined,
   kind: unknown,
   message: unknown,
   description = "",

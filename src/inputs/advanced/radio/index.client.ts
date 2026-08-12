@@ -121,11 +121,11 @@ function bindGroup(root) {
       const input = getRadioInput(option);
       if (!input) return;
 
-      input.addEventListener("change", function () {
+      input.addEventListener("change", function() {
           syncGroup(root);
       });
 
-      option.addEventListener("click", function (event) {
+      option.addEventListener("click", function(event) {
           if (input.disabled) return;
           if (option.tagName === "LABEL") return;
           if (isInteractiveTarget(event.target)) return;
@@ -133,7 +133,7 @@ function bindGroup(root) {
           selectOption(option);
       });
 
-      option.addEventListener("keydown", function (event) {
+      option.addEventListener("keydown", function(event) {
           if (event.key === " " || event.key === "Enter") {
             event.preventDefault();
             selectOption(option, { focus: true });
@@ -156,10 +156,10 @@ function bindGroup(root) {
   syncGroup(root);
 }
 
-function bindStaticGroups(scope?) {
+function bindStaticGroups(scope ? ) {
   const root = scope instanceof Element ? getGroupRoot(scope) : null;
   if (root) bindGroup(root);
-  const queryRoot = scope && "querySelectorAll" in scope ? scope : document;
+  const queryRoot = scope && "querySelectorAll"in scope ? scope : document;
   queryRoot.querySelectorAll(RADIO_GROUP_SELECTOR).forEach(bindGroup);
 }
 

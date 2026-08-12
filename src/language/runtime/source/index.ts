@@ -24,7 +24,7 @@ function createSourceLanguageController(
   }
   const excluded = new Set<string>();
   let activeBucket = getActiveSourceLanguageBucket(root);
-  const cleanups: Array<() => void> = [];
+  const cleanups: Array<()=>void> = [];
   const render = () => renderSourceLanguageState(root, items, excluded, activeBucket, options);
   bindControllerEvents(root, excluded, render, cleanups);
   bindTabEvents(root, (nextBucket) => {
@@ -38,7 +38,7 @@ function createSourceLanguageController(
   return { destroy: () => destroyController(root, cleanups), render, root };
 }
 
-function destroyController(root: HTMLElement, cleanups: Array<() => void>) {
+function destroyController(root: HTMLElement, cleanups: Array<()=>void>) {
   cleanups.splice(0).forEach((cleanup) => cleanup());
   sourceControllers.delete(root);
 }
@@ -47,7 +47,7 @@ function bindControllerEvents(
   root: HTMLElement,
   excluded: Set<string>,
   render: () => void,
-  cleanups: Array<() => void>,
+  cleanups: Array<()=>void>,
 ) {
   const onClick = (event: Event) => handleRowToggle(root, excluded, render, event);
   const onKeyDown = (event: KeyboardEvent) => {
@@ -83,7 +83,7 @@ function handleRowToggle(
 function bindTabEvents(
   root: HTMLElement,
   onBucketChange: (bucket: string) => void,
-  cleanups: Array<() => void>,
+  cleanups: Array<()=>void>,
 ) {
   const tabsRoot = root.querySelector<HTMLElement>(SOURCE_BUCKET_TABS_ROOT_SELECTOR);
   if (!tabsRoot) return;
@@ -102,7 +102,7 @@ function bindReset(
   root: HTMLElement,
   excluded: Set<string>,
   render: () => void,
-  cleanups: Array<() => void>,
+  cleanups: Array<()=>void>,
 ) {
   const resetButton = root.querySelector<HTMLButtonElement>(SOURCE_RESET_SELECTOR);
   if (!resetButton) return;

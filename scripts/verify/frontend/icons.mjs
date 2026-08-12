@@ -240,7 +240,7 @@ function ignoreResponseHeader(_name, _value) {
 
 async function verifyIconRuntime(iconRuntime) {
   let fetchCount = 0;
-  globalThis.fetch = async () => {
+  globalThis.fetch = async() => {
     fetchCount += 1;
     return new Response('<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>', {
         headers: { "Content-Type": "image/svg+xml" },

@@ -37,7 +37,7 @@ function setStaticDropdownDynamicClose(fn) {
 function bindHiddenSync(drop, hidden) {
   if (!hidden) return;
 
-  hidden.addEventListener("change", function () {
+  hidden.addEventListener("change", function() {
       syncFromHidden(drop);
       updateEmptyState(drop);
   });
@@ -158,12 +158,12 @@ function bindStaticDropdown(drop) {
   if (options instanceof HTMLElement) bindSearchOptions(options);
   bindHiddenSync(drop, hidden);
 
-  drop.addEventListener("click", function (e) {
+  drop.addEventListener("click", function(e) {
       toggleDropdown(drop, e);
   });
 
   if (options) {
-    options.addEventListener("click", function (e) {
+    options.addEventListener("click", function(e) {
         handleOptionsClick(drop, options, e);
     });
   }

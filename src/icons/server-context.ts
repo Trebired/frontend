@@ -7,13 +7,13 @@ type ServerIconCacheEntry = {
 
 type ServerIconRenderer = (spec: string) => ServerIconCacheEntry | null | undefined;
 
-const GLOBAL_HOLDER_KEY = Symbol.for("frontend.icon.active_server_renderer");
+const GLOBAL_HOLDER_KEY = Symbol.for ("frontend.icon.active_server_renderer");
 
 function activeRendererHolder(): { current: ServerIconRenderer | null } {
-  const holder = (globalThis as Record<symbol, { current: ServerIconRenderer | null } | undefined>)[GLOBAL_HOLDER_KEY];
+  const holder = (globalThis as Record<symbol, {current:ServerIconRenderer|null}|undefined>)[GLOBAL_HOLDER_KEY];
   if (holder) return holder;
   const created = { current: null };
-  (globalThis as Record<symbol, { current: ServerIconRenderer | null } | undefined>)[GLOBAL_HOLDER_KEY] = created;
+  (globalThis as Record<symbol, {current:ServerIconRenderer|null}|undefined>)[GLOBAL_HOLDER_KEY] = created;
   return created;
 }
 

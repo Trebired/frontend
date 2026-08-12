@@ -14,7 +14,7 @@ type BindRoot = Document | DocumentFragment | Element;
 type Cleanup = () => void;
 
 function bindRoot(root: BindRoot | null | undefined): BindRoot {
-  if (root && "querySelectorAll" in root) return root;
+  if (root && "querySelectorAll"in root) return root;
   return document;
 }
 
@@ -42,7 +42,7 @@ function requestDomFrame(callback: () => void): void {
   else setTimeout(callback, 0);
 }
 
-function queryAll<T extends Element = Element>(
+function queryAll<T extends Element=Element>(
   root: BindRoot | null | undefined,
   selector: string,
 ): T[] {
@@ -55,7 +55,7 @@ function queryAll<T extends Element = Element>(
   return items;
 }
 
-function closestElement<T extends Element = Element>(
+function closestElement<T extends Element=Element>(
   value: unknown,
   selector: string,
 ): T | null {
@@ -167,8 +167,8 @@ function readViewerId() {
   return String(meta?.getAttribute("content") || "").trim();
 }
 
-function connectedElementsFromSet<T extends Element>(set: Set<T> | undefined): T[] {
-  const elements = Array.from(set || []).filter((element) => element.isConnected);
+function connectedElementsFromSet<T extends Element>(set: Set<T>|undefined): T[] {
+  const elements = Array.from(set ||[]).filter((element) => element.isConnected);
   if (set) {
     set.forEach((element) => {
         if (!element.isConnected) set.delete(element);
@@ -214,7 +214,7 @@ function isInteractiveTarget(target: unknown, extraSelector = "") {
 
 function setControlDisabled(element: HTMLElement | null, disabled: boolean) {
   if (!element) return;
-  if ("disabled" in element) {
+  if ("disabled"in element) {
     (element as HTMLButtonElement).disabled = disabled;
     return;
   }
@@ -223,7 +223,7 @@ function setControlDisabled(element: HTMLElement | null, disabled: boolean) {
 }
 
 function formDataFlatRecord(data: FormData) {
-  const out: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
+  const out: Record<string, FormDataEntryValue|FormDataEntryValue[]> = {};
   data.forEach((value, key) => {
       const current = out[key];
       if (current === undefined) {
@@ -235,8 +235,8 @@ function formDataFlatRecord(data: FormData) {
   return out;
 }
 
-function formDataRecord(data: FormData): Record<string, string | string[]> {
-  const out: Record<string, string | string[]> = {};
+function formDataRecord(data: FormData): Record<string, string|string[]> {
+  const out: Record<string, string|string[]> = {};
   data.forEach((value, key) => {
       const next =
       typeof value === "string" ? value : String(value == null ? "" : value);
@@ -250,8 +250,8 @@ function formDataRecord(data: FormData): Record<string, string | string[]> {
   return out;
 }
 
-function formDataStringRecord(data: FormData): Record<string, string | string[]> {
-  const out: Record<string, string | string[]> = {};
+function formDataStringRecord(data: FormData): Record<string, string|string[]> {
+  const out: Record<string, string|string[]> = {};
   data.forEach((value, key) => {
       const next = typeof value === "string" ? value : "";
       const current = out[key];
@@ -308,5 +308,5 @@ export {
   setHidden,
 };
 export type { BindRoot, Cleanup };
-export * from "./binding.js";
-export * from "./element-helpers.js";
+export *from "./binding.js";
+export *from "./element-helpers.js";

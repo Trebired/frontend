@@ -168,9 +168,9 @@ async function checkBackendStatusInput(
   const requestId = (backendStatusRequestIds.get(input) || 0) + 1;
   backendStatusRequestIds.set(input, requestId);
   const response = await requestJson(endpoint, {
-      body: { [field]: value },
+      body: {[field]: value },
       method: "POST",
-  }).catch(() => null);
+  }).catch (() => null);
 
   if (backendStatusRequestIds.get(input) !== requestId) return;
 
@@ -196,10 +196,10 @@ function bindBackendStatusInput(
   const debounceMs = Number.isFinite(options.debounceMs)
   ? Number(options.debounceMs)
   : DEFAULT_DEBOUNCE_MS;
-  let timer: ReturnType<typeof setTimeout> | null = null;
-  input.addEventListener("input", function () {
+  let timer: ReturnType<typeof setTimeout>|null = null;
+  input.addEventListener("input", function() {
       if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
+      timer = setTimeout(function() {
           void checkBackendStatusInput(input);
         }, debounceMs);
   });
@@ -248,10 +248,10 @@ function bindMatchStatusInput(
   if (!(input instanceof HTMLInputElement) || boundMatchStatusInputs.has(input))
   return false;
   boundMatchStatusInputs.add(input);
-  input.addEventListener("input", function () {
+  input.addEventListener("input", function() {
       checkMatchStatusInput(input, config);
   });
-  matchTarget(config)?.addEventListener("input", function () {
+  matchTarget(config)?.addEventListener("input", function() {
       checkMatchStatusInput(input, config);
   });
   checkMatchStatusInput(input, config);
@@ -304,7 +304,7 @@ function bindStatusFieldHost(host: HTMLElement) {
 function bindAdvancedStatusFields(
   root: ParentNode | HTMLElement | Document = document,
 ) {
-  const scope = root && "querySelectorAll" in root ? root : document;
+  const scope = root && "querySelectorAll"in root ? root : document;
   const fields =
   scope instanceof HTMLElement && scope.matches(STATUS_FIELD_SELECTOR)
   ? [scope]

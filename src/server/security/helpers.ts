@@ -11,7 +11,7 @@ function responseLocals(res: ServerResponseLike | null | undefined) {
 }
 
 function attachUseMiddleware(app: unknown, middleware: unknown) {
-  if (app && typeof (app as { use?: unknown }).use === "function") {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
     (app as { use: (handler: unknown) => unknown }).use(middleware);
   }
 }

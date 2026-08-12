@@ -118,7 +118,7 @@ function pickAction(value: unknown) {
 }
 
 function normalizeTabSwitches(tab: unknown) {
-  const out: Array<{ family: string; route: string }> = [];
+  const out: Array<{family:string;route:string}> = [];
   function push(family: unknown, route: unknown) {
     const localFamily = typeof family === "string" ? family.trim() : "";
     const localRoute = typeof route === "string" ? route.trim() : "";

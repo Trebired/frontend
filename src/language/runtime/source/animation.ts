@@ -60,7 +60,7 @@ function startNumberAnimation(
   const step = (now: number) => {
     const progress = Math.min(1, (now - startedAt) / duration);
     const eased = 1 - Math.pow(1 - progress, 3);
-    const value = state.from + state.delta * eased;
+    const value = state.from +state.delta * eased;
     el.textContent = state.formatter(roundedValue(value, state.precision));
     if (progress < 1) {
       sourceNumberFrames.set(el, window.requestAnimationFrame(step));

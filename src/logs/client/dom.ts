@@ -58,7 +58,7 @@ export function getLogsDomIds(
   };
 }
 
-function queryById<T extends Element = HTMLElement>(
+function queryById<T extends Element=HTMLElement>(
   root: HTMLElement | null,
   id: string,
 ): T | null {

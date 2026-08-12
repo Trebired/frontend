@@ -50,7 +50,7 @@ type FrontendReactRendererOptions = {
   createIconRenderer?: () => ((spec: string) => unknown) | undefined;
   defaultLang?: string;
   defaultTheme?: string;
-  defaultUi?: Record<string, unknown> | (() => Record<string, unknown>);
+  defaultUi?: Record<string, unknown>|(() => Record<string, unknown>);
   dev?: Record<string, unknown>;
   faviconHref?: string | ((context: FrontendDocumentContext) => string);
   log?: {

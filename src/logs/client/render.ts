@@ -22,7 +22,7 @@ function buildRawLogText(page: LogsPage) {
   : Array.isArray(page.state.allLogs)
   ? page.state.allLogs
   : [];
-  const entries = source.filter(function (entry) {
+  const entries = source.filter(function(entry) {
       return entryMatchesConfig(entry, page.config);
   });
 
@@ -51,8 +51,8 @@ function syncRawModeUi(page: LogsPage) {
     ui.searchButton,
   ];
 
-  controls.forEach(function (control) {
-      if (control && "disabled" in control) (control as any).disabled = rawMode;
+  controls.forEach(function(control) {
+      if (control && "disabled"in control)(control as any).disabled = rawMode;
   });
   syncRawDropdowns([ui.groupSelect, ui.levelSelect], rawMode);
   syncRawButton(ui.rawModeButton, rawMode);
@@ -81,13 +81,13 @@ function syncRawButton(button: HTMLElement | null, rawMode: boolean) {
 
 function viewportHandlers(page: LogsPage) {
   return {
-    onOpen: function (logKey, trigger) {
+    onOpen: function(logKey, trigger) {
       openLogDetail(page, logKey, trigger);
     },
-    onToggleMarker: function (logKey) {
+    onToggleMarker: function(logKey) {
       toggleMarkedLog(page, logKey, renderLogs);
     },
-    onViewportScroll: function () {
+    onViewportScroll: function() {
       syncViewportFromScroll(page, {
           loadOlderLogs: (nextPage) =>
           loadOlderLogs(nextPage, {
@@ -98,10 +98,10 @@ function viewportHandlers(page: LogsPage) {
           renderLogs,
       });
     },
-    onViewportEscapeBottom: function () {
+    onViewportEscapeBottom: function() {
       escapeBottomFollow(page, renderLogs);
     },
-    canForceBottom: function () {
+    canForceBottom: function() {
       return canForceViewportToBottom(page);
     },
   };

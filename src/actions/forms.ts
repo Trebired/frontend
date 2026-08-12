@@ -29,7 +29,7 @@ function submitterFor(
   event?: SubmitEvent,
 ) {
   const submitEvent =
-  formOrEvent && "submitter" in formOrEvent ? formOrEvent : event;
+  formOrEvent && "submitter"in formOrEvent ? formOrEvent : event;
   if (submitEvent?.submitter instanceof HTMLElement) return submitEvent.submitter;
   const form = formOrEvent instanceof HTMLFormElement ? formOrEvent : null;
   return form?.querySelector<HTMLElement>('button[type="submit"],input[type="submit"]') || null;

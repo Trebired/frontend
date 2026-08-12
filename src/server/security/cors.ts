@@ -50,7 +50,7 @@ function createCorsOptionsDelegate(options: CorsOptions = {}) {
     callback: CorsDelegateCallback,
   ) {
     Promise.resolve()
-    .then(async () => {
+    .then(async() => {
         const origin = requestHeader(req, "origin");
         if (!origin || !options.isAllowedOrigin) {
           callback(null, defaultCorsOptions(options));
@@ -62,7 +62,7 @@ function createCorsOptionsDelegate(options: CorsOptions = {}) {
           allowed ? defaultCorsOptions(options) : { origin: false },
         );
     })
-    .catch((error) => callback(error, { origin: false }));
+    .catch ((error) => callback(error, { origin: false }));
   };
 }
 

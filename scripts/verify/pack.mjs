@@ -81,7 +81,7 @@ async function validatePackedImports(packageJson, exportEntries, tarballPath) {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "inherit"],
   });
-  await Promise.all(styleExportTargets(exportEntries).map(async (target) => {
+  await Promise.all(styleExportTargets(exportEntries).map(async(target) => {
         await fs.access(path.join(packageRoot, "node_modules", packageJson.name, target));
   }));
 }

@@ -5,7 +5,7 @@ import type { SavePolicyController } from "./types.js";
 
 function bindSavePolicyActionCompletion(
   root: Element | Document,
-  controller: Pick<SavePolicyController, "completeSave"> | null | undefined,
+  controller: Pick<SavePolicyController, "completeSave">|null | undefined,
   formIds: readonly string[],
   eventName = "tbf:action-complete",
 ) {
