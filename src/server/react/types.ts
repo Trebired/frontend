@@ -1,3 +1,4 @@
+import type { LoggerAdapterLogger } from "@package/logger-adapter";
 import type { ServerResponseLike } from "#hf241ii8z71i";
 
 type FrontendRenderShell = {
@@ -53,6 +54,7 @@ type FrontendReactRendererOptions = {
   defaultUi?: Record<string, unknown>|(() => Record<string, unknown>);
   dev?: Record<string, unknown>;
   faviconHref?: string | ((context: FrontendDocumentContext) => string);
+  logger?: LoggerAdapterLogger;
   log?: {
     info?: (message: string, metadata?: Record<string, unknown>) => unknown;
   };

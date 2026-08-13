@@ -4,6 +4,7 @@ import {
   type ServerResponseLike,
 } from "#hf241ii8z71i";
 import { buildReactRenderShell } from "#hrmhyqyjhxa3";
+import { resolveFrontendServerLogger } from "#jug9z8qra4yv";
 import type {
   FrontendDocumentContext,
   FrontendReactRendererOptions,
@@ -159,18 +160,29 @@ function logDocumentStart(
   res: ServerResponseLike,
   options: FrontendReactRendererOptions,
 ) {
-  options.log?.info?.("rendering react document", {
-      component_id: context.componentId,
-      css_link_count: countHtmlTags(context.cssLinks, "link"),
-      js_link_count: countHtmlTags(context.jsLinks, "script"),
-      locale: toText(context.locale.effective),
-      method: toText((res as any)?.req?.method),
-      page_id: context.pageId,
-      route: context.currentUrl,
-      status: Number((res as any)?.statusCode) || 200,
-      theme: toText(context.shell.theme || context.ui.theme),
-      viewer_id: toText((context.shell.viewer as any)?.id),
-  });
+  const metadata = {
+    component_id: context.componentId,
+    css_link_count: countHtmlTags(context.cssLinks, "link"),
+    js_link_count: countHtmlTags(context.jsLinks, "script"),
+    locale: toText(context.locale.effective),
+    method: toText((res as any)?.req?.method),
+    page_id: context.pageId,
+    route: context.currentUrl,
+    status: Number((res as any)?.statusCode) || 200,
+    theme: toText(context.shell.theme || context.ui.theme),
+    viewer_id: toText((context.shell.viewer as any)?.id),
+  };
+
+  if (options.logger) {
+    resolveFrontendServerLogger(options.logger).info(
+      "react.render",
+      "rendering react document",
+      metadata,
+    );
+    return;
+  }
+
+  options.log?.info?.("rendering react document", metadata);
 }
 
 export {

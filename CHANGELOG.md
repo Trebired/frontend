@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 6.16.0
+
+- Added package-owned frontend request logging middleware for document requests, static-success suppression, and generic browser probe suppression.
+- Added package-owned frontend performance middleware with request context counters, `Server-Timing`, slow-request summaries, and shared record helpers.
+- Moved React document/component/root resolution observability into the frontend renderer when a package logger is supplied.
+
 ## 6.15.9
 
 - Stopped frontend browser package logs from writing to the browser console by default, preventing dev runners from mirroring them into backend terminal logs.

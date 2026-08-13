@@ -9,6 +9,7 @@ import {
 import {
   buildReactRenderShell,
 } from "#hrmhyqyjhxa3";
+import { resolveFrontendServerLogger } from "#jug9z8qra4yv";
 import type {
   FrontendReactRendererOptions,
   FrontendRenderShell,
@@ -32,12 +33,65 @@ function timedRender(render: () => string, options: FrontendReactRendererOptions
   }
 }
 
+function logReactRenderInfo(
+  options: FrontendReactRendererOptions,
+  message: string,
+  metadata: Record<string, unknown>,
+) {
+  if (options.logger) {
+    resolveFrontendServerLogger(options.logger).info(
+      "react.render",
+      message,
+      metadata,
+    );
+    return;
+  }
+
+  options.log?.info?.(message, metadata);
+}
+
+function timedResolve<T>(
+  resolve: () => T,
+  onResolved: (durationMs: number) => void,
+): T {
+  const startedAt = performance.now();
+  try {
+    return resolve();
+  } finally {
+    onResolved(Math.max(0, performance.now() - startedAt));
+  }
+}
+
+function resolvePageComponent(
+  componentId: string,
+  options: FrontendReactRendererOptions,
+) {
+  return timedResolve(
+    () => options.resolvePageComponent(componentId),
+    (durationMs) =>
+    logReactRenderInfo(options, "resolved react page component", {
+        component_id: componentId,
+        duration_ms: durationMs,
+    }),
+  );
+}
+
+function resolveRootDocument(options: FrontendReactRendererOptions) {
+  return timedResolve(
+    () => options.resolveRootDocument(),
+    (durationMs) =>
+    logReactRenderInfo(options, "resolved react root document", {
+        duration_ms: durationMs,
+    }),
+  );
+}
+
 function renderBody(
   componentId: string,
   props: Record<string, unknown>,
   options: FrontendReactRendererOptions,
 ) {
-  return options.createElement(options.resolvePageComponent(componentId), props);
+  return options.createElement(resolvePageComponent(componentId, options), props);
 }
 
 function renderFragment(
@@ -78,7 +132,7 @@ function sendDocument(
   shellInput?: FrontendRenderShell,
 ) {
   const context = buildDocumentContext(res, pageId, componentId, props, options, shellInput);
-  const root = options.resolveRootDocument();
+  const root = resolveRootDocument(options);
   logDocumentStart(context, res, options);
   const html = timedRender(
     () => renderWithIcons(
