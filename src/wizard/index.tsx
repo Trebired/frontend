@@ -23,7 +23,17 @@ function wizardStepInactiveProps(active: boolean) {
   return { "aria-hidden": true, inert: true };
 }
 
+function wizardStepPositionProps(index: number, lastIndex: number) {
+  return {
+    "data-wizard-step-index": String(index),
+    ...(index === 0 ? { "data-wizard-step-first": "true" } : {}),
+    ...(index === lastIndex ? { "data-wizard-step-last": "true" } : {}),
+  };
+}
+
 function wizard(props: wizard_props) {
+  const lastIndex = props.steps.length - 1;
+
   return createElement(
     "wizard-root",
     {
@@ -38,6 +48,7 @@ function wizard(props: wizard_props) {
           id: `${props.id}_${step.id}`,
           key: step.id,
           ...(index === 0 ? { "data-wizard-step-state": "active" } : {}),
+          ...wizardStepPositionProps(index, lastIndex),
           ...wizardStepInactiveProps(index === 0),
         },
         step.content,
@@ -57,11 +68,10 @@ type wizard_nav_button_props = {
 function wizard_previous_button(props: wizard_nav_button_props) {
   return createElement(
     "wizard-previous-button",
-    { style: { display: "contents" } },
+    null,
     <button
     type="button"
     className={primitiveButtonClassName({ className: props.className })}
-    hidden
     >
     <Icon spec="remixicon arrow-left-line" />
     {props.label}
@@ -72,7 +82,7 @@ function wizard_previous_button(props: wizard_nav_button_props) {
 function wizard_next_button(props: wizard_nav_button_props) {
   return createElement(
     "wizard-next-button",
-    { style: { display: "contents" } },
+    null,
     <button type="button" className={primitiveButtonClassName({ className: props.className })}>
     <Icon spec="remixicon arrow-right-line" />
     {props.label}
@@ -81,7 +91,7 @@ function wizard_next_button(props: wizard_nav_button_props) {
 }
 
 function wizard_final_action(children: ReactNode) {
-  return createElement("wizard-final-action", { hidden: true }, children);
+  return createElement("wizard-final-action", null, children);
 }
 
 export type { wizard_nav_button_props, wizard_props, wizard_step };

@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.15.6
+
+- Fixed wizard SSR sizing by rendering first/last step metadata and CSS-only initial footer visibility so the first paint matches the hydrated measured layout.
+
 ## 6.15.4
 
 - Adopted the external `@trebired/code-discipline-config` preset and updated Code Discipline tooling to `@trebired/code-discipline@^6.0.9`.

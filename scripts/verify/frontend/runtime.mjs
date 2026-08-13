@@ -40,8 +40,45 @@ async function verifyPopover(context) {
   assert.equal(document.activeElement, trigger);
 }
 
-async function verifyWizard(context) {
-  const { bindWizardRoot } = await context.importDist("wizard");
+async function verifyWizardSsr(context, wizardModule) {
+  const {
+    default: wizard,
+    wizard_final_action,
+    wizard_next_button,
+    wizard_previous_button,
+  } = wizardModule;
+  const React = await import("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const actions = React.createElement(
+    React.Fragment,
+    null,
+    wizard_previous_button({ label: "Back" }),
+    wizard_next_button({ label: "Next" }),
+    wizard_final_action(React.createElement("button", { type: "submit" }, "Finish")),
+  );
+  const html = renderToStaticMarkup(
+    wizard({
+        id: "ssr",
+        steps: [
+          { id: "a", content: "A", actions },
+          { id: "b", content: "B", actions },
+        ],
+    }),
+  );
+  assert.match(html, /data-wizard-step-first="true"/u);
+  assert.match(html, /data-wizard-step-last="true"/u);
+  assert.doesNotMatch(html, /wizard-final-action hidden/u);
+  assert.doesNotMatch(html, /wizard-(previous|next)-button style=/u);
+  assert.doesNotMatch(html, /wizard-previous-button><button[^>]* hidden/u);
+  const styles = await fs.readFile(
+    path.join(context.rootDir, "dist", "primitives", "styles", "_wizard.scss"),
+    "utf8",
+  );
+  assert.ok(styles.includes('.wizard-step[data-wizard-step-first="true"] wizard-previous-button'));
+  assert.ok(styles.includes('.wizard-step[data-wizard-step-last="true"] wizard-next-button'));
+}
+
+async function verifyWizardSizing(bindWizardRoot) {
   document.body.innerHTML = [
     '<wizard-root id="setup" class="wizard">',
     '<wizard-step id="setup_a" data-wizard-step-state="active">A<wizard-next-button><button ' +
@@ -76,6 +113,12 @@ async function verifyWizard(context) {
   assert.equal(root.style.getPropertyValue("--wizard-step-width"), "320px");
   assert.equal(steps[1].hidden, true);
   assert.equal(root.getAttribute("data-wizard-ready"), "true");
+}
+
+async function verifyWizard(context) {
+  const wizardModule = await context.importDist("wizard");
+  await verifyWizardSsr(context, wizardModule);
+  await verifyWizardSizing(wizardModule.bindWizardRoot);
 }
 
 export { verifyNamespace, verifyPopover, verifyWizard };

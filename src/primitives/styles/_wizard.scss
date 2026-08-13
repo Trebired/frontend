@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+wizard-previous-button,
+wizard-next-button,
+wizard-final-action {
+  display: contents;
+}
+
 .wizard-step {
   grid-area: 1 / 1;
   width: var(--wizard-step-width, 100%);
@@ -12,6 +18,12 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+.wizard-step[data-wizard-step-first="true"] wizard-previous-button,
+.wizard-step[data-wizard-step-last="true"] wizard-next-button,
+.wizard-step:not([data-wizard-step-last="true"]) wizard-final-action {
+  display: none;
 }
 
 .wizard[data-wizard-ready="true"] .wizard-step {
