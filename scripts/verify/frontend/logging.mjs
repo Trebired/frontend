@@ -14,7 +14,7 @@ async function verifyRuntimeLogger(context) {
       observe: false,
   });
   assert.equal(events.length, 1);
-  assert.equal(events[0].group, "frontend.runtime");
+  assert.equal(events[0].group, "runtime");
   events.length = 0;
   bindFrontendRuntime(document, {
       adapters: { logger: {}, loggerAdapter: adapter },

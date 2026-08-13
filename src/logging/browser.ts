@@ -143,7 +143,7 @@ function bindWindowErrorLogging(log: FrontendBrowserLogInstance | null) {
       windowErrorLoggingBound
   )
   return;
-  const scoped = log.withScope(BROWSER_LOG_SOURCE, "frontend.runtime");
+  const scoped = log.withScope(BROWSER_LOG_SOURCE, "runtime");
   if (!scoped || typeof scoped.error !== "function") return;
   windowErrorLoggingBound = true;
   window.addEventListener("error", (event) => logWindowError(scoped, event));
@@ -204,7 +204,7 @@ function frontendBrowserLogger<TLog extends FrontendBrowserLogInstance>(
   frontendBrowserLog = log;
   if (options.bindWindowErrors !== false) bindWindowErrorLogging(log);
   log
-  .withScope?.(BROWSER_LOG_SOURCE, "frontend.logger")
+  .withScope?.(BROWSER_LOG_SOURCE, "logger")
   ?.info?.("Frontend logger initialized");
   return log;
 }

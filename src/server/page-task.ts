@@ -99,7 +99,7 @@ function logPageTaskFailure(
   options: PageTaskOptions<unknown>,
 ) {
   const level = context.status >= 500 && context.status !== 504 ? "error" : "warn";
-  options.logger?.[level]?.("frontend.page", "page task failed", {
+  options.logger?.[level]?.("page", "page task failed", {
       entity_id: context.entityId,
       message: context.message,
       operation: context.operation,

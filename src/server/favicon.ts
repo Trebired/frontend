@@ -66,7 +66,7 @@ function handleFaviconError(
   options: ThemedFaviconOptions,
 ) {
   if (options.logger && typeof options.logger.error === "function") {
-    options.logger.error("frontend.favicon", "favicon request failed", {
+    options.logger.error("favicon", "favicon request failed", {
         error: error && (error as { message?: unknown }).message
         ? String((error as { message?: unknown }).message)
         : String(error),

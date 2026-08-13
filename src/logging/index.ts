@@ -17,7 +17,7 @@ type FrontendLoggingOptions = {
 type FrontendLogger = NormalizedLoggerAdapter;
 
 const FRONTEND_PACKAGE_SOURCE = "frontend";
-const FRONTEND_LOG_GROUP = "frontend";
+const FRONTEND_LOG_GROUP = "runtime";
 
 function readGlobalQuiet() {
   const global = globalThis as typeof globalThis& {
@@ -40,11 +40,7 @@ function isFrontendQuiet(options: FrontendLoggingOptions = {}) {
 
 function toFrontendLogGroup(group: string) {
   const normalized = String(group || "").trim();
-  if (!normalized) return FRONTEND_LOG_GROUP;
-  if (normalized === FRONTEND_LOG_GROUP || normalized.startsWith(`${FRONTEND_LOG_GROUP}.`)) {
-    return normalized;
-  }
-  return `${FRONTEND_LOG_GROUP}.${normalized}`;
+  return normalized || FRONTEND_LOG_GROUP;
 }
 
 function quietLoggerMethod() {
