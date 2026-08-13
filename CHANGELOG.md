@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 6.15.7
+
+- Fixed wizard first-load height stability by hiding inactive SSR steps and removing runtime height measurement so CSS/SSR shell sizing stays stable through font readiness.
+
 ## 6.15.6
 
 - Fixed wizard SSR sizing by rendering first/last step metadata and CSS-only initial footer visibility so the first paint matches the hydrated measured layout.

@@ -67,6 +67,7 @@ async function verifyWizardSsr(context, wizardModule) {
   );
   assert.match(html, /data-wizard-step-first="true"/u);
   assert.match(html, /data-wizard-step-last="true"/u);
+  assert.match(html, /id="ssr_b"[^>]*hidden/u);
   assert.doesNotMatch(html, /wizard-final-action hidden/u);
   assert.doesNotMatch(html, /wizard-(previous|next)-button style=/u);
   assert.doesNotMatch(html, /wizard-previous-button><button[^>]* hidden/u);
@@ -76,6 +77,7 @@ async function verifyWizardSsr(context, wizardModule) {
   );
   assert.ok(styles.includes('.wizard-step[data-wizard-step-first="true"] wizard-previous-button'));
   assert.ok(styles.includes('.wizard-step[data-wizard-step-last="true"] wizard-next-button'));
+  assert.ok(styles.includes("form:has(> .wizard)"));
 }
 
 async function verifyWizardSizing(bindWizardRoot) {
@@ -83,35 +85,31 @@ async function verifyWizardSizing(bindWizardRoot) {
     '<wizard-root id="setup" class="wizard">',
     '<wizard-step id="setup_a" data-wizard-step-state="active">A<wizard-next-button><button ' +
       'type="button">Next</button></wizard-next-button></wizard-step>',
-    '<wizard-step id="setup_b" aria-hidden="true" inert>B<wizard-previous-button><button type="button" ' +
+    '<wizard-step id="setup_b" aria-hidden="true" hidden inert>B<wizard-previous-button><button type="button" ' +
       "hidden>Back</button></wizard-previous-button></wizard-step>",
     "</wizard-root>",
   ].join("");
   const root = document.getElementById("setup");
   const steps = Array.from(root.querySelectorAll("wizard-step"));
-  let ready = false;
   steps.forEach((step, index) => {
       step.getBoundingClientRect = () => ({
           bottom: 0,
-          height: ready ? 40 + index * 30 : 0,
+          height: 40 + index * 30,
           left: 0,
           right: 0,
           top: 0,
-          width: ready ? 320 : 0,
+          width: 320,
           x: 0,
           y: 0,
           toJSON: () => ({}),
       });
   });
   bindWizardRoot(root);
-  assert.equal(root.hasAttribute("data-wizard-ready"), false);
-  assert.equal(steps[1].hidden, false);
-  ready = true;
-  window.dispatchEvent(new Event("resize"));
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.equal(root.style.getPropertyValue("--wizard-step-min-height"), "70px");
-  assert.equal(root.style.getPropertyValue("--wizard-step-width"), "320px");
+  assert.equal(steps[0].hidden, false);
   assert.equal(steps[1].hidden, true);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(root.style.getPropertyValue("--wizard-step-min-height"), "");
+  assert.equal(root.style.getPropertyValue("--wizard-step-width"), "");
   assert.equal(root.getAttribute("data-wizard-ready"), "true");
 }
 

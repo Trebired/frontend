@@ -20,7 +20,7 @@ type wizard_props = {
 
 function wizardStepInactiveProps(active: boolean) {
   if (active) return {};
-  return { "aria-hidden": true, inert: true };
+  return { "aria-hidden": true, hidden: true, inert: true };
 }
 
 function wizardStepPositionProps(index: number, lastIndex: number) {

@@ -2,6 +2,19 @@
   display: grid;
   align-items: stretch;
   width: 100%;
+  min-height: 100%;
+}
+
+form:has(> .wizard) {
+  min-height: 0;
+}
+
+:where(.column, .row) > form:has(> .wizard) {
+  flex: 1 1 auto;
+}
+
+form:has(> .wizard) > .wizard {
+  height: 100%;
 }
 
 wizard-previous-button,
@@ -12,8 +25,8 @@ wizard-final-action {
 
 .wizard-step {
   grid-area: 1 / 1;
-  width: var(--wizard-step-width, 100%);
-  min-height: var(--wizard-step-min-height, auto);
+  width: 100%;
+  min-height: 100%;
   min-width: 0;
   opacity: 0;
   visibility: hidden;
