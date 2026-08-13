@@ -225,6 +225,7 @@
   "#e9huvjywacis": "./src/actions/clipboard.ts",
   "#ea48edhq8nzv": "./src/logs/client/socket/entries.ts",
   "#edzljmojf94k": "./src/inputs/advanced/dropdown/dynamic.ts",
+  "#eewefr3t1x8j": "./.trebired/logger/config.ts",
   "#ehll7fdudt6w": "./src/graph/advanced/contributions_heatmap/render.tsx",
   "#ej8ewfp5cb1i": "./src/logs/client/types.ts",
   "#eqg7t2uwjo0b": "./src/graph/advanced/i18n/cs.ts",

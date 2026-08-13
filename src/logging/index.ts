@@ -56,6 +56,7 @@ function quietLogger(): FrontendLogger {
     error: quietLoggerMethod,
     fail: quietLoggerMethod,
     info: quietLoggerMethod,
+    log: quietLoggerMethod,
     warn: quietLoggerMethod,
   };
 }
@@ -78,6 +79,9 @@ function resolveFrontendLogger(options: FrontendLoggingOptions = {}): FrontendLo
     },
     info(group, message, metadata) {
       logger.info(toFrontendLogGroup(group), message, metadata);
+    },
+    log(level, group, message, metadata) {
+      logger.log(level, toFrontendLogGroup(group), message, metadata);
     },
     warn(group, message, metadata) {
       logger.warn(toFrontendLogGroup(group), message, metadata);
