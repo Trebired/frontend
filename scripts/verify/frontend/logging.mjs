@@ -14,7 +14,7 @@ async function verifyRuntimeLogger(context) {
       observe: false,
   });
   assert.equal(events.length, 1);
-  assert.equal(events[0].group, "runtime");
+  assert.equal(events[0].group, "trebired.frontend.runtime");
   events.length = 0;
   bindFrontendRuntime(document, {
       adapters: { logger: {}, loggerAdapter: adapter },
@@ -40,10 +40,12 @@ async function verifyBrowserLogger(context) {
   });
   assert.equal(Boolean(logger), true);
   assert.equal(created.length, 1);
-  assert.equal(created[0].source, "frontend");
+  assert.equal(created[0].console, false);
+  assert.equal(created[0].source, "@trebired/frontend");
   assert.equal(created[0].metadata.instanceId, "instance-a");
   assert.equal(created[0].metadata.requestId, "request-a");
   assert.equal(created[0].metadata.configKey, "cfg-a");
+  assert.equal(created[0].transports.includes("console"), false);
   const transport = created[0].transports.find((item) =>
     item && typeof item === "object" && item.name === "logs-view");
   assert.ok(transport);

@@ -13,6 +13,7 @@ type FrontendBrowserLogConfig = Record<string, unknown>& {
 type FrontendBrowserLogFactoryOptions = {
   console?: boolean;
   metadata?: Record<string, unknown>;
+  prefix?: false | string;
   quiet?: boolean;
   source?: string;
   transports?: Array<"console" | {
@@ -38,6 +39,7 @@ type FrontendBrowserLogBatch = {
 
 type FrontendBrowserLoggerOptions = {
   bindWindowErrors?: boolean;
+  browserConsole?: boolean;
   createLog: (
     options: FrontendBrowserLogFactoryOptions,
   ) => FrontendBrowserLogInstance;
@@ -48,7 +50,7 @@ type FrontendBrowserLoggerOptions = {
   transportName?: string;
 };
 
-const BROWSER_LOG_SOURCE = "frontend";
+const BROWSER_LOG_SOURCE = "@trebired/frontend";
 const BROWSER_LOG_TRANSPORT = "logs-view";
 
 let frontendBrowserLog: FrontendBrowserLogInstance | null = null;
@@ -179,13 +181,14 @@ function createFrontendBrowserLogger<TLog extends FrontendBrowserLogInstance>(
   options: FrontendBrowserLoggerTypedOptions<TLog>,
 ): TLog {
   const config = readBrowserLogConfig(options);
+  const consoleEnabled = options.browserConsole === true;
   return options.createLog({
-      console: true,
+      console: consoleEnabled,
       metadata: browserLogMetadata(config),
       quiet: true,
       source: stringValue(options.source) || BROWSER_LOG_SOURCE,
       transports: [
-        "console",
+        ...(consoleEnabled ? ["console"as const] : []),
         {
           name: stringValue(options.transportName) || BROWSER_LOG_TRANSPORT,
           write(entries) {

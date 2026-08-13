@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 6.15.9
+
+- Stopped frontend browser package logs from writing to the browser console by default, preventing dev runners from mirroring them into backend terminal logs.
+- Switched frontend browser log source to the package name so browser log groups keep package-owned prefixes.
+
 ## 6.15.7
 
 - Fixed wizard first-load height stability by hiding inactive SSR steps and removing runtime height measurement so CSS/SSR shell sizing stays stable through font readiness.

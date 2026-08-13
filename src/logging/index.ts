@@ -16,7 +16,7 @@ type FrontendLoggingOptions = {
 
 type FrontendLogger = NormalizedLoggerAdapter;
 
-const FRONTEND_PACKAGE_SOURCE = "frontend";
+const FRONTEND_PACKAGE_SOURCE = "@trebired/frontend";
 const FRONTEND_LOG_GROUP = "runtime";
 
 function readGlobalQuiet() {
