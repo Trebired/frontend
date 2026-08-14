@@ -18,7 +18,7 @@
   padding: var(--tbf-primitives-upload-surface-padding, var(--tbf-gap-md, 12px));
   border: var(
     --tbf-primitives-upload-surface-border,
-    var(--tbf-border-width, 1px) dashed var(--tbf-border, #000)
+    var(--tbf-border-width, 1px) solid var(--tbf-border, #000)
   );
   border-radius: var(--tbf-primitives-upload-surface-radius, var(--tbf-radius, 0));
   color: var(--tbf-primitives-upload-surface-color, var(--tbf-text, #000));

@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.0.6
+
+- Fixed the upload stylesheet fallback so non-drop upload fields use solid borders even without app token overrides.
+
 ## 7.0.5
 
 - Made upload fields use a solid border unless drag-and-drop is enabled.
