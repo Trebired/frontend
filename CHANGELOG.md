@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.2
+
+- Corrected `ViewportCenter` centering when rendered inside padded layout content.
+
 ## 7.1.1
 
 - Exported `ReloadAdapterOptions` through the public actions barrel.
