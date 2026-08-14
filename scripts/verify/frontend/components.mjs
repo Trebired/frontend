@@ -43,6 +43,10 @@ async function verifyUploadStyles(rootDir) {
   const cropper = await fs.readFile(path.join(rootDir, "dist", "inputs", "styles", "cropper.scss"), "utf8");
   const cropperRuntime = await fs.readFile(path.join(rootDir, "dist", "inputs", "upload", "crop-session.js"), "utf8");
   assert.ok(upload.includes("--tbf-primitives-upload-surface-background"));
+  assert.ok(upload.includes("grid-template-columns: auto minmax(0, 1fr)"));
+  assert.ok(upload.includes("white-space: nowrap"));
+  assert.ok(upload.includes('data-tbf-upload-entry-count="1"'));
+  assert.ok(upload.includes("--tbf-primitives-upload-list-max-height"));
   assert.equal(upload.includes("tbf-upload__button"), false);
   assert.equal(upload.includes("--tbf-primitives-upload-button"), false);
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-overlay-color"));
@@ -171,6 +175,10 @@ async function verifyRenderedUpload(importDist) {
       assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
   });
   assert.ok(html.includes('class="btn"'));
+  assert.ok(html.includes("remixicon:file-upload-line"));
+  assert.ok(html.includes("remixicon:folder-upload-line"));
+  assert.ok(html.includes("remixicon:close-line"));
+  assert.ok(html.includes('data-tbf-upload-slot="formats"'));
   assert.equal(html.includes("tbf-upload__button"), false);
   assertNoWrapClass(html, "rendered upload component");
   assertNoCustomElementTags(html, "rendered upload component");

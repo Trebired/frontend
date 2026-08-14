@@ -4,6 +4,12 @@ import type { UploadFieldOptions } from "./types.js";
 
 const directoryPickerAttrs = " webkitdirectory directory";
 
+function iconHtml(spec: string) {
+  return spec
+  ? `<i aria-hidden="true" class="tbf-icon icon-glyph" data-tbf-icon="${escapeHtml(spec)}"></i>`
+  : "";
+}
+
 function attr(name: string, value: unknown) {
   const text = toText(value);
   return text ? ` ${name}="${escapeHtml(text)}"` : "";
@@ -84,15 +90,28 @@ function preview(model: ReturnType<typeof uploadModel>) {
 function triggerButtons(model: ReturnType<typeof uploadModel>) {
   if (model.allowMixedPicker) {
     return [
-      `<button class="btn" type="button" data-tbf-upload-slot="file-trigger">${escapeHtml(model.fileOptionLabel)}</button>`,
-      `<button class="btn" type="button" data-tbf-upload-slot="directory-trigger">${escapeHtml(model.directoryOptionLabel)}</button>`,
+      uploadButton("file-trigger", model.fileOptionLabel, model.fileOptionIconSpec),
+      uploadButton(
+        "directory-trigger",
+        model.directoryOptionLabel,
+        model.directoryOptionIconSpec,
+      ),
       uploadClearButton(model),
     ].join("");
   }
   const slot = model.allowDirectory ? "directory-trigger" : "trigger";
   return [
-    `<button class="btn" type="button" data-tbf-upload-slot="${slot}">${escapeHtml(model.triggerLabel)}</button>`,
+    uploadButton(slot, model.triggerLabel, model.triggerIconSpec),
     uploadClearButton(model),
+  ].join("");
+}
+
+function uploadButton(slot: string, label: string, iconSpec: string) {
+  return [
+    `<button class="btn" type="button" data-tbf-upload-slot="${escapeHtml(slot)}">`,
+    iconHtml(iconSpec),
+    `<span>${escapeHtml(label)}</span>`,
+    "</button>",
   ].join("");
 }
 
@@ -100,16 +119,33 @@ function uploadClearButton(model: ReturnType<typeof uploadModel>) {
   const hidden = model.canClearCurrentPreview ? "" : " hidden";
   return [
     '<button class="btn" type="button"',
-    `data-tbf-upload-slot="clear"${hidden}>${escapeHtml(model.clearLabel)}</button>`,
+    `data-tbf-upload-slot="clear"${hidden}>`,
+    iconHtml(model.clearIconSpec),
+    `<span>${escapeHtml(model.clearLabel)}</span>`,
+    "</button>",
+  ].join(" ");
+}
+
+function uploadHintHtml(value: string, slot?: string) {
+  const escapedValue = escapeHtml(value);
+  const slotAttribute = slot ? ` data-tbf-upload-slot="${escapeHtml(slot)}"` : "";
+  return `<span class="tbf-upload__hint"${slotAttribute} title="${escapedValue}">${escapedValue}</span>`;
+}
+
+function uploadFilenameHtml(value: string) {
+  const escapedValue = escapeHtml(value);
+  return [
+    '<span class="tbf-upload__filename" data-tbf-upload-slot="filename"',
+    `title="${escapedValue}">${escapedValue}</span>`,
   ].join(" ");
 }
 
 function helperLines(model: ReturnType<typeof uploadModel>) {
   return [
-    `<span class="tbf-upload__filename" data-tbf-upload-slot="filename">${escapeHtml(model.emptyLabel)}</span>`,
-    model.dropHint ? `<span class="tbf-upload__hint">${escapeHtml(model.dropHint)}</span>` : "",
-    model.helperText ? `<span class="tbf-upload__hint">${escapeHtml(model.helperText)}</span>` : "",
-    model.formatsText ? `<span class="tbf-upload__hint">${escapeHtml(model.formatsText)}</span>` : "",
+    uploadFilenameHtml(model.emptyLabel),
+    model.dropHint ? uploadHintHtml(model.dropHint) : "",
+    model.helperText ? uploadHintHtml(model.helperText) : "",
+    model.formatsText ? uploadHintHtml(model.formatsText, "formats") : "",
     '<ul class="tbf-upload__list" data-tbf-upload-slot="list"></ul>',
   ].join("");
 }

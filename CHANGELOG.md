@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 7.0.3
+
+- Made upload fields keep helper text, accepted formats, selected filenames, and single-file selections from expanding the component height.
+- Added default upload button icons while keeping buttons on the configured `.btn` component styling.
+- Made fixed-height wizard steps scroll overflowing content instead of clipping it.
+
 ## 7.0.1
 
 - Updated the shared Trebired config dependency to `@trebired/configs@^0.1.2`.

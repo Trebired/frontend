@@ -250,6 +250,8 @@ async function verifyUpload() {
   assert.equal(setUploadFiles(element, [file]), true);
   assert.equal(getUploadFiles(element).length, 1);
   assert.equal(element.querySelector('[data-tbf-upload-slot="filename"]').textContent, "avatar.png");
+  assert.equal(element.querySelector('[data-tbf-upload-slot="filename"]').title, "avatar.png");
+  assert.equal(element.getAttribute("data-tbf-upload-entry-count"), "1");
   assert.equal(matchesAccept(file, ["image/*"]), true);
   assertUploadMarkup(element.outerHTML);
 }
@@ -285,11 +287,15 @@ function assertUploadMarkup(html) {
     "directory-trigger",
     "clear",
     "filename",
+    "formats",
     "list",
     "empty-toggle",
   ].forEach((slot) => {
       assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
   });
+  assert.ok(html.includes("remixicon:file-upload-line"));
+  assert.ok(html.includes("remixicon:folder-upload-line"));
+  assert.ok(html.includes("remixicon:close-line"));
 }
 
 async function importDistRoot() {

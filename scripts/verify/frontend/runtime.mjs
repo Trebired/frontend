@@ -78,6 +78,9 @@ async function verifyWizardSsr(context, wizardModule) {
   assert.ok(styles.includes('.wizard-step[data-wizard-step-first="true"] wizard-previous-button'));
   assert.ok(styles.includes('.wizard-step[data-wizard-step-last="true"] wizard-next-button'));
   assert.ok(styles.includes("form:has(> .wizard)"));
+  assert.ok(styles.includes("grid-template-rows: minmax(0, 1fr)"));
+  assert.ok(styles.includes("overflow-y: auto"));
+  assert.ok(styles.includes("scrollbar-gutter: stable"));
 }
 
 async function verifyWizardSizing(bindWizardRoot) {

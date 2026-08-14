@@ -4,6 +4,10 @@ import type { UploadEmptyToggle, UploadFieldOptions } from "./types.js";
 
 type UploadModel = ReturnType<typeof uploadModel>;
 
+const DEFAULT_UPLOAD_CLEAR_ICON = "remixicon:close-line";
+const DEFAULT_UPLOAD_DIRECTORY_ICON = "remixicon:folder-upload-line";
+const DEFAULT_UPLOAD_FILE_ICON = "remixicon:file-upload-line";
+
 function uploadId(id?: string) {
   return toText(id) || `tbf_upload_${Math.random().toString(36).slice(2, 10)}`;
 }
@@ -46,6 +50,21 @@ function uploadLabels(options: UploadFieldOptions) {
   };
 }
 
+function uploadIcons(options: UploadFieldOptions) {
+  return {
+    clearIconSpec: toText(options.clearIconSpec, DEFAULT_UPLOAD_CLEAR_ICON),
+    directoryOptionIconSpec: toText(
+      options.directoryOptionIconSpec,
+      DEFAULT_UPLOAD_DIRECTORY_ICON,
+    ),
+    fileOptionIconSpec: toText(options.fileOptionIconSpec, DEFAULT_UPLOAD_FILE_ICON),
+    triggerIconSpec: toText(
+      options.triggerIconSpec,
+      options.directory === true ? DEFAULT_UPLOAD_DIRECTORY_ICON : DEFAULT_UPLOAD_FILE_ICON,
+    ),
+  };
+}
+
 function pickerModel(options: UploadFieldOptions) {
   return {
     allowDirectory: options.directory === true,
@@ -64,6 +83,7 @@ function uploadModel(options: UploadFieldOptions) {
   return {
     ...accept,
     ...labels,
+    ...uploadIcons(options),
     ...picker,
     aspect: toText(options.aspect),
     canClearCurrentPreview: Boolean(emptyToggle && options.previewUrl),

@@ -5,6 +5,7 @@ import type {
   TextareaHTMLAttributes,
 } from "react";
 import { classNames, dataBool, jsonScript } from "#ndsvdqv80epr";
+import { Icon } from "#lbkpzw8nphru";
 import { uploadConfigPayload } from "#pgcgwrvwwqfj";
 import { uploadModel } from "#fb78vhpo6xg5";
 import type { UploadFieldOptions } from "#skcj0a9esow0";
@@ -25,16 +26,19 @@ const uploadOptionKeys = new Set([
     "accept",
     "aspect",
     "clearLabel",
+    "clearIconSpec",
     "crop",
     "cropFailedMessage",
     "cropImageOnlyDescription",
     "cropImageOnlyMessage",
     "directory",
+    "directoryOptionIconSpec",
     "directoryOptionLabel",
     "drop",
     "dropDirectory",
     "emptyLabel",
     "emptyToggle",
+    "fileOptionIconSpec",
     "fileOptionLabel",
     "formatNotAllowedDescription",
     "formatNotAllowedMessage",
@@ -51,6 +55,7 @@ const uploadOptionKeys = new Set([
     "previewShape",
     "previewUrl",
     "skipDirs",
+    "triggerIconSpec",
     "triggerLabel",
     "useImageLabel",
 ]);
@@ -180,23 +185,32 @@ function UploadButtons(props: { model: ReturnType<typeof uploadModel> }) {
     <div className="tbf-upload__actions">
     {model.allowMixedPicker ? (
         <>
-        <UploadButton slot="file-trigger">{model.fileOptionLabel}</UploadButton>
-        <UploadButton slot="directory-trigger">{model.directoryOptionLabel}</UploadButton>
+        <UploadButton slot="file-trigger" iconSpec={model.fileOptionIconSpec}>
+        {model.fileOptionLabel}
+        </UploadButton>
+        <UploadButton slot="directory-trigger" iconSpec={model.directoryOptionIconSpec}>
+        {model.directoryOptionLabel}
+        </UploadButton>
         </>
       ) : (
-        <UploadButton slot={model.allowDirectory ? "directory-trigger" : "trigger"}>
+        <UploadButton
+        slot={model.allowDirectory ? "directory-trigger" : "trigger"}
+        iconSpec={model.triggerIconSpec}
+        >
         {model.triggerLabel}
         </UploadButton>
     )}
-    <UploadButton slot="clear" hidden={!model.canClearCurrentPreview}>
+    <UploadButton slot="clear" hidden={!model.canClearCurrentPreview} iconSpec={model.clearIconSpec}>
     {model.clearLabel}
     </UploadButton>
     </div>
   );
 }
 
-function UploadButton(props: ButtonHTMLAttributes<HTMLButtonElement> & { slot: string }) {
-  const { children, className, slot, type = "button", ...rest } = props;
+function UploadButton(
+  props: ButtonHTMLAttributes<HTMLButtonElement> & { iconSpec?: string; slot: string },
+) {
+  const { children, className, iconSpec, slot, type = "button", ...rest } = props;
   return (
     <button
     {...rest}
@@ -204,7 +218,8 @@ function UploadButton(props: ButtonHTMLAttributes<HTMLButtonElement> & { slot: s
     data-tbf-upload-slot={slot}
     type={type}
     >
-    {children}
+    {iconSpec ? <Icon spec={iconSpec} /> : null}
+    <span>{children}</span>
     </button>
   );
 }
@@ -213,12 +228,16 @@ function UploadMeta(props: { children?: ReactNode; model: ReturnType<typeof uplo
   const { children, model } = props;
   return (
     <div className="tbf-upload__meta">
-    <span className="tbf-upload__filename" data-tbf-upload-slot="filename">
+    <span className="tbf-upload__filename" data-tbf-upload-slot="filename" title={model.emptyLabel}>
     {model.emptyLabel}
     </span>
     {model.dropHint ? <span className="tbf-upload__hint">{model.dropHint}</span> : null}
     {model.helperText ? <span className="tbf-upload__hint">{model.helperText}</span> : null}
-    {model.formatsText ? <span className="tbf-upload__hint">{model.formatsText}</span> : null}
+    {model.formatsText ? (
+        <span className="tbf-upload__hint" data-tbf-upload-slot="formats" title={model.formatsText}>
+        {model.formatsText}
+        </span>
+      ) : null}
     {children}
     <ul className="tbf-upload__list" data-tbf-upload-slot="list" />
     </div>

@@ -17,12 +17,15 @@ type UploadFieldOptions = {
   cropFailedMessage?: string;
   cropImageOnlyDescription?: string;
   cropImageOnlyMessage?: string;
+  clearIconSpec?: string;
   directory?: boolean;
+  directoryOptionIconSpec?: string;
   directoryOptionLabel?: string;
   drop?: boolean;
   dropDirectory?: boolean;
   emptyLabel?: string;
   emptyToggle?: UploadEmptyToggle;
+  fileOptionIconSpec?: string;
   fileOptionLabel?: string;
   formatNotAllowedDescription?: string;
   formatNotAllowedMessage?: string;
@@ -39,6 +42,7 @@ type UploadFieldOptions = {
   previewShape?: "circle" | "square" | string;
   previewUrl?: string;
   skipDirs?: string;
+  triggerIconSpec?: string;
   triggerLabel?: string;
   useImageLabel?: string;
 };

@@ -240,10 +240,8 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               color: "var(--tbf-text-muted, #000)",
               fontSize: "0.92rem",
             },
-            list: {
-              gap: "4px",
-              paddingLeft: "18px",
-            },
+            filename: { fontSize: "0.95rem", lineHeight: "1.25" },
+            list: { gap: "4px", maxHeight: "84px", paddingLeft: "18px" },
             preview: {
               background: "var(--tbf-surface, #fff)",
               border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
@@ -257,10 +255,13 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             responsive: {
               mobile: {
+                actionsGap: "4px",
                 cropperModalMaxHeight: "calc(100vh - 24px)",
                 cropperModalWidth: "calc(100vw - 24px)",
                 cropperStageHeight: "min(52vh, 420px)",
                 cropperStageMinHeight: "260px",
+                surfaceGap: "8px",
+                surfacePadding: "8px",
               },
             },
             root: {

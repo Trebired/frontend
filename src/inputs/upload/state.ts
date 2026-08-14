@@ -72,11 +72,14 @@ function syncPreview(root: HTMLElement) {
   syncPreviewContent(root, entries, file, currentPreviewUrl(state), config.noPreview === true);
   root.toggleAttribute("data-tbf-upload-has-files", hasSelection);
   root.setAttribute("data-tbf-upload-has-files", hasSelection ? "true" : "false");
+  root.setAttribute("data-tbf-upload-entry-count", String(entries.length));
 }
 
 function syncSelectedLabel(root: HTMLElement, label: string) {
   const node = getFileNameNode(root);
-  if (node) node.textContent = label;
+  if (!node) return;
+  node.textContent = label;
+  node.title = label;
 }
 
 function syncList(root: HTMLElement, entries: UploadEntry[]) {

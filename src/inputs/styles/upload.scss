@@ -9,8 +9,9 @@
 }
 
 .tbf-upload__surface {
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--tbf-primitives-upload-surface-gap, var(--tbf-gap-md, 12px));
   min-height: var(--tbf-primitives-upload-surface-min-height, 72px);
   box-sizing: border-box;
@@ -42,16 +43,42 @@
   gap: var(--tbf-primitives-upload-content-gap, var(--tbf-gap-xs, 4px));
 }
 
+.tbf-upload__meta {
+  overflow: hidden;
+}
+
 .tbf-upload__actions {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
   gap: var(--tbf-primitives-upload-actions-gap, var(--tbf-gap-sm, 8px));
+  min-width: 0;
+}
+
+.tbf-upload__actions > .btn {
+  min-width: 0;
+}
+
+.tbf-upload__actions > .btn > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tbf-upload__filename,
 .tbf-upload__hint {
+  display: block;
   min-width: 0;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tbf-upload__filename {
+  font-size: var(--tbf-primitives-upload-filename-font-size, 0.95rem);
+  line-height: var(--tbf-primitives-upload-filename-line-height, 1.25);
 }
 
 .tbf-upload__hint {
@@ -62,8 +89,21 @@
 .tbf-upload__list {
   display: grid;
   gap: var(--tbf-primitives-upload-list-gap, var(--tbf-gap-xs, 4px));
+  overflow: auto;
+  max-height: var(--tbf-primitives-upload-list-max-height, 84px);
   margin: 0;
   padding-left: var(--tbf-primitives-upload-list-padding-left, 18px);
+}
+
+.tbf-upload[data-tbf-upload-entry-count="0"] .tbf-upload__list,
+.tbf-upload[data-tbf-upload-entry-count="1"] .tbf-upload__list {
+  display: none;
+}
+
+.tbf-upload__list > li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tbf-upload__preview {
@@ -103,12 +143,12 @@
 
 @media (max-width: 640px) {
   .tbf-upload__surface {
-    align-items: stretch;
-    flex-direction: column;
+    gap: var(--tbf-primitives-upload-responsive-mobile-surface-gap, var(--tbf-gap-sm, 8px));
+    padding: var(--tbf-primitives-upload-responsive-mobile-surface-padding, var(--tbf-gap-sm, 8px));
   }
 
   .tbf-upload__actions {
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap;
+    gap: var(--tbf-primitives-upload-responsive-mobile-actions-gap, var(--tbf-gap-xs, 4px));
   }
 }
