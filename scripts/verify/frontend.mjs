@@ -145,11 +145,12 @@ async function verifyLocaleSwitching() {
 }
 
 async function verifyTooltip() {
-  const { bindTooltips } = await importDist("tooltip");
+  const { bindTooltips, setTooltipText } = await importDist("tooltip");
   document.body.innerHTML = [
     '<button id="tip" title="Hover text">A</button>',
     '<button id="focus" data-tbf-tooltip="Focus text">B</button>',
     '<span id="status" tabindex="0" data-tbf-status-icon aria-label="Status text"></span>',
+    '<span id="dynamic-status" tabindex="0" data-tbf-status-icon></span>',
   ].join("");
   bindTooltips(document);
   document.getElementById("tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
@@ -166,6 +167,13 @@ async function verifyTooltip() {
   assert.equal(layer.textContent, "Focus text");
   document.getElementById("status").dispatchEvent(new Event("focusin", { bubbles: true }));
   assert.equal(layer.textContent, "Status text");
+  setTooltipText(document.getElementById("dynamic-status"), "Dynamic status text");
+  document.getElementById("dynamic-status").dispatchEvent(new Event("focusin", { bubbles: true }));
+  assert.equal(layer.textContent, "Dynamic status text");
+  assert.equal(
+    document.getElementById("dynamic-status").getAttribute("aria-description"),
+    "Dynamic status text",
+  );
 }
 
 async function verifyModal() {

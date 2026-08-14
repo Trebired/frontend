@@ -170,7 +170,18 @@ function installTooltipListeners() {
 
 function setTooltipText(trigger: HTMLElement | null, text: string) {
   if (!(trigger instanceof HTMLElement)) return false;
-  tooltipTexts.set(trigger, String(text || "").trim());
+  const previous = String(tooltipTexts.get(trigger) || "").trim();
+  const next = String(text || "").trim();
+  tooltipTexts.set(trigger, next);
+  const description = trigger.getAttribute("aria-description") || "";
+  if (next) {
+    if (!description || description === previous) {
+      trigger.setAttribute("aria-description", next);
+    }
+    bindTooltip(trigger);
+  } else if (previous && description === previous) {
+    trigger.removeAttribute("aria-description");
+  }
   if (tooltipState.openTrigger === trigger && tooltipState.layer) {
     tooltipState.layer.textContent = tooltipTexts.get(trigger) || "";
     placeTooltip(trigger, tooltipState.layer);
