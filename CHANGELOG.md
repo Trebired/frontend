@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.6
+
+- Kept upload cropper resize handles visible when the crop box touches the image boundary.
+
 ## 7.1.5
 
 - Replaced upload cropper adaptive blending with paired black and white strokes for outer and inner guides.

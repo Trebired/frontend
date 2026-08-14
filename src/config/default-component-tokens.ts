@@ -235,6 +235,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
                 overlayColor: "rgb(0 0 0 / 72%)",
                 pointBackground: "#fff",
                 pointBorder: "2px solid #fff",
+                pointInset: "0",
                 pointRadius: "var(--tbf-radius-sm, 0)",
                 pointSize: "12px",
                 radius: "var(--tbf-radius, 0)",

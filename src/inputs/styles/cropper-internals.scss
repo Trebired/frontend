@@ -1,0 +1,280 @@
+.tbf-upload-crop__stage .cropper-container,
+.tbf-upload-crop__stage .cropper-wrap-box,
+.tbf-upload-crop__stage .cropper-canvas,
+.tbf-upload-crop__stage .cropper-drag-box,
+.tbf-upload-crop__stage .cropper-crop-box,
+.tbf-upload-crop__stage .cropper-modal {
+  position: absolute;
+  inset: 0;
+}
+
+.tbf-upload-crop__stage .cropper-container {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+  font-size: 0;
+  line-height: 0;
+  touch-action: none;
+  user-select: none;
+}
+
+.tbf-upload-crop__stage .cropper-crop-box {
+  overflow: visible;
+}
+
+.tbf-upload-crop__stage .cropper-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  backface-visibility: hidden;
+}
+
+.tbf-upload-crop__stage .cropper-wrap-box,
+.tbf-upload-crop__stage .cropper-canvas {
+  overflow: hidden;
+}
+
+.tbf-upload-crop__stage .cropper-drag-box {
+  background: #fff;
+  opacity: 0;
+}
+
+.tbf-upload-crop__stage .cropper-modal {
+  background: var(--tbf-primitives-upload-cropper-stage-overlay-color, rgb(0 0 0 / 72%));
+}
+
+.tbf-upload-crop__stage .cropper-view-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: none;
+}
+
+.tbf-upload-crop__stage .cropper-view-box::before,
+.tbf-upload-crop__stage .cropper-view-box::after {
+  position: absolute;
+  display: block;
+  content: "";
+  pointer-events: none;
+  z-index: 4;
+}
+
+.tbf-upload-crop__stage .cropper-view-box::before {
+  inset: 0;
+  border: var(--tbf-primitives-upload-cropper-stage-line-width, 1px) solid
+  var(--tbf-primitives-upload-cropper-stage-line-contrast-color, #000);
+}
+
+.tbf-upload-crop__stage .cropper-view-box::after {
+  inset: var(--tbf-primitives-upload-cropper-stage-line-width, 1px);
+  border: var(--tbf-primitives-upload-cropper-stage-line-width, 1px) solid
+  var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+}
+
+.tbf-upload-crop__stage .cropper-dashed {
+  position: absolute;
+  display: block;
+  border: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tbf-upload-crop__stage .cropper-dashed::before,
+.tbf-upload-crop__stage .cropper-dashed::after {
+  position: absolute;
+  display: block;
+  content: "";
+  pointer-events: none;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-h {
+  top: calc(100% / 3);
+  left: 0;
+  width: 100%;
+  height: calc(100% / 3);
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-h::before,
+.tbf-upload-crop__stage .cropper-dashed.dashed-h::after {
+  left: 0;
+  width: 100%;
+  height: calc(var(--tbf-primitives-upload-cropper-stage-guide-width, 1px) * 2);
+  background: var(--tbf-upload-cropper-guide-horizontal);
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-h::before {
+  top: 0;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-h::after {
+  bottom: 0;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-v {
+  top: 0;
+  left: calc(100% / 3);
+  width: calc(100% / 3);
+  height: 100%;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-v::before,
+.tbf-upload-crop__stage .cropper-dashed.dashed-v::after {
+  top: 0;
+  width: calc(var(--tbf-primitives-upload-cropper-stage-guide-width, 1px) * 2);
+  height: 100%;
+  background: var(--tbf-upload-cropper-guide-vertical);
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-v::before {
+  left: 0;
+}
+
+.tbf-upload-crop__stage .cropper-dashed.dashed-v::after {
+  right: 0;
+}
+
+.tbf-upload-crop__stage .cropper-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tbf-upload-crop__stage .cropper-center::before,
+.tbf-upload-crop__stage .cropper-center::after {
+  position: absolute;
+  display: block;
+  content: " ";
+}
+
+.tbf-upload-crop__stage .cropper-center::before {
+  top: 0;
+  left: -4px;
+  width: 9px;
+  height: calc(var(--tbf-primitives-upload-cropper-stage-guide-width, 1px) * 2);
+  background: var(--tbf-upload-cropper-guide-horizontal);
+}
+
+.tbf-upload-crop__stage .cropper-center::after {
+  top: -4px;
+  left: 0;
+  width: calc(var(--tbf-primitives-upload-cropper-stage-guide-width, 1px) * 2);
+  height: 9px;
+  background: var(--tbf-upload-cropper-guide-vertical);
+}
+
+.tbf-upload-crop__stage .cropper-face,
+.tbf-upload-crop__stage .cropper-line,
+.tbf-upload-crop__stage .cropper-point {
+  position: absolute;
+  display: block;
+}
+
+.tbf-upload-crop__stage .cropper-face {
+  inset: 0;
+  background: var(--tbf-primitives-upload-cropper-stage-face-color, rgb(255 255 255 / 14%));
+  z-index: 1;
+}
+
+.tbf-upload-crop__stage .cropper-line {
+  background: transparent;
+  z-index: 6;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-e,
+.tbf-upload-crop__stage .cropper-line.line-w {
+  top: 0;
+  width: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * 2);
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-e {
+  right: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * -1);
+}
+
+.tbf-upload-crop__stage .cropper-line.line-w {
+  left: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * -1);
+}
+
+.tbf-upload-crop__stage .cropper-line.line-n,
+.tbf-upload-crop__stage .cropper-line.line-s {
+  left: 0;
+  width: 100%;
+  height: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * 2);
+  cursor: ns-resize;
+}
+
+.tbf-upload-crop__stage .cropper-line.line-n {
+  top: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * -1);
+}
+
+.tbf-upload-crop__stage .cropper-line.line-s {
+  bottom: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 1px) * -1);
+}
+
+.tbf-upload-crop__stage .cropper-point {
+  width: var(--tbf-primitives-upload-cropper-stage-point-size, 12px);
+  height: var(--tbf-primitives-upload-cropper-stage-point-size, 12px);
+  margin: 0;
+  border: var(
+    --tbf-primitives-upload-cropper-stage-point-border,
+    var(--tbf-border-width, 1px) solid var(--tbf-text, #000)
+  );
+  border-radius: var(--tbf-primitives-upload-cropper-stage-point-radius, var(--tbf-radius-sm, 0));
+  background: var(--tbf-primitives-upload-cropper-stage-point-background, #fff);
+  box-shadow: 0 0 0 var(--tbf-primitives-upload-cropper-stage-line-width, 1px)
+  var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+  transform: translate(var(--tbf-upload-cropper-point-x, 0), var(--tbf-upload-cropper-point-y, 0));
+  z-index: 5;
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-e, .point-w) {
+  top: 50%;
+  --tbf-upload-cropper-point-y: -50%;
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-n, .point-s) {
+  left: 50%;
+  --tbf-upload-cropper-point-x: -50%;
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-e, .point-ne, .point-se) {
+  right: var(--tbf-primitives-upload-cropper-stage-point-inset, 0);
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-w, .point-nw, .point-sw) {
+  left: var(--tbf-primitives-upload-cropper-stage-point-inset, 0);
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-n, .point-ne, .point-nw) {
+  top: var(--tbf-primitives-upload-cropper-stage-point-inset, 0);
+}
+
+.tbf-upload-crop__stage .cropper-point:is(.point-s, .point-se, .point-sw) {
+  bottom: var(--tbf-primitives-upload-cropper-stage-point-inset, 0);
+}
+
+.tbf-upload-crop__stage .cropper-hidden {
+  display: none !important;
+}
+
+.tbf-upload-crop__stage .cropper-hide {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+}
+
+.tbf-upload-crop__stage .cropper-invisible {
+  opacity: 0;
+}
