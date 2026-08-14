@@ -29,7 +29,7 @@ async function defaultPersistLocale(lang: string, endpoint: string) {
 
 function defaultRefreshLocale() {
   if (typeof window === "undefined") return false;
-  return softReload();
+  return softReload({ preserveState: true });
 }
 
 async function applyLocale(

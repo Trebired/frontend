@@ -41,6 +41,7 @@ type LayoutMainProps = HTMLAttributes<HTMLElement> & {
 };
 
 type LayoutContentProps = HTMLAttributes<HTMLDivElement>;
+type ViewportCenterProps = HTMLAttributes<HTMLDivElement>;
 
 type LayoutBootScriptProps = ScriptHTMLAttributes<HTMLScriptElement> & Partial<LayoutBodyState>;
 
@@ -152,17 +153,21 @@ function LayoutContent(props: LayoutContentProps) {
   );
 }
 
-function LayoutCenter(props: LayoutContentProps) {
+function ViewportCenter(props: ViewportCenterProps) {
   const { children, className, ...rest } = props;
   return (
     <div
     {...rest}
-    className={classNames("tbf-layout-center", className)}
-    data-tbf-layout-center=""
+    className={classNames("tbf-viewport-center", className)}
+    data-tbf-viewport-center=""
     >
     {children}
     </div>
   );
+}
+
+function LayoutCenter(props: LayoutContentProps) {
+  return <ViewportCenter {...props} />;
 }
 
 function LayoutPortalRoot(props: HTMLAttributes<HTMLDivElement>) {
@@ -261,6 +266,7 @@ export {
   LayoutPortalRoot,
   LayoutSecondaryHeader,
   RenderCurrentUrlProvider,
+  ViewportCenter,
 };
 export * from "./breadcrumb.js";
 export * from "./header.js";
@@ -272,4 +278,5 @@ export type {
   LayoutDocumentProps,
   LayoutMainProps,
   LayoutProps,
+  ViewportCenterProps,
 };

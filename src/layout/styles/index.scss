@@ -3,9 +3,9 @@
 
 :root {
   --tbf-layout-top-offset: 0px;
-  --tbf-layout-content-padding: 18px 20px 32px;
-  --tbf-layout-mobile-content-padding: 14px 14px 24px;
-  --tbf-layout-compact-content-padding: 12px 10px 20px;
+  --tbf-layout-content-padding-block-start: 18px;
+  --tbf-layout-content-padding-block-end: 32px;
+  --tbf-layout-content-padding-inline: 20px;
   --tbf-layout-bottom-bar-height: 68px;
   --tbf-layout-mobile-bottom-bar-safe-offset: calc(
     var(--tbf-layout-bottom-bar-height) + env(safe-area-inset-bottom, 0px)
@@ -110,13 +110,24 @@ body[data-tbf-sidebar-right-minimized="true"] {
   flex: 1 0 auto;
   min-height: 100%;
   box-sizing: border-box;
-  padding: var(--tbf-layout-content-padding);
+  padding:
+  var(--tbf-layout-content-padding-block-start)
+  var(--tbf-layout-content-padding-inline)
+  var(--tbf-layout-content-padding-block-end);
 }
 
-.tbf-layout-center,
-[data-tbf-layout-center] {
+.tbf-viewport-center,
+[data-tbf-viewport-center] {
   display: flex;
-  min-height: 100dvh;
+  width: 100%;
+  min-height: calc(
+    100dvh -
+    var(--tbf-layout-top-offset, 0px) -
+    var(--tbf-layout-bottom-bar-safe-offset, 0px) -
+    var(--tbf-layout-content-padding-block-start, 0px) -
+    var(--tbf-layout-content-padding-block-end, 0px)
+  );
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
 }
@@ -166,7 +177,9 @@ body[data-tbf-sidebar-right-minimized="true"] {
 
   .tbf-layout-content,
   [data-tbf-layout-content] {
-    padding: var(--tbf-layout-mobile-content-padding);
+    --tbf-layout-content-padding-block-start: 14px;
+    --tbf-layout-content-padding-block-end: 24px;
+    --tbf-layout-content-padding-inline: 14px;
   }
 
   .tbf-layout-bottom-bar,
@@ -185,6 +198,8 @@ body[data-tbf-sidebar-right-minimized="true"] {
 @media (max-width: 560px) {
   .tbf-layout-content,
   [data-tbf-layout-content] {
-    padding: var(--tbf-layout-compact-content-padding);
+    --tbf-layout-content-padding-block-start: 12px;
+    --tbf-layout-content-padding-block-end: 20px;
+    --tbf-layout-content-padding-inline: 10px;
   }
 }

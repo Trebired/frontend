@@ -9,7 +9,7 @@ import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyLiveOverlays } from "./frontend/live.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
-import { verifyNamespace, verifyPopover, verifyWizard } from "./frontend/runtime.mjs";
+import { verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
@@ -42,6 +42,7 @@ async function verifyFrontendMain() {
   await verifyFlash(context);
   await verifyTooltip();
   await verifyPopover(context);
+  await verifyViewportCenter(context);
   await verifyWizard(context);
   await verifyLiveOverlays(context);
   await verifyModal();
@@ -137,12 +138,12 @@ async function verifyLocaleSwitching() {
     "</button>",
   ].join("");
   let persisted = null;
-  let reloadCount = 0;
+  let reloadOptions = null;
   bindFrontendRuntime(document, {
       adapters: {
         reload: {
-          reload() {
-            reloadCount += 1;
+          reload(options) {
+            reloadOptions = options;
           },
         },
       },
@@ -158,7 +159,7 @@ async function verifyLocaleSwitching() {
   document.getElementById("locale").click();
   await new Promise((resolve) => setTimeout(resolve, 0));
   assert.deepEqual(persisted, { endpoint: "/ui/lang/set", lang: "cs" });
-  assert.equal(reloadCount, 1);
+  assert.deepEqual(reloadOptions, { preserveState: true, reason: "locale" });
 }
 
 async function verifyTooltip() {

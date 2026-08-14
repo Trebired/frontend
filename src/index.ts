@@ -86,7 +86,10 @@ function localeRuntimeOptions(
   if (locale.refresh || !adapters.reload?.reload) return locale;
   return {
     ...locale,
-    refresh: () => adapters.reload?.reload?.(),
+    refresh: () => adapters.reload?.reload?.({
+        preserveState: true,
+        reason: "locale",
+    }),
   };
 }
 

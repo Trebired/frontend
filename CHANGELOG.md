@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.1.0
+
+- Added `ViewportCenter` as the shared viewport-centering component for layout content.
+- Made locale-triggered SPA reloads request preserved live form and wizard state.
+
 ## 7.0.7
 
 - Made locale switching use the configured SPA reload adapter and default to frontend soft reload instead of forcing a document reload.

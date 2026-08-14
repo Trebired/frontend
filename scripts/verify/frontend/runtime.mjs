@@ -122,4 +122,21 @@ async function verifyWizard(context) {
   await verifyWizardSizing(wizardModule.bindWizardRoot);
 }
 
-export { verifyNamespace, verifyPopover, verifyWizard };
+async function verifyViewportCenter(context) {
+  const { ViewportCenter } = await context.importDist("react");
+  const React = await import("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const html = renderToStaticMarkup(
+    React.createElement(ViewportCenter, { className: "content" }, "Centered"),
+  );
+  assert.match(html, /class="tbf-viewport-center content"/u);
+  assert.match(html, /data-tbf-viewport-center=""/u);
+  const styles = await fs.readFile(
+    path.join(context.rootDir, "dist", "layout", "styles", "index.scss"),
+    "utf8",
+  );
+  assert.ok(styles.includes("var(--tbf-layout-top-offset, 0px)"));
+  assert.ok(styles.includes("var(--tbf-layout-content-padding-block-start, 0px)"));
+}
+
+export { verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };

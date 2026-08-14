@@ -30,8 +30,13 @@ type ActionAdapters = {
   };
   progress?: ProgressHandle;
   reload?: {
-    reload?: () => Promise<unknown>|unknown;
+    reload?: (options?: ReloadAdapterOptions) => Promise<unknown>|unknown;
   };
+};
+
+type ReloadAdapterOptions = {
+  preserveState?: boolean;
+  reason?: string;
 };
 
 type ActionRequestUi = {
@@ -95,6 +100,7 @@ export type {
   ActionFlashMeta,
   ActionJson,
   ActionRequestUi,
+  ReloadAdapterOptions,
   SubmitActionButtonOptions,
   SubmitActionFormOptions,
 };
