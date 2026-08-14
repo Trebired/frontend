@@ -25,7 +25,6 @@ const directoryPickerAttributes = {
 const uploadOptionKeys = new Set([
     "accept",
     "aspect",
-    "clearLabel",
     "clearIconSpec",
     "crop",
     "cropFailedMessage",
@@ -45,6 +44,7 @@ const uploadOptionKeys = new Set([
     "formats",
     "helperText",
     "id",
+    "lang",
     "mixedPicker",
     "modalDescription",
     "modalTitle",
@@ -228,7 +228,7 @@ function UploadMeta(props: { children?: ReactNode; model: ReturnType<typeof uplo
   const { children, model } = props;
   return (
     <div className="tbf-upload__meta">
-    <span className="tbf-upload__filename" data-tbf-upload-slot="filename" title={model.emptyLabel}>
+    <span className="tbf-upload__filename" data-tbf-upload-slot="filename">
     {model.emptyLabel}
     </span>
     {model.dropHint ? <span className="tbf-upload__hint">{model.dropHint}</span> : null}

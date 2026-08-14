@@ -246,6 +246,7 @@ async function verifyUpload() {
   const element = createUploadField(fullUploadOptions());
   document.body.appendChild(element);
   bindUploadRoot(element);
+  assert.equal(element.querySelector('[data-tbf-upload-slot="filename"]').hasAttribute("title"), false);
   const file = new File(["x"], "avatar.png", { type: "image/png" });
   assert.equal(setUploadFiles(element, [file]), true);
   assert.equal(getUploadFiles(element).length, 1);
@@ -275,6 +276,7 @@ function fullUploadOptions() {
 
 function assertUploadMarkup(html) {
   assert.equal(/class=["'][^"']*\bwrap\b/iu.test(html), false);
+  assert.equal(html.includes('title="Choose"'), false);
   [
     "native-file",
     "native-directory",

@@ -134,10 +134,7 @@ function uploadHintHtml(value: string, slot?: string) {
 
 function uploadFilenameHtml(value: string) {
   const escapedValue = escapeHtml(value);
-  return [
-    '<span class="tbf-upload__filename" data-tbf-upload-slot="filename"',
-    `title="${escapedValue}">${escapedValue}</span>`,
-  ].join(" ");
+  return `<span class="tbf-upload__filename" data-tbf-upload-slot="filename">${escapedValue}</span>`;
 }
 
 function helperLines(model: ReturnType<typeof uploadModel>) {

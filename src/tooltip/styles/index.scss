@@ -6,6 +6,7 @@
   padding: var(--tbf-overlays-tooltip-panel-padding, 7px 9px);
   border: var(--tbf-overlays-tooltip-panel-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
   border-radius: var(--tbf-overlays-tooltip-panel-radius, var(--tbf-radius-sm, 0));
+  box-shadow: var(--tbf-overlays-tooltip-panel-shadow, var(--tbf-shadow, 0 0 0 1px #000));
   color: var(--tbf-overlays-tooltip-panel-color, var(--tbf-text, #000));
   background: var(--tbf-overlays-tooltip-panel-background, var(--tbf-surface, #fff));
   font-family: var(--tbf-overlays-tooltip-panel-font-family, var(--tbf-font-sans, sans-serif));

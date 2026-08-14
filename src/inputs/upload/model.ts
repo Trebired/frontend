@@ -1,3 +1,4 @@
+import { actionLabel } from "#qq0hbx8lfn3p";
 import { formatLabels, isImageAcceptItem, parseAcceptList } from "./files.js";
 import { toText } from "./text.js";
 import type { UploadEmptyToggle, UploadFieldOptions } from "./types.js";
@@ -32,7 +33,7 @@ function uploadAcceptModel(options: UploadFieldOptions) {
 
 function uploadLabels(options: UploadFieldOptions) {
   return {
-    clearLabel: toText(options.clearLabel, "Clear"),
+    clearLabel: actionLabel("remove", options.lang),
     cropFailedMessage: toText(options.cropFailedMessage, "Failed to crop the selected image."),
     cropImageOnlyDescription: toText(options.cropImageOnlyDescription, "Choose an accepted image file."),
     cropImageOnlyMessage: toText(options.cropImageOnlyMessage, "Only image files can be cropped."),

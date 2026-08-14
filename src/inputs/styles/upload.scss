@@ -40,10 +40,14 @@
   min-width: 0;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: var(--tbf-primitives-upload-content-gap, var(--tbf-gap-xs, 4px));
+}
+
+.tbf-upload__content {
+  gap: var(--tbf-primitives-upload-content-gap, var(--tbf-gap-sm, 6px));
 }
 
 .tbf-upload__meta {
+  gap: var(--tbf-primitives-upload-meta-gap, var(--tbf-gap-xs, 4px));
   overflow: hidden;
 }
 

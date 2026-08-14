@@ -12,7 +12,6 @@ type UploadEmptyToggle = {
 type UploadFieldOptions = {
   accept?: string;
   aspect?: string;
-  clearLabel?: string;
   crop?: boolean;
   cropFailedMessage?: string;
   cropImageOnlyDescription?: string;
@@ -32,6 +31,7 @@ type UploadFieldOptions = {
   formats?: string;
   helperText?: string;
   id?: string;
+  lang?: string;
   mixedPicker?: boolean;
   modalDescription?: string;
   modalTitle?: string;

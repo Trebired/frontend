@@ -41,12 +41,13 @@ function uploadFieldLabels(props: UploadProps) {
 }
 
 function upload(props: UploadProps) {
-  const { lang: _lang, name = "", ...rest } = props;
+  const { lang, name = "", ...rest } = props;
   return (
     <UploadField
     {...rest}
     {...uploadFieldLabels(props)}
     data-upload-root=""
+    lang={lang}
     name={name}
     />
   );

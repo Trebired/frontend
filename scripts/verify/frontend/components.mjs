@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 async function verifyFrontendComponents(context) {
   await verifyLayoutStyles(context.rootDir);
   await verifyModalStyles(context.rootDir);
+  await verifyTooltipStyles(context.rootDir);
   await verifyThemeStyles(context.rootDir);
   await verifyTabsStyles(context.rootDir);
   await verifyUploadStyles(context.rootDir);
@@ -36,6 +37,11 @@ async function verifyModalStyles(rootDir) {
   assert.ok(source.includes("--tbf-overlays-modal-backdrop-background"));
   assert.ok(source.includes("--tbf-overlays-modal-content-background"));
   assert.ok(source.includes("--tbf-overlays-modal-motion-initial-scale"));
+}
+
+async function verifyTooltipStyles(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "tooltip", "styles", "index.scss"), "utf8");
+  assert.ok(source.includes("--tbf-overlays-tooltip-panel-shadow"));
 }
 
 async function verifyUploadStyles(rootDir) {
@@ -178,7 +184,9 @@ async function verifyRenderedUpload(importDist) {
   assert.ok(html.includes("remixicon:file-upload-line"));
   assert.ok(html.includes("remixicon:folder-upload-line"));
   assert.ok(html.includes("remixicon:close-line"));
+  assert.ok(html.includes(">Remove</span>"));
   assert.ok(html.includes('data-tbf-upload-slot="formats"'));
+  assert.equal(html.includes('title="No file selected"'), false);
   assert.equal(html.includes("tbf-upload__button"), false);
   assertNoWrapClass(html, "rendered upload component");
   assertNoCustomElementTags(html, "rendered upload component");

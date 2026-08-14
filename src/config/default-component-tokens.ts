@@ -95,6 +95,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               lineHeight: "1.3",
               padding: "7px 9px",
               radius: "0",
+              shadow: "var(--tbf-shadow, 0 0 0 1px #000)",
             },
         }),
     }),
@@ -212,7 +213,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
         upload: Object.freeze({
             actions: { gap: "8px" },
-            content: { gap: "4px" },
+            content: { gap: "6px" },
             cropper: {
               actions: { gap: "8px" },
               description: { color: "var(--tbf-text-muted, #000)" },
@@ -242,6 +243,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             filename: { fontSize: "0.95rem", lineHeight: "1.25" },
             list: { gap: "4px", maxHeight: "84px", paddingLeft: "18px" },
+            meta: { gap: "4px" },
             preview: {
               background: "var(--tbf-surface, #fff)",
               border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",

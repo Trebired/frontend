@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 7.0.4
+
+- Added a tooltip panel shadow token so tooltips match other overlay surfaces.
+- Made upload clear buttons use the generic localized Remove action label.
+- Removed the empty upload filename native tooltip and tightened upload internal spacing.
+
 ## 7.0.3
 
 - Made upload fields keep helper text, accepted formats, selected filenames, and single-file selections from expanding the component height.
