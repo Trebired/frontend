@@ -61,6 +61,15 @@ function currentPreviewUrl(state: UploadState) {
   return state.currentPreviewUrl;
 }
 
+function createPreviewObjectUrl(file: File) {
+  if (typeof URL.createObjectURL !== "function") return "";
+  try {
+    return URL.createObjectURL(file);
+  } catch {
+    return "";
+  }
+}
+
 function syncPreview(root: HTMLElement) {
   const state = getUploadState(root);
   const config = uploadRootConfig(root);
@@ -138,7 +147,7 @@ function dispatchUploadChange(root: HTMLElement) {
   }));
 }
 
-function setUploadEntries(root: HTMLElement, entries: UploadEntry[], input?: HTMLInputElement | null) {
+function restoreUploadEntries(root: HTMLElement, entries: UploadEntry[], input?: HTMLInputElement | null) {
   const state = getUploadState(root);
   revokePreviewUrl(state);
   state.entries = entries.filter((entry) => entry.file instanceof File);
@@ -149,6 +158,10 @@ function setUploadEntries(root: HTMLElement, entries: UploadEntry[], input?: HTM
   setNativeInputFiles(input || null, state.entries);
   syncPreview(root);
   syncClearAndEmpty(root);
+}
+
+function setUploadEntries(root: HTMLElement, entries: UploadEntry[], input?: HTMLInputElement | null) {
+  restoreUploadEntries(root, entries, input);
   dispatchUploadChange(root);
 }
 
@@ -165,9 +178,7 @@ function setUploadFile(
   state.cropData = options.cropData || null;
   state.emptySelected = false;
   if (options.previewUrl) state.previewUrl = options.previewUrl;
-  else if (state.file && isImageFileObject(state.file) && typeof URL.createObjectURL === "function") {
-    state.previewObjectUrl = URL.createObjectURL(state.file);
-  }
+  else if (state.file && isImageFileObject(state.file)) state.previewObjectUrl = createPreviewObjectUrl(state.file);
   if (state.previewObjectUrl) state.previewUrl = state.previewObjectUrl;
   clearNativeInputs(root, input);
   setNativeInputFiles(input, state.entries);
@@ -213,6 +224,7 @@ export {
   getUploadFiles,
   getUploadState,
   revokePreviewUrl,
+  restoreUploadEntries,
   setUploadEntries,
   setUploadFile,
   syncClearAndEmpty,

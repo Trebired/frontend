@@ -2,6 +2,7 @@ import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { uploadRootConfig } from "./config.js";
 import {
   getClear,
+  getCropField,
   getDirectoryInput,
   getDirectoryTrigger,
   getFileTrigger,
@@ -25,6 +26,7 @@ import {
   dispatchUploadChange,
   getUploadEntries,
   getUploadFiles,
+  restoreUploadEntries,
   setUploadEntries as writeUploadEntries,
   setUploadFile,
   syncClearAndEmpty,
@@ -95,6 +97,43 @@ function setSelectedEntries(
   const normalized = normalizeEntries(root, entries);
   if (rejectInvalidEntries(root, input, normalized, options)) return false;
   writeUploadEntries(root, normalized, input);
+  return true;
+}
+
+function readRestoredCropData(root: HTMLElement) {
+  const raw = String(getCropField(root)?.value || "").trim();
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object"
+    ? parsed as Record<string, number>
+    : null;
+  } catch {
+    return null;
+  }
+}
+
+function restoredNativeInputEntries(root: HTMLElement) {
+  const input = getUploadFileInput(root);
+  const directoryInput = getDirectoryInput(root);
+  const fileEntries = inputEntries(input);
+  const directoryEntries = inputEntries(directoryInput);
+  return fileEntries.length
+  ? { entries: fileEntries, input }
+  : { entries: directoryEntries, input: directoryInput };
+}
+
+function restoreUploadFromNativeInput(root: HTMLElement) {
+  const restored = restoredNativeInputEntries(root);
+  const entries = normalizeEntries(root, restored.entries);
+  if (!entries.length) return false;
+  if (entries.length === 1) {
+    setUploadFile(root, restored.input, entries[0].file, {
+        cropData: readRestoredCropData(root),
+    });
+    return true;
+  }
+  restoreUploadEntries(root, entries, restored.input);
   return true;
 }
 
@@ -235,7 +274,7 @@ function bindUploadRoot(root: HTMLElement | null, options: UploadRuntimeOptions 
   bindUploadInputs(root, runtimeOptions);
   bindUploadClear(root);
   bindUploadDrop(root, runtimeOptions);
-  syncPreview(root);
+  if (!restoreUploadFromNativeInput(root)) syncPreview(root);
   syncClearAndEmpty(root);
   return true;
 }

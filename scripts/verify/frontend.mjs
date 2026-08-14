@@ -7,7 +7,7 @@ import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
-import { verifyLiveOverlays } from "./frontend/live.mjs";
+import { verifyFrontendLive } from "./frontend/live.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
@@ -45,7 +45,7 @@ async function verifyFrontendMain() {
   await verifyPopover(context);
   await verifyViewportCenter(context);
   await verifyWizard(context);
-  await verifyLiveOverlays(context);
+  await verifyFrontendLive(context);
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
@@ -64,6 +64,7 @@ function installDom() {
   Object.assign(globalThis, {
       Blob: window.Blob,
       CustomEvent: window.CustomEvent,
+      DataTransfer: window.DataTransfer,
       DOMParser: window.DOMParser,
       Document: window.Document,
       DocumentFragment: window.DocumentFragment,

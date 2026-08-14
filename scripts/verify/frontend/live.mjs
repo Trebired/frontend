@@ -102,4 +102,84 @@ async function verifyLiveOverlays(context) {
   assert.equal(document.body.style.overflow, "");
 }
 
-export { verifyLiveOverlays };
+function assignFiles(input, files) {
+  const transfer = new DataTransfer();
+  files.forEach((file) => transfer.items.add(file));
+  input.files = transfer.files;
+}
+
+function uploadLiveMarkup(marker, cropValue = "") {
+  const crop = cropValue.replace(/"/g, "&quot;");
+  return [
+    "<div data-tbf-live-content>",
+    '<wizard-root id="welcome_wizard">',
+    '<wizard-step id="welcome_intro" data-wizard-step-state="active">Intro</wizard-step>',
+    '<wizard-step id="welcome_profile">',
+    `<div id="avatar_upload" class="tbf-upload" data-marker="${marker}" data-tbf-upload>`,
+    '<script data-tbf-upload-config hidden type="application/json">',
+    '{"crop":true,"emptyLabel":"No avatar selected","formats":"image/png"}',
+    "</script>",
+    '<input id="avatar_upload_input" type="file" name="avatar" data-tbf-upload-slot="native-file" accept="image/png">',
+    `<input type="hidden" name="avatar_crop" value="${crop}" data-tbf-upload-slot="crop-field">`,
+    '<div data-tbf-upload-slot="preview">',
+    '<img data-tbf-upload-slot="preview-image" hidden>',
+    '<span data-tbf-upload-slot="preview-empty"></span>',
+    "</div>",
+    '<span data-tbf-upload-slot="filename">No avatar selected</span>',
+    '<button type="button" data-tbf-upload-slot="clear" hidden>Remove</button>',
+    '<ul data-tbf-upload-slot="list"></ul>',
+    "</div>",
+    "</wizard-step>",
+    "</wizard-root>",
+    "</div>",
+  ].join("");
+}
+
+async function verifyLiveFileInputPreservation(context) {
+  const { softVisit } = await context.importDist("live");
+  const { bindUploads, getUploadFiles } = await context.importDist("inputs");
+  const cropValue = '{"x":1,"y":2,"width":3,"height":4}';
+  document.body.innerHTML = uploadLiveMarkup("before", cropValue);
+  document.getElementById("welcome_intro").removeAttribute("data-wizard-step-state");
+  const wizardStep = document.getElementById("welcome_profile");
+  wizardStep.setAttribute("data-wizard-step-state", "active");
+  const file = new File(["avatar"], "avatar.png", { type: "image/png" });
+  assignFiles(document.getElementById("avatar_upload_input"), [file]);
+  globalThis.fetch = async() => {
+    return new Response(
+      `<!doctype html><html lang="cs"><head><title>CS</title></head><body>${uploadLiveMarkup("after")}</body></html>`,
+      { headers: { "Content-Type": "text/html" } },
+    );
+  };
+  const result = await softVisit("/welcome", {
+      bind(root) {
+        bindUploads(root);
+      },
+      history: "none",
+      preserveState: true,
+  });
+  assert.equal(result, true);
+  const upload = document.getElementById("avatar_upload");
+  const input = document.getElementById("avatar_upload_input");
+  assert.equal(input.files.length, 1);
+  assert.equal(input.files[0].name, "avatar.png");
+  assert.equal(getUploadFiles(upload).length, 1);
+  assert.equal(upload.querySelector('[data-tbf-upload-slot="filename"]').textContent, "avatar.png");
+  assert.equal(
+    document
+    .getElementById("welcome_profile")
+    .getAttribute("data-wizard-step-state"),
+    "active",
+  );
+  assert.equal(
+    upload.querySelector('[data-tbf-upload-slot="crop-field"]').value,
+    cropValue,
+  );
+}
+
+async function verifyFrontendLive(context) {
+  await verifyLiveOverlays(context);
+  await verifyLiveFileInputPreservation(context);
+}
+
+export { verifyFrontendLive, verifyLiveFileInputPreservation, verifyLiveOverlays };

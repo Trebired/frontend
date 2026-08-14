@@ -1,11 +1,15 @@
 type LiveFormSnapshot = {
   checked: boolean;
+  files: File[];
   value: string;
 };
 
 function formFieldKey(
   element: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
 ) {
+  if (element instanceof HTMLInputElement && element.type === "file") {
+    return element.id || element.name;
+  }
   const name = element.name || element.id;
   if (!name) return "";
   if (
@@ -17,6 +21,26 @@ function formFieldKey(
   return name;
 }
 
+function inputFiles(element: HTMLInputElement) {
+  return element.files ? Array.from(element.files) : [];
+}
+
+function restoreInputFiles(element: HTMLInputElement, files: File[]) {
+  if (!files.length) {
+    element.value = "";
+    return true;
+  }
+  if (typeof DataTransfer !== "function") return false;
+  const transfer = new DataTransfer();
+  files.forEach((file) => transfer.items.add(file));
+  try {
+    element.files = transfer.files;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function captureFormState(root: ParentNode) {
   const state = new Map<string, LiveFormSnapshot>();
   root.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>(
@@ -26,10 +50,27 @@ function captureFormState(root: ParentNode) {
       if (!key) return;
       state.set(key, {
           checked: element instanceof HTMLInputElement ? element.checked : false,
-          value: element.value,
+          files: element instanceof HTMLInputElement && element.type === "file"
+          ? inputFiles(element)
+          : [],
+          value: element instanceof HTMLInputElement && element.type === "file"
+          ? ""
+          : element.value,
       });
   });
   return state;
+}
+
+function restoreFormElementState(
+  element: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+  snapshot: LiveFormSnapshot,
+) {
+  if (element instanceof HTMLInputElement && element.type === "file") {
+    restoreInputFiles(element, snapshot.files);
+    return;
+  }
+  element.value = snapshot.value;
+  if (element instanceof HTMLInputElement) element.checked = snapshot.checked;
 }
 
 function restoreFormState(
@@ -41,8 +82,7 @@ function restoreFormState(
   ).forEach((element) => {
       const snapshot = state.get(formFieldKey(element));
       if (!snapshot) return;
-      element.value = snapshot.value;
-      if (element instanceof HTMLInputElement) element.checked = snapshot.checked;
+      restoreFormElementState(element, snapshot);
   });
 }
 

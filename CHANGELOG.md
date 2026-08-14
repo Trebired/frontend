@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.1.9
+
+- Preserved file inputs and upload runtime state during locale-triggered live refreshes.
+- Prevented upload-used pages from falling back to hard navigation during preserved soft reloads.
+
 ## 7.1.8
 
 - Corrected `ViewportCenter` height inside padded layout content so it does not create unnecessary page overflow.
