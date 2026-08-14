@@ -70,6 +70,7 @@ export type {
   ActionFlashMeta,
   ActionJson,
   ActionRequestUi,
+  ReloadAdapterOptions,
   SubmitActionButtonOptions,
   SubmitActionFormOptions,
 } from "./types.js";

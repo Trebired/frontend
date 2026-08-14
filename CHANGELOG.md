@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.1
+
+- Exported `ReloadAdapterOptions` through the public actions barrel.
+
 ## 7.1.0
 
 - Added `ViewportCenter` as the shared viewport-centering component for layout content.
