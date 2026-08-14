@@ -135,6 +135,63 @@ function uploadLiveMarkup(marker, cropValue = "") {
   ].join("");
 }
 
+function chromeLiveMarkup(marker) {
+  return [
+    `<header id="primary_header" data-marker="${marker}">`,
+    '<button id="login_lang_switch_btn" data-tbf-popover-trigger aria-controls="login_lang_switch_btn_menu">Lang</button>',
+    '<div id="login_lang_switch_btn_menu" data-tbf-popover aria-hidden="true">',
+    '<button data-tbf-locale-option data-tbf-popover-close value="en">English</button>',
+    '<button data-tbf-locale-option data-tbf-popover-close value="cs">Czech</button>',
+    "</div>",
+    "</header>",
+    `<div data-tbf-live-content data-marker="${marker}">Content ${marker}</div>`,
+  ].join("");
+}
+
+async function verifyLiveChromePortaledOverlayCleanup(context) {
+  const { softVisit } = await context.importDist("live");
+  const { bindPopovers } = await context.importDist("popover");
+  document.body.innerHTML = [
+    '<div id="tbf_layer_root"></div>',
+    chromeLiveMarkup("before"),
+  ].join("");
+  bindPopovers(document);
+  document.getElementById("login_lang_switch_btn").click();
+  await settleDom();
+  assert.equal(
+    document.getElementById("tbf_layer_root")
+    .contains(document.getElementById("login_lang_switch_btn_menu")),
+    true,
+  );
+  globalThis.fetch = async() => {
+    return new Response(
+      `<!doctype html><html lang="cs"><head><title>CS</title></head><body>${chromeLiveMarkup("after")}</body></html>`,
+      { headers: { "Content-Type": "text/html" } },
+    );
+  };
+  const result = await softVisit("/welcome", {
+      bind(root) {
+        bindPopovers(root);
+      },
+      chromeIds: ["primary_header"],
+      history: "none",
+      preserveState: true,
+  });
+  assert.equal(result, true);
+  assert.equal(
+    document.querySelectorAll("#login_lang_switch_btn_menu").length,
+    1,
+  );
+  assert.equal(
+    document.getElementById("primary_header").getAttribute("data-marker"),
+    "after",
+  );
+  assert.equal(
+    document.querySelector("[data-tbf-live-content]").textContent,
+    "Content after",
+  );
+}
+
 async function verifyLiveFileInputPreservation(context) {
   const { softVisit } = await context.importDist("live");
   const { bindUploads, getUploadFiles } = await context.importDist("inputs");
@@ -179,7 +236,13 @@ async function verifyLiveFileInputPreservation(context) {
 
 async function verifyFrontendLive(context) {
   await verifyLiveOverlays(context);
+  await verifyLiveChromePortaledOverlayCleanup(context);
   await verifyLiveFileInputPreservation(context);
 }
 
-export { verifyFrontendLive, verifyLiveFileInputPreservation, verifyLiveOverlays };
+export {
+  verifyFrontendLive,
+  verifyLiveChromePortaledOverlayCleanup,
+  verifyLiveFileInputPreservation,
+  verifyLiveOverlays,
+};

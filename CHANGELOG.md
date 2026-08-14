@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.1.10
+
+- Removed stale portaled chrome overlays during preserved live refreshes.
+- Prevented repeated locale soft-refreshes from leaving duplicate language/theme menus.
+
 ## 7.1.9
 
 - Preserved file inputs and upload runtime state during locale-triggered live refreshes.

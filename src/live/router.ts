@@ -7,9 +7,11 @@ import {
   restoreFormState,
   restoreWizardSteps,
 } from "./state.js";
+import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
 
 type LiveNavigationOptions = LiveOptions& {
   history?: "none" | "push" | "replace";
+  portaledSelector?: string | string[];
   preserveState?: boolean;
   push?: boolean;
   updateUrl?: boolean;
@@ -18,6 +20,11 @@ type LiveNavigationOptions = LiveOptions& {
 
 const DEFAULT_CONTENT_SELECTOR = "[data-tbf-live-content],#live_content";
 const DEFAULT_FULL_RELOAD_SELECTOR = "[data-tbf-full-reload]";
+const DEFAULT_PORTALED_SELECTOR = [
+  "[data-tbf-modal][id]",
+  "[data-tbf-popover][id]",
+  "[data-dropdown-options][id]",
+].join(",");
 const loadedScriptSrcs = new Set<string>();
 let navigationInflight = false;
 
@@ -64,6 +71,18 @@ function swapChrome(doc: Document, options: LiveNavigationOptions) {
   });
 }
 
+function removeStalePortaledOverlays(
+  root: HTMLElement,
+  options: LiveNavigationOptions,
+) {
+  removeStalePortaledOverlaysFromRoot(
+    {
+      portaledSelector: options.portaledSelector || DEFAULT_PORTALED_SELECTOR,
+    },
+    root,
+  );
+}
+
 function updateDocumentMeta(doc: Document) {
   const title = doc.querySelector("title");
   if (title?.textContent) document.title = title.textContent;
@@ -88,6 +107,7 @@ function replaceLiveContent(
   ? captureWizardSteps(currentRoot)
   : null;
   options.closeOverlays?.();
+  removeStalePortaledOverlays(currentRoot, options);
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
   swapChrome(doc, options);
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
