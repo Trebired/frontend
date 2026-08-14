@@ -226,6 +226,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
                 background: "var(--tbf-surface-muted, #fff)",
                 border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
                 faceColor: "rgb(255 255 255 / 14%)",
+                guideOpacity: "1",
                 guideWidth: "1px",
                 height: "min(62vh, 640px)",
                 lineBlendMode: "difference",
@@ -294,28 +295,10 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
     }),
     shell: Object.freeze({
-        header: Object.freeze({
-            brand: {
-              tag: {
-                offsetY: "0",
-              },
-            },
-        }),
-        language: Object.freeze({
-            option: {
-              states: {
-                current: {},
-              },
-            },
-        }),
+        header: Object.freeze({ brand: { tag: { offsetY: "0" } } }),
+        language: Object.freeze({ option: { states: { current: {} } } }),
         sidebar: Object.freeze({}),
-        theme: Object.freeze({
-            option: {
-              states: {
-                current: {},
-              },
-            },
-        }),
+        theme: Object.freeze({ option: { states: { current: {} } } }),
     }),
     surfaces: Object.freeze({
         button: Object.freeze({}),

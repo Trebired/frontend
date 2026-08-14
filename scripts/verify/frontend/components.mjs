@@ -63,7 +63,10 @@ async function verifyUploadStyles(rootDir) {
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-overlay-color"));
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-blend-mode"));
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-width, 2px"));
+  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-guide-opacity, 1"));
   assert.ok(cropper.includes("mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode"));
+  assert.ok(cropper.includes("z-index: 3"));
+  assert.ok(cropper.includes("z-index: 1"));
   assert.ok(cropper.includes("--tbf-primitives-upload-responsive-mobile-cropper-stage-height"));
   assert.ok(cropperRuntime.includes("remixicon close-line"));
   assert.ok(cropperRuntime.includes("remixicon checkbox-circle-line"));

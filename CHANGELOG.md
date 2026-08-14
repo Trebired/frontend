@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.4
+
+- Made upload cropper internal guides stay above the crop face and use full adaptive contrast.
+
 ## 7.1.3
 
 - Made upload cropper guides, borders, and handles use adaptive per-pixel contrast over the image.
