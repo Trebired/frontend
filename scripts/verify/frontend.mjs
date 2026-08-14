@@ -243,6 +243,7 @@ async function verifyUpload() {
   } = await importDist("inputs");
   const html = uploadFieldHtml(fullUploadOptions());
   assertUploadMarkup(html);
+  assert.equal(uploadFieldHtml({ name: "plain" }).includes("data-tbf-upload-drop"), false);
   const element = createUploadField(fullUploadOptions());
   document.body.appendChild(element);
   bindUploadRoot(element);

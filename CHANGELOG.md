@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.0.5
+
+- Made upload fields use a solid border unless drag-and-drop is enabled.
+- Added a visible drag-over state for drop-enabled upload fields.
+
 ## 7.0.4
 
 - Added a tooltip panel shadow token so tooltips match other overlay surfaces.

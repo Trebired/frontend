@@ -272,7 +272,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             surface: {
               background: "var(--tbf-surface-muted, #fff)",
-              border: "var(--tbf-border-width, 1px) dashed var(--tbf-border, #000)",
+              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
               color: "var(--tbf-text, #000)",
               gap: "12px",
               minHeight: "72px",

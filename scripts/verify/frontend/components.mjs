@@ -50,6 +50,10 @@ async function verifyUploadStyles(rootDir) {
   const cropperRuntime = await fs.readFile(path.join(rootDir, "dist", "inputs", "upload", "crop-session.js"), "utf8");
   assert.ok(upload.includes("--tbf-primitives-upload-surface-background"));
   assert.ok(upload.includes("grid-template-columns: auto minmax(0, 1fr)"));
+  assert.ok(upload.includes('[data-tbf-upload-drop="true"]'));
+  assert.ok(upload.includes("--tbf-primitives-upload-surface-states-drop-border-style"));
+  assert.ok(upload.includes("[data-tbf-upload-drag]"));
+  assert.ok(upload.includes("--tbf-primitives-upload-surface-states-drag-shadow"));
   assert.ok(upload.includes("white-space: nowrap"));
   assert.ok(upload.includes('data-tbf-upload-entry-count="1"'));
   assert.ok(upload.includes("--tbf-primitives-upload-list-max-height"));

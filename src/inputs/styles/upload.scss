@@ -23,10 +23,19 @@
   border-radius: var(--tbf-primitives-upload-surface-radius, var(--tbf-radius, 0));
   color: var(--tbf-primitives-upload-surface-color, var(--tbf-text, #000));
   background: var(--tbf-primitives-upload-surface-background, var(--tbf-surface-muted, #fff));
+  transition: var(
+    --tbf-primitives-upload-surface-transition,
+    border-color 140ms ease, background 140ms ease, box-shadow 140ms ease
+  );
 }
 
-.tbf-upload[data-tbf-upload-drag] .tbf-upload__surface {
+.tbf-upload[data-tbf-upload-drop="true"] .tbf-upload__surface {
+  border-style: var(--tbf-primitives-upload-surface-states-drop-border-style, dashed);
+}
+
+.tbf-upload[data-tbf-upload-drop="true"][data-tbf-upload-drag] .tbf-upload__surface {
   border-color: var(--tbf-primitives-upload-surface-states-drag-border-color, var(--tbf-focus, #000));
+  box-shadow: var(--tbf-primitives-upload-surface-states-drag-shadow, 0 0 0 2px var(--tbf-focus, #000));
   background: var(--tbf-primitives-upload-surface-states-drag-background, var(--tbf-surface, #fff));
 }
 
