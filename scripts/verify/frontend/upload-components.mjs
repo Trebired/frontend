@@ -22,6 +22,8 @@ async function verifyUploadStyles(rootDir) {
   assert.ok(upload.includes("[data-tbf-upload-drag]"));
   assert.ok(upload.includes("--tbf-primitives-upload-surface-states-drag-shadow"));
   assert.ok(upload.includes("white-space: nowrap"));
+  assert.ok(upload.includes("--tbf-primitives-upload-hint-line-height"));
+  assert.ok(upload.includes("--tbf-primitives-upload-meta-gap, var(--tbf-gap-sm, 8px)"));
   assert.ok(upload.includes('data-tbf-upload-entry-count="1"'));
   assert.ok(upload.includes("--tbf-primitives-upload-list-max-height"));
   assert.equal(upload.includes("tbf-upload__button"), false);

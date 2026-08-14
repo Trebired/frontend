@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.12
+
+- Tightened upload metadata text line-height and made upload metadata spacing use `gap-sm`.
+
 ## 7.1.11
 
 - Bound dynamically assigned tooltip text so async status icons keep tooltips after preserved live refreshes.

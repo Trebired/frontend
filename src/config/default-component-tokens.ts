@@ -213,7 +213,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
         upload: Object.freeze({
             actions: { gap: "8px" },
-            content: { gap: "6px" },
+            content: { gap: "8px" },
             cropper: {
               actions: { gap: "8px" },
               description: { color: "var(--tbf-text-muted, #000)" },
@@ -244,10 +244,11 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             hint: {
               color: "var(--tbf-text-muted, #000)",
               fontSize: "0.92rem",
+              lineHeight: "1.15",
             },
-            filename: { fontSize: "0.95rem", lineHeight: "1.25" },
+            filename: { fontSize: "0.95rem", lineHeight: "1.15" },
             list: { gap: "4px", maxHeight: "84px", paddingLeft: "18px" },
-            meta: { gap: "4px" },
+            meta: { gap: "8px" },
             preview: {
               background: "var(--tbf-surface, #fff)",
               border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",

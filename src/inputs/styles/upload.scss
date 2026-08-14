@@ -52,11 +52,11 @@
 }
 
 .tbf-upload__content {
-  gap: var(--tbf-primitives-upload-content-gap, var(--tbf-gap-sm, 6px));
+  gap: var(--tbf-primitives-upload-content-gap, var(--tbf-gap-sm, 8px));
 }
 
 .tbf-upload__meta {
-  gap: var(--tbf-primitives-upload-meta-gap, var(--tbf-gap-xs, 4px));
+  gap: var(--tbf-primitives-upload-meta-gap, var(--tbf-gap-sm, 8px));
   overflow: hidden;
 }
 
@@ -91,12 +91,13 @@
 
 .tbf-upload__filename {
   font-size: var(--tbf-primitives-upload-filename-font-size, 0.95rem);
-  line-height: var(--tbf-primitives-upload-filename-line-height, 1.25);
+  line-height: var(--tbf-primitives-upload-filename-line-height, 1.15);
 }
 
 .tbf-upload__hint {
   color: var(--tbf-primitives-upload-hint-color, var(--tbf-text-muted, #000));
   font-size: var(--tbf-primitives-upload-hint-font-size, 0.92rem);
+  line-height: var(--tbf-primitives-upload-hint-line-height, 1.15);
 }
 
 .tbf-upload__list {
