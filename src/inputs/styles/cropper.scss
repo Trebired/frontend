@@ -95,18 +95,30 @@
 }
 
 .tbf-upload-crop__stage .cropper-view-box {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  outline: var(--tbf-border-width, 1px) solid
+  outline: none;
+}
+
+.tbf-upload-crop__stage .cropper-view-box::after {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border: var(--tbf-primitives-upload-cropper-stage-line-width, 2px) solid
   var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+  content: "";
+  mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode, difference);
+  pointer-events: none;
 }
 
 .tbf-upload-crop__stage .cropper-dashed {
   position: absolute;
   display: block;
   border: 0 dashed var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+  mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode, difference);
   opacity: 0.45;
 }
 
@@ -115,8 +127,8 @@
   left: 0;
   width: 100%;
   height: calc(100% / 3);
-  border-top-width: var(--tbf-border-width, 1px);
-  border-bottom-width: var(--tbf-border-width, 1px);
+  border-top-width: var(--tbf-primitives-upload-cropper-stage-guide-width, 1px);
+  border-bottom-width: var(--tbf-primitives-upload-cropper-stage-guide-width, 1px);
 }
 
 .tbf-upload-crop__stage .cropper-dashed.dashed-v {
@@ -124,8 +136,8 @@
   left: calc(100% / 3);
   width: calc(100% / 3);
   height: 100%;
-  border-right-width: var(--tbf-border-width, 1px);
-  border-left-width: var(--tbf-border-width, 1px);
+  border-right-width: var(--tbf-primitives-upload-cropper-stage-guide-width, 1px);
+  border-left-width: var(--tbf-primitives-upload-cropper-stage-guide-width, 1px);
 }
 
 .tbf-upload-crop__stage .cropper-center {
@@ -143,6 +155,7 @@
   display: block;
   background: var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
   content: " ";
+  mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode, difference);
 }
 
 .tbf-upload-crop__stage .cropper-center::before {
@@ -173,38 +186,39 @@
 
 .tbf-upload-crop__stage .cropper-line {
   background: var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+  mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode, difference);
 }
 
 .tbf-upload-crop__stage .cropper-line.line-e,
 .tbf-upload-crop__stage .cropper-line.line-w {
   top: 0;
-  width: 4px;
+  width: var(--tbf-primitives-upload-cropper-stage-line-width, 2px);
   height: 100%;
   cursor: ew-resize;
 }
 
 .tbf-upload-crop__stage .cropper-line.line-e {
-  right: -2px;
+  right: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 2px) / -2);
 }
 
 .tbf-upload-crop__stage .cropper-line.line-w {
-  left: -2px;
+  left: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 2px) / -2);
 }
 
 .tbf-upload-crop__stage .cropper-line.line-n,
 .tbf-upload-crop__stage .cropper-line.line-s {
   left: 0;
   width: 100%;
-  height: 4px;
+  height: var(--tbf-primitives-upload-cropper-stage-line-width, 2px);
   cursor: ns-resize;
 }
 
 .tbf-upload-crop__stage .cropper-line.line-n {
-  top: -2px;
+  top: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 2px) / -2);
 }
 
 .tbf-upload-crop__stage .cropper-line.line-s {
-  bottom: -2px;
+  bottom: calc(var(--tbf-primitives-upload-cropper-stage-line-width, 2px) / -2);
 }
 
 .tbf-upload-crop__stage .cropper-point {
@@ -216,6 +230,7 @@
   );
   border-radius: var(--tbf-primitives-upload-cropper-stage-point-radius, var(--tbf-radius-sm, 0));
   background: var(--tbf-primitives-upload-cropper-stage-point-background, #fff);
+  mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode, difference);
 }
 
 .tbf-upload-crop__stage .cropper-hidden {

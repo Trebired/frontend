@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.1.3
+
+- Made upload cropper guides, borders, and handles use adaptive per-pixel contrast over the image.
+- Reduced upload cropper selection lines from 4px to 2px.
+
 ## 7.1.2
 
 - Corrected `ViewportCenter` centering when rendered inside padded layout content.
