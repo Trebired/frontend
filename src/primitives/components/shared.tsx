@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import { appendClassName, joinClassNames, jsonScript, toText } from "#ndsvdqv80epr";
@@ -38,6 +38,12 @@ function actionTriggerAttrs(options?: BindActionTriggerOptions) {
 function wrapTriggerHostNode(children: ReactNode, options?: BindActionTriggerOptions) {
   if (!options || (!options.action && !options.href && !options.externalHref)) {
     return children;
+  }
+  if (isValidElement(children) && typeof children.type === "string") {
+    return cloneElement(
+      children as ReactElement<Record<string, unknown>>,
+      actionTriggerAttrs(options),
+    );
   }
   return (
     <span

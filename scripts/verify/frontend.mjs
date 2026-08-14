@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { verifyFrontendActions } from "./frontend/actions.mjs";
 import { verifyFrontendConfig } from "./frontend/config.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
@@ -36,9 +37,9 @@ async function verifyFrontendMain() {
   await verifyNamespace(context);
   await verifyCsrfFetch();
   await verifyLocaleSwitching();
+  await verifyFrontendActions({ importDist, importDistRoot });
   await verifyProductIdentity(context);
   await verifyIcons(context);
-  await verifyActionConfetti();
   await verifyFlash(context);
   await verifyTooltip();
   await verifyPopover(context);
@@ -108,26 +109,6 @@ async function verifyCsrfFetch() {
   await csrfFetch("/endpoint", { method: "POST" });
   assert.equal(captured.credentials, "same-origin");
   assert.equal(new Headers(captured.headers).get("X-CSRF-Token"), "token-a");
-}
-
-async function verifyActionConfetti() {
-  const { submitActionButton } = await importDist("actions");
-  let count = 0;
-  document.addEventListener("tbf:confetti", () => {
-      count += 1;
-  });
-  globalThis.fetch = async() => {
-    return new Response(JSON.stringify({ ok: true, message: "Saved." }), {
-        headers: { "Content-Type": "application/json" },
-    });
-  };
-  const plain = document.createElement("button");
-  await submitActionButton(plain, undefined, { url: "/ok" });
-  assert.equal(count, 0);
-  const configured = document.createElement("button");
-  configured.setAttribute("data-tbf-confetti", "true");
-  await submitActionButton(configured, undefined, { url: "/ok" });
-  assert.equal(count, 1);
 }
 
 async function verifyLocaleSwitching() {

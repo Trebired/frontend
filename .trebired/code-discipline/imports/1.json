@@ -522,6 +522,7 @@
   "#z8s8ga6gzetk": "./src/layout/components/shell/product/header.tsx",
   "#zfr3cxn2g1wf": "./src/logs/client/detail/load.ts",
   "#zgttxcjd88sc": "./src/explorer/index.ts",
+  "#zhdmn9kh778l": "./scripts/verify/frontend/actions.mjs",
   "#zmfqgs2j6lnm": "./src/flash/toast.ts",
   "#zs2n3yw4lveu": "./src/editor/components/surface.tsx",
   "#zs6eb2qqxczy": "./src/logs/client/index.ts",

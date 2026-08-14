@@ -1,6 +1,15 @@
-import { isInteractiveTarget, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import {
+  INTERACTIVE_TARGET_SELECTOR,
+  closestElement,
+  queryAll,
+  type BindRoot,
+} from "#er0dlx1gtbzh";
 
-const ACTION_TRIGGER_SELECTOR = "[data-tbf-action-trigger]";
+const ACTION_TRIGGER_SELECTOR = [
+  "[data-tbf-action-trigger]",
+  "[data-tbf-href]",
+  "[data-tbf-external-href]",
+].join(",");
 const ACTION_FULL_RELOAD_SELECTOR = "[data-tbf-full-reload]";
 const registry = new Map<string, Array<(payload: ActionPayload) => void>>();
 const triggerBindings = new WeakMap<HTMLElement, () => void>();
@@ -139,7 +148,17 @@ function handleTrigger(
   options: BindActionTriggerOptions,
 ) {
   if (event.defaultPrevented) return;
-  if (isInteractiveTarget(event.target) && event.target !== trigger) return;
+  const interactiveTarget = closestElement<HTMLElement>(
+    event.target,
+    INTERACTIVE_TARGET_SELECTOR,
+  );
+  if (
+    interactiveTarget &&
+      interactiveTarget !== trigger &&
+      trigger.contains(interactiveTarget)
+  ) {
+    return;
+  }
   if (navigateHref(trigger, options)) {
     event.preventDefault();
     return;

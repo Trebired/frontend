@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 7.1.8
+
+- Corrected `ViewportCenter` height inside padded layout content so it does not create unnecessary page overflow.
+- Made href-only action triggers bind to the soft-navigation runtime and apply trigger attributes directly to host elements.
+- Added pointer cursor feedback to upload cropper resize handles.
+
 ## 7.1.7
 
 - Allowed the upload cropper stage to show resize handles when they sit on exact-fit edges.

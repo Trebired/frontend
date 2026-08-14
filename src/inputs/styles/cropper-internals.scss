@@ -234,6 +234,7 @@
   background: var(--tbf-primitives-upload-cropper-stage-point-background, #fff);
   box-shadow: 0 0 0 var(--tbf-primitives-upload-cropper-stage-line-width, 1px)
   var(--tbf-primitives-upload-cropper-stage-line-color, #fff);
+  cursor: pointer;
   transform: translate(var(--tbf-upload-cropper-point-x, 0), var(--tbf-upload-cropper-point-y, 0));
   z-index: 5;
 }

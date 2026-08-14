@@ -137,6 +137,7 @@ async function verifyViewportCenter(context) {
   );
   assert.ok(styles.includes("var(--tbf-layout-top-offset, 0px)"));
   assert.ok(styles.includes("var(--tbf-layout-content-padding-block-start, 0px)"));
+  assert.ok(styles.includes("var(--tbf-layout-content-padding-block-end, 0px)"));
   assert.ok(
     styles.includes(
       "[data-tbf-layout-content] > [data-tbf-viewport-center]",
