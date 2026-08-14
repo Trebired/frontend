@@ -18,7 +18,7 @@
   transform 0.22s ease,
   visibility 0s linear 0.22s;
 
-  &:not(.show):not([data-dropdown-closing="true"]):not(
+  &:not([data-dropdown-show="true"]):not([data-dropdown-closing="true"]):not(
     [data-dropdown-measuring="true"]
   ) {
     top: 0 !important;
@@ -31,7 +31,7 @@
     overflow: hidden !important;
   }
 
-  &.show {
+  &[data-dropdown-show="true"] {
     visibility: visible;
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -105,7 +105,7 @@
 
 .options[data-dropdown-portaled="true"]
 .dropdown-list
-li[data-selected="true"] {
+li[data-dropdown-selected="true"] {
   background: color-mix(
     in srgb,
     var(--tbf-primitives-dropdown-option-states-selected-background, var(--background-surface-2, transparent)) 70%,
@@ -113,7 +113,9 @@ li[data-selected="true"] {
   );
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li[data-placeholder] {
+.options[data-dropdown-portaled="true"]
+.dropdown-list
+li[data-dropdown-placeholder-option] {
   color: var(--text-color-muted);
   cursor: default;
 }
@@ -185,7 +187,7 @@ span:not(.dropdown-check) {
 
 .options[data-dropdown-portaled="true"]
 .dropdown-list
-li[data-selected="true"]
+li[data-dropdown-selected="true"]
 .dropdown-check {
   opacity: 1;
 }
@@ -196,8 +198,8 @@ li[data-selected="true"]
 
 [data-dropdown-label] > i,
 [data-dropdown-label] > span.icon,
-[data-dropdown] .dropdown-list li > i,
-[data-dropdown] .dropdown-list li > span.icon,
+[data-dropdown-root] .dropdown-list li > i,
+[data-dropdown-root] .dropdown-list li > span.icon,
 .options[data-dropdown-portaled="true"] .dropdown-list li > i,
 .options[data-dropdown-portaled="true"] .dropdown-list li > span.icon {
   display: inline-flex;
@@ -207,7 +209,7 @@ li[data-selected="true"]
 }
 
 [data-dropdown-label] svg,
-[data-dropdown] .dropdown-list li svg,
+[data-dropdown-root] .dropdown-list li svg,
 .options[data-dropdown-portaled="true"] .dropdown-list li svg {
   width: 1em;
   height: 1em;

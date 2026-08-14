@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.13
+
+- Aligned advanced dropdown CSS selectors with the runtime attributes so hidden wizard-step dropdowns open and selected options style correctly.
+
 ## 7.1.12
 
 - Tightened upload metadata text line-height and made upload metadata spacing use `gap-sm`.
