@@ -27,7 +27,7 @@
   position: relative;
   height: var(--tbf-primitives-upload-cropper-stage-height, min(62vh, 640px));
   min-height: var(--tbf-primitives-upload-cropper-stage-min-height, 320px);
-  overflow: hidden;
+  overflow: visible;
   border: var(
     --tbf-primitives-upload-cropper-stage-border,
     var(--tbf-border-width, 1px) solid var(--tbf-border, #000)

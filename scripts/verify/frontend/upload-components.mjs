@@ -31,6 +31,7 @@ async function verifyUploadStyles(rootDir) {
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-width, 1px"));
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-point-inset"));
   assert.ok(cropper.includes("overflow: visible"));
+  assert.ok(cropperShell.includes("overflow: visible"));
   assert.ok(cropper.includes("linear-gradient("));
   assert.equal(cropper.includes("mix-blend-mode"), false);
   assert.ok(cropper.includes("z-index: 3"));
