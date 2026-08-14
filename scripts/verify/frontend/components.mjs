@@ -61,10 +61,10 @@ async function verifyUploadStyles(rootDir) {
   assert.equal(upload.includes("tbf-upload__button"), false);
   assert.equal(upload.includes("--tbf-primitives-upload-button"), false);
   assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-overlay-color"));
-  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-blend-mode"));
-  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-width, 2px"));
-  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-guide-opacity, 1"));
-  assert.ok(cropper.includes("mix-blend-mode: var(--tbf-primitives-upload-cropper-stage-line-blend-mode"));
+  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-contrast-color"));
+  assert.ok(cropper.includes("--tbf-primitives-upload-cropper-stage-line-width, 1px"));
+  assert.ok(cropper.includes("linear-gradient("));
+  assert.equal(cropper.includes("mix-blend-mode"), false);
   assert.ok(cropper.includes("z-index: 3"));
   assert.ok(cropper.includes("z-index: 1"));
   assert.ok(cropper.includes("--tbf-primitives-upload-responsive-mobile-cropper-stage-height"));

@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.5
+
+- Replaced upload cropper adaptive blending with paired black and white strokes for outer and inner guides.
+
 ## 7.1.4
 
 - Made upload cropper internal guides stay above the crop face and use full adaptive contrast.
