@@ -29,9 +29,9 @@ Feature binders such as `bindActionForms()`, `bindTooltips()`, `bindModals()`, a
 Projects configure package-owned systems through the frontend config file consumed by the bundler.
 
 ```ts
-import { defineFrontendConfig } from "<package-name>/config";
+import { defineConfig } from "<package-name>/config";
 
-export default defineFrontendConfig({
+export default defineConfig({
   prefix: "tbf",
   assets: {
     icons: {
@@ -68,7 +68,7 @@ export default defineFrontendConfig({
 });
 ```
 
-The config entrypoint exports `defineFrontendConfig()`, `normalizeFrontendConfig()`, `loadFrontendConfig()`, `findFrontendConfig()`, `generateFrontendScss()`, `collectConfigDependencies()`, and `THEME_MODE_ATTRIBUTE`.
+The config entrypoint exports `defineConfig()`, `normalizeFrontendConfig()`, `loadConfig()`, `findConfig()`, `generateFrontendScss()`, `collectConfigDependencies()`, and `THEME_MODE_ATTRIBUTE`.
 
 ## Components
 

@@ -76,9 +76,9 @@ async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
 
 async function writeBundlerConfig(fixture, frontendPackageName, configDirName) {
   await writeFile(fixture, `${configDirName}/frontend/config.ts`, [
-      `import { defineFrontendConfig } from "${frontendPackageName}/config";`,
+      `import { defineConfig } from "${frontendPackageName}/config";`,
       "",
-      "export default defineFrontendConfig({",
+      "export default defineConfig({",
       "  prefix: \"verify\",",
       "  assets: {",
       "    fonts: {",

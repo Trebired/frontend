@@ -6,8 +6,8 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 const outputPath = path.join(repoRoot, "src", "namespace", "generated.ts");
 const bundlerPackage = `@${String.fromCharCode(116, 114, 101, 98, 105, 114, 101, 100)}/bundler`;
 
-const { loadBundlerProjectConfig } = await import(bundlerPackage);
-const loaded = await loadBundlerProjectConfig(repoRoot, { defaultIfMissing: false });
+const { loadConfig } = await import(`${bundlerPackage}/config`);
+const loaded = await loadConfig(repoRoot, { defaultIfMissing: false });
 const prefix = loaded.config.prefix;
 
 await fs.mkdir(path.dirname(outputPath), { recursive: true });

@@ -10,9 +10,9 @@ import type {
   FrontendConfig,
 } from "./types.js";
 
-const defineFrontendConfig = defineValue as <T extends FrontendConfig > (config: T) => T;
+const defineConfig = defineValue as <T extends FrontendConfig > (config: T) => T;
 
-async function findFrontendConfig(
+async function findConfig(
   startDir: string = process.cwd(),
   boundaryDir?: string,
 ): Promise<string|null> {
@@ -36,14 +36,14 @@ function createDefaultLoadedConfig(): LoadedFrontendConfig {
   };
 }
 
-async function loadFrontendConfig(
+async function loadConfig(
   projectRoot: string = process.cwd(),
   options: LoadFrontendConfigOptions = {},
 ): Promise<LoadedFrontendConfig> {
   const root = path.resolve(projectRoot);
   const resolvedPath = options.configPath
   ? path.resolve(root, options.configPath)
-  : await findFrontendConfig(options.searchFrom || root);
+  : await findConfig(options.searchFrom || root);
 
   if (!resolvedPath) {
     if (options.defaultIfMissing === false) {
@@ -77,7 +77,7 @@ export {
 export { generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
 export { createFrontendTokenHelpers } from "./tokens.js";
-export { defineFrontendConfig, findFrontendConfig, loadFrontendConfig };
+export { defineConfig, findConfig, loadConfig };
 export type {
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,

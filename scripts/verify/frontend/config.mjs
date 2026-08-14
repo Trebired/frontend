@@ -7,11 +7,11 @@ async function verifyFrontendConfig(context) {
   const fixture = path.join(context.rootDir, ".tmp", "verify-frontend", "config");
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(path.join(fixture, context.configDirName, "frontend"), { recursive: true });
-  assertDefaultConfig(await config.loadFrontendConfig(fixture), context);
+  assertDefaultConfig(await config.loadConfig(fixture), context);
 
   const configPath = path.join(fixture, context.configRelPath);
   await fs.writeFile(configPath, configuredSource());
-  const loaded = await config.loadFrontendConfig(fixture);
+  const loaded = await config.loadConfig(fixture);
   assertLoadedConfig(loaded, configPath, config);
   assertTokenHelpers(config);
   await assert.rejects(
@@ -20,11 +20,11 @@ async function verifyFrontendConfig(context) {
   );
 
   await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
-  await assert.rejects(() => config.loadFrontendConfig(fixture), /invalid-config/u);
+  await assert.rejects(() => config.loadConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: {} } };\n");
-  await assert.rejects(() => config.loadFrontendConfig(fixture), /not supported/u);
+  await assert.rejects(() => config.loadConfig(fixture), /not supported/u);
   await fs.writeFile(configPath, "export default { assets: { fonts: { families: { bad: { package: \"https://bad\" } } } } };\n");
-  await assert.rejects(() => config.loadFrontendConfig(fixture), /Fontsource package name/u);
+  await assert.rejects(() => config.loadConfig(fixture), /Fontsource package name/u);
 }
 
 function assertTokenHelpers(config) {

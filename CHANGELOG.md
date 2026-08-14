@@ -2,6 +2,12 @@
 
 All notable package changes are documented here.
 
+## 7.0.0
+
+- Renamed the public frontend config definer and loader helpers to `defineConfig()`, `findConfig()`, and `loadConfig()`.
+- Updated generated namespace loading to use `@trebired/bundler/config`.
+- Replaced the Code Discipline preset dependency with `@trebired/configs`.
+
 ## 6.16.0
 
 - Added package-owned frontend request logging middleware for document requests, static-success suppression, and generic browser probe suppression.
