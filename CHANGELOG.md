@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.0.1
+
+- Updated the shared Trebired config dependency to `@trebired/configs@^0.1.2`.
+
 ## 7.0.0
 
 - Renamed the public frontend config definer and loader helpers to `defineConfig()`, `findConfig()`, and `loadConfig()`.
@@ -29,7 +33,7 @@ All notable package changes are documented here.
 
 ## 6.15.4
 
-- Adopted the external `@trebired/code-discipline-config` preset and updated Code Discipline tooling to `@trebired/code-discipline@^6.0.9`.
+- Adopted the external `@trebired/configs` preset and updated Code Discipline tooling to `@trebired/code-discipline@^6.0.9`.
 - Consolidated repeated frontend runtime helpers for boolean data attributes, close buttons, icon response locals, and React root caching.
 
 ## 6.15.3
