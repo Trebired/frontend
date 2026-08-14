@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.0.7
+
+- Made locale switching use the configured SPA reload adapter and default to frontend soft reload instead of forcing a document reload.
+
 ## 7.0.6
 
 - Fixed the upload stylesheet fallback so non-drop upload fields use solid borders even without app token overrides.

@@ -1,5 +1,6 @@
 import { requestJsonPayload } from "#yasd5gi3ad9a";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { softReload } from "#sida2bfa7lk5";
 import { text } from "./shared.js";
 
 type LocaleRuntimeOptions = {
@@ -28,8 +29,7 @@ async function defaultPersistLocale(lang: string, endpoint: string) {
 
 function defaultRefreshLocale() {
   if (typeof window === "undefined") return false;
-  window.location.reload();
-  return true;
+  return softReload();
 }
 
 async function applyLocale(

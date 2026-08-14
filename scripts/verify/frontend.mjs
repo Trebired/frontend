@@ -35,6 +35,7 @@ async function verifyFrontendMain() {
   await verifyFrontendConfig(context);
   await verifyNamespace(context);
   await verifyCsrfFetch();
+  await verifyLocaleSwitching();
   await verifyProductIdentity(context);
   await verifyIcons(context);
   await verifyActionConfetti();
@@ -126,6 +127,38 @@ async function verifyActionConfetti() {
   configured.setAttribute("data-tbf-confetti", "true");
   await submitActionButton(configured, undefined, { url: "/ok" });
   assert.equal(count, 1);
+}
+
+async function verifyLocaleSwitching() {
+  const { bindFrontendRuntime } = await importDistRoot();
+  document.body.innerHTML = [
+    '<button id="locale" data-tbf-locale-option data-tbf-locale-endpoint="/ui/lang/set" value="cs">',
+    "Czech",
+    "</button>",
+  ].join("");
+  let persisted = null;
+  let reloadCount = 0;
+  bindFrontendRuntime(document, {
+      adapters: {
+        reload: {
+          reload() {
+            reloadCount += 1;
+          },
+        },
+      },
+      locale: {
+        persistLocale(lang, endpoint) {
+          persisted = { endpoint, lang };
+          return Promise.resolve({ ok: true });
+        },
+      },
+      observe: false,
+      quiet: true,
+  });
+  document.getElementById("locale").click();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.deepEqual(persisted, { endpoint: "/ui/lang/set", lang: "cs" });
+  assert.equal(reloadCount, 1);
 }
 
 async function verifyTooltip() {

@@ -78,6 +78,18 @@ function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
   };
 }
 
+function localeRuntimeOptions(
+  options: FrontendRuntimeOptions,
+  adapters: ActionAdapters,
+): LocaleRuntimeOptions {
+  const locale = options.locale || {};
+  if (locale.refresh || !adapters.reload?.reload) return locale;
+  return {
+    ...locale,
+    refresh: () => adapters.reload?.reload?.(),
+  };
+}
+
 function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
   void bindThemeRuntime(scope, {
       ...(options.theme || {}),
@@ -99,7 +111,7 @@ function bindFrontendWidgets(
 ) {
   bindProgress();
   bindIcons(scope);
-  bindLocaleSwitchers(scope, options.locale || {});
+  bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters));
   bindSourceLanguageRuntime(scope, options.sourceLanguage || {});
   bindGraphs(scope);
   bindLogsRuntime(scope);
