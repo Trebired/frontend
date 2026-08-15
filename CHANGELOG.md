@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.15
+
+- Kept text-link styling generic and token-driven while making hover/focus decoration changes apply instantly without package-owned animation.
+
 ## 7.1.14
 
 - Made text-link hover feedback use animatable color and underline-color transitions instead of snapping underline style.

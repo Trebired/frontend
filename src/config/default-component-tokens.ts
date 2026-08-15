@@ -196,10 +196,10 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               fontWeight: "inherit",
               textDecorationLine: "underline",
               textDecorationColor: "currentColor",
-              textDecorationStyle: "dotted",
+              textDecorationStyle: "solid",
               textDecorationThickness: "1px",
               textUnderlineOffset: "3px",
-              transition: "color 120ms ease, text-decoration-color 120ms ease",
+              transition: "none",
             },
             states: {
               hover: {
