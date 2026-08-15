@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.1.17
+
+- Updated shared utilities to `@trebired/utils@^0.4.4`.
+
 All notable package changes are documented here.
 
 ## 7.1.16
