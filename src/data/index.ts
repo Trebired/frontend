@@ -1,15 +1,15 @@
 import { formatDateTime } from "#k0q2s2kidqtq";
-import { isPlainObject } from "#kr652d3st9at";
+import {
+  isRecord as isPlainObject,
+  toTrimmedString,
+} from "@trebired/utils";
 
 function onlyString(value: unknown) {
   return typeof value === "string" ? value : "";
 }
 
 function toString(value: unknown, fallback: unknown = "") {
-  if (typeof value === "string") return value.trim();
-  if (typeof value === "number" && Number.isFinite(value)) return String(value);
-  if (typeof value === "boolean") return value ? "true" : "false";
-  return typeof fallback === "string" ? fallback.trim() : String(fallback ?? "");
+  return toTrimmedString(value, toTrimmedString(fallback));
 }
 
 function dataTokens(value: unknown) {

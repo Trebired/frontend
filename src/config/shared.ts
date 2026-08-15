@@ -1,11 +1,9 @@
+import { isRecord as isPlainObject } from "@trebired/utils";
+
 const CONFIG_ERROR_PREFIX = "frontend-invalid-config";
 
 function invalidConfig(message: string): Error {
   return new Error(`${CONFIG_ERROR_PREFIX} :: ${message}`);
-}
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
 function assertPlainObject(value: unknown, pathLabel: string): Record<string, unknown> {

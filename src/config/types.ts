@@ -168,6 +168,7 @@ type FrontendConfig = {
   assets?: FrontendAssetsConfig;
   components?: FrontendComponentsConfig;
   design?: FrontendDesignConfig;
+  forVersion?: string;
   prefix?: string;
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
@@ -261,6 +262,7 @@ type NormalizedFrontendConfig = {
   assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
   design: NormalizedFrontendDesignConfig;
+  forVersion: string;
   prefix: string;
   runtime: NormalizedFrontendRuntimeConfig;
   systems: Record<FrontendSystemKey, boolean>;

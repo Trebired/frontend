@@ -5,12 +5,16 @@ import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
-import { frontendConfigPath } from "./package.js";
+import {
+  frontendConfigPath,
+  PACKAGE_VERSION,
+} from "./package.js";
 import {
   defaultIconAliases,
   normalizeIconAliasKey,
   normalizeIconAliasSpec,
 } from "#rqcj8y6keks2";
+import { resolveForVersion } from "@trebired/utils";
 import type {
   NormalizedFrontendConfig,
   FrontendAssetsConfig,
@@ -19,6 +23,11 @@ import type {
   FrontendRuntimeConfig,
   FrontendSystemKey,
 } from "./types.js";
+
+type NormalizeOptions = {
+  configPath?: string;
+  requireForVersion?: boolean;
+};
 
 const FRONTEND_CONFIG_PATH = frontendConfigPath();
 
@@ -54,6 +63,7 @@ const TOP_LEVEL_FIELDS = [
   "assets",
   "components",
   "design",
+  "forVersion",
   "prefix",
   "runtime",
   "systems",
@@ -102,6 +112,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         }) as NormalizedFrontendConfig["design"]["scales"],
         semantics: Object.freeze({}),
     }),
+    forVersion: PACKAGE_VERSION,
     prefix: "tbf",
     runtime: Object.freeze({
         layer: Object.freeze({}),
@@ -245,7 +256,10 @@ function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {
   return systems;
 }
 
-function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig {
+function normalizeFrontendConfig(
+  config: unknown = {},
+  options: NormalizeOptions = {},
+): NormalizedFrontendConfig {
   const source = assertPlainObject(config, "config");
   assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
   const runtime = normalizeRuntimeConfig(source.runtime);
@@ -253,10 +267,24 @@ function normalizeFrontendConfig(config: unknown = {}): NormalizedFrontendConfig
     assets: normalizeAssetsConfig(source.assets),
     components: normalizeComponentsConfig(source.components),
     design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
+    forVersion: normalizeForVersion(source, options),
     prefix: normalizePrefix(source.prefix),
     runtime,
     systems: normalizeSystems(source.systems),
   };
+}
+
+function normalizeForVersion(
+  config: Record<string, unknown>,
+  options: NormalizeOptions,
+): string {
+  return resolveForVersion({
+      configPath: options.configPath,
+      forVersion: config.forVersion,
+      label: "frontend",
+      packageVersion: PACKAGE_VERSION,
+      requireForVersion: options.requireForVersion,
+  });
 }
 
 export {

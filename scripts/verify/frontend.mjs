@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 import path from "node:path";
 import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -19,6 +20,7 @@ import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const distDir = path.join(rootDir, "dist");
 const sourceDir = path.join(rootDir, "src");
+const packageVersion = JSON.parse(await fs.readFile(path.join(rootDir, "package.json"), "utf8")).version;
 
 async function verifyFrontendMain() {
   const configDirName = await workspaceConfigDir(rootDir);
@@ -29,6 +31,7 @@ async function verifyFrontendMain() {
     importDist,
     importDistRoot,
     packageName: await packageName(rootDir),
+    packageVersion,
     rootDir,
     sourceDir,
   };
@@ -55,7 +58,7 @@ async function verifyFrontendMain() {
   await verifyFrontendSource(context);
   await verifyFrontendServer(context);
   await verifyFrontendComponents({ importDist, rootDir });
-  await verifyFrontendTheme({ importDist, rootDir });
+  await verifyFrontendTheme({ importDist, packageVersion, rootDir });
   console.log("Frontend verification succeeded.");
 }
 

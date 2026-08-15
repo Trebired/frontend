@@ -2,6 +2,11 @@
 
 All notable package changes are documented here.
 
+## 7.1.16
+
+- Updated shared utilities to `@trebired/utils@^0.4.3`.
+- Moved frontend package identity/config path resolution onto the shared package identity helper.
+
 ## 7.1.15
 
 - Kept text-link styling generic and token-driven while making hover/focus decoration changes apply instantly without package-owned animation.

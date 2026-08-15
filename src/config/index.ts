@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { defineValue } from "#ndsvdqv80epr";
 import { collectConfigDependencies, importConfigModule, pathExists } from "./module.js";
-import { FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
+import { DEFAULT_FRONTEND_CONFIG, FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
 import { generateFrontendScss } from "./scss.js";
 import type {
   LoadFrontendConfigOptions,
@@ -27,7 +27,10 @@ async function findConfig(
 }
 
 function createDefaultLoadedConfig(): LoadedFrontendConfig {
-  const config = normalizeFrontendConfig({});
+  const config = normalizeFrontendConfig(
+    { forVersion: DEFAULT_FRONTEND_CONFIG.forVersion },
+    { requireForVersion: false },
+  );
   return {
     config,
     configPath: null,
@@ -57,7 +60,10 @@ async function loadConfig(
   }
 
   const dependencies = await collectConfigDependencies(resolvedPath);
-  const config = normalizeFrontendConfig(await importConfigModule(root, resolvedPath, dependencies));
+  const config = normalizeFrontendConfig(
+    await importConfigModule(root, resolvedPath, dependencies),
+    { configPath: resolvedPath, requireForVersion: true },
+  );
   return {
     config,
     configPath: resolvedPath,

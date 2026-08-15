@@ -10,20 +10,26 @@ async function verifyFrontendConfig(context) {
   assertDefaultConfig(await config.loadConfig(fixture), context);
 
   const configPath = path.join(fixture, context.configRelPath);
-  await fs.writeFile(configPath, configuredSource());
+  await fs.writeFile(configPath, configuredSource(context));
   const loaded = await config.loadConfig(fixture);
-  assertLoadedConfig(loaded, configPath, config);
+  assertLoadedConfig(loaded, configPath, config, context);
   assertTokenHelpers(config);
   await assert.rejects(
     () => fs.access(path.join(fixture, context.configDirName, "frontend", "generated", "styles.scss")),
     /ENOENT/u,
   );
 
-  await fs.writeFile(configPath, "export default { prefix: \"bad prefix\" };\n");
+  await fs.writeFile(
+    configPath,
+    `export default { forVersion: "${context.packageVersion}", prefix: "bad prefix" };\n`,
+  );
   await assert.rejects(() => config.loadConfig(fixture), /invalid-config/u);
   await fs.writeFile(configPath, "export default { fonts: { families: {} } };\n");
   await assert.rejects(() => config.loadConfig(fixture), /not supported/u);
-  await fs.writeFile(configPath, "export default { assets: { fonts: { families: { bad: { package: \"https://bad\" } } } } };\n");
+  await fs.writeFile(
+    configPath,
+    `export default { forVersion: "${context.packageVersion}", assets: { fonts: { families: { bad: { package: "https://bad" } } } } };\n`,
+  );
   await assert.rejects(() => config.loadConfig(fixture), /Fontsource package name/u);
 }
 
@@ -56,9 +62,10 @@ function assertTokenHelpers(config) {
   assert.equal(helpers.colorMix(helpers.color("blue", 400), "22%"), "color-mix(in srgb, var(--blue-400) 22%, transparent)");
 }
 
-function configuredSource() {
+function configuredSource(context) {
   return [
     "export default {",
+    `  forVersion: "${context.packageVersion}",`,
     "  prefix: \"app\",",
     "  assets: {",
     "    fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
@@ -103,7 +110,7 @@ function assertDefaultConfig(defaults, context) {
   }
 }
 
-function assertLoadedConfig(loaded, configPath, config) {
+function assertLoadedConfig(loaded, configPath, config, context) {
   assert.equal(loaded.configPath, configPath);
   assert.deepEqual(loaded.config.assets.icons.aliases, {
       add: "remixicon:add-line",
@@ -130,11 +137,17 @@ function assertLoadedConfig(loaded, configPath, config) {
   assert.ok(loaded.generatedScss.includes("--app-primitives-upload-preview-size: 88px;"));
   assert.ok(loaded.generatedScss.includes("--app-primitives-upload-surface-background: #eeeeee;"));
   assert.equal(
-    config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: false } } } }).design.interactions.activePress.filter,
+    config.normalizeFrontendConfig({
+        design: { interactions: { activePress: { enabled: false } } },
+        forVersion: context.packageVersion,
+    }).design.interactions.activePress.filter,
     "none"
   );
   assert.equal(
-    config.normalizeFrontendConfig({ design: { interactions: { activePress: { enabled: true } } } }).design.interactions.activePress.filter,
+    config.normalizeFrontendConfig({
+        design: { interactions: { activePress: { enabled: true } } },
+        forVersion: context.packageVersion,
+    }).design.interactions.activePress.filter,
     "brightness(0.9)"
   );
   assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");

@@ -66,7 +66,12 @@ async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
   await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
-  await writeBundlerConfig(fixture, frontendPackageName, await workspaceConfigDir(rootDir));
+  await writeBundlerConfig(
+    fixture,
+    frontendPackageName,
+    await workspaceConfigDir(rootDir),
+    packageJson.version,
+  );
   await writeFile(fixture, "src/screen.client.ts", [
       "document.documentElement.dataset.verify = \"ready\";",
       "",
@@ -74,11 +79,12 @@ async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
   return fixture;
 }
 
-async function writeBundlerConfig(fixture, frontendPackageName, configDirName) {
+async function writeBundlerConfig(fixture, frontendPackageName, configDirName, packageVersion) {
   await writeFile(fixture, `${configDirName}/frontend/config.ts`, [
       `import { defineConfig } from "${frontendPackageName}/config";`,
       "",
       "export default defineConfig({",
+      `  forVersion: "${packageVersion}",`,
       "  prefix: \"verify\",",
       "  assets: {",
       "    fonts: {",

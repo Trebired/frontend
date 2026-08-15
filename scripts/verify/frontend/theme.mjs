@@ -16,11 +16,12 @@ async function verifyFrontendTheme(context) {
   await verifyThemeComponents(context);
 }
 
-function modeConfigSource() {
+function modeConfigSource(packageVersion) {
   return [
     "import { surface } from \"./tokens.js\";",
     "",
     "export default {",
+    `  forVersion: "${packageVersion}",`,
     "  prefix: \"app\",",
     "  runtime: {",
     "    theme: {",
@@ -50,19 +51,24 @@ function tokenSource(sepia) {
   ].join("\n");
 }
 
-async function writeThemeFixture(rootDir, name, sepia) {
+async function writeThemeFixture(rootDir, packageVersion, name, sepia) {
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", name);
   const configDir = path.join(fixture, await workspaceConfigDir(rootDir), "frontend");
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(configDir, { recursive: true });
-  await fs.writeFile(path.join(configDir, "config.ts"), modeConfigSource());
+  await fs.writeFile(path.join(configDir, "config.ts"), modeConfigSource(packageVersion));
   await fs.writeFile(path.join(configDir, "tokens.ts"), tokenSource(sepia));
   return { configDir, fixture };
 }
 
 async function verifyThemeConfigModes(context) {
   const config = await context.importDist("config");
-  const { fixture } = await writeThemeFixture(context.rootDir, "theme-config", "#f4ecd8");
+  const { fixture } = await writeThemeFixture(
+    context.rootDir,
+    context.packageVersion,
+    "theme-config",
+    "#f4ecd8",
+  );
   const loaded = await config.loadConfig(fixture);
   const scss = loaded.generatedScss;
 
@@ -78,18 +84,29 @@ async function verifyThemeConfigModes(context) {
   assert.ok(scss.includes(":root:not([data-tbf-theme]) {"));
   assert.equal(config.THEME_MODE_ATTRIBUTE, "data-tbf-theme");
   assert.throws(
-    () => config.normalizeFrontendConfig({ runtime: { theme: { modes: { dark: { color: "#000" } } } } }),
+    () => config.normalizeFrontendConfig({
+        forVersion: context.packageVersion,
+        runtime: { theme: { modes: { dark: { color: "#000" } } } },
+    }),
     /invalid-config/u,
   );
   assert.throws(
-    () => config.normalizeFrontendConfig({ runtime: { theme: { dark: "missing", modes: { light: {} } } } }),
+    () => config.normalizeFrontendConfig({
+        forVersion: context.packageVersion,
+        runtime: { theme: { dark: "missing", modes: { light: {} } } },
+    }),
     /theme\.dark must name a mode/u,
   );
 }
 
 async function verifyThemeConfigDependencies(context) {
   const config = await context.importDist("config");
-  const { configDir, fixture } = await writeThemeFixture(context.rootDir, "theme-deps", "#f4ecd8");
+  const { configDir, fixture } = await writeThemeFixture(
+    context.rootDir,
+    context.packageVersion,
+    "theme-deps",
+    "#f4ecd8",
+  );
   const tokensPath = path.join(configDir, "tokens.ts");
 
   const first = await config.loadConfig(fixture);
