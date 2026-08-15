@@ -2,6 +2,10 @@
 
 All notable package changes are documented here.
 
+## 7.1.14
+
+- Made text-link hover feedback use animatable color and underline-color transitions instead of snapping underline style.
+
 ## 7.1.13
 
 - Aligned advanced dropdown CSS selectors with the runtime attributes so hidden wizard-step dropdowns open and selected options style correctly.

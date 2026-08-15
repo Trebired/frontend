@@ -66,12 +66,14 @@
   );
   font-weight: var(--tbf-primitives-text-link-root-font-weight, inherit);
   text-decoration-line: var(--tbf-primitives-text-link-root-text-decoration-line, underline);
+  text-decoration-color: var(--tbf-primitives-text-link-root-text-decoration-color, currentColor);
   text-decoration-style: var(--tbf-primitives-text-link-root-text-decoration-style, dotted);
   text-decoration-thickness: var(--tbf-primitives-text-link-root-text-decoration-thickness, 1px);
   text-underline-offset: var(--tbf-primitives-text-link-root-text-underline-offset, 3px);
   transition: var(
     --tbf-primitives-text-link-root-transition,
-    color var(--transition-fast, var(--tbf-transition-fast, 120ms ease))
+    color var(--transition-fast, var(--tbf-transition-fast, 120ms ease)),
+    text-decoration-color var(--transition-fast, var(--tbf-transition-fast, 120ms ease))
   );
 }
 
@@ -80,7 +82,7 @@
 .text-link:hover,
 .text-link:focus {
   color: var(--tbf-primitives-text-link-states-hover-color, var(--text-color, var(--tbf-text, currentColor)));
-  text-decoration-style: var(--tbf-primitives-text-link-states-hover-text-decoration-style, solid);
+  text-decoration-color: var(--tbf-primitives-text-link-states-hover-text-decoration-color, currentColor);
 }
 
 [data-tbf-table] {
