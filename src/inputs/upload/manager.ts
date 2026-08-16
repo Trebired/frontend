@@ -29,10 +29,15 @@ import {
   restoreUploadEntries,
   setUploadEntries as writeUploadEntries,
   setUploadFile,
+  setUploadRemoteSelection as writeUploadRemoteSelection,
   syncClearAndEmpty,
   syncPreview,
 } from "./state.js";
-import type { UploadEntry, UploadRuntimeOptions } from "./types.js";
+import type {
+  UploadEntry,
+  UploadRemoteSelection,
+  UploadRuntimeOptions,
+} from "./types.js";
 import { resolveUploadFlash } from "./runtime.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
@@ -308,6 +313,14 @@ function setUploadFiles(root: HTMLElement | null, files: File[]) {
   return setManagerEntries(root, files.map((file) => ({ file, path: file.name })));
 }
 
+function setUploadRemoteSelection(
+  root: HTMLElement | null,
+  options: UploadRemoteSelection = {},
+) {
+  if (!(root instanceof HTMLElement)) return false;
+  return writeUploadRemoteSelection(root, options);
+}
+
 async function openCropSessionFromManager(
   root: HTMLElement,
   input: HTMLInputElement | null,
@@ -329,6 +342,7 @@ const uploadManager = Object.freeze({
     openCrop: openCropSessionFromManager,
     setEntries: setManagerEntries,
     setFiles: setUploadFiles,
+    setRemoteSelection: setUploadRemoteSelection,
 });
 
 export {
@@ -342,6 +356,7 @@ export {
   openCropSessionFromManager as openUploadCropSession,
   setSelectedEntries,
   setUploadFiles,
+  setUploadRemoteSelection,
   uploadManager,
 };
 export default uploadManager;

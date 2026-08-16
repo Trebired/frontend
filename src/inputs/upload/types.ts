@@ -9,6 +9,22 @@ type UploadEmptyToggle = {
   value?: string;
 };
 
+type UploadRemoteAction = {
+  ariaLabel?: string;
+  hiddenWhenSelected?: boolean;
+  iconSpec?: string;
+  id?: string;
+  label?: string;
+  name?: string;
+  value?: string;
+};
+
+type UploadRemoteSelection = {
+  cropData?: Record<string, number>|null;
+  label?: string;
+  previewUrl?: string;
+};
+
 type UploadFieldOptions = {
   accept?: string;
   aspect?: string;
@@ -41,6 +57,7 @@ type UploadFieldOptions = {
   previewAlt?: string;
   previewShape?: "circle" | "square" | string;
   previewUrl?: string;
+  remoteAction?: UploadRemoteAction;
   skipDirs?: string;
   triggerIconSpec?: string;
   triggerLabel?: string;
@@ -81,6 +98,8 @@ type UploadState = {
   file: File | null;
   previewObjectUrl: string;
   previewUrl: string;
+  remoteLabel: string;
+  remoteSelected: boolean;
 };
 
 type UploadFlashApi = {
@@ -98,6 +117,8 @@ export type {
   UploadEntry,
   UploadFieldOptions,
   UploadFlashApi,
+  UploadRemoteAction,
+  UploadRemoteSelection,
   UploadRootConfig,
   UploadRuntimeOptions,
   UploadState,

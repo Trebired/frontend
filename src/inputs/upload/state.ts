@@ -8,12 +8,13 @@ import {
   getPreviewEmpty,
   getPreviewImage,
   getPreviewNode,
+  getRemoteActions,
   setNativeInputFiles,
 } from "./dom.js";
 import { fileExtension, isImageFileObject } from "./files.js";
 import { uploadRootConfig } from "./config.js";
 import { toText } from "./text.js";
-import type { UploadEntry, UploadState } from "./types.js";
+import type { UploadEntry, UploadRemoteSelection, UploadState } from "./types.js";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 
 const uploadStates = new WeakMap<HTMLElement, UploadState>();
@@ -31,6 +32,8 @@ function getUploadState(root: HTMLElement) {
     file: null,
     previewObjectUrl: "",
     previewUrl: "",
+    remoteLabel: "",
+    remoteSelected: false,
   };
   uploadStates.set(root, state);
   return state;
@@ -44,14 +47,21 @@ function revokePreviewUrl(state: UploadState) {
   state.previewUrl = "";
 }
 
-function selectedName(entries: UploadEntry[], file: File | null, emptyLabel: string) {
+function selectedName(
+  state: UploadState,
+  entries: UploadEntry[],
+  file: File | null,
+  emptyLabel: string,
+) {
   if (entries.length > 1) return `${entries.length} files selected`;
   if (entries.length === 1) return entries[0].path || entries[0].file.name;
+  if (state.remoteSelected) return state.remoteLabel || emptyLabel;
   return file?.name || emptyLabel;
 }
 
-function previewFallback(entries: UploadEntry[], file: File | null) {
+function previewFallback(state: UploadState, entries: UploadEntry[], file: File | null) {
   if (entries.length > 1) return "Files";
+  if (state.remoteSelected) return "File";
   const selected = file || entries[0]?.file || null;
   return fileExtension(selected).toUpperCase() || "File";
 }
@@ -76,10 +86,21 @@ function syncPreview(root: HTMLElement) {
   const config = uploadRootConfig(root);
   const entries = state.entries;
   const file = state.file || (entries.length === 1 ? entries[0].file : null);
-  const hasSelection = Boolean(file || entries.length);
-  syncSelectedLabel(root, selectedName(entries, file, config.emptyLabel || ""), hasSelection);
+  const hasSelection = Boolean(file || entries.length || state.remoteSelected);
+  syncSelectedLabel(
+    root,
+    selectedName(state, entries, file, config.emptyLabel || ""),
+    hasSelection,
+  );
   syncList(root, entries);
-  syncPreviewContent(root, entries, file, currentPreviewUrl(state), config.noPreview === true);
+  syncPreviewContent(
+    root,
+    state,
+    entries,
+    file,
+    currentPreviewUrl(state),
+    config.noPreview === true,
+  );
   root.toggleAttribute(frontendDataAttr("upload-has-files"), hasSelection);
   root.setAttribute(frontendDataAttr("upload-has-files"), hasSelection ? "true" : "false");
   root.setAttribute(frontendDataAttr("upload-entry-count"), String(entries.length));
@@ -105,6 +126,7 @@ function syncList(root: HTMLElement, entries: UploadEntry[]) {
 
 function syncPreviewContent(
   root: HTMLElement,
+  state: UploadState,
   entries: UploadEntry[],
   file: File | null,
   url: string,
@@ -122,7 +144,7 @@ function syncPreviewContent(
   }
   if (empty) {
     empty.hidden = hidden || Boolean(url);
-    empty.textContent = previewFallback(entries, file);
+    empty.textContent = previewFallback(state, entries, file);
   }
 }
 
@@ -130,9 +152,17 @@ function syncClearAndEmpty(root: HTMLElement) {
   const state = getUploadState(root);
   const clear = getClear(root);
   const toggle = getEmptyToggle(root);
-  const hasEntries = state.entries.length > 0 || state.file instanceof File;
+  const hasEntries =
+  state.entries.length > 0 ||
+    state.file instanceof File ||
+    state.remoteSelected;
   const canClearCurrent = state.currentPreviewClearable && state.currentPreviewUrl && !state.emptySelected;
   if (clear) clear.hidden = !(hasEntries || canClearCurrent);
+  getRemoteActions(root).forEach((action) => {
+      const attr = frontendDataAttr("upload-hide-when-selected");
+      const hideWhenSelected = action.getAttribute(attr) !== "false";
+      action.hidden = hideWhenSelected && hasEntries;
+  });
   if (toggle) toggle.value = state.emptySelected ? uploadRootConfig(root).emptyToggleValue || "1" : "0";
 }
 
@@ -144,6 +174,8 @@ function dispatchUploadChange(root: HTMLElement) {
           cropData: state.cropData,
           entries: state.entries.slice(),
           files: state.entries.map((entry) => entry.file),
+          previewUrl: currentPreviewUrl(state),
+          remoteSelected: state.remoteSelected,
         },
   }));
 }
@@ -155,6 +187,8 @@ function restoreUploadEntries(root: HTMLElement, entries: UploadEntry[], input?:
   state.file = state.entries.length === 1 ? state.entries[0].file : null;
   state.cropData = null;
   state.emptySelected = false;
+  state.remoteLabel = "";
+  state.remoteSelected = false;
   clearNativeInputs(root, input);
   setNativeInputFiles(input || null, state.entries);
   syncPreview(root);
@@ -178,6 +212,8 @@ function setUploadFile(
   state.entries = state.file ? [{ file: state.file, path: state.file.name }] : [];
   state.cropData = options.cropData || null;
   state.emptySelected = false;
+  state.remoteLabel = "";
+  state.remoteSelected = false;
   if (options.previewUrl) state.previewUrl = options.previewUrl;
   else if (state.file && isImageFileObject(state.file)) state.previewObjectUrl = createPreviewObjectUrl(state.file);
   if (state.previewObjectUrl) state.previewUrl = state.previewObjectUrl;
@@ -193,15 +229,41 @@ function syncCropField(root: HTMLElement, cropData: Record<string, number>|null)
   if (cropField) cropField.value = cropData ? JSON.stringify(cropData) : "";
 }
 
+function setUploadRemoteSelection(
+  root: HTMLElement,
+  options: UploadRemoteSelection = {},
+) {
+  const previewUrl = toText(options.previewUrl);
+  const label = toText(options.label, uploadRootConfig(root).emptyLabel || "");
+  if (!previewUrl && !label) return false;
+  const state = getUploadState(root);
+  revokePreviewUrl(state);
+  state.file = null;
+  state.entries = [];
+  state.cropData = options.cropData || null;
+  state.emptySelected = false;
+  state.previewUrl = previewUrl;
+  state.remoteLabel = label;
+  state.remoteSelected = true;
+  clearNativeInputs(root, null);
+  syncCropField(root, state.cropData);
+  syncPreview(root);
+  syncClearAndEmpty(root);
+  dispatchUploadChange(root);
+  return true;
+}
+
 function clearUpload(root: HTMLElement, input?: HTMLInputElement | null) {
   const state = getUploadState(root);
-  const restoreCurrent = Boolean(state.file && state.currentPreviewUrl);
+  const restoreCurrent = Boolean((state.file || state.remoteSelected) && state.currentPreviewUrl);
   const canClearCurrent = state.currentPreviewClearable;
   revokePreviewUrl(state);
   state.file = null;
   state.entries = [];
   state.cropData = null;
   state.emptySelected = !restoreCurrent && canClearCurrent;
+  state.remoteLabel = "";
+  state.remoteSelected = false;
   if (state.emptySelected) state.currentPreviewUrl = "";
   clearNativeInputs(root, input || null);
   syncCropField(root, null);
@@ -228,6 +290,7 @@ export {
   restoreUploadEntries,
   setUploadEntries,
   setUploadFile,
+  setUploadRemoteSelection,
   syncClearAndEmpty,
   syncPreview,
 };

@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.1.0
+
+- Added upload remote-action rendering for app-owned external avatar sources.
+- Added `setUploadRemoteSelection()` so apps can apply remote upload previews without package-specific lookup logic.
+
 ## 8.0.0
 
 - Moved frontend namespace prefix ownership to `@trebired/bundler` generated TypeScript and Sass helpers.

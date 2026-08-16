@@ -2,7 +2,11 @@ import { actionLabel } from "#qq0hbx8lfn3p";
 import { FRONTEND_PREFIX } from "#5vbaqj4pirp3";
 import { formatLabels, isImageAcceptItem, parseAcceptList } from "./files.js";
 import { toText } from "./text.js";
-import type { UploadEmptyToggle, UploadFieldOptions } from "./types.js";
+import type {
+  UploadEmptyToggle,
+  UploadFieldOptions,
+  UploadRemoteAction,
+} from "./types.js";
 
 type UploadModel = ReturnType<typeof uploadModel>;
 
@@ -16,6 +20,21 @@ function uploadId(id?: string) {
 
 function normalizeUploadEmptyToggle(input: UploadEmptyToggle | undefined) {
   return input && typeof input === "object" ? input : null;
+}
+
+function normalizeUploadRemoteAction(input: UploadRemoteAction | undefined) {
+  if (!input || typeof input !== "object") return null;
+  const label = toText(input.label);
+  if (!label) return null;
+  return {
+    ariaLabel: toText(input.ariaLabel),
+    hiddenWhenSelected: input.hiddenWhenSelected !== false,
+    iconSpec: toText(input.iconSpec),
+    id: toText(input.id),
+    label,
+    name: toText(input.name),
+    value: toText(input.value),
+  };
 }
 
 function uploadAcceptModel(options: UploadFieldOptions) {
@@ -101,6 +120,7 @@ function uploadModel(options: UploadFieldOptions) {
     name: toText(options.name),
     previewShape: toText(options.previewShape, "square") === "circle" ? "circle" : "square",
     previewUrl: toText(options.previewUrl),
+    remoteAction: normalizeUploadRemoteAction(options.remoteAction),
     skipDirs: toText(options.skipDirs),
   };
 }

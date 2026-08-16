@@ -33,6 +33,12 @@ function getClear(root: HTMLElement) {
   return uploadSlot(root, "clear");
 }
 
+function getRemoteActions(root: HTMLElement) {
+  return Array.from(
+    root.querySelectorAll<HTMLElement>(frontendDataSelector("upload-slot", "remote-action")),
+  );
+}
+
 function getFileNameNode(root: HTMLElement) {
   return uploadSlot(root, "filename", "label");
 }
@@ -97,6 +103,7 @@ export {
   getPreviewEmpty,
   getPreviewImage,
   getPreviewNode,
+  getRemoteActions,
   getTrigger,
   getUploadFileInput,
   setNativeInputFiles,

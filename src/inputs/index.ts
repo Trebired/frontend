@@ -15,6 +15,7 @@ import {
   openUploadCropSession,
   setSelectedEntries,
   setUploadFiles,
+  setUploadRemoteSelection,
   uploadManager,
 } from "./upload/manager.js";
 import {
@@ -114,6 +115,7 @@ export {
   parseAcceptList,
   setSelectedEntries,
   setUploadFiles,
+  setUploadRemoteSelection,
   uploadConfigPayload,
   uploadFieldHtml,
   uploadManager,
@@ -129,6 +131,8 @@ export type {
   UploadEntry,
   UploadFieldOptions,
   UploadFlashApi,
+  UploadRemoteAction,
+  UploadRemoteSelection,
   UploadRootConfig,
   UploadRuntimeOptions,
   UploadState,

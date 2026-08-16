@@ -55,6 +55,7 @@ const uploadOptionKeys = new Set([
     "previewAlt",
     "previewShape",
     "previewUrl",
+    "remoteAction",
     "skipDirs",
     "triggerIconSpec",
     "triggerLabel",
@@ -201,10 +202,35 @@ function UploadButtons(props: { model: ReturnType<typeof uploadModel> }) {
         {model.triggerLabel}
         </UploadButton>
     )}
+    {model.remoteAction ? <UploadRemoteAction action={model.remoteAction} /> : null}
     <UploadButton slot="clear" hidden={!model.canClearCurrentPreview} iconSpec={model.clearIconSpec}>
     {model.clearLabel}
     </UploadButton>
     </div>
+  );
+}
+
+function UploadRemoteAction(
+  props: { action: NonNullable<ReturnType<typeof uploadModel>["remoteAction"]> },
+) {
+  const { action } = props;
+  return (
+    <button
+    aria-label={action.ariaLabel || undefined}
+    className="btn"
+    hidden={false}
+    id={action.id || undefined}
+    name={action.name || undefined}
+    type="button"
+    value={action.value || undefined}
+    {...frontendDataAttrs({ "upload-slot": "remote-action" })}
+    {...frontendDataAttrs({
+          "upload-hide-when-selected": action.hiddenWhenSelected ? "true" : "false",
+    })}
+    >
+    {action.iconSpec ? <Icon spec={action.iconSpec} /> : null}
+    <span>{action.label}</span>
+    </button>
   );
 }
 

@@ -103,12 +103,14 @@ function triggerButtons(model: ReturnType<typeof uploadModel>) {
         model.directoryOptionLabel,
         model.directoryOptionIconSpec,
       ),
+      uploadRemoteAction(model),
       uploadClearButton(model),
     ].join("");
   }
   const slot = model.allowDirectory ? "directory-trigger" : "trigger";
   return [
     uploadButton(slot, model.triggerLabel, model.triggerIconSpec),
+    uploadRemoteAction(model),
     uploadClearButton(model),
   ].join("");
 }
@@ -120,6 +122,27 @@ function uploadButton(slot: string, label: string, iconSpec: string) {
     `<span>${escapeHtml(label)}</span>`,
     "</button>",
   ].join("");
+}
+
+function uploadRemoteAction(model: ReturnType<typeof uploadModel>) {
+  const action = model.remoteAction;
+  if (!action) return "";
+  return [
+    '<button class="btn" type="button"',
+    attr("id", action.id),
+    attr("aria-label", action.ariaLabel),
+    attr("name", action.name),
+    attr("value", action.value),
+    data("upload-slot", "remote-action"),
+    data(
+      "upload-hide-when-selected",
+      action.hiddenWhenSelected ? "true" : "false",
+    ),
+    ">",
+    iconHtml(action.iconSpec),
+    `<span>${escapeHtml(action.label)}</span>`,
+    "</button>",
+  ].join(" ");
 }
 
 function uploadClearButton(model: ReturnType<typeof uploadModel>) {
