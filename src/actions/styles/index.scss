@@ -76,6 +76,23 @@
   flex: 0 0 auto;
 }
 
+#{ns.class("button")}.icon {
+  #{ns.css-var("icon-color")}: currentColor;
+  #{ns.css-var("ui-action-current-icon")}: currentColor;
+}
+
+#{ns.class("button")}.icon > i,
+
+#{ns.class("button")}.icon > svg,
+
+#{ns.class("button")}.icon > i svg,
+
+#{ns.class("button")}.icon > [data-icon],
+
+#{ns.class("button")}.icon > [data-icon] svg {
+  color: currentColor;
+}
+
 #{ns.modifier("button", "strong")} {
   #{ns.css-var("ui-action-current-icon")}: var(
     #{ns.css-var("ui-action-tone-highlight-icon")},

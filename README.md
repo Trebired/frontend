@@ -1,97 +1,102 @@
-# Frontend Package
+# @trebired/frontend
 
-Generic browser runtime systems for DOM binding, actions, overlays, theme state, live refresh, inputs, upload, layout, and React rendering.
+Generic frontend framework for Trebired applications: React shell, design tokens, UI components, browser runtime, and frontend server helpers.
 
-The package owns reusable browser behavior, icon rendering, overlay/runtime primitives, layout chrome, and generic UI components. Callers own product routes, copy, storage keys, persistence, navigation, logging adapters, domain icon maps, and backend response contracts beyond the documented generic JSON shape.
+This package owns reusable layout, theme, sidebar, header, overlay, upload, flash, tab, link, icon, and boot-script behavior. Callers own product routes, copy, persistence endpoints, domain rendering, and application design values supplied through config.
 
-## Runtime
+## Install
 
-Bind the root runtime after the document shell exists:
+Runtime support: Bun 1+.
 
-```ts
-import { bindFrontendRuntime } from "<package-name>";
-
-bindFrontendRuntime(document, {
-  adapters: {
-    navigation: {
-      navigate(url) {
-        window.location.assign(url);
-      },
-    },
-  },
-});
+```sh
+bun i @trebired/frontend
 ```
 
-Feature binders such as `bindActionForms()`, `bindTooltips()`, `bindModals()`, and `bindUploads()` are idempotent and accept a `Document`, `HTMLElement`, or `DocumentFragment`.
+## Quick Start
 
-## Configuration
-
-Projects configure package-owned systems through the frontend config file consumed by the bundler.
+Configure the package through `.trebired/frontend/config.ts`:
 
 ```ts
-import { defineConfig } from "<package-name>/config";
+import { defineConfig } from "@trebired/frontend/config";
 
 export default defineConfig({
-  prefix: "tbf",
+  forVersion: "8.0.0",
   assets: {
     icons: {
       endpoint: "/__icons/svg",
-      packs: ["remixicon", "simple-icons"],
+      packs: ["remixicon"],
     },
   },
-  design: {
-    interactions: {
-      activePress: {
-        enabled: false,
-        brightness: 0.9,
-      },
-    },
-  },
-  runtime: {
-    theme: {
-      defaultMode: "dark",
-      modes: {
-        dark: { scheme: "dark" },
-        light: { scheme: "light" },
-      },
-    },
-  },
+  components: {},
+  design: {},
+  runtime: {},
   systems: {
-    actions: true,
     flash: true,
     layout: true,
-    modal: true,
     popover: true,
-    sidebar: true,
     theme: true,
   },
 });
 ```
 
-The config entrypoint exports `defineConfig()`, `normalizeFrontendConfig()`, `loadConfig()`, `findConfig()`, `generateFrontendScss()`, `collectConfigDependencies()`, and `THEME_MODE_ATTRIBUTE`.
+Bind the browser runtime after the document shell exists:
 
-## Components
+```ts
+import { bindFrontendRuntime } from "@trebired/frontend";
 
-React components render normal HTML with `data-tbf-*` attributes and `tbf-*` classes. Use the React entrypoint for package-owned default markup:
-
-```tsx
-import { UploadField } from "<package-name>/react";
-
-export function AvatarUpload() {
-  return (
-    <UploadField
-      name="avatar"
-      accept="image/png,image/jpeg"
-      crop={true}
-      preview={true}
-      drop={true}
-    />
-  );
-}
+bindFrontendRuntime(document);
 ```
 
-## Styling
+## Concepts
 
-There is no public Sass subpath API. Package-owned CSS is selected by the frontend config, then emitted by the config entrypoint as SCSS for the bundler to compile in memory.
+### Package Namespace
 
-Generic app UI such as headers, mobile nav, breadcrumb, disclosure, tabs, dropdown/search controls, graph shells, cards, canvas panels, flash messages, and sidebar link lists is available from the React entrypoint.
+Frontend source-visible class names, data attributes, CSS variables, tokens, and events are created through `@trebired/bundler` namespace helpers. The package's own `.trebired/bundler/config.ts` declares the `tbf` prefix. Applications do not set a frontend prefix to consume this package.
+
+### React Shell
+
+The React entrypoint renders package-owned document, layout, header, sidebar, portal, upload, tabs, tooltip, popover, modal, fullscreen, flash, text-link, language, and theme controls. The markup is generic and configured through `.trebired/frontend/config.ts`.
+
+## Configuration
+
+### Design
+
+`design` config owns palette, semantic tokens, scales, active feedback, shadows, and component styling values. The package stays style-generic and does not hardcode application colors.
+
+### Runtime
+
+`runtime` config owns browser systems such as theme state, navigation hooks, boot scripts, and runtime adapters.
+
+### Systems
+
+`systems` config enables package-owned binders. Disabled systems do not emit their boot scripts.
+
+## Runtime
+
+Feature binders are idempotent and accept a `Document`, `HTMLElement`, or `DocumentFragment`. Runtime binding syncs newly added DOM without resetting document-level state such as the active theme.
+
+Frontend server helpers own package static assets, icon SVG endpoints, React document rendering support, and frontend middleware that is generic across Trebired applications.
+
+## Public API
+
+Entrypoints:
+
+- `@trebired/frontend`
+- `@trebired/frontend/config`
+- `@trebired/frontend/react`
+- `@trebired/frontend/server`
+
+The root entrypoint exports browser runtime binders and namespace helpers. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers.
+
+## Migration Notes
+
+Applications import public APIs only from the package root, `/config`, `/react`, and `/server`. There is no public Sass, style, or internal component subpath API.
+
+## What It Does Not Do
+
+This package does not:
+
+- Own product routes, copy, data, or persistence policy.
+- Own application colors outside the supplied frontend config.
+- Provide compatibility bridges for removed application-local UI attributes.
+- Expose package Sass or internal component subpaths as public API.
