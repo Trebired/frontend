@@ -2,6 +2,7 @@ import type {
   ButtonHTMLAttributes,
 } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName } from "#5vbaqj4pirp3";
 
 type CloseButtonOptions = {
   closeAttribute: `data-${string}`;
@@ -14,7 +15,7 @@ function renderCloseButton(options: CloseButtonOptions) {
     <button
     {...rest}
     {...{ [options.closeAttribute]: "" }}
-    className={classNames("tbf-button", className)}
+    className={classNames(frontendClassName("button"), className)}
     type={type}
     >
     {children}

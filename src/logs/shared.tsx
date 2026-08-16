@@ -17,6 +17,7 @@ import {
   setTextContent,
 } from "#er0dlx1gtbzh";
 import { createTranslatorFactory, defineValue, objectRecord as toObject } from "#ndsvdqv80epr";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 type BindActionOptions = BindActionTriggerOptions;
 
@@ -188,9 +189,9 @@ async function fetchJson(url: string, query: Record<string, unknown> = {}, init:
 
 function triggerAttrs(options: BindActionOptions = {}) {
   return {
-    "data-tbf-action-trigger": options.action || undefined,
-    "data-tbf-external-href": options.externalHref || undefined,
-    "data-tbf-href": options.href || undefined,
+    [frontendDataAttr("action-trigger")]: options.action || undefined,
+    [frontendDataAttr("external-href")]: options.externalHref || undefined,
+    [frontendDataAttr("href")]: options.href || undefined,
   };
 }
 

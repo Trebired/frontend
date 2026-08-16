@@ -30,6 +30,7 @@ import {
 import { EmptyEditorMessage } from "./readonly.js";
 import { ImagePreviewPane } from "./image.js";
 import { ReadonlyMonacoPane } from "./monaco.js";
+import { frontendClassName } from "#5vbaqj4pirp3";
 
 const rootStyle = { flex: "1 1 auto", minHeight: 0 };
 const rowStyle = { alignItems: "stretch", flex: "1 1 auto", minHeight: 0 };
@@ -51,7 +52,7 @@ function EditorViewerApp(props: any) {
   return (
     <div ref={rootRef} className={primitiveStackClassName({ gap: "sm", grow: true })} style={rootStyle}>
     <div
-    className={primitiveInlineRowClassName({ className: "tbf-editor-viewer-layout grow", gap: "sm" })}
+    className={primitiveInlineRowClassName({ className: `${frontendClassName("editor-viewer-layout")} grow`, gap: "sm" })}
     style={rowStyle}
     >
     <ViewerSidebar

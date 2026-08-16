@@ -2,6 +2,7 @@ import { requestJsonPayload } from "#yasd5gi3ad9a";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { softReload } from "#sida2bfa7lk5";
 import { text } from "./shared.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type LocaleRuntimeOptions = {
   endpoint?: string;
@@ -9,13 +10,13 @@ type LocaleRuntimeOptions = {
   refresh?: (lang: string) => Promise<unknown>|unknown;
 };
 
-const LOCALE_OPTION_SELECTOR = "[data-tbf-locale-option]";
+const LOCALE_OPTION_SELECTOR = frontendDataSelector("locale-option");
 const localeButtons = new WeakSet<HTMLButtonElement>();
 const busyLocaleButtons = new WeakSet<HTMLButtonElement>();
 
 function defaultLocaleEndpoint(button: HTMLButtonElement, options: LocaleRuntimeOptions) {
   return text(
-    options.endpoint || button.getAttribute("data-tbf-locale-endpoint"),
+    options.endpoint || button.getAttribute(frontendDataAttr("locale-endpoint")),
     "/ui/lang/set",
   );
 }

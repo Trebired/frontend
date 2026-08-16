@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .file-input {
   cursor: pointer;
 }
@@ -8,14 +9,14 @@
   padding: 0 10px;
   border: none;
   border-radius: var(--radius-xs);
-  background: var(--tbf-ui-input-file-btn-bg, var(--background-surface-2, transparent));
+  background: var(#{ns.css-var("ui-input-file-btn-bg")}, var(--background-surface-2, transparent));
   color: var(--text-color-muted);
   cursor: pointer;
 }
 
 .file-input::file-selector-button:hover {
   background: var(
-    --tbf-ui-input-file-btn-state-hover-bg,
-    var(--tbf-ui-input-file-btn-bg, var(--background-surface-2, transparent))
+    #{ns.css-var("ui-input-file-btn-state-hover-bg")},
+    var(#{ns.css-var("ui-input-file-btn-bg")}, var(--background-surface-2, transparent))
   );
 }

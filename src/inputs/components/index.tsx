@@ -9,6 +9,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { uploadConfigPayload } from "#pgcgwrvwwqfj";
 import { uploadModel } from "#fb78vhpo6xg5";
 import type { UploadFieldOptions } from "#skcj0a9esow0";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type UploadFieldProps = UploadFieldOptions & HTMLAttributes<HTMLDivElement>;
 type ClearButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -80,10 +81,10 @@ function UploadField(props: UploadFieldProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-upload", className)}
-    data-tbf-upload=""
-    data-tbf-upload-drop={dataBool(model.allowDrop)}
-    data-tbf-upload-empty={model.emptyLabel}
+    className={classNames(frontendClassName("upload"), className)}
+    {...frontendDataAttrs({ "upload": "" })}
+    {...frontendDataAttrs({ "upload-drop": dataBool(model.allowDrop) })}
+    {...frontendDataAttrs({ "upload-empty": model.emptyLabel })}
     id={model.id}
     >
     <UploadConfigScript model={model} />
@@ -97,7 +98,7 @@ function UploadField(props: UploadFieldProps) {
 function UploadConfigScript(props: { model: ReturnType<typeof uploadModel> }) {
   return (
     <script
-    data-tbf-upload-config=""
+    {...frontendDataAttrs({ "upload-config": "" })}
     hidden
     type="application/json"
     dangerouslySetInnerHTML={{
@@ -112,8 +113,8 @@ function UploadNativeInputs(props: { model: ReturnType<typeof uploadModel> }) {
   return (
     <>
     <input
-    className="tbf-upload__input"
-    data-tbf-upload-slot="native-file"
+    className={frontendElementClass("upload", "input")}
+    {...frontendDataAttrs({ "upload-slot": "native-file" })}
     id={`${model.id}_input`}
     type="file"
     name={model.name}
@@ -122,8 +123,8 @@ function UploadNativeInputs(props: { model: ReturnType<typeof uploadModel> }) {
     />
     {model.allowDirectory || model.allowMixedPicker ? (
         <input
-        className="tbf-upload__input"
-        data-tbf-upload-slot="native-directory"
+        className={frontendElementClass("upload", "input")}
+        {...frontendDataAttrs({ "upload-slot": "native-directory" })}
         id={`${model.id}_directory`}
         type="file"
         name={model.name}
@@ -132,7 +133,7 @@ function UploadNativeInputs(props: { model: ReturnType<typeof uploadModel> }) {
         />
       ) : null}
     {model.name && model.crop ? (
-        <input type="hidden" name={`${model.name}_crop`} value="" data-tbf-upload-slot="crop-field" />
+        <input type="hidden" name={`${model.name}_crop`} value="" {...frontendDataAttrs({ "upload-slot": "crop-field" })} />
       ) : null}
     </>
   );
@@ -141,9 +142,9 @@ function UploadNativeInputs(props: { model: ReturnType<typeof uploadModel> }) {
 function UploadSurface(props: { children?: ReactNode; model: ReturnType<typeof uploadModel> }) {
   const { children, model } = props;
   return (
-    <div className="tbf-upload__surface" data-tbf-upload-slot="shell">
+    <div className={frontendElementClass("upload", "surface")} {...frontendDataAttrs({ "upload-slot": "shell" })}>
     <UploadPreview model={model} />
-    <div className="tbf-upload__content">
+    <div className={frontendElementClass("upload", "content")}>
     <UploadButtons model={model} />
     <UploadMeta model={model}>{children}</UploadMeta>
     </div>
@@ -156,21 +157,21 @@ function UploadPreview(props: { model: ReturnType<typeof uploadModel> }) {
   if (!model.previewEnabled) return null;
   return (
     <div
-    className="tbf-upload__preview"
-    data-tbf-upload-preview-shape={model.previewShape}
-    data-tbf-upload-slot="preview"
+    className={frontendElementClass("upload", "preview")}
+    {...frontendDataAttrs({ "upload-preview-shape": model.previewShape })}
+    {...frontendDataAttrs({ "upload-slot": "preview" })}
     hidden={!model.previewUrl}
     >
     <img
-    className="tbf-upload__preview-image"
-    data-tbf-upload-slot="preview-image"
+    className={frontendElementClass("upload", "preview-image")}
+    {...frontendDataAttrs({ "upload-slot": "preview-image" })}
     alt={model.previewAlt}
     src={model.previewUrl || undefined}
     hidden={!model.previewUrl}
     />
     <span
-    className="tbf-upload__preview-empty"
-    data-tbf-upload-slot="preview-empty"
+    className={frontendElementClass("upload", "preview-empty")}
+    {...frontendDataAttrs({ "upload-slot": "preview-empty" })}
     hidden={Boolean(model.previewUrl)}
     >
     {model.previewEmptyText}
@@ -182,7 +183,7 @@ function UploadPreview(props: { model: ReturnType<typeof uploadModel> }) {
 function UploadButtons(props: { model: ReturnType<typeof uploadModel> }) {
   const { model } = props;
   return (
-    <div className="tbf-upload__actions">
+    <div className={frontendElementClass("upload", "actions")}>
     {model.allowMixedPicker ? (
         <>
         <UploadButton slot="file-trigger" iconSpec={model.fileOptionIconSpec}>
@@ -215,7 +216,7 @@ function UploadButton(
     <button
     {...rest}
     className={classNames("btn", className)}
-    data-tbf-upload-slot={slot}
+    {...frontendDataAttrs({ "upload-slot": slot })}
     type={type}
     >
     {iconSpec ? <Icon spec={iconSpec} /> : null}
@@ -227,19 +228,19 @@ function UploadButton(
 function UploadMeta(props: { children?: ReactNode; model: ReturnType<typeof uploadModel> }) {
   const { children, model } = props;
   return (
-    <div className="tbf-upload__meta">
-    <span className="tbf-upload__filename" data-tbf-upload-slot="filename">
+    <div className={frontendElementClass("upload", "meta")}>
+    <span className={frontendElementClass("upload", "filename")} {...frontendDataAttrs({ "upload-slot": "filename" })}>
     {model.emptyLabel}
     </span>
-    {model.dropHint ? <span className="tbf-upload__hint">{model.dropHint}</span> : null}
-    {model.helperText ? <span className="tbf-upload__hint">{model.helperText}</span> : null}
+    {model.dropHint ? <span className={frontendElementClass("upload", "hint")}>{model.dropHint}</span> : null}
+    {model.helperText ? <span className={frontendElementClass("upload", "hint")}>{model.helperText}</span> : null}
     {model.formatsText ? (
-        <span className="tbf-upload__hint" data-tbf-upload-slot="formats" title={model.formatsText}>
+        <span className={frontendElementClass("upload", "hint")} {...frontendDataAttrs({ "upload-slot": "formats" })} title={model.formatsText}>
         {model.formatsText}
         </span>
       ) : null}
     {children}
-    <ul className="tbf-upload__list" data-tbf-upload-slot="list" />
+    <ul className={frontendElementClass("upload", "list")} {...frontendDataAttrs({ "upload-slot": "list" })} />
     </div>
   );
 }
@@ -252,7 +253,7 @@ function UploadEmptyToggle(props: { model: ReturnType<typeof uploadModel> }) {
     type="hidden"
     name={toggle.name}
     value={toggle.checked === true ? String(toggle.value || "1") : "0"}
-    data-tbf-upload-slot="empty-toggle"
+    {...frontendDataAttrs({ "upload-slot": "empty-toggle" })}
     />
   );
 }
@@ -262,8 +263,8 @@ function ClearButton(props: ClearButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-clear={`#${controls.replace(/^#/u, "")}`}
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "clear": `#${controls.replace(/^#/u, "")}` })}
     type={type}
     >
     {children}
@@ -276,8 +277,8 @@ function PasswordToggleButton(props: PasswordToggleProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-password-toggle=""
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "password-toggle": "" })}
     aria-controls={controls}
     aria-pressed="false"
     type={type}
@@ -289,7 +290,7 @@ function PasswordToggleButton(props: PasswordToggleProps) {
 
 function AutosizeTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const { className, ...rest } = props;
-  return <textarea {...rest} className={classNames("tbf-input", className)} data-tbf-autosize="" />;
+  return <textarea {...rest} className={classNames(frontendClassName("input"), className)} {...frontendDataAttrs({ "autosize": "" })} />;
 }
 
 export { AutosizeTextarea, ClearButton, PasswordToggleButton, UploadField };

@@ -1,9 +1,10 @@
 import { parseJsonText, readElementJson } from "#er0dlx1gtbzh";
 import { bool, toText } from "./text.js";
 import type { UploadRootConfig } from "./types.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const UPLOAD_CONFIG_SELECTOR =
-'script[type="application/json"][data-tbf-upload-config]';
+`script[type="application/json"]${frontendDataSelector("upload-config")}`;
 
 const DEFAULT_EMPTY_LABEL = "No file selected";
 
@@ -39,7 +40,7 @@ function normalizeUploadConfig(config: UploadRootConfig = {}) {
 function readUploadConfig(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement)) return normalizeUploadConfig();
   const fromScript = readElementJson<UploadRootConfig>(root, UPLOAD_CONFIG_SELECTOR, {});
-  const fromAttr = parseJsonText<UploadRootConfig>(root.getAttribute("data-tbf-upload-config") || "", {});
+  const fromAttr = parseJsonText<UploadRootConfig>(root.getAttribute(frontendDataAttr("upload-config")) || "", {});
   return normalizeUploadConfig({ ...fromScript, ...fromAttr });
 }
 

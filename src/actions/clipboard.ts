@@ -3,6 +3,7 @@ import {
   renderIconElement,
 } from "#e55z7pkijewq";
 import { onReady, queryAll, readElementJson, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type CopyButtonOptions = {
   iconOnly?: boolean;
@@ -10,9 +11,9 @@ type CopyButtonOptions = {
   value?: string | null;
 };
 
-const COPY_SELECTOR = "[data-tbf-copy],copy-button";
+const COPY_SELECTOR = `${frontendDataSelector("copy")},copy-button`;
 const COPY_CONFIG_SELECTOR =
-'script[type="application/json"][data-copy-button-config],script[type="application/json"][data-tbf-copy-config]';
+`script[type="application/json"][data-copy-button-config],script[type="application/json"]${frontendDataSelector("copy-config")}`;
 const copyBindings = new WeakSet<HTMLElement>();
 
 function normalizeClipboardText(value: unknown) {
@@ -97,7 +98,7 @@ function buttonValue(button: HTMLElement, options: CopyButtonOptions) {
   if (direct) return direct;
   const target =
   options.target ||
-    button.getAttribute("data-tbf-copy-target") ||
+    button.getAttribute(frontendDataAttr("copy-target")) ||
     button.getAttribute("aria-controls") ||
     "";
   return readTargetValue(resolveCopyTarget(target));
@@ -169,7 +170,7 @@ function bindCopyButtons(root: BindRoot = document) {
   queryAll<HTMLElement>(root, COPY_SELECTOR).forEach((host) => {
       if (host.matches("copy-button")) bindCopyHost(host);
       else bindCopyButton(host, {
-          target: host.getAttribute("data-tbf-copy-target") || undefined,
+          target: host.getAttribute(frontendDataAttr("copy-target")) || undefined,
       });
   });
 }

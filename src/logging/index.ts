@@ -5,6 +5,7 @@ import {
   type LoggerAdapterWriter,
   type NormalizedLoggerAdapter,
 } from "@package/logger-adapter/browser";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 type FrontendLoggingOptions = {
   defaultLogger?: LoggerAdapterDefaultLogger | false;
@@ -26,7 +27,7 @@ function readGlobalQuiet() {
   if (typeof global.frontend_quiet === "boolean") return global.frontend_quiet;
   const attr = typeof document === "undefined"
   ? ""
-  : document.documentElement.getAttribute("data-tbf-frontend-quiet");
+  : document.documentElement.getAttribute(frontendDataAttr("frontend-quiet"));
   if (attr === "true" || attr === "1") return true;
   if (attr === "false" || attr === "0") return false;
   return false;

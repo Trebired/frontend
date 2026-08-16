@@ -12,6 +12,7 @@ import {
   type AppHeaderProps,
   type MobileNavProps,
 } from "#beon2qdcbsoe";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ShellHeaderProps = Omit<AppHeaderProps, "brand"> & {
   brandClassName?: string;
@@ -83,33 +84,33 @@ function ShellHeaderBrand(props: ShellHeaderBrandProps) {
   : brandContent !== undefined && brandContent !== null && brandContent !== false;
   const brandBody = structuredBrand ? (
     <span
-    className="tbf-shell-header-brand__identity"
-    data-tbf-brand-tag-align={brandTagAlign}
+    className={frontendElementClass("shell-header-brand", "identity")}
+    {...frontendDataAttrs({ "brand-tag-align": brandTagAlign })}
     >
     {brandLogo ? (
-        <span className="tbf-shell-header-brand__logo">{brandLogo}</span>
+        <span className={frontendElementClass("shell-header-brand", "logo")}>{brandLogo}</span>
       ) : null}
     {brandTag ? (
-        <span className="tbf-shell-header-brand__tag">{brandTag}</span>
+        <span className={frontendElementClass("shell-header-brand", "tag")}>{brandTag}</span>
       ) : null}
     </span>
   ) : brandContent;
   if (!hasBrandBody && !brandMeta) return null;
   return (
-    <HeaderGroup className={classNames("tbf-shell-header-brand", className)}>
+    <HeaderGroup className={classNames(frontendClassName("shell-header-brand"), className)}>
     {brandHref ? (
         <a
         aria-label={brandLabel}
-        className="tbf-shell-header-brand__link"
+        className={frontendElementClass("shell-header-brand", "link")}
         href={brandHref}
         >
         {brandBody}
         </a>
       ) : (
-        <span className="tbf-shell-header-brand__mark">{brandBody}</span>
+        <span className={frontendElementClass("shell-header-brand", "mark")}>{brandBody}</span>
     )}
     {!structuredBrand && brandMeta ? (
-        <span className="tbf-shell-header-brand__meta">{brandMeta}</span>
+        <span className={frontendElementClass("shell-header-brand", "meta")}>{brandMeta}</span>
       ) : null}
     </HeaderGroup>
   );
@@ -123,10 +124,10 @@ function ShellHeaderMobileToggle(props: ShellHeaderMobileToggleProps) {
     label = "Open navigation menu",
   } = props;
   return (
-    <HeaderGroup className="tbf-shell-header-toggle-group">
+    <HeaderGroup className={frontendClassName("shell-header-toggle-group")}>
     <MobileNavToggleButton
     aria-label={label}
-    className={classNames("tbf-shell-header-toggle", className)}
+    className={classNames(frontendClassName("shell-header-toggle"), className)}
     controls={controls}
     >
     {icon ?? label}
@@ -196,8 +197,8 @@ function ShellHeader(props: ShellHeaderProps) {
           mobileToggleIcon,
           mobileToggleLabel,
     })}
-    className={classNames("tbf-shell-header", className)}
-    data-tbf-shell-header=""
+    className={classNames(frontendClassName("shell-header"), className)}
+    {...frontendDataAttrs({ "shell-header": "" })}
     />
   );
 }
@@ -209,10 +210,10 @@ function ShellMobileNavSection(props: ShellMobileNavSectionProps) {
   return (
     <section
     {...rest}
-    className={classNames("tbf-shell-mobile-nav__section", className)}
+    className={classNames(frontendElementClass("shell-mobile-nav", "section"), className)}
     >
     {label ? (
-        <div className={classNames("tbf-shell-mobile-nav__section-label", labelClassName)}>
+        <div className={classNames(frontendElementClass("shell-mobile-nav", "section-label"), labelClassName)}>
         {label}
         </div>
       ) : null}
@@ -247,17 +248,17 @@ function ShellMobileNav(props: ShellMobileNavProps) {
   return (
     <MobileNav
     {...rest}
-    className={classNames("tbf-shell-mobile-nav-shell", className)}
+    className={classNames(frontendClassName("shell-mobile-nav-shell"), className)}
     panelLabel={panelLabel || String(title || "Menu")}
     >
-    <div className={classNames("tbf-shell-mobile-nav", contentClassName)}>
-    <div className="tbf-shell-mobile-nav__head">
-    <span className={classNames("tbf-shell-mobile-nav__title", titleClassName)}>
+    <div className={classNames(frontendClassName("shell-mobile-nav"), contentClassName)}>
+    <div className={frontendElementClass("shell-mobile-nav", "head")}>
+    <span className={classNames(frontendElementClass("shell-mobile-nav", "title"), titleClassName)}>
     {title}
     </span>
     <MobileNavCloseButton
     aria-label={closeLabel}
-    className="tbf-shell-mobile-nav__close"
+    className={frontendElementClass("shell-mobile-nav", "close")}
     >
     {closeIcon ?? closeLabel}
     </MobileNavCloseButton>

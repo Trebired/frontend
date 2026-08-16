@@ -32,6 +32,7 @@ import type {
   IconSvgSuccess,
   RenderIconHtmlAttrs,
 } from "./types.js";
+import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 export { withIconServerRenderer } from "#6o6fqz7svsts";
 export { attachIconAliasLocals, attachIconServer } from "./attachment.js";
@@ -159,9 +160,9 @@ function createServerIconRenderer(
 
 function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): string {
   const pairs = new Map<string, string|true>();
-  const className = classNames("tbf-icon", "icon-glyph", text(attrs.class ||attrs.className));
+  const className = classNames(frontendClassName("icon"), "icon-glyph", text(attrs.class ||attrs.className));
   pairs.set("class", className);
-  pairs.set("data-tbf-icon", parsed.spec);
+  pairs.set(frontendDataAttr("icon"), parsed.spec);
   const label = text(attrs.label || attrs["aria-label"]);
   if (label) pairs.set("aria-label", label);
   else pairs.set("aria-hidden", "true");
@@ -174,7 +175,7 @@ function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): st
     pairs.set(key, value === true ? true : String(value));
   }
   const color = text(attrs.color);
-  if (color) pairs.set("style", `--tbf-icon-color: ${color}; --icon-custom-color: ${color};`);
+  if (color) pairs.set("style", `${frontendCssVar("icon-color")}: ${color}; --icon-custom-color: ${color};`);
   return Array.from(pairs.entries())
   .map(([key, value]) => value === true ? key : `${key}="${escapeHtml(value)}"`)
   .join(" ");
@@ -187,7 +188,7 @@ function renderIconHtml(
 ): string {
   const parsed = parseServerIconSpec(spec, options);
   const tag = text(attrs.tag) || "i";
-  if (!parsed) return `<${tag} class="tbf-icon icon-glyph" aria-hidden="true"></${tag}>`;
+  if (!parsed) return `<${tag} class="${frontendClassName("icon")} icon-glyph" aria-hidden="true"></${tag}>`;
   const svgResult = resolveIconSvg(parsed.spec, {
       ...options,
       preserveSourceColors: attrs.preserveSourceColors ?? options.preserveSourceColors,
@@ -218,8 +219,8 @@ function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
   const svg = color ? applySvgColor(svgResult.svg, color) : svgResult.svg;
   return {
     body: applySvgRootAttrs(svg, {
-        "data-tbf-icon-color-mode": colorMode || undefined,
-        "data-tbf-icon-color-value": color || undefined,
+        [frontendDataAttr("icon-color-mode")]: colorMode || undefined,
+        [frontendDataAttr("icon-color-value")]: color || undefined,
     }),
     headers: {
       "Cache-Control": "public, max-age=3600",

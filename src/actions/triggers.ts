@@ -4,13 +4,14 @@ import {
   queryAll,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const ACTION_TRIGGER_SELECTOR = [
-  "[data-tbf-action-trigger]",
-  "[data-tbf-href]",
-  "[data-tbf-external-href]",
+  frontendDataSelector("action-trigger"),
+  frontendDataSelector("href"),
+  frontendDataSelector("external-href"),
 ].join(",");
-const ACTION_FULL_RELOAD_SELECTOR = "[data-tbf-full-reload]";
+const ACTION_FULL_RELOAD_SELECTOR = frontendDataSelector("full-reload");
 const registry = new Map<string, Array<(payload: ActionPayload) => void>>();
 const triggerBindings = new WeakMap<HTMLElement, () => void>();
 
@@ -34,7 +35,7 @@ type BindActionTriggerOptions = {
 };
 
 function parseAction(trigger: HTMLElement, options: BindActionTriggerOptions = {}) {
-  const raw = String(options.action || trigger.getAttribute("data-tbf-action-trigger") || "").trim();
+  const raw = String(options.action || trigger.getAttribute(frontendDataAttr("action-trigger")) || "").trim();
   const match = raw.match(/^(\S+)(?:\s+([\s\S]*))?$/u);
   return {
     action: match ? String(match[1]) : "",
@@ -109,13 +110,13 @@ function shouldNavigateWithFullReload(
 
 function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
   const externalHref = String(
-    options.externalHref || trigger.getAttribute("data-tbf-external-href") || "",
+    options.externalHref || trigger.getAttribute(frontendDataAttr("external-href")) || "",
   ).trim();
   if (externalHref) {
     window.open(externalHref, "_blank", "noopener,noreferrer");
     return true;
   }
-  const href = String(options.href || trigger.getAttribute("data-tbf-href") || "").trim();
+  const href = String(options.href || trigger.getAttribute(frontendDataAttr("href")) || "").trim();
   if (!href) return false;
   if (
     options.navigation?.navigate &&
@@ -132,8 +133,8 @@ function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOption
   const hasHref = Boolean(
     options.href ||
       options.externalHref ||
-      trigger.getAttribute("data-tbf-href") ||
-      trigger.getAttribute("data-tbf-external-href"),
+      trigger.getAttribute(frontendDataAttr("href")) ||
+      trigger.getAttribute(frontendDataAttr("external-href")),
   );
   if (!parseAction(trigger, options).action && !hasHref) return;
   if (trigger.matches("button,a,input,select,textarea")) return;

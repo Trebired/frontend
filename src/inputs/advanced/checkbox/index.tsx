@@ -3,6 +3,7 @@ import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type checkbox_props = {
   all?: boolean;
@@ -94,7 +95,7 @@ function checkbox(props: checkbox_props) {
   return (
     <Tag
     className={model.computedOptionClassName}
-    data-tbf-checkbox-option=""
+    {...frontendDataAttrs({ "checkbox-option": "" })}
     {...(props.wrap_attrs && typeof props.wrap_attrs === "object"
         ? props.wrap_attrs
         : {})}

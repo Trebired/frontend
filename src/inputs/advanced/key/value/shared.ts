@@ -6,6 +6,7 @@ import {
   primitiveButtonClassName,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 type AttrMap = Record<string, unknown>;
 
@@ -122,7 +123,7 @@ function gridColumns(fields: Array<{className?:unknown}>, remove: boolean) {
 
 function gridStyle(fields: Array<{className?:unknown}>, remove: boolean) {
   return {
-    "--tbf-grid-template-columns": gridColumns(fields, remove),
+    [frontendCssVar("grid-template-columns")]: gridColumns(fields, remove),
     alignItems: "center",
   } as Record<string, unknown>;
 }

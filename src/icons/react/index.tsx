@@ -10,6 +10,7 @@ import {
 import { readIconCacheEntry, renderIconElement } from "#e55z7pkijewq";
 import { applySvgColor } from "#bu1nq95e3k0f";
 import { getActiveIconServerRenderer } from "#6o6fqz7svsts";
+import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 type IconProps = Omit<HTMLAttributes<HTMLElement>, "color"> & {
   color?: string;
@@ -39,7 +40,7 @@ function resolveStyle(
     return {
       ...base,
       "--icon-custom-color": props.color,
-      "--tbf-icon-color": props.color,
+      [frontendCssVar("icon-color")]: props.color,
     } as CSSProperties;
   }
   if (colorMode === "brand" && colorValue) return { ...base, color: colorValue };
@@ -87,8 +88,8 @@ function Icon(props: IconProps) {
         ...rest,
         "aria-hidden": rest["aria-hidden"] ?? hidden,
         "aria-label": rest["aria-label"] || label || undefined,
-        className: classNames("tbf-icon", "icon-glyph", className),
-        "data-tbf-icon": normalizedSpec || undefined,
+        className: classNames(frontendClassName("icon"), "icon-glyph", className),
+        [frontendDataAttr("icon")]: normalizedSpec || undefined,
         ref,
         style: resolveStyle({ ...props, color }, colorMode, colorValue),
         title,

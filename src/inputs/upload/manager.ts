@@ -34,8 +34,9 @@ import {
 } from "./state.js";
 import type { UploadEntry, UploadRuntimeOptions } from "./types.js";
 import { resolveUploadFlash } from "./runtime.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const UPLOAD_SELECTOR = "[data-tbf-upload]";
+const UPLOAD_SELECTOR = frontendDataSelector("upload");
 const boundUploadRoots = new WeakSet<HTMLElement>();
 const rootOptions = new WeakMap<HTMLElement, UploadRuntimeOptions>();
 let booted = false;
@@ -229,7 +230,7 @@ function guardDocumentDrop(event: DragEvent) {
 
 function clearDraggingUploads(root: BindRoot = document) {
   queryAll<HTMLElement>(root, UPLOAD_SELECTOR).forEach((element) => {
-      element.removeAttribute("data-tbf-upload-drag");
+      element.removeAttribute(frontendDataAttr("upload-drag"));
   });
 }
 
@@ -247,7 +248,7 @@ function bindUploadDrop(root: HTMLElement, options: UploadRuntimeOptions) {
 function handleUploadDrag(root: HTMLElement, event: DragEvent, active: boolean) {
   if (!preventFileDragDefault(event, "copy")) return false;
   event.stopPropagation();
-  root.toggleAttribute("data-tbf-upload-drag", active);
+  root.toggleAttribute(frontendDataAttr("upload-drag"), active);
   return true;
 }
 

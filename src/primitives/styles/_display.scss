@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .canvas-panel {
   display: flex;
   min-height: 0;
@@ -35,7 +36,7 @@
 .canvas-panel-toolbar-actions-with-divider {
   margin-left: 4px;
   padding-left: 12px;
-  border-left: var(--border-width, var(--tbf-border-width, 1px)) solid rgba(255, 255, 255, 0.12);
+  border-left: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid rgba(255, 255, 255, 0.12);
 }
 
 .canvas-panel-toolbar-actions > .right,
@@ -58,40 +59,42 @@
   min-height: 0;
 }
 
-.tbf-text-link,
+#{ns.class("text-link")},
+
 .text-link {
   color: var(
-    --tbf-ui-link-root-color,
-    var(--text-color-muted, var(--tbf-text-muted, var(--tbf-text, currentColor)))
+    #{ns.css-var("ui-link-root-color")},
+    var(--text-color-muted, var(#{ns.css-var("text-muted")}, var(#{ns.css-var("text")}, currentColor)))
   );
-  font-weight: var(--tbf-ui-link-root-font-weight, inherit);
-  text-decoration-line: var(--tbf-ui-link-root-decoration-line, underline);
-  text-decoration-color: var(--tbf-ui-link-root-decoration-color, currentColor);
-  text-decoration-style: var(--tbf-ui-link-root-decoration-style, solid);
-  text-decoration-thickness: var(--tbf-ui-link-root-decoration-thickness, 1px);
-  text-underline-offset: var(--tbf-ui-link-root-underline-offset, 3px);
-  transition: var(--tbf-ui-link-root-transition, none);
+  font-weight: var(#{ns.css-var("ui-link-root-font-weight")}, inherit);
+  text-decoration-line: var(#{ns.css-var("ui-link-root-decoration-line")}, underline);
+  text-decoration-color: var(#{ns.css-var("ui-link-root-decoration-color")}, currentColor);
+  text-decoration-style: var(#{ns.css-var("ui-link-root-decoration-style")}, solid);
+  text-decoration-thickness: var(#{ns.css-var("ui-link-root-decoration-thickness")}, 1px);
+  text-underline-offset: var(#{ns.css-var("ui-link-root-underline-offset")}, 3px);
+  transition: var(#{ns.css-var("ui-link-root-transition")}, none);
 }
 
-.tbf-text-link:hover,
-.tbf-text-link:focus,
+#{ns.class("text-link")}:hover,
+
+#{ns.class("text-link")}:focus,
 .text-link:hover,
 .text-link:focus {
-  color: var(--tbf-ui-link-state-hover-color, var(--text-color, var(--tbf-text, currentColor)));
-  text-decoration-color: var(--tbf-ui-link-state-hover-decoration-color, currentColor);
+  color: var(#{ns.css-var("ui-link-state-hover-color")}, var(--text-color, var(#{ns.css-var("text")}, currentColor)));
+  text-decoration-color: var(#{ns.css-var("ui-link-state-hover-decoration-color")}, currentColor);
   text-decoration-style: var(
-    --tbf-ui-link-state-hover-decoration-style,
-    var(--tbf-ui-link-root-decoration-style, solid)
+    #{ns.css-var("ui-link-state-hover-decoration-style")},
+    var(#{ns.css-var("ui-link-root-decoration-style")}, solid)
   );
 }
 
-[data-tbf-table] {
+#{ns.data("table")} {
   width: 100%;
   border-collapse: collapse;
 
   th,
   td {
-    border: var(--border-width, var(--tbf-border-width, 1px)) solid var(--border-surface-1, var(--tbf-border, currentColor));
+    border: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid var(--border-surface-1, var(#{ns.css-var("border")}, currentColor));
     text-align: left;
     vertical-align: middle;
   }
@@ -111,7 +114,7 @@
   }
 
   tbody tr:hover {
-    background: var(--background-surface-2, var(--tbf-surface-muted, transparent));
+    background: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
     cursor: pointer;
   }
 }

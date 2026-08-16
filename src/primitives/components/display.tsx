@@ -9,6 +9,7 @@ import {
   primitivePaddingClass,
   primitiveStackClassName,
 } from "./classes.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type TableProps = HTMLAttributes<HTMLTableElement> & {
   children?: ReactNode;
@@ -46,7 +47,7 @@ type CanvasPanelCompatProps = {
 function table(props: TableProps) {
   const { children, className, ...rest } = props;
   return (
-    <table {...rest} className={joinClassNames(className)} data-tbf-table="">
+    <table {...rest} className={joinClassNames(className)} {...frontendDataAttrs({ "table": "" })}>
     {children}
     </table>
   );

@@ -1,45 +1,46 @@
+@use "@trebired/bundler/namespace" as ns;
 .ml-xs {
-  margin-left: var(--tbf-gap-xs);
+  margin-left: var(#{ns.css-var("gap-xs")});
 }
 
 .ml-xs2 {
-  margin-left: var(--tbf-gap-xs2);
+  margin-left: var(#{ns.css-var("gap-xs2")});
 }
 
 .ml-sm {
-  margin-left: var(--tbf-gap-sm);
+  margin-left: var(#{ns.css-var("gap-sm")});
 }
 
 .ml-md {
-  margin-left: var(--tbf-gap-md);
+  margin-left: var(#{ns.css-var("gap-md")});
 }
 
 .ml-lg {
-  margin-left: var(--tbf-gap-lg);
+  margin-left: var(#{ns.css-var("gap-lg")});
 }
 
 .mr-xs {
-  margin-right: var(--tbf-gap-xs);
+  margin-right: var(#{ns.css-var("gap-xs")});
 }
 
 .mr-xs2 {
-  margin-right: var(--tbf-gap-xs2);
+  margin-right: var(#{ns.css-var("gap-xs2")});
 }
 
 .mr-sm {
-  margin-right: var(--tbf-gap-sm);
+  margin-right: var(#{ns.css-var("gap-sm")});
 }
 
 .mr-md {
-  margin-right: var(--tbf-gap-md);
+  margin-right: var(#{ns.css-var("gap-md")});
 }
 
 .mr-lg {
-  margin-right: var(--tbf-gap-lg);
+  margin-right: var(#{ns.css-var("gap-lg")});
 }
 
 .border {
-  border: var(--tbf-border-width) solid var(--tbf-border);
+  border: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-0 {
@@ -47,25 +48,25 @@
 }
 
 .border-top {
-  border-top: var(--tbf-border-width) solid var(--tbf-border);
+  border-top: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-bottom {
-  border-bottom: var(--tbf-border-width) solid var(--tbf-border);
+  border-bottom: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-left {
-  border-left: var(--tbf-border-width) solid var(--tbf-border);
+  border-left: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-right {
-  border-right: var(--tbf-border-width) solid var(--tbf-border);
+  border-right: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-block {
-  border-block: var(--tbf-border-width) solid var(--tbf-border);
+  border-block: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
 .border-inline {
-  border-inline: var(--tbf-border-width) solid var(--tbf-border);
+  border-inline: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }

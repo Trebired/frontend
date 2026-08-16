@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, dataBool, jsonScript } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type LiveRegionProps = HTMLAttributes<HTMLElement> & {
   as?: "div" | "main" | "section";
@@ -24,9 +25,9 @@ function LiveRegion(props: LiveRegionProps) {
   return (
     <Tag
     {...rest}
-    className={classNames("tbf-live-region", className)}
-    data-tbf-live-region={region}
-    data-tbf-live-skip={dataBool(skip)}
+    className={classNames(frontendClassName("live-region"), className)}
+    {...frontendDataAttrs({ "live-region": region })}
+    {...frontendDataAttrs({ "live-skip": dataBool(skip) })}
     >
     {children}
     </Tag>
@@ -38,9 +39,9 @@ function LiveRefreshButton(props: LiveRefreshButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-live-refresh=""
-    data-tbf-live-url={url}
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "live-refresh": "" })}
+    {...frontendDataAttrs({ "live-url": url })}
     type={type}
     >
     {children}

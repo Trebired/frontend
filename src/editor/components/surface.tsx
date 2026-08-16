@@ -18,6 +18,7 @@ import {
   FullscreenTarget,
 } from "#vbkfq413o3u7";
 import type { EditorBodyProps, EditorLabels, EditorSurfaceProps } from "./types.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const EDITOR_FULLSCREEN_GROUP = "editor_surface";
 const EDITOR_EXTEND_ID = "editor_surface_panel";
@@ -257,7 +258,7 @@ function fullscreenActions(state: ReturnType<typeof readSurfaceState>) {
     <FullscreenCloseButton
     aria-label={state.labels.exitFullscreen}
     className={primitiveButtonClassName({ icon: true, size: "md", tooltip: true })}
-    data-tbf-fullscreen-hidden="true"
+    {...frontendDataAttrs({ "fullscreen-hidden": "true" })}
     fullscreenId={state.extendId}
     group={state.extendGroup}
     title={state.labels.exitFullscreen}

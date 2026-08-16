@@ -22,6 +22,7 @@ import type {
   ProductShellSidebarProps,
   ProductShellThemeToggleProps,
 } from "./types.js";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ProductShellThemeSelectProps =
 Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
@@ -36,7 +37,7 @@ function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
   return (
     <SidebarFooter
     {...rest}
-    className={classNames("tbf-product-shell-sidebar-footer", className)}
+    className={classNames(frontendClassName("product-shell-sidebar-footer"), className)}
     >
     {body}
     </SidebarFooter>
@@ -46,7 +47,7 @@ function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
 function ProductShellSidebarControls(props: ProductShellSidebarControlsProps) {
   const { about, className, language, minimize, theme, ...rest } = props;
   return (
-    <Card {...rest} className={classNames("tbf-product-shell-sidebar-controls", className)}>
+    <Card {...rest} className={classNames(frontendClassName("product-shell-sidebar-controls"), className)}>
     {minimize}
     {theme}
     {language}
@@ -84,15 +85,15 @@ function ProductShellSidebarMinimizeButton(
     <SidebarMinimizeButton
     {...rest}
     aria-label={props["aria-label"] || String(label)}
-    className={classNames("tbf-product-shell-sidebar-minimize", className)}
+    className={classNames(frontendClassName("product-shell-sidebar-minimize"), className)}
     title={String(label)}
     >
     {children || (
         <>
-        <span className="tbf-product-shell-sidebar-minimize__collapse">
+        <span className={frontendElementClass("product-shell-sidebar-minimize", "collapse")}>
         {expandedIcon}
         </span>
-        <span className="tbf-product-shell-sidebar-minimize__expand">
+        <span className={frontendElementClass("product-shell-sidebar-minimize", "expand")}>
         {minimizedIcon}
         </span>
         </>
@@ -143,7 +144,7 @@ function ProductShellSidebarDefaultControls(
         light={light}
         modes={modes}
         className={buttonClassName}
-        data-tbf-tooltip={themeLabel}
+        {...frontendDataAttrs({ "tooltip": themeLabel })}
         icon={productShellThemeIcon(theme)}
         labels={labels}
         theme={theme}
@@ -168,9 +169,9 @@ function productShellThemeSelect(props: ProductShellThemeSelectProps) {
   return (
     <ThemeSelect
     aria-hidden="true"
-    className="popover popover-portaled tbf-theme-switch-popover"
+    className={`popover popover-portaled ${frontendClassName("theme-switch-popover")}`}
     dark={props.dark}
-    data-tbf-popover=""
+    {...frontendDataAttrs({ "popover": "" })}
     id={props.popoverId}
     inert={true}
     label={props.label}
@@ -198,7 +199,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
     ...rest
   } = props;
   const label = productShellLabel(labels, "toggleTheme");
-  const id = String(rest.id || "tbf_product_shell_theme_control");
+  const id = String(rest.id || `${FRONTEND_PREFIX}_product_shell_theme_control`);
   const themePopoverId = popoverId || `${id}_menu`;
   const body = children || icon;
   return (
@@ -210,8 +211,8 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
           "aria-label": props["aria-label"] || label,
           "aria-haspopup": "menu",
           children: body,
-          className: classNames("tbf-product-shell-theme-control", className),
-          "data-tbf-popover-trigger": "",
+          className: classNames(frontendClassName("product-shell-theme-control"), className),
+          [frontendDataAttr("popover-trigger")]: "",
           icon: !children,
           id,
           title: String(label),
@@ -237,7 +238,7 @@ function ProductShellAboutButton(props: ProductShellAboutButtonProps) {
     <a
     {...rest}
     aria-label={props["aria-label"] || String(label)}
-    className={classNames("tbf-product-shell-about", className)}
+    className={classNames(frontendClassName("product-shell-about"), className)}
     href={href}
     title={String(label)}
     >

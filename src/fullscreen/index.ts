@@ -17,16 +17,21 @@ import {
   fullscreenSupported,
   toggleFullscreen,
 } from "./native.js";
+import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const FULLSCREEN_BASE_Z_INDEX = 1120;
 const FULLSCREEN_TRIGGER_SELECTOR = [
-  "[data-tbf-fullscreen-trigger]",
-  "[data-tbf-fullscreen-toggle]",
-  "[data-tbf-fullscreen-enter]",
-  "[data-tbf-fullscreen-exit]",
+  frontendDataSelector("fullscreen-trigger"),
+  frontendDataSelector("fullscreen-toggle"),
+  frontendDataSelector("fullscreen-enter"),
+  frontendDataSelector("fullscreen-exit"),
 ].join(",");
-const FULLSCREEN_TARGET_SELECTOR = "[data-tbf-fullscreen-target][data-tbf-fullscreen-id][data-tbf-fullscreen-group]";
-const FULLSCREEN_STORAGE_PREFIX = "tbf:fullscreen:";
+const FULLSCREEN_TARGET_SELECTOR = [
+  frontendDataSelector("fullscreen-target"),
+  frontendDataSelector("fullscreen-id"),
+  frontendDataSelector("fullscreen-group"),
+].join("");
+const FULLSCREEN_STORAGE_PREFIX = `${frontendEventName("fullscreen")}:`;
 
 type FullscreenRuntimeOptions = {
   target?: Element | string | null;
@@ -54,7 +59,7 @@ let originalBodyOverflow = "";
 let originalBodyPaddingRight = "";
 
 function readNativeTriggerTarget(trigger: HTMLElement, fallback?: Element | string | null): Element | string | null {
-  const value = trigger.getAttribute("data-tbf-fullscreen-target");
+  const value = trigger.getAttribute(frontendDataAttr("fullscreen-target"));
   return value || fallback || null;
 }
 
@@ -63,25 +68,25 @@ function fullscreenTargetKey(id: unknown, group: unknown) {
 }
 
 function readPanelId(element: HTMLElement) {
-  return String(element.getAttribute("data-tbf-fullscreen-id") || "").trim();
+  return String(element.getAttribute(frontendDataAttr("fullscreen-id")) || "").trim();
 }
 
 function readPanelGroup(element: HTMLElement) {
-  return String(element.getAttribute("data-tbf-fullscreen-group") || "default").trim() || "default";
+  return String(element.getAttribute(frontendDataAttr("fullscreen-group")) || "default").trim() || "default";
 }
 
 function readPanelTriggerMode(trigger: HTMLElement): FullscreenTriggerMode {
-  const explicit = String(trigger.getAttribute("data-tbf-fullscreen-mode") || "").trim().toLowerCase();
+  const explicit = String(trigger.getAttribute(frontendDataAttr("fullscreen-mode")) || "").trim().toLowerCase();
   if (explicit === "close" || explicit === "exit" || explicit === "open" || explicit === "toggle") {
     return explicit;
   }
-  if (trigger.hasAttribute("data-tbf-fullscreen-exit")) return "exit";
-  if (trigger.hasAttribute("data-tbf-fullscreen-enter")) return "open";
+  if (trigger.hasAttribute(frontendDataAttr("fullscreen-exit"))) return "exit";
+  if (trigger.hasAttribute(frontendDataAttr("fullscreen-enter"))) return "open";
   return "toggle";
 }
 
 function targetShouldPersist(target: HTMLElement) {
-  return target.getAttribute("data-tbf-fullscreen-persist") === "true";
+  return target.getAttribute(frontendDataAttr("fullscreen-persist")) === "true";
 }
 
 function readStoredPanelId(group: string) {
@@ -107,21 +112,21 @@ function lockDocumentScroll(lock: boolean) {
       document.body.style.paddingRight = `${currentPadding + scrollbarGap}px`;
     }
     document.body.style.overflow = "hidden";
-    document.documentElement.setAttribute("data-tbf-fullscreen-scroll-locked", "true");
-    document.body.setAttribute("data-tbf-fullscreen-scroll-locked", "true");
+    document.documentElement.setAttribute(frontendDataAttr("fullscreen-scroll-locked"), "true");
+    document.body.setAttribute(frontendDataAttr("fullscreen-scroll-locked"), "true");
     return;
   }
   document.body.style.overflow = originalBodyOverflow;
   document.body.style.paddingRight = originalBodyPaddingRight;
-  document.documentElement.removeAttribute("data-tbf-fullscreen-scroll-locked");
-  document.body.removeAttribute("data-tbf-fullscreen-scroll-locked");
+  document.documentElement.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
+  document.body.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
 }
 
 function createPlaceholder(target: HTMLElement) {
   const rect = target.getBoundingClientRect();
   const placeholder = document.createElement("div");
-  placeholder.className = "tbf-fullscreen-placeholder";
-  placeholder.setAttribute("data-tbf-fullscreen-placeholder", "");
+  placeholder.className = frontendClassName("fullscreen-placeholder");
+  placeholder.setAttribute(frontendDataAttr("fullscreen-placeholder"), "");
   placeholder.style.width = `${Math.max(0, rect.width)}px`;
   placeholder.style.height = `${Math.max(0, rect.height)}px`;
   return placeholder;
@@ -129,10 +134,10 @@ function createPlaceholder(target: HTMLElement) {
 
 function createOverlay(id: string, group: string) {
   const overlay = document.createElement("div");
-  overlay.className = "tbf-fullscreen-overlay";
-  overlay.setAttribute("data-tbf-fullscreen-overlay", "");
-  overlay.setAttribute("data-tbf-fullscreen-id", id);
-  overlay.setAttribute("data-tbf-fullscreen-group", group);
+  overlay.className = frontendClassName("fullscreen-overlay");
+  overlay.setAttribute(frontendDataAttr("fullscreen-overlay"), "");
+  overlay.setAttribute(frontendDataAttr("fullscreen-id"), id);
+  overlay.setAttribute(frontendDataAttr("fullscreen-group"), group);
   overlay.setAttribute("aria-hidden", "true");
   overlay.setAttribute("role", "presentation");
   return overlay;
@@ -153,14 +158,14 @@ function dispatchPanelEvent(name: string, state: FullscreenPanelState) {
 
 function syncPanelTriggers() {
   const active = panelState;
-  queryAll<HTMLElement>(document, "[data-tbf-fullscreen-trigger]").forEach((trigger) => {
+  queryAll<HTMLElement>(document, frontendDataSelector("fullscreen-trigger")).forEach((trigger) => {
       const id = readPanelId(trigger);
       const group = readPanelGroup(trigger);
       const matches = Boolean(active && active.id === id && active.group === group);
       const mode = readPanelTriggerMode(trigger);
-      trigger.setAttribute("data-tbf-fullscreen-active", matches ? "true" : "false");
+      trigger.setAttribute(frontendDataAttr("fullscreen-active"), matches ? "true" : "false");
       trigger.setAttribute(
-        "data-tbf-fullscreen-hidden",
+        frontendDataAttr("fullscreen-hidden"),
         (mode === "open" && matches) || ((mode === "close" || mode === "exit") && !matches) ? "true" : "false",
       );
   });
@@ -172,7 +177,7 @@ function registerFullscreenTarget(target: HTMLElement | null) {
   if (!id) return null;
   const group = readPanelGroup(target);
   targetRegistry.set(fullscreenTargetKey(id, group), target);
-  target.setAttribute("data-tbf-fullscreen-target", "");
+  target.setAttribute(frontendDataAttr("fullscreen-target"), "");
   const storedId = readStoredPanelId(group);
   if (storedId && storedId === id && targetShouldPersist(target) && !panelState) {
     openFullscreenTarget(id, group);
@@ -183,7 +188,9 @@ function registerFullscreenTarget(target: HTMLElement | null) {
 function findRegisteredFullscreenTarget(id: string, group: string) {
   const existing = targetRegistry.get(fullscreenTargetKey(id, group));
   if (existing?.isConnected) return existing;
-  const match = resolveDocumentTarget(`[data-tbf-fullscreen-target][data-tbf-fullscreen-id="${id}"][data-tbf-fullscreen-group="${group}"]`);
+  const match = resolveDocumentTarget(
+    `${frontendDataSelector("fullscreen-target")}${frontendDataSelector("fullscreen-id", id)}${frontendDataSelector("fullscreen-group", group)}`,
+  );
   return match instanceof HTMLElement ? registerFullscreenTarget(match) : null;
 }
 
@@ -207,7 +214,7 @@ function openFullscreenTarget(
   moveLayerElementToTop(target);
   const overlayZ = applyZIndex(overlay, { fallback: FULLSCREEN_BASE_Z_INDEX });
   applyZIndex(target, { fallback: overlayZ == null ? FULLSCREEN_BASE_Z_INDEX + 1 : overlayZ + 1 });
-  target.setAttribute("data-tbf-fullscreen-active", "true");
+  target.setAttribute(frontendDataAttr("fullscreen-active"), "true");
   target.setAttribute("aria-modal", "true");
   lockDocumentScroll(true);
   panelState = {
@@ -225,10 +232,10 @@ function openFullscreenTarget(
   overlay.addEventListener("click", () => closeFullscreenTarget(), { once: true });
   window.requestAnimationFrame(() => {
       if (panelState?.target !== target) return;
-      overlay.setAttribute("data-tbf-open", "true");
+      overlay.setAttribute(frontendDataAttr("open"), "true");
       overlay.setAttribute("aria-hidden", "false");
-      target.setAttribute("data-tbf-fullscreen-full", "true");
-      dispatchPanelEvent("tbf:fullscreen-open", panelState);
+      target.setAttribute(frontendDataAttr("fullscreen-full"), "true");
+      dispatchPanelEvent(frontendEventName("fullscreen-open"), panelState);
   });
   syncPanelTriggers();
   installPanelListeners();
@@ -236,8 +243,8 @@ function openFullscreenTarget(
 }
 
 function restoreFullscreenTarget(state: FullscreenPanelState) {
-  state.target.removeAttribute("data-tbf-fullscreen-active");
-  state.target.removeAttribute("data-tbf-fullscreen-full");
+  state.target.removeAttribute(frontendDataAttr("fullscreen-active"));
+  state.target.removeAttribute(frontendDataAttr("fullscreen-full"));
   state.target.removeAttribute("aria-modal");
   clearZIndex(state.target);
   if (state.originalStyle == null) state.target.removeAttribute("style");
@@ -256,14 +263,14 @@ function closeFullscreenTarget(options: { immediate?: boolean } = {}) {
   const state = panelState;
   if (!state) return false;
   panelState = null;
-  state.overlay.removeAttribute("data-tbf-open");
+  state.overlay.removeAttribute(frontendDataAttr("open"));
   state.overlay.setAttribute("aria-hidden", "true");
   clearStoredPanelId(state.group);
   const finish = () => {
     restoreFullscreenTarget(state);
     lockDocumentScroll(false);
     state.trigger?.focus({ preventScroll: true });
-    dispatchPanelEvent("tbf:fullscreen-close", state);
+    dispatchPanelEvent(frontendEventName("fullscreen-close"), state);
     syncPanelTriggers();
   };
   if (options.immediate) finish();
@@ -280,8 +287,8 @@ function toggleFullscreenTarget(id: string, group = "default", trigger: HTMLElem
 }
 
 function bindFullscreenTrigger(trigger: HTMLElement | null, options: FullscreenRuntimeOptions = {}): boolean {
-  if (!(trigger instanceof HTMLElement) || trigger.hasAttribute("data-tbf-fullscreen-bound")) return false;
-  trigger.setAttribute("data-tbf-fullscreen-bound", "true");
+  if (!(trigger instanceof HTMLElement) || trigger.hasAttribute(frontendDataAttr("fullscreen-bound"))) return false;
+  trigger.setAttribute(frontendDataAttr("fullscreen-bound"), "true");
   trigger.addEventListener("click", (event) => {
       event.preventDefault();
       const id = readPanelId(trigger);

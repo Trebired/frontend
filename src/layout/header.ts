@@ -4,17 +4,18 @@ import {
   type BindRoot,
   type Cleanup,
 } from "#er0dlx1gtbzh";
+import { frontendCssVar, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const HEADER_SELECTOR = "[data-tbf-header]";
-const HEADER_PRIMARY_SELECTOR = "[data-tbf-header][data-tbf-header-primary]";
-const HEADER_SECONDARY_SELECTOR = "[data-tbf-header][data-tbf-header-secondary]";
-const MOBILE_NAV_SELECTOR = "[data-tbf-mobile-nav]";
-const MOBILE_NAV_PANEL_SELECTOR = "[data-tbf-mobile-nav-panel]";
-const MOBILE_NAV_TOGGLE_SELECTOR = "[data-tbf-mobile-nav-toggle]";
-const MOBILE_NAV_CLOSE_SELECTOR = "[data-tbf-mobile-nav-close]";
-const HEADER_BOUND_ATTR = "data-tbf-header-bound";
-const MOBILE_NAV_BOUND_ATTR = "data-tbf-mobile-nav-bound";
-const MOBILE_NAV_EVENT = "tbf:mobile-nav";
+const HEADER_SELECTOR = frontendDataSelector("header");
+const HEADER_PRIMARY_SELECTOR = `${frontendDataSelector("header")}${frontendDataSelector("header-primary")}`;
+const HEADER_SECONDARY_SELECTOR = `${frontendDataSelector("header")}${frontendDataSelector("header-secondary")}`;
+const MOBILE_NAV_SELECTOR = frontendDataSelector("mobile-nav");
+const MOBILE_NAV_PANEL_SELECTOR = frontendDataSelector("mobile-nav-panel");
+const MOBILE_NAV_TOGGLE_SELECTOR = frontendDataSelector("mobile-nav-toggle");
+const MOBILE_NAV_CLOSE_SELECTOR = frontendDataSelector("mobile-nav-close");
+const HEADER_BOUND_ATTR = frontendDataAttr("header-bound");
+const MOBILE_NAV_BOUND_ATTR = frontendDataAttr("mobile-nav-bound");
+const MOBILE_NAV_EVENT = frontendEventName("mobile-nav");
 
 type HeaderRuntimeOptions = {
   breakpoint?: string;
@@ -40,11 +41,11 @@ function syncHeaderOffsets(root: ParentNode = document) {
   const primaryHeight = elementHeight(primary);
   const secondaryHeight = elementHeight(secondary);
   const target = document.body || document.documentElement;
-  target.setAttribute("data-tbf-header-primary", primary ? "true" : "false");
-  target.setAttribute("data-tbf-header-secondary", secondary ? "true" : "false");
-  target.style.setProperty("--tbf-header-height", `${primaryHeight}px`);
-  target.style.setProperty("--tbf-secondary-header-height", `${secondaryHeight}px`);
-  target.style.setProperty("--tbf-layout-top-offset", `${primaryHeight + secondaryHeight}px`);
+  target.setAttribute(frontendDataAttr("header-primary"), primary ? "true" : "false");
+  target.setAttribute(frontendDataAttr("header-secondary"), secondary ? "true" : "false");
+  target.style.setProperty(frontendCssVar("header-height"), `${primaryHeight}px`);
+  target.style.setProperty(frontendCssVar("secondary-header-height"), `${secondaryHeight}px`);
+  target.style.setProperty(frontendCssVar("layout-top-offset"), `${primaryHeight + secondaryHeight}px`);
   return { primaryHeight, secondaryHeight };
 }
 
@@ -59,12 +60,12 @@ function applyMobileNavState(nav: HTMLElement, open: boolean) {
   const panel = nav.querySelector<HTMLElement>(MOBILE_NAV_PANEL_SELECTOR);
   const state = { nav, open, panel };
   navStates.set(nav, state);
-  nav.setAttribute("data-tbf-mobile-nav-open", open ? "true" : "false");
+  nav.setAttribute(frontendDataAttr("mobile-nav-open"), open ? "true" : "false");
   panel?.setAttribute("aria-hidden", open ? "false" : "true");
   queryAll<HTMLElement>(document, MOBILE_NAV_TOGGLE_SELECTOR).forEach((button) => {
       if (button.getAttribute("aria-controls") === nav.id) setAriaExpanded(button, open);
   });
-  document.body?.setAttribute("data-tbf-mobile-nav-open", open ? "true" : "false");
+  document.body?.setAttribute(frontendDataAttr("mobile-nav-open"), open ? "true" : "false");
   dispatchMobileNavState(state);
   return state;
 }
@@ -83,7 +84,7 @@ function toggleMobileNav(nav: HTMLElement) {
 }
 
 function resolveMobileNav(button: HTMLElement) {
-  const controls = button.getAttribute("aria-controls") || button.getAttribute("data-tbf-mobile-nav-target");
+  const controls = button.getAttribute("aria-controls") || button.getAttribute(frontendDataAttr("mobile-nav-target"));
   if (controls) {
     const target = document.getElementById(controls.replace(/^#/u, ""));
     if (target instanceof HTMLElement && target.matches(MOBILE_NAV_SELECTOR)) return target;
@@ -94,7 +95,7 @@ function resolveMobileNav(button: HTMLElement) {
 function bindMobileNav(nav: HTMLElement | null) {
   if (!(nav instanceof HTMLElement) || nav.hasAttribute(MOBILE_NAV_BOUND_ATTR)) return null;
   nav.setAttribute(MOBILE_NAV_BOUND_ATTR, "true");
-  applyMobileNavState(nav, nav.getAttribute("data-tbf-mobile-nav-open") === "true");
+  applyMobileNavState(nav, nav.getAttribute(frontendDataAttr("mobile-nav-open")) === "true");
   nav.querySelectorAll<HTMLElement>(MOBILE_NAV_CLOSE_SELECTOR).forEach((button) => {
       button.addEventListener("click", (event) => {
           event.preventDefault();
@@ -105,12 +106,12 @@ function bindMobileNav(nav: HTMLElement | null) {
 }
 
 function bindMobileNavToggle(button: HTMLElement | null) {
-  if (!(button instanceof HTMLElement) || button.hasAttribute("data-tbf-mobile-nav-toggle-bound")) {
+  if (!(button instanceof HTMLElement) || button.hasAttribute(frontendDataAttr("mobile-nav-toggle-bound"))) {
     return null;
   }
   const nav = resolveMobileNav(button);
   if (!nav) return null;
-  button.setAttribute("data-tbf-mobile-nav-toggle-bound", "true");
+  button.setAttribute(frontendDataAttr("mobile-nav-toggle-bound"), "true");
   button.addEventListener("click", (event) => {
       event.preventDefault();
       toggleMobileNav(nav);
@@ -136,7 +137,7 @@ function installLayoutChromeListeners(root: BindRoot, options: HeaderRuntimeOpti
   const media = window.matchMedia?.(options.breakpoint || "(max-width: 900px)");
   const closeOnDesktop = () => {
     if (media && media.matches) return;
-    queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}[data-tbf-mobile-nav-open="true"]`)
+    queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}${frontendDataSelector("mobile-nav-open", "true")}`)
     .forEach(closeMobileNav);
   };
   media?.addEventListener?.("change", closeOnDesktop);
@@ -152,7 +153,7 @@ function installLayoutChromeListeners(root: BindRoot, options: HeaderRuntimeOpti
 
 function closeOnEscape(event: KeyboardEvent) {
   if (event.key !== "Escape") return;
-  queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}[data-tbf-mobile-nav-open="true"]`)
+  queryAll<HTMLElement>(document, `${MOBILE_NAV_SELECTOR}${frontendDataSelector("mobile-nav-open", "true")}`)
   .forEach(closeMobileNav);
 }
 

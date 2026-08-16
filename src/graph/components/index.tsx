@@ -1,6 +1,7 @@
 import type { CanvasHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, jsonScript } from "#ndsvdqv80epr";
 import type { GraphConfig, GraphSeries } from "#9wjes84tjrfc";
+import { frontendClassName, frontendCssVar, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type GraphPanelProps = HTMLAttributes<HTMLDivElement> & {
   config: GraphConfig;
@@ -25,18 +26,18 @@ type CalendarHeatmapDay = {
 function GraphPanel(props: GraphPanelProps) {
   const { children, className, config, details, legend = true, ...rest } = props;
   return (
-    <div {...rest} className={classNames("tbf-graph", className)} data-tbf-graph="">
+    <div {...rest} className={classNames(frontendClassName("graph"), className)} {...frontendDataAttrs({ "graph": "" })}>
     <script
-    data-tbf-graph-config=""
+    {...frontendDataAttrs({ "graph-config": "" })}
     hidden
     type="application/json"
     dangerouslySetInnerHTML={{ __html: jsonScript(config) }}
     />
-    <div className="tbf-graph__canvas-shell">
+    <div className={frontendElementClass("graph", "canvas-shell")}>
     {children || <GraphCanvas />}
     </div>
     {legend ? <GraphLegend series={config.series} /> : null}
-    {details ? <div className="tbf-graph__details">{details}</div> : null}
+    {details ? <div className={frontendElementClass("graph", "details")}>{details}</div> : null}
     </div>
   );
 }
@@ -46,8 +47,8 @@ function GraphCanvas(props: GraphCanvasProps) {
   return (
     <canvas
     {...rest}
-    className={classNames("tbf-graph__canvas", className)}
-    data-tbf-graph-canvas=""
+    className={classNames(frontendElementClass("graph", "canvas"), className)}
+    {...frontendDataAttrs({ "graph-canvas": "" })}
     height={height}
     width={width}
     />
@@ -57,9 +58,9 @@ function GraphCanvas(props: GraphCanvasProps) {
 function GraphLegend(props: { series: GraphSeries[] }) {
   if (!props.series.length) return null;
   return (
-    <ul className="tbf-graph__legend">
+    <ul className={frontendElementClass("graph", "legend")}>
     {props.series.map((series) => (
-          <li key={series.key} style={{ "--tbf-graph-series-color": series.color } as Record<string, string | undefined>}>
+          <li key={series.key} style={{ [frontendCssVar("graph-series-color")]: series.color } as Record<string, string | undefined>}>
           <span />
           {series.label || series.key}
           </li>
@@ -70,12 +71,12 @@ function GraphLegend(props: { series: GraphSeries[] }) {
 
 function KeyValueList(props: HTMLAttributes<HTMLDListElement>) {
   const { children, className, ...rest } = props;
-  return <dl {...rest} className={classNames("tbf-key-values", className)}>{children}</dl>;
+  return <dl {...rest} className={classNames(frontendClassName("key-values"), className)}>{children}</dl>;
 }
 
 function KeyValueItem(props: { label: ReactNode; value: ReactNode }) {
   return (
-    <div className="tbf-key-values__item">
+    <div className={frontendElementClass("key-values", "item")}>
     <dt>{props.label}</dt>
     <dd>{props.value}</dd>
     </div>
@@ -85,7 +86,7 @@ function KeyValueItem(props: { label: ReactNode; value: ReactNode }) {
 function Roadmap(props: HTMLAttributes<HTMLOListElement> & { items: RoadmapItemModel[] }) {
   const { className, items, ...rest } = props;
   return (
-    <ol {...rest} className={classNames("tbf-roadmap", className)}>
+    <ol {...rest} className={classNames(frontendClassName("roadmap"), className)}>
     {items.map((item, index) => <RoadmapItem item={item} key={item.key || index} />)}
     </ol>
   );
@@ -93,10 +94,10 @@ function Roadmap(props: HTMLAttributes<HTMLOListElement> & { items: RoadmapItemM
 
 function RoadmapItem(props: { item: RoadmapItemModel }) {
   return (
-    <li className="tbf-roadmap__item" data-tbf-roadmap-state={props.item.state}>
-    <span className="tbf-roadmap__marker" />
-    <div className="tbf-roadmap__body">
-    <div className="tbf-roadmap__header">
+    <li className={frontendElementClass("roadmap", "item")} {...frontendDataAttrs({ "roadmap-state": props.item.state })}>
+    <span className={frontendElementClass("roadmap", "marker")} />
+    <div className={frontendElementClass("roadmap", "body")}>
+    <div className={frontendElementClass("roadmap", "header")}>
     <strong>{props.item.label}</strong>
     {props.item.meta ? <span>{props.item.meta}</span> : null}
     </div>
@@ -110,14 +111,14 @@ function CalendarHeatmap(props: HTMLAttributes<HTMLDivElement> & { days: Calenda
   const { className, days, max, ...rest } = props;
   const ceiling = max || Math.max(1, ...days.map((day) => day.value));
   return (
-    <div {...rest} className={classNames("tbf-heatmap", className)} data-tbf-heatmap="">
+    <div {...rest} className={classNames(frontendClassName("heatmap"), className)} {...frontendDataAttrs({ "heatmap": "" })}>
     {days.map((day) => (
           <span
           aria-label={day.label || `${day.date}: ${day.value}`}
-          data-tbf-heatmap-cell=""
-          data-tbf-heatmap-date={day.date}
+          {...frontendDataAttrs({ "heatmap-cell": "" })}
+          {...frontendDataAttrs({ "heatmap-date": day.date })}
           key={day.date}
-          style={{ "--tbf-heatmap-level": String(Math.max(0, Math.min(1, day.value / ceiling))) } as Record<string, string>}
+          style={{ [frontendCssVar("heatmap-level")]: String(Math.max(0, Math.min(1, day.value / ceiling))) } as Record<string, string>}
           title={day.label || `${day.date}: ${day.value}`}
           />
     ))}

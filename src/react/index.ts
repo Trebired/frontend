@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { readJsonScript } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 
 type ReactRootOptions = {
   hydrate?: boolean;
@@ -68,9 +69,9 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   const root = await mountReactRoot(target, node, {
       hydrate: target.childNodes.length > 0,
   });
-  target.setAttribute(options.hydratedAttr || "data-tbf-live-hydrated", "true");
+  target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
   target.dispatchEvent(
-    new CustomEvent(options.hydratedEvent || "tbf:live-island-hydrated", {
+    new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {
         bubbles: true,
         detail: { initialState: state, root: target },
     }),

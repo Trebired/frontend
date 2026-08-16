@@ -1,6 +1,7 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "sass:list";
 
-$tbf-primitive-icon-sizes: (
+$frontend-primitive-icon-sizes: (
   xs2: (
     18px,
     10px,
@@ -23,7 +24,7 @@ $tbf-primitive-icon-sizes: (
   ),
 );
 
-$tbf-primitive-button-sizes: (
+$frontend-primitive-button-sizes: (
   sm: (
     24px,
     9px,
@@ -41,7 +42,7 @@ $tbf-primitive-button-sizes: (
   ),
 );
 
-$tbf-primitive-avatar-sizes: (
+$frontend-primitive-avatar-sizes: (
   sm: 32px,
   md: 48px,
   lg: 64px,
@@ -52,17 +53,28 @@ $tbf-primitive-avatar-sizes: (
   xl5: 224px,
 );
 
-$tbf-primitive-tone-colors: (
-  "green": var(--tbf-tone-green, var(--tbf-tone-success, currentColor)),
-  "success": var(--tbf-tone-success, currentColor),
-  "red": var(--tbf-tone-red, var(--tbf-tone-error, currentColor)),
-  "error": var(--tbf-tone-error, currentColor),
-  "yellow": var(--tbf-tone-yellow, var(--tbf-tone-warning, currentColor)),
-  "warning": var(--tbf-tone-warning, currentColor),
-  "blue": var(--tbf-tone-blue, var(--tbf-tone-info, currentColor)),
-  "info": var(--tbf-tone-info, currentColor),
-  "purple": var(--tbf-tone-purple, currentColor),
-  "cyan": var(--tbf-tone-cyan, currentColor),
-  "gray": var(--tbf-tone-gray, var(--tbf-tone-muted, currentColor)),
-  "muted": var(--tbf-tone-muted, currentColor),
+$frontend-primitive-tone-colors: (
+  "green": var(#{ns.css-var("tone-green")}, var(#{ns.css-var("tone-success")}, currentColor)),
+
+  "success": var(#{ns.css-var("tone-success")}, currentColor),
+
+  "red": var(#{ns.css-var("tone-red")}, var(#{ns.css-var("tone-error")}, currentColor)),
+
+  "error": var(#{ns.css-var("tone-error")}, currentColor),
+
+  "yellow": var(#{ns.css-var("tone-yellow")}, var(#{ns.css-var("tone-warning")}, currentColor)),
+
+  "warning": var(#{ns.css-var("tone-warning")}, currentColor),
+
+  "blue": var(#{ns.css-var("tone-blue")}, var(#{ns.css-var("tone-info")}, currentColor)),
+
+  "info": var(#{ns.css-var("tone-info")}, currentColor),
+
+  "purple": var(#{ns.css-var("tone-purple")}, currentColor),
+
+  "cyan": var(#{ns.css-var("tone-cyan")}, currentColor),
+
+  "gray": var(#{ns.css-var("tone-gray")}, var(#{ns.css-var("tone-muted")}, currentColor)),
+
+  "muted": var(#{ns.css-var("tone-muted")}, currentColor),
 );

@@ -11,22 +11,23 @@ import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
 import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
 import type { ActionJson, SubmitActionButtonOptions } from "./types.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const ACTION_BUTTON_SELECTOR =
-"[data-tbf-submit],[data-tbf-action-url]";
+`${frontendDataSelector("submit")},${frontendDataSelector("action-url")}`;
 const boundButtons = new WeakMap<HTMLElement, EventListener>();
 
 function buttonUrl(button: HTMLElement, options: SubmitActionButtonOptions) {
-  return String(options.url || button.getAttribute("data-tbf-action-url") || "").trim();
+  return String(options.url || button.getAttribute(frontendDataAttr("action-url")) || "").trim();
 }
 
 function buttonMethod(button: HTMLElement, options: SubmitActionButtonOptions) {
-  return String(options.method || button.getAttribute("data-tbf-action-method") || "post").toUpperCase();
+  return String(options.method || button.getAttribute(frontendDataAttr("action-method")) || "post").toUpperCase();
 }
 
 function readButtonBody(button: HTMLElement, options: SubmitActionButtonOptions) {
   if (options.body !== undefined) return options.body;
-  return readDataJson<Record<string, unknown>>(button, "data-tbf-action-body", {});
+  return readDataJson<Record<string, unknown>>(button, frontendDataAttr("action-body"), {});
 }
 
 function dispatchActionButtonEvent(
@@ -49,10 +50,10 @@ async function confirmActionButton(
   options: SubmitActionButtonOptions,
 ) {
   if (options.confirm === false) return true;
-  const configured = options.confirm === true || readBooleanAttribute(button, "data-tbf-confirm") === true;
-  if (!configured && !button.hasAttribute("data-tbf-confirm-title")) return true;
+  const configured = options.confirm === true || readBooleanAttribute(button, frontendDataAttr("confirm")) === true;
+  if (!configured && !button.hasAttribute(frontendDataAttr("confirm-title"))) return true;
   const detail: any = { button, confirm: null };
-  const event = dispatchActionButtonEvent(button, "tbf:action-confirm", detail, true);
+  const event = dispatchActionButtonEvent(button, frontendEventName("action-confirm"), detail, true);
   if (event.defaultPrevented) return false;
   if (detail.confirm !== null && detail.confirm !== undefined) {
     const value = typeof detail.confirm === "function" ? detail.confirm() : detail.confirm;
@@ -70,7 +71,7 @@ async function resolveCustomActionButtonRequest(
     return { handled: true, json: await options.request() };
   }
   const detail: any = { button, handled: false, json: null, request: null };
-  const event = dispatchActionButtonEvent(button, "tbf:action-request", detail, true);
+  const event = dispatchActionButtonEvent(button, frontendEventName("action-request"), detail, true);
   if (!event.defaultPrevented && !detail.handled && detail.request == null) {
     return { handled: false, json: null };
   }
@@ -84,12 +85,12 @@ async function resolveCustomActionButtonRequest(
 }
 
 function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
-  const attrUi = readDataJson<Record<string, unknown>>(button, "data-tbf-action-ui", {});
+  const attrUi = readDataJson<Record<string, unknown>>(button, frontendDataAttr("action-ui"), {});
   const ignoreResponseAction =
   options.ignoreResponseAction === true ||
     options.ui?.ignoreResponseAction === true ||
     attrUi.ignoreResponseAction === true ||
-    readBooleanAttribute(button, "data-tbf-ignore-response-action") === true;
+    readBooleanAttribute(button, frontendDataAttr("ignore-response-action")) === true;
   return {
     ...attrUi,
     ...(options.ui || {}),
@@ -101,15 +102,15 @@ function buttonSuccessConfig(button: HTMLElement, options: SubmitActionButtonOpt
   return {
     success:
     options.success ||
-      (readTextAttr(button, "data-tbf-success") === "soft-reload"
+      (readTextAttr(button, frontendDataAttr("success")) === "soft-reload"
       ? "soft-reload"
       : undefined),
-    successTab: options.successTab || readTextAttr(button, "data-tbf-success-tab"),
+    successTab: options.successTab || readTextAttr(button, frontendDataAttr("success-tab")),
   };
 }
 
 function buttonSuccessConfetti(button: HTMLElement, options: SubmitActionButtonOptions) {
-  return options.successConfetti === true || readBooleanAttribute(button, "data-tbf-confetti") === true;
+  return options.successConfetti === true || readBooleanAttribute(button, frontendDataAttr("confetti")) === true;
 }
 
 async function submitActionButton(
@@ -125,7 +126,7 @@ async function submitActionButton(
   const ui = buttonUi(button, options);
   setControlDisabled(button, true);
   try {
-    dispatchActionButtonEvent(button, "tbf:action-submit", {});
+    dispatchActionButtonEvent(button, frontendEventName("action-submit"), {});
     const custom = await resolveCustomActionButtonRequest(button, options);
     json = custom.handled
     ? custom.json
@@ -145,10 +146,10 @@ async function submitActionButton(
         options.adapters,
       );
     }
-    dispatchActionButtonEvent(button, "tbf:action-complete", { json, ok });
+    dispatchActionButtonEvent(button, frontendEventName("action-complete"), { json, ok });
     return json;
   } catch (error) {
-    dispatchActionButtonEvent(button, "tbf:action-complete", {
+    dispatchActionButtonEvent(button, frontendEventName("action-complete"), {
         error,
         json: null,
         ok: false,

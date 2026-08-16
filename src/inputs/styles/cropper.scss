@@ -1,88 +1,91 @@
-.tbf-upload-cropper-modal .tbf-modal__content,
-.tbf-upload-cropper-modal__content {
-  width: var(--tbf-ui-upload-cropper-modal-width, min(960px, calc(100vw - 40px)));
-  max-height: var(--tbf-ui-upload-cropper-modal-max-h, min(90vh, 920px));
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("upload-cropper-modal")} #{ns.element-class("modal", "content")},
+
+#{ns.element-class("upload-cropper-modal", "content")} {
+  width: var(#{ns.css-var("ui-upload-cropper-modal-width")}, min(960px, calc(100vw - 40px)));
+  max-height: var(#{ns.css-var("ui-upload-cropper-modal-max-h")}, min(90vh, 920px));
 }
 
-.tbf-upload-crop {
+#{ns.class("upload-crop")} {
   display: grid;
-  gap: var(--tbf-ui-upload-cropper-root-gap, var(--tbf-gap-md, 12px));
+  gap: var(#{ns.css-var("ui-upload-cropper-root-gap")}, var(#{ns.css-var("gap-md")}, 12px));
 }
 
-.tbf-upload-crop__header {
+#{ns.element-class("upload-crop", "header")} {
   display: grid;
-  gap: var(--tbf-ui-upload-cropper-header-gap, var(--tbf-gap-xs, 4px));
+  gap: var(#{ns.css-var("ui-upload-cropper-header-gap")}, var(#{ns.css-var("gap-xs")}, 4px));
 }
 
-.tbf-upload-crop__title,
-.tbf-upload-crop__description {
+#{ns.element-class("upload-crop", "title")},
+
+#{ns.element-class("upload-crop", "description")} {
   margin: 0;
 }
 
-.tbf-upload-crop__description {
-  color: var(--tbf-ui-upload-cropper-description-color, var(--tbf-text-muted, #000));
+#{ns.element-class("upload-crop", "description")} {
+  color: var(#{ns.css-var("ui-upload-cropper-description-color")}, var(#{ns.css-var("text-muted")}, #000));
 }
 
-.tbf-upload-crop__stage {
+#{ns.element-class("upload-crop", "stage")} {
   position: relative;
-  height: var(--tbf-ui-upload-cropper-stage-height, min(62vh, 640px));
-  min-height: var(--tbf-ui-upload-cropper-stage-min-h, 320px);
+  height: var(#{ns.css-var("ui-upload-cropper-stage-height")}, min(62vh, 640px));
+  min-height: var(#{ns.css-var("ui-upload-cropper-stage-min-h")}, 320px);
   overflow: visible;
   border: var(
-    --tbf-ui-upload-cropper-stage-border,
-    var(--tbf-border-width, 1px) solid var(--tbf-border, #000)
+    #{ns.css-var("ui-upload-cropper-stage-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000)
   );
-  border-radius: var(--tbf-ui-upload-cropper-stage-radius, var(--tbf-radius, 0));
-  background: var(--tbf-ui-upload-cropper-stage-bg, var(--tbf-surface-muted, #fff));
-  --tbf-upload-cropper-guide-horizontal: linear-gradient(
+  border-radius: var(#{ns.css-var("ui-upload-cropper-stage-radius")}, var(#{ns.css-var("radius")}, 0));
+  background: var(#{ns.css-var("ui-upload-cropper-stage-bg")}, var(#{ns.css-var("surface-muted")}, #fff));
+  #{ns.css-var("upload-cropper-guide-horizontal")}: linear-gradient(
     to bottom,
-    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000) 0,
-    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000)
-    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-ui-upload-cropper-stage-line-color, #fff)
-    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-ui-upload-cropper-stage-line-color, #fff) 100%
+    var(#{ns.css-var("ui-upload-cropper-stage-line-contrast-color")}, #000) 0,
+    var(#{ns.css-var("ui-upload-cropper-stage-line-contrast-color")}, #000)
+    var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px),
+    var(#{ns.css-var("ui-upload-cropper-stage-line-color")}, #fff)
+    var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px),
+    var(#{ns.css-var("ui-upload-cropper-stage-line-color")}, #fff) 100%
   );
-  --tbf-upload-cropper-guide-vertical: linear-gradient(
+  #{ns.css-var("upload-cropper-guide-vertical")}: linear-gradient(
     to right,
-    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000) 0,
-    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000)
-    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-ui-upload-cropper-stage-line-color, #fff)
-    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-ui-upload-cropper-stage-line-color, #fff) 100%
+    var(#{ns.css-var("ui-upload-cropper-stage-line-contrast-color")}, #000) 0,
+    var(#{ns.css-var("ui-upload-cropper-stage-line-contrast-color")}, #000)
+    var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px),
+    var(#{ns.css-var("ui-upload-cropper-stage-line-color")}, #fff)
+    var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px),
+    var(#{ns.css-var("ui-upload-cropper-stage-line-color")}, #fff) 100%
   );
 }
 
-.tbf-upload-crop__image {
+#{ns.element-class("upload-crop", "image")} {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.tbf-upload-crop__actions {
+#{ns.element-class("upload-crop", "actions")} {
   display: flex;
   justify-content: flex-end;
-  gap: var(--tbf-ui-upload-cropper-actions-gap, var(--tbf-gap-sm, 8px));
+  gap: var(#{ns.css-var("ui-upload-cropper-actions-gap")}, var(#{ns.css-var("gap-sm")}, 8px));
 }
 
 @media (max-width: 768px) {
-  .tbf-upload-cropper-modal .tbf-modal__content,
-  .tbf-upload-cropper-modal__content {
-    width: var(--tbf-ui-upload-resp-mobile-cropper-modal-width, calc(100vw - 24px));
+  #{ns.class("upload-cropper-modal")} #{ns.element-class("modal", "content")},
+  #{ns.element-class("upload-cropper-modal", "content")} {
+    width: var(#{ns.css-var("ui-upload-resp-mobile-cropper-modal-width")}, calc(100vw - 24px));
     max-height: var(
-      --tbf-ui-upload-resp-mobile-cropper-modal-max-h,
+      #{ns.css-var("ui-upload-resp-mobile-cropper-modal-max-h")},
       calc(100vh - 24px)
     );
   }
 
-  .tbf-upload-crop__stage {
-    height: var(--tbf-ui-upload-resp-mobile-cropper-stage-height, min(52vh, 420px));
-    min-height: var(--tbf-ui-upload-resp-mobile-cropper-stage-min-h, 260px);
+  #{ns.element-class("upload-crop", "stage")} {
+    height: var(#{ns.css-var("ui-upload-resp-mobile-cropper-stage-height")}, min(52vh, 420px));
+    min-height: var(#{ns.css-var("ui-upload-resp-mobile-cropper-stage-min-h")}, 260px);
   }
 
-  .tbf-upload-crop__actions {
+  #{ns.element-class("upload-crop", "actions")} {
     flex-direction: column;
   }
 }

@@ -11,12 +11,13 @@ import {
   stackZIndex,
   applyZIndex,
 } from "#ccvonx3uhbte";
+import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass, frontendEventName } from "#5vbaqj4pirp3";
 
 const MODAL_BASE_Z_INDEX = 1060;
-const MODAL_SELECTOR = "[data-tbf-modal]";
-const MODAL_CONTENT_SELECTOR = "[data-tbf-modal-content]";
-const MODAL_CLOSE_SELECTOR = "[data-tbf-modal-close]";
-const MODAL_TRIGGER_SELECTOR = "[data-tbf-modal-open][aria-controls]";
+const MODAL_SELECTOR = frontendDataSelector("modal");
+const MODAL_CONTENT_SELECTOR = frontendDataSelector("modal-content");
+const MODAL_CLOSE_SELECTOR = frontendDataSelector("modal-close");
+const MODAL_TRIGGER_SELECTOR = `${frontendDataSelector("modal-open")}[aria-controls]`;
 const FOCUSABLE_SELECTOR = [
   "button:not([disabled])",
   "[href]",
@@ -54,12 +55,12 @@ function findModalTarget(root: BindRoot, trigger: HTMLElement) {
 }
 
 function prepareModal(modal: HTMLElement) {
-  modal.setAttribute("data-tbf-modal", "");
+  modal.setAttribute(frontendDataAttr("modal"), "");
   if (!modal.hasAttribute("role")) modal.setAttribute("role", "dialog");
   if (!modal.hasAttribute("aria-hidden")) modal.setAttribute("aria-hidden", "true");
-  modal.removeAttribute("data-tbf-open");
-  modal.removeAttribute("data-tbf-opening");
-  modal.removeAttribute("data-tbf-closing");
+  modal.removeAttribute(frontendDataAttr("open"));
+  modal.removeAttribute(frontendDataAttr("opening"));
+  modal.removeAttribute(frontendDataAttr("closing"));
 }
 
 function focusModal(modal: HTMLElement) {
@@ -124,7 +125,7 @@ function setTopStates() {
       const top = index === modalStack.length - 1;
       entry.modal.toggleAttribute("inert", !top);
       entry.modal.setAttribute("aria-hidden", top ? "false" : "true");
-      entry.modal.setAttribute("data-tbf-top", top ? "true" : "false");
+      entry.modal.setAttribute(frontendDataAttr("top"), top ? "true" : "false");
   });
 }
 
@@ -141,16 +142,16 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   applyZIndex(modal, {
       fallback: stackZIndex(MODAL_BASE_Z_INDEX, modalStack.length - 1),
   });
-  modal.setAttribute("data-tbf-opening", "true");
+  modal.setAttribute(frontendDataAttr("opening"), "true");
   modal.setAttribute("aria-hidden", "false");
   setTopStates();
   lockBodyScroll(true);
-  dispatchModalEvent(modal, "tbf:modal-open", { trigger });
+  dispatchModalEvent(modal, frontendEventName("modal-open"), { trigger });
   requestDomFrame(() => {
-      modal.removeAttribute("data-tbf-opening");
-      modal.setAttribute("data-tbf-open", "true");
+      modal.removeAttribute(frontendDataAttr("opening"));
+      modal.setAttribute(frontendDataAttr("open"), "true");
       focusModal(modal);
-      dispatchModalEvent(modal, "tbf:modal-ready", { trigger });
+      dispatchModalEvent(modal, frontendEventName("modal-ready"), { trigger });
   });
   return modal;
 }
@@ -163,19 +164,19 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
   const index = modalStack.findIndex((entry) => entry.modal === modal);
   if (index < 0) return false;
   const [entry] = modalStack.splice(index, 1);
-  modal.removeAttribute("data-tbf-open");
-  modal.setAttribute("data-tbf-closing", "true");
+  modal.removeAttribute(frontendDataAttr("open"));
+  modal.setAttribute(frontendDataAttr("closing"), "true");
   modal.setAttribute("aria-hidden", "true");
   window.setTimeout(() => {
-      modal.removeAttribute("data-tbf-closing");
-      modal.removeAttribute("data-tbf-top");
+      modal.removeAttribute(frontendDataAttr("closing"));
+      modal.removeAttribute(frontendDataAttr("top"));
       modal.toggleAttribute("inert", true);
     }, 220);
   setTopStates();
   lockBodyScroll(false);
   const restoreTarget = entry.trigger || entry.restoreFocus;
   if (restoreTarget?.isConnected) restoreTarget.focus({ preventScroll: true });
-  dispatchModalEvent(modal, "tbf:modal-close", { trigger: entry.trigger });
+  dispatchModalEvent(modal, frontendEventName("modal-close"), { trigger: entry.trigger });
   return true;
 }
 
@@ -221,12 +222,12 @@ function installModalListeners() {
         return;
       }
       const top = modalStack[modalStack.length - 1]?.modal;
-      if (target === top && top.getAttribute("data-tbf-modal-backdrop-close") !== "false") closeModal(top);
+      if (target === top && top.getAttribute(frontendDataAttr("modal-backdrop-close")) !== "false") closeModal(top);
   });
   document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         const top = modalStack[modalStack.length - 1]?.modal;
-        if (top?.getAttribute("data-tbf-modal-escape-close") !== "false") closeModal();
+        if (top?.getAttribute(frontendDataAttr("modal-escape-close")) !== "false") closeModal();
         return;
       }
       trapModalFocus(event);
@@ -240,11 +241,11 @@ function createModal(options: {
 }) {
   const modal = document.createElement("div");
   modal.id = options.id;
-  modal.className = "tbf-modal";
-  modal.setAttribute("data-tbf-modal", "");
+  modal.className = frontendClassName("modal");
+  modal.setAttribute(frontendDataAttr("modal"), "");
   const content = document.createElement("div");
-  content.className = "tbf-modal__content";
-  content.setAttribute("data-tbf-modal-content", "");
+  content.className = frontendElementClass("modal", "content");
+  content.setAttribute(frontendDataAttr("modal-content"), "");
   if (options.title) {
     const title = document.createElement("h2");
     title.textContent = options.title;

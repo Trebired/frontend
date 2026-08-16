@@ -21,6 +21,7 @@ import type {
   contributions_graph_props,
   heatmap_tooltip_state,
 } from "./types.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function weekLabels(t: ContributionTranslator) {
   return (
@@ -152,8 +153,8 @@ function tooltipNode(tooltip: heatmap_tooltip_state | null) {
     <div
     aria-hidden="true"
     className="tooltip"
-    data-tbf-open="true"
-    data-tbf-tooltip-placement="top"
+    {...frontendDataAttrs({ "open": "true" })}
+    {...frontendDataAttrs({ "tooltip-placement": "top" })}
     style={{
         left: tooltip.left,
         position: "fixed",

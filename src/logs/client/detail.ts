@@ -4,6 +4,7 @@ import { setTextContent } from "#aq4qe9opqpbm";
 import { formatTimestamp, safeStr } from "./utils.js";
 import type { LogsPage } from "./types.js";
 import { refreshLogDom } from "./view_state.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 export { bindLogEvents } from "./detail/events.js";
 export { loadInitialLogs, loadOlderLogs } from "./detail/load.js";
@@ -26,7 +27,7 @@ function refreshDetailCodeBlocks(modal: HTMLElement) {
     const host = target ? target.closest("code-block") : null;
     if (host) {
       host.removeAttribute("data-code-rendered");
-      host.removeAttribute("data-tbf-code-rendered");
+      host.removeAttribute(frontendDataAttr("code-rendered"));
     }
   }
 

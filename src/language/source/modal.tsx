@@ -17,6 +17,7 @@ import {
 } from "#k0q2s2kidqtq";
 import { text, translate } from "#kv9urtb9dbq5";
 import type { SourceLanguageModalProps } from "#2w72xmq6rvza";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function extensionText(extensions: any[], lang?: string, locale?: string) {
   if (!extensions.length) return translate(lang, "none");
@@ -137,8 +138,8 @@ function filesCard(
         <Stack
         id={`${model.id}_file_tree`}
         gap="sm"
-        data-tbf-source-language-file-tree-root=""
-        data-tbf-source-language-file-tree-config={model.fileTreeConfig}
+        {...frontendDataAttrs({ "source-language-file-tree-root": "" })}
+        {...frontendDataAttrs({ "source-language-file-tree-config": model.fileTreeConfig })}
         >
         <Text muted size="sm">
         {model.files.length

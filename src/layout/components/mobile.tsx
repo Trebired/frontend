@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type MobileBottomBarProps = HTMLAttributes<HTMLElement>;
 
@@ -14,11 +15,11 @@ function MobileBottomBar(props: MobileBottomBarProps) {
   return (
     <nav
     {...rest}
-    className={classNames("tbf-mobile-bottom-bar", className)}
-    data-tbf-layout-bottom-bar=""
-    data-tbf-mobile-bottom-bar=""
+    className={classNames(frontendClassName("mobile-bottom-bar"), className)}
+    {...frontendDataAttrs({ "layout-bottom-bar": "" })}
+    {...frontendDataAttrs({ "mobile-bottom-bar": "" })}
     >
-    <div className="tbf-mobile-bottom-bar__items">{children}</div>
+    <div className={frontendElementClass("mobile-bottom-bar", "items")}>{children}</div>
     </nav>
   );
 }
@@ -29,12 +30,12 @@ function MobileBottomBarItem(props: MobileBottomBarItemProps) {
     <a
     {...rest}
     aria-current={active ? "page" : props["aria-current"]}
-    className={classNames("tbf-mobile-bottom-bar__item", className)}
-    data-tbf-active={active ? "true" : undefined}
+    className={classNames(frontendElementClass("mobile-bottom-bar", "item"), className)}
+    {...frontendDataAttrs({ "active": active ? "true" : undefined })}
     >
-    {icon ? <span className="tbf-mobile-bottom-bar__icon">{icon}</span> : null}
-    <span className="tbf-mobile-bottom-bar__label">{children}</span>
-    {badge ? <span className="tbf-mobile-bottom-bar__badge">{badge}</span> : null}
+    {icon ? <span className={frontendElementClass("mobile-bottom-bar", "icon")}>{icon}</span> : null}
+    <span className={frontendElementClass("mobile-bottom-bar", "label")}>{children}</span>
+    {badge ? <span className={frontendElementClass("mobile-bottom-bar", "badge")}>{badge}</span> : null}
     </a>
   );
 }

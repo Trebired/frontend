@@ -6,6 +6,7 @@ import type {
 import { classNames } from "#ndsvdqv80epr";
 import { TextLink } from "#hzrmwbvgt2ax";
 import { shellPageHref } from "./state.js";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ShellSupportLink = AnchorHTMLAttributes<HTMLAnchorElement> & {
   key: string;
@@ -52,7 +53,7 @@ function defaultSupportLink(
   return (
     <TextLink
     {...attrs}
-    className={classNames("tbf-shell-support-links__link", className, linkClassName)}
+    className={classNames(frontendElementClass("shell-support-links", "link"), className, linkClassName)}
     key={key}
     rel={attrs.rel || "noopener noreferrer"}
     target={attrs.target || "_blank"}
@@ -85,15 +86,15 @@ function ShellSupportLinks(props: ShellSupportLinksProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-shell-support-links", className)}
-    data-tbf-shell-support-links=""
+    className={classNames(frontendClassName("shell-support-links"), className)}
+    {...frontendDataAttrs({ "shell-support-links": "" })}
     >
     {label ? (
-        <div className={classNames("tbf-shell-support-links__label", labelClassName)}>
+        <div className={classNames(frontendElementClass("shell-support-links", "label"), labelClassName)}>
         {label}
         </div>
       ) : null}
-    <div className={classNames("tbf-shell-support-links__list", listClassName)}>
+    <div className={classNames(frontendElementClass("shell-support-links", "list"), listClassName)}>
     {links.map((link) => renderLink
         ? renderLink(link)
         : defaultSupportLink(link, linkClassName))}

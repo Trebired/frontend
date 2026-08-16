@@ -3,6 +3,7 @@ import { bindTooltip } from "#yf1o70q7eshd";
 import { closeAll } from "./static/position.js";
 import { CLOSE_ANIMATION_MS } from "./shared.js";
 import { setDropdownOptionConfig } from "./registry.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 const DROPDOWN_BASE_Z_INDEX = 1020;
 
@@ -90,7 +91,7 @@ function createDynamicItem(opts, item) {
   });
   li.textContent = item.label != null ? String(item.label) : "";
   if (item.title) {
-    li.setAttribute("data-tbf-tooltip", String(item.title));
+    li.setAttribute(frontendDataAttr("tooltip"), String(item.title));
     bindTooltip(li);
   }
 

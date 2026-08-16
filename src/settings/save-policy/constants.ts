@@ -1,6 +1,7 @@
 import type { SavePolicyLabels } from "./types.js";
+import { frontendToken } from "#5vbaqj4pirp3";
 
-const DEFAULT_UNSAVED_FLASH_ID = "tbf-save-policy-unsaved";
+const DEFAULT_UNSAVED_FLASH_ID = frontendToken("save-policy-unsaved");
 
 const defaultSavePolicyLabels: Required<SavePolicyLabels> = {
   blockedFormDescription: "Use the page save action.",

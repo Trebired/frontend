@@ -1,9 +1,10 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const CHECKBOX_GROUP_SELECTOR = "[data-tbf-checkbox-group]";
-const CHECKBOX_ALL_SELECTOR = "[data-tbf-checkbox-all]";
-const RADIO_GROUP_SELECTOR = "[data-tbf-radio-group]";
-const CHOICE_EVENT = "tbf:choice";
+const CHECKBOX_GROUP_SELECTOR = frontendDataSelector("checkbox-group");
+const CHECKBOX_ALL_SELECTOR = frontendDataSelector("checkbox-all");
+const RADIO_GROUP_SELECTOR = frontendDataSelector("radio-group");
+const CHOICE_EVENT = frontendEventName("choice");
 
 function checkboxInputs(root: HTMLElement) {
   return queryAll<HTMLInputElement>(root, "input[type='checkbox']").filter((input) => !input.matches(CHECKBOX_ALL_SELECTOR));
@@ -20,8 +21,8 @@ function syncCheckboxAll(root: HTMLElement) {
 }
 
 function bindCheckboxGroup(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-checkbox-bound")) return null;
-  root.setAttribute("data-tbf-checkbox-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("checkbox-bound"))) return null;
+  root.setAttribute(frontendDataAttr("checkbox-bound"), "true");
   checkboxInputs(root).forEach((input) => input.addEventListener("change", () => syncCheckboxAll(root)));
   queryAll<HTMLInputElement>(root, CHECKBOX_ALL_SELECTOR).forEach((input) => {
       input.addEventListener("change", () => {
@@ -47,8 +48,8 @@ function moveRadioFocus(root: HTMLElement, input: HTMLInputElement, direction: n
 }
 
 function bindRadioGroup(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-radio-bound")) return null;
-  root.setAttribute("data-tbf-radio-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("radio-bound"))) return null;
+  root.setAttribute(frontendDataAttr("radio-bound"), "true");
   queryAll<HTMLInputElement>(root, "input[type='radio']").forEach((input) => {
       input.addEventListener("keydown", (event) => {
           if (event.key === "ArrowRight" || event.key === "ArrowDown") moveRadioFocus(root, input, 1);

@@ -10,6 +10,7 @@ import {
   actionTriggerAttrs,
   wrapTriggerHostNode,
 } from "#6mupcizo1mwq";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type ActionFormProps = FormHTMLAttributes<HTMLFormElement> & {
   actionConfig?: Record<string, unknown>;
@@ -77,13 +78,13 @@ function ActionForm(props: ActionFormProps) {
   return (
     <form
     {...rest}
-    className={classNames("tbf-form", className)}
-    data-tbf-action=""
-    data-tbf-confirm={dataBool(confirm)}
+    className={classNames(frontendClassName("form"), className)}
+    {...frontendDataAttrs({ "action": "" })}
+    {...frontendDataAttrs({ "confirm": dataBool(confirm) })}
     >
     {Object.keys(config).length ? (
         <script
-        data-tbf-action-config=""
+        {...frontendDataAttrs({ "action-config": "" })}
         hidden
         type="application/json"
         dangerouslySetInnerHTML={{ __html: jsonScript(config) }}
@@ -112,15 +113,15 @@ function ActionButton(props: ActionButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-action-body={actionBody ? jsonScript(actionBody) : undefined}
-    data-tbf-action-method={actionMethod}
-    data-tbf-action-url={actionUrl}
-    data-tbf-confetti={dataBool(successConfetti)}
-    data-tbf-confirm={dataBool(confirm)}
-    data-tbf-ignore-response-action={dataBool(ignoreResponseAction)}
-    data-tbf-success={success}
-    data-tbf-success-tab={successTab}
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "action-body": actionBody ? jsonScript(actionBody) : undefined })}
+    {...frontendDataAttrs({ "action-method": actionMethod })}
+    {...frontendDataAttrs({ "action-url": actionUrl })}
+    {...frontendDataAttrs({ "confetti": dataBool(successConfetti) })}
+    {...frontendDataAttrs({ "confirm": dataBool(confirm) })}
+    {...frontendDataAttrs({ "ignore-response-action": dataBool(ignoreResponseAction) })}
+    {...frontendDataAttrs({ "success": success })}
+    {...frontendDataAttrs({ "success-tab": successTab })}
     type={type}
     >
     {children}
@@ -134,7 +135,7 @@ function ActionTrigger(props: ActionTriggerProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-action-trigger", className)}
+    className={classNames(frontendClassName("action-trigger"), className)}
     {...triggerAttrs}
     role={role}
     tabIndex={tabIndex}

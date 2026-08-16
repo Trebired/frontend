@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { createElement, useEffect, useMemo, useRef, useState } from "react";
 
-import { cssEscape } from "#er0dlx1gtbzh";
 import {
   buildInitialOpenState,
   findTreeNodeByPath,
@@ -15,6 +14,7 @@ import { StaticFileTreeView } from "#xjjhb3oy2yyh";
 import { FileTreeRow } from "./tree/row.js";
 import { FileTreeShell } from "./tree/shell.js";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
+import { frontendClassName, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const FILE_TREE_ROW_HEIGHT = 34;
 
@@ -60,7 +60,7 @@ function useTreeScrollFocus(
       requestAnimationFrame(() => {
           const scrollRoot = scrollRef.current;
           const target = scrollRoot instanceof HTMLElement
-          ? scrollRoot.querySelector(`[data-tbf-file-tree-path="${cssEscape(firstPath)}"]`)
+          ? scrollRoot.querySelector(frontendDataSelector("file-tree-path", firstPath))
           : null;
           if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
       });
@@ -152,7 +152,7 @@ function renderInteractiveFileTree(options: any) {
           { style: { display: "contents" } },
           <div
           ref={options.scrollRef}
-          className="scroll scroll-min tbf-file-tree-scroll"
+          className={`scroll scroll-min ${frontendClassName("file-tree-scroll")}`}
           style={treeScrollStyle(options.treeHeight, rows)}
           >
           <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>

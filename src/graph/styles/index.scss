@@ -1,74 +1,77 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "#lh941e0cjcmv" as advanced-graph-styles;
 
-.tbf-graph,
-[data-tbf-graph] {
+#{ns.class("graph")},
+
+#{ns.data("graph")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--tbf-gap-sm, 8px);
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
 }
 
-.tbf-graph__canvas-shell {
+#{ns.element-class("graph", "canvas-shell")} {
   min-width: 0;
   overflow: hidden;
 }
 
-.tbf-graph__canvas,
-[data-tbf-graph-canvas] {
+#{ns.element-class("graph", "canvas")},
+
+#{ns.data("graph-canvas")} {
   display: block;
   width: 100%;
   max-width: 100%;
   min-height: 180px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-sm, 0);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  background: var(#{ns.css-var("surface")}, #fff);
 }
 
-.tbf-graph__legend {
+#{ns.element-class("graph", "legend")} {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 12px;
   padding: 0;
   margin: 0;
-  color: var(--tbf-text-muted, #666);
+  color: var(#{ns.css-var("text-muted")}, #666);
   font-size: 0.9rem;
   list-style: none;
 }
 
-.tbf-graph__legend li {
+#{ns.element-class("graph", "legend")} li {
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
-.tbf-graph__legend span {
+#{ns.element-class("graph", "legend")} span {
   width: 10px;
   height: 10px;
-  border-radius: var(--tbf-radius-pill, 999px);
-  background: var(--tbf-graph-series-color, var(--tbf-focus, #000));
+  border-radius: var(#{ns.css-var("radius-pill")}, 999px);
+  background: var(#{ns.css-var("graph-series-color")}, var(#{ns.css-var("focus")}, #000));
 }
 
-.tbf-key-values {
+#{ns.class("key-values")} {
   display: grid;
   gap: 8px;
   margin: 0;
 }
 
-.tbf-key-values__item {
+#{ns.element-class("key-values", "item")} {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
 }
 
-.tbf-key-values dt {
-  color: var(--tbf-text-muted, #666);
+#{ns.class("key-values")} dt {
+  color: var(#{ns.css-var("text-muted")}, #666);
 }
 
-.tbf-key-values dd {
+#{ns.class("key-values")} dd {
   margin: 0;
 }
 
-.tbf-roadmap {
+#{ns.class("roadmap")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -78,26 +81,26 @@
   list-style: none;
 }
 
-.tbf-roadmap__item {
+#{ns.element-class("roadmap", "item")} {
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
   gap: 10px;
 }
 
-.tbf-roadmap__marker {
+#{ns.element-class("roadmap", "marker")} {
   width: 10px;
   height: 10px;
   margin-block-start: 5px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-pill, 999px);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-pill")}, 999px);
+  background: var(#{ns.css-var("surface")}, #fff);
 }
 
-.tbf-roadmap__body {
+#{ns.element-class("roadmap", "body")} {
   min-width: 0;
 }
 
-.tbf-roadmap__header {
+#{ns.element-class("roadmap", "header")} {
   display: flex;
   min-width: 0;
   align-items: baseline;
@@ -105,27 +108,28 @@
   gap: 8px;
 }
 
-.tbf-roadmap__header span,
-.tbf-roadmap__body p {
-  color: var(--tbf-text-muted, #666);
+#{ns.element-class("roadmap", "header")} span,
+
+#{ns.element-class("roadmap", "body")} p {
+  color: var(#{ns.css-var("text-muted")}, #666);
 }
 
-.tbf-roadmap__body p {
+#{ns.element-class("roadmap", "body")} p {
   margin: 4px 0 0;
 }
 
-.tbf-heatmap {
+#{ns.class("heatmap")} {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10px, 1fr));
   gap: 3px;
 }
 
-[data-tbf-heatmap-cell] {
+#{ns.data("heatmap-cell")} {
   aspect-ratio: 1;
-  border-radius: var(--tbf-radius-sm, 0);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
   background: color-mix(
     in srgb,
-    var(--tbf-focus, #000) calc(var(--tbf-heatmap-level, 0) * 100%),
-    var(--tbf-surface-muted, #f4f4f4)
+    var(#{ns.css-var("focus")}, #000) calc(var(#{ns.css-var("heatmap-level")}, 0) * 100%),
+    var(#{ns.css-var("surface-muted")}, #f4f4f4)
   );
 }

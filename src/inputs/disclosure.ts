@@ -5,11 +5,12 @@ import {
   setHidden,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const DISCLOSURE_SELECTOR = "[data-tbf-disclosure]";
-const DISCLOSURE_TRIGGER_SELECTOR = "[data-tbf-disclosure-trigger]";
-const DISCLOSURE_PANEL_SELECTOR = "[data-tbf-disclosure-panel]";
-const DISCLOSURE_CHANGE_EVENT = "tbf:disclosure";
+const DISCLOSURE_SELECTOR = frontendDataSelector("disclosure");
+const DISCLOSURE_TRIGGER_SELECTOR = frontendDataSelector("disclosure-trigger");
+const DISCLOSURE_PANEL_SELECTOR = frontendDataSelector("disclosure-panel");
+const DISCLOSURE_CHANGE_EVENT = frontendEventName("disclosure");
 
 type DisclosureState = {
   open: boolean;
@@ -19,7 +20,7 @@ type DisclosureState = {
 };
 
 function readDisclosureOpen(root: HTMLElement) {
-  return root.getAttribute("data-tbf-disclosure-open") === "true";
+  return root.getAttribute(frontendDataAttr("disclosure-open")) === "true";
 }
 
 function disclosureState(root: HTMLElement): DisclosureState {
@@ -41,8 +42,8 @@ function dispatchDisclosureChange(state: DisclosureState) {
 function setDisclosureOpen(root: HTMLElement, open: boolean) {
   const state = disclosureState(root);
   state.open = open;
-  root.setAttribute("data-tbf-disclosure-open", open ? "true" : "false");
-  state.panel?.setAttribute("data-tbf-disclosure-panel-open", open ? "true" : "false");
+  root.setAttribute(frontendDataAttr("disclosure-open"), open ? "true" : "false");
+  state.panel?.setAttribute(frontendDataAttr("disclosure-panel-open"), open ? "true" : "false");
   setHidden(state.panel, !open);
   setAriaExpanded(state.trigger, open);
   dispatchDisclosureChange(state);
@@ -54,8 +55,8 @@ function toggleDisclosure(root: HTMLElement) {
 }
 
 function bindDisclosure(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-disclosure-bound")) return null;
-  root.setAttribute("data-tbf-disclosure-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("disclosure-bound"))) return null;
+  root.setAttribute(frontendDataAttr("disclosure-bound"), "true");
   const state = setDisclosureOpen(root, readDisclosureOpen(root));
   state.trigger?.addEventListener("click", (event) => {
       event.preventDefault();

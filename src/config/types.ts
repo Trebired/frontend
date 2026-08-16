@@ -169,7 +169,6 @@ type FrontendConfig = {
   components?: FrontendComponentsConfig;
   design?: FrontendDesignConfig;
   forVersion?: string;
-  prefix?: string;
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
 };

@@ -56,11 +56,12 @@ import {
 } from "./status/index.client.js";
 import { bindOwnedTabs, bindTabs, bindTabsHost, createTabs } from "./tabs/manager.js";
 import { bootTabsClient } from "./tabs/client.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
-const CHECKBOX_HOST_SELECTOR = "[data-tbf-checkbox-option]";
-const DISCLOSURE_SELECTOR = "[data-tbf-disclosure]";
+const CHECKBOX_HOST_SELECTOR = frontendDataSelector("checkbox-option");
+const DISCLOSURE_SELECTOR = frontendDataSelector("disclosure");
 const DROPDOWN_SELECTOR = "[data-dropdown-root]";
-const RADIO_HOST_SELECTOR = "[data-tbf-radio-group]";
+const RADIO_HOST_SELECTOR = frontendDataSelector("radio-group");
 const TABS_ROOT_SELECTOR = "[data-tabs-root]";
 
 function scopeFor(root?: BindRoot | null) {

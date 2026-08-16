@@ -10,6 +10,7 @@ import {
   SOURCE_SUMMARY_LINES_SELECTOR,
 } from "./selectors.js";
 import type { SourceLanguageItem, SourceLanguageRuntimeOptions } from "./types.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function panelStats(items: SourceLanguageItem[], excluded: Set<string>) {
   const includedItems = items.filter((item) => !excluded.has(item.id));
@@ -62,7 +63,7 @@ function renderSourceLanguageItem(
   item.row.hidden = false;
   if (item.listItemEl !== item.row) item.listItemEl.hidden = false;
   item.row.setAttribute("aria-pressed", isIncluded ? "true" : "false");
-  item.row.setAttribute("data-tbf-source-language-included", isIncluded ? "true" : "false");
+  item.row.setAttribute(frontendDataAttr("source-language-included"), isIncluded ? "true" : "false");
   item.row.setAttribute("title", rowTitle(isIncluded, options.lang));
   if (isIncluded) item.row.removeAttribute("data-card-excluded");
   else item.row.setAttribute("data-card-excluded", "true");
@@ -119,7 +120,7 @@ function renderSourceLanguageControls(
     resetButton.disabled = excluded.size === 0;
   }
   queryAll<HTMLElement>(root, SOURCE_EMPTY_SELECTOR).forEach((emptyEl) => {
-      const bucket = text(emptyEl.getAttribute("data-tbf-source-language-panel-bucket"), "everything");
+      const bucket = text(emptyEl.getAttribute(frontendDataAttr("source-language-panel-bucket")), "everything");
       const visible = bucket === activeBucket && stats.totalDetected === 0;
       emptyEl.hidden = !visible;
       if (visible) emptyEl.textContent = emptyStateText(activeBucket, options.lang);
@@ -135,8 +136,8 @@ function emptyStateText(activeBucket: string, lang?: string) {
 function seedSourceLanguageTotals(root: HTMLElement) {
   const bytesEl = root.querySelector<HTMLElement>(SOURCE_SUMMARY_BYTES_SELECTOR);
   const linesEl = root.querySelector<HTMLElement>(SOURCE_SUMMARY_LINES_SELECTOR);
-  if (bytesEl) bytesEl.dataset.value = String(Number(bytesEl.getAttribute("data-tbf-source-language-summary-total-bytes")) || 0);
-  if (linesEl) linesEl.dataset.value = String(Number(linesEl.getAttribute("data-tbf-source-language-summary-total-lines")) || 0);
+  if (bytesEl) bytesEl.dataset.value = String(Number(bytesEl.getAttribute(frontendDataAttr("source-language-summary-total-bytes"))) || 0);
+  if (linesEl) linesEl.dataset.value = String(Number(linesEl.getAttribute(frontendDataAttr("source-language-summary-total-lines"))) || 0);
 }
 
 function renderSourceLanguageState(

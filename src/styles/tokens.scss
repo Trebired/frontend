@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 :root {
   --border-width: 1px;
   --outline-width: 2px;
@@ -36,41 +37,42 @@
   --z-modal: var(--z-index-md, 1010);
   --z-floating-ui: var(--z-index-lg, 1020);
   --z-tooltip: var(--z-index-xl, 1100);
-  --tbf-radius: var(--radius-md, 0);
-  --tbf-radius-sm: var(--radius-sm, 0);
-  --tbf-border-width: var(--border-width, 1px);
-  --tbf-border: var(--border-surface-1, #000);
-  --tbf-page: var(--background-page, var(--tbf-surface, #fff));
-  --tbf-surface: var(--surface-1, var(--background-surface-1, #fff));
-  --tbf-surface-muted: var(--surface-2, var(--background-surface-2, #fff));
-  --tbf-text: var(--text-color, #000);
-  --tbf-text-muted: var(--text-color-muted, var(--tbf-text, #000));
-  --tbf-focus: var(--focus-color, #000);
-  --tbf-shadow: var(--shadow-overlay-lg, 0 0 0 1px #000);
-  --tbf-overlay: color-mix(in srgb, var(--tbf-text) 48%, transparent);
-  --tbf-transition-fast: var(--transition-2, 180ms);
-  --tbf-transition-normal: var(--transition-3, 240ms);
-  --tbf-gap-xs2: var(--space-xs2, 4px);
-  --tbf-gap-xs: var(--space-xs, 8px);
-  --tbf-gap-sm: var(--space-sm, 12px);
-  --tbf-gap-md: var(--space-md, 24px);
-  --tbf-gap-lg: var(--space-lg, 40px);
-  --tbf-canvas-bg: var(--dot-grid);
-  --tbf-z-layer: var(--z-layer-root, 1000);
-  --tbf-z-bottom-bar: var(--z-bottom-bar, 900);
-  --tbf-z-header: var(--z-header-primary, 920);
-  --tbf-z-secondary-header: var(--z-header-secondary, 910);
-  --tbf-z-sidebar: var(--z-index-xs, 900);
-  --tbf-z-fullscreen: var(--z-fullscreen, var(--z-index-sm, 1000));
-  --tbf-z-modal: var(--z-modal, var(--z-index-md, 1010));
-  --tbf-z-floating-ui: var(--z-floating-ui, var(--z-index-lg, 1020));
-  --tbf-z-tooltip: var(--z-tooltip, var(--z-index-xl, 1100));
-  --tbf-z-progress: var(--z-progress, 99999);
-  --tbf-z-confetti: var(--z-confetti, 99998);
+  #{ns.css-var("radius")}: var(--radius-md, 0);
+  #{ns.css-var("radius-sm")}: var(--radius-sm, 0);
+  #{ns.css-var("border-width")}: var(--border-width, 1px);
+  #{ns.css-var("border")}: var(--border-surface-1, #000);
+  #{ns.css-var("page")}: var(--background-page, var(#{ns.css-var("surface")}, #fff));
+  #{ns.css-var("surface")}: var(--surface-1, var(--background-surface-1, #fff));
+  #{ns.css-var("surface-muted")}: var(--surface-2, var(--background-surface-2, #fff));
+  #{ns.css-var("text")}: var(--text-color, #000);
+  #{ns.css-var("text-muted")}: var(--text-color-muted, var(#{ns.css-var("text")}, #000));
+  #{ns.css-var("focus")}: var(--focus-color, #000);
+  #{ns.css-var("shadow")}: var(--shadow-overlay-lg, 0 0 0 1px #000);
+  #{ns.css-var("overlay")}: color-mix(in srgb, var(#{ns.css-var("text")}) 48%, transparent);
+  #{ns.css-var("transition-fast")}: var(--transition-2, 180ms);
+  #{ns.css-var("transition-normal")}: var(--transition-3, 240ms);
+  #{ns.css-var("gap-xs2")}: var(--space-xs2, 4px);
+  #{ns.css-var("gap-xs")}: var(--space-xs, 8px);
+  #{ns.css-var("gap-sm")}: var(--space-sm, 12px);
+  #{ns.css-var("gap-md")}: var(--space-md, 24px);
+  #{ns.css-var("gap-lg")}: var(--space-lg, 40px);
+  #{ns.css-var("canvas-bg")}: var(--dot-grid);
+  #{ns.css-var("z-layer")}: var(--z-layer-root, 1000);
+  #{ns.css-var("z-bottom-bar")}: var(--z-bottom-bar, 900);
+  #{ns.css-var("z-header")}: var(--z-header-primary, 920);
+  #{ns.css-var("z-secondary-header")}: var(--z-header-secondary, 910);
+  #{ns.css-var("z-sidebar")}: var(--z-index-xs, 900);
+  #{ns.css-var("z-fullscreen")}: var(--z-fullscreen, var(--z-index-sm, 1000));
+  #{ns.css-var("z-modal")}: var(--z-modal, var(--z-index-md, 1010));
+  #{ns.css-var("z-floating-ui")}: var(--z-floating-ui, var(--z-index-lg, 1020));
+  #{ns.css-var("z-tooltip")}: var(--z-tooltip, var(--z-index-xl, 1100));
+  #{ns.css-var("z-progress")}: var(--z-progress, 99999);
+  #{ns.css-var("z-confetti")}: var(--z-confetti, 99998);
 }
 
-:root[data-tbf-theme="light"],
-body[data-tbf-theme="light"] {
+:root#{ns.data("theme", "light")},
+
+body#{ns.data("theme", "light")} {
   --dot-grid:
   var(--dot-grid-base)
   radial-gradient(var(--dot-grid-dot) 2px, transparent 0) -5px -5px / 30px 30px;

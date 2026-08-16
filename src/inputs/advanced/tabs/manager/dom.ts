@@ -5,6 +5,7 @@ import {
   initializeOwnedNodes,
   ownedNodes,
 } from "./ownership.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 const TAB_PANE_ANIMATION_MS = 290;
 const TAB_PANE_ANIMATION_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -288,8 +289,8 @@ function syncNestedIndicatorRow(root) {
 }
 
 function bindTabTooltip(tab) {
-  if (!tab.hasAttribute("data-tbf-tooltip")) {
-    tab.setAttribute("data-tbf-tooltip", tabLabel(tab));
+  if (!tab.hasAttribute(frontendDataAttr("tooltip"))) {
+    tab.setAttribute(frontendDataAttr("tooltip"), tabLabel(tab));
   }
   bindTooltip(tab);
 }

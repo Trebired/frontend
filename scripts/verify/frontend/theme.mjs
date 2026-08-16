@@ -22,7 +22,6 @@ function modeConfigSource(packageVersion) {
     "",
     "export default {",
     `  forVersion: "${packageVersion}",`,
-    "  prefix: \"app\",",
     "  runtime: {",
     "    theme: {",
     "      defaultMode: \"sepia\",",
@@ -76,10 +75,10 @@ async function verifyThemeConfigModes(context) {
   assert.equal(loaded.config.runtime.theme.dark, "dark");
   assert.equal(loaded.config.runtime.theme.light, "light");
   assert.equal(loaded.config.runtime.theme.defaultMode, "sepia");
-  assert.ok(scss.includes("--app-theme-modes: \"dark light sepia\";"));
-  assert.ok(scss.includes("--app-theme-default: \"sepia\";"));
+  assert.ok(scss.includes("--tbf-theme-modes: \"dark light sepia\";"));
+  assert.ok(scss.includes("--tbf-theme-default: \"sepia\";"));
   assert.ok(scss.includes("[data-tbf-theme=\"sepia\"] {"));
-  assert.ok(scss.includes("--app-color-surface: #f4ecd8;"));
+  assert.ok(scss.includes("--tbf-color-surface: #f4ecd8;"));
   assert.ok(scss.includes("@media (prefers-color-scheme: dark) {"));
   assert.ok(scss.includes(":root:not([data-tbf-theme]) {"));
   assert.equal(config.THEME_MODE_ATTRIBUTE, "data-tbf-theme");
@@ -112,11 +111,11 @@ async function verifyThemeConfigDependencies(context) {
   const first = await config.loadConfig(fixture);
   assert.ok(first.dependencies.includes(path.join(configDir, "config.ts")));
   assert.ok(first.dependencies.includes(tokensPath));
-  assert.ok(first.generatedScss.includes("--app-color-surface: #f4ecd8;"));
+  assert.ok(first.generatedScss.includes("--tbf-color-surface: #f4ecd8;"));
 
   await fs.writeFile(tokensPath, tokenSource("#0f0f0f"));
   const second = await config.loadConfig(fixture);
-  assert.ok(second.generatedScss.includes("--app-color-surface: #0f0f0f;"));
+  assert.ok(second.generatedScss.includes("--tbf-color-surface: #0f0f0f;"));
   assert.equal(second.generatedScss.includes("#f4ecd8"), false);
 }
 

@@ -7,6 +7,7 @@ import type {
 } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import { createSidebarBootScript, type SidebarSide } from "#dyryux7b683c";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type SidebarShellProps = HTMLAttributes<HTMLDivElement> & {
   minimized?: boolean;
@@ -45,12 +46,12 @@ function SidebarShell(props: SidebarShellProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-sidebar-shell", className)}
-    data-tbf-sidebar-shell=""
-    data-tbf-sidebar-side={String(side)}
-    data-tbf-sidebar-minimized={minimized === undefined ? undefined : String(minimized)}
-    data-tbf-sidebar-open={open === undefined ? undefined : String(open)}
-    data-tbf-sidebar-persist={persist ? undefined : "false"}
+    className={classNames(frontendClassName("sidebar-shell"), className)}
+    {...frontendDataAttrs({ "sidebar-shell": "" })}
+    {...frontendDataAttrs({ "sidebar-side": String(side) })}
+    {...frontendDataAttrs({ "sidebar-minimized": minimized === undefined ? undefined : String(minimized) })}
+    {...frontendDataAttrs({ "sidebar-open": open === undefined ? undefined : String(open) })}
+    {...frontendDataAttrs({ "sidebar-persist": persist ? undefined : "false" })}
     >
     {children}
     </div>
@@ -62,8 +63,8 @@ function Sidebar(props: SidebarProps) {
   return (
     <aside
     {...rest}
-    className={classNames("tbf-sidebar", className)}
-    data-tbf-sidebar=""
+    className={classNames(frontendClassName("sidebar"), className)}
+    {...frontendDataAttrs({ "sidebar": "" })}
     >
     {children}
     </aside>
@@ -75,8 +76,8 @@ function SidebarBody(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-sidebar__body", className)}
-    data-tbf-sidebar-body=""
+    className={classNames(frontendElementClass("sidebar", "body"), className)}
+    {...frontendDataAttrs({ "sidebar-body": "" })}
     >
     {children}
     </div>
@@ -88,8 +89,8 @@ function SidebarFooter(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-sidebar__footer", className)}
-    data-tbf-sidebar-footer=""
+    className={classNames(frontendElementClass("sidebar", "footer"), className)}
+    {...frontendDataAttrs({ "sidebar-footer": "" })}
     >
     {children}
     </div>
@@ -101,8 +102,8 @@ function SidebarMinimizeButton(props: SidebarButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button tbf-sidebar__minimize", className)}
-    data-tbf-sidebar-minimize=""
+    className={classNames(`${frontendClassName("button")} ${frontendElementClass("sidebar", "minimize")}`, className)}
+    {...frontendDataAttrs({ "sidebar-minimize": "" })}
     aria-controls={controls}
     aria-expanded={props["aria-expanded"] ?? true}
     type={type}
@@ -117,8 +118,8 @@ function SidebarOpenButton(props: SidebarButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button tbf-sidebar__open", className)}
-    data-tbf-sidebar-open=""
+    className={classNames(`${frontendClassName("button")} ${frontendElementClass("sidebar", "open")}`, className)}
+    {...frontendDataAttrs({ "sidebar-open": "" })}
     aria-controls={controls}
     type={type}
     >
@@ -132,8 +133,8 @@ function SidebarCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button tbf-sidebar__close", className)}
-    data-tbf-sidebar-close=""
+    className={classNames(`${frontendClassName("button")} ${frontendElementClass("sidebar", "close")}`, className)}
+    {...frontendDataAttrs({ "sidebar-close": "" })}
     type={type}
     >
     {children}
@@ -146,8 +147,8 @@ function SidebarList(props: HTMLAttributes<HTMLUListElement>) {
   return (
     <ul
     {...rest}
-    className={classNames("tbf-sidebar-list", className)}
-    data-tbf-sidebar-list=""
+    className={classNames(frontendClassName("sidebar-list"), className)}
+    {...frontendDataAttrs({ "sidebar-list": "" })}
     >
     {children}
     </ul>
@@ -166,22 +167,22 @@ function SidebarLink(props: SidebarLinkProps) {
   } = props;
   return (
     <li
-    className="tbf-sidebar-list__item"
-    data-tbf-sidebar-link-row=""
-    data-tbf-active={dataBool(active)}
+    className={frontendElementClass("sidebar-list", "item")}
+    {...frontendDataAttrs({ "sidebar-link-row": "" })}
+    {...frontendDataAttrs({ "active": dataBool(active) })}
     >
     <a
     {...rest}
     aria-current={active ? "page" : props["aria-current"]}
     aria-disabled={disabled ? true : props["aria-disabled"]}
-    className={classNames("tbf-sidebar-link", className)}
-    data-tbf-sidebar-link=""
-    data-tbf-disabled={dataBool(disabled)}
+    className={classNames(frontendClassName("sidebar-link"), className)}
+    {...frontendDataAttrs({ "sidebar-link": "" })}
+    {...frontendDataAttrs({ "disabled": dataBool(disabled) })}
     tabIndex={disabled ? -1 : props.tabIndex}
     >
-    {icon ? <span className="tbf-sidebar-link__icon" data-tbf-sidebar-link-icon="">{icon}</span> : null}
-    <span className="tbf-sidebar-link__label" data-tbf-sidebar-label="">{children}</span>
-    {badge ? <span className="tbf-sidebar-link__badge">{badge}</span> : null}
+    {icon ? <span className={frontendElementClass("sidebar-link", "icon")} {...frontendDataAttrs({ "sidebar-link-icon": "" })}>{icon}</span> : null}
+    <span className={frontendElementClass("sidebar-link", "label")} {...frontendDataAttrs({ "sidebar-label": "" })}>{children}</span>
+    {badge ? <span className={frontendElementClass("sidebar-link", "badge")}>{badge}</span> : null}
     </a>
     </li>
   );
@@ -192,8 +193,8 @@ function SidebarSeparator(props: HTMLAttributes<HTMLLIElement>) {
   return (
     <li
     {...rest}
-    className={classNames("tbf-sidebar-separator", className)}
-    data-tbf-sidebar-separator=""
+    className={classNames(frontendClassName("sidebar-separator"), className)}
+    {...frontendDataAttrs({ "sidebar-separator": "" })}
     role="separator"
     >
     <span />
@@ -206,7 +207,7 @@ function SidebarBootScript(props: SidebarBootScriptProps) {
   return (
     <script
     {...rest}
-    data-tbf-sidebar-boot=""
+    {...frontendDataAttrs({ "sidebar-boot": "" })}
     dangerouslySetInnerHTML={{ __html: createSidebarBootScript(sides) }}
     />
   );

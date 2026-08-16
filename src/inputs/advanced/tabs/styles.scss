@@ -1,45 +1,46 @@
+@use "@trebired/bundler/namespace" as ns;
 $tabs-pane-animation-ms: 290ms;
 $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
 .tabs {
   display: flex;
   width: 100%;
-  gap: var(--tbf-ui-tabs-list-gap, var(--tbf-gap-sm));
+  gap: var(#{ns.css-var("ui-tabs-list-gap")}, var(#{ns.css-var("gap-sm")}));
 
   .tab {
     flex: 1 1 0;
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
-    height: var(--tbf-ui-tabs-root-height, 34px);
-    padding: 0 var(--tbf-ui-tabs-root-px, 14px);
-    border: var(--tbf-ui-tabs-root-border, var(--border-width) solid var(--border-surface-1));
-    border-radius: var(--tbf-ui-tabs-root-radius, var(--radius-sm));
-    color: var(--tbf-ui-tabs-root-color, var(--text-color));
-    background: var(--tbf-ui-tabs-root-bg, transparent);
+    height: var(#{ns.css-var("ui-tabs-root-height")}, 34px);
+    padding: 0 var(#{ns.css-var("ui-tabs-root-px")}, 14px);
+    border: var(#{ns.css-var("ui-tabs-root-border")}, var(--border-width) solid var(--border-surface-1));
+    border-radius: var(#{ns.css-var("ui-tabs-root-radius")}, var(--radius-sm));
+    color: var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color));
+    background: var(#{ns.css-var("ui-tabs-root-bg")}, transparent);
     cursor: pointer;
     transition:
     background 0.15s,
     border-color 0.15s;
-    font-family: var(--tbf-ui-tabs-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
-    font-size: var(--tbf-ui-tabs-root-font-size, 14px);
-    font-weight: var(--tbf-ui-tabs-root-font-weight, inherit);
-    line-height: calc(var(--tbf-ui-tabs-root-height, 34px) - (var(--border-width) * 2));
+    font-family: var(#{ns.css-var("ui-tabs-root-font-family")}, var(#{ns.css-var("font-sans")}, "Inter", sans-serif));
+    font-size: var(#{ns.css-var("ui-tabs-root-font-size")}, 14px);
+    font-weight: var(#{ns.css-var("ui-tabs-root-font-weight")}, inherit);
+    line-height: calc(var(#{ns.css-var("ui-tabs-root-height")}, 34px) - (var(--border-width) * 2));
     text-align: left;
 
     &:hover {
-      background: var(--tbf-ui-tabs-state-hover-bg, var(--background-surface-1));
-      border-color: var(--tbf-ui-tabs-state-hover-border, var(--border-surface-1));
-      color: var(--tbf-ui-tabs-state-hover-color, var(--tbf-ui-tabs-root-color, var(--text-color)));
+      background: var(#{ns.css-var("ui-tabs-state-hover-bg")}, var(--background-surface-1));
+      border-color: var(#{ns.css-var("ui-tabs-state-hover-border")}, var(--border-surface-1));
+      color: var(#{ns.css-var("ui-tabs-state-hover-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
     }
 
     &.active,
     &[aria-selected="true"],
-    &[data-tbf-active="true"],
+    &#{ns.data("active", "true")},
     &[data-active="true"] {
-      background: var(--tbf-ui-tabs-state-active-bg, var(--background-surface-1));
-      border-color: var(--tbf-ui-tabs-state-active-border, var(--border-surface-1));
-      color: var(--tbf-ui-tabs-state-active-color, var(--tbf-ui-tabs-root-color, var(--text-color)));
+      background: var(#{ns.css-var("ui-tabs-state-active-bg")}, var(--background-surface-1));
+      border-color: var(#{ns.css-var("ui-tabs-state-active-border")}, var(--border-surface-1));
+      color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
     }
 
     .tab-label {
@@ -105,7 +106,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   position: absolute;
   left: var(--tabs-nested-indicator-left, 50%);
   top: 50%;
-  color: var(--tbf-ui-tabs-nested-indicator-color, var(--text-color-muted, currentColor));
+  color: var(#{ns.css-var("ui-tabs-nested-indicator-color")}, var(--text-color-muted, currentColor));
   font-size: 20px;
   line-height: 1;
   transform: translate(-50%, -50%);
@@ -140,9 +141,9 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
   .tabs .tab {
     flex: 1 1 calc(50% - 8px);
-    height: var(--tbf-ui-tabs-resp-mobile-height, 36px);
-    font-size: var(--tbf-ui-tabs-resp-mobile-font-size, 13px);
-    line-height: calc(var(--tbf-ui-tabs-resp-mobile-height, 36px) - (var(--border-width) * 2));
+    height: var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px);
+    font-size: var(#{ns.css-var("ui-tabs-resp-mobile-font-size")}, 13px);
+    line-height: calc(var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px) - (var(--border-width) * 2));
   }
 }
 

@@ -1,3 +1,5 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
+
 const sourceNumberFrames = new WeakMap<HTMLElement, number>();
 const sourceTextTimers = new WeakMap<HTMLElement, number>();
 
@@ -8,7 +10,7 @@ function finishNumberAnimation(
 ) {
   el.textContent = formatter(target);
   el.dataset.value = String(target);
-  el.removeAttribute("data-tbf-source-language-updating");
+  el.removeAttribute(frontendDataAttr("source-language-updating"));
   sourceNumberFrames.delete(el);
 }
 
@@ -54,7 +56,7 @@ function startNumberAnimation(
   },
 ) {
   cancelNumberAnimation(el);
-  el.setAttribute("data-tbf-source-language-updating", "true");
+  el.setAttribute(frontendDataAttr("source-language-updating"), "true");
   const startedAt = performance.now();
   const duration = state.precision > 0 ? 260 : 220;
   const step = (now: number) => {
@@ -79,19 +81,19 @@ function setAnimatedText(
   if (!el || el.textContent === nextText) return;
   if (prefersReducedMotion || typeof window === "undefined") {
     el.textContent = nextText;
-    el.removeAttribute("data-tbf-source-language-updating");
+    el.removeAttribute(frontendDataAttr("source-language-updating"));
     return;
   }
-  el.removeAttribute("data-tbf-source-language-updating");
+  el.removeAttribute(frontendDataAttr("source-language-updating"));
   void el.offsetWidth;
-  el.setAttribute("data-tbf-source-language-updating", "true");
+  el.setAttribute(frontendDataAttr("source-language-updating"), "true");
   el.textContent = nextText;
   const timer = sourceTextTimers.get(el);
   if (timer) window.clearTimeout(timer);
   sourceTextTimers.set(
     el,
     window.setTimeout(() => {
-        el.removeAttribute("data-tbf-source-language-updating");
+        el.removeAttribute(frontendDataAttr("source-language-updating"));
         sourceTextTimers.delete(el);
       }, 180),
   );

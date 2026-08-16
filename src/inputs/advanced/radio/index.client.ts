@@ -4,8 +4,9 @@ import {
   noop as defineRadioGroupElement,
   resolveDocumentTarget,
 } from "#dqy2d22qyujv";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
-const RADIO_GROUP_SELECTOR = "[data-tbf-radio-group]";
+const RADIO_GROUP_SELECTOR = frontendDataSelector("radio-group");
 const boundRadioGroups = new WeakSet<Element>();
 
 function getGroupRoot(input) {

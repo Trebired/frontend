@@ -1,4 +1,6 @@
-.tbf-icon,
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("icon")},
+
 .icon-glyph {
   display: inline-flex;
   flex: 0 0 auto;
@@ -7,16 +9,17 @@
   width: 1em;
   height: 1em;
   line-height: 1;
-  color: var(--tbf-icon-color, var(--icon-custom-color, currentColor));
+  color: var(#{ns.css-var("icon-color")}, var(--icon-custom-color, currentColor));
   vertical-align: -0.125em;
 }
 
-.tbf-icon > svg,
+#{ns.class("icon")} > svg,
+
 .icon-glyph > svg {
   display: block;
   width: 100%;
   height: 100%;
-  color: var(--tbf-icon-color, var(--icon-custom-color, currentColor)) !important;
+  color: var(#{ns.css-var("icon-color")}, var(--icon-custom-color, currentColor)) !important;
 }
 
 .icon {

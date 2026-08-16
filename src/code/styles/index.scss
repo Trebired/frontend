@@ -1,24 +1,26 @@
+@use "@trebired/bundler/namespace" as ns;
 .code {
   font-family: monospace;
   font-size: 0.95em;
   line-height: 1.45;
-  color: var(--text-color, var(--tbf-text, #111));
+  color: var(--text-color, var(#{ns.css-var("text")}, #111));
 }
 
 [data-code],
-[data-tbf-code-block] pre {
+#{ns.data("code-block")} pre {
   margin: 0;
   padding: 0;
-  border: var(--border-width, var(--tbf-border-width, 1px)) solid var(--border-surface-1, var(--tbf-border, #ddd));
-  border-radius: var(--radius-md, var(--tbf-radius, 0));
-  background: var(--background-surface-2, var(--tbf-surface-muted, transparent));
+  border: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid var(--border-surface-1, var(#{ns.css-var("border")}, #ddd));
+  border-radius: var(--radius-md, var(#{ns.css-var("radius")}, 0));
+  background: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
   overflow: auto;
   cursor: text;
   user-select: text;
 }
 
 [data-code] code,
-[data-tbf-code-content],
+#{ns.data("code-content")},
+
 .data-code-content {
   display: block;
   min-width: max-content;
@@ -27,12 +29,13 @@
   font-size: 13px;
   line-height: 1.6;
   white-space: pre;
-  color: var(--text-color, var(--tbf-text, #111));
+  color: var(--text-color, var(#{ns.css-var("text")}, #111));
   user-select: text;
 }
 
 [data-code] code *,
-[data-tbf-code-content] *,
+#{ns.data("code-content")} *,
+
 .data-code-content * {
   font-family: inherit !important;
   line-height: inherit;

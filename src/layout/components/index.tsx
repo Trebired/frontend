@@ -9,6 +9,7 @@ import { LayerRoot } from "#4okrafkbueid";
 import { TooltipLayer } from "#8sfk4kby98q6";
 import { createLayoutBootScript, LAYOUT_PORTAL_ROOT_ID, type LayoutBodyState } from "#ieim4iimrwal";
 import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type LayoutDocumentProps = {
   bodyAttributes?: HTMLAttributes<HTMLBodyElement>;
@@ -64,8 +65,8 @@ function LayoutDocument(props: LayoutDocumentProps) {
     <html
     {...htmlAttributes}
     lang={htmlAttributes?.lang || lang}
-    data-tbf-theme={theme || htmlAttributes?.["data-tbf-theme"]}
-    data-tbf-layout-document=""
+    {...frontendDataAttrs({ "theme": theme || htmlAttributes?.[frontendDataAttr("theme")] })}
+    {...frontendDataAttrs({ "layout-document": "" })}
     >
     <head>
     <meta charSet="UTF-8" />
@@ -78,8 +79,8 @@ function LayoutDocument(props: LayoutDocumentProps) {
     </head>
     <body
     {...bodyAttributes}
-    data-tbf-layout=""
-    data-tbf-theme={theme || bodyAttributes?.["data-tbf-theme"]}
+    {...frontendDataAttrs({ "layout": "" })}
+    {...frontendDataAttrs({ "theme": theme || bodyAttributes?.[frontendDataAttr("theme")] })}
     >
     <RenderCurrentUrlProvider currentUrl={currentUrl}>
     {children}
@@ -97,7 +98,7 @@ function Layout(props: LayoutProps) {
     className,
     header,
     leftSidebar,
-    mainId = "tbf_live_content",
+    mainId = `${FRONTEND_PREFIX}_live_content`,
     mobileNav,
     portalRoot,
     rightSidebar,
@@ -111,8 +112,8 @@ function Layout(props: LayoutProps) {
     {portalRoot === undefined ? <LayoutPortalRoot /> : portalRoot}
     <div
     {...rest}
-    className={classNames("tbf-layout", className)}
-    data-tbf-layout-root=""
+    className={classNames(frontendClassName("layout"), className)}
+    {...frontendDataAttrs({ "layout-root": "" })}
     >
     {leftSidebar}
     <LayoutMain id={mainId}>
@@ -131,9 +132,9 @@ function LayoutMain(props: LayoutMainProps) {
   return (
     <main
     {...rest}
-    className={classNames("tbf-layout-main", className)}
-    data-tbf-layout-main=""
-    data-tbf-live-content={live ? "" : undefined}
+    className={classNames(frontendClassName("layout-main"), className)}
+    {...frontendDataAttrs({ "layout-main": "" })}
+    {...frontendDataAttrs({ "live-content": live ? "" : undefined })}
     >
     {children}
     </main>
@@ -145,8 +146,8 @@ function LayoutContent(props: LayoutContentProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-layout-content", className)}
-    data-tbf-layout-content=""
+    className={classNames(frontendClassName("layout-content"), className)}
+    {...frontendDataAttrs({ "layout-content": "" })}
     >
     {children}
     </div>
@@ -158,8 +159,8 @@ function ViewportCenter(props: ViewportCenterProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-viewport-center", className)}
-    data-tbf-viewport-center=""
+    className={classNames(frontendClassName("viewport-center"), className)}
+    {...frontendDataAttrs({ "viewport-center": "" })}
     >
     {children}
     </div>
@@ -175,8 +176,8 @@ function LayoutPortalRoot(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-layout-portal-root", className)}
-    data-tbf-layout-portal-root=""
+    className={classNames(frontendClassName("layout-portal-root"), className)}
+    {...frontendDataAttrs({ "layout-portal-root": "" })}
     id={id}
     >
     {children === undefined ? (
@@ -194,8 +195,8 @@ function LayoutHeader(props: HTMLAttributes<HTMLElement>) {
   return (
     <header
     {...rest}
-    className={classNames("tbf-layout-header", className)}
-    data-tbf-layout-header=""
+    className={classNames(frontendClassName("layout-header"), className)}
+    {...frontendDataAttrs({ "layout-header": "" })}
     >
     {children}
     </header>
@@ -207,8 +208,8 @@ function LayoutSecondaryHeader(props: HTMLAttributes<HTMLElement>) {
   return (
     <header
     {...rest}
-    className={classNames("tbf-layout-secondary-header", className)}
-    data-tbf-layout-secondary-header=""
+    className={classNames(frontendClassName("layout-secondary-header"), className)}
+    {...frontendDataAttrs({ "layout-secondary-header": "" })}
     >
     {children}
     </header>
@@ -220,8 +221,8 @@ function LayoutBottomBar(props: HTMLAttributes<HTMLElement>) {
   return (
     <nav
     {...rest}
-    className={classNames("tbf-layout-bottom-bar", className)}
-    data-tbf-layout-bottom-bar=""
+    className={classNames(frontendClassName("layout-bottom-bar"), className)}
+    {...frontendDataAttrs({ "layout-bottom-bar": "" })}
     >
     {children}
     </nav>
@@ -240,7 +241,7 @@ function LayoutBootScript(props: LayoutBootScriptProps) {
   return (
     <script
     {...rest}
-    data-tbf-layout-boot=""
+    {...frontendDataAttrs({ "layout-boot": "" })}
     dangerouslySetInnerHTML={{
         __html: createLayoutBootScript({
             hasHeader,

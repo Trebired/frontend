@@ -18,6 +18,7 @@ import {
   toString,
   type BindActionOptions,
 } from "#aq4qe9opqpbm";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function groupDropdown(model: any) {
   return dropdown({
@@ -192,14 +193,14 @@ function exportPopover(model: any) {
           icon: true,
           size: "md",
           tooltip: true,
-          "data-tbf-popover-trigger": "",
+          [frontendDataAttr("popover-trigger")]: "",
           children: <>{icon({ spec: "remixicon download-2-line" })}</>,
     })}
     <div
     className="popover popover-portaled"
     id={model.exportPopoverId}
     aria-hidden="true"
-    data-tbf-popover=""
+    {...frontendDataAttrs({ "popover": "" })}
     inert={true}
     >
     {model.exportOptions.map((item: any) => (
@@ -207,7 +208,7 @@ function exportPopover(model: any) {
           key={toString(item.href)}
           href={toString(item.href)}
           className="popover-close popover-item"
-          data-tbf-popover-close=""
+          {...frontendDataAttrs({ "popover-close": "" })}
           >
           {toString(item.label)}
           </a>
@@ -236,7 +237,7 @@ function fullscreenButtons(model: any) {
     {toolbarButton(
         {
           "aria-label": model.t("display.exitFullscreen"),
-          "data-tbf-fullscreen-hidden": "true",
+          [frontendDataAttr("fullscreen-hidden")]: "true",
           title: model.t("display.exitFullscreen"),
         },
         "remixicon fullscreen-exit-line",

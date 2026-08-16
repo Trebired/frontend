@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { joinClassNames } from "./shared.js";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type TextLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children?: ReactNode;
@@ -21,8 +22,8 @@ function TextLink(props: TextLinkProps) {
   return (
     <a
     {...rest}
-    className={joinClassNames("tbf-text-link", "text-link", className)}
-    data-tbf-text-link=""
+    className={joinClassNames(frontendClassName("text-link"), "text-link", className)}
+    {...frontendDataAttrs({ "text-link": "" })}
     rel={linkRel(rel, resolvedTarget)}
     target={resolvedTarget}
     >

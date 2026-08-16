@@ -18,6 +18,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendClassName } from "#5vbaqj4pirp3";
 
 const FILE_TREE_INDENT = 18;
 const FILE_TREE_ROW_HEIGHT = 34;
@@ -178,7 +179,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
     {createElement(
         "scroll-overflow",
         { style: { display: "contents" } },
-        <div className="scroll scroll-min tbf-file-tree-scroll" style={scrollStyleFor(options, rows)}>
+        <div className={`scroll scroll-min ${frontendClassName("file-tree-scroll")}`} style={scrollStyleFor(options, rows)}>
         <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
         {rows.map((row, index) => renderStaticFileTreeRow(row, index, options))}
         </div>

@@ -21,17 +21,18 @@ import {
   textValue,
 } from "#yv4ubgils4dc";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function DynamicSidebarLiveRoot(props: DynamicSidebarLiveRootProps) {
   const { children, config, style, ...rest } = props;
   return (
     <div
     {...rest}
-    data-tbf-sidebar-dynamic-live=""
+    {...frontendDataAttrs({ "sidebar-dynamic-live": "" })}
     style={{ display: "contents", ...style }}
     >
     <script
-    data-tbf-sidebar-dynamic-live-config=""
+    {...frontendDataAttrs({ "sidebar-dynamic-live-config": "" })}
     hidden
     type="application/json"
     dangerouslySetInnerHTML={{ __html: jsonScript(config) }}
@@ -56,11 +57,11 @@ function DynamicSidebarCountSlot(props: {
   const render = props.render || defaultDynamicSidebarCount;
   return (
     <span
-    data-tbf-sidebar-active={props.active ? "1" : "0"}
-    data-tbf-sidebar-count-path={props.path}
-    data-tbf-sidebar-count-slot=""
-    data-tbf-sidebar-count-visibility={props.visibility}
-    data-tbf-sidebar-disabled={disabled ? "1" : "0"}
+    {...frontendDataAttrs({ "sidebar-active": props.active ? "1" : "0" })}
+    {...frontendDataAttrs({ "sidebar-count-path": props.path })}
+    {...frontendDataAttrs({ "sidebar-count-slot": "" })}
+    {...frontendDataAttrs({ "sidebar-count-visibility": props.visibility })}
+    {...frontendDataAttrs({ "sidebar-disabled": disabled ? "1" : "0" })}
     >
     {count == null ? null : render({ ...props.context, count, path: props.path })}
     </span>
@@ -101,14 +102,14 @@ function DynamicSidebarLoaderSlot(props: {
   const hidden = props.context.disabled || (visibility === "active" && !props.active);
   return (
     <span
-    data-tbf-sidebar-active={props.active ? "1" : "0"}
-    data-tbf-sidebar-disabled={props.context.disabled ? "1" : "0"}
-    data-tbf-sidebar-loader-path={context.loaderPath}
-    data-tbf-sidebar-loader-slot=""
-    data-tbf-sidebar-loader-visibility={visibility}
-    data-tbf-sidebar-status-idle-count-path={context.idleCountPath}
-    data-tbf-sidebar-status-path={context.statusPath}
-    data-tbf-sidebar-status-repository-id={context.repositoryId}
+    {...frontendDataAttrs({ "sidebar-active": props.active ? "1" : "0" })}
+    {...frontendDataAttrs({ "sidebar-disabled": props.context.disabled ? "1" : "0" })}
+    {...frontendDataAttrs({ "sidebar-loader-path": context.loaderPath })}
+    {...frontendDataAttrs({ "sidebar-loader-slot": "" })}
+    {...frontendDataAttrs({ "sidebar-loader-visibility": visibility })}
+    {...frontendDataAttrs({ "sidebar-status-idle-count-path": context.idleCountPath })}
+    {...frontendDataAttrs({ "sidebar-status-path": context.statusPath })}
+    {...frontendDataAttrs({ "sidebar-status-repository-id": context.repositoryId })}
     >
     {hidden ? null : render(context)}
     </span>
@@ -128,10 +129,10 @@ function DynamicSidebarStateSlot(props: {
   const render = props.render || defaultDynamicSidebarState;
   return (
     <span
-    data-tbf-sidebar-active={props.active ? "1" : "0"}
-    data-tbf-sidebar-disabled={props.context.disabled ? "1" : "0"}
-    data-tbf-sidebar-state-path={props.path}
-    data-tbf-sidebar-state-slot=""
+    {...frontendDataAttrs({ "sidebar-active": props.active ? "1" : "0" })}
+    {...frontendDataAttrs({ "sidebar-disabled": props.context.disabled ? "1" : "0" })}
+    {...frontendDataAttrs({ "sidebar-state-path": props.path })}
+    {...frontendDataAttrs({ "sidebar-state-slot": "" })}
     >
     {render({ ...props.context, path: props.path, state })}
     </span>
@@ -146,7 +147,7 @@ function DynamicSidebarIcon(props: {
   ? props.render(props.context)
   : props.context.item.icon || defaultDynamicSidebarIcon(props.context);
   return node ? (
-    <span className={primitiveTextClassName({ muted: true })} data-tbf-sidebar-link-icon="">
+    <span className={primitiveTextClassName({ muted: true })} {...frontendDataAttrs({ "sidebar-link-icon": "" })}>
     {node}
     </span>
   ) : null;

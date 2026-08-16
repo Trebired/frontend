@@ -19,6 +19,7 @@ import type {
   SavePolicyInput,
   SavePolicyState,
 } from "./types.js";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
@@ -152,7 +153,7 @@ function createSavePolicyState(input: SavePolicyInput, root: HTMLElement) {
     uploadChangeEvents: Array.isArray(input.uploadChangeEvents) &&
       input.uploadChangeEvents.length
     ? input.uploadChangeEvents
-    : ["tbf:upload-change"],
+    : [frontendEventName("upload-change")],
   } satisfies SavePolicyState;
 }
 

@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .log-box-shell {
   position: relative;
   display: flex;
@@ -110,10 +111,10 @@
   overflow-x: hidden;
   scroll-behavior: auto;
   overscroll-behavior: contain;
-  background: var(--tbf-canvas-bg, var(--dot-grid));
+  background: var(#{ns.css-var("canvas-bg")}, var(--dot-grid));
 
   ::selection {
-    background-color: var(--tbf-data-log-selection-bg, var(--background-surface-2, currentColor)) !important;
+    background-color: var(#{ns.css-var("data-log-selection-bg")}, var(--background-surface-2, currentColor)) !important;
     color: currentColor;
   }
 }
@@ -150,7 +151,7 @@
   cursor: pointer;
 
   &:hover {
-    background: var(--tbf-data-log-line-state-hover-bg, color-mix(in srgb, var(--border-surface-1, currentColor) 28%, transparent));
+    background: var(#{ns.css-var("data-log-line-state-hover-bg")}, color-mix(in srgb, var(--border-surface-1, currentColor) 28%, transparent));
   }
 
   &::after {

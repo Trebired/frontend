@@ -5,6 +5,7 @@ import type {
 } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import type { FullscreenTriggerMode } from "#e1wjbzbsyghi";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type FullscreenTargetProps = HTMLAttributes<HTMLDivElement> & {
   fullscreenId: string;
@@ -31,11 +32,11 @@ function FullscreenTarget(props: FullscreenTargetProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-fullscreen-target", className)}
-    data-tbf-fullscreen-target=""
-    data-tbf-fullscreen-id={fullscreenId}
-    data-tbf-fullscreen-group={group}
-    data-tbf-fullscreen-persist={dataBool(persist)}
+    className={classNames(frontendClassName("fullscreen-target"), className)}
+    {...frontendDataAttrs({ "fullscreen-target": "" })}
+    {...frontendDataAttrs({ "fullscreen-id": fullscreenId })}
+    {...frontendDataAttrs({ "fullscreen-group": group })}
+    {...frontendDataAttrs({ "fullscreen-persist": dataBool(persist) })}
     >
     {children as ReactNode}
     </div>
@@ -57,15 +58,15 @@ function FullscreenButton(props: FullscreenButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button tbf-fullscreen-button", className)}
-    data-tbf-fullscreen-trigger={panel ? "" : undefined}
-    data-tbf-fullscreen-id={fullscreenId}
-    data-tbf-fullscreen-group={panel ? group : undefined}
-    data-tbf-fullscreen-mode={mode}
-    data-tbf-fullscreen-target={nativeTarget}
-    data-tbf-fullscreen-toggle={!panel && mode === "toggle" ? "" : undefined}
-    data-tbf-fullscreen-enter={!panel && mode === "open" ? "" : undefined}
-    data-tbf-fullscreen-exit={!panel && (mode === "close" || mode === "exit") ? "" : undefined}
+    className={classNames(`${frontendClassName("button")} ${frontendClassName("fullscreen-button")}`, className)}
+    {...frontendDataAttrs({ "fullscreen-trigger": panel ? "" : undefined })}
+    {...frontendDataAttrs({ "fullscreen-id": fullscreenId })}
+    {...frontendDataAttrs({ "fullscreen-group": panel ? group : undefined })}
+    {...frontendDataAttrs({ "fullscreen-mode": mode })}
+    {...frontendDataAttrs({ "fullscreen-target": nativeTarget })}
+    {...frontendDataAttrs({ "fullscreen-toggle": !panel && mode === "toggle" ? "" : undefined })}
+    {...frontendDataAttrs({ "fullscreen-enter": !panel && mode === "open" ? "" : undefined })}
+    {...frontendDataAttrs({ "fullscreen-exit": !panel && (mode === "close" || mode === "exit") ? "" : undefined })}
     type={type}
     >
     {children}

@@ -1,4 +1,5 @@
 import { resolveDocumentTarget } from "#er0dlx1gtbzh";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 function fullscreenElement(): Element | null {
   return typeof document === "undefined" ? null : document.fullscreenElement;
@@ -18,14 +19,14 @@ async function enterFullscreen(target?: Element | string | null): Promise<boolea
   const element = resolveFullscreenTarget(target);
   if (!element || typeof element.requestFullscreen !== "function") return false;
   await element.requestFullscreen();
-  document.dispatchEvent(new CustomEvent("tbf:fullscreen-enter", { bubbles: true, detail: { target: element } }));
+  document.dispatchEvent(new CustomEvent(frontendEventName("fullscreen-enter"), { bubbles: true, detail: { target: element } }));
   return true;
 }
 
 async function exitFullscreen(): Promise<boolean> {
   if (!fullscreenElement() || typeof document.exitFullscreen !== "function") return false;
   await document.exitFullscreen();
-  document.dispatchEvent(new CustomEvent("tbf:fullscreen-exit", { bubbles: true }));
+  document.dispatchEvent(new CustomEvent(frontendEventName("fullscreen-exit"), { bubbles: true }));
   return true;
 }
 

@@ -14,6 +14,7 @@ import {
   FullscreenOpenButton,
   FullscreenTarget,
 } from "#vbkfq413o3u7";
+import { frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function graphFullscreenButton(
   props: graph_props,
@@ -35,7 +36,7 @@ function graphFullscreenButton(
   return mode === "close" ? (
     <FullscreenCloseButton
     {...commonProps}
-    data-tbf-fullscreen-hidden="true"
+    {...frontendDataAttrs({ "fullscreen-hidden": "true" })}
     >
     {icon({ spec: iconSpec })}
     </FullscreenCloseButton>
@@ -84,8 +85,8 @@ function graphShellStateOverlay(model: any) {
           justifyContent: "center",
           color:
           model.resolvedStateTone === "warn"
-          ? "var(--tbf-status-warning-color, var(--tbf-focus, currentColor))"
-          : "var(--tbf-status-error-color, var(--tbf-focus, currentColor))",
+          ? `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`
+          : `var(${frontendCssVar("status-error-color")}, var(${frontendCssVar("focus")}, currentColor))`,
       }}
       >
       <div className="center">

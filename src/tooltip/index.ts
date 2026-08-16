@@ -1,12 +1,13 @@
 import { clampNumber, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
+import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const TOOLTIP_BASE_Z_INDEX = 1100;
-const TOOLTIP_LAYER_ID = "tbf_tooltip";
+const TOOLTIP_LAYER_ID = `${FRONTEND_PREFIX}_tooltip`;
 const TOOLTIP_SELECTOR = [
-  "[data-tbf-tooltip]",
+  frontendDataSelector("tooltip"),
   "[title]",
-  "[data-tbf-status-icon][aria-label]",
+  `${frontendDataSelector("status-icon")}[aria-label]`,
 ].join(",");
 
 type TooltipState = {
@@ -27,9 +28,9 @@ let listenersInstalled = false;
 function readTooltipText(trigger: HTMLElement | null) {
   if (!trigger) return "";
   if (tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
-  const configured = String(trigger.getAttribute("data-tbf-tooltip") || "").trim();
+  const configured = String(trigger.getAttribute(frontendDataAttr("tooltip")) || "").trim();
   const title = String(trigger.getAttribute("title") || "").trim();
-  const status = trigger.hasAttribute("data-tbf-status-icon")
+  const status = trigger.hasAttribute(frontendDataAttr("status-icon"))
   ? String(trigger.getAttribute("aria-label") || "").trim()
   : "";
   const text = configured || title || status;
@@ -52,17 +53,17 @@ function ensureTooltipLayer() {
   }
   const layer = document.createElement("div");
   layer.id = TOOLTIP_LAYER_ID;
-  layer.className = "tbf-tooltip";
+  layer.className = frontendClassName("tooltip");
   layer.setAttribute("role", "tooltip");
   layer.setAttribute("aria-hidden", "true");
-  layer.setAttribute("data-tbf-tooltip-layer", "");
+  layer.setAttribute(frontendDataAttr("tooltip-layer"), "");
   portalElement(layer);
   tooltipState.layer = layer;
   return layer;
 }
 
 function measureLayer(layer: HTMLElement) {
-  const wasOpen = layer.hasAttribute("data-tbf-open");
+  const wasOpen = layer.hasAttribute(frontendDataAttr("open"));
   const previous = {
     left: layer.style.left,
     opacity: layer.style.opacity,
@@ -77,7 +78,7 @@ function measureLayer(layer: HTMLElement) {
   layer.style.opacity = "0";
   layer.style.left = "0px";
   layer.style.top = "0px";
-  layer.setAttribute("data-tbf-open", "true");
+  layer.setAttribute(frontendDataAttr("open"), "true");
   const rect = layer.getBoundingClientRect();
   layer.style.visibility = previous.visibility;
   layer.style.opacity = previous.opacity;
@@ -85,7 +86,7 @@ function measureLayer(layer: HTMLElement) {
   layer.style.top = previous.top;
   layer.style.transform = previous.transform;
   layer.style.transition = previous.transition;
-  if (!wasOpen) layer.removeAttribute("data-tbf-open");
+  if (!wasOpen) layer.removeAttribute(frontendDataAttr("open"));
   return rect;
 }
 
@@ -103,8 +104,8 @@ function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
   const left = clampNumber(anchor.left + anchor.width / 2 - tip.width / 2, gutter, vw - tip.width - gutter);
   layer.style.top = `${Math.max(gutter, top)}px`;
   layer.style.left = `${left}px`;
-  layer.setAttribute("data-tbf-placement", fitsTop ? "top" : "bottom");
-  layer.style.setProperty("--tbf-arrow-x", `${anchor.left + anchor.width / 2 - left}px`);
+  layer.setAttribute(frontendDataAttr("placement"), fitsTop ? "top" : "bottom");
+  layer.style.setProperty(frontendCssVar("arrow-x"), `${anchor.left + anchor.width / 2 - left}px`);
 }
 
 function showTooltip(trigger: HTMLElement) {
@@ -116,7 +117,7 @@ function showTooltip(trigger: HTMLElement) {
   promoteZIndex(layer, { fallback: TOOLTIP_BASE_Z_INDEX });
   placeTooltip(trigger, layer);
   layer.setAttribute("aria-hidden", "false");
-  layer.setAttribute("data-tbf-open", "true");
+  layer.setAttribute(frontendDataAttr("open"), "true");
   tooltipState.openTrigger = trigger;
   tooltipState.shown = true;
   return true;
@@ -125,7 +126,7 @@ function showTooltip(trigger: HTMLElement) {
 function hideTooltip() {
   const layer = tooltipState.layer;
   if (layer) {
-    layer.removeAttribute("data-tbf-open");
+    layer.removeAttribute(frontendDataAttr("open"));
     layer.setAttribute("aria-hidden", "true");
   }
   tooltipState.openTrigger = null;

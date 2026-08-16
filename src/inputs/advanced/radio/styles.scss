@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
 .choice-row.radio-option {
@@ -16,7 +17,7 @@
   user-select: none;
 
   &:focus-visible {
-    outline: var(--border-width) solid var(--tbf-ui-input-state-focus-color, var(--tbf-focus, currentColor));
+    outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
     outline-offset: 2px;
   }
 
@@ -27,7 +28,7 @@
   &.is-checked,
   &:has(> .radio-input:checked) {
     border-color: var(--border-surface-1);
-    background: var(--tbf-ui-choice-checked-bg, var(--background-surface-1, transparent));
+    background: var(#{ns.css-var("ui-choice-checked-bg")}, var(--background-surface-1, transparent));
   }
 
   &:not(:has(.radio-option-description)) {
@@ -47,9 +48,9 @@
   height: 18px;
   margin-top: 0;
   border-radius: var(--radius-xs);
-  border: var(--border-width) solid var(--tbf-ui-choice-control-border, var(--border-surface-1, currentColor));
+  border: var(--border-width) solid var(#{ns.css-var("ui-choice-control-border")}, var(--border-surface-1, currentColor));
   background: var(--background-surface-1);
-  color: var(--tbf-ui-choice-control-color, currentColor);
+  color: var(#{ns.css-var("ui-choice-control-color")}, currentColor);
   line-height: 0;
   position: relative;
   transition:
@@ -65,7 +66,7 @@
   }
 
   .radio-control-icon.active {
-    color: var(--tbf-ui-choice-control-active-icon, currentColor);
+    color: var(#{ns.css-var("ui-choice-control-active-icon")}, currentColor);
   }
 
   .radio-control-icon::before {
@@ -84,9 +85,9 @@
 
 .radio-option:has(> .radio-input:checked) > .radio-control,
 .radio-option.is-checked > .radio-control {
-  border-color: var(--tbf-ui-choice-control-checked-border, var(--tbf-focus, currentColor));
-  background: var(--tbf-ui-choice-control-checked-bg, var(--tbf-focus, transparent));
-  color: var(--tbf-ui-choice-control-checked-color, var(--background-page, currentColor));
+  border-color: var(#{ns.css-var("ui-choice-control-checked-border")}, var(#{ns.css-var("focus")}, currentColor));
+  background: var(#{ns.css-var("ui-choice-control-checked-bg")}, var(#{ns.css-var("focus")}, transparent));
+  color: var(#{ns.css-var("ui-choice-control-checked-color")}, var(--background-page, currentColor));
 }
 
 .radio-option:has(> .radio-input:checked)

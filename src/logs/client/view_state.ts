@@ -7,6 +7,7 @@ import { entryMatchesConfig } from "./identity.js";
 import { DEFAULT_LOGS_INSTANCE_ID } from "./types.js";
 import { logsT, normalizeInstanceId, safeStr } from "./utils.js";
 import type { LogsPage } from "./types.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 function readJsonElement(element: Element | null, fallback: Record<string, unknown>) {
   if (!element) return fallback;
@@ -28,7 +29,6 @@ export function readLogsBootData(fallback: Record<string, unknown> = {}) {
   if (typeof document === "undefined") return fallback;
   const element =
   document.querySelector("[data-logs-boot]") ||
-    document.getElementById("__TBF_LOGS_VIEW_DATA__") ||
     document.getElementById("__DEPLOYMENT_VIEW_DATA__");
   return readJsonElement(element, fallback);
 }
@@ -252,7 +252,7 @@ export function focusSearchInputAfterFullscreenRequest(
   const isFullscreen = Boolean(
     root &&
       root.getAttribute &&
-      root.getAttribute("data-tbf-fullscreen-active") === "true",
+      root.getAttribute(frontendDataAttr("fullscreen-active")) === "true",
   );
   const isVisible = Boolean(input && input.getClientRects().length > 0);
 
@@ -287,7 +287,7 @@ export function focusSearchInputWhenAvailable(page: LogsPage, attempt = 0) {
   const isFullscreen = Boolean(
     root &&
       root.querySelector &&
-      root.querySelector('[data-tbf-fullscreen-active="true"]'),
+      root.querySelector(frontendDataSelector("fullscreen-active", "true")),
   );
   const isVisible = Boolean(input && input.getClientRects().length > 0);
 

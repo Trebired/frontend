@@ -1,135 +1,146 @@
-.tbf-button {
-  --tbf-ui-action-current-icon: var(
-    --tbf-ui-action-slot-icon,
-    var(--tbf-ui-btn-slot-icon, currentColor)
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("button")} {
+  #{ns.css-var("ui-action-current-icon")}: var(
+    #{ns.css-var("ui-action-slot-icon")},
+    var(#{ns.css-var("ui-btn-slot-icon")}, currentColor)
   );
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--tbf-ui-action-root-gap, var(--tbf-ui-btn-root-gap, 8px));
+  gap: var(#{ns.css-var("ui-action-root-gap")}, var(#{ns.css-var("ui-btn-root-gap")}, 8px));
   min-height: var(
-    --tbf-ui-action-root-min-h,
-    var(--tbf-ui-action-root-height, var(--tbf-ui-btn-root-height, 28px))
+    #{ns.css-var("ui-action-root-min-h")},
+    var(#{ns.css-var("ui-action-root-height")}, var(#{ns.css-var("ui-btn-root-height")}, 28px))
   );
   box-sizing: border-box;
-  padding: var(--tbf-ui-action-root-padding, var(--tbf-ui-btn-root-padding, 0 12px));
-  padding-block: var(--tbf-ui-action-root-py, var(--tbf-ui-btn-root-py, 0));
+  padding: var(#{ns.css-var("ui-action-root-padding")}, var(#{ns.css-var("ui-btn-root-padding")}, 0 12px));
+  padding-block: var(#{ns.css-var("ui-action-root-py")}, var(#{ns.css-var("ui-btn-root-py")}, 0));
   border: var(
-    --tbf-ui-action-root-border,
-    var(--tbf-ui-btn-root-border, var(--border-width) solid var(--border-surface-2))
+    #{ns.css-var("ui-action-root-border")},
+    var(#{ns.css-var("ui-btn-root-border")}, var(--border-width) solid var(--border-surface-2))
   );
   border-radius: var(
-    --tbf-ui-action-root-radius,
-    var(--tbf-ui-btn-root-radius, var(--radius-md, var(--tbf-radius, 0)))
+    #{ns.css-var("ui-action-root-radius")},
+    var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)))
   );
-  color: var(--tbf-ui-action-root-color, var(--tbf-ui-btn-root-color, var(--text-color)));
-  background: var(--tbf-ui-action-root-bg, var(--tbf-ui-btn-root-bg, transparent));
+  color: var(#{ns.css-var("ui-action-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(--text-color)));
+  background: var(#{ns.css-var("ui-action-root-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  font-family: var(--tbf-ui-action-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
-  font-size: var(--tbf-ui-action-root-font-size, var(--tbf-ui-btn-root-font-size, 12px));
-  font-weight: var(--tbf-ui-action-root-font-weight, var(--tbf-ui-btn-root-font-weight, 600));
+  font-family: var(#{ns.css-var("ui-action-root-font-family")}, var(#{ns.css-var("font-sans")}, "Inter", sans-serif));
+  font-size: var(#{ns.css-var("ui-action-root-font-size")}, var(#{ns.css-var("ui-btn-root-font-size")}, 12px));
+  font-weight: var(#{ns.css-var("ui-action-root-font-weight")}, var(#{ns.css-var("ui-btn-root-font-weight")}, 600));
   line-height: 1.15;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.tbf-button:hover,
-.tbf-button[aria-pressed="true"],
-.tbf-button[data-tbf-active="true"] {
-  --tbf-ui-action-current-icon: var(
-    --tbf-ui-action-state-hover-icon,
-    var(--tbf-ui-btn-state-hover-icon, currentColor)
+#{ns.class("button")}:hover,
+
+#{ns.class("button")}[aria-pressed="true"],
+
+#{ns.class("button")}#{ns.data("active", "true")} {
+  #{ns.css-var("ui-action-current-icon")}: var(
+    #{ns.css-var("ui-action-state-hover-icon")},
+    var(#{ns.css-var("ui-btn-state-hover-icon")}, currentColor)
   );
-  border-color: var(--tbf-ui-action-state-hover-border, var(--tbf-ui-btn-state-hover-border, currentColor));
-  color: var(--tbf-ui-action-state-hover-color, var(--tbf-ui-btn-state-hover-color, currentColor));
+  border-color: var(#{ns.css-var("ui-action-state-hover-border")}, var(#{ns.css-var("ui-btn-state-hover-border")}, currentColor));
+  color: var(#{ns.css-var("ui-action-state-hover-color")}, var(#{ns.css-var("ui-btn-state-hover-color")}, currentColor));
   background: var(
-    --tbf-ui-action-state-hover-bg,
-    var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+    #{ns.css-var("ui-action-state-hover-bg")},
+    var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
   );
 }
 
-.tbf-button:disabled,
-.tbf-button[disabled],
-.tbf-button.disabled {
-  opacity: var(--tbf-ui-action-state-disabled-opacity, var(--tbf-ui-btn-state-disabled-opacity, 0.55));
+#{ns.class("button")}:disabled,
+
+#{ns.class("button")}[disabled],
+
+#{ns.class("button")}.disabled {
+  opacity: var(#{ns.css-var("ui-action-state-disabled-opacity")}, var(#{ns.css-var("ui-btn-state-disabled-opacity")}, 0.55));
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.tbf-button > i,
-.tbf-button > svg,
-.tbf-button > i svg,
-.tbf-button > [data-icon],
-.tbf-button > [data-icon] svg {
-  color: var(--tbf-ui-action-current-icon);
+#{ns.class("button")} > i,
+
+#{ns.class("button")} > svg,
+
+#{ns.class("button")} > i svg,
+
+#{ns.class("button")} > [data-icon],
+
+#{ns.class("button")} > [data-icon] svg {
+  color: var(#{ns.css-var("ui-action-current-icon")});
   flex: 0 0 auto;
 }
 
-.tbf-button--strong {
-  --tbf-ui-action-current-icon: var(
-    --tbf-ui-action-tone-highlight-icon,
-    var(--tbf-ui-btn-tone-highlight-icon, currentColor)
+#{ns.modifier("button", "strong")} {
+  #{ns.css-var("ui-action-current-icon")}: var(
+    #{ns.css-var("ui-action-tone-highlight-icon")},
+    var(#{ns.css-var("ui-btn-tone-highlight-icon")}, currentColor)
   );
   border-color: var(
-    --tbf-ui-action-tone-highlight-border,
-    var(--tbf-ui-btn-tone-highlight-border, currentColor)
+    #{ns.css-var("ui-action-tone-highlight-border")},
+    var(#{ns.css-var("ui-btn-tone-highlight-border")}, currentColor)
   );
   color: var(
-    --tbf-ui-action-tone-highlight-color,
-    var(--tbf-ui-btn-tone-highlight-color, currentColor)
+    #{ns.css-var("ui-action-tone-highlight-color")},
+    var(#{ns.css-var("ui-btn-tone-highlight-color")}, currentColor)
   );
   background: var(
-    --tbf-ui-action-tone-highlight-bg,
-    var(--tbf-ui-btn-tone-highlight-bg, var(--tbf-ui-btn-root-bg, transparent))
+    #{ns.css-var("ui-action-tone-highlight-bg")},
+    var(#{ns.css-var("ui-btn-tone-highlight-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
   );
 }
 
-.tbf-button--strong:hover,
-.tbf-button--strong[aria-pressed="true"],
-.tbf-button--strong[data-tbf-active="true"] {
-  --tbf-ui-action-current-icon: var(
-    --tbf-ui-action-tone-highlight-state-hover-icon,
-    var(--tbf-ui-btn-tone-highlight-state-hover-icon, currentColor)
+#{ns.modifier("button", "strong")}:hover,
+
+#{ns.modifier("button", "strong")}[aria-pressed="true"],
+
+#{ns.modifier("button", "strong")}#{ns.data("active", "true")} {
+  #{ns.css-var("ui-action-current-icon")}: var(
+    #{ns.css-var("ui-action-tone-highlight-state-hover-icon")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-icon")}, currentColor)
   );
   border-color: var(
-    --tbf-ui-action-tone-highlight-state-hover-border,
-    var(--tbf-ui-btn-tone-highlight-state-hover-border, currentColor)
+    #{ns.css-var("ui-action-tone-highlight-state-hover-border")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-border")}, currentColor)
   );
   color: var(
-    --tbf-ui-action-tone-highlight-state-hover-color,
-    var(--tbf-ui-btn-tone-highlight-state-hover-color, currentColor)
+    #{ns.css-var("ui-action-tone-highlight-state-hover-color")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-color")}, currentColor)
   );
   background: var(
-    --tbf-ui-action-tone-highlight-state-hover-bg,
+    #{ns.css-var("ui-action-tone-highlight-state-hover-bg")},
     var(
-      --tbf-ui-btn-tone-highlight-state-hover-bg,
-      var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+      #{ns.css-var("ui-btn-tone-highlight-state-hover-bg")},
+      var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
     )
   );
 }
 
-.tbf-confetti {
+#{ns.class("confetti")} {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: var(--tbf-z-confetti);
+  z-index: var(#{ns.css-var("z-confetti")});
 }
 
-.tbf-confetti i {
+#{ns.class("confetti")} i {
   position: absolute;
   top: -12px;
   left: var(--x);
   width: 7px;
   height: 12px;
-  background: var(--tbf-confetti-color, var(--tbf-focus, #000));
-  filter: hue-rotate(var(--tbf-confetti-hue, 0deg));
+  background: var(#{ns.css-var("confetti-color")}, var(#{ns.css-var("focus")}, #000));
+  filter: hue-rotate(var(#{ns.css-var("confetti-hue")}, 0deg));
   transform: rotate(var(--r));
-  animation: tbf-confetti-fall var(--d) ease-in forwards;
+  animation: #{ns.token("confetti-fall")} var(--d) ease-in forwards;
 }
 
-@keyframes tbf-confetti-fall {
+@keyframes #{ns.token("confetti-fall")} {
   to {
     top: 100vh;
     transform: rotate(calc(var(--r) + 180deg));

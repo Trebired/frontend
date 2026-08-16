@@ -13,6 +13,7 @@ import type {
   SourceLanguageBucket,
   SourceLanguageTabsContentProps,
 } from "#2w72xmq6rvza";
+import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function sourceLanguageBucketPanelId(bucket: SourceLanguageBucket) {
   return `source_language_bucket_${bucket}_panel`;
@@ -60,14 +61,14 @@ function distributionSegment(language: any, index: number, lang?: string) {
   return (
     <span
     key={`source_language_distribution_${index}`}
-    className="tbf-source-language-distribution-segment"
-    data-tbf-source-language-overview-segment=""
-    data-tbf-source-language-id={text(language && language.viz_id)}
-    data-tbf-source-language-color={text(language && language.color)}
+    className={frontendClassName("source-language-distribution-segment")}
+    {...frontendDataAttrs({ "source-language-overview-segment": "" })}
+    {...frontendDataAttrs({ "source-language-id": text(language && language.viz_id) })}
+    {...frontendDataAttrs({ "source-language-color": text(language && language.color) })}
     title={`${languageName} / ${formatLanguagePercent(percent)}%`}
     style={{
         width: `${Math.max(0, Math.min(100, percent))}%`,
-        background: text(language && language.color, "var(--tbf-language-color, currentColor)"),
+        background: text(language && language.color, `var(${frontendCssVar("language-color")}, currentColor)`),
     }}
     />
   );
@@ -80,9 +81,9 @@ function languageDistribution(
 ) {
   return (
     <div
-    className="tbf-source-language-distribution"
-    data-tbf-source-language-overview=""
-    data-tbf-source-language-panel-bucket={bucket}
+    className={frontendClassName("source-language-distribution")}
+    {...frontendDataAttrs({ "source-language-overview": "" })}
+    {...frontendDataAttrs({ "source-language-panel-bucket": bucket })}
     role="img"
     aria-label={translate(lang, "languageSizeDistribution")}
     >
@@ -94,8 +95,8 @@ function languageDistribution(
 function emptyState(lang: string | undefined, bucket: SourceLanguageBucket, hidden: boolean) {
   return (
     <div
-    data-tbf-source-language-empty-state=""
-    data-tbf-source-language-panel-bucket={bucket}
+    {...frontendDataAttrs({ "source-language-empty-state": "" })}
+    {...frontendDataAttrs({ "source-language-panel-bucket": bucket })}
     className={primitiveTextClassName({ muted: true })}
     hidden={hidden}
     >
@@ -109,12 +110,12 @@ function languageList(model: SourceLanguageTabsContentProps, bucket: SourceLangu
   return (
     <div
     className="max-height-xl scroll scroll-min"
-    data-tbf-source-language-list=""
-    data-tbf-source-language-panel-bucket={bucket}
+    {...frontendDataAttrs({ "source-language-list": "" })}
+    {...frontendDataAttrs({ "source-language-panel-bucket": bucket })}
     >
     <Stack gap="sm">
     {cards.map((entry: any, index: number) => (
-          <div key={`source_language_card_${index}`} data-tbf-source-language-list-item="">
+          <div key={`source_language_card_${index}`} {...frontendDataAttrs({ "source-language-list-item": "" })}>
           {source_language_card({ ...entry, lang: model.lang, locale: model.locale })}
           </div>
     ))}
@@ -131,7 +132,7 @@ function languagePanel(model: SourceLanguageTabsContentProps, bucket: SourceLang
     matchesBucket(language, bucket),
   );
   return (
-    <Stack gap="sm" data-tbf-source-language-panel-bucket={bucket}>
+    <Stack gap="sm" {...frontendDataAttrs({ "source-language-panel-bucket": bucket })}>
     {languageDistribution(languages, bucket, model.lang)}
     {languageList(model, bucket)}
     {emptyState(model.lang, bucket, languages.length > 0)}
@@ -142,7 +143,7 @@ function languagePanel(model: SourceLanguageTabsContentProps, bucket: SourceLang
 function bucketTabItems(lang?: string) {
   return [
     {
-      buttonAttributes: { "data-tbf-source-language-bucket-tab": "everything" },
+      buttonAttributes: { [frontendDataAttr("source-language-bucket-tab")]: "everything" },
       defaultActive: true,
       id: sourceLanguageBucketPanelId("everything"),
       label: translate(lang, "everything"),
@@ -152,7 +153,7 @@ function bucketTabItems(lang?: string) {
     {
       buttonAttributes: {
         "aria-description": translate(lang, "codeFilesDescription"),
-        "data-tbf-source-language-bucket-tab": "repository",
+        [frontendDataAttr("source-language-bucket-tab")]: "repository",
       },
       id: sourceLanguageBucketPanelId("repository"),
       label: translate(lang, "codeFiles"),
@@ -162,7 +163,7 @@ function bucketTabItems(lang?: string) {
     {
       buttonAttributes: {
         "aria-description": translate(lang, "assetsAndConfigDescription"),
-        "data-tbf-source-language-bucket-tab": "supporting",
+        [frontendDataAttr("source-language-bucket-tab")]: "supporting",
       },
       id: sourceLanguageBucketPanelId("supporting"),
       label: translate(lang, "assetsAndConfig"),
@@ -176,9 +177,9 @@ function sourceLanguageTabs(model: SourceLanguageTabsContentProps) {
   return tabs({
       familyKey: "source-language-bucket",
       items: bucketTabItems(model.lang),
-      listAttributes: { "data-tbf-source-language-bucket-tabs": "" },
+      listAttributes: { [frontendDataAttr("source-language-bucket-tabs")]: "" },
       listClassName: primitiveGapClass("sm"),
-      rootAttributes: { "data-tbf-source-language-bucket-tabs-root": "" },
+      rootAttributes: { [frontendDataAttr("source-language-bucket-tabs-root")]: "" },
       rootClassName: primitiveStackClassName({ gap: "sm" }),
   });
 }

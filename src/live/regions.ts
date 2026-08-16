@@ -7,6 +7,7 @@ import {
   restoreFormState,
   restoreWizardSteps,
 } from "./state.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName, frontendToken } from "#5vbaqj4pirp3";
 
 type LiveSkipAdapter = {
   shouldSkip?: (element: Element) => boolean;
@@ -21,19 +22,19 @@ type LiveOptions = {
   skip?: LiveSkipAdapter;
 };
 
-const LIVE_REGION_SELECTOR = "[data-tbf-live-region]";
+const LIVE_REGION_SELECTOR = frontendDataSelector("live-region");
 let refreshInflight = false;
 
 function shouldSkipLiveElement(element: Element, options: LiveOptions = {}) {
-  if (element.hasAttribute("data-tbf-live-skip")) return true;
+  if (element.hasAttribute(frontendDataAttr("live-skip"))) return true;
   return options.skip?.shouldSkip?.(element) === true;
 }
 
 function liveRegionKey(element: Element) {
   return (
-    element.getAttribute("data-tbf-live-region") ||
+    element.getAttribute(frontendDataAttr("live-region")) ||
       element.id ||
-      element.getAttribute("data-tbf-live-key") ||
+      element.getAttribute(frontendDataAttr("live-key")) ||
       ""
   ).trim();
 }
@@ -43,13 +44,13 @@ function findMatchingRegion(doc: Document, current: Element) {
   if (!key) return null;
   const byId = doc.getElementById(key);
   if (byId) return byId;
-  return doc.querySelector(`[data-tbf-live-region="${cssEscape(key)}"]`);
+  return doc.querySelector(frontendDataSelector("live-region", key));
 }
 
 function isOpenOverlay(element: Element) {
   return Boolean(
-    element.getAttribute("data-tbf-open") === "true" ||
-      element.getAttribute("data-tbf-opening") === "true",
+    element.getAttribute(frontendDataAttr("open")) === "true" ||
+      element.getAttribute(frontendDataAttr("opening")) === "true",
   );
 }
 
@@ -79,7 +80,7 @@ function rehydrate(root: BindRoot = document, options: LiveOptions = {}) {
   reconcilePortaledDuplicates(root);
   if (options.cards !== false) bindLiveCards(root, options.cards || {});
   options.bind?.(root);
-  document.dispatchEvent(new CustomEvent("tbf:rehydrate", { detail: { root } }));
+  document.dispatchEvent(new CustomEvent(frontendEventName("rehydrate"), { detail: { root } }));
 }
 
 function replaceLiveRegions(doc: Document, options: LiveOptions = {}) {
@@ -106,7 +107,7 @@ async function refreshLive(options: LiveOptions& { url?: string } = {}) {
   try {
     const response = await fetch(url, {
         credentials: "same-origin",
-        headers: { Accept: "text/html", "X-Requested-With": "tbf-live" },
+        headers: { Accept: "text/html", "X-Requested-With": frontendToken("live") },
     });
     if (!response.ok) return false;
     const html = await response.text();

@@ -1,20 +1,21 @@
-.tbf-progress {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("progress")} {
   position: fixed;
   inset: 0 0 auto 0;
-  height: var(--tbf-runtime-progress-height, 3px);
-  --tbf-runtime-progress-bar-color: var(
-    --tbf-runtime-progress-color,
-    var(--tbf-focus, currentColor)
+  height: var(#{ns.css-var("runtime-progress-height")}, 3px);
+  #{ns.css-var("runtime-progress-bar-color")}: var(
+    #{ns.css-var("runtime-progress-color")},
+    var(#{ns.css-var("focus")}, currentColor)
   );
   pointer-events: none;
-  z-index: var(--tbf-z-progress, 99999);
+  z-index: var(#{ns.css-var("z-progress")}, 99999);
 }
 
-.tbf-progress__bar {
+#{ns.element-class("progress", "bar")} {
   display: block;
   height: 100%;
-  background: var(--tbf-runtime-progress-bar-color);
+  background: var(#{ns.css-var("runtime-progress-bar-color")});
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform var(--tbf-transition-fast) ease;
+  transition: transform var(#{ns.css-var("transition-fast")}) ease;
 }

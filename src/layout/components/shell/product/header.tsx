@@ -6,6 +6,7 @@ import {
 } from "#beon2qdcbsoe";
 import { productShellLabel, readProductShellState } from "./state.js";
 import type { ProductShellHeaderProps } from "./types.js";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 function headerBrand(props: ProductShellHeaderProps) {
   const structuredBrand = props.brandLogo !== undefined || props.brandTag !== undefined;
@@ -15,38 +16,38 @@ function headerBrand(props: ProductShellHeaderProps) {
   if (!hasBrandBody && !props.brandMeta) return null;
   const brandBody = structuredBrand ? (
     <span
-    className="tbf-shell-header-brand__identity"
-    data-tbf-brand-tag-align={props.brandTagAlign || "horizontal"}
+    className={frontendElementClass("shell-header-brand", "identity")}
+    {...frontendDataAttrs({ "brand-tag-align": props.brandTagAlign || "horizontal" })}
     >
     {props.brandLogo ? (
-        <span className="tbf-shell-header-brand__logo">
+        <span className={frontendElementClass("shell-header-brand", "logo")}>
         {props.brandLogo}
         </span>
       ) : null}
     {props.brandTag ? (
-        <span className="tbf-shell-header-brand__tag">
+        <span className={frontendElementClass("shell-header-brand", "tag")}>
         {props.brandTag}
         </span>
       ) : null}
     </span>
   ) : props.brandContent;
   return (
-    <HeaderGroup className={classNames("tbf-shell-header-brand", props.brandClassName)}>
+    <HeaderGroup className={classNames(frontendClassName("shell-header-brand"), props.brandClassName)}>
     {props.brandHref ? (
         <a
         aria-label={productShellLabel(props.labels, "goHome")}
-        className="tbf-shell-header-brand__link"
+        className={frontendElementClass("shell-header-brand", "link")}
         href={props.brandHref}
         >
         {brandBody}
         </a>
       ) : (
-        <span className="tbf-shell-header-brand__mark">
+        <span className={frontendElementClass("shell-header-brand", "mark")}>
         {brandBody}
         </span>
     )}
     {!structuredBrand && props.brandMeta ? (
-        <span className="tbf-shell-header-brand__meta">
+        <span className={frontendElementClass("shell-header-brand", "meta")}>
         {props.brandMeta}
         </span>
       ) : null}
@@ -59,10 +60,10 @@ function headerMobileToggle(props: ProductShellHeaderProps) {
   if (!state.chrome.showMobileNavToggle) return null;
   const label = productShellLabel(props.labels, "menu");
   return (
-    <HeaderGroup className="tbf-shell-header-toggle-group">
+    <HeaderGroup className={frontendClassName("shell-header-toggle-group")}>
     <MobileNavToggleButton
     aria-label={label}
-    className={classNames("tbf-shell-header-toggle", props.mobileToggleClassName)}
+    className={classNames(frontendClassName("shell-header-toggle"), props.mobileToggleClassName)}
     controls={props.mobileToggleControls || "mobile_nav_shell"}
     >
     {props.mobileToggleIcon ?? label}
@@ -83,8 +84,8 @@ function ProductShellHeader(props: ProductShellHeaderProps) {
         {headerMobileToggle(props)}
         </>
     )}
-    className={classNames("tbf-shell-header", props.className)}
-    data-tbf-shell-header=""
+    className={classNames(frontendClassName("shell-header"), props.className)}
+    {...frontendDataAttrs({ "shell-header": "" })}
     id={props.id || "primary_header"}
     nav={state.chrome.showHeaderLinks ? props.nav : null}
     />

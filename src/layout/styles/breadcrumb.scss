@@ -1,8 +1,9 @@
-.tbf-breadcrumb {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("breadcrumb")} {
   min-width: 0;
 }
 
-.tbf-breadcrumb__list {
+#{ns.element-class("breadcrumb", "list")} {
   display: flex;
   min-width: 0;
   align-items: center;
@@ -13,20 +14,21 @@
   list-style: none;
 }
 
-.tbf-breadcrumb__item {
+#{ns.element-class("breadcrumb", "item")} {
   display: inline-flex;
   min-width: 0;
   align-items: center;
 }
 
-.tbf-breadcrumb__item + .tbf-breadcrumb__item::before {
+#{ns.element-class("breadcrumb", "item")} + #{ns.element-class("breadcrumb", "item")}::before {
   content: "/";
   margin-inline-end: 6px;
-  color: var(--tbf-text-muted, #666);
+  color: var(#{ns.css-var("text-muted")}, #666);
 }
 
-.tbf-breadcrumb__link,
-.tbf-breadcrumb__current {
+#{ns.element-class("breadcrumb", "link")},
+
+#{ns.element-class("breadcrumb", "current")} {
   display: inline-flex;
   min-width: 0;
   align-items: center;
@@ -35,7 +37,7 @@
   text-decoration: none;
 }
 
-.tbf-breadcrumb__label {
+#{ns.element-class("breadcrumb", "label")} {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

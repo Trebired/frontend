@@ -7,13 +7,14 @@ import {
   getPreferredMonacoColorizeThemeName,
   getPreferredMonacoThemeName,
 } from "./monaco.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const CODE_BLOCK_TAG = "code-block";
-const CODE_SELECTOR = `${CODE_BLOCK_TAG},[data-tbf-code-block]`;
-const DATA_CODE_BLOCK_ATTR = "data-tbf-code-block";
-const DATA_CODE_CONTENT_ATTR = "data-tbf-code-content";
-const DATA_CODE_LANG_ATTR = "data-tbf-code-lang";
-const DATA_CODE_RENDERED_ATTR = "data-tbf-code-rendered";
+const CODE_SELECTOR = `${CODE_BLOCK_TAG},${frontendDataSelector("code-block")}`;
+const DATA_CODE_BLOCK_ATTR = frontendDataAttr("code-block");
+const DATA_CODE_CONTENT_ATTR = frontendDataAttr("code-content");
+const DATA_CODE_LANG_ATTR = frontendDataAttr("code-lang");
+const DATA_CODE_RENDERED_ATTR = frontendDataAttr("code-rendered");
 
 const codeState = new WeakMap<Element, {
   languageId: string;
@@ -111,7 +112,7 @@ async function renderCodeWithin(root: BindRoot = document) {
 function bindCodeThemeRefresh() {
   if (themeRefreshBound) return;
   themeRefreshBound = true;
-  window.addEventListener("tbf:themechange", () => {
+  window.addEventListener(frontendEventName("themechange"), () => {
       window.requestAnimationFrame(() => {
           void renderConnectedCodeHosts();
       });

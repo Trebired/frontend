@@ -1,6 +1,7 @@
 import { isUploadDropRoot, uploadRootConfig } from "./config.js";
 import { toText } from "./text.js";
 import type { UploadEntry } from "./types.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type FileSystemEntryLike = {
   createReader?: () => { readEntries: (callback: (entries: FileSystemEntryLike[]) => void) => void };
@@ -24,7 +25,7 @@ function preventFileDragDefault(event: DragEvent, effect: DataTransfer["dropEffe
 
 function closestDropRoot(target: EventTarget | null) {
   const element = target instanceof Element ? target : null;
-  const root = element?.closest("[data-tbf-upload]");
+  const root = element?.closest(frontendDataSelector("upload"));
   return isUploadDropRoot(root) ? root as HTMLElement : null;
 }
 

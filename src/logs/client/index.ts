@@ -11,6 +11,7 @@ import { setLogsPartialManager } from "./bridge.js";
 import { createLogsPage } from "./page.js";
 import { renderLogs } from "./render.js";
 import { replaceLogsPartialData } from "./replace.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 function installLogsPartialManager() {
   setLogsPartialManager({
@@ -27,7 +28,7 @@ function bindLogsRuntime(root: BindRoot = document) {
   const scope = root && "querySelectorAll"in root ? root : document;
   bindCodeBlocks(scope);
   installLogsPartialManager();
-  return queryAll<HTMLElement>(scope, "[data-tbf-logs-partial]").map((partialRoot) =>
+  return queryAll<HTMLElement>(scope, frontendDataSelector("logs-partial")).map((partialRoot) =>
     bindLogsPartialElement(partialRoot),
   );
 }

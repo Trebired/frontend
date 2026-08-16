@@ -1,57 +1,62 @@
-.tbf-modal,
-[data-tbf-modal] {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("modal")},
+
+#{ns.data("modal")} {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
   box-sizing: border-box;
-  padding: var(--tbf-overlay-modal-backdrop-padding, 24px);
-  background: var(--tbf-overlay-modal-backdrop-bg, var(--tbf-overlay, rgb(0 0 0 / 48%)));
+  padding: var(#{ns.css-var("overlay-modal-backdrop-padding")}, 24px);
+  background: var(#{ns.css-var("overlay-modal-backdrop-bg")}, var(#{ns.css-var("overlay")}, rgb(0 0 0 / 48%)));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition:
-  opacity var(--tbf-overlay-modal-motion-duration, var(--tbf-transition-normal))
-  var(--tbf-overlay-modal-motion-easing, ease),
-  visibility 0s linear var(--tbf-overlay-modal-motion-duration, var(--tbf-transition-normal));
+  opacity var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}))
+  var(#{ns.css-var("overlay-modal-motion-easing")}, ease),
+  visibility 0s linear var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}));
 }
 
-[data-tbf-modal][data-tbf-open="true"],
-[data-tbf-modal][data-tbf-opening="true"],
-[data-tbf-modal][data-tbf-closing="true"] {
+#{ns.data("modal")}#{ns.data("open", "true")},
+
+#{ns.data("modal")}#{ns.data("opening", "true")},
+
+#{ns.data("modal")}#{ns.data("closing", "true")} {
   visibility: visible;
 }
 
-[data-tbf-modal][data-tbf-open="true"] {
-  opacity: var(--tbf-overlay-modal-backdrop-opacity, 1);
+#{ns.data("modal")}#{ns.data("open", "true")} {
+  opacity: var(#{ns.css-var("overlay-modal-backdrop-opacity")}, 1);
   pointer-events: auto;
   transition:
-  opacity var(--tbf-overlay-modal-motion-duration, var(--tbf-transition-normal))
-  var(--tbf-overlay-modal-motion-easing, ease),
+  opacity var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}))
+  var(#{ns.css-var("overlay-modal-motion-easing")}, ease),
   visibility 0s;
 }
 
-.tbf-modal__content,
-[data-tbf-modal-content] {
-  width: var(--tbf-overlay-modal-content-width, min(720px, calc(100vw - 48px)));
-  max-height: var(--tbf-overlay-modal-content-max-h, min(80vh, 720px));
+#{ns.element-class("modal", "content")},
+
+#{ns.data("modal-content")} {
+  width: var(#{ns.css-var("overlay-modal-content-width")}, min(720px, calc(100vw - 48px)));
+  max-height: var(#{ns.css-var("overlay-modal-content-max-h")}, min(80vh, 720px));
   box-sizing: border-box;
-  padding: var(--tbf-overlay-modal-content-padding, 20px);
+  padding: var(#{ns.css-var("overlay-modal-content-padding")}, 20px);
   overflow-y: auto;
   border: var(
-    --tbf-overlay-modal-content-border,
-    var(--tbf-border-width, 1px) solid var(--tbf-border, #000)
+    #{ns.css-var("overlay-modal-content-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000)
   );
-  border-radius: var(--tbf-overlay-modal-content-radius, var(--tbf-radius, 0));
-  color: var(--tbf-overlay-modal-content-color, var(--tbf-text, #000));
-  background: var(--tbf-overlay-modal-content-bg, var(--tbf-surface, #fff));
-  box-shadow: var(--tbf-overlay-modal-content-shadow, var(--tbf-shadow, 0 0 0 1px #000));
-  transform: scale(var(--tbf-overlay-modal-motion-initial-scale, 0.96));
+  border-radius: var(#{ns.css-var("overlay-modal-content-radius")}, var(#{ns.css-var("radius")}, 0));
+  color: var(#{ns.css-var("overlay-modal-content-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("overlay-modal-content-bg")}, var(#{ns.css-var("surface")}, #fff));
+  box-shadow: var(#{ns.css-var("overlay-modal-content-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
+  transform: scale(var(#{ns.css-var("overlay-modal-motion-initial-scale")}, 0.96));
   transition:
-  transform var(--tbf-overlay-modal-motion-duration, var(--tbf-transition-normal))
-  var(--tbf-overlay-modal-motion-easing, ease);
+  transform var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}))
+  var(#{ns.css-var("overlay-modal-motion-easing")}, ease);
 }
 
-[data-tbf-modal][data-tbf-open="true"] [data-tbf-modal-content] {
-  transform: scale(var(--tbf-overlay-modal-motion-open-scale, 1));
+#{ns.data("modal")}#{ns.data("open", "true")} #{ns.data("modal-content")} {
+  transform: scale(var(#{ns.css-var("overlay-modal-motion-open-scale")}, 1));
 }

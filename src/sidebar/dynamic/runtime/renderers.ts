@@ -10,6 +10,7 @@ import type {
   DynamicSidebarRuntimeStateContext,
 } from "./types.js";
 import { textValue } from "#yv4ubgils4dc";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function defaultCountNode(context: DynamicSidebarRuntimeCountContext) {
   const node = context.document.createElement("span");
@@ -58,7 +59,7 @@ function defaultStateNode(context: DynamicSidebarRuntimeStateContext) {
   });
   node.setAttribute("aria-hidden", "true");
   node.setAttribute("data-state", state);
-  node.setAttribute("data-tbf-sidebar-state-dot", "");
+  node.setAttribute(frontendDataAttr("sidebar-state-dot"), "");
   return node;
 }
 

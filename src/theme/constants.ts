@@ -1,13 +1,15 @@
-const THEME_ATTR = "data-tbf-theme";
-const THEME_BOUND_ATTR = "data-tbf-theme-bound";
-const THEME_CURRENT_ATTR = "data-tbf-theme-current";
-const THEME_VALUE_ATTR = "data-tbf-theme-value";
-const THEME_CHANGE_EVENT = "tbf:themechange";
-const THEME_MODES_GLOBAL_KEY = "tbf.frontend.theme.modes";
-const THEME_TOGGLE_SELECTOR = "[data-tbf-theme-button]";
-const THEME_SELECT_SELECTOR = "[data-tbf-theme-select]";
-const THEME_OPTION_SELECTOR = "[data-tbf-theme-value]";
-const THEME_LABEL_SELECTOR = "[data-tbf-theme-label]";
+import { FRONTEND_PREFIX, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
+
+const THEME_ATTR = frontendDataAttr("theme");
+const THEME_BOUND_ATTR = frontendDataAttr("theme-bound");
+const THEME_CURRENT_ATTR = frontendDataAttr("theme-current");
+const THEME_VALUE_ATTR = frontendDataAttr("theme-value");
+const THEME_CHANGE_EVENT = frontendEventName("themechange");
+const THEME_MODES_GLOBAL_KEY = `${FRONTEND_PREFIX}.frontend.theme.modes`;
+const THEME_TOGGLE_SELECTOR = frontendDataSelector("theme-button");
+const THEME_SELECT_SELECTOR = frontendDataSelector("theme-select");
+const THEME_OPTION_SELECTOR = frontendDataSelector("theme-value");
+const THEME_LABEL_SELECTOR = frontendDataSelector("theme-label");
 
 export {
   THEME_ATTR,

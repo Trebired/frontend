@@ -1,36 +1,37 @@
+@use "@trebired/bundler/namespace" as ns;
 .card {
-  min-height: var(--tbf-surf-card-root-min-h, var(--height-xs4, 35px));
-  border-radius: var(--tbf-surf-card-root-radius, var(--radius-lg, var(--tbf-radius, 0)));
-  border: var(--tbf-surf-card-root-border, var(--border-width) solid var(--border-surface-1));
-  background: var(--tbf-surf-card-root-bg, var(--background-page));
-  padding: var(--tbf-surf-card-root-padding, 14px 14px 12px 14px);
+  min-height: var(#{ns.css-var("surf-card-root-min-h")}, var(--height-xs4, 35px));
+  border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
+  border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
+  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page));
+  padding: var(#{ns.css-var("surf-card-root-padding")}, 14px 14px 12px 14px);
   overflow: hidden;
 
   h2 {
-    margin: var(--tbf-surf-card-title-margin, 0 0 10px 0);
-    font-size: var(--tbf-surf-card-title-font-size, 15px);
-    font-weight: var(--tbf-surf-card-title-font-weight, 700);
+    margin: var(#{ns.css-var("surf-card-title-margin")}, 0 0 10px 0);
+    font-size: var(#{ns.css-var("surf-card-title-font-size")}, 15px);
+    font-weight: var(#{ns.css-var("surf-card-title-font-weight")}, 700);
   }
 }
 
 .card-row {
   min-height: 0;
-  border-radius: var(--tbf-surf-card-row-radius, var(--radius-lg, var(--tbf-radius, 0)));
-  border: var(--tbf-surf-card-row-border, var(--border-width) solid var(--border-surface-1));
-  background: var(--tbf-surf-card-row-bg, transparent);
+  border-radius: var(#{ns.css-var("surf-card-row-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
+  border: var(#{ns.css-var("surf-card-row-border")}, var(--border-width) solid var(--border-surface-1));
+  background: var(#{ns.css-var("surf-card-row-bg")}, transparent);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: var(--tbf-surf-card-row-padding, 9px 12px);
+  padding: var(#{ns.css-var("surf-card-row-padding")}, 9px 12px);
   transition: all var(--transition-2) ease;
 
   &.excluded {
-    border-color: var(--tbf-surf-card-row-state-excluded-border, var(--border-surface-1));
+    border-color: var(#{ns.css-var("surf-card-row-state-excluded-border")}, var(--border-surface-1));
   }
 
   &.selected {
-    background: var(--tbf-surf-card-row-state-selected-bg, var(--background-surface-1));
+    background: var(#{ns.css-var("surf-card-row-state-selected-bg")}, var(--background-surface-1));
   }
 
   > * {
@@ -40,7 +41,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .card-row:hover {
-    background: var(--tbf-surf-card-row-state-hover-bg, var(--background-surface-1, transparent));
+    background: var(#{ns.css-var("surf-card-row-state-hover-bg")}, var(--background-surface-1, transparent));
   }
 }
 
@@ -77,7 +78,7 @@
   flex: 0 0 auto;
   width: 1px;
   min-width: 1px;
-  background: var(--tbf-surf-card-body-divider-bg, var(--border-surface-1));
+  background: var(#{ns.css-var("surf-card-body-divider-bg")}, var(--border-surface-1));
   border-radius: 999px;
   opacity: 0.9;
 }

@@ -1,6 +1,7 @@
 import { subscribe } from "#tso422aj56zf";
 import type { LogsPage, LogsUi } from "#ej8ewfp5cb1i";
 import { safeStr } from "#gu61mitj537f";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 type EventHandlers = {
   forceViewportToBottom: (page: LogsPage) => void;
@@ -134,7 +135,7 @@ function bindExtendEvents(page: LogsPage, handlers: EventHandlers) {
     if (safeStr(detail.group) !== fullscreenGroup) return;
 
     if (
-      event.type === "tbf:fullscreen-open" &&
+      event.type === frontendEventName("fullscreen-open") &&
         state.focusSearchOnFullscreen
     ) {
       state.focusSearchOnFullscreen = false;
@@ -142,7 +143,7 @@ function bindExtendEvents(page: LogsPage, handlers: EventHandlers) {
       return;
     }
 
-    if (event.type === "tbf:fullscreen-close") {
+    if (event.type === frontendEventName("fullscreen-close")) {
       state.focusSearchOnFullscreen = false;
       if (ui.searchInput && ui.searchInput.value) {
         ui.searchInput.value = "";
@@ -151,8 +152,8 @@ function bindExtendEvents(page: LogsPage, handlers: EventHandlers) {
     }
   }
 
-  document.addEventListener("tbf:fullscreen-open", handleFullscreenEvent);
-  document.addEventListener("tbf:fullscreen-close", handleFullscreenEvent);
+  document.addEventListener(frontendEventName("fullscreen-open"), handleFullscreenEvent);
+  document.addEventListener(frontendEventName("fullscreen-close"), handleFullscreenEvent);
 }
 
 export function bindLogEvents(page: LogsPage, handlers: EventHandlers) {

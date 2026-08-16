@@ -4,6 +4,7 @@ import type {
   ReactNode,
 } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type TooltipButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   tooltip: string;
@@ -22,8 +23,8 @@ function TooltipButton(props: TooltipButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-tooltip={tooltip}
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "tooltip": tooltip })}
     type={type}
     >
     {children}
@@ -36,8 +37,8 @@ function TooltipText(props: TooltipTextProps) {
   return (
     <span
     {...rest}
-    className={classNames("tbf-tooltip-text", className)}
-    data-tbf-tooltip={tooltip}
+    className={classNames(frontendClassName("tooltip-text"), className)}
+    {...frontendDataAttrs({ "tooltip": tooltip })}
     tabIndex={props.tabIndex ?? 0}
     >
     {children}
@@ -50,8 +51,8 @@ function StatusIcon(props: StatusIconProps) {
   return (
     <span
     {...rest}
-    className={classNames("tbf-status-icon", className)}
-    data-tbf-status-icon=""
+    className={classNames(frontendClassName("status-icon"), className)}
+    {...frontendDataAttrs({ "status-icon": "" })}
     aria-label={label}
     role="img"
     tabIndex={props.tabIndex ?? 0}
@@ -62,12 +63,12 @@ function StatusIcon(props: StatusIconProps) {
 }
 
 function TooltipLayer(props: HTMLAttributes<HTMLDivElement>) {
-  const { className, id = "tbf_tooltip", ...rest } = props;
+  const { className, id = `${FRONTEND_PREFIX}_tooltip`, ...rest } = props;
   return (
     <div
     {...rest}
-    className={classNames("tbf-tooltip", className)}
-    data-tbf-tooltip-layer=""
+    className={classNames(frontendClassName("tooltip"), className)}
+    {...frontendDataAttrs({ "tooltip-layer": "" })}
     id={id}
     aria-hidden="true"
     role="tooltip"

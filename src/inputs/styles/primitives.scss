@@ -1,146 +1,153 @@
-.tbf-disclosure {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("disclosure")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--tbf-gap-sm, 8px);
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
 }
 
-.tbf-disclosure__trigger,
-.tbf-dropdown__trigger,
-.tbf-tabs__tab {
+#{ns.element-class("disclosure", "trigger")},
+
+#{ns.element-class("dropdown", "trigger")},
+
+#{ns.element-class("tabs", "tab")} {
   min-height: 32px;
   box-sizing: border-box;
   padding: 0 10px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-sm, 0);
-  color: var(--tbf-text, #000);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  color: var(#{ns.css-var("text")}, #000);
+  background: var(#{ns.css-var("surface")}, #fff);
   cursor: pointer;
 }
 
-.tbf-disclosure__panel {
+#{ns.element-class("disclosure", "panel")} {
   min-width: 0;
 }
 
-.tbf-tabs {
+#{ns.class("tabs")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--tbf-gap-md, 12px);
+  gap: var(#{ns.css-var("gap-md")}, 12px);
 }
 
-.tbf-tabs__list {
+#{ns.element-class("tabs", "list")} {
   display: flex;
   min-width: 0;
   gap: 6px;
   overflow-x: auto;
 }
 
-.tbf-tabs__tab[aria-selected="true"],
-.tbf-tabs__tab[data-tbf-active="true"] {
-  border-color: var(--tbf-focus, #000);
-  background: var(--tbf-surface-muted, #f4f4f4);
+#{ns.element-class("tabs", "tab")}[aria-selected="true"],
+
+#{ns.element-class("tabs", "tab")}#{ns.data("active", "true")} {
+  border-color: var(#{ns.css-var("focus")}, #000);
+  background: var(#{ns.css-var("surface-muted")}, #f4f4f4);
 }
 
-.tbf-tabs__panel {
+#{ns.element-class("tabs", "panel")} {
   min-width: 0;
 }
 
-.tbf-dropdown {
+#{ns.class("dropdown")} {
   position: relative;
   display: inline-flex;
   min-width: 0;
 }
 
-.tbf-dropdown__menu {
+#{ns.element-class("dropdown", "menu")} {
   position: absolute;
-  z-index: var(--tbf-z-dropdown, 950);
+  z-index: var(#{ns.css-var("z-dropdown")}, 950);
   inset-block-start: calc(100% + 4px);
   inset-inline-start: 0;
   display: none;
   min-width: 100%;
   flex-direction: column;
   padding: 4px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-sm, 0);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  background: var(#{ns.css-var("surface")}, #fff);
 }
 
-.tbf-dropdown[data-tbf-dropdown-open="true"] .tbf-dropdown__menu,
-[data-tbf-dropdown][data-tbf-dropdown-open="true"] [data-tbf-dropdown-menu] {
+#{ns.class("dropdown")}#{ns.data("dropdown-open", "true")} #{ns.element-class("dropdown", "menu")},
+
+#{ns.data("dropdown")}#{ns.data("dropdown-open", "true")} #{ns.data("dropdown-menu")} {
   display: flex;
 }
 
-.tbf-dropdown__option {
+#{ns.element-class("dropdown", "option")} {
   min-height: 30px;
   border: 0;
-  color: var(--tbf-text, #000);
+  color: var(#{ns.css-var("text")}, #000);
   text-align: start;
   background: transparent;
   cursor: pointer;
 }
 
-.tbf-dropdown__option[aria-selected="true"] {
-  background: var(--tbf-surface-muted, #f4f4f4);
+#{ns.element-class("dropdown", "option")}[aria-selected="true"] {
+  background: var(#{ns.css-var("surface-muted")}, #f4f4f4);
 }
 
-.tbf-search {
+#{ns.class("search")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--tbf-gap-sm, 8px);
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
 }
 
-.tbf-search__item[hidden],
-.tbf-search__empty[hidden] {
+#{ns.element-class("search", "item")}[hidden],
+
+#{ns.element-class("search", "empty")}[hidden] {
   display: none !important;
 }
 
-.tbf-choice-group {
+#{ns.class("choice-group")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 6px;
 }
 
-.tbf-choice,
-.tbf-toggle {
+#{ns.class("choice")},
+
+#{ns.class("toggle")} {
   display: inline-flex;
   min-width: 0;
   align-items: center;
   gap: 8px;
 }
 
-.tbf-toggle span {
+#{ns.class("toggle")} span {
   display: inline-flex;
   min-height: 28px;
   align-items: center;
   padding: 0 10px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-pill, 999px);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-pill")}, 999px);
 }
 
-.tbf-toggle input:checked + span {
-  border-color: var(--tbf-focus, #000);
-  background: var(--tbf-surface-muted, #f4f4f4);
+#{ns.class("toggle")} input:checked + span {
+  border-color: var(#{ns.css-var("focus")}, #000);
+  background: var(#{ns.css-var("surface-muted")}, #f4f4f4);
 }
 
-.tbf-status-field {
+#{ns.class("status-field")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 5px;
 }
 
-.tbf-status-field__message {
-  color: var(--tbf-text-muted, #666);
+#{ns.element-class("status-field", "message")} {
+  color: var(#{ns.css-var("text-muted")}, #666);
   font-size: 0.9rem;
 }
 
-.tbf-status-field[data-tbf-status-state="error"] .tbf-status-field__message {
-  color: var(--tbf-status-error-color, var(--tbf-focus, currentColor));
+#{ns.class("status-field")}#{ns.data("status-state", "error")} #{ns.element-class("status-field", "message")} {
+  color: var(#{ns.css-var("status-error-color")}, var(#{ns.css-var("focus")}, currentColor));
 }
 
-.tbf-status-field[data-tbf-status-state="success"] .tbf-status-field__message {
-  color: var(--tbf-status-success-color, var(--tbf-focus, currentColor));
+#{ns.class("status-field")}#{ns.data("status-state", "success")} #{ns.element-class("status-field", "message")} {
+  color: var(#{ns.css-var("status-success-color")}, var(#{ns.css-var("focus")}, currentColor));
 }

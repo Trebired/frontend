@@ -6,6 +6,7 @@ import {
   ensureMonaco,
   getPreferredMonacoThemeName,
 } from "#c1t1f0t76p85";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type EditorContentState = {
   editor: any;
@@ -23,7 +24,7 @@ const states = new WeakMap<HTMLElement, EditorContentState>();
 let sharedListenersBound = false;
 
 function editorContentConfig(root: HTMLElement, input: HTMLTextAreaElement) {
-  const script = root.querySelector('script[type="application/json"][data-tbf-editor-content-config]');
+  const script = root.querySelector(`script[type="application/json"]${frontendDataSelector("editor-content-config")}`);
   const config = parseJsonText<EditorContentConfig>(script?.textContent || "", {});
   return {
     language: String(config.language || "json"),
@@ -135,10 +136,10 @@ function bindEditorSharedListeners() {
 }
 
 function bindEditorContentFields(root: BindRoot = document) {
-  queryAll<HTMLElement>(root, "editor-content-field,[data-tbf-editor-content-field]")
+  queryAll<HTMLElement>(root, `editor-content-field,${frontendDataSelector("editor-content-field")}`)
   .forEach((field) => {
       void bindEditorContent(field).catch (() => {
-          field.textContent = field.getAttribute("data-tbf-editor-error") ||
+          field.textContent = field.getAttribute(frontendDataAttr("editor-error")) ||
             "Editor failed to load.";
       });
   });

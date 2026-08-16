@@ -1,4 +1,5 @@
 import { cssEscape } from "#er0dlx1gtbzh";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 type TrackedField =
 HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
@@ -36,7 +37,7 @@ function isSpecialSettingsForm(
   form: HTMLFormElement,
   specialActionPatterns: RegExp[] = [],
 ) {
-  if (form.getAttribute("data-tbf-save-policy-special") === "true") {
+  if (form.getAttribute(frontendDataAttr("save-policy-special")) === "true") {
     return true;
   }
   const actionPath = normalizeActionPath(

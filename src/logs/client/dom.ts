@@ -2,6 +2,7 @@ import { resolveNamedDropdownInput } from "#z2c0jqmjqds4";
 import { DEFAULT_LOGS_INSTANCE_ID } from "./types.js";
 import { instanceIdToSnake, normalizeInstanceId } from "./utils.js";
 import type { LogsDomIds, LogsUi } from "./types.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type DropdownInput = HTMLInputElement | HTMLSelectElement;
 
@@ -120,7 +121,7 @@ export function resolveLogsDomRoot(
   if (byId instanceof HTMLElement) return byId;
 
   const byMarker = document.querySelector(
-    `[data-tbf-logs-partial][data-logs-instance-id="${id}"]`,
+    `${frontendDataSelector("logs-partial")}[data-logs-instance-id="${id}"]`,
   );
   return byMarker instanceof HTMLElement ? byMarker : null;
 }

@@ -1,11 +1,12 @@
 import { dispatchInputChange, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const DROPDOWN_SELECTOR = "[data-tbf-dropdown]";
-const DROPDOWN_TRIGGER_SELECTOR = "[data-tbf-dropdown-trigger]";
-const DROPDOWN_MENU_SELECTOR = "[data-tbf-dropdown-menu]";
-const DROPDOWN_OPTION_SELECTOR = "[data-tbf-dropdown-option]";
-const DROPDOWN_VALUE_SELECTOR = "[data-tbf-dropdown-value]";
-const DROPDOWN_EVENT = "tbf:dropdown";
+const DROPDOWN_SELECTOR = frontendDataSelector("dropdown");
+const DROPDOWN_TRIGGER_SELECTOR = frontendDataSelector("dropdown-trigger");
+const DROPDOWN_MENU_SELECTOR = frontendDataSelector("dropdown-menu");
+const DROPDOWN_OPTION_SELECTOR = frontendDataSelector("dropdown-option");
+const DROPDOWN_VALUE_SELECTOR = frontendDataSelector("dropdown-value");
+const DROPDOWN_EVENT = frontendEventName("dropdown");
 
 type DropdownState = {
   open: boolean;
@@ -14,18 +15,18 @@ type DropdownState = {
 };
 
 function setDropdownOpen(root: HTMLElement, open: boolean) {
-  root.setAttribute("data-tbf-dropdown-open", open ? "true" : "false");
+  root.setAttribute(frontendDataAttr("dropdown-open"), open ? "true" : "false");
   root.querySelector<HTMLElement>(DROPDOWN_MENU_SELECTOR)?.setAttribute("aria-hidden", open ? "false" : "true");
   root.querySelector<HTMLElement>(DROPDOWN_TRIGGER_SELECTOR)?.setAttribute("aria-expanded", open ? "true" : "false");
 }
 
 function staticDropdownValue(root: HTMLElement) {
-  return root.getAttribute("data-tbf-dropdown-current") || "";
+  return root.getAttribute(frontendDataAttr("dropdown-current")) || "";
 }
 
 function commitDropdownValue(root: HTMLElement, value: string, label = value): DropdownState {
-  root.setAttribute("data-tbf-dropdown-current", value);
-  root.querySelectorAll<HTMLInputElement>("input[type='hidden'][data-tbf-dropdown-input]").forEach((input) => {
+  root.setAttribute(frontendDataAttr("dropdown-current"), value);
+  root.querySelectorAll<HTMLInputElement>(`input[type='hidden']${frontendDataSelector("dropdown-input")}`).forEach((input) => {
       input.value = value;
       dispatchInputChange(input);
   });
@@ -33,7 +34,7 @@ function commitDropdownValue(root: HTMLElement, value: string, label = value): D
       slot.textContent = label;
   });
   queryAll<HTMLElement>(root, DROPDOWN_OPTION_SELECTOR).forEach((option) => {
-      option.setAttribute("aria-selected", option.getAttribute("data-tbf-dropdown-option") === value ? "true" : "false");
+      option.setAttribute("aria-selected", option.getAttribute(frontendDataAttr("dropdown-option")) === value ? "true" : "false");
   });
   const state = { open: false, root, value };
   root.dispatchEvent(new CustomEvent(DROPDOWN_EVENT, { bubbles: true, detail: state }));
@@ -41,22 +42,22 @@ function commitDropdownValue(root: HTMLElement, value: string, label = value): D
 }
 
 function bindDropdownRuntimeRoot(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-dropdown-bound")) return null;
-  root.setAttribute("data-tbf-dropdown-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("dropdown-bound"))) return null;
+  root.setAttribute(frontendDataAttr("dropdown-bound"), "true");
   const trigger = root.querySelector<HTMLElement>(DROPDOWN_TRIGGER_SELECTOR);
   trigger?.addEventListener("click", (event) => {
       event.preventDefault();
-      setDropdownOpen(root, root.getAttribute("data-tbf-dropdown-open") !== "true");
+      setDropdownOpen(root, root.getAttribute(frontendDataAttr("dropdown-open")) !== "true");
   });
   queryAll<HTMLElement>(root, DROPDOWN_OPTION_SELECTOR).forEach((option) => {
       option.addEventListener("click", (event) => {
           event.preventDefault();
-          commitDropdownValue(root, option.getAttribute("data-tbf-dropdown-option") || "", option.textContent?.trim());
+          commitDropdownValue(root, option.getAttribute(frontendDataAttr("dropdown-option")) || "", option.textContent?.trim());
           setDropdownOpen(root, false);
       });
   });
   const selected = root.querySelector<HTMLElement>(`${DROPDOWN_OPTION_SELECTOR}[aria-selected="true"]`);
-  if (selected) commitDropdownValue(root, selected.getAttribute("data-tbf-dropdown-option") || "", selected.textContent?.trim());
+  if (selected) commitDropdownValue(root, selected.getAttribute(frontendDataAttr("dropdown-option")) || "", selected.textContent?.trim());
   return { open: false, root, value: staticDropdownValue(root) };
 }
 

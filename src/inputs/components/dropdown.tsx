@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, InputHTMLAttributes } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type DropdownProps = HTMLAttributes<HTMLDivElement> & {
   name?: string;
@@ -18,12 +19,12 @@ function Dropdown(props: DropdownProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-dropdown", className)}
-    data-tbf-dropdown=""
-    data-tbf-dropdown-current={value}
-    data-tbf-dropdown-open="false"
+    className={classNames(frontendClassName("dropdown"), className)}
+    {...frontendDataAttrs({ "dropdown": "" })}
+    {...frontendDataAttrs({ "dropdown-current": value })}
+    {...frontendDataAttrs({ "dropdown-open": "false" })}
     >
-    {name ? <input data-tbf-dropdown-input="" name={name} type="hidden" value={value} /> : null}
+    {name ? <input {...frontendDataAttrs({ "dropdown-input": "" })} name={name} type="hidden" value={value} /> : null}
     {children}
     </div>
   );
@@ -35,8 +36,8 @@ function DropdownTrigger(props: DropdownTriggerProps) {
     <button
     {...rest}
     aria-expanded={props["aria-expanded"] ?? false}
-    className={classNames("tbf-dropdown__trigger", className)}
-    data-tbf-dropdown-trigger=""
+    className={classNames(frontendElementClass("dropdown", "trigger"), className)}
+    {...frontendDataAttrs({ "dropdown-trigger": "" })}
     type={type}
     >
     {children}
@@ -47,7 +48,7 @@ function DropdownTrigger(props: DropdownTriggerProps) {
 function DropdownValue(props: HTMLAttributes<HTMLSpanElement>) {
   const { children, className, ...rest } = props;
   return (
-    <span {...rest} className={classNames("tbf-dropdown__value", className)} data-tbf-dropdown-value="">
+    <span {...rest} className={classNames(frontendElementClass("dropdown", "value"), className)} {...frontendDataAttrs({ "dropdown-value": "" })}>
     {children}
     </span>
   );
@@ -56,7 +57,7 @@ function DropdownValue(props: HTMLAttributes<HTMLSpanElement>) {
 function DropdownMenu(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
-    <div {...rest} className={classNames("tbf-dropdown__menu", className)} data-tbf-dropdown-menu="">
+    <div {...rest} className={classNames(frontendElementClass("dropdown", "menu"), className)} {...frontendDataAttrs({ "dropdown-menu": "" })}>
     {children}
     </div>
   );
@@ -68,8 +69,8 @@ function DropdownOption(props: DropdownOptionProps) {
     <button
     {...rest}
     aria-selected={selected ? "true" : "false"}
-    className={classNames("tbf-dropdown__option", className)}
-    data-tbf-dropdown-option={value}
+    className={classNames(frontendElementClass("dropdown", "option"), className)}
+    {...frontendDataAttrs({ "dropdown-option": value })}
     role="option"
     type={type}
     >
@@ -79,7 +80,7 @@ function DropdownOption(props: DropdownOptionProps) {
 }
 
 function DropdownNativeInput(props: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} data-tbf-dropdown-input="" type="hidden" />;
+  return <input {...props} {...frontendDataAttrs({ "dropdown-input": "" })} type="hidden" />;
 }
 
 export { Dropdown, DropdownMenu, DropdownNativeInput, DropdownOption, DropdownTrigger, DropdownValue };

@@ -12,6 +12,7 @@ import {
   SOURCE_ROW_SELECTOR,
 } from "./selectors.js";
 import type { SourceLanguageItem } from "./types.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function overviewSegmentKey(panelBucket: string, languageId: string) {
   return `${text(panelBucket, "everything")}:${text(languageId)}`;
@@ -20,11 +21,11 @@ function overviewSegmentKey(panelBucket: string, languageId: string) {
 function parseOverviewSegments(root: HTMLElement) {
   const segments = new Map<string, HTMLElement>();
   queryAll<HTMLElement>(root, SOURCE_OVERVIEW_SEGMENT_SELECTOR).forEach((segment) => {
-      const languageId = text(segment.getAttribute("data-tbf-source-language-id"));
+      const languageId = text(segment.getAttribute(frontendDataAttr("source-language-id")));
       const panelBucket = text(
         segment
         .closest(SOURCE_PANEL_SELECTOR)
-        ?.getAttribute("data-tbf-source-language-panel-bucket"),
+        ?.getAttribute(frontendDataAttr("source-language-panel-bucket")),
         "everything",
       );
       if (languageId) segments.set(overviewSegmentKey(panelBucket, languageId), segment);
@@ -40,9 +41,9 @@ function parseSourceLanguageRow(
   const listItemEl = row.closest<HTMLElement>(SOURCE_LIST_ITEM_SELECTOR) || row;
   const panelEl = row.closest<HTMLElement>(SOURCE_PANEL_SELECTOR);
   const percentEl = row.querySelector<HTMLElement>(SOURCE_PERCENT_SELECTOR);
-  const id = text(row.getAttribute("data-tbf-source-language-id"), `language-${index}`);
+  const id = text(row.getAttribute(frontendDataAttr("source-language-id")), `language-${index}`);
   const panelBucket = text(
-    panelEl?.getAttribute("data-tbf-source-language-panel-bucket"),
+    panelEl?.getAttribute(frontendDataAttr("source-language-panel-bucket")),
     "everything",
   );
   if (percentEl) percentEl.dataset.value = String(Number(percentEl.textContent) || 0);
@@ -51,11 +52,11 @@ function parseSourceLanguageRow(
     listItemEl,
     panelBucket,
     id,
-    bucket: text(row.getAttribute("data-tbf-source-language-bucket"), "supporting"),
+    bucket: text(row.getAttribute(frontendDataAttr("source-language-bucket")), "supporting"),
     color: deriveColorFromIcon(row) ||
-      normalizeColor(row.getAttribute("data-tbf-source-language-color")),
-    bytes: Number(row.getAttribute("data-tbf-source-language-bytes")) || 0,
-    lines: Number(row.getAttribute("data-tbf-source-language-lines")) || 0,
+      normalizeColor(row.getAttribute(frontendDataAttr("source-language-color"))),
+    bytes: Number(row.getAttribute(frontendDataAttr("source-language-bytes"))) || 0,
+    lines: Number(row.getAttribute(frontendDataAttr("source-language-lines"))) || 0,
     percentEl,
     progressEl: row.querySelector<HTMLElement>(SOURCE_PROGRESS_SELECTOR),
     overviewSegmentEl:
@@ -77,7 +78,7 @@ function getActiveSourceLanguageBucket(root: HTMLElement) {
   );
   const fallbackTab = root.querySelector<HTMLElement>(SOURCE_BUCKET_TAB_SELECTOR);
   return text(
-    (activeTab || fallbackTab)?.getAttribute("data-tbf-source-language-bucket-tab"),
+    (activeTab || fallbackTab)?.getAttribute(frontendDataAttr("source-language-bucket-tab")),
     "everything",
   );
 }

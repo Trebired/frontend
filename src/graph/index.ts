@@ -1,8 +1,9 @@
 import { parseJsonText, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const GRAPH_SELECTOR = "[data-tbf-graph]";
-const GRAPH_CANVAS_SELECTOR = "canvas[data-tbf-graph-canvas]";
-const GRAPH_CONFIG_SELECTOR = "script[data-tbf-graph-config]";
+const GRAPH_SELECTOR = frontendDataSelector("graph");
+const GRAPH_CANVAS_SELECTOR = `canvas${frontendDataSelector("graph-canvas")}`;
+const GRAPH_CONFIG_SELECTOR = `script${frontendDataSelector("graph-config")}`;
 
 type GraphPoint = {
   label?: string;
@@ -25,7 +26,7 @@ type GraphConfig = {
 
 function graphConfig(root: HTMLElement): GraphConfig {
   const script = root.querySelector<HTMLScriptElement>(GRAPH_CONFIG_SELECTOR);
-  const raw = script?.textContent || root.getAttribute("data-tbf-graph-config") || "";
+  const raw = script?.textContent || root.getAttribute(frontendDataAttr("graph-config")) || "";
   return normalizeGraphConfig(parseJsonText<GraphConfig>(raw, { series: [] }));
 }
 
@@ -91,8 +92,8 @@ function drawSeries(
 }
 
 function bindGraph(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-graph-bound")) return null;
-  root.setAttribute("data-tbf-graph-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("graph-bound"))) return null;
+  root.setAttribute(frontendDataAttr("graph-bound"), "true");
   const config = graphConfig(root);
   queryAll<HTMLCanvasElement>(root, GRAPH_CANVAS_SELECTOR).forEach((canvas) => {
       drawGraphCanvas(canvas, config);

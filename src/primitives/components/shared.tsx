@@ -2,6 +2,7 @@ import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import { appendClassName, joinClassNames, jsonScript, toText } from "#ndsvdqv80epr";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function jsonAttr(value: unknown) {
   if (value === undefined || typeof value === "function") return undefined;
@@ -11,27 +12,27 @@ function jsonAttr(value: unknown) {
 function actionButtonAttrs(options?: SubmitActionButtonOptions) {
   if (!options) return {};
   return {
-    "data-tbf-action-body": jsonAttr(options.body),
-    "data-tbf-action-method": options.method,
-    "data-tbf-action-ui": jsonAttr(options.ui),
-    "data-tbf-action-url": options.url,
-    "data-tbf-confetti": options.successConfetti === true ? "true" : undefined,
-    "data-tbf-confirm":
+    [frontendDataAttr("action-body")]: jsonAttr(options.body),
+    [frontendDataAttr("action-method")]: options.method,
+    [frontendDataAttr("action-ui")]: jsonAttr(options.ui),
+    [frontendDataAttr("action-url")]: options.url,
+    [frontendDataAttr("confetti")]: options.successConfetti === true ? "true" : undefined,
+    [frontendDataAttr("confirm")]:
     typeof options.confirm === "boolean" ? String(options.confirm) : undefined,
-    "data-tbf-ignore-response-action":
+    [frontendDataAttr("ignore-response-action")]:
     options.ignoreResponseAction === true ? "true" : undefined,
-    "data-tbf-submit": "",
-    "data-tbf-success": options.success,
-    "data-tbf-success-tab": options.successTab,
+    [frontendDataAttr("submit")]: "",
+    [frontendDataAttr("success")]: options.success,
+    [frontendDataAttr("success-tab")]: options.successTab,
   };
 }
 
 function actionTriggerAttrs(options?: BindActionTriggerOptions) {
   if (!options) return {};
   return {
-    "data-tbf-action-trigger": options.action,
-    "data-tbf-external-href": options.externalHref,
-    "data-tbf-href": options.href,
+    [frontendDataAttr("action-trigger")]: options.action,
+    [frontendDataAttr("external-href")]: options.externalHref,
+    [frontendDataAttr("href")]: options.href,
   };
 }
 

@@ -8,6 +8,7 @@ import {
   restoreWizardSteps,
 } from "./state.js";
 import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
+import { frontendDataSelector, frontendEventName, frontendToken } from "#5vbaqj4pirp3";
 
 type LiveNavigationOptions = LiveOptions& {
   history?: "none" | "push" | "replace";
@@ -18,11 +19,11 @@ type LiveNavigationOptions = LiveOptions& {
   url?: string;
 };
 
-const DEFAULT_CONTENT_SELECTOR = "[data-tbf-live-content],#live_content";
-const DEFAULT_FULL_RELOAD_SELECTOR = "[data-tbf-full-reload]";
+const DEFAULT_CONTENT_SELECTOR = `${frontendDataSelector("live-content")},#live_content`;
+const DEFAULT_FULL_RELOAD_SELECTOR = frontendDataSelector("full-reload");
 const DEFAULT_PORTALED_SELECTOR = [
-  "[data-tbf-modal][id]",
-  "[data-tbf-popover][id]",
+  `${frontendDataSelector("modal")}[id]`,
+  `${frontendDataSelector("popover")}[id]`,
   "[data-dropdown-options][id]",
 ].join(",");
 const loadedScriptSrcs = new Set<string>();
@@ -117,7 +118,7 @@ function replaceLiveContent(
   if (!options.preserveState) window.scrollTo(0, 0);
   rehydrate(document, options);
   document.dispatchEvent(
-    new CustomEvent("tbf:live-content-updated", {
+    new CustomEvent(frontendEventName("live-content-updated"), {
         detail: { root: currentRoot, url },
     }),
   );
@@ -153,7 +154,7 @@ async function softVisit(url: string, options: LiveNavigationOptions = {}) {
   try {
     const response = await fetch(targetUrl, {
         credentials: "same-origin",
-        headers: { Accept: "text/html", "X-Requested-With": "tbf-router" },
+        headers: { Accept: "text/html", "X-Requested-With": frontendToken("router") },
     });
     if (!response.ok) return fallbackNavigate(targetUrl, historyMode !== "none");
     const html = await response.text();
@@ -164,7 +165,7 @@ async function softVisit(url: string, options: LiveNavigationOptions = {}) {
     }
     applyHistoryMode(historyMode, resolvedUrl);
     document.dispatchEvent(
-      new CustomEvent("tbf:live-navigation", {
+      new CustomEvent(frontendEventName("live-navigation"), {
           detail: { historyMode, url: resolvedUrl },
       }),
     );

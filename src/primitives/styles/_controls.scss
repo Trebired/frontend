@@ -1,31 +1,32 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "sass:list";
 @use "./variables" as *;
 
 .btn {
-  --button-icon-color: var(--tbf-ui-btn-slot-icon, currentColor);
+  --button-icon-color: var(#{ns.css-var("ui-btn-slot-icon")}, currentColor);
   box-sizing: border-box;
-  height: var(--tbf-ui-btn-root-height, 28px);
-  min-height: var(--tbf-ui-btn-root-height, 28px);
+  height: var(#{ns.css-var("ui-btn-root-height")}, 28px);
+  min-height: var(#{ns.css-var("ui-btn-root-height")}, 28px);
   width: auto;
   max-width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--tbf-ui-btn-root-gap, 8px);
-  padding: var(--tbf-ui-btn-root-padding, 0 12px);
-  padding-block: var(--tbf-ui-btn-root-py, 0);
-  border-radius: var(--tbf-ui-btn-root-radius, var(--radius-md, var(--tbf-radius, 0)));
-  border: var(--tbf-ui-btn-root-border, var(--border-width) solid var(--border-surface-2));
-  background: var(--tbf-ui-btn-root-bg, transparent);
-  color: var(--tbf-ui-btn-root-color, var(--text-color));
+  gap: var(#{ns.css-var("ui-btn-root-gap")}, 8px);
+  padding: var(#{ns.css-var("ui-btn-root-padding")}, 0 12px);
+  padding-block: var(#{ns.css-var("ui-btn-root-py")}, 0);
+  border-radius: var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
+  border: var(#{ns.css-var("ui-btn-root-border")}, var(--border-width) solid var(--border-surface-2));
+  background: var(#{ns.css-var("ui-btn-root-bg")}, transparent);
+  color: var(#{ns.css-var("ui-btn-root-color")}, var(--text-color));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   font-family: inherit;
   white-space: nowrap;
   text-decoration: none;
-  font-size: var(--tbf-ui-btn-root-font-size, 12px);
-  font-weight: var(--tbf-ui-btn-root-font-weight, 600);
+  font-size: var(#{ns.css-var("ui-btn-root-font-size")}, 12px);
+  font-weight: var(#{ns.css-var("ui-btn-root-font-weight")}, 600);
   line-height: 1.15;
   vertical-align: middle;
   transition:
@@ -36,17 +37,17 @@
 
   &:hover,
   &[aria-pressed="true"],
-  &[data-tbf-active="true"] {
-    --button-icon-color: var(--tbf-ui-btn-state-hover-icon, currentColor);
-    background: var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent));
-    border-color: var(--tbf-ui-btn-state-hover-border, currentColor);
-    color: var(--tbf-ui-btn-state-hover-color, currentColor);
+  &#{ns.data("active", "true")} {
+    --button-icon-color: var(#{ns.css-var("ui-btn-state-hover-icon")}, currentColor);
+    background: var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
+    border-color: var(#{ns.css-var("ui-btn-state-hover-border")}, currentColor);
+    color: var(#{ns.css-var("ui-btn-state-hover-color")}, currentColor);
   }
 
   &:disabled,
   &[disabled],
   &.disabled {
-    opacity: var(--tbf-ui-btn-state-disabled-opacity, 0.55);
+    opacity: var(#{ns.css-var("ui-btn-state-disabled-opacity")}, 0.55);
     pointer-events: none;
   }
 
@@ -60,81 +61,81 @@
       flex: 0 0 auto;
     }
 
-    @each $name, $size in $tbf-primitive-button-sizes {
+    @each $name, $size in $frontend-primitive-button-sizes {
       &.#{$name} {
-        height: var(--tbf-ui-btn-sizes-#{$name}-height, #{list.nth($size, 1)});
-        min-height: var(--tbf-ui-btn-sizes-#{$name}-height, #{list.nth($size, 1)});
-        padding-inline: var(--tbf-ui-btn-sizes-#{$name}-px, #{list.nth($size, 2)});
+        height: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-height, #{list.nth($size, 1)});
+        min-height: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-height, #{list.nth($size, 1)});
+        padding-inline: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-px, #{list.nth($size, 2)});
         padding-block: 0;
-        font-size: var(--tbf-ui-btn-sizes-#{$name}-font-size, #{list.nth($size, 3)});
+        font-size: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-font-size, #{list.nth($size, 3)});
       }
     }
   }
 
   &.highlight {
-    --button-icon-color: var(--tbf-ui-btn-tone-highlight-icon, currentColor);
-    background: var(--tbf-ui-btn-tone-highlight-bg, var(--tbf-ui-btn-root-bg, transparent));
-    color: var(--tbf-ui-btn-tone-highlight-color, currentColor);
-    border-color: var(--tbf-ui-btn-tone-highlight-border, currentColor);
+    --button-icon-color: var(#{ns.css-var("ui-btn-tone-highlight-icon")}, currentColor);
+    background: var(#{ns.css-var("ui-btn-tone-highlight-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
+    color: var(#{ns.css-var("ui-btn-tone-highlight-color")}, currentColor);
+    border-color: var(#{ns.css-var("ui-btn-tone-highlight-border")}, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
-    &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-ui-btn-tone-highlight-state-hover-icon, currentColor);
+    &#{ns.data("active", "true")} {
+      --button-icon-color: var(#{ns.css-var("ui-btn-tone-highlight-state-hover-icon")}, currentColor);
       background: var(
-        --tbf-ui-btn-tone-highlight-state-hover-bg,
-        var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+        #{ns.css-var("ui-btn-tone-highlight-state-hover-bg")},
+        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(--tbf-ui-btn-tone-highlight-state-hover-border, currentColor);
-      color: var(--tbf-ui-btn-tone-highlight-state-hover-color, currentColor);
+      border-color: var(#{ns.css-var("ui-btn-tone-highlight-state-hover-border")}, currentColor);
+      color: var(#{ns.css-var("ui-btn-tone-highlight-state-hover-color")}, currentColor);
     }
   }
 
   &.red {
-    border-inline-color: var(--tbf-ui-btn-tone-red-inline-border, currentColor);
+    border-inline-color: var(#{ns.css-var("ui-btn-tone-red-inline-border")}, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
-    &[data-tbf-active="true"] {
+    &#{ns.data("active", "true")} {
       background: var(
-        --tbf-ui-btn-tone-red-state-hover-bg,
-        var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+        #{ns.css-var("ui-btn-tone-red-state-hover-bg")},
+        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(--tbf-ui-btn-tone-red-state-hover-border, currentColor);
-      color: var(--tbf-ui-btn-tone-red-state-hover-color, currentColor);
-      --button-icon-color: var(--tbf-ui-btn-tone-red-state-hover-icon, currentColor);
+      border-color: var(#{ns.css-var("ui-btn-tone-red-state-hover-border")}, currentColor);
+      color: var(#{ns.css-var("ui-btn-tone-red-state-hover-color")}, currentColor);
+      --button-icon-color: var(#{ns.css-var("ui-btn-tone-red-state-hover-icon")}, currentColor);
     }
   }
 
   &.yellow {
-    border-inline-color: var(--tbf-ui-btn-tone-yellow-inline-border, currentColor);
+    border-inline-color: var(#{ns.css-var("ui-btn-tone-yellow-inline-border")}, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
-    &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-ui-btn-tone-yellow-state-hover-icon, currentColor);
+    &#{ns.data("active", "true")} {
+      --button-icon-color: var(#{ns.css-var("ui-btn-tone-yellow-state-hover-icon")}, currentColor);
       background: var(
-        --tbf-ui-btn-tone-yellow-state-hover-bg,
-        var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+        #{ns.css-var("ui-btn-tone-yellow-state-hover-bg")},
+        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(--tbf-ui-btn-tone-yellow-state-hover-border, currentColor);
-      color: var(--tbf-ui-btn-tone-yellow-state-hover-color, currentColor);
+      border-color: var(#{ns.css-var("ui-btn-tone-yellow-state-hover-border")}, currentColor);
+      color: var(#{ns.css-var("ui-btn-tone-yellow-state-hover-color")}, currentColor);
     }
   }
 
   &.green {
-    border-inline-color: var(--tbf-ui-btn-tone-green-inline-border, currentColor);
+    border-inline-color: var(#{ns.css-var("ui-btn-tone-green-inline-border")}, currentColor);
 
     &:hover,
     &[aria-pressed="true"],
-    &[data-tbf-active="true"] {
-      --button-icon-color: var(--tbf-ui-btn-tone-green-state-hover-icon, currentColor);
+    &#{ns.data("active", "true")} {
+      --button-icon-color: var(#{ns.css-var("ui-btn-tone-green-state-hover-icon")}, currentColor);
       background: var(
-        --tbf-ui-btn-tone-green-state-hover-bg,
-        var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+        #{ns.css-var("ui-btn-tone-green-state-hover-bg")},
+        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(--tbf-ui-btn-tone-green-state-hover-border, currentColor);
-      color: var(--tbf-ui-btn-tone-green-state-hover-color, currentColor);
+      border-color: var(#{ns.css-var("ui-btn-tone-green-state-hover-border")}, currentColor);
+      color: var(#{ns.css-var("ui-btn-tone-green-state-hover-color")}, currentColor);
     }
   }
 
@@ -142,13 +143,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--tbf-ui-btn-slot-icon-size, 28px);
-    height: var(--tbf-ui-btn-slot-icon-size, 28px);
-    min-width: var(--tbf-ui-btn-slot-icon-size, 28px);
-    min-height: var(--tbf-ui-btn-slot-icon-size, 28px);
+    width: var(#{ns.css-var("ui-btn-slot-icon-size")}, 28px);
+    height: var(#{ns.css-var("ui-btn-slot-icon-size")}, 28px);
+    min-width: var(#{ns.css-var("ui-btn-slot-icon-size")}, 28px);
+    min-height: var(#{ns.css-var("ui-btn-slot-icon-size")}, 28px);
     gap: 0;
     padding: 0;
-    font-size: var(--tbf-ui-btn-slot-icon-font-size, 15px);
+    font-size: var(#{ns.css-var("ui-btn-slot-icon-font-size")}, 15px);
     line-height: 1;
     text-align: center;
     position: relative;
@@ -178,13 +179,13 @@
       text-align: center;
     }
 
-    @each $name, $size in $tbf-primitive-icon-sizes {
+    @each $name, $size in $frontend-primitive-icon-sizes {
       &.#{$name} {
-        width: var(--tbf-ui-btn-slot-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
-        height: var(--tbf-ui-btn-slot-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
-        min-width: var(--tbf-ui-btn-slot-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
-        min-height: var(--tbf-ui-btn-slot-icon-sizes-#{$name}-size, #{list.nth($size, 1)});
-        font-size: var(--tbf-ui-btn-slot-icon-sizes-#{$name}-font-size, #{list.nth($size, 2)});
+        width: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
+        height: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
+        min-width: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
+        min-height: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
+        font-size: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-font-size, #{list.nth($size, 2)});
       }
     }
 
@@ -200,10 +201,10 @@
   border: var(--border-width) solid var(--border-surface-1);
 
   &.unknown {
-    background-color: var(--background-surface-2, var(--tbf-surface-muted, transparent));
+    background-color: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
   }
 
-  @each $name, $size in $tbf-primitive-avatar-sizes {
+  @each $name, $size in $frontend-primitive-avatar-sizes {
     &.#{$name} {
       width: $size;
       height: $size;

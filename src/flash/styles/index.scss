@@ -1,124 +1,130 @@
-.tbf-flash-stack {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("flash-stack")} {
   position: fixed;
-  right: var(--tbf-feedback-flash-placement-offset, 18px);
-  bottom: calc(var(--tbf-feedback-flash-placement-offset, 18px) + var(--tbf-layout-bottom-bar-safe-offset, 0px));
-  width: min(var(--tbf-feedback-flash-placement-max-width, 520px), calc(100vw - 36px));
+  right: var(#{ns.css-var("feedback-flash-placement-offset")}, 18px);
+  bottom: calc(var(#{ns.css-var("feedback-flash-placement-offset")}, 18px) + var(#{ns.css-var("layout-bottom-bar-safe-offset")}, 0px));
+  width: min(var(#{ns.css-var("feedback-flash-placement-max-width")}, 520px), calc(100vw - 36px));
   pointer-events: none;
-  transition: height var(--tbf-transition-fast) ease;
+  transition: height var(#{ns.css-var("transition-fast")}) ease;
 }
 
-.tbf-flash {
+#{ns.class("flash")} {
   position: absolute;
   right: 0;
   bottom: 0;
   display: inline-flex;
   align-items: center;
-  gap: var(--tbf-feedback-flash-layout-gap, 10px);
+  gap: var(#{ns.css-var("feedback-flash-layout-gap")}, 10px);
   width: max-content;
   max-width: 100%;
   box-sizing: border-box;
-  padding: var(--tbf-feedback-flash-container-padding, 15px);
+  padding: var(#{ns.css-var("feedback-flash-container-padding")}, 15px);
   border: var(
-    --tbf-feedback-flash-container-border,
-    var(--tbf-border-width, 1px) solid var(--tbf-feedback-flash-container-border, var(--border-surface-1, currentColor))
+    #{ns.css-var("feedback-flash-container-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("feedback-flash-container-border")}, var(--border-surface-1, currentColor))
   );
-  border-radius: var(--tbf-feedback-flash-container-radius, var(--radius-lg, var(--tbf-radius, 0)));
-  color: var(--tbf-feedback-flash-container-color, var(--text-color, currentColor));
-  background: var(--tbf-feedback-flash-container-bg, var(--background-surface-1, transparent));
-  box-shadow: var(--tbf-feedback-flash-container-shadow, var(--tbf-shadow, none));
+  border-radius: var(#{ns.css-var("feedback-flash-container-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
+  color: var(#{ns.css-var("feedback-flash-container-color")}, var(--text-color, currentColor));
+  background: var(#{ns.css-var("feedback-flash-container-bg")}, var(--background-surface-1, transparent));
+  box-shadow: var(#{ns.css-var("feedback-flash-container-shadow")}, var(#{ns.css-var("shadow")}, none));
   opacity: 0;
   overflow: hidden;
   pointer-events: auto;
-  transform: translateY(var(--tbf-flash-y, 0)) translateX(16px);
+  transform: translateY(var(#{ns.css-var("flash-y")}, 0)) translateX(16px);
   transition:
-  opacity var(--tbf-transition-fast) ease,
-  transform var(--tbf-transition-fast) ease;
+  opacity var(#{ns.css-var("transition-fast")}) ease,
+  transform var(#{ns.css-var("transition-fast")}) ease;
 }
 
-.tbf-flash[data-tbf-visible="true"] {
+#{ns.class("flash")}#{ns.data("visible", "true")} {
   opacity: 1;
-  transform: translateY(var(--tbf-flash-y, 0)) translateX(0);
+  transform: translateY(var(#{ns.css-var("flash-y")}, 0)) translateX(0);
 }
 
-.tbf-flash[data-tbf-hiding="true"] {
+#{ns.class("flash")}#{ns.data("hiding", "true")} {
   opacity: 0;
 }
 
-.tbf-flash__icon {
+#{ns.element-class("flash", "icon")} {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: var(--tbf-feedback-flash-slot-icon, currentColor);
-  font-size: var(--tbf-feedback-flash-slot-icon-size, 13px);
-  font-weight: var(--tbf-feedback-flash-slot-icon-font-weight, 700);
+  color: var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor);
+  font-size: var(#{ns.css-var("feedback-flash-slot-icon-size")}, 13px);
+  font-weight: var(#{ns.css-var("feedback-flash-slot-icon-font-weight")}, 700);
 }
 
-.tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-success-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-success-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+#{ns.class("flash")}#{ns.data("flash-type", "success")} #{ns.element-class("flash", "icon")} {
+  color: var(#{ns.css-var("feedback-flash-intents-success-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
+  #{ns.css-var("icon-color")}: var(
+    #{ns.css-var("feedback-flash-intents-success-icon")},
+    var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor)
+  );
 }
 
-.tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-error-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-error-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+#{ns.class("flash")}#{ns.data("flash-type", "error")} #{ns.element-class("flash", "icon")} {
+  color: var(#{ns.css-var("feedback-flash-intents-error-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
+  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-error-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
-.tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-warn-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-warn-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+#{ns.class("flash")}#{ns.data("flash-type", "warn")} #{ns.element-class("flash", "icon")} {
+  color: var(#{ns.css-var("feedback-flash-intents-warn-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
+  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-warn-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
-.tbf-flash[data-tbf-flash-type="info"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-info-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-info-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+#{ns.class("flash")}#{ns.data("flash-type", "info")} #{ns.element-class("flash", "icon")} {
+  color: var(#{ns.css-var("feedback-flash-intents-info-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
+  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-info-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
-.tbf-flash__body,
-.tbf-flash__form {
+#{ns.element-class("flash", "body")},
+
+#{ns.element-class("flash", "form")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--tbf-feedback-flash-layout-body-gap, 8px);
+  gap: var(#{ns.css-var("feedback-flash-layout-body-gap")}, 8px);
 }
 
-.tbf-flash__title,
-.tbf-flash__description {
+#{ns.element-class("flash", "title")},
+
+#{ns.element-class("flash", "description")} {
   min-width: 0;
 }
 
-.tbf-flash__title {
-  color: var(--tbf-feedback-flash-slot-title-color, currentColor);
-  font-weight: var(--tbf-feedback-flash-slot-title-font-weight, 400);
+#{ns.element-class("flash", "title")} {
+  color: var(#{ns.css-var("feedback-flash-slot-title-color")}, currentColor);
+  font-weight: var(#{ns.css-var("feedback-flash-slot-title-font-weight")}, 400);
   text-shadow: none;
 }
 
-.tbf-flash__description {
-  color: var(--tbf-feedback-flash-slot-description-color, var(--text-color-muted, currentColor));
-  font-size: var(--tbf-feedback-flash-slot-description-font-size, 0.92rem);
+#{ns.element-class("flash", "description")} {
+  color: var(#{ns.css-var("feedback-flash-slot-description-color")}, var(--text-color-muted, currentColor));
+  font-size: var(#{ns.css-var("feedback-flash-slot-description-font-size")}, 0.92rem);
   text-shadow: none;
 }
 
-.tbf-flash__actions {
+#{ns.element-class("flash", "actions")} {
   display: flex;
   justify-content: flex-end;
-  gap: var(--tbf-feedback-flash-layout-actions-gap, 8px);
+  gap: var(#{ns.css-var("feedback-flash-layout-actions-gap")}, 8px);
 }
 
-.tbf-flash__progress {
+#{ns.element-class("flash", "progress")} {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--tbf-feedback-flash-slot-progress-height, 4px);
-  background: var(--tbf-feedback-flash-slot-progress-color, currentColor);
+  height: var(#{ns.css-var("feedback-flash-slot-progress-height")}, 4px);
+  background: var(#{ns.css-var("feedback-flash-slot-progress-color")}, currentColor);
   transform-origin: left center;
-  animation-name: tbf-flash-progress;
+  animation-name: #{ns.token("flash-progress")};
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
-@keyframes tbf-flash-progress {
+@keyframes #{ns.token("flash-progress")} {
   from {
     transform: scaleX(1);
   }

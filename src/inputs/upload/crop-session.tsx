@@ -20,6 +20,7 @@ import {
 import { dispatchUploadChange, setUploadFile } from "./state.js";
 import type { UploadRuntimeOptions } from "./types.js";
 import { resolveUploadFlash } from "./runtime.js";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass } from "#5vbaqj4pirp3";
 
 type CropperInstance = InstanceType<typeof Cropper>;
 type CropSession = {
@@ -45,8 +46,8 @@ type CropperViewProps = CropSession & {
   registerCropper: (cropper: CropperInstance | null) => void;
 };
 
-const CROP_MODAL_ID = "tbf_upload_crop_modal";
-const CROP_MODAL_CONTENT_ID = "tbf_upload_crop_modal_content";
+const CROP_MODAL_ID = `${FRONTEND_PREFIX}_upload_crop_modal`;
+const CROP_MODAL_CONTENT_ID = `${FRONTEND_PREFIX}_upload_crop_modal_content`;
 let modalElement: HTMLElement | null = null;
 let modalContentElement: HTMLElement | null = null;
 let modalRoot: Root | null = null;
@@ -96,22 +97,22 @@ function CropperView(props: CropperViewProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   useUploadCropper(props, imageRef);
   const useImageLabel = props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel;
-  return h("div", { className: "tbf-upload-crop" },
-    h("div", { className: "tbf-upload-crop__header" },
-      h("h2", { className: "tbf-upload-crop__title" }, props.title),
+  return h("div", { className: frontendClassName("upload-crop") },
+    h("div", { className: frontendElementClass("upload-crop", "header") },
+      h("h2", { className: frontendElementClass("upload-crop", "title") }, props.title),
       props.description
-      ? h("p", { className: "tbf-upload-crop__description" }, props.description)
+      ? h("p", { className: frontendElementClass("upload-crop", "description") }, props.description)
       : null,
     ),
-    h("div", { className: "tbf-upload-crop__stage" },
+    h("div", { className: frontendElementClass("upload-crop", "stage") },
       h("img", {
           alt: props.title,
-          className: "tbf-upload-crop__image",
+          className: frontendElementClass("upload-crop", "image"),
           ref: imageRef,
           src: props.imageUrl,
       }),
     ),
-    h("div", { className: "tbf-upload-crop__actions" },
+    h("div", { className: frontendElementClass("upload-crop", "actions") },
       h("button", {
           className: "btn",
           disabled: props.busy,
@@ -134,7 +135,7 @@ function ensureCropModalHost() {
   modalContentElement = document.getElementById(CROP_MODAL_CONTENT_ID);
   if (!modalElement) createCropModalHost();
   if (modalElement && !modalContentElement) {
-    modalContentElement = modalElement.querySelector("[data-tbf-modal-content]");
+    modalContentElement = modalElement.querySelector(frontendDataSelector("modal-content"));
   }
   if (!modalElement || !modalContentElement) return false;
   prepareModal(modalElement);
@@ -145,12 +146,12 @@ function ensureCropModalHost() {
 function createCropModalHost() {
   modalElement = document.createElement("div");
   modalElement.id = CROP_MODAL_ID;
-  modalElement.className = "tbf-modal tbf-upload-cropper-modal";
-  modalElement.setAttribute("data-tbf-modal", "");
+  modalElement.className = `${frontendClassName("modal")} ${frontendClassName("upload-cropper-modal")}`;
+  modalElement.setAttribute(frontendDataAttr("modal"), "");
   modalContentElement = document.createElement("div");
   modalContentElement.id = CROP_MODAL_CONTENT_ID;
-  modalContentElement.className = "tbf-modal__content tbf-upload-cropper-modal__content";
-  modalContentElement.setAttribute("data-tbf-modal-content", "");
+  modalContentElement.className = `${frontendElementClass("modal", "content")} ${frontendElementClass("upload-cropper-modal", "content")}`;
+  modalContentElement.setAttribute(frontendDataAttr("modal-content"), "");
   modalElement.appendChild(modalContentElement);
   document.body.appendChild(modalElement);
 }

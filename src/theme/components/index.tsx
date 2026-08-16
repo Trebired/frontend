@@ -7,6 +7,7 @@ import {
   type ThemeModeOptions,
   type ThemeValue,
 } from "#zzt5zj380sl9";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ThemeToggleProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   darkLabel?: string;
@@ -29,7 +30,7 @@ type ThemeSelectProps = Omit<HTMLAttributes<HTMLElement>, "defaultValue"> & Them
 function themeLabelAttributes(labels: Record<string, string> | undefined): Record<string, string> {
   const attributes: Record<string, string> = {};
   for (const [key, label] of Object.entries(labels || {})) {
-    attributes[`data-tbf-theme-${key}-label`] = label;
+    attributes[frontendDataAttr(`theme-${key}-label`)] = label;
   }
   return attributes;
 }
@@ -48,13 +49,13 @@ function ThemeToggle(props: ThemeToggleProps) {
     <button
     {...rest}
     {...themeLabelAttributes(labels)}
-    className={classNames("tbf-theme-button", className)}
-    data-tbf-theme-button=""
-    data-tbf-theme-dark-label={darkLabel}
-    data-tbf-theme-light-label={lightLabel}
+    className={classNames(frontendClassName("theme-button"), className)}
+    {...frontendDataAttrs({ "theme-button": "" })}
+    {...frontendDataAttrs({ "theme-dark-label": darkLabel })}
+    {...frontendDataAttrs({ "theme-light-label": lightLabel })}
     type={type}
     >
-    {children || <span data-tbf-theme-label="">{lightLabel}</span>}
+    {children || <span {...frontendDataAttrs({ "theme-label": "" })}>{lightLabel}</span>}
     </button>
   );
 }
@@ -68,17 +69,17 @@ function ThemeSelect(props: ThemeSelectProps) {
       <div
       {...rest}
       aria-label={label}
-      className={classNames("tbf-theme-select", className)}
-      data-tbf-theme-select=""
+      className={classNames(frontendClassName("theme-select"), className)}
+      {...frontendDataAttrs({ "theme-select": "" })}
       role="radiogroup"
       >
       {registry.modes.map((mode) => (
             <button
             aria-checked={mode.key === current}
-            className={classNames("tbf-theme-select__option", optionClassName)}
-            data-tbf-popover-close=""
-            data-tbf-theme-active={mode.key === current ? "true" : "false"}
-            data-tbf-theme-value={mode.key}
+            className={classNames(frontendElementClass("theme-select", "option"), optionClassName)}
+            {...frontendDataAttrs({ "popover-close": "" })}
+            {...frontendDataAttrs({ "theme-active": mode.key === current ? "true" : "false" })}
+            {...frontendDataAttrs({ "theme-value": mode.key })}
             key={mode.key}
             role="radio"
             type="button"
@@ -93,8 +94,8 @@ function ThemeSelect(props: ThemeSelectProps) {
     <select
     {...rest}
     aria-label={label}
-    className={classNames("tbf-theme-select", className)}
-    data-tbf-theme-select=""
+    className={classNames(frontendClassName("theme-select"), className)}
+    {...frontendDataAttrs({ "theme-select": "" })}
     defaultValue={current || undefined}
     name={name}
     >

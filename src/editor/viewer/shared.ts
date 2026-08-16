@@ -8,6 +8,7 @@ import {
   normalizePath,
   text,
 } from "#zgttxcjd88sc";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 const roots: ReactRootCache = new WeakMap();
 let editorViewerModelInstanceId = 0;
@@ -111,7 +112,7 @@ function readViewerPathFromUrl() {
 }
 
 function readFullscreenState(rootInput: HTMLDivElement | null) {
-  return Boolean(rootInput?.closest('[data-tbf-fullscreen-active="true"]'));
+  return Boolean(rootInput?.closest(frontendDataSelector("fullscreen-active", "true")));
 }
 
 function resolveViewerTreeHeight(isFullscreen: boolean, viewportHeight: number) {

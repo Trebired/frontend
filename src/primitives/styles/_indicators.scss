@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "./variables" as *;
 
 .pill {
@@ -7,15 +8,15 @@
   gap: 4px;
   padding: 3px 5px;
   border: var(--border-width) solid transparent;
-  border-radius: var(--radius-lg, var(--tbf-radius, 0));
-  background-color: var(--tbf-ui-pill-bg, var(--background-surface-1, transparent));
+  border-radius: var(--radius-lg, var(#{ns.css-var("radius")}, 0));
+  background-color: var(#{ns.css-var("ui-pill-bg")}, var(--background-surface-1, transparent));
   color: var(--text-color);
   font-size: 13px;
   line-height: 1;
   white-space: nowrap;
   flex-wrap: nowrap;
 
-  @each $name, $color in $tbf-primitive-tone-colors {
+  @each $name, $color in $frontend-primitive-tone-colors {
     &.#{$name} {
       border-color: $color;
     }
@@ -38,7 +39,7 @@
 }
 
 .dot {
-  --dot-color: var(--tbf-ui-dot-color, currentColor);
+  --dot-color: var(#{ns.css-var("ui-dot-color")}, currentColor);
   --dot-size: 10px;
   width: var(--dot-size);
   height: var(--dot-size);
@@ -65,7 +66,7 @@
     --dot-size: 12px;
   }
 
-  @each $name, $color in $tbf-primitive-tone-colors {
+  @each $name, $color in $frontend-primitive-tone-colors {
     &.#{$name} {
       --dot-color: #{$color};
     }
@@ -78,8 +79,8 @@
   aspect-ratio: 1;
   border-radius: 50%;
   border: calc(var(--border-width) * 8) solid;
-  border-color: var(--tbf-ui-loader-color, currentColor) transparent;
-  animation: tbf-primitive-loader-spin 1s infinite;
+  border-color: var(#{ns.css-var("ui-loader-color")}, currentColor) transparent;
+  animation: #{ns.token("primitive-loader-spin")} 1s infinite;
 
   &.xs {
     width: 16px;
@@ -111,9 +112,9 @@
   position: relative;
   margin-top: 6px;
   height: 6px;
-  border-radius: var(--radius-sm, var(--tbf-radius-sm, 0));
-  --progress-color: var(--tbf-ui-progress-color, currentColor);
-  --progress-track: var(--tbf-ui-progress-track, color-mix(in srgb, var(--progress-color) 22%, transparent));
+  border-radius: var(--radius-sm, var(#{ns.css-var("radius-sm")}, 0));
+  --progress-color: var(#{ns.css-var("ui-progress-color")}, currentColor);
+  --progress-track: var(#{ns.css-var("ui-progress-track")}, color-mix(in srgb, var(--progress-color) 22%, transparent));
   --progress-percent: 0%;
   color: var(--progress-color);
   background: var(--progress-track);
@@ -145,16 +146,16 @@
   opacity: 1;
   background: var(--progress-color);
   transform: translateX(-140%);
-  animation: tbf-primitive-progress-slide 1.05s linear infinite;
+  animation: #{ns.token("primitive-progress-slide")} 1.05s linear infinite;
 }
 
-@keyframes tbf-primitive-loader-spin {
+@keyframes #{ns.token("primitive-loader-spin")} {
   to {
     transform: rotate(0.5turn);
   }
 }
 
-@keyframes tbf-primitive-progress-slide {
+@keyframes #{ns.token("primitive-progress-slide")} {
   0% {
     transform: translateX(-140%);
   }

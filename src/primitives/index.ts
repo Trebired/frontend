@@ -5,6 +5,7 @@ import {
   parseDateMsOrNull,
   parseCountValue,
 } from "./components/index.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type TimeCounterConfig = {
   count?: number | string | null;
@@ -15,9 +16,9 @@ type TimeCounterConfig = {
   start?: string;
 };
 
-const TIME_COUNTER_SELECTOR = "[data-tbf-time-counter]";
+const TIME_COUNTER_SELECTOR = frontendDataSelector("time-counter");
 const TIME_COUNTER_CONFIG_SELECTOR =
-'script[type="application/json"][data-tbf-time-counter-config]';
+`script[type="application/json"]${frontendDataSelector("time-counter-config")}`;
 const configs = new WeakMap<HTMLElement, TimeCounterConfig>();
 const positiveRemainingCounters = new WeakSet<HTMLElement>();
 const activeCounters = new Set<HTMLElement>();

@@ -15,6 +15,7 @@ import type {
   key_value_input_dom_field,
   key_value_input_dom_props,
 } from "./shared.js";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 function appendDomField(
   controls: HTMLElement,
@@ -117,7 +118,7 @@ function createControls(
 ) {
   const controls = doc.createElement("div");
   controls.className = primitiveGridClassName({ gap: "xs" });
-  controls.style.setProperty("--tbf-grid-template-columns", gridColumns(fields, removable));
+  controls.style.setProperty(frontendCssVar("grid-template-columns"), gridColumns(fields, removable));
   controls.style.alignItems = "center";
   controls.setAttribute("data-key-value-input-controls", "");
   return controls;

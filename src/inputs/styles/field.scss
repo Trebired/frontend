@@ -1,14 +1,15 @@
-.tbf-input {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("input")} {
   min-height: 36px;
   box-sizing: border-box;
   padding: 0 10px;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius-sm, 0);
-  color: var(--tbf-text, #000);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  color: var(#{ns.css-var("text")}, #000);
+  background: var(#{ns.css-var("surface")}, #fff);
 }
 
-.tbf-input:focus-visible {
-  outline: var(--tbf-border-width, 1px) solid var(--tbf-focus, #000);
+#{ns.class("input")}:focus-visible {
+  outline: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("focus")}, #000);
   outline-offset: 2px;
 }

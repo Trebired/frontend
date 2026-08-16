@@ -17,8 +17,14 @@ async function verifyFlashStyles(rootDir) {
     assert.equal(source.includes(`--tbf-flash-${type}-color`), false);
     assert.equal(source.includes(`--tbf-flash-${type}-title-color`), false);
     assert.equal(source.includes(`--tbf-flash-${type}-progress-color`), false);
-    assert.equal(source.includes(`--tbf-feedback-flash-intents-${type}-icon`), true);
-    assert.equal(source.includes(`--tbf-icon-color: var(--tbf-feedback-flash-intents-${type}-icon`), true);
+    assert.equal(source.includes(`ns.css-var("feedback-flash-intents-${type}-icon")`), true);
+    const intentSelector = `#{ns.class("flash")}#{ns.data("flash-type", "${type}")}`;
+    const intentStart = source.indexOf(intentSelector);
+    const intentEnd = source.indexOf("\n}", intentStart);
+    const intentBlock = source.slice(intentStart, intentEnd);
+    assert.equal(intentStart >= 0, true);
+    assert.equal(intentBlock.includes(`#{ns.css-var("icon-color")}: var(`), true);
+    assert.equal(intentBlock.includes(`#{ns.css-var("feedback-flash-intents-${type}-icon")}`), true);
   }
 }
 

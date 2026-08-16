@@ -1,9 +1,10 @@
 import { requestJson } from "#v1p6uw62hhsf";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const STATUS_FIELD_SELECTOR = "[data-tbf-status-field]";
-const STATUS_MESSAGE_SELECTOR = "[data-tbf-status-message]";
-const STATUS_EVENT = "tbf:status";
+const STATUS_FIELD_SELECTOR = frontendDataSelector("status-field");
+const STATUS_MESSAGE_SELECTOR = frontendDataSelector("status-message");
+const STATUS_EVENT = frontendEventName("status");
 
 type StatusState = {
   field: HTMLInputElement | HTMLTextAreaElement;
@@ -18,7 +19,7 @@ function findStaticStatusField(root: HTMLElement) {
 }
 
 function setStatus(root: HTMLElement, state: "idle" | "checking" | "error" | "success", message = "") {
-  root.setAttribute("data-tbf-status-state", state);
+  root.setAttribute(frontendDataAttr("status-state"), state);
   root.querySelectorAll<HTMLElement>(STATUS_MESSAGE_SELECTOR).forEach((slot) => {
       slot.textContent = message;
       slot.hidden = !message;
@@ -27,12 +28,12 @@ function setStatus(root: HTMLElement, state: "idle" | "checking" | "error" | "su
 
 async function validateStatusField(root: HTMLElement) {
   const field = findStaticStatusField(root);
-  const url = root.getAttribute("data-tbf-status-url");
+  const url = root.getAttribute(frontendDataAttr("status-url"));
   if (!field || !url) return null;
   setStatus(root, "checking");
   const { json } = await requestJson(url, {
       body: { name: field.name, value: field.value },
-      method: root.getAttribute("data-tbf-status-method") || "POST",
+      method: root.getAttribute(frontendDataAttr("status-method")) || "POST",
   });
   const ok = Boolean((json as { ok?: boolean }).ok);
   const message = String((json as { message?: string }).message || "");
@@ -43,8 +44,8 @@ async function validateStatusField(root: HTMLElement) {
 }
 
 function bindStatusField(root: HTMLElement | null) {
-  if (!(root instanceof HTMLElement) || root.hasAttribute("data-tbf-status-bound")) return null;
-  root.setAttribute("data-tbf-status-bound", "true");
+  if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("status-bound"))) return null;
+  root.setAttribute(frontendDataAttr("status-bound"), "true");
   const field = findStaticStatusField(root);
   field?.addEventListener("change", () => {
       void validateStatusField(root);

@@ -19,10 +19,11 @@ import type {
   ActionJson,
   SubmitActionFormOptions,
 } from "./types.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const ACTION_FORM_SELECTOR = "form[data-tbf-action]";
+const ACTION_FORM_SELECTOR = `form${frontendDataSelector("action")}`;
 const ACTION_CONFIG_SELECTOR =
-'script[type="application/json"][data-tbf-action-config]';
+`script[type="application/json"]${frontendDataSelector("action-config")}`;
 const boundForms = new WeakMap<HTMLFormElement, EventListener>();
 
 function submitterFor(
@@ -39,7 +40,7 @@ function submitterFor(
 function readActionFormConfig(form: HTMLFormElement) {
   return {
     ...readElementJson<Record<string, unknown>>(form, ACTION_CONFIG_SELECTOR, {}),
-    ...readDataJson<Record<string, unknown>>(form, "data-tbf-action-config", {}),
+    ...readDataJson<Record<string, unknown>>(form, frontendDataAttr("action-config"), {}),
   };
 }
 
@@ -106,11 +107,11 @@ async function confirmActionForm(
   submitter: HTMLElement | null,
   options: SubmitActionFormOptions,
 ) {
-  const configured = options.confirm === true || readBooleanAttribute(form, "data-tbf-confirm") === true;
+  const configured = options.confirm === true || readBooleanAttribute(form, frontendDataAttr("confirm")) === true;
   if (options.confirm === false) return true;
-  if (!configured && !form.hasAttribute("data-tbf-confirm-title")) return true;
+  if (!configured && !form.hasAttribute(frontendDataAttr("confirm-title"))) return true;
   const detail: any = { confirm: null, form, submitter };
-  const event = dispatchActionFormEvent(form, "tbf:action-confirm", detail, true);
+  const event = dispatchActionFormEvent(form, frontendEventName("action-confirm"), detail, true);
   if (event.defaultPrevented) return false;
   if (detail.confirm !== null && detail.confirm !== undefined) {
     const value = typeof detail.confirm === "function" ? detail.confirm() : detail.confirm;
@@ -129,7 +130,7 @@ async function resolveCustomActionFormRequest(
     return { handled: true, json: await options.request(form, submitter) };
   }
   const detail: any = { form, handled: false, json: null, request: null, submitter };
-  const event = dispatchActionFormEvent(form, "tbf:action-request", detail, true);
+  const event = dispatchActionFormEvent(form, frontendEventName("action-request"), detail, true);
   if (!event.defaultPrevented && !detail.handled && detail.request == null) {
     return { handled: false, json: null };
   }
@@ -182,7 +183,7 @@ async function submitActionForm(
   try {
     ensureFormCsrfToken(form);
     options.beforeSubmit?.(form, submitter);
-    dispatchActionFormEvent(form, "tbf:action-submit", { submitter });
+    dispatchActionFormEvent(form, frontendEventName("action-submit"), { submitter });
     const custom = await resolveCustomActionFormRequest(form, submitter, options);
     const json = custom.handled
     ? custom.json
@@ -210,11 +211,11 @@ async function submitActionForm(
       );
     }
     options.onComplete?.(ok, json);
-    dispatchActionFormEvent(form, "tbf:action-complete", { json, ok, submitter });
+    dispatchActionFormEvent(form, frontendEventName("action-complete"), { json, ok, submitter });
     return json;
   } catch (error) {
     options.onComplete?.(false, { ok: false });
-    dispatchActionFormEvent(form, "tbf:action-complete", {
+    dispatchActionFormEvent(form, frontendEventName("action-complete"), {
         error,
         json: null,
         ok: false,

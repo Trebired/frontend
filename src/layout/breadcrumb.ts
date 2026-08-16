@@ -1,8 +1,9 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const BREADCRUMB_SELECTOR = "[data-tbf-breadcrumb]";
-const BREADCRUMB_CURRENT_SELECTOR = "[data-tbf-breadcrumb-current]";
-const BREADCRUMB_EVENT = "tbf:breadcrumb";
+const BREADCRUMB_SELECTOR = frontendDataSelector("breadcrumb");
+const BREADCRUMB_CURRENT_SELECTOR = frontendDataSelector("breadcrumb-current");
+const BREADCRUMB_EVENT = frontendEventName("breadcrumb");
 
 type BreadcrumbItemModel = {
   current?: boolean;
@@ -18,11 +19,11 @@ type BreadcrumbState = {
 };
 
 function readBreadcrumbItems(root: HTMLElement): BreadcrumbItemModel[] {
-  return Array.from(root.querySelectorAll<HTMLElement>("[data-tbf-breadcrumb-item]")).map((item) => ({
-        current: item.getAttribute("aria-current") === "page" || item.hasAttribute("data-tbf-breadcrumb-current"),
+  return Array.from(root.querySelectorAll<HTMLElement>(frontendDataSelector("breadcrumb-item"))).map((item) => ({
+        current: item.getAttribute("aria-current") === "page" || item.hasAttribute(frontendDataAttr("breadcrumb-current")),
         href: item.getAttribute("href") || item.querySelector("a")?.getAttribute("href") || undefined,
-        icon: item.getAttribute("data-tbf-breadcrumb-icon") || undefined,
-        key: item.getAttribute("data-tbf-breadcrumb-key") || undefined,
+        icon: item.getAttribute(frontendDataAttr("breadcrumb-icon")) || undefined,
+        key: item.getAttribute(frontendDataAttr("breadcrumb-key")) || undefined,
         label: item.textContent?.trim() || "",
   }));
 }
@@ -44,7 +45,7 @@ function dispatchBreadcrumbState(root: HTMLElement) {
 function bindBreadcrumb(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement)) return null;
   applyBreadcrumbCurrent(root);
-  root.setAttribute("data-tbf-breadcrumb-bound", "true");
+  root.setAttribute(frontendDataAttr("breadcrumb-bound"), "true");
   return dispatchBreadcrumbState(root);
 }
 

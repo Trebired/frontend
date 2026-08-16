@@ -11,6 +11,7 @@ import {
   normalizeDynamicSidebarItems,
   textValue,
 } from "#yv4ubgils4dc";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function DynamicSidebarLinkList(props: DynamicSidebarLinkListProps) {
   const {
@@ -31,8 +32,8 @@ function DynamicSidebarLinkList(props: DynamicSidebarLinkListProps) {
   const list = (
     <ul
     {...rest}
-    className={classNames("tbf-sidebar-list", "sidebar-links", className)}
-    data-tbf-sidebar-list=""
+    className={classNames(frontendClassName("sidebar-list"), "sidebar-links", className)}
+    {...frontendDataAttrs({ "sidebar-list": "" })}
     id={linksId || rest.id}
     >
     {normalizeDynamicSidebarItems(items).map((item, index) => {

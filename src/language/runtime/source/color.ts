@@ -1,4 +1,5 @@
 import { text } from "#kv9urtb9dbq5";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 function normalizeColor(value: unknown) {
   const raw = text(value);
@@ -45,7 +46,7 @@ function collectSvgColors(svg: Element) {
 }
 
 function deriveColorFromIcon(row: HTMLElement) {
-  const svg = row.querySelector("[data-tbf-source-language-icon] svg");
+  const svg = row.querySelector(`${frontendDataSelector("source-language-icon")} svg`);
   if (!svg) return "";
   let winner = "";
   let winnerCount = -1;

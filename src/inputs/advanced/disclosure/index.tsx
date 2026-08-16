@@ -8,6 +8,7 @@ import {
   primitiveCardClassName,
   primitiveInlineRowClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type disclosure_props = {
   card?: boolean;
@@ -27,7 +28,7 @@ type disclosure_props = {
 function disclosureModel(props: disclosure_props) {
   const rootId = toString(props.id);
   const rootClassName = classNames([
-      "tbf-disclosure",
+      frontendClassName("disclosure"),
       props.card === false ? "" : primitiveCardClassName({ layout: "none" }),
       "cursor-pointer",
       "disclosure",
@@ -36,7 +37,7 @@ function disclosureModel(props: disclosure_props) {
   return {
     isOpen: props.open === true,
     panelClassName: classNames([
-        "tbf-disclosure__panel",
+        frontendElementClass("disclosure", "panel"),
         "cursor-auto",
         "disclosure-panel",
         toString(props.panelClassName),
@@ -79,7 +80,7 @@ function disclosureTrigger(
     ? (
       <div
       className={model.triggerClassName}
-      data-tbf-disclosure-trigger=""
+      {...frontendDataAttrs({ "disclosure-trigger": "" })}
       role="button"
       tabIndex={0}
       aria-controls={props.panelId}
@@ -108,8 +109,8 @@ function disclosurePanel(
     <div
     id={props.panelId}
     className={model.panelClassName}
-    data-tbf-disclosure-panel=""
-    data-tbf-disclosure-panel-open={model.isOpen ? "true" : "false"}
+    {...frontendDataAttrs({ "disclosure-panel": "" })}
+    {...frontendDataAttrs({ "disclosure-panel-open": model.isOpen ? "true" : "false" })}
     {...(model.isOpen ? {} : { hidden: true })}
     >
     {props.content}
@@ -124,8 +125,8 @@ function advancedDisclosure(props: disclosure_props) {
     {...model.rootAttrs}
     {...(model.rootId ? { id: model.rootId } : {})}
     className={model.rootClassName}
-    data-tbf-disclosure=""
-    data-tbf-disclosure-open={model.isOpen ? "true" : "false"}
+    {...frontendDataAttrs({ "disclosure": "" })}
+    {...frontendDataAttrs({ "disclosure-open": model.isOpen ? "true" : "false" })}
     aria-controls={props.panelId}
     aria-expanded={model.isOpen ? "true" : "false"}
     hidden={props.hidden === true}

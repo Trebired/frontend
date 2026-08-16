@@ -1,4 +1,5 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 type LiveCleanup = () => void;
 type LiveCardsOptions = {
@@ -11,7 +12,7 @@ type LiveCardsOptions = {
   ) => LiveCleanup;
 };
 
-const LIVE_CARD_SELECTOR = "[data-tbf-live-card]";
+const LIVE_CARD_SELECTOR = frontendDataSelector("live-card");
 const boundLiveCards = new WeakSet<HTMLElement>();
 
 function liveCardTarget(host: HTMLElement) {
@@ -40,7 +41,7 @@ function syncLiveCardAttributes(target: HTMLElement, fresh: Element) {
 function rehydrateLiveCard(target: HTMLElement, options: LiveCardsOptions) {
   options.bind?.(target);
   target.dispatchEvent(
-    new CustomEvent("tbf:rehydrate", {
+    new CustomEvent(frontendEventName("rehydrate"), {
         bubbles: true,
         detail: { root: target },
     }),
@@ -65,8 +66,8 @@ function swapLiveCardHtml(
 }
 
 function defaultLiveCardRoom(host: HTMLElement) {
-  const kind = String(host.getAttribute("data-tbf-live-kind") || "").trim();
-  const id = String(host.getAttribute("data-tbf-live-id") || "").trim();
+  const kind = String(host.getAttribute(frontendDataAttr("live-kind")) || "").trim();
+  const id = String(host.getAttribute(frontendDataAttr("live-id")) || "").trim();
   return kind && id ? `${kind}:${id}` : "";
 }
 

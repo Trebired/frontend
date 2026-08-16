@@ -2,6 +2,7 @@ import { createElement, type ReactNode } from "react";
 import { card } from "#6hfutrhvm6x6";
 import { Text, primitiveStackClassName } from "#hzrmwbvgt2ax";
 import type { EditorContentProps, EditorSidebarProps } from "./types.js";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function editor_content(props: EditorContentProps) {
   const className = String(props.className || primitiveStackClassName({ gap: "sm", grow: true })).trim();
@@ -24,9 +25,9 @@ function editor_content_body(props: EditorContentProps, minHeight: number) {
   const value = props.value == null ? props.defaultValue || "" : props.value;
   return createElement(
     "editor-content-field",
-    { "data-tbf-editor-content-field": "" },
+    { [frontendDataAttr("editor-content-field")]: "" },
     <>
-    <script data-tbf-editor-content-config="" hidden type="application/json">
+    <script {...frontendDataAttrs({ "editor-content-config": "" })} hidden type="application/json">
     {JSON.stringify({
           language: props.language || "json",
           path: props.path || `${props.name || "value"}.json`,

@@ -30,10 +30,11 @@ import { bindDropdowns } from "./dropdown.js";
 import { bindSearchControls } from "./search.js";
 import { bindStatusFields } from "./status.js";
 import { bindTabs } from "./tabs.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const AUTOSIZE_SELECTOR = "textarea[data-tbf-autosize]";
-const CLEAR_SELECTOR = "[data-tbf-clear]";
-const PASSWORD_TOGGLE_SELECTOR = "[data-tbf-password-toggle][aria-controls]";
+const AUTOSIZE_SELECTOR = `textarea${frontendDataSelector("autosize")}`;
+const CLEAR_SELECTOR = frontendDataSelector("clear");
+const PASSWORD_TOGGLE_SELECTOR = `${frontendDataSelector("password-toggle")}[aria-controls]`;
 
 type InputControllerOptions = UploadRuntimeOptions;
 
@@ -43,18 +44,18 @@ function resizeTextarea(textarea: HTMLTextAreaElement) {
 }
 
 function bindAutosizeTextarea(textarea: HTMLTextAreaElement) {
-  if (textarea.hasAttribute("data-tbf-autosize-bound")) return false;
-  textarea.setAttribute("data-tbf-autosize-bound", "true");
+  if (textarea.hasAttribute(frontendDataAttr("autosize-bound"))) return false;
+  textarea.setAttribute(frontendDataAttr("autosize-bound"), "true");
   textarea.addEventListener("input", () => resizeTextarea(textarea));
   resizeTextarea(textarea);
   return true;
 }
 
 function bindClearButton(button: HTMLElement) {
-  if (button.hasAttribute("data-tbf-clear-bound")) return false;
-  button.setAttribute("data-tbf-clear-bound", "true");
+  if (button.hasAttribute(frontendDataAttr("clear-bound"))) return false;
+  button.setAttribute(frontendDataAttr("clear-bound"), "true");
   button.addEventListener("click", () => {
-      const target = resolveDocumentTarget(button.getAttribute("data-tbf-clear"));
+      const target = resolveDocumentTarget(button.getAttribute(frontendDataAttr("clear")));
       if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
         target.value = "";
         dispatchInputChange(target);
@@ -64,8 +65,8 @@ function bindClearButton(button: HTMLElement) {
 }
 
 function bindPasswordToggle(button: HTMLElement) {
-  if (button.hasAttribute("data-tbf-password-bound")) return false;
-  button.setAttribute("data-tbf-password-bound", "true");
+  if (button.hasAttribute(frontendDataAttr("password-bound"))) return false;
+  button.setAttribute(frontendDataAttr("password-bound"), "true");
   button.addEventListener("click", () => {
       const input = resolveDocumentTarget(button.getAttribute("aria-controls"));
       if (!(input instanceof HTMLInputElement)) return;

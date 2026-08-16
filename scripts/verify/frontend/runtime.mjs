@@ -4,7 +4,7 @@ import path from "node:path";
 
 async function verifyNamespace(context) {
   const source = await fs.readFile(path.join(context.sourceDir, "namespace", "generated.ts"), "utf8");
-  assert.ok(source.includes('FRONTEND_PREFIX = "tbf"'));
+  assert.ok(source.includes('NAMESPACE_PREFIX = "tbf"'));
   const root = await context.importDistRoot();
   assert.equal(root.FRONTEND_PREFIX, "tbf");
   assert.equal(root.frontendClassName("button"), "tbf-button");
@@ -12,7 +12,7 @@ async function verifyNamespace(context) {
   assert.equal(root.frontendDataAttr("popover"), "data-tbf-popover");
   assert.equal(root.frontendDataSelector("popover"), "[data-tbf-popover]");
   const base = await fs.readFile(path.join(context.rootDir, "dist", "styles", "utils", "base.scss"), "utf8");
-  assert.ok(base.includes("var(--tbf-interaction-active-filter, none)"));
+  assert.ok(base.includes('var(#{ns.css-var("interaction-active-filter")}, none)'));
 }
 
 async function verifyPopover(context) {
@@ -135,12 +135,12 @@ async function verifyViewportCenter(context) {
     path.join(context.rootDir, "dist", "layout", "styles", "index.scss"),
     "utf8",
   );
-  assert.ok(styles.includes("var(--tbf-layout-top-offset, 0px)"));
-  assert.ok(styles.includes("var(--tbf-layout-content-padding-block-start, 0px)"));
-  assert.ok(styles.includes("var(--tbf-layout-content-padding-block-end, 0px)"));
+  assert.ok(styles.includes('var(#{ns.css-var("layout-top-offset")}, 0px)'));
+  assert.ok(styles.includes('var(#{ns.css-var("layout-content-padding-block-start")}, 0px)'));
+  assert.ok(styles.includes('var(#{ns.css-var("layout-content-padding-block-end")}, 0px)'));
   assert.ok(
     styles.includes(
-      "[data-tbf-layout-content] > [data-tbf-viewport-center]",
+      "#{ns.data(\"layout-content\")} > #{ns.data(\"viewport-center\")}",
     ),
   );
 }

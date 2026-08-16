@@ -1,7 +1,8 @@
-.tbf-file-tree-shell {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("file-tree-shell")} {
   max-inline-size: 100%;
 }
 
-.tbf-file-tree-scroll {
+#{ns.class("file-tree-scroll")} {
   inline-size: 100%;
 }

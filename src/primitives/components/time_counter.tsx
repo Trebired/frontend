@@ -2,6 +2,7 @@ import { jsonScript } from "#ndsvdqv80epr";
 import type { TimeCounterProps } from "./types.js";
 import { joinClassNames, toText } from "./shared.js";
 import { primitiveTextClassName } from "./classes.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function normalizeDurationMs(value: number) {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
@@ -117,9 +118,9 @@ function time_counter(props: TimeCounterProps) {
   const live = "live" in state ? state.live : false;
   const remaining = "remaining" in state ? state.remaining : false;
   return (
-    <span data-tbf-time-counter="" style={{ display: "contents" }}>
+    <span {...frontendDataAttrs({ "time-counter": "" })} style={{ display: "contents" }}>
     <script
-    data-tbf-time-counter-config=""
+    {...frontendDataAttrs({ "time-counter-config": "" })}
     hidden
     type="application/json"
     dangerouslySetInnerHTML={{

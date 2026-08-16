@@ -66,7 +66,6 @@ function configuredSource(context) {
   return [
     "export default {",
     `  forVersion: "${context.packageVersion}",`,
-    "  prefix: \"app\",",
     "  assets: {",
     "    fonts: { families: { sans: { package: \"inter\", family: \"Inter\" } } },",
     "    icons: {",
@@ -127,15 +126,15 @@ function assertLoadedConfig(loaded, configPath, config, context) {
     loaded.generatedScss.indexOf("styles/tokens.scss"),
   );
   assert.equal(loaded.generatedScss.includes("modal/styles/index.scss"), false);
-  assert.ok(loaded.generatedScss.includes("--app-color-brand: #123456;"));
-  assert.ok(loaded.generatedScss.includes("--app-interaction-active-filter: brightness(0.8);"));
-  assert.ok(loaded.generatedScss.includes("--app-overlay-modal-content-bg: #111111;"));
-  assert.ok(loaded.generatedScss.includes("--app-overlay-modal-motion-initial-scale: 0.92;"));
-  assert.ok(loaded.generatedScss.includes("--app-runtime-progress-color: #111111;"));
-  assert.ok(loaded.generatedScss.includes("--app-ui-link-root-color: #222222;"));
-  assert.ok(loaded.generatedScss.includes("--app-ui-link-state-hover-color: #333333;"));
-  assert.ok(loaded.generatedScss.includes("--app-ui-upload-preview-size: 88px;"));
-  assert.ok(loaded.generatedScss.includes("--app-ui-upload-surface-bg: #eeeeee;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-color-brand: #123456;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-interaction-active-filter: brightness(0.8);"));
+  assert.ok(loaded.generatedScss.includes("--tbf-overlay-modal-content-bg: #111111;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-overlay-modal-motion-initial-scale: 0.92;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-runtime-progress-color: #111111;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-ui-link-root-color: #222222;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-ui-link-state-hover-color: #333333;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-ui-upload-preview-size: 88px;"));
+  assert.ok(loaded.generatedScss.includes("--tbf-ui-upload-surface-bg: #eeeeee;"));
   assert.equal(
     config.normalizeFrontendConfig({
         design: { interactions: { activePress: { enabled: false } } },

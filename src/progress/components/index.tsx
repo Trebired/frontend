@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ProgressRootProps = HTMLAttributes<HTMLDivElement> & {
   active?: boolean;
@@ -14,17 +15,17 @@ function normalizedProgress(value: number | undefined) {
 }
 
 function ProgressRoot(props: ProgressRootProps) {
-  const { active, className, id = "tbf_progress", value = 0, ...rest } = props;
+  const { active, className, id = `${FRONTEND_PREFIX}_progress`, value = 0, ...rest } = props;
   return (
     <div
     {...rest}
-    className={classNames("tbf-progress", className)}
-    data-tbf-progress-active={dataBool(active)}
+    className={classNames(frontendClassName("progress"), className)}
+    {...frontendDataAttrs({ "progress-active": dataBool(active) })}
     id={id}
     aria-hidden="true"
     >
     <span
-    className="tbf-progress__bar"
+    className={frontendElementClass("progress", "bar")}
     style={{ transform: `scaleX(${normalizedProgress(value)})` }}
     />
     </div>

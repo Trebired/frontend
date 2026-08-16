@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .toggle {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -46,7 +47,7 @@
 }
 
 .toggle-side.active .toggle-side-label {
-  color: var(--tbf-ui-toggle-active-color, var(--text-color, currentColor));
+  color: var(#{ns.css-var("ui-toggle-active-color")}, var(--text-color, currentColor));
 }
 
 .toggle-handle {
@@ -68,7 +69,7 @@
   padding: 3px;
   border: var(--border-width) solid var(--border-surface-1);
   border-radius: 999px;
-  background: var(--tbf-ui-toggle-track-bg, var(--background-surface-1, transparent));
+  background: var(#{ns.css-var("ui-toggle-track-bg")}, var(--background-surface-1, transparent));
   transition:
   background 120ms ease,
   border-color 120ms ease;
@@ -78,7 +79,7 @@
   width: 24px;
   height: 24px;
   border-radius: 999px;
-  background: var(--tbf-ui-toggle-thumb-bg, var(--text-color-muted, currentColor));
+  background: var(#{ns.css-var("ui-toggle-thumb-bg")}, var(--text-color-muted, currentColor));
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
   transform: translateX(0);
   transition: transform 140ms ease;
@@ -89,7 +90,7 @@
 }
 
 .toggle-handle:focus-visible {
-  outline: var(--border-width) solid var(--tbf-ui-input-state-focus-color, var(--tbf-focus, currentColor));
+  outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
   outline-offset: 3px;
   border-radius: 999px;
 }

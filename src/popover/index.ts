@@ -10,10 +10,11 @@ import {
   portalElement,
   promoteZIndex,
 } from "#ccvonx3uhbte";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const POPOVER_BASE_Z_INDEX = 1040;
-const POPOVER_TRIGGER_SELECTOR = "[data-tbf-popover-trigger][aria-controls]";
-const POPOVER_CLOSE_SELECTOR = "[data-tbf-popover-close]";
+const POPOVER_TRIGGER_SELECTOR = `${frontendDataSelector("popover-trigger")}[aria-controls]`;
+const POPOVER_CLOSE_SELECTOR = frontendDataSelector("popover-close");
 
 type PopoverEntry = {
   hover: boolean;
@@ -50,17 +51,17 @@ function placePopover(trigger: HTMLElement, popover: HTMLElement) {
   );
   popover.style.top = `${top}px`;
   popover.style.left = `${left}px`;
-  popover.setAttribute("data-tbf-position", below ? "below" : "above");
+  popover.setAttribute(frontendDataAttr("position"), below ? "below" : "above");
 }
 
 function setPopoverExpanded(entry: PopoverEntry, open: boolean) {
   setAriaExpanded(entry.trigger, open);
   if (open) {
     entry.popover.removeAttribute("inert");
-    entry.trigger.setAttribute("data-tbf-popover-open", "true");
+    entry.trigger.setAttribute(frontendDataAttr("popover-open"), "true");
   } else {
     entry.popover.setAttribute("inert", "");
-    entry.trigger.removeAttribute("data-tbf-popover-open");
+    entry.trigger.removeAttribute(frontendDataAttr("popover-open"));
   }
   entry.popover.setAttribute("aria-hidden", open ? "false" : "true");
 }
@@ -70,9 +71,9 @@ function showPopover(entry: PopoverEntry) {
   portalElement(entry.popover);
   moveLayerElementToTop(entry.popover);
   promoteZIndex(entry.popover, { fallback: POPOVER_BASE_Z_INDEX });
-  entry.popover.setAttribute("data-tbf-popover", "");
+  entry.popover.setAttribute(frontendDataAttr("popover"), "");
   placePopover(entry.trigger, entry.popover);
-  entry.popover.setAttribute("data-tbf-open", "true");
+  entry.popover.setAttribute(frontendDataAttr("open"), "true");
   setPopoverExpanded(entry, true);
   openEntry = entry;
 }
@@ -83,7 +84,7 @@ function hidePopover(popoverOrTrigger?: HTMLElement | null) {
     Array.from(entries.values()).find((item) => item.popover === popoverOrTrigger)
   : openEntry;
   if (!entry) return false;
-  entry.popover.removeAttribute("data-tbf-open");
+  entry.popover.removeAttribute(frontendDataAttr("open"));
   releasePopoverFocus(entry);
   setPopoverExpanded(entry, false);
   if (openEntry === entry) openEntry = null;
@@ -124,11 +125,11 @@ function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = docume
   if (existing?.popover === popover) return existing;
   cleanups.get(trigger)?.();
   const entry = {
-    hover: trigger.getAttribute("data-tbf-popover-hover") === "true",
+    hover: trigger.getAttribute(frontendDataAttr("popover-hover")) === "true",
     popover,
     trigger,
   };
-  popover.setAttribute("data-tbf-popover", "");
+  popover.setAttribute(frontendDataAttr("popover"), "");
   setPopoverExpanded(entry, false);
   const onClick = (event: MouseEvent) => {
     event.preventDefault();

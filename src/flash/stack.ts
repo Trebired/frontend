@@ -1,6 +1,7 @@
 import { applyZIndex } from "#ccvonx3uhbte";
+import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const FLASH_STACK_ID = "tbf_flash_stack";
+const FLASH_STACK_ID = `${FRONTEND_PREFIX}_flash_stack`;
 const FLASH_BASE_Z_INDEX = 1020;
 const FLASH_PRIORITY_WEIGHT = new Map([
     ["low", 0],
@@ -15,25 +16,25 @@ function ensureFlashStack() {
   if (existing instanceof HTMLElement) return existing;
   const stack = document.createElement("div");
   stack.id = FLASH_STACK_ID;
-  stack.className = "tbf-flash-stack";
-  stack.setAttribute("data-tbf-flash-stack", "");
-  stack.setAttribute("data-tbf-expanded", "false");
+  stack.className = frontendClassName("flash-stack");
+  stack.setAttribute(frontendDataAttr("flash-stack"), "");
+  stack.setAttribute(frontendDataAttr("expanded"), "false");
   applyZIndex(stack, { fallback: FLASH_BASE_Z_INDEX });
   document.body.appendChild(stack);
   bindFlashStackResize(stack);
   stack.addEventListener("mouseenter", () => {
-      stack.setAttribute("data-tbf-expanded", "true");
+      stack.setAttribute(frontendDataAttr("expanded"), "true");
       layoutFlashStack(stack);
   });
   stack.addEventListener("mouseleave", () => {
-      stack.setAttribute("data-tbf-expanded", "false");
+      stack.setAttribute(frontendDataAttr("expanded"), "false");
       layoutFlashStack(stack);
   });
   return stack;
 }
 
 function orderedFlashItems(stack: HTMLElement) {
-  return Array.from(stack.querySelectorAll<HTMLElement>("[data-tbf-flash]"))
+  return Array.from(stack.querySelectorAll<HTMLElement>(frontendDataSelector("flash")))
   .map((item, index) => ({ index, item }))
   .sort((a, b) => {
       const diff = priorityWeight(a.item) - priorityWeight(b.item);
@@ -44,11 +45,11 @@ function orderedFlashItems(stack: HTMLElement) {
 
 function layoutFlashStack(stack: HTMLElement) {
   const items = orderedFlashItems(stack);
-  const expanded = stack.getAttribute("data-tbf-expanded") === "true";
+  const expanded = stack.getAttribute(frontendDataAttr("expanded")) === "true";
   let offset = 0;
   items.forEach((item, index) => {
       item.style.zIndex = String(1000 + index + 1);
-      item.style.setProperty("--tbf-flash-y", `${expanded ? -offset : -index * 9}px`);
+      item.style.setProperty(frontendCssVar("flash-y"), `${expanded ? -offset : -index * 9}px`);
       offset += item.getBoundingClientRect().height + 10;
   });
   stack.style.height = flashStackHeight(items, expanded, offset);
@@ -61,7 +62,7 @@ function flashStackHeight(items: HTMLElement[], expanded: boolean, offset: numbe
 }
 
 function hideFlashElement(stack: HTMLElement, element: HTMLElement) {
-  element.setAttribute("data-tbf-hiding", "true");
+  element.setAttribute(frontendDataAttr("hiding"), "true");
   window.setTimeout(() => {
       element.remove();
       layoutFlashStack(stack);
@@ -70,7 +71,7 @@ function hideFlashElement(stack: HTMLElement, element: HTMLElement) {
 
 function priorityWeight(item: HTMLElement) {
   const priority = String(
-    item.getAttribute("data-tbf-flash-stack-priority") ||
+    item.getAttribute(frontendDataAttr("flash-stack-priority")) ||
       item.getAttribute("data-flash-stack-priority") ||
       "normal",
   ).toLowerCase();

@@ -19,6 +19,7 @@ import {
 } from "./catalog.js";
 import type { ParsedIconSpec } from "./shared.js";
 import type { IconAliasMap, IconAliasValue } from "./catalog.js";
+import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector, frontendToken } from "#5vbaqj4pirp3";
 
 type IconCacheEntry = {
   colorMode?: string;
@@ -38,8 +39,8 @@ type RenderIconElementAttrs = Record<string, unknown>& {
   tag?: string;
 };
 
-const ICON_SELECTOR = "[data-tbf-icon],[data-icon-spec]";
-const CUSTOM_COLOR_VAR = "--tbf-icon-color";
+const ICON_SELECTOR = `${frontendDataSelector("icon")},[data-icon-spec]`;
+const CUSTOM_COLOR_VAR = frontendCssVar("icon-color");
 const LEGACY_CUSTOM_COLOR_VAR = "--icon-custom-color";
 const svgFetchCache = new Map<string, Promise<string>>();
 const iconCacheEntries = new Map<string, IconCacheEntry>();
@@ -89,7 +90,7 @@ function uniqueClassName(...values: string[]): string {
 function applyElementAttrs(host: Element, attrs: RenderIconElementAttrs = {}): void {
   const requestedClassName = text(attrs.class ||attrs.className);
   const className = uniqueClassName(
-    "tbf-icon",
+    frontendClassName("icon"),
     "icon-glyph",
     requestedClassName || text(host.getAttribute("class")),
   );
@@ -117,7 +118,7 @@ function prepareIconHost(host: Element, spec: string, attrs: RenderIconElementAt
   applyElementAttrs(host, attrs);
   if (spec) renderedIconSpecs.set(host, spec);
   else renderedIconSpecs.delete(host);
-  host.setAttribute("data-tbf-icon", spec);
+  host.setAttribute(frontendDataAttr("icon"), spec);
 }
 
 function applyHostSvgColor(host: Element, svg: SVGElement): void {
@@ -142,9 +143,9 @@ function fetchSvg(spec: string, endpoint = "/__icons/svg"): Promise<string> {
       credentials: "same-origin",
       headers: { Accept: "image/svg+xml,text/plain;q=0.9,*/*;q=0.8" },
   }).then(async(response) => {
-      if (!response.ok) throw new Error(`tbf-icon-http-${response.status}`);
+      if (!response.ok) throw new Error(`${frontendToken("icon-http")}-${response.status}`);
       const svg = String(await response.text()).trim();
-      if (!/^<svg\b/iu.test(svg)) throw new Error("tbf-icon-invalid-svg");
+      if (!/^<svg\b/iu.test(svg)) throw new Error(frontendClassName("icon-invalid-svg"));
       storeFetchedSvg(spec, svg);
       return svg;
   });
@@ -195,7 +196,7 @@ function appendIcon(parent: Element | null | undefined, spec: unknown, attrs: Re
 }
 
 function readHostSpec(host: Element): string {
-  return text(host.getAttribute("data-tbf-icon") || host.getAttribute("data-icon-spec"));
+  return text(host.getAttribute(frontendDataAttr("icon")) || host.getAttribute("data-icon-spec"));
 }
 
 function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions = {}): boolean {
@@ -203,7 +204,7 @@ function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions 
   const spec = readHostSpec(host);
   if (!spec) return false;
   void renderIconElement(host, spec, {
-      color: host.getAttribute("data-tbf-icon-color") || "",
+      color: host.getAttribute(frontendDataAttr("icon-color")) || "",
       endpoint: options.endpoint,
   });
   return true;

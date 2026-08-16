@@ -1,5 +1,11 @@
 # Changelog
 
+## 8.0.0
+
+- Moved frontend namespace prefix ownership to `@trebired/bundler` generated TypeScript and Sass helpers.
+- Removed user-facing frontend `prefix` config while keeping package DOM/CSS output under the package-owned `tbf` prefix.
+- Replaced authored `tbf-*`, `data-tbf-*`, `--tbf-*`, and `tbf:*` source literals with namespace helpers.
+
 ## 7.1.17
 
 - Updated shared utilities to `@trebired/utils@^0.4.4`.

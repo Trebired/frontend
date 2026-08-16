@@ -5,6 +5,7 @@ import type {
   contribution_day,
   contribution_summary,
 } from "./types.js";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 const CELL_SIZE = 11;
 const CELL_SPACE = 3;
@@ -124,12 +125,12 @@ function heatmap_width(columnCount: number) {
 }
 
 function heatmap_fill_color(count: number, maxCount: number) {
-  if (count <= 0 || maxCount <= 0) return "var(--tbf-data-graph-heatmap-empty, var(--background-surface-2, transparent))";
+  if (count <= 0 || maxCount <= 0) return `var(${frontendCssVar("data-graph-heatmap-empty")}, var(--background-surface-2, transparent))`;
   const ratio = count / maxCount;
-  if (ratio >= 0.85) return "var(--tbf-data-graph-heatmap-level-4, var(--tbf-focus, currentColor))";
-  if (ratio >= 0.55) return "var(--tbf-data-graph-heatmap-level-3, var(--tbf-focus, currentColor))";
-  if (ratio >= 0.25) return "var(--tbf-data-graph-heatmap-level-2, var(--tbf-focus, currentColor))";
-  return "var(--tbf-data-graph-heatmap-level-1, var(--tbf-focus, currentColor))";
+  if (ratio >= 0.85) return `var(${frontendCssVar("data-graph-heatmap-level-4")}, var(${frontendCssVar("focus")}, currentColor))`;
+  if (ratio >= 0.55) return `var(${frontendCssVar("data-graph-heatmap-level-3")}, var(${frontendCssVar("focus")}, currentColor))`;
+  if (ratio >= 0.25) return `var(${frontendCssVar("data-graph-heatmap-level-2")}, var(${frontendCssVar("focus")}, currentColor))`;
+  return `var(${frontendCssVar("data-graph-heatmap-level-1")}, var(${frontendCssVar("focus")}, currentColor))`;
 }
 
 function buildMonthLabels(

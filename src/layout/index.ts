@@ -6,14 +6,15 @@ import {
   bindHeaders,
   type HeaderRuntimeOptions,
 } from "./header.js";
+import { FRONTEND_PREFIX, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const LAYOUT_ROOT_SELECTOR = "[data-tbf-layout-root]";
-const LAYOUT_MAIN_SELECTOR = "[data-tbf-layout-main]";
-const LAYOUT_CONTENT_SELECTOR = "[data-tbf-layout-content]";
-const LAYOUT_PORTAL_ROOT_ID = "tbf_layout_portal_root";
-const LAYOUT_PORTAL_ROOT_SELECTOR = "[data-tbf-layout-portal-root]";
-const LAYOUT_BODY_ATTRIBUTE = "data-tbf-layout";
-const LAYOUT_MOBILE_BODY_ATTRIBUTE = "data-tbf-layout-mobile";
+const LAYOUT_ROOT_SELECTOR = frontendDataSelector("layout-root");
+const LAYOUT_MAIN_SELECTOR = frontendDataSelector("layout-main");
+const LAYOUT_CONTENT_SELECTOR = frontendDataSelector("layout-content");
+const LAYOUT_PORTAL_ROOT_ID = `${FRONTEND_PREFIX}_layout_portal_root`;
+const LAYOUT_PORTAL_ROOT_SELECTOR = frontendDataSelector("layout-portal-root");
+const LAYOUT_BODY_ATTRIBUTE = frontendDataAttr("layout");
+const LAYOUT_MOBILE_BODY_ATTRIBUTE = frontendDataAttr("layout-mobile");
 
 type LayoutSide = "left" | "right";
 
@@ -31,7 +32,7 @@ type LayoutRuntimeOptions = {
 };
 
 function layoutSideSelector(side: LayoutSide) {
-  return `[data-tbf-sidebar-shell][data-tbf-sidebar-side="${side}"]`;
+  return `${frontendDataSelector("sidebar-shell")}${frontendDataSelector("sidebar-side", side)}`;
 }
 
 function hasSidebar(root: ParentNode, side: LayoutSide) {
@@ -42,7 +43,7 @@ function readLayoutBodyState(root: ParentNode = document): LayoutBodyState {
   return {
     hasHeader: Boolean(root.querySelector(HEADER_PRIMARY_SELECTOR)),
     hasLeftSidebar: hasSidebar(root, "left"),
-    hasMobileBottomBar: Boolean(root.querySelector("[data-tbf-layout-bottom-bar]")),
+    hasMobileBottomBar: Boolean(root.querySelector(frontendDataSelector("layout-bottom-bar"))),
     hasRightSidebar: hasSidebar(root, "right"),
     hasSecondaryHeader: Boolean(root.querySelector(HEADER_SECONDARY_SELECTOR)),
   };
@@ -52,13 +53,13 @@ function applyLayoutBodyState(state: LayoutBodyState, options: LayoutRuntimeOpti
   const body = typeof document !== "undefined" ? document.body : null;
   if (!body) return state;
   body.setAttribute(LAYOUT_BODY_ATTRIBUTE, "true");
-  body.setAttribute("data-tbf-header-primary", state.hasHeader ? "true" : "false");
+  body.setAttribute(frontendDataAttr("header-primary"), state.hasHeader ? "true" : "false");
   body.setAttribute(
-    "data-tbf-header-secondary",
+    frontendDataAttr("header-secondary"),
     state.hasSecondaryHeader ? "true" : "false",
   );
-  body.setAttribute("data-tbf-sidebar-left", state.hasLeftSidebar ? "true" : "false");
-  body.setAttribute("data-tbf-sidebar-right", state.hasRightSidebar ? "true" : "false");
+  body.setAttribute(frontendDataAttr("sidebar-left"), state.hasLeftSidebar ? "true" : "false");
+  body.setAttribute(frontendDataAttr("sidebar-right"), state.hasRightSidebar ? "true" : "false");
   body.setAttribute(
     LAYOUT_MOBILE_BODY_ATTRIBUTE,
     options.mobile === true || state.hasMobileBottomBar ? "true" : "false",
@@ -72,7 +73,7 @@ function syncLayoutBodyState(root: ParentNode = document, options: LayoutRuntime
 
 function bindLayoutRoot(root: HTMLElement | null, options: LayoutRuntimeOptions = {}) {
   if (!(root instanceof HTMLElement)) return null;
-  root.setAttribute("data-tbf-layout-bound", "true");
+  root.setAttribute(frontendDataAttr("layout-bound"), "true");
   syncLayoutBodyState(root, options);
   return root;
 }
@@ -92,7 +93,7 @@ function ensureLayoutPortalRoot() {
   if (existing instanceof HTMLElement) return existing;
   const root = document.createElement("div");
   root.id = LAYOUT_PORTAL_ROOT_ID;
-  root.setAttribute("data-tbf-layout-portal-root", "");
+  root.setAttribute(frontendDataAttr("layout-portal-root"), "");
   document.body?.appendChild(root);
   return root;
 }
@@ -110,12 +111,12 @@ function createLayoutBootScript(state: Partial<LayoutBodyState> = {}) {
     `var state=${payload};`,
     "var body=document.body;",
     "if(!body)return;",
-    "body.setAttribute('data-tbf-layout','true');",
-    "body.setAttribute('data-tbf-header-primary',state.hasHeader?'true':'false');",
-    "body.setAttribute('data-tbf-header-secondary',state.hasSecondaryHeader?'true':'false');",
-    "body.setAttribute('data-tbf-sidebar-left',state.hasLeftSidebar?'true':'false');",
-    "body.setAttribute('data-tbf-sidebar-right',state.hasRightSidebar?'true':'false');",
-    "body.setAttribute('data-tbf-layout-mobile',state.hasMobileBottomBar?'true':'false');",
+    `body.setAttribute(${JSON.stringify(LAYOUT_BODY_ATTRIBUTE)},'true');`,
+    `body.setAttribute(${JSON.stringify(frontendDataAttr("header-primary"))},state.hasHeader?'true':'false');`,
+    `body.setAttribute(${JSON.stringify(frontendDataAttr("header-secondary"))},state.hasSecondaryHeader?'true':'false');`,
+    `body.setAttribute(${JSON.stringify(frontendDataAttr("sidebar-left"))},state.hasLeftSidebar?'true':'false');`,
+    `body.setAttribute(${JSON.stringify(frontendDataAttr("sidebar-right"))},state.hasRightSidebar?'true':'false');`,
+    `body.setAttribute(${JSON.stringify(LAYOUT_MOBILE_BODY_ATTRIBUTE)},state.hasMobileBottomBar?'true':'false');`,
     "}catch(e){}})();",
   ].join("");
 }

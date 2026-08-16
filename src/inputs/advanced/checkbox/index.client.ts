@@ -7,6 +7,7 @@ import {
 import {
   readHostJsonConfig,
 } from "#dqy2d22qyujv";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type CheckboxOptionRoot = Element& {
   blur?: () => void;
@@ -14,7 +15,7 @@ type CheckboxOptionRoot = Element& {
 
 const CHECKBOX_CONFIG_SELECTOR =
 'script[type="application/json"][data-checkbox-option-config]';
-const CHECKBOX_OPTION_SELECTOR = "[data-tbf-checkbox-option]";
+const CHECKBOX_OPTION_SELECTOR = frontendDataSelector("checkbox-option");
 const boundCheckboxOptions = new WeakSet<Element>();
 const allCheckboxInputs = new WeakSet<HTMLInputElement>();
 const checkboxOptionsByInput = new WeakMap<HTMLInputElement, Element>();

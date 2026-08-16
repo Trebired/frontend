@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .width-max {
   width: 100% !important;
   max-width: 100% !important;
@@ -9,7 +10,7 @@
 }
 
 .text-muted {
-  color: var(--tbf-text-muted, #000);
+  color: var(#{ns.css-var("text-muted")}, #000);
 }
 
 .text-xs {

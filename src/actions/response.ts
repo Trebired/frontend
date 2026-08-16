@@ -5,6 +5,7 @@ import type {
   ActionJson,
   ActionRequestUi,
 } from "./types.js";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 type ConfiguredSuccessAction = {
   lifecycle?: unknown;
@@ -155,7 +156,7 @@ function normalizeTabSwitches(tab: unknown) {
 
 function dispatchTabSwitches(tab: unknown) {
   if (!tab || typeof document === "undefined") return false;
-  document.dispatchEvent(new CustomEvent("tbf:tabs", { detail: { tab } }));
+  document.dispatchEvent(new CustomEvent(frontendEventName("tabs"), { detail: { tab } }));
   const switches = normalizeTabSwitches(tab);
   if (switches.length) {
     document.dispatchEvent(new CustomEvent("tabs:switch", { detail: { switches } }));

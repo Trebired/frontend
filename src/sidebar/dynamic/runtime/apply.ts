@@ -22,6 +22,7 @@ import {
   dynamicSidebarText,
   textValue,
 } from "#yv4ubgils4dc";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function applyDynamicSidebarCountSlots(
   root: HTMLElement,
@@ -30,10 +31,10 @@ function applyDynamicSidebarCountSlots(
 ) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_COUNT_SLOT_SELECTOR)
   .forEach((slot) => {
-      const path = textValue(slot.getAttribute("data-tbf-sidebar-count-path"));
+      const path = textValue(slot.getAttribute(frontendDataAttr("sidebar-count-path")));
       const count = dynamicSidebarNumber(counts, path);
       if (!path || slotDisabled(slot) ||
-          !slotActive(slot, "data-tbf-sidebar-count-visibility") || count == null) {
+          !slotActive(slot, frontendDataAttr("sidebar-count-visibility")) || count == null) {
         clearChildren(slot);
         return;
       }
@@ -53,7 +54,7 @@ function applyDynamicSidebarStateSlots(
 ) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR)
   .forEach((slot) => {
-      const path = textValue(slot.getAttribute("data-tbf-sidebar-state-path"));
+      const path = textValue(slot.getAttribute(frontendDataAttr("sidebar-state-path")));
       const state = dynamicSidebarText(counts, path);
       const node = path && !slotDisabled(slot)
       ? (renderers.state || defaultStateNode)({
@@ -73,7 +74,7 @@ function applyRepositoryIdleLoader(
   idleCountPath: string,
   renderers: DynamicSidebarRuntimeRenderers,
 ) {
-  if (!idleCountPath || slot.getAttribute("data-tbf-sidebar-active") !== "1") {
+  if (!idleCountPath || slot.getAttribute(frontendDataAttr("sidebar-active")) !== "1") {
     clearChildren(slot);
     return true;
   }
@@ -97,16 +98,16 @@ function applyDynamicSidebarLoaderSlot(
   slot: HTMLElement,
   renderers: DynamicSidebarRuntimeRenderers = {},
 ) {
-  const loaderPath = textValue(slot.getAttribute("data-tbf-sidebar-loader-path"));
+  const loaderPath = textValue(slot.getAttribute(frontendDataAttr("sidebar-loader-path")));
   const repositoryId = textValue(
-    slot.getAttribute("data-tbf-sidebar-status-repository-id"),
+    slot.getAttribute(frontendDataAttr("sidebar-status-repository-id")),
   );
   const idleCountPath = textValue(
-    slot.getAttribute("data-tbf-sidebar-status-idle-count-path"),
+    slot.getAttribute(frontendDataAttr("sidebar-status-idle-count-path")),
   );
-  const statusPath = textValue(slot.getAttribute("data-tbf-sidebar-status-path"));
+  const statusPath = textValue(slot.getAttribute(frontendDataAttr("sidebar-status-path")));
   const running = dynamicSidebarNumber(counts, loaderPath) || 0;
-  if (slotDisabled(slot) || !slotActive(slot, "data-tbf-sidebar-loader-visibility")) {
+  if (slotDisabled(slot) || !slotActive(slot, frontendDataAttr("sidebar-loader-visibility"))) {
     clearChildren(slot);
     return;
   }
@@ -138,15 +139,15 @@ function applyDynamicSidebarLoaderSlots(
 }
 
 function setDynamicSidebarLinkDisabled(link: HTMLElement, disabled: boolean) {
-  link.setAttribute("data-tbf-sidebar-link-disabled", disabled ? "1" : "0");
-  link.setAttribute("data-tbf-disabled", disabled ? "true" : "false");
+  link.setAttribute(frontendDataAttr("sidebar-link-disabled"), disabled ? "1" : "0");
+  link.setAttribute(frontendDataAttr("disabled"), disabled ? "true" : "false");
   if (disabled) {
     link.setAttribute("aria-disabled", "true");
     link.setAttribute("tabindex", "-1");
     link.removeAttribute("aria-current");
-    link.removeAttribute("data-tbf-sidebar-link-active");
-    link.closest("li")?.removeAttribute("data-tbf-sidebar-link-row-active");
-    link.closest("li")?.removeAttribute("data-tbf-active");
+    link.removeAttribute(frontendDataAttr("sidebar-link-active"));
+    link.closest("li")?.removeAttribute(frontendDataAttr("sidebar-link-row-active"));
+    link.closest("li")?.removeAttribute(frontendDataAttr("active"));
   } else {
     link.removeAttribute("aria-disabled");
     link.removeAttribute("tabindex");
@@ -157,7 +158,7 @@ function setDynamicSidebarLinkDisabled(link: HTMLElement, disabled: boolean) {
       DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR,
     ].join(",")).forEach((slot) => {
       if (slot instanceof HTMLElement) {
-        slot.setAttribute("data-tbf-sidebar-disabled", disabled ? "1" : "0");
+        slot.setAttribute(frontendDataAttr("sidebar-disabled"), disabled ? "1" : "0");
       }
   });
 }
@@ -165,7 +166,7 @@ function setDynamicSidebarLinkDisabled(link: HTMLElement, disabled: boolean) {
 function applyDynamicSidebarDisabledLinks(root: HTMLElement, counts: unknown) {
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_DYNAMIC_LINK_SELECTOR)
   .forEach((link) => {
-      const path = textValue(link.getAttribute("data-tbf-sidebar-disabled-path"));
+      const path = textValue(link.getAttribute(frontendDataAttr("sidebar-disabled-path")));
       const disabled = !path || (dynamicSidebarNumber(counts, path) || 0) <= 0;
       setDynamicSidebarLinkDisabled(link, disabled);
   });

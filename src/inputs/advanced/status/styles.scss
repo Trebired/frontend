@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .input-status-wrap {
   position: relative;
   display: flex;
@@ -23,9 +24,9 @@
 }
 
 .input-status-icon.ok {
-  color: var(--tbf-status-success-color, var(--tbf-focus, currentColor));
+  color: var(#{ns.css-var("status-success-color")}, var(#{ns.css-var("focus")}, currentColor));
 }
 
 .input-status-icon.bad {
-  color: var(--tbf-status-error-color, var(--tbf-focus, currentColor));
+  color: var(#{ns.css-var("status-error-color")}, var(#{ns.css-var("focus")}, currentColor));
 }

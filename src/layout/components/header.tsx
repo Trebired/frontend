@@ -4,6 +4,7 @@ import type {
   ReactNode,
 } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type AppHeaderProps = HTMLAttributes<HTMLElement> & {
   actions?: ReactNode;
@@ -29,15 +30,15 @@ function AppHeader(props: AppHeaderProps) {
   return (
     <header
     {...rest}
-    className={classNames("tbf-header", className)}
-    data-tbf-header=""
-    data-tbf-header-primary={primary && !secondary ? "" : undefined}
-    data-tbf-header-secondary={secondary ? "" : undefined}
+    className={classNames(frontendClassName("header"), className)}
+    {...frontendDataAttrs({ "header": "" })}
+    {...frontendDataAttrs({ "header-primary": primary && !secondary ? "" : undefined })}
+    {...frontendDataAttrs({ "header-secondary": secondary ? "" : undefined })}
     >
-    {brand ? <div className="tbf-header__brand" data-tbf-header-brand="">{brand}</div> : null}
-    {nav ? <nav className="tbf-header__nav" data-tbf-header-nav="">{nav}</nav> : null}
+    {brand ? <div className={frontendElementClass("header", "brand")} {...frontendDataAttrs({ "header-brand": "" })}>{brand}</div> : null}
+    {nav ? <nav className={frontendElementClass("header", "nav")} {...frontendDataAttrs({ "header-nav": "" })}>{nav}</nav> : null}
     {children}
-    {actions ? <div className="tbf-header__actions" data-tbf-header-actions="">{actions}</div> : null}
+    {actions ? <div className={frontendElementClass("header", "actions")} {...frontendDataAttrs({ "header-actions": "" })}>{actions}</div> : null}
     </header>
   );
 }
@@ -45,7 +46,7 @@ function AppHeader(props: AppHeaderProps) {
 function HeaderGroup(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
-    <div {...rest} className={classNames("tbf-header__group", className)} data-tbf-header-group="">
+    <div {...rest} className={classNames(frontendElementClass("header", "group"), className)} {...frontendDataAttrs({ "header-group": "" })}>
     {children}
     </div>
   );
@@ -56,22 +57,22 @@ function MobileNav(props: MobileNavProps) {
   return (
     <nav
     {...rest}
-    className={classNames("tbf-mobile-nav", className)}
-    data-tbf-mobile-nav=""
-    data-tbf-mobile-nav-open="false"
+    className={classNames(frontendClassName("mobile-nav"), className)}
+    {...frontendDataAttrs({ "mobile-nav": "" })}
+    {...frontendDataAttrs({ "mobile-nav-open": "false" })}
     id={id}
     >
-    <div className="tbf-mobile-nav__scrim" data-tbf-mobile-nav-close="" />
+    <div className={frontendElementClass("mobile-nav", "scrim")} {...frontendDataAttrs({ "mobile-nav-close": "" })} />
     <div
     aria-hidden="true"
     aria-label={panelLabel}
-    className="tbf-mobile-nav__panel"
-    data-tbf-mobile-nav-panel=""
+    className={frontendElementClass("mobile-nav", "panel")}
+    {...frontendDataAttrs({ "mobile-nav-panel": "" })}
     role="dialog"
     >
     {children}
-    {actions ? <div className="tbf-mobile-nav__actions">{actions}</div> : null}
-    {bottom ? <div className="tbf-mobile-nav__bottom">{bottom}</div> : null}
+    {actions ? <div className={frontendElementClass("mobile-nav", "actions")}>{actions}</div> : null}
+    {bottom ? <div className={frontendElementClass("mobile-nav", "bottom")}>{bottom}</div> : null}
     </div>
     </nav>
   );
@@ -84,8 +85,8 @@ function MobileNavToggleButton(props: MobileNavToggleButtonProps) {
     {...rest}
     aria-controls={controls}
     aria-expanded={props["aria-expanded"] ?? false}
-    className={classNames("tbf-button tbf-mobile-nav__toggle", className)}
-    data-tbf-mobile-nav-toggle=""
+    className={classNames(`${frontendClassName("button")} ${frontendElementClass("mobile-nav", "toggle")}`, className)}
+    {...frontendDataAttrs({ "mobile-nav-toggle": "" })}
     type={type}
     >
     {children}
@@ -98,8 +99,8 @@ function MobileNavCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button tbf-mobile-nav__close", className)}
-    data-tbf-mobile-nav-close=""
+    className={classNames(`${frontendClassName("button")} ${frontendElementClass("mobile-nav", "close")}`, className)}
+    {...frontendDataAttrs({ "mobile-nav-close": "" })}
     type={type}
     >
     {children}

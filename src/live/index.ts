@@ -1,15 +1,16 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { refreshLive, type LiveOptions } from "./regions.js";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const LIVE_REFRESH_SELECTOR = "[data-tbf-live-refresh]";
+const LIVE_REFRESH_SELECTOR = frontendDataSelector("live-refresh");
 
 function bindLiveRefresh(root: BindRoot = document, options: LiveOptions = {}) {
   queryAll<HTMLElement>(root, LIVE_REFRESH_SELECTOR).forEach((trigger) => {
-      if (trigger.hasAttribute("data-tbf-live-bound")) return;
-      trigger.setAttribute("data-tbf-live-bound", "true");
+      if (trigger.hasAttribute(frontendDataAttr("live-bound"))) return;
+      trigger.setAttribute(frontendDataAttr("live-bound"), "true");
       trigger.addEventListener("click", (event) => {
           event.preventDefault();
-          const url = trigger.getAttribute("data-tbf-live-url") || undefined;
+          const url = trigger.getAttribute(frontendDataAttr("live-url")) || undefined;
           void refreshLive({ ...options, url });
       });
   });

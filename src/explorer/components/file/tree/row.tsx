@@ -18,6 +18,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type FileTreeRowProps = {
   highlightedPaths?: Set<string>;
@@ -107,7 +108,7 @@ function FileTreeRow(props: FileTreeRowProps) {
     role="treeitem"
     aria-level={model.rowLevel}
     aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
-    data-tbf-file-tree-path={model.relPath || undefined}
+    {...frontendDataAttrs({ "file-tree-path": model.relPath || undefined })}
     style={rowStyle}
     className={primitiveInlineRowClassName({ verticalCenter: true })}
     >

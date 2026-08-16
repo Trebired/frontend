@@ -11,6 +11,7 @@ import {
   type PrimitiveButtonSize,
   type PrimitiveButtonTone,
 } from "#0rl8rpgzssot";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type StandardActionButtonProps = {
   button_attrs?: Record<string, unknown>;
@@ -159,7 +160,7 @@ function start_button(
       ...props,
       button_attrs: {
         ...(props.button_attrs || {}),
-        ...(props.confetti ? { "data-tbf-confetti": "true" } : {}),
+        ...(props.confetti ? { [frontendDataAttr("confetti")]: "true" } : {}),
       },
   });
 }
@@ -195,7 +196,7 @@ function copy_button(props: CopyButtonProps) {
   return createElement(
     "copy-button",
     { className: "copy-button-host", style: { display: "contents" } },
-    <script data-tbf-copy-config="" hidden type="application/json">
+    <script {...frontendDataAttrs({ "copy-config": "" })} hidden type="application/json">
     {JSON.stringify({
           iconOnly: !props.children,
           target,
@@ -240,14 +241,14 @@ function copy_code_card(props: CopyCodeCardProps) {
 
 function removeConfirmationAttrs(props: RemoveConfirmationProps = {}) {
   return {
-    "data-tbf-confirm-confirm-text": actionLabel(
+    [frontendDataAttr("confirm-confirm-text")]: actionLabel(
       "remove",
       props.lang,
       props.confirmText,
     ),
-    "data-tbf-confirm-description": String(props.description || "").trim(),
-    "data-tbf-confirm-mode": "classic",
-    "data-tbf-confirm-title": actionLabel("removeItem", props.lang, props.title),
+    [frontendDataAttr("confirm-description")]: String(props.description || "").trim(),
+    [frontendDataAttr("confirm-mode")]: "classic",
+    [frontendDataAttr("confirm-title")]: actionLabel("removeItem", props.lang, props.title),
   };
 }
 

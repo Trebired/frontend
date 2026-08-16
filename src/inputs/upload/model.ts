@@ -1,4 +1,5 @@
 import { actionLabel } from "#qq0hbx8lfn3p";
+import { FRONTEND_PREFIX } from "#5vbaqj4pirp3";
 import { formatLabels, isImageAcceptItem, parseAcceptList } from "./files.js";
 import { toText } from "./text.js";
 import type { UploadEmptyToggle, UploadFieldOptions } from "./types.js";
@@ -10,7 +11,7 @@ const DEFAULT_UPLOAD_DIRECTORY_ICON = "remixicon:folder-upload-line";
 const DEFAULT_UPLOAD_FILE_ICON = "remixicon:file-upload-line";
 
 function uploadId(id?: string) {
-  return toText(id) || `tbf_upload_${Math.random().toString(36).slice(2, 10)}`;
+  return toText(id) || `${FRONTEND_PREFIX}_upload_${Math.random().toString(36).slice(2, 10)}`;
 }
 
 function normalizeUploadEmptyToggle(input: UploadEmptyToggle | undefined) {

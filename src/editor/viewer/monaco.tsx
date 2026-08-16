@@ -13,6 +13,7 @@ import {
   upsertReadonlyModel,
 } from "./shared.js";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 const editorViewerThemeHandlers = new WeakMap<HTMLElement, () => void>();
 
@@ -29,7 +30,7 @@ function installThemeChange(host: HTMLElement, monaco: any) {
   const handleThemeChange = () => {
     if (monaco?.editor) monaco.editor.setTheme(getPreferredMonacoThemeName());
   };
-  window.addEventListener("tbf:themechange", handleThemeChange);
+  window.addEventListener(frontendEventName("themechange"), handleThemeChange);
   editorViewerThemeHandlers.set(host, handleThemeChange);
 }
 
@@ -37,7 +38,7 @@ function removeThemeChange(host: HTMLElement | null) {
   if (!(host instanceof HTMLElement)) return;
   const handleThemeChange = editorViewerThemeHandlers.get(host);
   if (!handleThemeChange) return;
-  window.removeEventListener("tbf:themechange", handleThemeChange);
+  window.removeEventListener(frontendEventName("themechange"), handleThemeChange);
   editorViewerThemeHandlers.delete(host);
 }
 

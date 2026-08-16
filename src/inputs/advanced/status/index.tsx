@@ -2,6 +2,7 @@ import { icon } from "#dqy2d22qyujv";
 import sharedInput from "#8y47rueq20kg";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type BackendStatusCheckConfig = {
   endpoint: string;
@@ -53,10 +54,10 @@ function backendStatusConfig(check: BackendStatusCheckConfig, name: string) {
 function statusIcons() {
   return (
     <>
-    <span className="input-status-icon ok" data-tbf-status-icon="" hidden>
+    <span className="input-status-icon ok" {...frontendDataAttrs({ "status-icon": "" })} hidden>
     {icon({ spec: "remixicon checkbox-circle-line" })}
     </span>
-    <span className="input-status-icon bad" data-tbf-status-icon="" hidden>
+    <span className="input-status-icon bad" {...frontendDataAttrs({ "status-icon": "" })} hidden>
     {icon({ spec: "remixicon close-circle-line" })}
     </span>
     </>

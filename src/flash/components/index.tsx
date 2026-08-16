@@ -3,6 +3,7 @@ import { classNames } from "#ndsvdqv80epr";
 import { flashIconSpec } from "#qdbpux4f2e4m";
 import type { FlashType } from "#33o6e7mug9pg";
 import { Icon } from "#lbkpzw8nphru";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type FlashStackProps = HTMLAttributes<HTMLDivElement> & {
   expanded?: boolean;
@@ -26,13 +27,13 @@ type ConfirmElementProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 function FlashStack(props: FlashStackProps) {
-  const { children, className, expanded = false, id = "tbf_flash_stack", ...rest } = props;
+  const { children, className, expanded = false, id = `${FRONTEND_PREFIX}_flash_stack`, ...rest } = props;
   return (
     <div
     {...rest}
-    className={classNames("tbf-flash-stack", className)}
-    data-tbf-expanded={expanded ? "true" : "false"}
-    data-tbf-flash-stack=""
+    className={classNames(frontendClassName("flash-stack"), className)}
+    {...frontendDataAttrs({ "expanded": expanded ? "true" : "false" })}
+    {...frontendDataAttrs({ "flash-stack": "" })}
     id={id}
     >
     {children}
@@ -54,20 +55,20 @@ function FlashShell(props: FlashShellProps) {
   return (
     <section
     {...rest}
-    className={classNames("tbf-flash", className)}
-    data-tbf-flash=""
-    data-tbf-flash-id={id}
-    data-tbf-flash-type={type}
-    data-tbf-progress-tone={type}
+    className={classNames(frontendClassName("flash"), className)}
+    {...frontendDataAttrs({ "flash": "" })}
+    {...frontendDataAttrs({ "flash-id": id })}
+    {...frontendDataAttrs({ "flash-type": type })}
+    {...frontendDataAttrs({ "progress-tone": type })}
     role={type === "error" ? "alert" : "status"}
     >
-    <Icon className="tbf-flash__icon" spec={flashIconSpec(type)} />
-    <div className="tbf-flash__body">
-    <span className="tbf-flash__title">{title}</span>
-    {description ? <span className="tbf-flash__description">{description}</span> : null}
-    {actions ? <div className="tbf-flash__actions">{actions}</div> : null}
+    <Icon className={frontendElementClass("flash", "icon")} spec={flashIconSpec(type)} />
+    <div className={frontendElementClass("flash", "body")}>
+    <span className={frontendElementClass("flash", "title")}>{title}</span>
+    {description ? <span className={frontendElementClass("flash", "description")}>{description}</span> : null}
+    {actions ? <div className={frontendElementClass("flash", "actions")}>{actions}</div> : null}
     </div>
-    <span className="tbf-flash__progress" aria-hidden="true" hidden={!progress} />
+    <span className={frontendElementClass("flash", "progress")} aria-hidden="true" hidden={!progress} />
     </section>
   );
 }
@@ -87,13 +88,13 @@ function ConfirmElement(props: ConfirmElementProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-confirm=""
-    data-tbf-confirm-description={confirmDescription}
-    data-tbf-confirm-mode={confirmMode}
-    data-tbf-confirm-text={confirmText}
-    data-tbf-confirm-title={confirmTitle}
-    data-tbf-confirm-type={confirmType}
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "confirm": "" })}
+    {...frontendDataAttrs({ "confirm-description": confirmDescription })}
+    {...frontendDataAttrs({ "confirm-mode": confirmMode })}
+    {...frontendDataAttrs({ "confirm-text": confirmText })}
+    {...frontendDataAttrs({ "confirm-title": confirmTitle })}
+    {...frontendDataAttrs({ "confirm-type": confirmType })}
     type={type}
     >
     {children}
@@ -106,9 +107,9 @@ function FlashLiveRegion(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-flash-live", className)}
+    className={classNames(frontendClassName("flash-live"), className)}
     aria-live="polite"
-    data-tbf-flash-live=""
+    {...frontendDataAttrs({ "flash-live": "" })}
     />
   );
 }

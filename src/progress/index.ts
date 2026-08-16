@@ -1,4 +1,6 @@
-const PROGRESS_ID = "tbf_progress";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
+
+const PROGRESS_ID = `${FRONTEND_PREFIX}_progress`;
 const MAX_UPLOAD_PROGRESS = 0.95;
 
 type ProgressHandle = {
@@ -24,15 +26,15 @@ function ensureProgressElement() {
   if (existing instanceof HTMLElement) return existing;
   const root = document.createElement("div");
   root.id = PROGRESS_ID;
-  root.className = "tbf-progress";
+  root.className = frontendClassName("progress");
   root.setAttribute("aria-hidden", "true");
-  root.innerHTML = '<span class="tbf-progress__bar"></span>';
+  root.innerHTML = `<span class="${frontendElementClass("progress", "bar")}"></span>`;
   document.body.appendChild(root);
   return root;
 }
 
 function progressBar() {
-  return ensureProgressElement()?.querySelector<HTMLElement>(".tbf-progress__bar") || null;
+  return ensureProgressElement()?.querySelector<HTMLElement>(`.${frontendElementClass("progress", "bar")}`) || null;
 }
 
 function setProgress(value: number) {
@@ -42,7 +44,7 @@ function setProgress(value: number) {
   : 0;
   const root = ensureProgressElement();
   const bar = progressBar();
-  if (root) root.setAttribute("data-tbf-progress-active", "true");
+  if (root) root.setAttribute(frontendDataAttr("progress-active"), "true");
   if (bar) bar.style.transform = `scaleX(${next})`;
   return next;
 }
@@ -52,7 +54,7 @@ function beginProgress() {
   if (activeRequests === 1) {
     setProgress(0.12);
     const root = ensureProgressElement();
-    if (root) root.setAttribute("data-tbf-progress-active", "true");
+    if (root) root.setAttribute(frontendDataAttr("progress-active"), "true");
   }
   return activeRequests;
 }
@@ -66,7 +68,7 @@ function endProgress(force = false) {
     window.setTimeout(() => {
         const root = ensureProgressElement();
         if (root && activeRequests === 0) {
-          root.removeAttribute("data-tbf-progress-active");
+          root.removeAttribute(frontendDataAttr("progress-active"));
           const nextBar = progressBar();
           if (nextBar) nextBar.style.transform = "scaleX(0)";
         }

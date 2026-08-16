@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { readFullscreenState } from "./shared.js";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 function readViewportHeight() {
   const height = typeof window !== "undefined" ? window.innerHeight : 0;
@@ -18,12 +19,12 @@ function useFullscreenState(rootRef: any) {
         setViewportHeight((current) => current === nextViewportHeight ? current : nextViewportHeight);
       }
       syncFullscreenState();
-      document.addEventListener("tbf:fullscreen-open", syncFullscreenState as EventListener);
-      document.addEventListener("tbf:fullscreen-close", syncFullscreenState as EventListener);
+      document.addEventListener(frontendEventName("fullscreen-open"), syncFullscreenState as EventListener);
+      document.addEventListener(frontendEventName("fullscreen-close"), syncFullscreenState as EventListener);
       window.addEventListener("resize", syncFullscreenState);
       return () => {
-        document.removeEventListener("tbf:fullscreen-open", syncFullscreenState as EventListener);
-        document.removeEventListener("tbf:fullscreen-close", syncFullscreenState as EventListener);
+        document.removeEventListener(frontendEventName("fullscreen-open"), syncFullscreenState as EventListener);
+        document.removeEventListener(frontendEventName("fullscreen-close"), syncFullscreenState as EventListener);
         window.removeEventListener("resize", syncFullscreenState);
       };
     }, []);

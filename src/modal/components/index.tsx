@@ -5,6 +5,7 @@ import type {
 } from "react";
 import { renderCloseButton } from "#5e51rp1mtb3n";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ModalRootProps = HTMLAttributes<HTMLDivElement> & {
   children?: ReactNode;
@@ -24,8 +25,8 @@ function ModalRoot(props: ModalRootProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-modal", className)}
-    data-tbf-modal=""
+    className={classNames(frontendClassName("modal"), className)}
+    {...frontendDataAttrs({ "modal": "" })}
     role={role}
     aria-hidden="true"
     aria-labelledby={labelledBy}
@@ -40,8 +41,8 @@ function ModalContent(props: ModalContentProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-modal__content", className)}
-    data-tbf-modal-content=""
+    className={classNames(frontendElementClass("modal", "content"), className)}
+    {...frontendDataAttrs({ "modal-content": "" })}
     >
     {children}
     </div>
@@ -53,8 +54,8 @@ function ModalOpenButton(props: ModalOpenButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames("tbf-button", className)}
-    data-tbf-modal-open=""
+    className={classNames(frontendClassName("button"), className)}
+    {...frontendDataAttrs({ "modal-open": "" })}
     aria-controls={controls}
     type={type}
     >
@@ -64,7 +65,7 @@ function ModalOpenButton(props: ModalOpenButtonProps) {
 }
 
 function ModalCloseButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return renderCloseButton({ closeAttribute: "data-tbf-modal-close", props });
+  return renderCloseButton({ closeAttribute: frontendDataAttr("modal-close"), props });
 }
 
 export { ModalCloseButton, ModalContent, ModalOpenButton, ModalRoot };

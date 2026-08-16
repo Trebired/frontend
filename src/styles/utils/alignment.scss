@@ -1,10 +1,11 @@
-$tbf-hor-alignments: (
+@use "@trebired/bundler/namespace" as ns;
+$frontend-hor-alignments: (
   left: flex-start,
   center: center,
   right: flex-end,
 );
 
-@each $name, $value in $tbf-hor-alignments {
+@each $name, $value in $frontend-hor-alignments {
   .hor-#{$name} {
     justify-content: $value;
 
@@ -56,19 +57,19 @@ $tbf-hor-alignments: (
 }
 
 .ver-xs {
-  margin-top: var(--tbf-gap-xs2);
+  margin-top: var(#{ns.css-var("gap-xs2")});
 }
 
 .ver-sm {
-  margin-top: var(--tbf-gap-xs);
+  margin-top: var(#{ns.css-var("gap-xs")});
 }
 
 .ver-md {
-  margin-top: var(--tbf-gap-sm);
+  margin-top: var(#{ns.css-var("gap-sm")});
 }
 
 .ver-lg {
-  margin-top: var(--tbf-gap-md);
+  margin-top: var(#{ns.css-var("gap-md")});
 }
 
 .no-stretch {

@@ -1,7 +1,8 @@
 import { getEffectiveTheme } from "#zzt5zj380sl9";
+import { frontendClassName } from "#5vbaqj4pirp3";
 
-const THEME_DARK = "tbf-dark-transparent";
-const THEME_LIGHT = "tbf-light-transparent";
+const THEME_DARK = frontendClassName("dark-transparent");
+const THEME_LIGHT = frontendClassName("light-transparent");
 const COLORIZE_THEME_DARK = "vs-dark";
 const COLORIZE_THEME_LIGHT = "vs";
 const DEFAULT_LOADER_SCRIPT_ID = "monaco-amd-loader";

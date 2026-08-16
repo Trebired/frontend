@@ -18,6 +18,7 @@ import type {
   ProductShellLayoutState,
   ProductShellSidebarRenderContext,
 } from "#cdsjz7wn4cgk";
+import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
 
 type ProductShellDocumentNode =
 | ReactNode
@@ -99,7 +100,7 @@ function ProductShellLayout(props: ProductShellLayoutProps) {
     body: _body,
     children: _children,
     currentPath,
-    mainId = "tbf_live_content",
+    mainId = `${FRONTEND_PREFIX}_live_content`,
     renderBottomBar,
     renderHeader,
     renderMobileNav,
@@ -152,11 +153,11 @@ function productShellBodyAttributes(
 ) {
   const attrs = {
     ...resolveProductShellValue(props.bodyAttributes, state),
-    "data-tbf-header-primary": state.showHeader ? "true" : "false",
-    "data-tbf-header-secondary": state.showSecondaryHeader ? "true" : "false",
-    "data-tbf-layout-mobile": state.hasMobileBottomBar ? "true" : "false",
-    "data-tbf-sidebar-left": state.showLeftSidebar ? "true" : "false",
-    "data-tbf-sidebar-right": state.showRightSidebar ? "true" : "false",
+    [frontendDataAttr("header-primary")]: state.showHeader ? "true" : "false",
+    [frontendDataAttr("header-secondary")]: state.showSecondaryHeader ? "true" : "false",
+    [frontendDataAttr("layout-mobile")]: state.hasMobileBottomBar ? "true" : "false",
+    [frontendDataAttr("sidebar-left")]: state.showLeftSidebar ? "true" : "false",
+    [frontendDataAttr("sidebar-right")]: state.showRightSidebar ? "true" : "false",
   };
   return attrs as HTMLAttributes<HTMLBodyElement>;
 }

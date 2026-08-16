@@ -1,6 +1,7 @@
 import { createElement, type ReactNode } from "react";
 import { appendClassName, joinClassNames } from "#6mupcizo1mwq";
 import { objectRecord as objectProps } from "#ndsvdqv80epr";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type CodeBlockProps = {
   children?: ReactNode;
@@ -31,8 +32,8 @@ function code_block(props: CodeBlockProps) {
   return createElement(
     "code-block",
     {
-      "data-tbf-code-block": "",
-      "data-tbf-code-lang": props.language || undefined,
+      [frontendDataAttr("code-block")]: "",
+      [frontendDataAttr("code-lang")]: props.language || undefined,
       style: { display: "contents" },
     },
     <pre
@@ -47,7 +48,7 @@ function code_block(props: CodeBlockProps) {
     <code
     {...(props.id ? { id: String(props.id) } : {})}
     className={joinClassNames(wrap ? "pre-wrap" : "", props.codeClassName)}
-    data-tbf-code-content=""
+    {...frontendDataAttrs({ "code-content": "" })}
     {...codeProps}
     >
     {content}

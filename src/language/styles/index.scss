@@ -1,22 +1,23 @@
+@use "@trebired/bundler/namespace" as ns;
 @use "country-flag-icons/3x2/flags";
 
-.tbf-locale-switch-popover {
+#{ns.class("locale-switch-popover")} {
   min-width: 170px;
 }
 
-.tbf-locale-switch-popover .tbf-locale-option {
+#{ns.class("locale-switch-popover")} #{ns.class("locale-option")} {
   justify-content: flex-start;
 }
 
-.tbf-locale-switch-popover .tbf-locale-option[data-tbf-locale-current="true"] {
+#{ns.class("locale-switch-popover")} #{ns.class("locale-option")}#{ns.data("locale-current", "true")} {
   background: var(
-    --tbf-shell-language-option-state-current-bg,
-    var(--tbf-overlay-popover-item-state-selected-bg, var(--background-surface-2, transparent))
+    #{ns.css-var("shell-language-option-state-current-bg")},
+    var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, var(--background-surface-2, transparent))
   );
-  color: var(--tbf-shell-language-option-state-current-color, var(--text-color));
+  color: var(#{ns.css-var("shell-language-option-state-current-color")}, var(--text-color));
 }
 
-.tbf-locale-code {
+#{ns.class("locale-code")} {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +33,7 @@
   line-height: 1;
 }
 
-.tbf-locale-flag {
+#{ns.class("locale-flag")} {
   --CountryFlagIcon-height: 16px;
 
   flex: 0 0 auto;
@@ -42,7 +43,7 @@
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.02) inset;
 }
 
-.tbf-source-language-share {
+#{ns.class("source-language-share")} {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -51,7 +52,7 @@
   background: var(--background-surface-2, transparent);
 }
 
-.tbf-source-language-share-bar {
+#{ns.class("source-language-share-bar")} {
   display: block;
   height: 100%;
   min-width: 0;
@@ -61,7 +62,7 @@
   background var(--transition-2, 180ms) ease;
 }
 
-.tbf-source-language-distribution {
+#{ns.class("source-language-distribution")} {
   display: flex;
   overflow: hidden;
   width: 100%;
@@ -70,7 +71,7 @@
   background: var(--background-surface-2, transparent);
 }
 
-.tbf-source-language-distribution-segment {
+#{ns.class("source-language-distribution-segment")} {
   display: block;
   min-width: 0;
   height: 100%;
@@ -79,23 +80,24 @@
   background var(--transition-2, 180ms) ease;
 }
 
-[data-tbf-source-language-row] {
+#{ns.data("source-language-row")} {
   cursor: pointer;
 }
 
-[data-tbf-source-language-included="false"],
+#{ns.data("source-language-included", "false")},
+
 [data-card-excluded="true"] {
   opacity: 0.55;
 }
 
-[data-tbf-source-language-updating="true"] {
+#{ns.data("source-language-updating", "true")} {
   transition: opacity var(--transition-1, 120ms) ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tbf-source-language-share-bar,
-  .tbf-source-language-distribution-segment,
-  [data-tbf-source-language-updating="true"] {
+  #{ns.class("source-language-share-bar")},
+  #{ns.class("source-language-distribution-segment")},
+  #{ns.data("source-language-updating", "true")} {
     transition: none;
   }
 }

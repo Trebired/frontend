@@ -14,6 +14,7 @@ import { fileExtension, isImageFileObject } from "./files.js";
 import { uploadRootConfig } from "./config.js";
 import { toText } from "./text.js";
 import type { UploadEntry, UploadState } from "./types.js";
+import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 
 const uploadStates = new WeakMap<HTMLElement, UploadState>();
 
@@ -79,9 +80,9 @@ function syncPreview(root: HTMLElement) {
   syncSelectedLabel(root, selectedName(entries, file, config.emptyLabel || ""), hasSelection);
   syncList(root, entries);
   syncPreviewContent(root, entries, file, currentPreviewUrl(state), config.noPreview === true);
-  root.toggleAttribute("data-tbf-upload-has-files", hasSelection);
-  root.setAttribute("data-tbf-upload-has-files", hasSelection ? "true" : "false");
-  root.setAttribute("data-tbf-upload-entry-count", String(entries.length));
+  root.toggleAttribute(frontendDataAttr("upload-has-files"), hasSelection);
+  root.setAttribute(frontendDataAttr("upload-has-files"), hasSelection ? "true" : "false");
+  root.setAttribute(frontendDataAttr("upload-entry-count"), String(entries.length));
 }
 
 function syncSelectedLabel(root: HTMLElement, label: string, hasSelection: boolean) {
@@ -137,7 +138,7 @@ function syncClearAndEmpty(root: HTMLElement) {
 
 function dispatchUploadChange(root: HTMLElement) {
   const state = getUploadState(root);
-  root.dispatchEvent(new CustomEvent("tbf:upload-change", {
+  root.dispatchEvent(new CustomEvent(frontendEventName("upload-change"), {
         bubbles: true,
         detail: {
           cropData: state.cropData,

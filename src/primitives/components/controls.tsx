@@ -24,6 +24,7 @@ import {
   primitiveTextClassName,
 } from "./classes.js";
 import { actionButtonAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function primitiveButton(props: ButtonProps) {
   const {
@@ -52,7 +53,7 @@ function primitiveButton(props: ButtonProps) {
           transparent,
           variant,
     })}
-    data-tbf-active={active ? "true" : undefined}
+    {...frontendDataAttrs({ "active": active ? "true" : undefined })}
     {...actionButtonAttrs(actionButton)}
     {...rest}
     >

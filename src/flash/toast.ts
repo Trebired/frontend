@@ -2,13 +2,14 @@ import { computeFlashDurationMs, flashId, normalizeFlashType } from "./duration.
 import { createFlashElement } from "./elements.js";
 import { ensureFlashStack, hideFlashElement, layoutFlashStack } from "./stack.js";
 import type { FlashHandle, FlashOptions, FlashType } from "./types.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function dismissFlash(id: string) {
   const stack = ensureFlashStack();
   if (!stack) return false;
   const safeId = String(id || "").trim();
   if (!safeId) return false;
-  const target = stack.querySelector<HTMLElement>(attrSelector("data-tbf-flash-id", safeId));
+  const target = stack.querySelector<HTMLElement>(attrSelector(frontendDataAttr("flash-id"), safeId));
   if (!target) return false;
   hideFlashElement(stack, target);
   return true;
@@ -23,7 +24,7 @@ function showFlashImpl(
   const stack = ensureFlashStack();
   if (!stack) return null;
   const id = String(options.id || "").trim() || flashId();
-  const existing = stack.querySelector<HTMLElement>(attrSelector("data-tbf-flash-id", id));
+  const existing = stack.querySelector<HTMLElement>(attrSelector(frontendDataAttr("flash-id"), id));
   if (existing && options.update === true) existing.remove();
   const controls = createFlashElement(type, message, description, id, options);
   stack.appendChild(controls.element);
@@ -54,7 +55,7 @@ function startFlashLifetime(
     controls.progress.hidden = true;
   }
   window.requestAnimationFrame(() => {
-      controls.element.setAttribute("data-tbf-visible", "true");
+      controls.element.setAttribute(frontendDataAttr("visible"), "true");
       layoutFlashStack(stack);
   });
 }

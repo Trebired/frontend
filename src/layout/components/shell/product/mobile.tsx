@@ -14,6 +14,7 @@ import type {
   ProductShellBottomBarProps,
   ProductShellMobileNavProps,
 } from "./types.js";
+import { frontendClassName, frontendElementClass } from "#5vbaqj4pirp3";
 
 function mobileHeaderContent(props: ProductShellMobileNavProps) {
   if (props.headerContent !== undefined) return props.headerContent;
@@ -30,8 +31,8 @@ function mobileHeaderContent(props: ProductShellMobileNavProps) {
 function mobileSection(label: string, content: unknown, hidden: boolean) {
   if (hidden || !content) return null;
   return (
-    <section className="tbf-shell-mobile-nav__section">
-    <div className="tbf-shell-mobile-nav__section-label">{label}</div>
+    <section className={frontendElementClass("shell-mobile-nav", "section")}>
+    <div className={frontendElementClass("shell-mobile-nav", "section-label")}>{label}</div>
     {content as any}
     </section>
   );
@@ -42,18 +43,18 @@ function ProductShellMobileNav(props: ProductShellMobileNavProps) {
   if (!state.chrome.showMobileNav) return null;
   return (
     <MobileNav
-    className={classNames("tbf-shell-mobile-nav-shell", props.className)}
+    className={classNames(frontendClassName("shell-mobile-nav-shell"), props.className)}
     id={props.id || "mobile_nav_shell"}
     panelLabel={productShellLabel(props.labels, "mobileNavigation")}
     >
-    <div className={classNames("tbf-shell-mobile-nav", props.contentClassName)}>
-    <div className="tbf-shell-mobile-nav__head">
-    <span className={classNames("tbf-shell-mobile-nav__title", props.titleClassName)}>
+    <div className={classNames(frontendClassName("shell-mobile-nav"), props.contentClassName)}>
+    <div className={frontendElementClass("shell-mobile-nav", "head")}>
+    <span className={classNames(frontendElementClass("shell-mobile-nav", "title"), props.titleClassName)}>
     {productShellLabel(props.labels, "menu")}
     </span>
     <MobileNavCloseButton
     aria-label={productShellLabel(props.labels, "closeNavigationMenu")}
-    className="tbf-shell-mobile-nav__close"
+    className={frontendElementClass("shell-mobile-nav", "close")}
     >
     {props.closeIcon ?? productShellLabel(props.labels, "closeNavigationMenu")}
     </MobileNavCloseButton>
@@ -106,7 +107,7 @@ function ProductShellBottomBar(props: ProductShellBottomBarProps) {
     controls="mobile_nav_shell"
     >
     {menuIcon}
-    <span className="tbf-mobile-bottom-bar__label">
+    <span className={frontendElementClass("mobile-bottom-bar", "label")}>
     {productShellLabel(labels, "menu")}
     </span>
     </MobileNavToggleButton>

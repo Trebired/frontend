@@ -1,4 +1,5 @@
 import type { NormalizedFrontendComponentsConfig } from "./types.js";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     data: Object.freeze({
@@ -35,22 +36,22 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     overlays: Object.freeze({
         modal: Object.freeze({
             backdrop: {
-              background: "var(--tbf-overlay, rgb(0 0 0 / 48%))",
+              background: `var(${frontendCssVar("overlay")}, rgb(0 0 0 / 48%))`,
               opacity: "1",
               padding: "24px",
             },
             content: {
-              background: "var(--tbf-surface, #fff)",
-              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
-              color: "var(--tbf-text, #000)",
+              background: `var(${frontendCssVar("surface")}, #fff)`,
+              border: `var(${frontendCssVar("border-width")}, 1px) solid var(${frontendCssVar("border")}, #000)`,
+              color: `var(${frontendCssVar("text")}, #000)`,
               maxHeight: "min(80vh, 720px)",
               padding: "20px",
-              radius: "var(--tbf-radius, 0)",
-              shadow: "var(--tbf-shadow, 0 0 0 1px #000)",
+              radius: `var(${frontendCssVar("radius")}, 0)`,
+              shadow: `var(${frontendCssVar("shadow")}, 0 0 0 1px #000)`,
               width: "min(720px, calc(100vw - 48px))",
             },
             motion: {
-              duration: "var(--tbf-transition-normal)",
+              duration: `var(${frontendCssVar("transition-normal")})`,
               easing: "ease",
               initialScale: "0.96",
               openScale: "1",
@@ -95,7 +96,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               lineHeight: "1.3",
               padding: "7px 9px",
               radius: "0",
-              shadow: "var(--tbf-shadow, 0 0 0 1px #000)",
+              shadow: `var(${frontendCssVar("shadow")}, 0 0 0 1px #000)`,
             },
         }),
     }),
@@ -217,15 +218,15 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             content: { gap: "8px" },
             cropper: {
               actions: { gap: "8px" },
-              description: { color: "var(--tbf-text-muted, #000)" },
+              description: { color: `var(${frontendCssVar("text-muted")}, #000)` },
               header: { gap: "4px" },
               modal: {
                 maxHeight: "min(90vh, 920px)",
                 width: "min(960px, calc(100vw - 40px))",
               },
               stage: {
-                background: "var(--tbf-surface-muted, #fff)",
-                border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
+                background: `var(${frontendCssVar("surface-muted")}, #fff)`,
+                border: `var(${frontendCssVar("border-width")}, 1px) solid var(${frontendCssVar("border")}, #000)`,
                 faceColor: "rgb(255 255 255 / 14%)",
                 guideWidth: "1px",
                 height: "min(62vh, 640px)",
@@ -237,13 +238,13 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
                 pointBackground: "#fff",
                 pointBorder: "2px solid #fff",
                 pointInset: "0",
-                pointRadius: "var(--tbf-radius-sm, 0)",
+                pointRadius: `var(${frontendCssVar("radius-sm")}, 0)`,
                 pointSize: "12px",
-                radius: "var(--tbf-radius, 0)",
+                radius: `var(${frontendCssVar("radius")}, 0)`,
               },
             },
             hint: {
-              color: "var(--tbf-text-muted, #000)",
+              color: `var(${frontendCssVar("text-muted")}, #000)`,
               fontSize: "0.92rem",
               lineHeight: "1.15",
             },
@@ -251,14 +252,14 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             list: { gap: "4px", maxHeight: "84px", paddingLeft: "18px" },
             meta: { gap: "8px" },
             preview: {
-              background: "var(--tbf-surface, #fff)",
-              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
-              emptyColor: "var(--tbf-text-muted, #000)",
+              background: `var(${frontendCssVar("surface")}, #fff)`,
+              border: `var(${frontendCssVar("border-width")}, 1px) solid var(${frontendCssVar("border")}, #000)`,
+              emptyColor: `var(${frontendCssVar("text-muted")}, #000)`,
               emptyFontSize: "0.82rem",
               emptyLineHeight: "1.1",
               emptyPadding: "4px",
-              radius: "var(--tbf-radius, 0)",
-              roundRadius: "var(--tbf-radius-round, 999px)",
+              radius: `var(${frontendCssVar("radius")}, 0)`,
+              roundRadius: `var(${frontendCssVar("radius-round")}, 999px)`,
               size: "64px",
             },
             responsive: {
@@ -273,21 +274,21 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               },
             },
             root: {
-              color: "var(--tbf-text, #000)",
+              color: `var(${frontendCssVar("text")}, #000)`,
               gap: "8px",
             },
             surface: {
-              background: "var(--tbf-surface-muted, #fff)",
-              border: "var(--tbf-border-width, 1px) solid var(--tbf-border, #000)",
-              color: "var(--tbf-text, #000)",
+              background: `var(${frontendCssVar("surface-muted")}, #fff)`,
+              border: `var(${frontendCssVar("border-width")}, 1px) solid var(${frontendCssVar("border")}, #000)`,
+              color: `var(${frontendCssVar("text")}, #000)`,
               gap: "12px",
               minHeight: "72px",
               padding: "12px",
-              radius: "var(--tbf-radius, 0)",
+              radius: `var(${frontendCssVar("radius")}, 0)`,
               states: {
                 drag: {
-                  background: "var(--tbf-surface, #fff)",
-                  borderColor: "var(--tbf-focus, #000)",
+                  background: `var(${frontendCssVar("surface")}, #fff)`,
+                  borderColor: `var(${frontendCssVar("focus")}, #000)`,
                 },
                 hasFiles: {
                   borderStyle: "solid",

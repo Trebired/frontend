@@ -5,6 +5,7 @@ import {
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
 import "./index.client.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type radio_option = {
   bodyClassName?: string;
@@ -143,7 +144,7 @@ function radio(props: radio_props) {
   const inputName = toString(props.name);
 
   return (
-    <div className={groupClassName} data-tbf-radio-group="">
+    <div className={groupClassName} {...frontendDataAttrs({ "radio-group": "" })}>
     {options.map((option, index) =>
         radioOption({
             currentValue,

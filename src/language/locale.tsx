@@ -3,6 +3,7 @@ import { button } from "#6hfutrhvm6x6";
 import { normalizedLang, text, translate } from "./shared.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
 import { hasFlag } from "country-flag-icons";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const LANGUAGE_FLAG_COUNTRIES: Record<string, string> = {
   ar: "SA",
@@ -86,14 +87,14 @@ function localeOptionIcon(option: LocaleOption) {
     return (
       <span
       aria-hidden="true"
-      className={`tbf-locale-flag flag:${flagCountry}`}
-      data-tbf-locale-flag={flagCountry}
+      className={`${frontendClassName("locale-flag")} flag:${flagCountry}`}
+      {...frontendDataAttrs({ "locale-flag": flagCountry })}
       title={text(option.flagLabel)}
       />
     );
   }
   return (
-    <span className="tbf-locale-code" aria-hidden="true">
+    <span className={frontendClassName("locale-code")} aria-hidden="true">
     {text(option.shortLabel, option.code).slice(0, 3).toUpperCase()}
     </span>
   );
@@ -111,7 +112,7 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
       "aria-haspopup": "menu",
       "aria-expanded": "false",
       "aria-label": translate(current, "label"),
-      "data-tbf-popover-trigger": "",
+      [frontendDataAttr("popover-trigger")]: "",
       title: translate(current, "label"),
       children: <Icon spec="remixicon translate-2" />,
   });
@@ -128,11 +129,11 @@ function localeOptionButton(
     <button
     key={code}
     type="button"
-    className="popover-close popover-item tbf-locale-option"
-    data-tbf-locale-current={isCurrent ? "true" : "false"}
-    data-tbf-locale-endpoint={text(props.endpoint, "/ui/lang/set")}
-    data-tbf-locale-option=""
-    data-tbf-popover-close=""
+    className={`popover-close popover-item ${frontendClassName("locale-option")}`}
+    {...frontendDataAttrs({ "locale-current": isCurrent ? "true" : "false" })}
+    {...frontendDataAttrs({ "locale-endpoint": text(props.endpoint, "/ui/lang/set") })}
+    {...frontendDataAttrs({ "locale-option": "" })}
+    {...frontendDataAttrs({ "popover-close": "" })}
     role="menuitemradio"
     aria-checked={isCurrent ? "true" : "false"}
     value={code}
@@ -150,10 +151,10 @@ function localePopover(popoverId: string, props: LocaleSwitcherProps) {
   : DEFAULT_LOCALES;
   return (
     <div
-    className="popover popover-portaled tbf-locale-switch-popover"
+    className={`popover popover-portaled ${frontendClassName("locale-switch-popover")}`}
     id={popoverId}
     aria-hidden="true"
-    data-tbf-popover=""
+    {...frontendDataAttrs({ "popover": "" })}
     inert={true}
     role="menu"
     >
@@ -163,7 +164,7 @@ function localePopover(popoverId: string, props: LocaleSwitcherProps) {
 }
 
 function locale_switcher(props: LocaleSwitcherProps = {}) {
-  const triggerId = text(props.id, "tbf_locale_switch_btn");
+  const triggerId = text(props.id, `${FRONTEND_PREFIX}_locale_switch_btn`);
   const popoverId = `${triggerId}_menu`;
   return (
     <>

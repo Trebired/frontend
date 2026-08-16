@@ -12,6 +12,7 @@ import { safeId, text, translate } from "#kv9urtb9dbq5";
 import { source_language_modal } from "./modal.js";
 import type { SourceLanguageCardProps } from "#2w72xmq6rvza";
 import { Text } from "#hzrmwbvgt2ax";
+import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function sourceLanguageCardModel(props: SourceLanguageCardProps) {
   const payload =
@@ -58,7 +59,7 @@ function detailButton(
       type: "button",
       "aria-controls": model.modalId,
       "aria-label": translate(lang, "openDetails", { name: model.languageName }),
-      "data-tbf-modal-open": "",
+      [frontendDataAttr("modal-open")]: "",
       title: translate(lang, "detailsButton"),
       className: "icon sm has-tooltip",
       children: <Icon spec="remixicon information-line" />,
@@ -77,7 +78,7 @@ function languageSegments(
             {
               value: (
                 <Text muted>
-                <span data-tbf-source-language-percent="">
+                <span {...frontendDataAttrs({ "source-language-percent": "" })}>
                 {formatLanguagePercent(model.percent)}
                 </span>
                 %
@@ -98,13 +99,13 @@ function languageSegments(
 
 function shareBar(model: ReturnType<typeof sourceLanguageCardModel>) {
   return (
-    <div className="tbf-source-language-share">
+    <div className={frontendClassName("source-language-share")}>
     <span
-    className="tbf-source-language-share-bar"
-    data-tbf-source-language-progress=""
+    className={frontendClassName("source-language-share-bar")}
+    {...frontendDataAttrs({ "source-language-progress": "" })}
     style={{
         width: `${Math.max(0, Math.min(100, model.percent))}%`,
-        background: text(model.language.color, "var(--tbf-language-color, currentColor)"),
+        background: text(model.language.color, `var(${frontendCssVar("language-color")}, currentColor)`),
     }}
     />
     </div>
@@ -117,20 +118,20 @@ function iconNode(model: ReturnType<typeof sourceLanguageCardModel>) {
     <Icon
     spec={model.languageIconSpec}
     className="icon"
-    data-tbf-source-language-icon=""
+    {...frontendDataAttrs({ "source-language-icon": "" })}
     />
   );
 }
 
 function sourceLanguageDataAttrs(model: ReturnType<typeof sourceLanguageCardModel>) {
   return {
-    "data-tbf-source-language-row": "",
-    "data-tbf-source-language-id": text(model.language.viz_id),
-    "data-tbf-source-language-bucket": text(model.language.viz_bucket, "supporting"),
-    "data-tbf-source-language-name": model.languageName,
-    "data-tbf-source-language-color": text(model.language.color),
-    "data-tbf-source-language-bytes": String(model.bytes),
-    "data-tbf-source-language-lines": String(model.lineCount),
+    [frontendDataAttr("source-language-row")]: "",
+    [frontendDataAttr("source-language-id")]: text(model.language.viz_id),
+    [frontendDataAttr("source-language-bucket")]: text(model.language.viz_bucket, "supporting"),
+    [frontendDataAttr("source-language-name")]: model.languageName,
+    [frontendDataAttr("source-language-color")]: text(model.language.color),
+    [frontendDataAttr("source-language-bytes")]: String(model.bytes),
+    [frontendDataAttr("source-language-lines")]: String(model.lineCount),
     role: "button",
     tabIndex: "0",
     "aria-pressed": "true",

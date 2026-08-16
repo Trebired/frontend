@@ -12,14 +12,15 @@ import {
   type DynamicSidebarLiveOptions,
 } from "./dynamic/runtime/index.js";
 import { bindSidebarLiveSlots } from "./live.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const SIDEBAR_SHELL_SELECTOR = "[data-tbf-sidebar-shell]";
-const SIDEBAR_MINIMIZE_SELECTOR = "[data-tbf-sidebar-minimize][aria-controls]";
-const SIDEBAR_OPEN_SELECTOR = "[data-tbf-sidebar-open][aria-controls]";
-const SIDEBAR_CLOSE_SELECTOR = "[data-tbf-sidebar-close]";
-const SIDEBAR_BOOT_ATTRIBUTE = "data-tbf-sidebar-boot";
-const SIDEBAR_STATE_EVENT = "tbf:sidebar-state";
-const SIDEBAR_STORAGE_PREFIX = "tbf:sidebar:";
+const SIDEBAR_SHELL_SELECTOR = frontendDataSelector("sidebar-shell");
+const SIDEBAR_MINIMIZE_SELECTOR = `${frontendDataSelector("sidebar-minimize")}[aria-controls]`;
+const SIDEBAR_OPEN_SELECTOR = `${frontendDataSelector("sidebar-open")}[aria-controls]`;
+const SIDEBAR_CLOSE_SELECTOR = frontendDataSelector("sidebar-close");
+const SIDEBAR_BOOT_ATTRIBUTE = frontendDataAttr("sidebar-boot");
+const SIDEBAR_STATE_EVENT = frontendEventName("sidebar-state");
+const SIDEBAR_STORAGE_PREFIX = `${frontendEventName("sidebar")}:`;
 
 type SidebarSide = "left" | "right" | string;
 
@@ -54,7 +55,7 @@ function normalizeSide(value: unknown): SidebarSide {
 }
 
 function isPersistent(shell: HTMLElement) {
-  return shell.getAttribute("data-tbf-sidebar-persist") !== "false";
+  return shell.getAttribute(frontendDataAttr("sidebar-persist")) !== "false";
 }
 
 function readSavedMinimized(side: SidebarSide) {
@@ -82,15 +83,15 @@ function applyBodyState(state: SidebarState) {
   const body = typeof document !== "undefined" ? document.body : null;
   if (!body) return;
   const side = String(state.side || "left");
-  body.setAttribute(`data-tbf-sidebar-${side}`, "true");
-  body.setAttribute(`data-tbf-sidebar-${side}-minimized`, state.minimized ? "true" : "false");
-  body.setAttribute(`data-tbf-sidebar-${side}-open`, state.open ? "true" : "false");
+  body.setAttribute(frontendDataAttr(`sidebar-${side}`), "true");
+  body.setAttribute(frontendDataAttr(`sidebar-${side}-minimized`), state.minimized ? "true" : "false");
+  body.setAttribute(frontendDataAttr(`sidebar-${side}-open`), state.open ? "true" : "false");
 }
 
 function syncSidebarButtons(shell: HTMLElement, state: SidebarState) {
   for (const button of minimizeButtons.get(shell) || []) {
     setAriaExpanded(button, !state.minimized);
-    button.setAttribute("data-tbf-sidebar-minimized", state.minimized ? "true" : "false");
+    button.setAttribute(frontendDataAttr("sidebar-minimized"), state.minimized ? "true" : "false");
   }
 }
 
@@ -102,17 +103,17 @@ function applySidebarState(
     minimized: false,
     open: false,
     shell,
-    side: normalizeSide(shell.getAttribute("data-tbf-sidebar-side")),
+    side: normalizeSide(shell.getAttribute(frontendDataAttr("sidebar-side"))),
   };
   const state = {
     ...current,
     ...next,
     shell,
-    side: normalizeSide(shell.getAttribute("data-tbf-sidebar-side") || current.side),
+    side: normalizeSide(shell.getAttribute(frontendDataAttr("sidebar-side")) || current.side),
   };
   shellStates.set(shell, state);
-  shell.setAttribute("data-tbf-sidebar-minimized", state.minimized ? "true" : "false");
-  shell.setAttribute("data-tbf-sidebar-open", state.open ? "true" : "false");
+  shell.setAttribute(frontendDataAttr("sidebar-minimized"), state.minimized ? "true" : "false");
+  shell.setAttribute(frontendDataAttr("sidebar-open"), state.open ? "true" : "false");
   applyBodyState(state);
   syncSidebarButtons(shell, state);
   dispatchSidebarState(state);
@@ -177,12 +178,12 @@ function bindSidebarShell(
   options: SidebarRuntimeOptions = {},
 ) {
   if (!(shell instanceof HTMLElement)) return null;
-  const side = normalizeSide(shell.getAttribute("data-tbf-sidebar-side"));
-  const attrMinimized = shell.getAttribute("data-tbf-sidebar-minimized");
+  const side = normalizeSide(shell.getAttribute(frontendDataAttr("sidebar-side")));
+  const attrMinimized = shell.getAttribute(frontendDataAttr("sidebar-minimized"));
   const minimized = attrMinimized === "true" || (attrMinimized == null && isPersistent(shell) && readSavedMinimized(side));
   const state = applySidebarState(shell, {
       minimized,
-      open: shell.getAttribute("data-tbf-sidebar-open") === "true",
+      open: shell.getAttribute(frontendDataAttr("sidebar-open")) === "true",
   });
   void options;
   return state;
@@ -243,7 +244,7 @@ function bindSidebarCloseButton(button: HTMLElement | null) {
 function closeOpenSidebarFromEvent(event: Event) {
   const target = event.target instanceof Node ? event.target : null;
   if (!target) return;
-  for (const shell of queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}[data-tbf-sidebar-open="true"]`)) {
+  for (const shell of queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}${frontendDataSelector("sidebar-open", "true")}`)) {
     if (shell.contains(target)) continue;
     if (target instanceof Element && target.closest(SIDEBAR_OPEN_SELECTOR)) continue;
     closeSidebar(shell);
@@ -256,7 +257,7 @@ function installSharedSidebarListeners() {
   document.addEventListener("click", closeOpenSidebarFromEvent);
   document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
-      queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}[data-tbf-sidebar-open="true"]`)
+      queryAll<HTMLElement>(document, `${SIDEBAR_SHELL_SELECTOR}${frontendDataSelector("sidebar-open", "true")}`)
       .forEach(closeSidebar);
   });
 }
@@ -278,7 +279,11 @@ function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions 
 }
 
 function createSidebarBootScript(sides: SidebarSide[] = ["left"]): string {
-  const payload = JSON.stringify({ prefix: SIDEBAR_STORAGE_PREFIX, sides }).replace(/</gu, "\\u003c");
+  const payload = JSON.stringify({
+      attrPrefix: frontendDataAttr("sidebar-"),
+      prefix: SIDEBAR_STORAGE_PREFIX,
+      sides,
+  }).replace(/</gu, "\\u003c");
   return [
     "(function(){try{",
     `var config=${payload};`,
@@ -286,7 +291,7 @@ function createSidebarBootScript(sides: SidebarSide[] = ["left"]): string {
     "for(var i=0;i<config.sides.length;i++){",
     "var side=String(config.sides[i]||'left');",
     "var value=storage&&storage.getItem(config.prefix+side+':minimized');",
-    "if(value==='1'||value==='0'){document.body.setAttribute('data-tbf-sidebar-'+side+'-minimized',value==='1'?'true':'false');}",
+    "if(value==='1'||value==='0'){document.body.setAttribute(config.attrPrefix+side+'-minimized',value==='1'?'true':'false');}",
     "}",
     "}catch(e){}})();",
   ].join("");

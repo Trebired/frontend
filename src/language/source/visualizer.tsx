@@ -20,6 +20,7 @@ import {
 } from "./model.js";
 import { source_language_tabs_content } from "./tabs.js";
 import type { SourceLanguageVisualizerProps } from "#2w72xmq6rvza";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function headerCard(model: SourceLanguageScanModel) {
   return card({
@@ -30,7 +31,7 @@ function headerCard(model: SourceLanguageScanModel) {
         <h3>{translate(model.lang, "languages")}</h3>
         {button({
               type: "button",
-              "data-tbf-source-language-reset": "",
+              [frontendDataAttr("source-language-reset")]: "",
               hidden: true,
               className: primitiveTextClassName({ muted: true, right: true, size: "sm" }),
               children: <>{translate(model.lang, "resetFilter")}</>,
@@ -39,7 +40,7 @@ function headerCard(model: SourceLanguageScanModel) {
         className="no-shrink"
         muted
         size="sm"
-        data-tbf-source-language-detected-count=""
+        {...frontendDataAttrs({ "source-language-detected-count": "" })}
         >
         {translate(model.lang, "detected", {
               count: formatCount(
@@ -112,7 +113,7 @@ function sourceLanguageVisualizerRows(model: SourceLanguageScanModel) {
     <Text
     breakWord
     className="lh-xs"
-    data-tbf-source-language-summary-total-bytes={String(safeNumber(scan.total_bytes))}
+    {...frontendDataAttrs({ "source-language-summary-total-bytes": String(safeNumber(scan.total_bytes)) })}
     >
     {formatCompactBytes(scan.total_bytes, model.locale)}
     </Text>
@@ -126,9 +127,9 @@ function sourceLanguageVisualizerRows(model: SourceLanguageScanModel) {
     <Text
     breakWord
     className="lh-xs"
-    data-tbf-source-language-summary-total-lines={String(
-        safeNumber(scan.total_lines && scan.total_lines.code),
-    )}
+    {...frontendDataAttrs({
+          "source-language-summary-total-lines": String(safeNumber(scan.total_lines && scan.total_lines.code)),
+    })}
     >
     {formatCount(scan.total_lines && scan.total_lines.code, model.locale)}
     </Text>
@@ -166,7 +167,7 @@ function readyContent(model: SourceLanguageScanModel) {
     <Stack
     id="repository_scan_ready_content"
     gap="sm"
-    data-tbf-source-language-ready-state={model.hasReadySnapshot ? "available" : "empty"}
+    {...frontendDataAttrs({ "source-language-ready-state": model.hasReadySnapshot ? "available" : "empty" })}
     hidden={model.scanFailed || model.scanPending}
     >
     {!model.scanPending && !model.scanFailed ? (
@@ -189,7 +190,7 @@ function source_language_visualizer(props: SourceLanguageVisualizerProps) {
       id: "repository_visualizer_card",
       "data-repository-scan-visualizer-url": repositoryScanVisualizerUrl,
       "data-repository-visualizer-card": "",
-      "data-tbf-source-language-root": "",
+      [frontendDataAttr("source-language-root")]: "",
       gap: "sm",
       children: (
         <>

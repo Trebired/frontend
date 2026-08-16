@@ -22,34 +22,38 @@ async function verifyFrontendComponents(context) {
 
 async function verifyLayoutStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes("--tbf-layout-bottom-bar-safe-offset: 0px;"));
-  assert.ok(source.includes("--tbf-layout-mobile-bottom-bar-safe-offset: calc("));
-  assert.ok(source.includes("--tbf-layout-bottom-bar-safe-offset: var(--tbf-layout-mobile-bottom-bar-safe-offset);"));
+  assert.ok(source.includes('#{ns.css-var("layout-bottom-bar-safe-offset")}: 0px;'));
+  assert.ok(source.includes('#{ns.css-var("layout-mobile-bottom-bar-safe-offset")}: calc('));
+  assert.ok(
+    source.includes(
+      '#{ns.css-var("layout-bottom-bar-safe-offset")}: var(#{ns.css-var("layout-mobile-bottom-bar-safe-offset")});',
+    ),
+  );
 }
 
 async function verifyTabsStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "inputs", "advanced", "tabs", "styles.scss"), "utf8");
   assert.ok(source.includes('&[aria-selected="true"]'));
-  assert.ok(source.includes('&[data-tbf-active="true"]'));
-  assert.ok(source.includes("var(--tbf-ui-tabs-state-active-bg"));
+  assert.ok(source.includes('&#{ns.data("active", "true")}'));
+  assert.ok(source.includes('var(#{ns.css-var("ui-tabs-state-active-bg")},'));
 }
 
 async function verifyModalStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "modal", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes("--tbf-overlay-modal-backdrop-bg"));
-  assert.ok(source.includes("--tbf-overlay-modal-content-bg"));
-  assert.ok(source.includes("--tbf-overlay-modal-motion-initial-scale"));
+  assert.ok(source.includes('ns.css-var("overlay-modal-backdrop-bg")'));
+  assert.ok(source.includes('ns.css-var("overlay-modal-content-bg")'));
+  assert.ok(source.includes('ns.css-var("overlay-modal-motion-initial-scale")'));
 }
 
 async function verifyTooltipStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "tooltip", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes("--tbf-overlay-tooltip-panel-shadow"));
+  assert.ok(source.includes('ns.css-var("overlay-tooltip-panel-shadow")'));
 }
 
 async function verifyThemeStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "theme", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes('data-tbf-theme-active="true"'));
-  assert.ok(source.includes("--tbf-shell-theme-option-state-current-bg"));
+  assert.ok(source.includes('ns.data("theme-active", "true")'));
+  assert.ok(source.includes('ns.css-var("shell-theme-option-state-current-bg")'));
 }
 
 async function verifyReactEntrypoint(importDist) {

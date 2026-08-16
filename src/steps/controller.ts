@@ -1,6 +1,7 @@
 import { resolveDocumentTarget } from "#er0dlx1gtbzh";
 import { createDisclosure } from "#z2c0jqmjqds4";
 import { renderSharedSteps } from "./dom.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 const lastSteps = new WeakMap();
 const actionControls = new Set<HTMLElement>();
@@ -47,7 +48,7 @@ function setCopyMessage(target, message) {
 
 function open(target) {
   const panel = resolvePanel(target);
-  const disclosure = panel && panel.closest("[data-tbf-disclosure]");
+  const disclosure = panel && panel.closest(frontendDataSelector("disclosure"));
   if (!disclosure) return;
   const controller = createDisclosure(disclosure);
   if (controller) controller.open(false);

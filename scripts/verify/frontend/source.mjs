@@ -61,15 +61,21 @@ async function writeBundlerConfigStyleFixture(rootDir, packageJson) {
   const fixture = path.join(rootDir, ".tmp", "verify-frontend", "config-styles");
   const frontendPackageName = await packageName(rootDir);
   const packageRoot = path.join(fixture, "node_modules", ...frontendPackageName.split("/"));
+  const configDirName = await workspaceConfigDir(rootDir);
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(packageRoot, { recursive: true });
   await fs.cp(path.join(rootDir, "dist"), path.join(packageRoot, "dist"), { recursive: true });
+  await fs.cp(
+    path.join(rootDir, configDirName, "bundler"),
+    path.join(packageRoot, configDirName, "bundler"),
+    { recursive: true },
+  );
   await writeFontsourceFixture(fixture, "inter", ["latin", "latin-ext"], [400, 700], ["normal", "italic"]);
   await fs.writeFile(path.join(packageRoot, "package.json"), JSON.stringify(packageJson, null, 2));
   await writeBundlerConfig(
     fixture,
     frontendPackageName,
-    await workspaceConfigDir(rootDir),
+    configDirName,
     packageJson.version,
   );
   await writeFile(fixture, "src/screen.client.ts", [
@@ -85,7 +91,6 @@ async function writeBundlerConfig(fixture, frontendPackageName, configDirName, p
       "",
       "export default defineConfig({",
       `  forVersion: "${packageVersion}",`,
-      "  prefix: \"verify\",",
       "  assets: {",
       "    fonts: {",
       "      families: {",
@@ -115,7 +120,7 @@ async function assertBundledFrontendCss(result) {
   assert.ok(cssOutput, "expected bundled frontend SCSS output");
   const css = await fs.readFile(cssOutput, "utf8");
   assert.equal(css.includes("--tbf-radius"), true);
-  assert.equal(css.includes("--verify-color-brand: #123456;"), true);
+  assert.equal(css.includes("--tbf-color-brand: #123456;"), true);
   assert.equal(css.includes("@font-face"), true);
   assert.equal(css.includes('font-family: "Inter"'), true);
   assert.equal(css.includes("--tbf-font-family-sans"), true);
@@ -180,8 +185,8 @@ async function verifyNoProductNames(rootDir, sourceDir) {
 
 async function verifyRadiusFallbacks(sourceDir) {
   const tokens = await fs.readFile(path.join(sourceDir, "styles", "tokens.scss"), "utf8");
-  assert.ok(tokens.includes("--tbf-radius: var(--radius-md, 0);"));
-  assert.ok(tokens.includes("--tbf-radius-sm: var(--radius-sm, 0);"));
+  assert.ok(tokens.includes('#{ns.css-var("radius")}: var(--radius-md, 0);'));
+  assert.ok(tokens.includes('#{ns.css-var("radius-sm")}: var(--radius-sm, 0);'));
   const files = await sourceFiles(sourceDir);
   for (const file of files.filter((item) => item.endsWith(".scss"))) {
     const source = await fs.readFile(file, "utf8");

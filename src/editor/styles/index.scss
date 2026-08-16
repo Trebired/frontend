@@ -1,5 +1,6 @@
+@use "@trebired/bundler/namespace" as ns;
 .sticky-widget {
-  background-color: var(--background-surface-2, var(--tbf-surface-muted, transparent));
+  background-color: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
 }
 
 .monaco-diff-editor .editor.original,
@@ -37,12 +38,12 @@
   margin-left: 0 !important;
 }
 
-.tbf-editor-viewer-layout {
+#{ns.class("editor-viewer-layout")} {
   flex-flow: row nowrap;
 }
 
 @media (max-width: 720px) {
-  .tbf-editor-viewer-layout {
+  #{ns.class("editor-viewer-layout")} {
     flex-direction: column;
   }
 }

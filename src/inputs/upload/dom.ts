@@ -1,8 +1,9 @@
 import type { UploadEntry } from "./types.js";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 function uploadSlot(root: HTMLElement, ...slots: string[]) {
   for (const slot of slots) {
-    const found = root.querySelector<HTMLElement>(`[data-tbf-upload-slot="${slot}"]`);
+    const found = root.querySelector<HTMLElement>(frontendDataSelector("upload-slot", slot));
     if (found) return found;
   }
   return null;

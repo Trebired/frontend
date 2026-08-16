@@ -10,6 +10,7 @@ import {
 } from "./selectors.js";
 import { renderSourceLanguageState, seedSourceLanguageTotals } from "./render.js";
 import type { SourceLanguageController, SourceLanguageRuntimeOptions } from "./types.js";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 const sourceControllers = new WeakMap<HTMLElement, SourceLanguageController>();
 
@@ -73,7 +74,7 @@ function handleRowToggle(
   if (!row || !root.contains(row)) return;
   if (target !== row && isInteractiveTarget(target)) return;
   event.preventDefault();
-  const languageId = text(row.getAttribute("data-tbf-source-language-id"));
+  const languageId = text(row.getAttribute(frontendDataAttr("source-language-id")));
   if (!languageId) return;
   if (excluded.has(languageId)) excluded.delete(languageId);
   else excluded.add(languageId);

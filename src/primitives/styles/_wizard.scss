@@ -1,3 +1,4 @@
+@use "@trebired/bundler/namespace" as ns;
 .wizard {
   display: grid;
   align-items: stretch;
@@ -49,7 +50,7 @@ wizard-final-action {
 }
 
 .wizard[data-wizard-ready="true"] .wizard-step {
-  transition: opacity var(--tbf-transition-normal, 240ms) ease;
+  transition: opacity var(#{ns.css-var("transition-normal")}, 240ms) ease;
 }
 
 .wizard-step[data-wizard-step-state="active"] {

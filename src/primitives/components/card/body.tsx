@@ -16,6 +16,7 @@ import {
 } from "#0rl8rpgzssot";
 import { InlineRow, Stack } from "#tlkyab3pczjn";
 import { joinClassNames, toText, wrapTriggerHostNode } from "#6mupcizo1mwq";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const CARD_BODY_DIVIDER_CLASS = "card-body-divider";
 
@@ -33,9 +34,9 @@ function liveCardNode(props: BodyProps, node: ReactNode) {
   if (!kind || !id) return node;
   return (
     <span
-    data-tbf-live-card=""
-    data-tbf-live-id={id}
-    data-tbf-live-kind={kind}
+    {...frontendDataAttrs({ "live-card": "" })}
+    {...frontendDataAttrs({ "live-id": id })}
+    {...frontendDataAttrs({ "live-kind": kind })}
     style={{ display: "contents" }}
     >
     {node}

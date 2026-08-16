@@ -11,6 +11,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 const GRAPH_CARD_ROOT_CLASS = "graph-card-root";
 const GRAPH_FRAME_CLASS = "graph-card-frame bg-canvas";
@@ -107,7 +108,7 @@ function GraphWarning(props) {
       className: primitiveInlineRowClassName(),
       style: {
         alignItems: "center",
-        color: "var(--tbf-status-warning-color, var(--tbf-focus, currentColor))",
+        color: `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`,
         inset: 0,
         justifyContent: "center",
         pointerEvents: "none",

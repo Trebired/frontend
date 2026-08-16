@@ -13,6 +13,7 @@ import type {
   DynamicSidebarStateContext,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
   const spec =
@@ -75,7 +76,7 @@ function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {
           tone: state === "running" ? "green" : "red",
     })}
     data-state={state}
-    data-tbf-sidebar-state-dot=""
+    {...frontendDataAttrs({ "sidebar-state-dot": "" })}
     />
   );
 }

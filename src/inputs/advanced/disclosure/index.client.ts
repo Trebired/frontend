@@ -6,6 +6,7 @@ import {
 } from "#4v0ws2g2hwfc";
 import { resolveDocumentTarget } from "#dqy2d22qyujv";
 import { noop } from "#dqy2d22qyujv";
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type DisclosureController = {
   close: (animate?: boolean) => void;
@@ -17,9 +18,9 @@ type DisclosureController = {
 };
 
 const rootBindings = new WeakMap<HTMLElement, DisclosureController>();
-const DISCLOSURE_ROOT_SELECTOR = "[data-tbf-disclosure]";
-const DISCLOSURE_TRIGGER_SELECTOR = "[data-tbf-disclosure-trigger]";
-const DISCLOSURE_PANEL_SELECTOR = "[data-tbf-disclosure-panel]";
+const DISCLOSURE_ROOT_SELECTOR = frontendDataSelector("disclosure");
+const DISCLOSURE_TRIGGER_SELECTOR = frontendDataSelector("disclosure-trigger");
+const DISCLOSURE_PANEL_SELECTOR = frontendDataSelector("disclosure-panel");
 
 function disclosureParts(root: HTMLElement) {
   const trigger = root.querySelector(DISCLOSURE_TRIGGER_SELECTOR);

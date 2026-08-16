@@ -1,12 +1,13 @@
 import { escapeHtml, jsonScriptPayload, toText } from "./text.js";
 import { uploadModel } from "./model.js";
 import type { UploadFieldOptions } from "./types.js";
+import { frontendClassName, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
 
 const directoryPickerAttrs = " webkitdirectory directory";
 
 function iconHtml(spec: string) {
   return spec
-  ? `<i aria-hidden="true" class="tbf-icon icon-glyph" data-tbf-icon="${escapeHtml(spec)}"></i>`
+  ? `<i aria-hidden="true" class="${frontendClassName("icon")} icon-glyph"${data("icon", spec)}></i>`
   : "";
 }
 
@@ -17,6 +18,12 @@ function attr(name: string, value: unknown) {
 
 function boolAttr(name: string, enabled: boolean) {
   return enabled ? ` ${name}` : "";
+}
+
+function data(name: string, value: unknown = "") {
+  const attrName = frontendDataAttr(name);
+  const text = toText(value);
+  return text ? ` ${attrName}="${escapeHtml(text)}"` : ` ${attrName}`;
 }
 
 function uploadConfigPayload(model: ReturnType<typeof uploadModel>) {
@@ -49,19 +56,19 @@ function uploadConfigPayload(model: ReturnType<typeof uploadModel>) {
 function nativeInputs(model: ReturnType<typeof uploadModel>) {
   return [
     [
-      '<input class="tbf-upload__input" data-tbf-upload-slot="native-file"',
+      `<input class="${frontendElementClass("upload", "input")}"${data("upload-slot", "native-file")}`,
       `id="${escapeHtml(model.id)}_input" type="file" name="${escapeHtml(model.name)}"`,
       `${boolAttr("multiple", model.allowMultiple)}${attr("accept", model.accept)}>`,
     ].join(" "),
     model.allowDirectory || model.allowMixedPicker
     ? [
-      '<input class="tbf-upload__input" data-tbf-upload-slot="native-directory"',
+      `<input class="${frontendElementClass("upload", "input")}"${data("upload-slot", "native-directory")}`,
       `id="${escapeHtml(model.id)}_directory" type="file" name="${escapeHtml(model.name)}"`,
       `multiple${directoryPickerAttrs}>`,
     ].join(" ")
     : "",
     model.name && model.crop
-    ? `<input type="hidden" name="${escapeHtml(model.name)}_crop" value="" data-tbf-upload-slot="crop-field">`
+    ? `<input type="hidden" name="${escapeHtml(model.name)}_crop" value=""${data("upload-slot", "crop-field")}>`
     : "",
   ].join("");
 }
@@ -71,16 +78,16 @@ function preview(model: ReturnType<typeof uploadModel>) {
   const src = attr("src", model.previewUrl);
   return [
     [
-      '<div class="tbf-upload__preview" data-tbf-upload-slot="preview"',
-      `data-tbf-upload-preview-shape="${escapeHtml(model.previewShape)}"`,
+      `<div class="${frontendElementClass("upload", "preview")}"${data("upload-slot", "preview")}`,
+      data("upload-preview-shape", model.previewShape),
       `${model.previewUrl ? "" : " hidden"}>`,
     ].join(" "),
     [
-      '<img class="tbf-upload__preview-image" data-tbf-upload-slot="preview-image"',
+      `<img class="${frontendElementClass("upload", "preview-image")}"${data("upload-slot", "preview-image")}`,
       `alt="${escapeHtml(model.previewAlt)}"${src}${model.previewUrl ? "" : " hidden"}>`,
     ].join(" "),
     [
-      '<span class="tbf-upload__preview-empty" data-tbf-upload-slot="preview-empty"',
+      `<span class="${frontendElementClass("upload", "preview-empty")}"${data("upload-slot", "preview-empty")}`,
       `${model.previewUrl ? " hidden" : ""}>${escapeHtml(model.previewEmptyText)}</span>`,
     ].join(" "),
     "</div>",
@@ -108,7 +115,7 @@ function triggerButtons(model: ReturnType<typeof uploadModel>) {
 
 function uploadButton(slot: string, label: string, iconSpec: string) {
   return [
-    `<button class="btn" type="button" data-tbf-upload-slot="${escapeHtml(slot)}">`,
+    `<button class="btn" type="button"${data("upload-slot", slot)}>`,
     iconHtml(iconSpec),
     `<span>${escapeHtml(label)}</span>`,
     "</button>",
@@ -119,7 +126,7 @@ function uploadClearButton(model: ReturnType<typeof uploadModel>) {
   const hidden = model.canClearCurrentPreview ? "" : " hidden";
   return [
     '<button class="btn" type="button"',
-    `data-tbf-upload-slot="clear"${hidden}>`,
+    `${data("upload-slot", "clear")}${hidden}>`,
     iconHtml(model.clearIconSpec),
     `<span>${escapeHtml(model.clearLabel)}</span>`,
     "</button>",
@@ -128,13 +135,13 @@ function uploadClearButton(model: ReturnType<typeof uploadModel>) {
 
 function uploadHintHtml(value: string, slot?: string) {
   const escapedValue = escapeHtml(value);
-  const slotAttribute = slot ? ` data-tbf-upload-slot="${escapeHtml(slot)}"` : "";
-  return `<span class="tbf-upload__hint"${slotAttribute} title="${escapedValue}">${escapedValue}</span>`;
+  const slotAttribute = slot ? data("upload-slot", slot) : "";
+  return `<span class="${frontendElementClass("upload", "hint")}"${slotAttribute} title="${escapedValue}">${escapedValue}</span>`;
 }
 
 function uploadFilenameHtml(value: string) {
   const escapedValue = escapeHtml(value);
-  return `<span class="tbf-upload__filename" data-tbf-upload-slot="filename">${escapedValue}</span>`;
+  return `<span class="${frontendElementClass("upload", "filename")}"${data("upload-slot", "filename")}>${escapedValue}</span>`;
 }
 
 function helperLines(model: ReturnType<typeof uploadModel>) {
@@ -143,7 +150,7 @@ function helperLines(model: ReturnType<typeof uploadModel>) {
     model.dropHint ? uploadHintHtml(model.dropHint) : "",
     model.helperText ? uploadHintHtml(model.helperText) : "",
     model.formatsText ? uploadHintHtml(model.formatsText, "formats") : "",
-    '<ul class="tbf-upload__list" data-tbf-upload-slot="list"></ul>',
+    `<ul class="${frontendElementClass("upload", "list")}"${data("upload-slot", "list")}></ul>`,
   ].join("");
 }
 
@@ -152,19 +159,19 @@ function emptyToggle(model: ReturnType<typeof uploadModel>) {
   const value = model.emptyToggle.checked === true
   ? toText(model.emptyToggle.value, "1")
   : "0";
-  return `<input type="hidden" name="${escapeHtml(model.emptyToggle.name)}" value="${escapeHtml(value)}" data-tbf-upload-slot="empty-toggle">`;
+  return `<input type="hidden" name="${escapeHtml(model.emptyToggle.name)}" value="${escapeHtml(value)}"${data("upload-slot", "empty-toggle")}>`;
 }
 
 function uploadFieldHtml(options: UploadFieldOptions) {
   const model = uploadModel(options);
   return [
-    `<script data-tbf-upload-config hidden type="application/json">${jsonScriptPayload(uploadConfigPayload(model))}</script>`,
+    `<script${data("upload-config")} hidden type="application/json">${jsonScriptPayload(uploadConfigPayload(model))}</script>`,
     nativeInputs(model),
-    '<div class="tbf-upload__surface" data-tbf-upload-slot="shell">',
+    `<div class="${frontendElementClass("upload", "surface")}"${data("upload-slot", "shell")}>`,
     preview(model),
-    '<div class="tbf-upload__content">',
-    `<div class="tbf-upload__actions">${triggerButtons(model)}</div>`,
-    `<div class="tbf-upload__meta">${helperLines(model)}</div>`,
+    `<div class="${frontendElementClass("upload", "content")}">`,
+    `<div class="${frontendElementClass("upload", "actions")}">${triggerButtons(model)}</div>`,
+    `<div class="${frontendElementClass("upload", "meta")}">${helperLines(model)}</div>`,
     "</div>",
     "</div>",
     emptyToggle(model),
@@ -175,10 +182,10 @@ function createUploadField(options: UploadFieldOptions) {
   const model = uploadModel(options);
   const root = document.createElement("div");
   root.id = model.id;
-  root.className = "tbf-upload";
-  root.setAttribute("data-tbf-upload", "");
-  root.setAttribute("data-tbf-upload-empty", model.emptyLabel);
-  if (model.allowDrop) root.setAttribute("data-tbf-upload-drop", "true");
+  root.className = frontendClassName("upload");
+  root.setAttribute(frontendDataAttr("upload"), "");
+  root.setAttribute(frontendDataAttr("upload-empty"), model.emptyLabel);
+  if (model.allowDrop) root.setAttribute(frontendDataAttr("upload-drop"), "true");
   root.innerHTML = uploadFieldHtml({ ...options, id: model.id });
   return root;
 }

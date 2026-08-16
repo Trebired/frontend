@@ -4,8 +4,9 @@ import {
   resolveDocumentTarget,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
-const LAYER_ROOT_ID = "tbf_layer_root";
+const LAYER_ROOT_ID = `${FRONTEND_PREFIX}_layer_root`;
 const Z_INDEX_STEP = 10;
 const resolvedZIndexElements = new Set<HTMLElement>();
 let fullscreenListenerInstalled = false;
@@ -28,8 +29,8 @@ function ensureLayerRoot() {
 
   const root = document.createElement("div");
   root.id = LAYER_ROOT_ID;
-  root.className = "tbf-layer-root";
-  root.setAttribute("data-tbf-layer-root", "");
+  root.className = frontendClassName("layer-root");
+  root.setAttribute(frontendDataAttr("layer-root"), "");
   container?.appendChild(root);
   installFullscreenLayerListener();
   return root;
@@ -92,7 +93,7 @@ function resolveElementZIndex(element: HTMLElement | null, fallback = null) {
   if (!element) return fallback;
   const direct = readComputedZIndex(element);
   if (direct !== null) return direct;
-  const attrValue = parseNumber(element.getAttribute("data-tbf-z-resolved"));
+  const attrValue = parseNumber(element.getAttribute(frontendDataAttr("z-resolved")));
   return attrValue === null ? fallback : attrValue;
 }
 
@@ -121,7 +122,7 @@ function resolveZIndexSpec(element: HTMLElement | null, options: ZIndexOptions =
   if (behind !== null) return behind - Z_INDEX_STEP;
   const ahead = resolveReferenceValue(options.ahead, element, fallback);
   if (ahead !== null) return ahead + Z_INDEX_STEP;
-  const rawSpec = String(element?.getAttribute("data-tbf-z") || "").trim();
+  const rawSpec = String(element?.getAttribute(frontendDataAttr("z")) || "").trim();
   const direct = parseNumber(rawSpec);
   if (direct !== null) return direct;
   const reference = rawSpec ? resolveReferenceValue(rawSpec, element, fallback) : null;
@@ -132,7 +133,7 @@ function applyZIndex(element: HTMLElement | null, options: ZIndexOptions = {}) {
   if (!element) return null;
   const value = resolveZIndexSpec(element, options);
   element.style.zIndex = String(value);
-  element.setAttribute("data-tbf-z-resolved", String(value));
+  element.setAttribute(frontendDataAttr("z-resolved"), String(value));
   resolvedZIndexElements.add(element);
   return value;
 }
@@ -157,7 +158,7 @@ function promoteZIndex(element: HTMLElement | null, options: ZIndexOptions = {})
   const max = highestResolvedZIndex(element, fallback);
   const value = max === null ? fallback : Math.max(fallback, max + Z_INDEX_STEP);
   element.style.zIndex = String(value);
-  element.setAttribute("data-tbf-z-resolved", String(value));
+  element.setAttribute(frontendDataAttr("z-resolved"), String(value));
   resolvedZIndexElements.add(element);
   return value;
 }
@@ -165,12 +166,12 @@ function promoteZIndex(element: HTMLElement | null, options: ZIndexOptions = {})
 function clearZIndex(element: HTMLElement | null) {
   if (!element) return;
   element.style.removeProperty("z-index");
-  element.removeAttribute("data-tbf-z-resolved");
+  element.removeAttribute(frontendDataAttr("z-resolved"));
   resolvedZIndexElements.delete(element);
 }
 
 function bindPortals(root: BindRoot = document) {
-  queryAll<HTMLElement>(root, "[data-tbf-portal]").forEach((element) => {
+  queryAll<HTMLElement>(root, frontendDataSelector("portal")).forEach((element) => {
       mountLayerPortalElement(element);
   });
 }

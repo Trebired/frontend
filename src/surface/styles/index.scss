@@ -1,207 +1,223 @@
-.tbf-button {
-  --tbf-surf-btn-current-icon: var(
-    --tbf-surf-btn-slot-icon,
-    var(--tbf-ui-btn-slot-icon, currentColor)
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("button")} {
+  #{ns.css-var("surf-btn-current-icon")}: var(
+    #{ns.css-var("surf-btn-slot-icon")},
+    var(#{ns.css-var("ui-btn-slot-icon")}, currentColor)
   );
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--tbf-surf-btn-root-gap, var(--tbf-ui-btn-root-gap, 8px));
-  min-height: var(--tbf-surf-btn-root-min-h, var(--tbf-surf-btn-root-height, var(--tbf-ui-btn-root-height, 28px)));
+  gap: var(#{ns.css-var("surf-btn-root-gap")}, var(#{ns.css-var("ui-btn-root-gap")}, 8px));
+  min-height: var(#{ns.css-var("surf-btn-root-min-h")}, var(#{ns.css-var("surf-btn-root-height")}, var(#{ns.css-var("ui-btn-root-height")}, 28px)));
   box-sizing: border-box;
-  padding: var(--tbf-surf-btn-root-padding, var(--tbf-ui-btn-root-padding, 0 12px));
-  padding-block: var(--tbf-surf-btn-root-py, var(--tbf-ui-btn-root-py, 0));
+  padding: var(#{ns.css-var("surf-btn-root-padding")}, var(#{ns.css-var("ui-btn-root-padding")}, 0 12px));
+  padding-block: var(#{ns.css-var("surf-btn-root-py")}, var(#{ns.css-var("ui-btn-root-py")}, 0));
   border: var(
-    --tbf-surf-btn-root-border,
-    var(--tbf-ui-btn-root-border, var(--border-width) solid var(--border-surface-2))
+    #{ns.css-var("surf-btn-root-border")},
+    var(#{ns.css-var("ui-btn-root-border")}, var(--border-width) solid var(--border-surface-2))
   );
   border-radius: var(
-    --tbf-surf-btn-root-radius,
-    var(--tbf-ui-btn-root-radius, var(--radius-md, var(--tbf-radius, 0)))
+    #{ns.css-var("surf-btn-root-radius")},
+    var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)))
   );
-  color: var(--tbf-surf-btn-root-color, var(--tbf-ui-btn-root-color, var(--text-color)));
-  background: var(--tbf-surf-btn-root-bg, var(--tbf-ui-btn-root-bg, transparent));
+  color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(--text-color)));
+  background: var(#{ns.css-var("surf-btn-root-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  font-family: var(--tbf-surf-btn-root-font-family, var(--tbf-font-sans, "Inter", sans-serif));
-  font-size: var(--tbf-surf-btn-root-font-size, var(--tbf-ui-btn-root-font-size, 12px));
-  font-weight: var(--tbf-surf-btn-root-font-weight, var(--tbf-ui-btn-root-font-weight, 600));
+  font-family: var(#{ns.css-var("surf-btn-root-font-family")}, var(#{ns.css-var("font-sans")}, "Inter", sans-serif));
+  font-size: var(#{ns.css-var("surf-btn-root-font-size")}, var(#{ns.css-var("ui-btn-root-font-size")}, 12px));
+  font-weight: var(#{ns.css-var("surf-btn-root-font-weight")}, var(#{ns.css-var("ui-btn-root-font-weight")}, 600));
   line-height: 1.15;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.tbf-button:hover,
-.tbf-button[aria-pressed="true"],
-.tbf-button[data-tbf-active="true"] {
-  --tbf-surf-btn-current-icon: var(
-    --tbf-surf-btn-state-hover-icon,
-    var(--tbf-ui-btn-state-hover-icon, currentColor)
+#{ns.class("button")}:hover,
+
+#{ns.class("button")}[aria-pressed="true"],
+
+#{ns.class("button")}#{ns.data("active", "true")} {
+  #{ns.css-var("surf-btn-current-icon")}: var(
+    #{ns.css-var("surf-btn-state-hover-icon")},
+    var(#{ns.css-var("ui-btn-state-hover-icon")}, currentColor)
   );
-  border-color: var(--tbf-surf-btn-state-hover-border, var(--tbf-ui-btn-state-hover-border, currentColor));
-  color: var(--tbf-surf-btn-state-hover-color, var(--tbf-ui-btn-state-hover-color, currentColor));
+  border-color: var(#{ns.css-var("surf-btn-state-hover-border")}, var(#{ns.css-var("ui-btn-state-hover-border")}, currentColor));
+  color: var(#{ns.css-var("surf-btn-state-hover-color")}, var(#{ns.css-var("ui-btn-state-hover-color")}, currentColor));
   background: var(
-    --tbf-surf-btn-state-hover-bg,
-    var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+    #{ns.css-var("surf-btn-state-hover-bg")},
+    var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
   );
 }
 
-.tbf-button:disabled,
-.tbf-button[disabled],
-.tbf-button.disabled {
-  opacity: var(--tbf-surf-btn-state-disabled-opacity, var(--tbf-ui-btn-state-disabled-opacity, 0.55));
+#{ns.class("button")}:disabled,
+
+#{ns.class("button")}[disabled],
+
+#{ns.class("button")}.disabled {
+  opacity: var(#{ns.css-var("surf-btn-state-disabled-opacity")}, var(#{ns.css-var("ui-btn-state-disabled-opacity")}, 0.55));
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.tbf-button > i,
-.tbf-button > svg,
-.tbf-button > i svg,
-.tbf-button > [data-icon],
-.tbf-button > [data-icon] svg {
-  color: var(--tbf-surf-btn-current-icon);
+#{ns.class("button")} > i,
+
+#{ns.class("button")} > svg,
+
+#{ns.class("button")} > i svg,
+
+#{ns.class("button")} > [data-icon],
+
+#{ns.class("button")} > [data-icon] svg {
+  color: var(#{ns.css-var("surf-btn-current-icon")});
   flex: 0 0 auto;
 }
 
-.tbf-button--strong {
-  --tbf-surf-btn-current-icon: var(
-    --tbf-surf-btn-tone-highlight-icon,
-    var(--tbf-ui-btn-tone-highlight-icon, currentColor)
+#{ns.modifier("button", "strong")} {
+  #{ns.css-var("surf-btn-current-icon")}: var(
+    #{ns.css-var("surf-btn-tone-highlight-icon")},
+    var(#{ns.css-var("ui-btn-tone-highlight-icon")}, currentColor)
   );
   border-color: var(
-    --tbf-surf-btn-tone-highlight-border,
-    var(--tbf-ui-btn-tone-highlight-border, currentColor)
+    #{ns.css-var("surf-btn-tone-highlight-border")},
+    var(#{ns.css-var("ui-btn-tone-highlight-border")}, currentColor)
   );
   color: var(
-    --tbf-surf-btn-tone-highlight-color,
-    var(--tbf-ui-btn-tone-highlight-color, currentColor)
+    #{ns.css-var("surf-btn-tone-highlight-color")},
+    var(#{ns.css-var("ui-btn-tone-highlight-color")}, currentColor)
   );
   background: var(
-    --tbf-surf-btn-tone-highlight-bg,
-    var(--tbf-ui-btn-tone-highlight-bg, var(--tbf-ui-btn-root-bg, transparent))
+    #{ns.css-var("surf-btn-tone-highlight-bg")},
+    var(#{ns.css-var("ui-btn-tone-highlight-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
   );
 }
 
-.tbf-button--strong:hover,
-.tbf-button--strong[aria-pressed="true"],
-.tbf-button--strong[data-tbf-active="true"] {
-  --tbf-surf-btn-current-icon: var(
-    --tbf-surf-btn-tone-highlight-state-hover-icon,
-    var(--tbf-ui-btn-tone-highlight-state-hover-icon, currentColor)
+#{ns.modifier("button", "strong")}:hover,
+
+#{ns.modifier("button", "strong")}[aria-pressed="true"],
+
+#{ns.modifier("button", "strong")}#{ns.data("active", "true")} {
+  #{ns.css-var("surf-btn-current-icon")}: var(
+    #{ns.css-var("surf-btn-tone-highlight-state-hover-icon")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-icon")}, currentColor)
   );
   border-color: var(
-    --tbf-surf-btn-tone-highlight-state-hover-border,
-    var(--tbf-ui-btn-tone-highlight-state-hover-border, currentColor)
+    #{ns.css-var("surf-btn-tone-highlight-state-hover-border")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-border")}, currentColor)
   );
   color: var(
-    --tbf-surf-btn-tone-highlight-state-hover-color,
-    var(--tbf-ui-btn-tone-highlight-state-hover-color, currentColor)
+    #{ns.css-var("surf-btn-tone-highlight-state-hover-color")},
+    var(#{ns.css-var("ui-btn-tone-highlight-state-hover-color")}, currentColor)
   );
   background: var(
-    --tbf-surf-btn-tone-highlight-state-hover-bg,
+    #{ns.css-var("surf-btn-tone-highlight-state-hover-bg")},
     var(
-      --tbf-ui-btn-tone-highlight-state-hover-bg,
-      var(--tbf-ui-btn-state-hover-bg, var(--tbf-ui-btn-root-bg, transparent))
+      #{ns.css-var("ui-btn-tone-highlight-state-hover-bg")},
+      var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
     )
   );
 }
 
-.tbf-button--sm {
-  min-height: var(--tbf-surf-btn-sizes-sm-height, var(--tbf-ui-btn-sizes-sm-height, 24px));
-  padding-inline: var(--tbf-surf-btn-sizes-sm-px, var(--tbf-ui-btn-sizes-sm-px, 9px));
-  font-size: var(--tbf-surf-btn-sizes-sm-font-size, var(--tbf-ui-btn-sizes-sm-font-size, 11px));
+#{ns.modifier("button", "sm")} {
+  min-height: var(#{ns.css-var("surf-btn-sizes-sm-height")}, var(#{ns.css-var("ui-btn-sizes-sm-height")}, 24px));
+  padding-inline: var(#{ns.css-var("surf-btn-sizes-sm-px")}, var(#{ns.css-var("ui-btn-sizes-sm-px")}, 9px));
+  font-size: var(#{ns.css-var("surf-btn-sizes-sm-font-size")}, var(#{ns.css-var("ui-btn-sizes-sm-font-size")}, 11px));
 }
 
-.tbf-button--lg {
-  min-height: var(--tbf-surf-btn-sizes-lg-height, var(--tbf-ui-btn-sizes-lg-height, 34px));
-  padding-inline: var(--tbf-surf-btn-sizes-lg-px, var(--tbf-ui-btn-sizes-lg-px, 14px));
-  font-size: var(--tbf-surf-btn-sizes-lg-font-size, var(--tbf-ui-btn-sizes-lg-font-size, 13px));
+#{ns.modifier("button", "lg")} {
+  min-height: var(#{ns.css-var("surf-btn-sizes-lg-height")}, var(#{ns.css-var("ui-btn-sizes-lg-height")}, 34px));
+  padding-inline: var(#{ns.css-var("surf-btn-sizes-lg-px")}, var(#{ns.css-var("ui-btn-sizes-lg-px")}, 14px));
+  font-size: var(#{ns.css-var("surf-btn-sizes-lg-font-size")}, var(#{ns.css-var("ui-btn-sizes-lg-font-size")}, 13px));
 }
 
-.tbf-card,
-[data-tbf-card] {
+#{ns.class("card")},
+
+#{ns.data("card")} {
   min-width: 0;
   box-sizing: border-box;
-  border: var(--tbf-surf-card-root-border, var(--border-width) solid var(--border-surface-1));
-  border-radius: var(--tbf-surf-card-root-radius, var(--radius-lg, var(--tbf-radius, 0)));
-  color: var(--tbf-surf-card-root-color, var(--tbf-text, #000));
-  background: var(--tbf-surf-card-root-bg, var(--background-page, var(--tbf-page, #fff)));
+  border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
+  border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
+  color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));
 }
 
-.tbf-card.card,
-.card[data-tbf-card] {
-  background: var(--tbf-surf-card-root-bg, var(--background-page, var(--tbf-page, #fff)));
+#{ns.class("card")}.card,
+
+.card#{ns.data("card")} {
+  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));
 }
 
-.tbf-card[data-tbf-interactive="true"]:hover {
-  border-color: var(--tbf-surf-card-state-hover-border, var(--tbf-focus, #000));
+#{ns.class("card")}#{ns.data("interactive", "true")}:hover {
+  border-color: var(#{ns.css-var("surf-card-state-hover-border")}, var(#{ns.css-var("focus")}, #000));
 }
 
-.tbf-card__header,
-.tbf-card__body,
-.tbf-card__footer {
+#{ns.element-class("card", "header")},
+
+#{ns.element-class("card", "body")},
+
+#{ns.element-class("card", "footer")} {
   min-width: 0;
   box-sizing: border-box;
-  padding: var(--tbf-surf-card-section-padding, var(--tbf-surf-card-root-padding, 12px));
+  padding: var(#{ns.css-var("surf-card-section-padding")}, var(#{ns.css-var("surf-card-root-padding")}, 12px));
 }
 
-.tbf-card__header,
-.tbf-card__footer {
+#{ns.element-class("card", "header")},
+
+#{ns.element-class("card", "footer")} {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--tbf-gap-sm, 8px);
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
 }
 
-.tbf-card__header {
-  border-block-end: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+#{ns.element-class("card", "header")} {
+  border-block-end: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
 }
 
-.tbf-card__footer {
-  border-block-start: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+#{ns.element-class("card", "footer")} {
+  border-block-start: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
 }
 
-.tbf-canvas-panel {
+#{ns.class("canvas-panel")} {
   display: flex;
   min-width: 0;
   min-height: 0;
   flex-direction: column;
-  border: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
-  border-radius: var(--tbf-radius, 0);
-  background: var(--tbf-surface, #fff);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border-radius: var(#{ns.css-var("radius")}, 0);
+  background: var(#{ns.css-var("surface")}, #fff);
 }
 
-.tbf-canvas-panel__header {
+#{ns.element-class("canvas-panel", "header")} {
   display: flex;
   min-width: 0;
   align-items: center;
   justify-content: space-between;
-  gap: var(--tbf-gap-sm, 8px);
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
   padding: 10px 12px;
-  border-block-end: var(--tbf-border-width, 1px) solid var(--tbf-border, #000);
+  border-block-end: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
 }
 
-.tbf-canvas-panel__titles {
+#{ns.element-class("canvas-panel", "titles")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 2px;
 }
 
-.tbf-canvas-panel__titles span {
-  color: var(--tbf-text-muted, #666);
+#{ns.element-class("canvas-panel", "titles")} span {
+  color: var(#{ns.css-var("text-muted")}, #666);
   font-size: 0.9rem;
 }
 
-.tbf-canvas-panel__actions {
+#{ns.element-class("canvas-panel", "actions")} {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
   gap: 6px;
 }
 
-.tbf-canvas-panel__body {
+#{ns.element-class("canvas-panel", "body")} {
   min-width: 0;
   min-height: 0;
   flex: 1 1 auto;

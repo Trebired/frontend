@@ -15,6 +15,10 @@ import {
   normalizeIconAliasSpec,
 } from "#rqcj8y6keks2";
 import { resolveForVersion } from "@trebired/utils";
+import {
+  FRONTEND_PREFIX,
+  frontendDataAttr,
+} from "#5vbaqj4pirp3";
 import type {
   NormalizedFrontendConfig,
   FrontendAssetsConfig,
@@ -31,7 +35,7 @@ type NormalizeOptions = {
 
 const FRONTEND_CONFIG_PATH = frontendConfigPath();
 
-const THEME_MODE_ATTRIBUTE = "data-tbf-theme";
+const THEME_MODE_ATTRIBUTE = frontendDataAttr("theme");
 
 const SUPPORTED_ICON_PACKS: FrontendIconPack[] = ["remixicon", "simple-icons"];
 
@@ -64,7 +68,6 @@ const TOP_LEVEL_FIELDS = [
   "components",
   "design",
   "forVersion",
-  "prefix",
   "runtime",
   "systems",
 ];
@@ -113,7 +116,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         semantics: Object.freeze({}),
     }),
     forVersion: PACKAGE_VERSION,
-    prefix: "tbf",
+    prefix: FRONTEND_PREFIX,
     runtime: Object.freeze({
         layer: Object.freeze({}),
         layout: Object.freeze({}),
@@ -140,14 +143,6 @@ function assertKnownFields(
       throw invalidConfig(`${pathLabel}.${key} is not supported`);
     }
   }
-}
-
-function normalizePrefix(value: unknown): string {
-  const prefix = String(value || DEFAULT_FRONTEND_CONFIG.prefix).trim();
-  if (!/^[a-z][a-z0-9_-]*$/iu.test(prefix)) {
-    throw invalidConfig("prefix must start with a letter and contain only letters, numbers, underscores, or hyphens");
-  }
-  return prefix;
 }
 
 function normalizeEndpoint(value: unknown): string {
@@ -268,7 +263,7 @@ function normalizeFrontendConfig(
     components: normalizeComponentsConfig(source.components),
     design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
     forVersion: normalizeForVersion(source, options),
-    prefix: normalizePrefix(source.prefix),
+    prefix: DEFAULT_FRONTEND_CONFIG.prefix,
     runtime,
     systems: normalizeSystems(source.systems),
   };

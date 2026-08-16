@@ -16,6 +16,7 @@ import type {
   PromptOptions,
 } from "./types.js";
 import { toText as text } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttr, frontendElementClass, frontendModifierClass } from "#5vbaqj4pirp3";
 
 function finishDialog<T>(
   stack: HTMLElement,
@@ -24,8 +25,8 @@ function finishDialog<T>(
   value: T,
   timeoutId?: number,
 ) {
-  if (element.hasAttribute("data-tbf-dialog-resolved")) return;
-  element.setAttribute("data-tbf-dialog-resolved", "true");
+  if (element.hasAttribute(frontendDataAttr("dialog-resolved"))) return;
+  element.setAttribute(frontendDataAttr("dialog-resolved"), "true");
   if (timeoutId !== undefined) window.clearTimeout(timeoutId);
   hideFlashElement(stack, element);
   resolve(value);
@@ -48,11 +49,11 @@ function confirm(message: unknown, description = "", options: ConfirmOptions = {
       const controls = createDialogFlash(model.type, model.title, model.description, {
           progressTone: model.progressTone,
       });
-      const body = controls.element.querySelector(".tbf-flash__body");
+      const body = controls.element.querySelector(`.${frontendElementClass("flash", "body")}`);
       const actions = document.createElement("div");
-      actions.className = "tbf-flash__actions";
-      const cancel = makeButton(model.cancelText, "tbf-button");
-      const ok = makeButton(model.confirmButtonText, "tbf-button tbf-button--strong");
+      actions.className = frontendElementClass("flash", "actions");
+      const cancel = makeButton(model.cancelText, frontendClassName("button"));
+      const ok = makeButton(model.confirmButtonText, `${frontendClassName("button")} ${frontendModifierClass("button", "strong")}`);
       const input = createConfirmInput(model, ok);
       if (input) body?.appendChild(input);
       actions.append(cancel, ok);
@@ -85,7 +86,7 @@ function createConfirmInput(options: ConfirmModel, ok: HTMLButtonElement) {
   if (options.confirmMode !== "text" || !confirmationText) return null;
   ok.disabled = true;
   const input = document.createElement("input");
-  input.className = "tbf-input";
+  input.className = frontendClassName("input");
   input.type = "text";
   input.autocomplete = "off";
   input.placeholder = options.placeholder || confirmationText;
@@ -103,7 +104,7 @@ function prompt(message: unknown, description = "", options: PromptOptions = {})
           progressTone: options.progressTone || options.progressType || "info",
       });
       const form = createPromptForm(options);
-      controls.element.querySelector(".tbf-flash__body")?.appendChild(form);
+      controls.element.querySelector(`.${frontendElementClass("flash", "body")}`)?.appendChild(form);
       stack.appendChild(controls.element);
       const timeoutRef: { id?: number } = {};
       const finishPromptDialog = createDialogFinisher(stack, controls.element, resolve, timeoutRef);
@@ -116,16 +117,16 @@ function prompt(message: unknown, description = "", options: PromptOptions = {})
 
 function createPromptForm(options: PromptOptions) {
   const form = document.createElement("form");
-  form.className = "tbf-flash__form";
+  form.className = frontendElementClass("flash", "form");
   const input = document.createElement("input");
-  input.className = "tbf-input";
+  input.className = frontendClassName("input");
   input.name = "value";
   input.placeholder = options.placeholder || "";
   input.value = options.value || "";
   const actions = document.createElement("div");
-  actions.className = "tbf-flash__actions";
+  actions.className = frontendElementClass("flash", "actions");
   actions.append(
-    makeButton(options.cancelText || "Cancel", "tbf-button"),
+    makeButton(options.cancelText || "Cancel", frontendClassName("button")),
     submitButton(options.submitText || "OK"),
   );
   form.append(input, actions);
@@ -133,7 +134,7 @@ function createPromptForm(options: PromptOptions) {
 }
 
 function submitButton(label: string) {
-  const button = makeButton(label, "tbf-button tbf-button--strong");
+  const button = makeButton(label, `${frontendClassName("button")} ${frontendModifierClass("button", "strong")}`);
   button.type = "submit";
   return button;
 }
@@ -143,7 +144,7 @@ function bindPromptControls(
   finish: (value: string | null) => void,
 ) {
   const input = form.querySelector<HTMLInputElement>("input");
-  const cancel = form.querySelector<HTMLButtonElement>(".tbf-button:not(.tbf-button--strong)");
+  const cancel = form.querySelector<HTMLButtonElement>(`.${frontendClassName("button")}:not(.${frontendModifierClass("button", "strong")})`);
   form.addEventListener("submit", (event) => {
       event.preventDefault();
       finish(input?.value.trim() || null);
@@ -153,7 +154,7 @@ function bindPromptControls(
 
 function revealDialog(stack: HTMLElement, element: HTMLElement, focusTarget: HTMLElement | null) {
   window.requestAnimationFrame(() => {
-      element.setAttribute("data-tbf-visible", "true");
+      element.setAttribute(frontendDataAttr("visible"), "true");
       focusTarget?.focus();
       if (focusTarget instanceof HTMLInputElement) focusTarget.select();
       layoutFlashStack(stack);
@@ -172,15 +173,15 @@ function confirmationVariantAttrs(input: ConfirmationAttrsInput) {
   const variant = text(item.variant).toLowerCase();
   const attrs: Record<string, string> = {};
   if (!variant) return attrs;
-  attrs["data-tbf-confirm-variant"] = variant;
+  attrs[frontendDataAttr("confirm-variant")] = variant;
   const mode = text(item.mode).toLowerCase();
   const target = text(item.target);
   const subject = text(item.subject);
   const confirmationText = text(item.confirmationText);
-  if (mode) attrs["data-tbf-confirm-mode"] = mode;
-  if (target) attrs["data-tbf-confirm-target"] = target;
-  if (subject) attrs["data-tbf-confirm-subject"] = subject;
-  if (confirmationText) attrs["data-tbf-confirm-text"] = confirmationText;
+  if (mode) attrs[frontendDataAttr("confirm-mode")] = mode;
+  if (target) attrs[frontendDataAttr("confirm-target")] = target;
+  if (subject) attrs[frontendDataAttr("confirm-subject")] = subject;
+  if (confirmationText) attrs[frontendDataAttr("confirm-text")] = confirmationText;
   return attrs;
 }
 
@@ -188,10 +189,10 @@ function hasElementConfirmRequest(source: Element | null | undefined) {
   const node = elementNode(source);
   if (!node) return false;
   return Boolean(
-    dialogAttr(node, "data-tbf-confirm-variant") ||
-      dialogAttr(node, "data-tbf-confirm-title") ||
-      dialogAttr(node, "data-tbf-confirm-description") ||
-      dialogAttr(node, "data-tbf-confirm-text") ||
+    dialogAttr(node, frontendDataAttr("confirm-variant")) ||
+      dialogAttr(node, frontendDataAttr("confirm-title")) ||
+      dialogAttr(node, frontendDataAttr("confirm-description")) ||
+      dialogAttr(node, frontendDataAttr("confirm-text")) ||
       dialogAttr(node, "data-confirmation-variant") ||
       dialogAttr(node, "data-confirmation-title") ||
       dialogAttr(node, "data-confirmation-description") ||
@@ -204,24 +205,24 @@ function readElementConfirmRequest(source: Element | null | undefined) {
   if (!node) {
     return { description: "", options: {}, title: "" };
   }
-  const variant = dialogAttr(node, "data-tbf-confirm-variant") || dialogAttr(node, "data-confirmation-variant");
+  const variant = dialogAttr(node, frontendDataAttr("confirm-variant")) || dialogAttr(node, "data-confirmation-variant");
   if (variant) return variantElementConfirmRequest(node, variant);
   return {
-    description: dialogAttr(node, "data-tbf-confirm-description") || dialogAttr(node, "data-confirmation-description"),
+    description: dialogAttr(node, frontendDataAttr("confirm-description")) || dialogAttr(node, "data-confirmation-description"),
     options: standardElementConfirmOptions(node),
-    title: dialogAttr(node, "data-tbf-confirm-title") || dialogAttr(node, "data-confirmation-title"),
+    title: dialogAttr(node, frontendDataAttr("confirm-title")) || dialogAttr(node, "data-confirmation-title"),
   };
 }
 
 function variantElementConfirmRequest(node: Element, variant: string) {
-  const mode = dialogAttr(node, "data-tbf-confirm-mode") || dialogAttr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, "data-confirmation-mode");
   return {
     description: "",
     options: {
-      confirmationText: dialogAttr(node, "data-tbf-confirm-text") || dialogAttr(node, "data-confirmation-text") || undefined,
+      confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, "data-confirmation-text") || undefined,
       mode: mode ? normalizeConfirmMode(mode) : undefined,
-      subject: dialogAttr(node, "data-tbf-confirm-subject") || dialogAttr(node, "data-confirmation-subject") || undefined,
-      target: dialogAttr(node, "data-tbf-confirm-target") || dialogAttr(node, "data-confirmation-target") || undefined,
+      subject: dialogAttr(node, frontendDataAttr("confirm-subject")) || dialogAttr(node, "data-confirmation-subject") || undefined,
+      target: dialogAttr(node, frontendDataAttr("confirm-target")) || dialogAttr(node, "data-confirmation-target") || undefined,
       variant,
     },
     title: "",
@@ -229,21 +230,21 @@ function variantElementConfirmRequest(node: Element, variant: string) {
 }
 
 function standardElementConfirmOptions(node: Element): ConfirmOptions {
-  const mode = dialogAttr(node, "data-tbf-confirm-mode") || dialogAttr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, "data-confirmation-mode");
   return {
-    cancelText: dialogAttr(node, "data-tbf-confirm-cancel-text") || dialogAttr(node, "data-confirmation-cancel-text") || undefined,
-    confirmButtonText: dialogAttr(node, "data-tbf-confirm-confirm-text") ||
+    cancelText: dialogAttr(node, frontendDataAttr("confirm-cancel-text")) || dialogAttr(node, "data-confirmation-cancel-text") || undefined,
+    confirmButtonText: dialogAttr(node, frontendDataAttr("confirm-confirm-text")) ||
       dialogAttr(node, "data-confirmation-confirm-text") ||
       undefined,
-    confirmationText: dialogAttr(node, "data-tbf-confirm-text") || dialogAttr(node, "data-confirmation-text") || undefined,
+    confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, "data-confirmation-text") || undefined,
     mode: mode ? normalizeConfirmMode(mode) : undefined,
-    placeholder: dialogAttr(node, "data-tbf-confirm-placeholder") ||
+    placeholder: dialogAttr(node, frontendDataAttr("confirm-placeholder")) ||
       dialogAttr(node, "data-confirmation-placeholder") ||
       undefined,
-    progressTone: dialogAttr(node, "data-tbf-confirm-progress-tone") ||
+    progressTone: dialogAttr(node, frontendDataAttr("confirm-progress-tone")) ||
       dialogAttr(node, "data-confirmation-progress-tone") ||
       undefined,
-    type: normalizeFlashType(dialogAttr(node, "data-tbf-confirm-type") || "warn"),
+    type: normalizeFlashType(dialogAttr(node, frontendDataAttr("confirm-type")) || "warn"),
   };
 }
 

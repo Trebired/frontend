@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type StatusFieldProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
@@ -12,11 +13,11 @@ function StatusField(props: StatusFieldProps) {
   return (
     <div
     {...rest}
-    className={classNames("tbf-status-field", className)}
-    data-tbf-status-field=""
-    data-tbf-status-method={method}
-    data-tbf-status-state="idle"
-    data-tbf-status-url={url}
+    className={classNames(frontendClassName("status-field"), className)}
+    {...frontendDataAttrs({ "status-field": "" })}
+    {...frontendDataAttrs({ "status-method": method })}
+    {...frontendDataAttrs({ "status-state": "idle" })}
+    {...frontendDataAttrs({ "status-url": url })}
     >
     {children}
     </div>
@@ -26,7 +27,11 @@ function StatusField(props: StatusFieldProps) {
 function StatusMessage(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
-    <div {...rest} className={classNames("tbf-status-field__message", className)} data-tbf-status-message="">
+    <div
+    {...rest}
+    className={classNames(frontendElementClass("status-field", "message"), className)}
+    {...frontendDataAttrs({ "status-message": "" })}
+    >
     {children}
     </div>
   );

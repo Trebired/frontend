@@ -1,16 +1,18 @@
-.tbf-theme-switch-popover {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("theme-switch-popover")} {
   min-width: 170px;
 }
 
-.tbf-theme-switch-popover .tbf-theme-select__option {
+#{ns.class("theme-switch-popover")} #{ns.element-class("theme-select", "option")} {
   justify-content: flex-start;
 }
 
-.tbf-theme-switch-popover .tbf-theme-select__option[data-tbf-theme-active="true"],
-.tbf-theme-switch-popover .tbf-theme-select__option[aria-checked="true"] {
+#{ns.class("theme-switch-popover")} #{ns.element-class("theme-select", "option")}#{ns.data("theme-active", "true")},
+
+#{ns.class("theme-switch-popover")} #{ns.element-class("theme-select", "option")}[aria-checked="true"] {
   background: var(
-    --tbf-shell-theme-option-state-current-bg,
-    var(--tbf-overlay-popover-item-state-selected-bg, var(--background-surface-2, transparent))
+    #{ns.css-var("shell-theme-option-state-current-bg")},
+    var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, var(--background-surface-2, transparent))
   );
-  color: var(--tbf-shell-theme-option-state-current-color, var(--text-color));
+  color: var(#{ns.css-var("shell-theme-option-state-current-color")}, var(--text-color));
 }

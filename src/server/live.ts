@@ -1,7 +1,8 @@
 import { requestHeader, type ServerRequestLike } from "./http.js";
+import { frontendToken } from "#5vbaqj4pirp3";
 
-const LIVE_NAVIGATION_REQUEST = "tbf-router";
-const LIVE_REGION_REQUEST = "tbf-live";
+const LIVE_NAVIGATION_REQUEST = frontendToken("router");
+const LIVE_REGION_REQUEST = frontendToken("live");
 const REQUESTED_WITH_HEADER = "x-requested-with";
 
 function requestedWith(req: ServerRequestLike | null | undefined) {

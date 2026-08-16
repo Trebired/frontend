@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type SidebarLinkItem = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   active?: boolean;
@@ -33,11 +34,20 @@ function isSeparatorItem(item: SidebarItem): item is SidebarSeparatorItem {
 function SidebarLinkList(props: SidebarLinkListProps) {
   const { className, items, ...rest } = props;
   return (
-    <ul {...rest} className={classNames("tbf-sidebar-list", className)} data-tbf-sidebar-list="">
+    <ul
+    {...rest}
+    className={classNames(frontendClassName("sidebar-list"), className)}
+    {...frontendDataAttrs({ "sidebar-list": "" })}
+    >
     {items.map((item, index) => {
           if (isSeparatorItem(item)) {
             return (
-              <li className="tbf-sidebar-separator" data-tbf-sidebar-separator="" key={item.key || `separator-${index}`} role="separator">
+              <li
+              className={frontendClassName("sidebar-separator")}
+              {...frontendDataAttrs({ "sidebar-separator": "" })}
+              key={item.key || `separator-${index}`}
+              role="separator"
+              >
               <span />
               </li>
             );
@@ -51,19 +61,35 @@ function SidebarLinkList(props: SidebarLinkListProps) {
 function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
   const { active, badge, disabled, icon, key: _key, label, separator: _separator, ...rest } = props.item;
   return (
-    <li className="tbf-sidebar-list__item" data-tbf-active={dataBool(active)} data-tbf-sidebar-link-row="">
+    <li
+    className={frontendElementClass("sidebar-list", "item")}
+    {...frontendDataAttrs({ "active": dataBool(active) })}
+    {...frontendDataAttrs({ "sidebar-link-row": "" })}
+    >
     <a
     {...rest}
     aria-current={active ? "page" : props.item["aria-current"]}
     aria-disabled={disabled ? true : props.item["aria-disabled"]}
-    className={classNames("tbf-sidebar-link", props.item.className)}
-    data-tbf-disabled={dataBool(disabled)}
-    data-tbf-sidebar-link=""
+    className={classNames(frontendClassName("sidebar-link"), props.item.className)}
+    {...frontendDataAttrs({ "disabled": dataBool(disabled) })}
+    {...frontendDataAttrs({ "sidebar-link": "" })}
     tabIndex={disabled ? -1 : props.item.tabIndex}
     >
-    {icon ? <span className="tbf-sidebar-link__icon" data-tbf-sidebar-link-icon="">{icon}</span> : null}
-    <span className="tbf-sidebar-link__label" data-tbf-sidebar-label="">{label}</span>
-    {badge ? <span className="tbf-sidebar-link__badge">{badge}</span> : null}
+    {icon ? (
+        <span
+        className={frontendElementClass("sidebar-link", "icon")}
+        {...frontendDataAttrs({ "sidebar-link-icon": "" })}
+        >
+        {icon}
+        </span>
+      ) : null}
+    <span
+    className={frontendElementClass("sidebar-link", "label")}
+    {...frontendDataAttrs({ "sidebar-label": "" })}
+    >
+    {label}
+    </span>
+    {badge ? <span className={frontendElementClass("sidebar-link", "badge")}>{badge}</span> : null}
     </a>
     </li>
   );
@@ -72,7 +98,7 @@ function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
 function SidebarLiveSlot(props: SidebarLiveSlotProps) {
   const { children, slotKey, ...rest } = props;
   return (
-    <span {...rest} data-tbf-sidebar-live-slot={slotKey}>
+    <span {...rest} {...frontendDataAttrs({ "sidebar-live-slot": slotKey })}>
     {children}
     </span>
   );

@@ -10,6 +10,7 @@ import {
   primitivePaddingClass,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 
 function jsonScriptConfig(config: Record<string, unknown>) {
   return {
@@ -24,7 +25,7 @@ function view(props: view_props) {
     {
       id: model.ids.root,
       className: model.resolvedRootClassName,
-      "data-tbf-logs-partial": "",
+      [frontendDataAttr("logs-partial")]: "",
       "data-logs-instance-id": model.logsInstanceId,
     },
     <>

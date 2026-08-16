@@ -3,6 +3,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 type FileTreeRowModel = {
   fileCount: number;
@@ -14,7 +15,7 @@ type FileTreeRowModel = {
 };
 
 function fileTreeLeftBorderColor(model: Pick<FileTreeRowModel, "highlighted">) {
-  return model.highlighted ? "var(--tbf-focus, currentColor)" : "var(--border-surface-1, currentColor)";
+  return model.highlighted ? `var(${frontendCssVar("focus")}, currentColor)` : "var(--border-surface-1, currentColor)";
 }
 
 function FileTreeToggle(props: { isDir: boolean; isOpen: boolean }) {

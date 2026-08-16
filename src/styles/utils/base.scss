@@ -1,5 +1,7 @@
-.tbf-root,
-[data-tbf-layout-document],
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("root")},
+
+#{ns.data("layout-document")},
 html,
 body {
   min-width: 0;
@@ -18,9 +20,10 @@ body {
 }
 
 html,
-.tbf-root,
-[data-tbf-layout-document] {
-  font-family: var(--tbf-font-sans, "Inter", sans-serif);
+#{ns.class("root")},
+
+#{ns.data("layout-document")} {
+  font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
 }
 
 button,
@@ -29,7 +32,7 @@ optgroup,
 select,
 textarea {
   font: inherit;
-  font-family: var(--tbf-font-sans, "Inter", sans-serif);
+  font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
 }
 
 html,
@@ -38,8 +41,8 @@ body {
   padding: 0;
   scroll-behavior: smooth;
   overscroll-behavior-y: none;
-  color: var(--tbf-text, #000);
-  background-color: var(--background-page, var(--tbf-surface, #fff));
+  color: var(#{ns.css-var("text")}, #000);
+  background-color: var(--background-page, var(#{ns.css-var("surface")}, #fff));
   transition:
   background-color 0.3s ease,
   border-color 0.3s ease,
@@ -59,8 +62,8 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  font-family: var(--tbf-font-sans, "Inter", sans-serif);
-  line-height: var(--tbf-body-line-height, var(--lh-sm, 1.4));
+  font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
+  line-height: var(#{ns.css-var("body-line-height")}, var(--lh-sm, 1.4));
 }
 
 body::after {
@@ -69,20 +72,20 @@ body::after {
   top: 0;
   right: var(--viewport-scrollbar-gap-inline-end, 0px);
   bottom: 0;
-  width: var(--tbf-border-width, 1px);
-  background: var(--tbf-border, #000);
+  width: var(#{ns.css-var("border-width")}, 1px);
+  background: var(#{ns.css-var("border")}, #000);
   pointer-events: none;
   z-index: var(--z-scrollbar-gutter-border, 925);
 }
 
 body[data-mobile-sidebar-open="true"],
-body[data-tbf-sidebar-open="true"] {
+body#{ns.data("sidebar-open", "true")} {
   overflow: hidden;
 }
 
 ::selection {
-  color: var(--tbf-selection-text, var(--text-color, #fff));
-  background-color: var(--tbf-selection-bg, color-mix(in srgb, var(--tbf-focus, currentColor) 50%, transparent)) !important;
+  color: var(#{ns.css-var("selection-text")}, var(--text-color, #fff));
+  background-color: var(#{ns.css-var("selection-bg")}, color-mix(in srgb, var(#{ns.css-var("focus")}, currentColor) 50%, transparent)) !important;
 }
 
 h1,
@@ -92,8 +95,8 @@ h4,
 h5,
 h6 {
   margin: 0 !important;
-  font-family: var(--tbf-font-sans, "Inter", sans-serif);
-  font-weight: var(--tbf-heading-font-weight, 500) !important;
+  font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
+  font-weight: var(#{ns.css-var("heading-font-weight")}, 500) !important;
   cursor: default;
 }
 
@@ -157,18 +160,18 @@ span {
 
 hr {
   width: 100%;
-  height: var(--tbf-border-width, 1px);
+  height: var(#{ns.css-var("border-width")}, 1px);
   border: 0;
-  background-color: var(--tbf-border, #000);
+  background-color: var(#{ns.css-var("border")}, #000);
 }
 
 a {
-  color: var(--tbf-link-color, var(--tbf-text, #000));
+  color: var(#{ns.css-var("link-color")}, var(#{ns.css-var("text")}, #000));
   text-decoration: none;
 }
 
 :where(a, button, [role="button"], [role="tab"], .btn, .text-link, .popover-item):active:not(:disabled):not([aria-disabled="true"]) {
-  filter: var(--tbf-interaction-active-filter, none);
+  filter: var(#{ns.css-var("interaction-active-filter")}, none);
 }
 
 img {
@@ -241,29 +244,29 @@ ul {
 }
 
 .scroll-min {
-  --tbf-scroll-min-size: 6px;
-  --tbf-scroll-min-track: var(--scroll-track, #fff);
-  --tbf-scroll-min-thumb: var(--scroll-thumb, #000);
-  --tbf-scroll-min-thumb-hover: var(--scroll-thumb-hover, var(--tbf-scroll-min-thumb));
+  #{ns.css-var("scroll-min-size")}: 6px;
+  #{ns.css-var("scroll-min-track")}: var(--scroll-track, #fff);
+  #{ns.css-var("scroll-min-thumb")}: var(--scroll-thumb, #000);
+  #{ns.css-var("scroll-min-thumb-hover")}: var(--scroll-thumb-hover, var(#{ns.css-var("scroll-min-thumb")}));
   --scroll-min-horizontal-gap: 6px;
-  --scroll-min-size: var(--tbf-scroll-min-size);
+  --scroll-min-size: var(#{ns.css-var("scroll-min-size")});
 
   &::-webkit-scrollbar {
-    width: var(--tbf-scroll-min-size);
-    height: var(--tbf-scroll-min-size);
+    width: var(#{ns.css-var("scroll-min-size")});
+    height: var(#{ns.css-var("scroll-min-size")});
   }
 
   &::-webkit-scrollbar-track {
-    background-color: var(--tbf-scroll-min-track);
+    background-color: var(#{ns.css-var("scroll-min-track")});
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: var(--tbf-radius, 0);
-    background-color: var(--tbf-scroll-min-thumb);
+    border-radius: var(#{ns.css-var("radius")}, 0);
+    background-color: var(#{ns.css-var("scroll-min-thumb")});
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--tbf-scroll-min-thumb-hover);
+    background-color: var(#{ns.css-var("scroll-min-thumb-hover")});
   }
 
   &[data-scroll-overflow-x="true"] {
@@ -278,7 +281,7 @@ ul {
   align-items: center;
   width: 100%;
   min-width: 0;
-  gap: var(--tbf-gap-sm);
+  gap: var(#{ns.css-var("gap-sm")});
 
   &.fit-content {
     width: fit-content;
