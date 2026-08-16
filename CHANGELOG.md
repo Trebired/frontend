@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2.2
+
+- Fixed the dynamic sidebar loader crashing the page render when a link item has no loader path configured, which broke server-rendered navigation after sign-in and after completing the welcome flow.
+
 ## 8.2.1
 
 - Fixed dropdown option registration running twice on bind, halving JSON config parsing and attribute writes on long option lists.

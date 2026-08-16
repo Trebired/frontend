@@ -16,6 +16,7 @@ function dynamicSidebarTreeValue(tree: unknown, pathInput?: string) {
   .split(".")
   .map((part) => textValue(part))
   .filter(Boolean);
+  if (!parts.length) return null;
   let current: unknown = tree && typeof tree === "object" ? tree : {};
   for (const part of parts) {
     if (!current || typeof current !== "object" || !(part in current)) {
