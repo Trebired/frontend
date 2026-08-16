@@ -53,6 +53,11 @@
   width: 100%;
 }
 
+.options[data-dropdown-portaled="true"] .dropdown-top .input-search-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .options[data-dropdown-portaled="true"] .dropdown-list {
   @include component-scroll-min;
 
@@ -98,6 +103,8 @@
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
+  content-visibility: auto;
+  contain-intrinsic-height: auto var(--height-input);
 }
 
 .options[data-dropdown-portaled="true"] .dropdown-list li:hover {
@@ -136,6 +143,7 @@ li[data-dropdown-unselect="true"] {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
+  content-visibility: visible;
 }
 
 .options[data-dropdown-portaled="true"]

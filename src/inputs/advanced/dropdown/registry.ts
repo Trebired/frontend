@@ -99,12 +99,27 @@ function readDropdownOptionConfigScript(host: ParentNode) {
   );
 }
 
+function optionConfigsEqual(
+  a: DropdownOptionConfig,
+  b: DropdownOptionConfig,
+) {
+  return (
+    a.label === b.label &&
+      a.section === b.section &&
+      a.selected === b.selected &&
+      a.unselect === b.unselect &&
+      a.value === b.value
+  );
+}
+
 function setDropdownOptionConfig(
   option: HTMLElement | null,
   config: DropdownOptionConfig = {},
 ) {
   if (!(option instanceof HTMLElement)) return false;
   const normalized = normalizeOptionConfig(config);
+  const previous = optionConfigs.get(option);
+  if (previous && optionConfigsEqual(previous, normalized)) return true;
   optionConfigs.set(option, normalized);
   option.setAttribute("data-dropdown-option", "");
   option.setAttribute(

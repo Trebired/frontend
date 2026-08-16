@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.2.1
+
+- Fixed dropdown option registration running twice on bind, halving JSON config parsing and attribute writes on long option lists.
+- Skipped redundant attribute writes when re-syncing dropdown option state that has not changed, cutting DOM writes on every selection change in long lists.
+- Added scroll containment to dropdown option rows so browsers skip layout and paint for off-screen options in long lists.
+- Fixed the dropdown search input collapsing instead of filling the available row width next to the clear button.
+
 ## 8.2.0
 
 - Restored upload remote selections from an upload-owned hidden field slot after preserved live refreshes.

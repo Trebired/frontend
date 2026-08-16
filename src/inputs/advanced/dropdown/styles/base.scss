@@ -126,6 +126,11 @@
     .input {
       width: 100%;
     }
+
+    .input-search-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
   }
 
   .dropdown-list {
@@ -164,6 +169,9 @@
       -webkit-user-select: none;
       user-select: none;
 
+      content-visibility: auto;
+      contain-intrinsic-height: auto var(--height-input);
+
       &:hover {
         background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(--background-surface-2, transparent));
       }
@@ -194,6 +202,7 @@
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
+        content-visibility: visible;
       }
 
       &.dropdown-section:hover {

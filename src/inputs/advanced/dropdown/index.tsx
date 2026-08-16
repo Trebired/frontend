@@ -51,7 +51,6 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
               type: "search",
               placeholder: model.searchPlaceholderText,
               autoComplete: "off",
-              className: "width-lg",
           }),
     })}
     {model.isMultiple
