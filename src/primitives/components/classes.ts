@@ -91,7 +91,7 @@ function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
     options.size,
     primitiveButtonTone(options),
     options.active ? "active" : "",
-    options.tooltip ? "has-tooltip" : "",
+    options.icon && options.tooltip ? "has-tooltip" : "",
     options.transparent ? "transparent" : "",
     options.className,
   );

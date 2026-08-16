@@ -108,8 +108,9 @@ function assignFiles(input, files) {
   input.files = transfer.files;
 }
 
-function uploadLiveMarkup(marker, cropValue = "") {
+function uploadLiveMarkup(marker, cropValue = "", remoteValue = "") {
   const crop = cropValue.replace(/"/g, "&quot;");
+  const remote = remoteValue.replace(/"/g, "&quot;");
   return [
     "<div data-tbf-live-content>",
     '<wizard-root id="welcome_wizard">',
@@ -117,10 +118,12 @@ function uploadLiveMarkup(marker, cropValue = "") {
     '<wizard-step id="welcome_profile">',
     `<div id="avatar_upload" class="tbf-upload" data-marker="${marker}" data-tbf-upload>`,
     '<script data-tbf-upload-config hidden type="application/json">',
-    '{"crop":true,"emptyLabel":"No avatar selected","formats":"image/png"}',
+    '{"crop":true,"emptyLabel":"No avatar selected","formats":"image/png","remoteSelectedLabel":"Remote avatar"}',
     "</script>",
     '<input id="avatar_upload_input" type="file" name="avatar" data-tbf-upload-slot="native-file" accept="image/png">',
     `<input type="hidden" name="avatar_crop" value="${crop}" data-tbf-upload-slot="crop-field">`,
+    `<input type="hidden" name="avatar_remote_url" value="${remote}" `,
+    'data-tbf-upload-slot="remote-field" data-tbf-upload-remote-label="Remote avatar">',
     '<div data-tbf-upload-slot="preview">',
     '<img data-tbf-upload-slot="preview-image" hidden>',
     '<span data-tbf-upload-slot="preview-empty"></span>',
@@ -234,15 +237,50 @@ async function verifyLiveFileInputPreservation(context) {
   );
 }
 
+async function verifyLiveRemoteUploadPreservation(context) {
+  const { softVisit } = await context.importDist("live");
+  const { bindUploads } = await context.importDist("inputs");
+  document.body.innerHTML = uploadLiveMarkup("before", "", "/remote-avatar.png");
+  globalThis.fetch = async() => {
+    return new Response(
+      `<!doctype html><html lang="cs"><head><title>CS</title></head><body>${uploadLiveMarkup("after")}</body></html>`,
+      { headers: { "Content-Type": "text/html" } },
+    );
+  };
+  const result = await softVisit("/welcome", {
+      bind(root) {
+        bindUploads(root);
+      },
+      history: "none",
+      preserveState: true,
+  });
+  assert.equal(result, true);
+  const upload = document.getElementById("avatar_upload");
+  assert.equal(
+    upload.querySelector('[data-tbf-upload-slot="remote-field"]').value,
+    "/remote-avatar.png",
+  );
+  assert.equal(
+    upload.querySelector('[data-tbf-upload-slot="filename"]').textContent,
+    "Remote avatar",
+  );
+  assert.equal(
+    upload.querySelector('[data-tbf-upload-slot="preview-image"]').hidden,
+    false,
+  );
+}
+
 async function verifyFrontendLive(context) {
   await verifyLiveOverlays(context);
   await verifyLiveChromePortaledOverlayCleanup(context);
   await verifyLiveFileInputPreservation(context);
+  await verifyLiveRemoteUploadPreservation(context);
 }
 
 export {
   verifyFrontendLive,
   verifyLiveChromePortaledOverlayCleanup,
   verifyLiveFileInputPreservation,
+  verifyLiveRemoteUploadPreservation,
   verifyLiveOverlays,
 };

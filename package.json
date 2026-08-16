@@ -11,7 +11,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "8.1.0",
+  "version": "8.2.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,

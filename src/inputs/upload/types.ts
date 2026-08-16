@@ -16,6 +16,7 @@ type UploadRemoteAction = {
   id?: string;
   label?: string;
   name?: string;
+  selectedLabel?: string;
   value?: string;
 };
 
@@ -85,6 +86,7 @@ type UploadRootConfig = {
   modalDescription?: string;
   modalTitle?: string;
   noPreview?: boolean;
+  remoteSelectedLabel?: string;
   skipDirs?: string;
   useImageLabel?: string;
 };

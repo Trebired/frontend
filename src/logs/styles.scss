@@ -241,21 +241,3 @@
     min-width: 0;
   }
 }
-
-.input-search-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color-muted);
-  pointer-events: none;
-  line-height: 0;
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-}

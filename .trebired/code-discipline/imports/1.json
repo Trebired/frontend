@@ -385,6 +385,7 @@
   "#p0bohjc116l9": "./src/inputs/advanced/dropdown/i18n/en.ts",
   "#p0m3f4xaab7z": "./src/graph/advanced/contributions.tsx",
   "#p8aofvpyx6fl": "./src/editor/components/types.ts",
+  "#p8xyf2ac55t2": "./src/search/client/cache.ts",
   "#pg5rm7whmwpd": "./src/server/seo/robots.ts",
   "#pgcgwrvwwqfj": "./src/inputs/upload/markup.ts",
   "#phikqix8e831": "./src/server/react/types.ts",

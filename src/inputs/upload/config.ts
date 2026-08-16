@@ -32,6 +32,7 @@ function normalizeUploadConfig(config: UploadRootConfig = {}) {
     modalDescription: toText(config.modalDescription, "Adjust the crop before saving."),
     modalTitle: toText(config.modalTitle, "Crop image"),
     noPreview: bool(config.noPreview),
+    remoteSelectedLabel: toText(config.remoteSelectedLabel),
     skipDirs: toText(config.skipDirs),
     useImageLabel: toText(config.useImageLabel, "Use image"),
   } satisfies UploadRootConfig;

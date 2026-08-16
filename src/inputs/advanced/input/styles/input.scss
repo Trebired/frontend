@@ -9,6 +9,7 @@
 
     &[type="search"] {
       appearance: none;
+      -webkit-appearance: none;
       padding-right: 34px;
 
       &::-webkit-search-decoration,
@@ -18,6 +19,37 @@
         display: none;
       }
     }
+  }
+}
+
+.input-search-wrap {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  > .input.classic[type="search"] {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.input-search-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-muted);
+  pointer-events: none;
+  line-height: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 

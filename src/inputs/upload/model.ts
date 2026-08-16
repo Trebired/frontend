@@ -33,6 +33,7 @@ function normalizeUploadRemoteAction(input: UploadRemoteAction | undefined) {
     id: toText(input.id),
     label,
     name: toText(input.name),
+    selectedLabel: toText(input.selectedLabel),
     value: toText(input.value),
   };
 }

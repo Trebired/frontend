@@ -1,5 +1,5 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
-import { searchText, toText } from "./model.js";
+import { toText } from "./model.js";
 import {
   firstNonScriptHTMLElementChild,
   isInUnhydratedIsland,
@@ -10,19 +10,22 @@ import {
   searchPanelHostsFromNode,
 } from "./client/hosts.js";
 import {
-  firstFormControl,
-  normalizeSearchKey,
+  filterDetails,
+  getCombinedQuery,
+  getFilterInputs,
+  getSearchInputs,
+  itemMatchesFilters,
+  itemMatchesQuery,
+  panelCache,
+  refreshPanelCache,
+  syncDropdownSections,
+} from "./client/cache.js";
+import {
   readSearchControlsConfig,
-  readSearchFilterConfig,
-  readSearchItemConfig,
   readSearchPanelConfig,
-  searchFilterValues,
-  type SearchFilterDef,
-  tagName,
 } from "./client/config.js";
 import {
   registerFamilyElement,
-  registeredSearchControls,
   registeredSearchPanels,
   searchControlsByFamily,
   searchPanelsByFamily,
@@ -50,166 +53,65 @@ function searchPanelFromHost(host: HTMLElement | null) {
   if (!(root instanceof HTMLElement)) return null;
   const config = readSearchPanelConfig(host);
   const familyKey = toText(config.familyKey);
-  return { familyKey, host, root };
-}
-
-function controlsForPanel(panel: SearchPanelBinding) {
-  if (!panel.familyKey) return [];
-  return registeredSearchControls(panel.familyKey).filter(
-    (node) => !isInUnhydratedIsland(node),
-  );
-}
-
-function belongsToPanel(panel: SearchPanelBinding, node: Element) {
-  const host = searchPanelHostFromNode(node);
-  return !host || host === panel.host;
-}
-
-function collectHosts(
-  panel: SearchPanelBinding,
-  rootSelector: string,
-  controlSelector: string,
-) {
-  const out = new Set<HTMLElement>();
-  if (rootSelector) {
-    Array.from(panel.root.querySelectorAll(rootSelector)).forEach((node) => {
-        if (node instanceof HTMLElement && belongsToPanel(panel, node))
-        out.add(node);
-    });
-  }
-  if (controlSelector) {
-    controlsForPanel(panel).forEach((controls) => {
-        Array.from(controls.querySelectorAll(controlSelector)).forEach((node) => {
-            if (node instanceof HTMLElement) out.add(node);
-        });
-    });
-  }
-  return Array.from(out);
-}
-
-function getSearchInputs(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-query-input", "search-query-input")
-  .map(firstFormControl)
-  .filter(
-    (input): input is HTMLInputElement | HTMLSelectElement =>
-    input instanceof HTMLInputElement || input instanceof HTMLSelectElement,
-  );
-}
-
-function getFilterInputs(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-filter", "search-filter")
-  .map((host) => {
-      const input = firstFormControl(host);
-      const config = readSearchFilterConfig(host);
-      return {
-        input,
-        key: normalizeSearchKey(config.attr),
-        value: toText(input && input.value, "all"),
-      };
-  })
-  .filter((filter): filter is SearchFilterDef =>
-    Boolean(filter.input && filter.key),
-  );
-}
-
-function getEmptyNodes(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-empty, [data-search-empty-slot]", "");
-}
-
-function getSearchItems(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-item, [data-search-item]", "");
-}
-
-function getCombinedQuery(panel: SearchPanelBinding) {
-  return getSearchInputs(panel)
-  .map((input) => toText(input.value).toLowerCase())
-  .filter(Boolean)
-  .join(" ");
+  return { cache: null, familyKey, host, renderFrame: 0, root };
 }
 
 function setItemVisibility(item: HTMLElement, visible: boolean) {
   item.hidden = !visible;
 }
 
-function isExcludedItem(item: HTMLElement) {
-  return readSearchItemConfig(item).exclude === true;
-}
-
-function itemMatchesFilters(item: HTMLElement, filters: SearchFilterDef[]) {
-  const config = readSearchItemConfig(item);
-  return filters.every((filter) => {
-      if (!filter.key) return true;
-      if (!filter.value || filter.value === "all") return true;
-      return searchFilterValues(config.filters, filter.key).includes(
-        filter.value,
-      );
-  });
-}
-
-function itemMatchesQuery(item: HTMLElement, query: string) {
-  if (!query) return true;
-  return searchText(
-    readSearchItemConfig(item).text || item.textContent,
-  ).includes(query);
-}
-
-function visibleDropdownItemInSection(
-  panel: SearchPanelBinding,
-  section: string,
-) {
-  return getSearchItems(panel).some((item) => {
-      if (item.hidden) return false;
-      if (tagName(item) !== "li") return false;
-      return toText(item.getAttribute("data-dropdown-section")) === section;
-  });
-}
-
-function syncDropdownSections(panel: SearchPanelBinding) {
-  panel.root
-  .querySelectorAll("[data-dropdown-section-heading]")
-  .forEach((sectionNode) => {
-      if (!(sectionNode instanceof HTMLElement)) return;
-      const section = toText(
-        sectionNode.getAttribute("data-dropdown-section-heading"),
-      );
-      if (!section) return;
-      sectionNode.hidden = !visibleDropdownItemInSection(panel, section);
-  });
-}
-
-function renderSearchPanel(panel: SearchPanelBinding) {
+function renderSearchPanelNow(panel: SearchPanelBinding) {
   if (!panel || !panel.host.isConnected) return;
+  if (panel.renderFrame) {
+    window.cancelAnimationFrame(panel.renderFrame);
+    panel.renderFrame = 0;
+  }
+  const cache = panelCache(panel);
   const query = getCombinedQuery(panel);
   const filters = getFilterInputs(panel);
-  const items = getSearchItems(panel);
-  const total = items.filter((item) => !isExcludedItem(item)).length;
+  const visibleSections = new Set<string>();
   let visible = 0;
 
-  items.forEach((item) => {
-      if (isExcludedItem(item)) {
-        setItemVisibility(item, true);
+  cache.items.forEach((item) => {
+      if (item.exclude) {
+        setItemVisibility(item.element, true);
         return;
       }
       const matches =
       itemMatchesQuery(item, query) && itemMatchesFilters(item, filters);
-      setItemVisibility(item, matches);
-      if (matches) visible += 1;
+      setItemVisibility(item.element, matches);
+      if (!matches) return;
+      visible += 1;
+      if (item.section) visibleSections.add(item.section);
   });
-  syncDropdownSections(panel);
-  getEmptyNodes(panel).forEach((node) => {
-      node.hidden = !(total > 0 && visible === 0);
+  syncDropdownSections(panel, visibleSections);
+  cache.emptyNodes.forEach((node) => {
+      node.hidden = !(cache.total > 0 && visible === 0);
   });
   panel.root.dispatchEvent(
     new CustomEvent("search:updated", {
         bubbles: true,
         detail: {
           query,
-          filters,
-          total,
+          filters: filterDetails(filters),
+          total: cache.total,
           visible,
         },
     }),
   );
+}
+
+function renderSearchPanel(panel: SearchPanelBinding) {
+  renderSearchPanelNow(panel);
+}
+
+function scheduleSearchPanel(panel: SearchPanelBinding) {
+  if (!panel.host.isConnected) return;
+  if (panel.renderFrame) return;
+  panel.renderFrame = window.requestAnimationFrame(() => {
+      panel.renderFrame = 0;
+      renderSearchPanelNow(panel);
+  });
 }
 
 function bindControlForPanel(
@@ -226,7 +128,7 @@ function bindControlForPanel(
   const key = `${eventName}:${token}`;
   if (bindings.has(key)) return;
   bindings.add(key);
-  input.addEventListener(eventName, () => renderSearchPanel(panel));
+  input.addEventListener(eventName, () => scheduleSearchPanel(panel));
 }
 
 function bindSearchPanel(host: HTMLElement | null) {
@@ -234,6 +136,7 @@ function bindSearchPanel(host: HTMLElement | null) {
   if (!panel) return null;
   panelBindings.set(panel.host, panel);
   registerFamilyElement(searchPanelsByFamily, panel.familyKey, panel.host);
+  refreshPanelCache(panel);
   getSearchInputs(panel).forEach((input) => {
       bindControlForPanel(panel, input, "input");
   });
@@ -257,7 +160,10 @@ function bindSearchControls(host: HTMLElement | null) {
   const familyKey = toText(config.familyKey);
   registerFamilyElement(searchControlsByFamily, familyKey, host);
   if (controlBindings.has(host)) {
-    panelsForFamily(familyKey).forEach(renderSearchPanel);
+    panelsForFamily(familyKey).forEach((panel) => {
+        refreshPanelCache(panel);
+        renderSearchPanel(panel);
+    });
     return host;
   }
   controlBindings.add(host);
@@ -266,6 +172,7 @@ function bindSearchControls(host: HTMLElement | null) {
 }
 
 function bindSearchPanelInputs(panel: SearchPanelBinding) {
+  refreshPanelCache(panel);
   getSearchInputs(panel).forEach((input) => {
       bindControlForPanel(panel, input, "input");
   });
@@ -284,7 +191,7 @@ function bindSearchRoot(root: HTMLElement | null) {
   if (!(root instanceof HTMLElement)) return null;
   const config = readSearchPanelConfig(root);
   const familyKey = toText(config.familyKey);
-  const panel = { familyKey, host: root, root };
+  const panel = { cache: null, familyKey, host: root, renderFrame: 0, root };
   panelBindings.set(root, panel);
   bindSearchPanelInputs(panel);
   return panel;

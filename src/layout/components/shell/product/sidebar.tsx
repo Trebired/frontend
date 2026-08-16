@@ -124,6 +124,7 @@ function ProductShellSidebarDefaultControls(
   const minimizeLabel = productShellLabel(labels, "minimize");
   const themeLabel = productShellLabel(labels, "toggleTheme");
   const aboutLabel = productShellLabel(labels, "about");
+  const hasIconOnlyControls = /\bicon\b/u.test(buttonClassName);
   return (
     <ProductShellSidebarControls
     {...rest}
@@ -144,7 +145,7 @@ function ProductShellSidebarDefaultControls(
         light={light}
         modes={modes}
         className={buttonClassName}
-        {...frontendDataAttrs({ "tooltip": themeLabel })}
+        {...(hasIconOnlyControls ? frontendDataAttrs({ "tooltip": themeLabel }) : {})}
         icon={productShellThemeIcon(theme)}
         labels={labels}
         theme={theme}
@@ -202,6 +203,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
   const id = String(rest.id || `${FRONTEND_PREFIX}_product_shell_theme_control`);
   const themePopoverId = popoverId || `${id}_menu`;
   const body = children || icon;
+  const iconOnly = !children;
   return (
     <>
     {button({
@@ -213,10 +215,10 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
           children: body,
           className: classNames(frontendClassName("product-shell-theme-control"), className),
           [frontendDataAttr("popover-trigger")]: "",
-          icon: !children,
+          icon: iconOnly,
           id,
-          title: String(label),
-          tooltip: true,
+          title: iconOnly ? String(label) : undefined,
+          tooltip: iconOnly,
           type,
     })}
     {productShellThemeSelect({

@@ -27,6 +27,7 @@ import {
   getUploadEntries,
   getUploadFiles,
   restoreUploadEntries,
+  restoreUploadRemoteSelection,
   setUploadEntries as writeUploadEntries,
   setUploadFile,
   setUploadRemoteSelection as writeUploadRemoteSelection,
@@ -280,7 +281,9 @@ function bindUploadRoot(root: HTMLElement | null, options: UploadRuntimeOptions 
   bindUploadInputs(root, runtimeOptions);
   bindUploadClear(root);
   bindUploadDrop(root, runtimeOptions);
-  if (!restoreUploadFromNativeInput(root)) syncPreview(root);
+  if (!restoreUploadFromNativeInput(root) && !restoreUploadRemoteSelection(root)) {
+    syncPreview(root);
+  }
   syncClearAndEmpty(root);
   return true;
 }

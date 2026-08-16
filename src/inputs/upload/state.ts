@@ -9,6 +9,7 @@ import {
   getPreviewImage,
   getPreviewNode,
   getRemoteActions,
+  getRemoteField,
   setNativeInputFiles,
 } from "./dom.js";
 import { fileExtension, isImageFileObject } from "./files.js";
@@ -191,6 +192,7 @@ function restoreUploadEntries(root: HTMLElement, entries: UploadEntry[], input?:
   state.remoteSelected = false;
   clearNativeInputs(root, input);
   setNativeInputFiles(input || null, state.entries);
+  syncRemoteField(root, "", false);
   syncPreview(root);
   syncClearAndEmpty(root);
 }
@@ -220,6 +222,7 @@ function setUploadFile(
   clearNativeInputs(root, input);
   setNativeInputFiles(input, state.entries);
   syncCropField(root, state.cropData);
+  syncRemoteField(root, "", false);
   syncPreview(root);
   syncClearAndEmpty(root);
 }
@@ -229,12 +232,37 @@ function syncCropField(root: HTMLElement, cropData: Record<string, number>|null)
   if (cropField) cropField.value = cropData ? JSON.stringify(cropData) : "";
 }
 
-function setUploadRemoteSelection(
+function syncRemoteField(root: HTMLElement, value: string, notify: boolean) {
+  const field = getRemoteField(root);
+  if (!field || field.value === value) return;
+  field.value = value;
+  if (!notify) return;
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+  field.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+function remoteFieldLabel(root: HTMLElement) {
+  const field = getRemoteField(root);
+  return toText(
+    field?.getAttribute(frontendDataAttr("upload-remote-label")),
+    uploadRootConfig(root).remoteSelectedLabel || "",
+  );
+}
+
+function remoteSelectionLabel(root: HTMLElement, label: unknown) {
+  return toText(
+    label,
+    remoteFieldLabel(root) || uploadRootConfig(root).emptyLabel || "",
+  );
+}
+
+function applyUploadRemoteSelection(
   root: HTMLElement,
   options: UploadRemoteSelection = {},
+  effects: { dispatch?: boolean; field?: boolean } = {},
 ) {
   const previewUrl = toText(options.previewUrl);
-  const label = toText(options.label, uploadRootConfig(root).emptyLabel || "");
+  const label = remoteSelectionLabel(root, options.label);
   if (!previewUrl && !label) return false;
   const state = getUploadState(root);
   revokePreviewUrl(state);
@@ -247,10 +275,28 @@ function setUploadRemoteSelection(
   state.remoteSelected = true;
   clearNativeInputs(root, null);
   syncCropField(root, state.cropData);
+  if (effects.field !== false) syncRemoteField(root, previewUrl, true);
   syncPreview(root);
   syncClearAndEmpty(root);
-  dispatchUploadChange(root);
+  if (effects.dispatch !== false) dispatchUploadChange(root);
   return true;
+}
+
+function restoreUploadRemoteSelection(root: HTMLElement) {
+  const previewUrl = toText(getRemoteField(root)?.value);
+  if (!previewUrl) return false;
+  return applyUploadRemoteSelection(
+    root,
+    { cropData: null, label: remoteFieldLabel(root), previewUrl },
+    { dispatch: false, field: false },
+  );
+}
+
+function setUploadRemoteSelection(
+  root: HTMLElement,
+  options: UploadRemoteSelection = {},
+) {
+  return applyUploadRemoteSelection(root, options);
 }
 
 function clearUpload(root: HTMLElement, input?: HTMLInputElement | null) {
@@ -267,6 +313,7 @@ function clearUpload(root: HTMLElement, input?: HTMLInputElement | null) {
   if (state.emptySelected) state.currentPreviewUrl = "";
   clearNativeInputs(root, input || null);
   syncCropField(root, null);
+  syncRemoteField(root, "", true);
   syncPreview(root);
   syncClearAndEmpty(root);
   dispatchUploadChange(root);
@@ -288,6 +335,7 @@ export {
   getUploadState,
   revokePreviewUrl,
   restoreUploadEntries,
+  restoreUploadRemoteSelection,
   setUploadEntries,
   setUploadFile,
   setUploadRemoteSelection,

@@ -25,6 +25,27 @@ const tooltipTexts = new WeakMap<HTMLElement, string>();
 const tooltipCleanups = new WeakMap<HTMLElement, ()=>void>();
 let listenersInstalled = false;
 
+function isTooltipControl(trigger: HTMLElement) {
+  return trigger.matches("button,a,[role='button']");
+}
+
+function controlHasText(trigger: HTMLElement) {
+  return Boolean(String(trigger.textContent || "").trim());
+}
+
+function allowsTooltip(trigger: HTMLElement) {
+  if (!isTooltipControl(trigger)) return true;
+  if (trigger.hasAttribute(frontendDataAttr("status-icon"))) return true;
+  return !controlHasText(trigger);
+}
+
+function suppressControlTooltip(trigger: HTMLElement) {
+  if (!isTooltipControl(trigger) || !controlHasText(trigger)) return;
+  trigger.removeAttribute("title");
+  trigger.removeAttribute(frontendDataAttr("tooltip"));
+  trigger.classList.remove("has-tooltip");
+}
+
 function readTooltipText(trigger: HTMLElement | null) {
   if (!trigger) return "";
   if (tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
@@ -135,6 +156,10 @@ function hideTooltip() {
 
 function bindTooltip(trigger: HTMLElement | null) {
   if (!(trigger instanceof HTMLElement) || tooltipCleanups.has(trigger)) return false;
+  if (!allowsTooltip(trigger)) {
+    suppressControlTooltip(trigger);
+    return false;
+  }
   readTooltipText(trigger);
   const showBoundTooltip = () => showTooltip(trigger);
   const hideBoundTooltip = () => hideTooltip();

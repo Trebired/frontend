@@ -1,7 +1,33 @@
 type SearchPanelBinding = {
+  cache: SearchPanelCache | null;
   familyKey: string;
   host: HTMLElement;
+  renderFrame: number;
   root: HTMLElement;
+};
+
+type SearchInput = HTMLInputElement | HTMLSelectElement;
+
+type SearchFilterRecord = {
+  input: SearchInput;
+  key: string;
+};
+
+type SearchItemRecord = {
+  element: HTMLElement;
+  exclude: boolean;
+  filters: Record<string, unknown>|undefined;
+  section: string;
+  text: string;
+};
+
+type SearchPanelCache = {
+  emptyNodes: HTMLElement[];
+  filters: SearchFilterRecord[];
+  inputs: SearchInput[];
+  items: SearchItemRecord[];
+  sectionHeadings: HTMLElement[];
+  total: number;
 };
 
 const SEARCH_PANEL_SELECTOR = "search-panel";
@@ -30,4 +56,10 @@ export {
   panelBindings,
   panelToken,
 };
-export type { SearchPanelBinding };
+export type {
+  SearchFilterRecord,
+  SearchInput,
+  SearchItemRecord,
+  SearchPanelBinding,
+  SearchPanelCache,
+};

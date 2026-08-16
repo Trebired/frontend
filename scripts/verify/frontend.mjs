@@ -150,12 +150,16 @@ async function verifyLocaleSwitching() {
 async function verifyTooltip() {
   const { bindTooltips, setTooltipText } = await importDist("tooltip");
   document.body.innerHTML = [
-    '<button id="tip" title="Hover text">A</button>',
-    '<button id="focus" data-tbf-tooltip="Focus text">B</button>',
+    '<button id="text-tip" title="Text hover">Text</button>',
+    '<button id="tip" title="Hover text" aria-label="Hover text"><span aria-hidden="true"></span></button>',
+    '<button id="focus" data-tbf-tooltip="Focus text" aria-label="Focus"><span aria-hidden="true"></span></button>',
     '<span id="status" tabindex="0" data-tbf-status-icon aria-label="Status text"></span>',
     '<span id="dynamic-status" tabindex="0" data-tbf-status-icon></span>',
   ].join("");
   bindTooltips(document);
+  document.getElementById("text-tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+  assert.equal(document.getElementById("tbf_tooltip"), null);
+  assert.equal(document.getElementById("text-tip").hasAttribute("title"), false);
   document.getElementById("tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
   const layer = document.getElementById("tbf_tooltip");
   assert.equal(layer.textContent, "Hover text");

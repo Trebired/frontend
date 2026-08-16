@@ -48,6 +48,7 @@ function uploadConfigPayload(model: ReturnType<typeof uploadModel>) {
     modalDescription: model.modalDescription,
     modalTitle: model.modalTitle,
     noPreview: !model.previewEnabled,
+    remoteSelectedLabel: model.remoteAction?.selectedLabel || "",
     skipDirs: model.skipDirs,
     useImageLabel: model.useImageLabel,
   };

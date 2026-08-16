@@ -63,6 +63,10 @@ function getCropField(root: HTMLElement) {
   return uploadSlot(root, "crop-field") as HTMLInputElement | null;
 }
 
+function getRemoteField(root: HTMLElement) {
+  return uploadSlot(root, "remote-field") as HTMLInputElement | null;
+}
+
 function getEmptyToggle(root: HTMLElement) {
   return uploadSlot(root, "empty-toggle") as HTMLInputElement | null;
 }
@@ -103,6 +107,7 @@ export {
   getPreviewEmpty,
   getPreviewImage,
   getPreviewNode,
+  getRemoteField,
   getRemoteActions,
   getTrigger,
   getUploadFileInput,

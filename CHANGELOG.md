@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.2.0
+
+- Restored upload remote selections from an upload-owned hidden field slot after preserved live refreshes.
+- Added remote upload selected-label configuration for app-owned external file sources.
+- Cached generic search-panel records and scheduled search renders to reduce lag in long dropdowns.
+- Moved search input icon wrapper styling into the shared input styles so dropdown search icons stay inside the field.
+- Suppressed tooltips on text buttons while keeping icon-only controls and status indicators tooltip-enabled.
+
 ## 8.1.0
 
 - Added upload remote-action rendering for app-owned external avatar sources.
