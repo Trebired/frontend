@@ -3,15 +3,15 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  gap: var(--tbf-overlays-popover-panel-gap, 2px);
+  gap: var(--tbf-overlay-popover-panel-gap, 2px);
   min-width: 220px;
   max-width: min(320px, calc(100vw - 24px));
-  padding: var(--tbf-overlays-popover-panel-padding, 8px);
-  border: var(--tbf-overlays-popover-panel-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
-  border-radius: var(--tbf-overlays-popover-panel-radius, var(--tbf-radius, 0));
-  color: var(--tbf-overlays-popover-panel-color, var(--tbf-text, #000));
-  background: var(--tbf-overlays-popover-panel-background, var(--tbf-surface, #fff));
-  box-shadow: var(--tbf-overlays-popover-panel-shadow, var(--tbf-shadow, 0 0 0 1px #000));
+  padding: var(--tbf-overlay-popover-panel-padding, 8px);
+  border: var(--tbf-overlay-popover-panel-border, var(--tbf-border-width, 1px) solid var(--tbf-border, #000));
+  border-radius: var(--tbf-overlay-popover-panel-radius, var(--tbf-radius, 0));
+  color: var(--tbf-overlay-popover-panel-color, var(--tbf-text, #000));
+  background: var(--tbf-overlay-popover-panel-bg, var(--tbf-surface, #fff));
+  box-shadow: var(--tbf-overlay-popover-panel-shadow, var(--tbf-shadow, 0 0 0 1px #000));
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -40,16 +40,16 @@
 [data-tbf-popover] > :where(a, button) {
   display: flex;
   width: 100%;
-  height: var(--tbf-overlays-popover-item-root-height, 35px);
-  min-height: var(--tbf-overlays-popover-item-root-height, 35px);
+  height: var(--tbf-overlay-popover-item-root-height, 35px);
+  min-height: var(--tbf-overlay-popover-item-root-height, 35px);
   align-items: center;
-  gap: var(--tbf-overlays-popover-item-root-gap, 10px);
-  padding: var(--tbf-overlays-popover-item-root-padding, 5px 10px);
+  gap: var(--tbf-overlay-popover-item-root-gap, 10px);
+  padding: var(--tbf-overlay-popover-item-root-padding, 5px 10px);
   overflow: hidden;
-  border: var(--tbf-overlays-popover-item-root-border, 0);
-  border-radius: var(--tbf-overlays-popover-item-root-radius, var(--tbf-radius-sm, var(--tbf-radius, 0)));
-  color: var(--tbf-overlays-popover-item-root-color, var(--tbf-text-muted, #666));
-  background: var(--tbf-overlays-popover-item-root-background, transparent);
+  border: var(--tbf-overlay-popover-item-root-border, 0);
+  border-radius: var(--tbf-overlay-popover-item-root-radius, var(--tbf-radius-sm, var(--tbf-radius, 0)));
+  color: var(--tbf-overlay-popover-item-root-color, var(--tbf-text-muted, #666));
+  background: var(--tbf-overlay-popover-item-root-bg, transparent);
   cursor: pointer;
   font: inherit;
   line-height: 1.2;
@@ -71,6 +71,6 @@
 [data-tbf-popover] :where(a, button).popover-item:focus,
 [data-tbf-popover] > :where(a, button):hover,
 [data-tbf-popover] > :where(a, button):focus {
-  color: var(--tbf-overlays-popover-item-states-hover-color, var(--tbf-text, #000));
-  background: var(--tbf-overlays-popover-item-states-hover-background, var(--tbf-surface-muted, #f4f4f4));
+  color: var(--tbf-overlay-popover-item-state-hover-color, var(--tbf-text, #000));
+  background: var(--tbf-overlay-popover-item-state-hover-bg, var(--tbf-surface-muted, #f4f4f4));
 }

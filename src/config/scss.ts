@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import { renderFontsCss } from "./fonts.js";
 import { cssComment, cssString } from "./shared.js";
+import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
 import {
   SYSTEM_ORDER,
   THEME_MODE_ATTRIBUTE,
@@ -68,16 +69,12 @@ function tokenDeclarations(prefix: string, tokens: FrontendThemeTokens): string[
   return flattenThemeTokens(tokens).map(([key, value]) => `  --${prefix}-${key}: ${String(value)};`);
 }
 
-function cssTokenKey(value: string): string {
-  return value.replace(/([a-z0-9])([A-Z])/gu, "$1-$2").toLowerCase();
-}
-
 function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
   for (const [componentGroup, tokens] of Object.entries(config.components)) {
-    const componentKey = cssTokenKey(componentGroup);
+    const componentKey = componentGroupCssName(componentGroup);
     for (const [key, value] of flattenThemeTokens(tokens)) {
-      lines.push(`  --${config.prefix}-${componentKey}-${cssTokenKey(key)}: ${String(value)};`);
+      lines.push(`  --${config.prefix}-${componentKey}-${componentTokenCssName(key)}: ${String(value)};`);
     }
   }
   return lines;

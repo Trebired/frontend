@@ -31,25 +31,25 @@ async function verifyTabsStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "inputs", "advanced", "tabs", "styles.scss"), "utf8");
   assert.ok(source.includes('&[aria-selected="true"]'));
   assert.ok(source.includes('&[data-tbf-active="true"]'));
-  assert.ok(source.includes("var(--tbf-primitives-tabs-states-active-background"));
+  assert.ok(source.includes("var(--tbf-ui-tabs-state-active-bg"));
 }
 
 async function verifyModalStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "modal", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes("--tbf-overlays-modal-backdrop-background"));
-  assert.ok(source.includes("--tbf-overlays-modal-content-background"));
-  assert.ok(source.includes("--tbf-overlays-modal-motion-initial-scale"));
+  assert.ok(source.includes("--tbf-overlay-modal-backdrop-bg"));
+  assert.ok(source.includes("--tbf-overlay-modal-content-bg"));
+  assert.ok(source.includes("--tbf-overlay-modal-motion-initial-scale"));
 }
 
 async function verifyTooltipStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "tooltip", "styles", "index.scss"), "utf8");
-  assert.ok(source.includes("--tbf-overlays-tooltip-panel-shadow"));
+  assert.ok(source.includes("--tbf-overlay-tooltip-panel-shadow"));
 }
 
 async function verifyThemeStyles(rootDir) {
   const source = await fs.readFile(path.join(rootDir, "dist", "theme", "styles", "index.scss"), "utf8");
   assert.ok(source.includes('data-tbf-theme-active="true"'));
-  assert.ok(source.includes("--tbf-shell-theme-option-states-current-background"));
+  assert.ok(source.includes("--tbf-shell-theme-option-state-current-bg"));
 }
 
 async function verifyReactEntrypoint(importDist) {

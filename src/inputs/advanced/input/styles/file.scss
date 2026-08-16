@@ -8,14 +8,14 @@
   padding: 0 10px;
   border: none;
   border-radius: var(--radius-xs);
-  background: var(--tbf-primitives-input-file-button-background, var(--background-surface-2, transparent));
+  background: var(--tbf-ui-input-file-btn-bg, var(--background-surface-2, transparent));
   color: var(--text-color-muted);
   cursor: pointer;
 }
 
 .file-input::file-selector-button:hover {
   background: var(
-    --tbf-primitives-input-file-button-states-hover-background,
-    var(--tbf-primitives-input-file-button-background, var(--background-surface-2, transparent))
+    --tbf-ui-input-file-btn-state-hover-bg,
+    var(--tbf-ui-input-file-btn-bg, var(--background-surface-2, transparent))
   );
 }

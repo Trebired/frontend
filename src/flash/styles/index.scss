@@ -20,11 +20,11 @@
   padding: var(--tbf-feedback-flash-container-padding, 15px);
   border: var(
     --tbf-feedback-flash-container-border,
-    var(--tbf-border-width, 1px) solid var(--tbf-feedback-flash-container-border-color, var(--border-surface-1, currentColor))
+    var(--tbf-border-width, 1px) solid var(--tbf-feedback-flash-container-border, var(--border-surface-1, currentColor))
   );
   border-radius: var(--tbf-feedback-flash-container-radius, var(--radius-lg, var(--tbf-radius, 0)));
   color: var(--tbf-feedback-flash-container-color, var(--text-color, currentColor));
-  background: var(--tbf-feedback-flash-container-background, var(--background-surface-1, transparent));
+  background: var(--tbf-feedback-flash-container-bg, var(--background-surface-1, transparent));
   box-shadow: var(--tbf-feedback-flash-container-shadow, var(--tbf-shadow, none));
   opacity: 0;
   overflow: hidden;
@@ -49,29 +49,29 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: var(--tbf-feedback-flash-slots-icon-color, currentColor);
-  font-size: var(--tbf-feedback-flash-slots-icon-size, 13px);
-  font-weight: var(--tbf-feedback-flash-slots-icon-font-weight, 700);
+  color: var(--tbf-feedback-flash-slot-icon, currentColor);
+  font-size: var(--tbf-feedback-flash-slot-icon-size, 13px);
+  font-weight: var(--tbf-feedback-flash-slot-icon-font-weight, 700);
 }
 
 .tbf-flash[data-tbf-flash-type="success"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-success-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-success-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
+  color: var(--tbf-feedback-flash-intents-success-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+  --tbf-icon-color: var(--tbf-feedback-flash-intents-success-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="error"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-error-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-error-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
+  color: var(--tbf-feedback-flash-intents-error-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+  --tbf-icon-color: var(--tbf-feedback-flash-intents-error-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="warn"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-warn-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-warn-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
+  color: var(--tbf-feedback-flash-intents-warn-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+  --tbf-icon-color: var(--tbf-feedback-flash-intents-warn-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
 }
 
 .tbf-flash[data-tbf-flash-type="info"] .tbf-flash__icon {
-  color: var(--tbf-feedback-flash-intents-info-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
-  --tbf-icon-color: var(--tbf-feedback-flash-intents-info-icon-color, var(--tbf-feedback-flash-slots-icon-color, currentColor));
+  color: var(--tbf-feedback-flash-intents-info-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
+  --tbf-icon-color: var(--tbf-feedback-flash-intents-info-icon, var(--tbf-feedback-flash-slot-icon, currentColor));
 }
 
 .tbf-flash__body,
@@ -88,14 +88,14 @@
 }
 
 .tbf-flash__title {
-  color: var(--tbf-feedback-flash-slots-title-color, currentColor);
-  font-weight: var(--tbf-feedback-flash-slots-title-font-weight, 400);
+  color: var(--tbf-feedback-flash-slot-title-color, currentColor);
+  font-weight: var(--tbf-feedback-flash-slot-title-font-weight, 400);
   text-shadow: none;
 }
 
 .tbf-flash__description {
-  color: var(--tbf-feedback-flash-slots-description-color, var(--text-color-muted, currentColor));
-  font-size: var(--tbf-feedback-flash-slots-description-font-size, 0.92rem);
+  color: var(--tbf-feedback-flash-slot-description-color, var(--text-color-muted, currentColor));
+  font-size: var(--tbf-feedback-flash-slot-description-font-size, 0.92rem);
   text-shadow: none;
 }
 
@@ -110,8 +110,8 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--tbf-feedback-flash-slots-progress-height, 4px);
-  background: var(--tbf-feedback-flash-slots-progress-color, currentColor);
+  height: var(--tbf-feedback-flash-slot-progress-height, 4px);
+  background: var(--tbf-feedback-flash-slot-progress-color, currentColor);
   transform-origin: left center;
   animation-name: tbf-flash-progress;
   animation-timing-function: linear;

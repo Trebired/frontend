@@ -1,4 +1,5 @@
 import { FRONTEND_PREFIX } from "./generated.js";
+import { frontendCssTokenName } from "./css-var.js";
 
 function prefixedName(name: string): string {
   const normalized = String(name || "").trim();
@@ -19,7 +20,7 @@ function frontendDataSelector(name: string): string {
 }
 
 function frontendCssVar(name: string): string {
-  return `--${prefixedName(name)}`;
+  return `--${prefixedName(frontendCssTokenName(name))}`;
 }
 
 function frontendEventName(name: string): string {

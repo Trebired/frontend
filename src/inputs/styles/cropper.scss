@@ -1,17 +1,17 @@
 .tbf-upload-cropper-modal .tbf-modal__content,
 .tbf-upload-cropper-modal__content {
-  width: var(--tbf-primitives-upload-cropper-modal-width, min(960px, calc(100vw - 40px)));
-  max-height: var(--tbf-primitives-upload-cropper-modal-max-height, min(90vh, 920px));
+  width: var(--tbf-ui-upload-cropper-modal-width, min(960px, calc(100vw - 40px)));
+  max-height: var(--tbf-ui-upload-cropper-modal-max-h, min(90vh, 920px));
 }
 
 .tbf-upload-crop {
   display: grid;
-  gap: var(--tbf-primitives-upload-cropper-root-gap, var(--tbf-gap-md, 12px));
+  gap: var(--tbf-ui-upload-cropper-root-gap, var(--tbf-gap-md, 12px));
 }
 
 .tbf-upload-crop__header {
   display: grid;
-  gap: var(--tbf-primitives-upload-cropper-header-gap, var(--tbf-gap-xs, 4px));
+  gap: var(--tbf-ui-upload-cropper-header-gap, var(--tbf-gap-xs, 4px));
 }
 
 .tbf-upload-crop__title,
@@ -20,37 +20,37 @@
 }
 
 .tbf-upload-crop__description {
-  color: var(--tbf-primitives-upload-cropper-description-color, var(--tbf-text-muted, #000));
+  color: var(--tbf-ui-upload-cropper-description-color, var(--tbf-text-muted, #000));
 }
 
 .tbf-upload-crop__stage {
   position: relative;
-  height: var(--tbf-primitives-upload-cropper-stage-height, min(62vh, 640px));
-  min-height: var(--tbf-primitives-upload-cropper-stage-min-height, 320px);
+  height: var(--tbf-ui-upload-cropper-stage-height, min(62vh, 640px));
+  min-height: var(--tbf-ui-upload-cropper-stage-min-h, 320px);
   overflow: visible;
   border: var(
-    --tbf-primitives-upload-cropper-stage-border,
+    --tbf-ui-upload-cropper-stage-border,
     var(--tbf-border-width, 1px) solid var(--tbf-border, #000)
   );
-  border-radius: var(--tbf-primitives-upload-cropper-stage-radius, var(--tbf-radius, 0));
-  background: var(--tbf-primitives-upload-cropper-stage-background, var(--tbf-surface-muted, #fff));
+  border-radius: var(--tbf-ui-upload-cropper-stage-radius, var(--tbf-radius, 0));
+  background: var(--tbf-ui-upload-cropper-stage-bg, var(--tbf-surface-muted, #fff));
   --tbf-upload-cropper-guide-horizontal: linear-gradient(
     to bottom,
-    var(--tbf-primitives-upload-cropper-stage-line-contrast-color, #000) 0,
-    var(--tbf-primitives-upload-cropper-stage-line-contrast-color, #000)
-    var(--tbf-primitives-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-primitives-upload-cropper-stage-line-color, #fff)
-    var(--tbf-primitives-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-primitives-upload-cropper-stage-line-color, #fff) 100%
+    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000) 0,
+    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000)
+    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
+    var(--tbf-ui-upload-cropper-stage-line-color, #fff)
+    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
+    var(--tbf-ui-upload-cropper-stage-line-color, #fff) 100%
   );
   --tbf-upload-cropper-guide-vertical: linear-gradient(
     to right,
-    var(--tbf-primitives-upload-cropper-stage-line-contrast-color, #000) 0,
-    var(--tbf-primitives-upload-cropper-stage-line-contrast-color, #000)
-    var(--tbf-primitives-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-primitives-upload-cropper-stage-line-color, #fff)
-    var(--tbf-primitives-upload-cropper-stage-guide-width, 1px),
-    var(--tbf-primitives-upload-cropper-stage-line-color, #fff) 100%
+    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000) 0,
+    var(--tbf-ui-upload-cropper-stage-line-contrast-color, #000)
+    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
+    var(--tbf-ui-upload-cropper-stage-line-color, #fff)
+    var(--tbf-ui-upload-cropper-stage-guide-width, 1px),
+    var(--tbf-ui-upload-cropper-stage-line-color, #fff) 100%
   );
 }
 
@@ -64,22 +64,22 @@
 .tbf-upload-crop__actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--tbf-primitives-upload-cropper-actions-gap, var(--tbf-gap-sm, 8px));
+  gap: var(--tbf-ui-upload-cropper-actions-gap, var(--tbf-gap-sm, 8px));
 }
 
 @media (max-width: 768px) {
   .tbf-upload-cropper-modal .tbf-modal__content,
   .tbf-upload-cropper-modal__content {
-    width: var(--tbf-primitives-upload-responsive-mobile-cropper-modal-width, calc(100vw - 24px));
+    width: var(--tbf-ui-upload-resp-mobile-cropper-modal-width, calc(100vw - 24px));
     max-height: var(
-      --tbf-primitives-upload-responsive-mobile-cropper-modal-max-height,
+      --tbf-ui-upload-resp-mobile-cropper-modal-max-h,
       calc(100vh - 24px)
     );
   }
 
   .tbf-upload-crop__stage {
-    height: var(--tbf-primitives-upload-responsive-mobile-cropper-stage-height, min(52vh, 420px));
-    min-height: var(--tbf-primitives-upload-responsive-mobile-cropper-stage-min-height, 260px);
+    height: var(--tbf-ui-upload-resp-mobile-cropper-stage-height, min(52vh, 420px));
+    min-height: var(--tbf-ui-upload-resp-mobile-cropper-stage-min-h, 260px);
   }
 
   .tbf-upload-crop__actions {

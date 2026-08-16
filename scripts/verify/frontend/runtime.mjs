@@ -8,7 +8,7 @@ async function verifyNamespace(context) {
   const root = await context.importDistRoot();
   assert.equal(root.FRONTEND_PREFIX, "tbf");
   assert.equal(root.frontendClassName("button"), "tbf-button");
-  assert.equal(root.frontendCssVar("primitives-button-root-color"), "--tbf-primitives-button-root-color");
+  assert.equal(root.frontendCssVar("primitives-button-root-color"), "--tbf-ui-btn-root-color");
   assert.equal(root.frontendDataAttr("popover"), "data-tbf-popover");
   assert.equal(root.frontendDataSelector("popover"), "[data-tbf-popover]");
   const base = await fs.readFile(path.join(context.rootDir, "dist", "styles", "utils", "base.scss"), "utf8");

@@ -2,7 +2,7 @@
 
 .options[data-dropdown-portaled="true"] {
   position: fixed;
-  background: var(--tbf-primitives-dropdown-menu-background, var(--background-surface-1, transparent));
+  background: var(--tbf-ui-dropdown-menu-bg, var(--background-surface-1, transparent));
   border: var(--border-width) solid var(--border-surface-1);
   border-radius: var(--radius-lg);
   margin: 0;
@@ -100,7 +100,7 @@
 }
 
 .options[data-dropdown-portaled="true"] .dropdown-list li:hover {
-  background: var(--tbf-primitives-dropdown-option-states-hover-background, var(--background-surface-2, transparent));
+  background: var(--tbf-ui-dropdown-option-state-hover-bg, var(--background-surface-2, transparent));
 }
 
 .options[data-dropdown-portaled="true"]
@@ -108,7 +108,7 @@
 li[data-dropdown-selected="true"] {
   background: color-mix(
     in srgb,
-    var(--tbf-primitives-dropdown-option-states-selected-background, var(--background-surface-2, transparent)) 70%,
+    var(--tbf-ui-dropdown-option-state-selected-bg, var(--background-surface-2, transparent)) 70%,
     var(--accent, var(--tbf-focus, currentColor)) 30%
   );
 }
