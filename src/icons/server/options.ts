@@ -66,15 +66,13 @@ function findPackageRootFromResolvedFile(
   }
 }
 
-function resolveIconPackRoot(
-  pack: unknown,
-  options: IconServerOptions = {},
+const packRootCache = new Map<string, string>();
+
+function resolveIconPackRootUncached(
+  normalizedPack: IconPack,
+  options: IconServerOptions,
+  packageRoots: Record<string, string>,
 ): string {
-  const normalizedPack = normalizeIconPack(pack);
-  if (!normalizedPack) return "";
-  const packageRoots = options.packageRoots && typeof options.packageRoots === "object"
-  ? options.packageRoots
-  : {};
   if (packageRoots[normalizedPack]) return path.resolve(packageRoots[normalizedPack]);
   if (options.packageRoot) return path.resolve(options.packageRoot);
 
@@ -102,6 +100,27 @@ function resolveIconPackRoot(
   } catch {
     return "";
   }
+}
+
+function resolveIconPackRoot(
+  pack: unknown,
+  options: IconServerOptions = {},
+): string {
+  const normalizedPack = normalizeIconPack(pack);
+  if (!normalizedPack) return "";
+  const packageRoots = options.packageRoots && typeof options.packageRoots === "object"
+  ? options.packageRoots
+  : {};
+  const cacheKey = `${normalizedPack}\u0000${packageRoots[normalizedPack] || ""}\u0000${options.packageRoot || ""}\u0000${options.rootDir || ""}`;
+  const cached = packRootCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+  const resolved = resolveIconPackRootUncached(
+    normalizedPack,
+    options,
+    packageRoots as Record<string, string>,
+  );
+  packRootCache.set(cacheKey, resolved);
+  return resolved;
 }
 
 export {

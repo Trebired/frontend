@@ -41,6 +41,9 @@ export *from "./defaults.js";
 export *from "./material.js";
 
 const svgMarkupCache = new Map<string, IconSvgResult>();
+const iconColorCache = new Map<string, string>();
+const iconColorModeCache = new Map<string, ""|"brand"|"monochrome">();
+const iconSvgResponseCache = new Map<string, string>();
 
 function failure(
   parsed: ParsedIconSpec | null,
@@ -63,11 +66,7 @@ function resolveIconSvg(
 ): IconSvgResult {
   const parsed = parseServerIconSpec(spec, options);
   if (!parsed) return failure(null, "invalid-spec", 400);
-  const cacheKey = [
-    parsed.spec,
-    resolveIconPackRoot(parsed.pack, options),
-    JSON.stringify(options.preserveSourceColors || null),
-  ].join(":");
+  const cacheKey = `${parsed.spec}:${resolveIconPackRoot(parsed.pack, options)}:${shouldPreserveSourceColors(parsed.pack, options) ? "1" : "0"}`;
   const cached = svgMarkupCache.get(cacheKey);
   if (cached) return cached;
   const index = buildPackIndex(parsed.pack, options);
@@ -109,20 +108,30 @@ function resolveIconColor(
   if (parsed.pack === "simple-icons") return simpleIconColor(parsed.icon, options);
   const svg = resolveIconSvg(parsed.spec, options);
   if (!svg.ok || !svg.file) return "";
+  const cached = iconColorCache.get(svg.file);
+  if (cached !== undefined) return cached;
+  let color = "";
   try {
-    return derivePrimarySvgColor(fs.readFileSync(svg.file, "utf8"));
+    color = derivePrimarySvgColor(fs.readFileSync(svg.file, "utf8"));
   } catch {
-    return "";
+    color = "";
   }
+  iconColorCache.set(svg.file, color);
+  return color;
 }
 
 function classifyIconColorMode(value: unknown): "" | "brand" | "monochrome" {
   const color = normalizeHexColor(value);
   if (!color) return "";
-  const rgb = [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)]
-  .map((part) => parseInt(part, 16));
-  const spread = Math.max(...rgb) - Math.min(...rgb);
-  return spread <= 24 ? "monochrome" : "brand";
+  const cached = iconColorModeCache.get(color);
+  if (cached !== undefined) return cached;
+  const red = parseInt(color.slice(1, 3), 16);
+  const green = parseInt(color.slice(3, 5), 16);
+  const blue = parseInt(color.slice(5, 7), 16);
+  const spread = Math.max(red, green, blue) - Math.min(red, green, blue);
+  const mode = spread <= 24 ? "monochrome" : "brand";
+  iconColorModeCache.set(color, mode);
+  return mode;
 }
 
 function buildRenderedIconCacheEntry(
@@ -214,14 +223,20 @@ function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
       status: svgResult.status,
     };
   }
-  const color = resolveIconColor(svgResult.spec, options);
-  const colorMode = classifyIconColorMode(color);
-  const svg = color ? applySvgColor(svgResult.svg, color) : svgResult.svg;
-  return {
-    body: applySvgRootAttrs(svg, {
+  const cacheKey = svgResult.file || svgResult.spec;
+  let body = iconSvgResponseCache.get(cacheKey);
+  if (body === undefined) {
+    const color = resolveIconColor(svgResult.spec, options);
+    const colorMode = classifyIconColorMode(color);
+    const svg = color ? applySvgColor(svgResult.svg, color) : svgResult.svg;
+    body = applySvgRootAttrs(svg, {
         [frontendDataAttr("icon-color-mode")]: colorMode || undefined,
         [frontendDataAttr("icon-color-value")]: color || undefined,
-    }),
+    });
+    iconSvgResponseCache.set(cacheKey, body);
+  }
+  return {
+    body,
     headers: {
       "Cache-Control": "public, max-age=3600",
       "Content-Type": "image/svg+xml; charset=utf-8",

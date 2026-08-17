@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.3.0
+
+- Removed per-request filesystem and module-resolution work from the icon server. `resolveIconPackRoot()` ran full Node module resolution (`createRequire` + `require.resolve`) on every icon lookup because it was part of the SVG cache key, and `resolveIconColor()` re-read the icon file from disk with `readFileSync` on every call even when the SVG itself was already cached. Both are now memoised, the derived colour mode is cached, and `createIconSvgResponse()` caches its composed response body. Rendering an icon no longer performs any filesystem syscall after the first resolution, which matters most for server-rendered pages that emit many icons and for the `/__icons/svg` route. Output is byte-identical.
+
 ## 8.2.9
 
 - Added `bindLiveLists`/`live.lists` runtime support so `entity_list`'s `<live-list>` marker (rendered whenever a list is given a `live: {room, event}` config) actually gets bound to something. Previously the marker was rendered but nothing ever subscribed to it, so lists relying on this feature silently never refreshed after the resource they list changed elsewhere (e.g. after creating a new item, the list stayed stale until a manual page reload). It now soft-reloads the current page on a matching live event, consistent with the existing `live.cards` wiring.
