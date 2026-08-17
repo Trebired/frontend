@@ -414,6 +414,7 @@
   "#rqcj8y6keks2": "./src/icons/catalog.ts",
   "#rsbvm1wpfq7m": "./src/layout/styles/chrome.scss",
   "#rsws889coppb": "./scripts/verify/frontend/upload-components.mjs",
+  "#rycus8hf65yd": "./src/live/lists.ts",
   "#rzc4srxgt13o": "./src/fullscreen/styles/index.scss",
   "#s2gusqvj0iyq": "./src/explorer/components/file/tree.tsx",
   "#s2sjj85bt9pa": "./src/layout/components/shell/product/index.ts",

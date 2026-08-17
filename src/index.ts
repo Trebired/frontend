@@ -21,6 +21,7 @@ import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import {
   bindLiveCards,
+  bindLiveLists,
   bindLiveRefresh,
   bindScrollOverflows,
   rehydrate,
@@ -142,6 +143,9 @@ function bindFrontendWidgets(
   bindFullscreen(scope);
   if (options.live?.cards !== false) {
     bindLiveCards(scope, options.live?.cards || {});
+  }
+  if (options.live?.lists !== false) {
+    bindLiveLists(scope, options.live?.lists || {});
   }
 }
 

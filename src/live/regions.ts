@@ -1,5 +1,6 @@
 import { cssEscape, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { bindLiveCards, type LiveCardsOptions } from "./cards.js";
+import { bindLiveLists, type LiveListsOptions } from "./lists.js";
 import {
   captureFormState,
   captureWizardSteps,
@@ -19,6 +20,7 @@ type LiveOptions = {
   closeOverlays?: () => void;
   contentSelector?: string;
   fullReloadSelector?: string;
+  lists?: LiveListsOptions | false;
   skip?: LiveSkipAdapter;
 };
 
@@ -79,6 +81,7 @@ function reconcilePortaledDuplicates(root: ParentNode) {
 function rehydrate(root: BindRoot = document, options: LiveOptions = {}) {
   reconcilePortaledDuplicates(root);
   if (options.cards !== false) bindLiveCards(root, options.cards || {});
+  if (options.lists !== false) bindLiveLists(root, options.lists || {});
   options.bind?.(root);
   document.dispatchEvent(new CustomEvent(frontendEventName("rehydrate"), { detail: { root } }));
 }
