@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2.4
+
+- Fixed dynamic sidebar links falling back to a full page navigation instead of SPA soft navigation. `wrapTriggerHostNode()` was called with a component reference rather than the raw `<a>` element, so it wrapped the link in an outer `data-tbf-href` span instead of setting the attribute on the anchor itself; the click handler's nested-interactive-element guard then saw the inner `<a>` as a separate element and declined to intercept the click. The action-trigger attributes are now applied directly on the anchor.
+
 ## 8.2.3
 
 - Removed dead `config.creator` from `package.json`.

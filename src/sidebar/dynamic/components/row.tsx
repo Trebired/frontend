@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { dataBool } from "#ndsvdqv80epr";
-import { wrapTriggerHostNode } from "#6mupcizo1mwq";
+import { actionTriggerAttrs } from "#6mupcizo1mwq";
 import {
   DynamicSidebarCountSlot,
   DynamicSidebarIcon,
@@ -68,6 +68,7 @@ function dynamicSidebarLinkAttrs(
 }
 
 function DynamicSidebarLinkNode(props: {
+    actionTrigger: boolean;
     context: DynamicSidebarItemContext;
     dynamicDisabled: boolean;
     href: string;
@@ -81,6 +82,7 @@ function DynamicSidebarLinkNode(props: {
     <a
     className={frontendClassName("sidebar-link")}
     {...dynamicSidebarLinkAttrs(context, props.href, props.dynamicDisabled)}
+    {...(props.actionTrigger ? actionTriggerAttrs({ href: props.href }) : {})}
     >
     <DynamicSidebarIcon context={context} render={options.renderIcon} />
     <span className={frontendElementClass("sidebar-link", "label")} {...frontendDataAttrs({ "sidebar-label": "" })}>
@@ -131,9 +133,21 @@ function wrapDynamicSidebarLink(
     );
   }
   if (options.wrapLink) return options.wrapLink(node, { ...context, href });
-  return href && href !== "#" && context.item.navIgnore !== true && options.actionTrigger !== false
-  ? wrapTriggerHostNode(node, { href })
-  : node;
+  return node;
+}
+
+function dynamicSidebarLinkActionTrigger(
+  href: string,
+  context: DynamicSidebarItemContext,
+  options: DynamicSidebarLinkListProps,
+) {
+  return Boolean(
+    href &&
+      href !== "#" &&
+      context.item.navIgnore !== true &&
+      options.actionTrigger !== false &&
+      !options.wrapLink,
+  );
 }
 
 function DynamicSidebarLinkRow(props: {
@@ -155,6 +169,7 @@ function DynamicSidebarLinkRow(props: {
   Boolean(textValue(props.item.disabledPath)) && props.item.disabled !== true;
   const node = (
     <DynamicSidebarLinkNode
+    actionTrigger={dynamicSidebarLinkActionTrigger(href, context, props.options)}
     context={context}
     dynamicDisabled={dynamicDisabled}
     href={href}
