@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2.6
+
+- Fixed `ProductShellAboutButton` leaking its `productName` prop onto the rendered `<a>` element as an unrecognized DOM attribute, triggering a React warning. The label text already comes fully formed through `labels.about`, so `productName` was never read by this component.
+
 ## 8.2.5
 
 - Fixed `mountLiveIsland`/`mountReactRoot` crashing with `TypeError: react.createElement is not a function` when a dynamic `import("react")` or `import("react-dom/client")` resolved to a CJS/ESM interop namespace object missing the top-level named exports. Both dynamic imports now fall back to `.default` when the expected export isn't found directly on the namespace.

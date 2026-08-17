@@ -234,7 +234,7 @@ function ProductShellThemeToggle(props: ProductShellThemeToggleProps) {
 }
 
 function ProductShellAboutButton(props: ProductShellAboutButtonProps) {
-  const { children, className, href = "/about", icon, labels, title, ...rest } = props;
+  const { children, className, href = "/about", icon, labels, productName, title, ...rest } = props;
   const label = title || productShellLabel(labels, "about");
   return (
     <a
