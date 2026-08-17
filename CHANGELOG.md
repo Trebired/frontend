@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2.7
+
+- Added a `minimized` prop to `ProductShellSidebar`, forwarded to `SidebarShell`, so consuming apps can render the sidebar's minimized state server-side instead of only correcting it client-side after mount, which caused a visible flash from expanded to minimized on full page loads.
+
 ## 8.2.6
 
 - Fixed `ProductShellAboutButton` leaking its `productName` prop onto the rendered `<a>` element as an unrecognized DOM attribute, triggering a React warning. The label text already comes fully formed through `labels.about`, so `productName` was never read by this component.

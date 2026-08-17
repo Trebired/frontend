@@ -254,7 +254,7 @@ function ProductShellSidebar(props: ProductShellSidebarProps) {
   const shellId = props.id || `sidebar_shell_${side}`;
   const bodyId = props.bodyId || `sidebar_body_${side}`;
   return (
-    <SidebarShell className={classNames(String(side), props.className)} id={shellId} persist={props.persist} side={side}>
+    <SidebarShell className={classNames(String(side), props.className)} id={shellId} minimized={props.minimized} persist={props.persist} side={side}>
     <Sidebar aria-label={props.ariaLabel} className={primitiveStackClassName({ gap: "sm" })}>
     <SidebarBody className={primitiveStackClassName({ className: props.bodyClassName, gap: "sm" })} id={bodyId}>
     {props.content ?? props.children}

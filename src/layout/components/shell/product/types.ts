@@ -138,6 +138,7 @@ type ProductShellSidebarProps = {
   footer?: ReactNode;
   footerActions?: ReactNode;
   id?: string;
+  minimized?: boolean;
   persist?: boolean;
   showFooter?: boolean;
   side?: SidebarSide;
