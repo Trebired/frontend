@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.2.5
+
+- Fixed `mountLiveIsland`/`mountReactRoot` crashing with `TypeError: react.createElement is not a function` when a dynamic `import("react")` or `import("react-dom/client")` resolved to a CJS/ESM interop namespace object missing the top-level named exports. Both dynamic imports now fall back to `.default` when the expected export isn't found directly on the namespace.
+- Fixed the sidebar's bottom controls row staying in a row and getting cut off when the sidebar is minimized; it now switches to a vertical column.
+
 ## 8.2.4
 
 - Fixed dynamic sidebar links falling back to a full page navigation instead of SPA soft navigation. `wrapTriggerHostNode()` was called with a component reference rather than the raw `<a>` element, so it wrapped the link in an outer `data-tbf-href` span instead of setting the attribute on the anchor itself; the click handler's nested-interactive-element guard then saw the inner `<a>` as a separate element and declined to intercept the click. The action-trigger attributes are now applied directly on the anchor.

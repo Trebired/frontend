@@ -21,12 +21,19 @@ type LiveIslandMountOptions = {
 
 const roots = new WeakMap<Element, {render:(node:ReactNode)=>void;unmount:()=>void}>();
 
+function resolveEsmInterop<T>(namespace: any, probe: string): T {
+  return (typeof namespace?.[probe] === "function" ? namespace : namespace?.default) as T;
+}
+
 async function mountReactRoot(
   root: Element,
   node: ReactNode,
   options: ReactRootOptions = {},
 ) {
-  const client = await import("react-dom/client");
+  const client = resolveEsmInterop<typeof import("react-dom/client")>(
+    await import("react-dom/client"),
+    "createRoot",
+  );
   const existing = roots.get(root);
   if (existing) {
     existing.render(node);
@@ -61,7 +68,7 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   const state = options.stateId
   ? readJsonScript(options.stateId, {})
   : options.initialState || {};
-  const react = await import("react");
+  const react = resolveEsmInterop<typeof import("react")>(await import("react"), "createElement");
   const child = react.createElement(options.component, { initialState: state });
   const node = options.wrap
   ? options.wrap(child, { initialState: state, root: target })
