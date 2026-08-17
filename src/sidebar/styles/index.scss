@@ -200,7 +200,13 @@
 
 #{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.data("sidebar-label")},
 
-#{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.element-class("sidebar-link", "badge")} {
+#{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.element-class("sidebar-link", "badge")},
+
+#{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.data("sidebar-count-slot")},
+
+#{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.data("sidebar-state-slot")},
+
+#{ns.data("sidebar-shell")}#{ns.data("sidebar-minimized", "true")} #{ns.data("sidebar-loader-slot")} {
   width: 0;
   max-width: 0;
   opacity: 0;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.2.8
+
+- Reversed the sidebar's bottom controls stacking order when the sidebar is minimized, so the first control (minimize) lands at the bottom instead of the top.
+- Hid dynamic sidebar link count, state, and loader slots when the sidebar is minimized, matching the existing label/badge hiding so only the icon remains.
+
 ## 8.2.7
 
 - Added a `minimized` prop to `ProductShellSidebar`, forwarded to `SidebarShell`, so consuming apps can render the sidebar's minimized state server-side instead of only correcting it client-side after mount, which caused a visible flash from expanded to minimized on full page loads.

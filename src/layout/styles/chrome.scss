@@ -257,7 +257,7 @@
 }
 
 #{ns.data("sidebar-minimized", "true")} #{ns.class("product-shell-sidebar-controls")} {
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: stretch;
 }
 
