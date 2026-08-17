@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.2.3
+
+- Removed dead `config.creator` from `package.json`.
+- Updated shared utilities to `@trebired/utils@^0.6.0` and replaced the removed `readPackageIdentity()` with `readPackageJsonUrl()` + `readOrganizationIdentity()`. No change to `frontendPackageName()`/`frontendConfigPath()`/`PACKAGE_VERSION` behavior.
+
 ## 8.2.2
 
 - Fixed the dynamic sidebar loader crashing the page render when a link item has no loader path configured, which broke server-rendered navigation after sign-in and after completing the welcome flow.

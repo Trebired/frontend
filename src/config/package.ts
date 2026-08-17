@@ -1,21 +1,21 @@
-import { readPackageIdentity } from "@trebired/utils";
+import { readOrganizationIdentity, readPackageJsonUrl, toTrimmedString } from "@trebired/utils";
 
-const packageIdentity = readPackageIdentity({
-    fallbackSlug: "frontend",
-    fallbackVersion: "7.1.16",
-    packageJsonUrl: new URL("../../package.json", import.meta.url),
-});
-const PACKAGE_VERSION = packageIdentity.version;
+const packageJson = readPackageJsonUrl(new URL("../../package.json", import.meta.url));
+const organization = readOrganizationIdentity({ packageJson });
+
+const PACKAGE_VERSION = toTrimmedString(packageJson?.version, "7.1.16");
 
 function frontendPackageName(): string {
-  const name = packageIdentity.name;
+  const packageJsonName = toTrimmedString(packageJson?.name);
+  const name =
+  packageJsonName ||
+    (organization.name ? `@${organization.name}/frontend` : "frontend");
   if (!name) throw new Error("frontend-package-name-missing");
   return name;
 }
 
 function organizationName(): string {
-  const organization = packageIdentity.organizationName;
-  if (organization) return organization;
+  if (organization.name) return organization.name;
   throw new Error("frontend-package-organization-missing");
 }
 
