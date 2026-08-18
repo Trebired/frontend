@@ -16,7 +16,7 @@
 #{ns.data("sidebar")} {
   position: fixed;
   z-index: var(#{ns.css-var("z-sidebar")}, 900);
-  inset-block: var(#{ns.css-var("sidebar-offset-block")}, 0) 0;
+  inset-block: var(#{ns.css-var("sidebar-offset-block")}, var(#{ns.css-var("layout-top-offset")}, 0)) 0;
   inset-inline-start: 0;
   display: flex;
   box-sizing: border-box;
@@ -24,7 +24,8 @@
   min-width: 0;
   flex-direction: column;
   gap: var(#{ns.css-var("gap-sm")}, 8px);
-  padding: var(#{ns.css-var("sidebar-padding")}, 14px 10px);
+  padding-block: 0 var(#{ns.css-var("sidebar-padding-block-end")}, 14px);
+  padding-inline: var(#{ns.css-var("sidebar-padding-inline")}, 10px);
   overflow-x: hidden;
   overflow-y: auto;
   border-inline-end: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
@@ -83,7 +84,8 @@
   min-height: var(#{ns.css-var("sidebar-link-height")}, 36px);
   box-sizing: border-box;
   gap: var(#{ns.css-var("gap-sm")}, 8px);
-  padding: var(#{ns.css-var("sidebar-link-padding")}, 5px 11px);
+  padding-block: 5px;
+  padding-inline: var(#{ns.css-var("sidebar-link-padding-inline-start")}, 16px) var(#{ns.css-var("sidebar-link-padding-inline-end")}, 11px);
   overflow: hidden;
   border: var(#{ns.css-var("border-width")}, 1px) solid transparent;
   border-radius: var(#{ns.css-var("radius-sm")}, 0);

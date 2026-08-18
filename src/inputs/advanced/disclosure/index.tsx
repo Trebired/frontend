@@ -111,9 +111,11 @@ function disclosurePanel(
     className={model.panelClassName}
     {...frontendDataAttrs({ "disclosure-panel": "" })}
     {...frontendDataAttrs({ "disclosure-panel-open": model.isOpen ? "true" : "false" })}
-    {...(model.isOpen ? {} : { hidden: true })}
+    {...(model.isOpen ? {} : { inert: true })}
     >
+    <div className={frontendElementClass("disclosure", "panel-content")}>
     {props.content}
+    </div>
     </div>
   );
 }

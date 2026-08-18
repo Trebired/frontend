@@ -3,10 +3,7 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(#{ns.css-var("gap-sm")}, 8px);
 }
-
-#{ns.element-class("disclosure", "trigger")},
 
 #{ns.element-class("dropdown", "trigger")},
 
@@ -21,8 +18,39 @@
   cursor: pointer;
 }
 
+#{ns.element-class("disclosure", "trigger")} {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  color: var(#{ns.css-var("text")}, #000);
+  font: inherit;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  transition: background var(#{ns.css-var("transition-fast")}, 120ms) ease;
+}
+
+#{ns.element-class("disclosure", "trigger")}:hover {
+  background: var(#{ns.css-var("surface")}, #f4f4f4);
+}
+
 #{ns.element-class("disclosure", "panel")} {
+  display: grid;
   min-width: 0;
+  grid-template-rows: minmax(0, 0fr);
+  transition: grid-template-rows var(#{ns.css-var("transition-normal")}, 180ms) ease;
+}
+
+#{ns.element-class("disclosure", "panel")}#{ns.data("disclosure-panel-open", "true")} {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+#{ns.element-class("disclosure", "panel-content")} {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 12px 10px;
 }
 
 #{ns.class("tabs")} {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.4.0
+
+- Fixed the fixed-position sidebar rendering underneath the fixed header instead of below it. `[data-tbf-sidebar]`'s `position: fixed` top offset defaulted to a bare `0`, so consuming apps that pair the sidebar system with a normal-flow header (rather than manually wiring `--tbf-sidebar-offset-block`) got the first ~header-height worth of sidebar content rendered behind the header and effectively invisible. It now defaults to the existing `--tbf-layout-top-offset` variable, which the layout system already keeps in sync with the actual header height.
+- Removed the sidebar's block-start padding so the first sidebar item sits flush with the sidebar's own top edge instead of leaving a gap; block-end and inline padding are unchanged. Exposed as `--tbf-sidebar-padding-block-end` and `--tbf-sidebar-padding-inline` (replacing the single `--tbf-sidebar-padding` shorthand, which nothing overrode).
+- Increased sidebar link inline-start padding from 11px to 16px so items no longer sit flush against the sidebar's edge. Exposed as `--tbf-sidebar-link-padding-inline-start`/`-end` (replacing `--tbf-sidebar-link-padding`, which nothing overrode).
+- Gave the disclosure trigger its own style instead of sharing the dropdown-trigger/tabs-tab "chip" rule, which gave it its own border and background independent of the disclosure's own card wrapper — so a card disclosure visually looked like a bordered button nested inside another card rather than one seamless card. The trigger is now a plain full-width row (also resetting native `<button>` chrome, which the removed border had been masking).
+- Added a real open/close animation to the disclosure panel using a `grid-template-rows` transition (0 to content height), replacing the previous instant `hidden`-attribute toggle. The panel now stays in the layout and is marked `inert` while closed instead of `hidden`, matching the `inert` convention already used by this package's modal/popover/wizard components.
+
 ## 8.3.1
 
 - Bounded the icon server caches. The SVG markup, resolved colour, colour mode and composed HTTP response caches were plain unbounded maps keyed by icon spec, so their size was driven by request input rather than by application need; with several thousand icons available across the installed packs they could grow to tens of megabytes. Each is now a small LRU bounded to 512 entries, which covers the icon set a real page uses while keeping worst-case memory flat. Output is unchanged.

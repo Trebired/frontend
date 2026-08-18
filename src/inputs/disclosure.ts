@@ -2,7 +2,6 @@ import {
   closestElement,
   queryAll,
   setAriaExpanded,
-  setHidden,
   type BindRoot,
 } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
@@ -44,7 +43,7 @@ function setDisclosureOpen(root: HTMLElement, open: boolean) {
   state.open = open;
   root.setAttribute(frontendDataAttr("disclosure-open"), open ? "true" : "false");
   state.panel?.setAttribute(frontendDataAttr("disclosure-panel-open"), open ? "true" : "false");
-  setHidden(state.panel, !open);
+  state.panel?.toggleAttribute("inert", !open);
   setAriaExpanded(state.trigger, open);
   dispatchDisclosureChange(state);
   return state;
