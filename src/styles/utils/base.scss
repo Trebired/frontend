@@ -7,6 +7,10 @@ body {
   min-width: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 [data-scrollbar-gap="y"],
 [data-scrollbar-gap="both"] {
   scrollbar-gutter: stable;

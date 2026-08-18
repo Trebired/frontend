@@ -37,7 +37,6 @@ const modalStack: ModalEntry[] = [];
 const triggerBindings = new WeakMap<HTMLElement, ()=>void>();
 let listenersInstalled = false;
 let originalBodyOverflow = "";
-let originalBodyPaddingRight = "";
 
 function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
   modal.dispatchEvent(new CustomEvent(name, {
@@ -106,17 +105,10 @@ function lockBodyScroll(lock: boolean) {
   if (!document.body) return;
   if (lock && modalStack.length === 1) {
     originalBodyOverflow = document.body.style.overflow;
-    originalBodyPaddingRight = document.body.style.paddingRight;
-    const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-    if (scrollbarGap > 0) {
-      const currentPadding = Number.parseFloat(window.getComputedStyle(document.body).paddingRight || "0") || 0;
-      document.body.style.paddingRight = `${currentPadding + scrollbarGap}px`;
-    }
     document.body.style.overflow = "hidden";
   }
   if (!lock && modalStack.length === 0) {
     document.body.style.overflow = originalBodyOverflow;
-    document.body.style.paddingRight = originalBodyPaddingRight;
   }
 }
 

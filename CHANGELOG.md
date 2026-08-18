@@ -1,5 +1,11 @@
 # Changelog
 
+## 8.4.2
+
+- Removed the disclosure trigger's hover color/underline on its label text, leaving the cursor as the only hover affordance now that the trigger has no box chrome of its own.
+- Made the disclosure's arrow indicator bigger (`1.35em`) and muted (`--tbf-text-muted`) instead of matching the trigger's own text size/color.
+- Fixed page content shifting horizontally when a modal opens or closes. The modal locked body scroll by toggling `overflow: hidden` and manually measuring/compensating for the scrollbar's width with `padding-right`, but `closeModal` reverted that compensation synchronously (before the 220ms close transition finished), so the scrollbar reappeared and the page visibly jumped left mid-animation. `html` now reserves `scrollbar-gutter: stable` unconditionally, so the scrollbar's width never changes the content width in the first place; the modal's manual scrollbar-width measurement and compensating `padding-right` are removed as no longer necessary.
+
 ## 8.4.1
 
 - Fixed the sidebar rendering with a gap below the header on pages with a secondary header. The sidebar's top offset was wired to `--tbf-layout-top-offset`, which includes the secondary header's height, but the secondary header only renders inside the main content column (never full-width above the sidebar), so that extra height showed up as a dead gap. The sidebar now offsets by `--tbf-header-height` alone.
