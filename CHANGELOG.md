@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.4.3
+
+- Increased the disclosure card's padding from `--tbf-gap-xs` to `--tbf-gap-sm`. In apps whose theme collapses `gap-xs`/`gap-xs2` down to the same very small value, `padding: var(--tbf-gap-xs)` rendered close enough to 0 that the card read as having no padding at all.
+- Restored the sidebar's block-start padding (previously zeroed out), now exposed as `--tbf-sidebar-padding-block-start` (default `20px`) alongside the existing `--tbf-sidebar-padding-block-end`.
+
 ## 8.4.2
 
 - Removed the disclosure trigger's hover color/underline on its label text, leaving the cursor as the only hover affordance now that the trigger has no box chrome of its own.

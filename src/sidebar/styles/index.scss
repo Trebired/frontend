@@ -24,7 +24,7 @@
   min-width: 0;
   flex-direction: column;
   gap: var(#{ns.css-var("gap-sm")}, 8px);
-  padding-block: 0 var(#{ns.css-var("sidebar-padding-block-end")}, 14px);
+  padding-block: var(#{ns.css-var("sidebar-padding-block-start")}, 20px) var(#{ns.css-var("sidebar-padding-block-end")}, 14px);
   padding-inline: var(#{ns.css-var("sidebar-padding-inline")}, 10px);
   overflow-x: hidden;
   overflow-y: auto;

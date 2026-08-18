@@ -8,7 +8,7 @@
 #{ns.class("disclosure")}.card,
 
 #{ns.class("disclosure")}#{ns.class("card")} {
-  padding: var(#{ns.css-var("gap-xs")}, 8px);
+  padding: var(#{ns.css-var("gap-sm")}, 8px);
 }
 
 #{ns.element-class("dropdown", "trigger")},
