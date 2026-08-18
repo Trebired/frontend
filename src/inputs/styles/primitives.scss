@@ -5,6 +5,12 @@
   flex-direction: column;
 }
 
+#{ns.class("disclosure")}.card,
+
+#{ns.class("disclosure")}#{ns.class("card")} {
+  padding: var(#{ns.css-var("gap-xs")}, 8px);
+}
+
 #{ns.element-class("dropdown", "trigger")},
 
 #{ns.element-class("tabs", "tab")} {
@@ -21,24 +27,40 @@
 #{ns.element-class("disclosure", "trigger")} {
   box-sizing: border-box;
   width: 100%;
-  padding: 10px 12px;
+  padding: 0;
   border: none;
-  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  border-radius: 0;
   color: var(#{ns.css-var("text")}, #000);
   font: inherit;
   background: transparent;
   cursor: pointer;
   appearance: none;
-  transition: background var(#{ns.css-var("transition-fast")}, 120ms) ease;
 }
 
-#{ns.element-class("disclosure", "trigger")}:hover {
-  background: var(#{ns.css-var("surface")}, #f4f4f4);
+#{ns.element-class("disclosure", "trigger-label")} {
+  transition: color var(#{ns.css-var("transition-fast")}, 120ms) ease;
+}
+
+#{ns.element-class("disclosure", "trigger")}:hover #{ns.element-class("disclosure", "trigger-label")} {
+  color: var(#{ns.css-var("focus")}, currentColor);
+  text-decoration: underline;
+}
+
+#{ns.element-class("disclosure", "indicator")} {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  transition: transform var(#{ns.css-var("transition-fast")}, 120ms) ease;
+}
+
+#{ns.data("disclosure-open", "true")} #{ns.element-class("disclosure", "indicator")} {
+  transform: rotate(90deg);
 }
 
 #{ns.element-class("disclosure", "panel")} {
   display: grid;
   min-width: 0;
+  align-items: stretch;
   grid-template-rows: minmax(0, 0fr);
   transition: grid-template-rows var(#{ns.css-var("transition-normal")}, 180ms) ease;
 }
@@ -50,7 +72,7 @@
 #{ns.element-class("disclosure", "panel-content")} {
   min-height: 0;
   overflow: hidden;
-  padding: 0 12px 10px;
+  padding-block-start: var(#{ns.css-var("gap-sm")}, 12px);
 }
 
 #{ns.class("tabs")} {

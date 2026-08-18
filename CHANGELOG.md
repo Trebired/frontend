@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.4.1
+
+- Fixed the sidebar rendering with a gap below the header on pages with a secondary header. The sidebar's top offset was wired to `--tbf-layout-top-offset`, which includes the secondary header's height, but the secondary header only renders inside the main content column (never full-width above the sidebar), so that extra height showed up as a dead gap. The sidebar now offsets by `--tbf-header-height` alone.
+- Redesigned the disclosure's spacing and trigger: the card now uses a single uniform `--tbf-gap-xs` padding on all sides (replacing the previous asymmetric per-element padding), and `--tbf-gap-sm` now separates the trigger from the panel content. The trigger itself no longer has its own padding or a full-row hover background — only its label text responds to hover — so it reads as plain clickable text rather than a nested button/chip.
+- Moved the disclosure's arrow indicator to the end of the trigger row (`margin-inline-start: auto`) and made it rotate 90° when open, so it now reflects the disclosure's state instead of being a static glyph.
+- Fixed the disclosure panel losing its grid-based collapse when a consumer passed a `panelClassName` that set `align-items` (e.g. `inline-row`, used to lay out the 2FA manual-key/copy-button row) — the panel's own `align-items: stretch` is now asserted explicitly, since otherwise the panel content stopped stretching into the collapsed 0-height row and rendered at its natural height regardless of open/closed state.
+
 ## 8.4.0
 
 - Fixed the fixed-position sidebar rendering underneath the fixed header instead of below it. `[data-tbf-sidebar]`'s `position: fixed` top offset defaulted to a bare `0`, so consuming apps that pair the sidebar system with a normal-flow header (rather than manually wiring `--tbf-sidebar-offset-block`) got the first ~header-height worth of sidebar content rendered behind the header and effectively invisible. It now defaults to the existing `--tbf-layout-top-offset` variable, which the layout system already keeps in sync with the actual header height.

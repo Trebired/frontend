@@ -16,7 +16,7 @@
 #{ns.data("sidebar")} {
   position: fixed;
   z-index: var(#{ns.css-var("z-sidebar")}, 900);
-  inset-block: var(#{ns.css-var("sidebar-offset-block")}, var(#{ns.css-var("layout-top-offset")}, 0)) 0;
+  inset-block: var(#{ns.css-var("sidebar-offset-block")}, var(#{ns.css-var("header-height")}, 0)) 0;
   inset-inline-start: 0;
   display: flex;
   box-sizing: border-box;

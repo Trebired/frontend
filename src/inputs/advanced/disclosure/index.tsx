@@ -62,8 +62,10 @@ function disclosureModel(props: disclosure_props) {
 function disclosureTriggerContent(props: disclosure_props) {
   return (
     <>
+    <span className={frontendElementClass("disclosure", "trigger-label")}>
     {props.label}
-    <span className="disclosure-indicator" aria-hidden="true">
+    </span>
+    <span className={frontendElementClass("disclosure", "indicator")} aria-hidden="true">
     {icon({ spec: "remixicon arrow-right-s-line" })}
     </span>
     </>
