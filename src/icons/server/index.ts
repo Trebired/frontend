@@ -40,10 +40,38 @@ export type { AttachIconServerOptions, IconServerAttachment } from "./attachment
 export *from "./defaults.js";
 export *from "./material.js";
 
-const svgMarkupCache = new Map<string, IconSvgResult>();
-const iconColorCache = new Map<string, string>();
-const iconColorModeCache = new Map<string, ""|"brand"|"monochrome">();
-const iconSvgResponseCache = new Map<string, string>();
+const ICON_CACHE_MAX_ENTRIES = 512;
+
+type BoundedIconCache<T> = {
+  get: (key: string) => T | undefined;
+  set: (key: string, value: T) => void;
+};
+
+function createBoundedIconCache<T>(maxEntries = ICON_CACHE_MAX_ENTRIES): BoundedIconCache<T> {
+  const entries = new Map<string, T>();
+  return {
+    get(key) {
+      const value = entries.get(key);
+      if (value === undefined) return undefined;
+      entries.delete(key);
+      entries.set(key, value);
+      return value;
+    },
+    set(key, value) {
+      entries.set(key, value);
+      while (entries.size > maxEntries) {
+        const oldest = entries.keys().next();
+        if (oldest.done) return;
+        entries.delete(oldest.value);
+      }
+    },
+  };
+}
+
+const svgMarkupCache = createBoundedIconCache<IconSvgResult>();
+const iconColorCache = createBoundedIconCache<string>();
+const iconColorModeCache = createBoundedIconCache<""|"brand"|"monochrome">();
+const iconSvgResponseCache = createBoundedIconCache<string>();
 
 function failure(
   parsed: ParsedIconSpec | null,

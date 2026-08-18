@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.3.1
+
+- Bounded the icon server caches. The SVG markup, resolved colour, colour mode and composed HTTP response caches were plain unbounded maps keyed by icon spec, so their size was driven by request input rather than by application need; with several thousand icons available across the installed packs they could grow to tens of megabytes. Each is now a small LRU bounded to 512 entries, which covers the icon set a real page uses while keeping worst-case memory flat. Output is unchanged.
+
 ## 8.3.0
 
 - Removed per-request filesystem and module-resolution work from the icon server. `resolveIconPackRoot()` ran full Node module resolution (`createRequire` + `require.resolve`) on every icon lookup because it was part of the SVG cache key, and `resolveIconColor()` re-read the icon file from disk with `readFileSync` on every call even when the SVG itself was already cached. Both are now memoised, the derived colour mode is cached, and `createIconSvgResponse()` caches its composed response body. Rendering an icon no longer performs any filesystem syscall after the first resolution, which matters most for server-rendered pages that emit many icons and for the `/__icons/svg` route. Output is byte-identical.
