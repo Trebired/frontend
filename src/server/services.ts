@@ -18,10 +18,6 @@ import {
   type NavigationMiddlewareOptions,
 } from "./navigation.js";
 import {
-  attachSecurityMiddleware,
-  type SecurityMiddlewareOptions,
-} from "./security.js";
-import {
   attachSeoMiddleware,
   type SeoMiddlewareOptions,
 } from "./seo.js";
@@ -86,7 +82,6 @@ type FrontendServerServicesOptions = {
   locale?: OptionalService<LocaleMiddlewareOptions>;
   monaco?: OptionalService<Partial<PackageStaticRouteOptions>>;
   navigation?: OptionalService<NavigationMiddlewareOptions>;
-  security?: OptionalService<SecurityMiddlewareOptions>;
   seo?: OptionalService<FrontendSeoServiceOptions>;
   sidebar?: OptionalService<FrontendSidebarServiceOptions>;
   statics?: false | PackageStaticRouteOptions | readonly PackageStaticRouteOptions[];
@@ -103,7 +98,6 @@ type FrontendServerServicesAttachment = {
   locale?: true;
   monaco?: StaticRouteAttachment;
   navigation?: true;
-  security?: true;
   seo?: true;
   sidebar?: true;
   statics?: StaticRouteAttachment[];
@@ -178,10 +172,6 @@ function attachFrontendServerServices(
 ): FrontendServerServicesAttachment {
   const attached: FrontendServerServicesAttachment = {};
 
-  if (serviceEnabled(options.security)) {
-    attachSecurityMiddleware(app, serviceConfig(options.security));
-    attached.security = true;
-  }
   if (serviceEnabled(options.navigation)) {
     attachNavigationMiddleware(app, serviceConfig(options.navigation));
     attached.navigation = true;

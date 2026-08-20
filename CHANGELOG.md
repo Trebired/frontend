@@ -1,5 +1,11 @@
 # Changelog
 
+## 8.5.0
+
+- Removed `server/security.ts`, `server/security/cors.ts`, `server/security/policy.ts`, `server/security/helpers.ts`, and `server/request-log.ts` along with their exports (`SecurityState`, `createSecurityState`, `applySecurityToLocals`, `attachSecurityMiddleware`, `createSecurityMiddleware`, `createCorsOptionsDelegate`, `defaultCorsOptions`, `attachNonceMiddleware`, `attachSecurityHeadersMiddleware`, `attachContentSecurityPolicyMiddleware`, `attachFrontendRequestLogger`). This package no longer carries CORS, CSP, security-header, nonce, or HTTP request-logging middleware — that generic Express/Node security layer now lives in `@trebired/security`, which product apps should depend on directly. `attachFrontendServerServices`'s optional `security` service is removed along with it (it only ever wired the now-deleted `attachSecurityMiddleware`).
+- `server/http.ts` is now a thin re-export of `@trebired/utils`'s `redirectResponse`, `requestBody`, `requestCookies`, `requestHeader`, `requestQuery`, `responseSecure`, `sendJson`, `sendText`, `serverObject`, `serverString`, `setResponseHeader`, and the `CookieOptions`/`HeaderMap`/`ServerRequestLike`/`ServerResponseLike` types, which moved there so `@trebired/security` and this package can share one framework-agnostic req/res layer without a `@trebired/security` → `@trebired/frontend` dependency. Existing imports from `@trebired/frontend/server` are unaffected.
+- Bumped the `@trebired/utils` dependency to `^0.8.0`.
+
 ## 8.4.3
 
 - Increased the disclosure card's padding from `--tbf-gap-xs` to `--tbf-gap-sm`. In apps whose theme collapses `gap-xs`/`gap-xs2` down to the same very small value, `padding: var(--tbf-gap-xs)` rendered close enough to 0 that the card read as having no padding at all.

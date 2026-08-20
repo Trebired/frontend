@@ -75,52 +75,6 @@ function verifyReactRenderServer(server) {
     }), "<span>A</span>");
 }
 
-function verifyRequestLogServer(server) {
-  const app = appCapture();
-  app.set = function set(key, value) {
-    this.settings ||= {};
-    this.settings[key] = value;
-  };
-  const events = [];
-  server.attachFrontendRequestLogger(app, {
-      logger: (event) => events.push(event),
-      quietSuccessRoutes: ["GET /quiet"],
-      trustProxy: 1,
-  });
-  assert.equal(app.settings["trust proxy"], 1);
-
-  const middleware = app.middlewares[0];
-  const okRes = eventResponse({ statusCode: 200 });
-  middleware({
-      headers: {},
-      ip: "127.0.0.1",
-      method: "GET",
-      originalUrl: "/welcome",
-    }, okRes, () => {});
-  okRes.emit("finish");
-  assert.equal(events[0].group, "trebired.frontend.client.http");
-  assert.equal(events[0].level, "success");
-
-  const probeRes = eventResponse({ statusCode: 404 });
-  middleware({
-      headers: {},
-      method: "GET",
-      originalUrl: "/.well-known/appspecific/com.chrome.devtools.json",
-    }, probeRes, () => {});
-  probeRes.emit("finish");
-  assert.equal(events.length, 1);
-
-  const failRes = eventResponse({ statusCode: 404 });
-  middleware({
-      headers: {},
-      method: "GET",
-      originalUrl: "/missing",
-    }, failRes, () => {});
-  failRes.emit("finish");
-  assert.equal(events[1].group, "trebired.frontend.client.http");
-  assert.equal(events[1].level, "warn");
-}
-
 function verifyPerformanceServer(server) {
   const app = appCapture();
   const events = [];
@@ -155,5 +109,4 @@ function verifyPerformanceServer(server) {
 export {
   verifyPerformanceServer,
   verifyReactRenderServer,
-  verifyRequestLogServer,
 };

@@ -100,3 +100,4 @@ This package does not:
 - Own application colors outside the supplied frontend config.
 - Provide compatibility bridges for removed application-local UI attributes.
 - Expose package Sass or internal component subpaths as public API.
+- Provide CORS, CSP, security-header, nonce, or HTTP request-log middleware. Use `@trebired/security` for these.

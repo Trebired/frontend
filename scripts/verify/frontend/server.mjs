@@ -6,10 +6,8 @@ import { verifyLiveSocketServer } from "./server/live-socket.mjs";
 import {
   verifyPerformanceServer,
   verifyReactRenderServer,
-  verifyRequestLogServer,
 } from "./server/observability.mjs";
 import { verifyPermissionStateServer } from "./server/permissions.mjs";
-import { verifySecurityPolicyServer } from "./server/security-policy.mjs";
 
 async function verifyFrontendServer(context) {
   const server = await context.importDist("server");
@@ -17,8 +15,6 @@ async function verifyFrontendServer(context) {
   await verifyThemeServer(server);
   await verifyLanguageServer(server);
   await verifyFrontendServerFramework(server);
-  verifySecurityServer(server);
-  await verifySecurityPolicyServer(server);
   await verifyLiveSocketServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
@@ -30,7 +26,6 @@ async function verifyFrontendServer(context) {
   await verifyFaviconServer(server);
   verifyLiveServer(server);
   verifyLocaleServer(server);
-  verifyRequestLogServer(server);
   verifyPerformanceServer(server);
   await verifyPageTaskServer(server);
   verifyReactRenderServer(server);
@@ -113,14 +108,6 @@ function verifyNavigationServer(server) {
 function verifyRootNavigation(root) {
   assert.equal(root.normalizeNavigationPath("/apps/one?tab=x"), "/apps/one");
   assert.equal(root.matchesCurrentPath("/apps/one/settings", "/apps/one"), true);
-}
-
-function verifySecurityServer(server) {
-  const res = serverResponseProbe();
-  res.locals = { csrfToken: "csrf-a", nonce: "nonce-a" };
-  const state = server.applySecurityToLocals(res);
-  assert.deepEqual(state, { csrfToken: "csrf-a", nonce: "nonce-a" });
-  assert.deepEqual(res.locals.security, state);
 }
 
 async function verifyIconServerAttachment(server) {

@@ -52,7 +52,6 @@ async function verifyFrontendServerServices(server) {
       },
       locale: true,
       navigation: true,
-      security: true,
       seo: { defaults: { contentLanguage: "en" } },
       sidebar: {
         options: { allowedSides: ["left"] },
@@ -63,7 +62,6 @@ async function verifyFrontendServerServices(server) {
         respond: ({ theme }) => ({ theme }),
       },
   });
-  assert.equal(attached.security, true);
   assert.equal(attached.navigation, true);
   assert.equal(attached.locale, true);
   assert.equal(attached.seo, true);
