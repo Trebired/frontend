@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 8.6.2
+
+- Updated logger-adapter and package tooling dependency ranges to the current Trebired releases so consumers do not retain stale nested logger packages.
+
 ## 8.6.1
 
 - Updated the logger-adapter dependency so frontend logging uses the current shared adapter release.

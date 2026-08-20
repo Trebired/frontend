@@ -1,4 +1,4 @@
 export default {
-  forVersion: "5.3.2",
+  forVersion: "5.6.3",
   prefix: "tbf",
 };
