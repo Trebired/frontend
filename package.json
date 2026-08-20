@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "8.6.0",
+  "version": "8.6.1",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -54,7 +54,7 @@
     "verify:pack": "bun ./scripts/verify/pack.mjs"
   },
   "dependencies": {
-    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.9",
+    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.17",
     "@trebired/utils": "^0.8.0",
     "chart.js": "^4.5.1",
     "country-flag-icons": "^1.6.20",

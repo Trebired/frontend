@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 8.6.1
+
+- Updated the logger-adapter dependency so frontend logging uses the current shared adapter release.
+
 ## 8.6.0
 
 - Added static icon cache registration so browser and React icon rendering can work without a live icon SVG endpoint.

@@ -5,7 +5,7 @@
     "": {
       "name": "@trebired/frontend",
       "dependencies": {
-        "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.9",
+        "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.17",
         "@trebired/utils": "^0.8.0",
         "chart.js": "^4.5.1",
         "country-flag-icons": "^1.6.20",
@@ -101,7 +101,7 @@
 
     "@package/logger": ["@trebired/logger@2.5.28", "", { "dependencies": { "@package/result": "npm:@trebired/result@^1.1.6", "@trebired/utils": "^0.4.4", "fflate": "^0.8.3", "tar-stream": "^3.2.0" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-6yBgZVmfnl1VrVXPi76wliobeoP1E1L+cVGnsOft7hA7U88wn3DVv4bmNuAboxCS3AvCLgXGnurZQz5GsTYRSw=="],
 
-    "@package/logger-adapter": ["@trebired/logger-adapter@0.4.9", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.24" }, "peerDependencies": { "@trebired/logger": ">=2.5.24" }, "optionalPeers": ["@trebired/logger"], "bin": { "logger-adapter-bridge": "dist/bridge/server.js" } }, "sha512-L+u4yUEJjL6OK4+1PXYWXdwWv9DlGROi7C78VcghSsLaXABsY0Xd2viXnv4f/v/cAgBLHrps0xzJp49O9cR2oQ=="],
+    "@package/logger-adapter": ["@trebired/logger-adapter@0.4.17", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.28", "@trebired/utils": "^0.6.0" }, "peerDependencies": { "@trebired/logger": "^2.5.29" }, "optionalPeers": ["@trebired/logger"], "bin": { "logger-adapter-bridge": "dist/bridge/server.js" } }, "sha512-yO7j0vttLJiGbadJKpz6bbF43BRtrBNiVgcaOdj/HJIw1qVybwY0GJeHpvZ6a4c8RtF2ieyUFjKiAaoqQ+w9GA=="],
 
     "@package/result": ["@trebired/result@1.1.6", "", { "dependencies": { "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.2.11" } }, "sha512-qRXp1K7q1VhdIXlFEuNSvBMAoHbZljIeCSP5EBVPh0daF7LQ8f6G3+OVkItm5x/xK/L9Xj9dk6XxA5NpsL2saw=="],
 
@@ -503,14 +503,18 @@
 
     "@package/logger/@trebired/utils": ["@trebired/utils@0.4.4", "", {}, "sha512-Ro3B9q5o0zGJ4tsEf+RK21njqDnCHft6RtG8Nm23D3hoDXtVfa0iFEgNy+liyKLKVEXrQ/evo4wULrpZuCtyog=="],
 
-    "@package/logger-adapter/@package/logger": ["@trebired/logger@2.5.24", "", { "dependencies": { "@package/result": "npm:@trebired/result@^1.1.6", "fflate": "^0.8.3", "tar-stream": "^3.2.0" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-j1SQGRHPGSZKsMFWQGEkxHn99HNUulujC271e2GXTBkXKeBDws0bELv6ZoZgs3d1ioRVQGfRcyqgI8R4zhrxYw=="],
+    "@package/logger-adapter/@trebired/utils": ["@trebired/utils@0.6.0", "", {}, "sha512-uLclMCUuokqgfJmdqq69p+sw4l757VIGsxnm74EJ8oqzXRUBgfLFw7W5+ymRO/JYdXJaCkRKJRAGhltOQtZowQ=="],
 
     "@package/result/@package/logger-adapter": ["@trebired/logger-adapter@0.2.11", "", {}, "sha512-sGgBBqcON7AJXRjuE1vDDejYcCl6a2yEHWie8uBEFDtQQ5piu8fcTPPzcuJhTMekF90z7x8l59t3uC9deFSwNg=="],
+
+    "@trebired/bundler/@package/logger-adapter": ["@trebired/logger-adapter@0.4.9", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.24" }, "peerDependencies": { "@trebired/logger": ">=2.5.24" }, "optionalPeers": ["@trebired/logger"], "bin": { "logger-adapter-bridge": "dist/bridge/server.js" } }, "sha512-L+u4yUEJjL6OK4+1PXYWXdwWv9DlGROi7C78VcghSsLaXABsY0Xd2viXnv4f/v/cAgBLHrps0xzJp49O9cR2oQ=="],
 
     "@trebired/bundler/@trebired/utils": ["@trebired/utils@0.4.4", "", {}, "sha512-Ro3B9q5o0zGJ4tsEf+RK21njqDnCHft6RtG8Nm23D3hoDXtVfa0iFEgNy+liyKLKVEXrQ/evo4wULrpZuCtyog=="],
 
     "@trebired/code-discipline/@trebired/utils": ["@trebired/utils@0.4.4", "", {}, "sha512-Ro3B9q5o0zGJ4tsEf+RK21njqDnCHft6RtG8Nm23D3hoDXtVfa0iFEgNy+liyKLKVEXrQ/evo4wULrpZuCtyog=="],
 
     "parse-entities/@types/unist": ["@types/unist@2.0.11", "", {}, "sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA=="],
+
+    "@trebired/bundler/@package/logger-adapter/@package/logger": ["@trebired/logger@2.5.24", "", { "dependencies": { "@package/result": "npm:@trebired/result@^1.1.6", "fflate": "^0.8.3", "tar-stream": "^3.2.0" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-j1SQGRHPGSZKsMFWQGEkxHn99HNUulujC271e2GXTBkXKeBDws0bELv6ZoZgs3d1ioRVQGfRcyqgI8R4zhrxYw=="],
   }
 }
