@@ -15,7 +15,7 @@ import {
   type LocaleRuntimeOptions,
   type SourceLanguageRuntimeOptions,
 } from "./language/index.js";
-import { bindIcons } from "./icons/index.js";
+import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
@@ -55,6 +55,7 @@ type FrontendRuntimeAdapters = ActionAdapters&FrontendLoggingOptions& {
 type FrontendRuntimeOptions = {
   adapters?: FrontendRuntimeAdapters;
   frontend_quiet?: boolean;
+  icons?: IconRuntimeOptions;
   live?: Omit<LiveOptions, "skip">;
   layout?: LayoutRuntimeOptions;
   locale?: LocaleRuntimeOptions;
@@ -114,7 +115,7 @@ function bindFrontendWidgets(
   adapters: ActionAdapters,
 ) {
   bindProgress();
-  bindIcons(scope);
+  bindIcons(scope, options.icons || {});
   bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters));
   bindSourceLanguageRuntime(scope, options.sourceLanguage || {});
   bindGraphs(scope);

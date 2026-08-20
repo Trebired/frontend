@@ -85,6 +85,7 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   return [
     `  --${config.prefix}-config-prefix: ${cssString(config.prefix)};`,
     `  --${config.prefix}-icon-endpoint: ${cssString(config.assets.icons.endpoint)};`,
+    `  --${config.prefix}-icon-mode: ${cssString(config.assets.icons.mode)};`,
     `  --${config.prefix}-interaction-active-filter: ${config.design.interactions.activePress.filter};`,
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),

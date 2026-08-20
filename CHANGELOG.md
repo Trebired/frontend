@@ -1,5 +1,15 @@
 # Changelog
 
+All notable changes to `@trebired/frontend` will be documented here.
+
+This project follows semantic versioning once published.
+
+## 8.6.0
+
+- Added static icon cache registration so browser and React icon rendering can work without a live icon SVG endpoint.
+- Added build-time static icon cache helpers from `@trebired/frontend/server`, including `buildStaticIconCache()` and `writeStaticIconCacheModule()`.
+- Added `assets.icons.mode` with static mode support and documented which package surfaces work without a backend and which require backend services.
+
 ## 8.5.0
 
 - Removed `server/security.ts`, `server/security/cors.ts`, `server/security/policy.ts`, `server/security/helpers.ts`, and `server/request-log.ts` along with their exports (`SecurityState`, `createSecurityState`, `applySecurityToLocals`, `attachSecurityMiddleware`, `createSecurityMiddleware`, `createCorsOptionsDelegate`, `defaultCorsOptions`, `attachNonceMiddleware`, `attachSecurityHeadersMiddleware`, `attachContentSecurityPolicyMiddleware`, `attachFrontendRequestLogger`). This package no longer carries CORS, CSP, security-header, nonce, or HTTP request-logging middleware — that generic Express/Node security layer now lives in `@trebired/security`, which product apps should depend on directly. `attachFrontendServerServices`'s optional `security` service is removed along with it (it only ever wired the now-deleted `attachSecurityMiddleware`).

@@ -97,11 +97,13 @@ function configuredSource(context) {
 function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
+  assert.equal(defaults.config.assets.icons.mode, "server");
   assert.equal(defaults.config.design.interactions.activePress.enabled, false);
   assert.equal(defaults.config.design.interactions.activePress.brightness, "0.9");
   assert.equal(defaults.config.design.interactions.activePress.filter, "none");
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-icon-mode: \"server\";"));
   assert.ok(defaults.generatedScss.includes("--tbf-overlay-modal-content-width: min(720px, calc(100vw - 48px));"));
   assert.ok(defaults.generatedScss.includes("--tbf-ui-upload-preview-size: 64px;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
@@ -110,14 +112,25 @@ function assertDefaultConfig(defaults, context) {
 }
 
 function assertLoadedConfig(loaded, configPath, config, context) {
+  assertLoadedConfigShape(loaded, configPath);
+  assertLoadedScss(loaded);
+  assertNormalizeFrontendConfig(config, context);
+  assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
+}
+
+function assertLoadedConfigShape(loaded, configPath) {
   assert.equal(loaded.configPath, configPath);
   assert.deepEqual(loaded.config.assets.icons.aliases, {
       add: "remixicon:add-line",
       github: "simple-icons:github",
   });
   assert.deepEqual(loaded.config.assets.icons.packs, ["simple-icons"]);
+  assert.equal(loaded.config.assets.icons.mode, "server");
   assert.equal(loaded.config.assets.fonts.families[0].packageName, "inter");
   assert.equal(loaded.config.design.interactions.activePress.filter, "brightness(0.8)");
+}
+
+function assertLoadedScss(loaded) {
   assert.ok(loaded.generatedScss.includes('@use "sass:meta";'));
   assert.ok(loaded.generatedScss.includes("@include meta.load-css("));
   assert.ok(loaded.generatedScss.includes("@fontsource/inter/files/inter-latin-400-normal.woff2"));
@@ -135,6 +148,9 @@ function assertLoadedConfig(loaded, configPath, config, context) {
   assert.ok(loaded.generatedScss.includes("--tbf-ui-link-state-hover-color: #333333;"));
   assert.ok(loaded.generatedScss.includes("--tbf-ui-upload-preview-size: 88px;"));
   assert.ok(loaded.generatedScss.includes("--tbf-ui-upload-surface-bg: #eeeeee;"));
+}
+
+function assertNormalizeFrontendConfig(config, context) {
   assert.equal(
     config.normalizeFrontendConfig({
         design: { interactions: { activePress: { enabled: false } } },
@@ -144,12 +160,22 @@ function assertLoadedConfig(loaded, configPath, config, context) {
   );
   assert.equal(
     config.normalizeFrontendConfig({
+        assets: { icons: { endpoint: false, mode: "static" } },
+        forVersion: context.packageVersion,
+    }).assets.icons.endpoint,
+    ""
+  );
+  assert.equal(
+    config.normalizeFrontendConfig({
         design: { interactions: { activePress: { enabled: true } } },
         forVersion: context.packageVersion,
     }).design.interactions.activePress.filter,
     "brightness(0.9)"
   );
-  assert.equal(typeof config.writeGeneratedFrontendScss, "undefined");
+  assert.throws(() => config.normalizeFrontendConfig({
+        assets: { icons: { endpoint: false } },
+        forVersion: context.packageVersion,
+    }), /endpoint/u);
 }
 
 export { verifyFrontendConfig };

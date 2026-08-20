@@ -47,11 +47,44 @@ import { bindFrontendRuntime } from "@trebired/frontend";
 bindFrontendRuntime(document);
 ```
 
+For a static app without an icon endpoint, generate an icon cache module during the frontend build:
+
+```ts
+import { writeStaticIconCacheModule } from "@trebired/frontend/server";
+
+await writeStaticIconCacheModule({
+  outFile: "src/frontend/generated/static-icons.ts",
+  rootDir: process.cwd(),
+  specs: [
+    "remixicon:home-line",
+    "remixicon:settings-3-line",
+  ],
+});
+```
+
+Register that cache before binding the browser runtime:
+
+```ts
+import { bindFrontendRuntime } from "@trebired/frontend";
+import { registerFrontendStaticIcons } from "../generated/static-icons";
+
+registerFrontendStaticIcons();
+bindFrontendRuntime(document, { icons: { mode: "static" } });
+```
+
 ## Concepts
 
 ### Package Namespace
 
 Frontend source-visible class names, data attributes, CSS variables, tokens, and events are created through `@trebired/bundler` namespace helpers. The package's own `.trebired/bundler/config.ts` declares the `tbf` prefix. Applications do not set a frontend prefix to consume this package.
+
+### Backend-free and Server-backed Surfaces
+
+Backend-free applications can use the config API, generated CSS, namespace helpers, theme and layout runtime, browser binders, static React components, design-token driven primitives, and static icon caches.
+
+Server-backed applications use `@trebired/frontend/server` for package static assets, icon SVG endpoints, React document rendering, server locals, navigation, SEO, theme and language cookies, live socket helpers, and framework middleware.
+
+Runtime components that submit HTTP actions, expect data-attribute request/response endpoints, subscribe to live socket islands, load code-editor assets through server routes, or render server-provided entity graph data require an application backend.
 
 ### React Shell
 
@@ -67,6 +100,12 @@ The React entrypoint renders package-owned document, layout, header, sidebar, po
 
 `runtime` config owns browser systems such as theme state, navigation hooks, boot scripts, and runtime adapters.
 
+### Icons
+
+`assets.icons.mode` is `"server"` by default. In server mode, browser icon binders fetch SVG from `assets.icons.endpoint`, usually `/__icons/svg`, and an app must attach the icon server helper.
+
+Static apps set `assets.icons.mode: "static"` and `assets.icons.endpoint: false`, then register a build-generated icon cache before calling `bindFrontendRuntime(document, { icons: { mode: "static" } })`.
+
 ### Systems
 
 `systems` config enables package-owned binders. Disabled systems do not emit their boot scripts.
@@ -77,6 +116,8 @@ Feature binders are idempotent and accept a `Document`, `HTMLElement`, or `Docum
 
 Frontend server helpers own package static assets, icon SVG endpoints, React document rendering support, and frontend middleware that is generic across Trebired applications.
 
+Static icon mode uses `registerStaticIcons()` in the browser. Missing cached icons do not trigger HTTP when the runtime mode is `"static"`.
+
 ## Public API
 
 Entrypoints:
@@ -86,7 +127,7 @@ Entrypoints:
 - `@trebired/frontend/react`
 - `@trebired/frontend/server`
 
-The root entrypoint exports browser runtime binders and namespace helpers. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers.
+The root entrypoint exports browser runtime binders, namespace helpers, and static icon cache registration. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers plus build-time static icon cache helpers.
 
 ## Migration Notes
 

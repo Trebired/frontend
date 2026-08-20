@@ -27,8 +27,11 @@ type IconCacheEntry = {
   svg?: string;
 };
 
+type IconRuntimeMode = "auto" | "fetch" | "static";
+
 type IconRuntimeOptions = {
   endpoint?: string;
+  mode?: IconRuntimeMode;
 };
 
 type RenderIconElementAttrs = Record<string, unknown>& {
@@ -36,7 +39,14 @@ type RenderIconElementAttrs = Record<string, unknown>& {
   className?: string;
   color?: string;
   endpoint?: string;
+  mode?: IconRuntimeMode;
   tag?: string;
+};
+
+type StaticIconCacheEntry = string | IconCacheEntry | null | undefined;
+type StaticIconCacheInput = Record<string, StaticIconCacheEntry>;
+type StaticIconCacheRegistration = {
+  registered: number;
 };
 
 const ICON_SELECTOR = `${frontendDataSelector("icon")},[data-icon-spec]`;
@@ -54,6 +64,10 @@ function readIconCacheEntry(spec: unknown): IconCacheEntry | null {
 function storeIconCacheEntry(spec: unknown, entry: IconCacheEntry): void {
   const parsed = parseIconSpec(spec);
   if (parsed && entry && typeof entry === "object") iconCacheEntries.set(parsed.spec, entry);
+}
+
+function normalizeIconRuntimeMode(value: unknown): IconRuntimeMode {
+  return value === "fetch" || value === "static" ? value : "auto";
 }
 
 function readRenderedSpec(host: Element | null | undefined): string {
@@ -74,6 +88,35 @@ function buildSvgNode(svgMarkup: string): SVGElement | null {
 function readSvgCacheEntry(svgMarkup: unknown): IconCacheEntry | null {
   const svg = String(svgMarkup || "").trim();
   return /^<svg\b/iu.test(svg) ? { svg } : null;
+}
+
+function normalizeStaticIconCacheEntry(
+  value: StaticIconCacheEntry,
+): IconCacheEntry | null {
+  if (typeof value === "string") return readSvgCacheEntry(value);
+  if (!value || typeof value !== "object") return null;
+  const svgEntry = readSvgCacheEntry(value.svg);
+  if (!svgEntry) return null;
+  return {
+    ...svgEntry,
+    colorMode: text(value.colorMode),
+    colorValue: text(value.colorValue),
+  };
+}
+
+function registerStaticIcons(
+  input: StaticIconCacheInput,
+): StaticIconCacheRegistration {
+  let registered = 0;
+  for (const [spec, value] of Object.entries(input || {})) {
+    const parsed = parseIconSpec(spec);
+    if (!parsed) continue;
+    const entry = normalizeStaticIconCacheEntry(value);
+    if (!entry) continue;
+    storeIconCacheEntry(parsed.spec, entry);
+    registered += 1;
+  }
+  return { registered };
 }
 
 function storeFetchedSvg(spec: string, svgMarkup: unknown): void {
@@ -171,6 +214,7 @@ async function renderIconElement(
   try {
     const cachedSvg = text(readIconCacheEntry(parsed.spec)?.svg);
     if (cachedSvg && renderSvgIntoHost(host, cachedSvg)) return host;
+    if (normalizeIconRuntimeMode(attrs.mode) === "static") return null;
     const svgMarkup = await fetchSvg(parsed.spec, attrs.endpoint || "/__icons/svg");
     if (readRenderedSpec(host) !== parsed.spec) return null;
     if (renderSvgIntoHost(host, svgMarkup)) return host;
@@ -206,6 +250,7 @@ function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions 
   void renderIconElement(host, spec, {
       color: host.getAttribute(frontendDataAttr("icon-color")) || "",
       endpoint: options.endpoint,
+      mode: options.mode,
   });
   return true;
 }
@@ -226,6 +271,7 @@ const icons = Object.freeze({
     parseSpec: parseIconSpec,
     readIconCacheEntry,
     readRenderedSpec,
+    registerStatic: registerStaticIcons,
     renderElement: renderIconElement,
     resolveAlias: resolveIconAlias,
     storeIconCacheEntry,
@@ -252,6 +298,7 @@ export {
   parseIconSpec,
   readIconCacheEntry,
   readRenderedSpec,
+  registerStaticIcons,
   renderIconElement,
   resolveIconAlias,
   SUPPORTED_ICON_PACKS,
@@ -261,8 +308,12 @@ export type {
   IconAliasMap,
   IconAliasValue,
   IconCacheEntry,
+  IconRuntimeMode,
   IconRuntimeOptions,
   ParsedIconSpec,
   RenderIconElementAttrs,
+  StaticIconCacheEntry,
+  StaticIconCacheInput,
+  StaticIconCacheRegistration,
 };
 export default icons;

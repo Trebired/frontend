@@ -73,7 +73,7 @@ const TOP_LEVEL_FIELDS = [
 ];
 
 const ASSET_FIELDS = ["fonts", "icons"];
-const ICON_FIELDS = ["aliases", "endpoint", "packs"];
+const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs"];
 const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
@@ -86,6 +86,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         icons: Object.freeze({
             aliases: Object.freeze({ ...defaultIconAliases }),
             endpoint: "/__icons/svg",
+            mode: "server",
             packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
         }),
     }),
@@ -145,8 +146,23 @@ function assertKnownFields(
   }
 }
 
-function normalizeEndpoint(value: unknown): string {
-  const endpoint = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint).trim();
+function normalizeIconMode(value: unknown): NormalizedFrontendConfig["assets"]["icons"]["mode"] {
+  const mode = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.mode).trim().toLowerCase();
+  if (mode === "server" || mode === "static") return mode;
+  throw invalidConfig("assets.icons.mode must be server or static");
+}
+
+function normalizeEndpoint(
+  value: unknown,
+  mode: NormalizedFrontendConfig["assets"]["icons"]["mode"],
+): string {
+  if (value === false) {
+    if (mode === "static") return "";
+    throw invalidConfig("assets.icons.endpoint can be false only when assets.icons.mode is static");
+  }
+  const fallback = mode === "static" ? "" : DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint;
+  const endpoint = String(value || fallback).trim();
+  if (!endpoint && mode === "static") return "";
   if (!endpoint || /[\s"'<>]/u.test(endpoint)) {
     throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
   }
@@ -196,11 +212,13 @@ function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets
   ? {}
   : assertPlainObject(source.icons, "assets.icons");
   assertKnownFields(icons, ICON_FIELDS, "assets.icons");
+  const mode = normalizeIconMode(icons.mode);
   return {
     fonts: normalizeFontsConfig(source.fonts),
     icons: {
       aliases: normalizeIconAliases(icons.aliases),
-      endpoint: normalizeEndpoint(icons.endpoint),
+      endpoint: normalizeEndpoint(icons.endpoint, mode),
+      mode,
       packs: normalizeIconPacks(icons.packs),
     },
   };

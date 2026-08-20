@@ -11,11 +11,13 @@ import { readIconCacheEntry, renderIconElement } from "#e55z7pkijewq";
 import { applySvgColor } from "#bu1nq95e3k0f";
 import { getActiveIconServerRenderer } from "#6o6fqz7svsts";
 import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
+import type { IconRuntimeMode } from "#e55z7pkijewq";
 
 type IconProps = Omit<HTMLAttributes<HTMLElement>, "color"> & {
   color?: string;
   endpoint?: string;
   label?: string;
+  mode?: IconRuntimeMode;
   name?: string;
   pack?: string;
   spec?: string;
@@ -60,6 +62,7 @@ function Icon(props: IconProps) {
     color,
     endpoint,
     label,
+    mode,
     name: _name,
     pack: _pack,
     spec: _spec,
@@ -78,9 +81,9 @@ function Icon(props: IconProps) {
 
   useEffect(() => {
       if (!ref.current || !normalizedSpec) return undefined;
-      void renderIconElement(ref.current, normalizedSpec, { color, endpoint });
+      void renderIconElement(ref.current, normalizedSpec, { color, endpoint, mode });
       return undefined;
-    }, [color, endpoint, normalizedSpec]);
+    }, [color, endpoint, mode, normalizedSpec]);
 
   const elementProps = useMemo(() => {
       const hidden = label || rest["aria-label"] ? undefined : "true";

@@ -72,6 +72,7 @@
   "#4eoy445xl4kk": "./src/sidebar/dynamic/runtime/live.ts",
   "#4fte8m1x62rd": "./src/graph/advanced/_shared.tsx",
   "#4fxzl20lc5t1": "./src/logs/client/style.ts",
+  "#4gh1zj5qcwle": "./src/icons/server/static.ts",
   "#4h2kc2sps7v0": "./src/inputs/advanced/tabs/manager/dom.ts",
   "#4hhrwyiiwrtv": "./src/server/favicon.ts",
   "#4hlk3mrarcqi": "./src/settings/index.ts",

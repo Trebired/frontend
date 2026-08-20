@@ -109,6 +109,7 @@ function verifyIconServer(iconServer, rootDir) {
         label: "Add",
       }, { rootDir }).includes("--tbf-icon-color: #123456"));
   verifyIconMiddleware(iconServer, rootDir);
+  verifyStaticIconModule(iconServer, rootDir);
   verifyIconAliasLocals(iconServer);
   verifyCustomIconPack(iconServer);
 }
@@ -218,6 +219,23 @@ function verifyIconMiddleware(iconServer, rootDir) {
   assert.ok(sent.includes("<svg"));
 }
 
+function verifyStaticIconModule(iconServer, rootDir) {
+  const cache = iconServer.buildStaticIconCache([
+      "remixicon:add-line",
+      "remixicon:missing-static-icon",
+    ], { rootDir });
+  const source = iconServer.renderStaticIconCacheModule(cache);
+
+  assert.ok(cache["remixicon:add-line"].svg.includes("<svg"));
+  assert.equal(cache["remixicon:missing-static-icon"], undefined);
+  assert.ok(source.includes("registerStaticIcons"));
+  assert.ok(source.includes("\\u003csvg"));
+  assert.throws(() => iconServer.buildStaticIconCache(
+      ["remixicon:missing-static-icon"],
+      { rootDir, strict: true },
+    ), /frontend-static-icon-missing/u);
+}
+
 function responseCapture(send) {
   return {
     set: ignoreResponseHeader,
@@ -259,6 +277,18 @@ async function verifyIconRuntime(iconRuntime) {
   assert.equal(fetchCount, 1);
   const secondHost = document.createElement("i");
   await iconRuntime.renderIconElement(secondHost, "remixicon:add-line", { endpoint: "/icons" });
+  assert.equal(fetchCount, 1);
+  const registration = iconRuntime.registerStaticIcons({
+      "remixicon:static-line": '<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>',
+  });
+  const staticHost = document.createElement("i");
+  const missingHost = document.createElement("i");
+  await iconRuntime.renderIconElement(staticHost, "remixicon:static-line", { mode: "static" });
+  await iconRuntime.renderIconElement(missingHost, "remixicon:missing-static-line", { mode: "static" });
+
+  assert.equal(registration.registered, 1);
+  assert.equal(staticHost.querySelector("svg") !== null, true);
+  assert.equal(missingHost.querySelector("svg"), null);
   assert.equal(fetchCount, 1);
 }
 

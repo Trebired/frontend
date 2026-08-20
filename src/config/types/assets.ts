@@ -1,4 +1,5 @@
 type FrontendIconPack = string;
+type FrontendIconMode = "server" | "static";
 
 type FrontendIconAliasValue = string | {
   icon?: string;
@@ -29,7 +30,8 @@ type FrontendAssetsConfig = {
   fonts?: FrontendFontConfig;
   icons?: {
     aliases?: Record<string, FrontendIconAliasValue>;
-    endpoint?: string;
+    endpoint?: string | false;
+    mode?: FrontendIconMode;
     packs?: readonly FrontendIconPack[];
   };
 };
@@ -54,6 +56,7 @@ type NormalizedFrontendAssetsConfig = {
   icons: {
     aliases: Record<string, string>;
     endpoint: string;
+    mode: FrontendIconMode;
     packs: FrontendIconPack[];
   };
 };
@@ -65,6 +68,7 @@ export type {
   FrontendFontFamilyConfig,
   FrontendFontStyle,
   FrontendIconAliasValue,
+  FrontendIconMode,
   FrontendIconPack,
   NormalizedFrontendAssetsConfig,
   NormalizedFrontendFontConfig,
