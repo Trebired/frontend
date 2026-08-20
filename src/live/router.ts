@@ -1,4 +1,13 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
+import {
+  beginLiveNavigation,
+  dispatchLiveContentUpdated,
+  dispatchLiveNavigation,
+  dispatchLivePageDispose,
+  retargetLiveNavigation,
+  type LiveHistoryMode,
+  type LiveNavigationDetail,
+} from "./page.js";
 import { rehydrate, type LiveOptions } from "./regions.js";
 import {
   captureFormState,
@@ -8,10 +17,10 @@ import {
   restoreWizardSteps,
 } from "./state.js";
 import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
-import { frontendDataSelector, frontendEventName, frontendToken } from "#5vbaqj4pirp3";
+import { frontendDataSelector, frontendToken } from "#5vbaqj4pirp3";
 
 type LiveNavigationOptions = LiveOptions& {
-  history?: "none" | "push" | "replace";
+  history?: LiveHistoryMode;
   portaledSelector?: string | string[];
   preserveState?: boolean;
   push?: boolean;
@@ -97,10 +106,15 @@ function replaceLiveContent(
   doc: Document,
   url: string,
   options: LiveNavigationOptions,
+  liveNavigation?: LiveNavigationDetail,
 ) {
   const currentRoot = contentRoot(document, options.contentSelector);
   const nextRoot = contentRoot(doc, options.contentSelector);
   if (!currentRoot || !nextRoot) return false;
+  const navigation = liveNavigation || beginLiveNavigation(
+    url,
+    options.history || "none",
+  );
   const formState = options.preserveState
   ? captureFormState(currentRoot)
   : null;
@@ -109,6 +123,11 @@ function replaceLiveContent(
   : null;
   options.closeOverlays?.();
   removeStalePortaledOverlays(currentRoot, options);
+  dispatchLivePageDispose(
+    navigation,
+    currentRoot,
+    options.preserveState === true,
+  );
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
   swapChrome(doc, options);
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
@@ -117,16 +136,12 @@ function replaceLiveContent(
   injectNewScripts(doc);
   if (!options.preserveState) window.scrollTo(0, 0);
   rehydrate(document, options);
-  document.dispatchEvent(
-    new CustomEvent(frontendEventName("live-content-updated"), {
-        detail: { root: currentRoot, url },
-    }),
-  );
+  dispatchLiveContentUpdated(navigation, currentRoot);
   return true;
 }
 
 function applyHistoryMode(
-  mode: "none" | "push" | "replace",
+  mode: LiveHistoryMode,
   resolvedUrl: string,
 ) {
   if (mode === "none") return;
@@ -151,6 +166,7 @@ async function softVisit(url: string, options: LiveNavigationOptions = {}) {
   const targetUrl = String(url || window.location.href).trim();
   const historyMode =
   options.history || (options.push === false ? "none" : "push");
+  let navigation = beginLiveNavigation(targetUrl, historyMode);
   try {
     const response = await fetch(targetUrl, {
         credentials: "same-origin",
@@ -160,15 +176,12 @@ async function softVisit(url: string, options: LiveNavigationOptions = {}) {
     const html = await response.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
     const resolvedUrl = response.url || targetUrl;
-    if (!replaceLiveContent(doc, resolvedUrl, options)) {
+    navigation = retargetLiveNavigation(navigation, resolvedUrl);
+    if (!replaceLiveContent(doc, resolvedUrl, options, navigation)) {
       return fallbackNavigate(targetUrl, historyMode !== "none");
     }
     applyHistoryMode(historyMode, resolvedUrl);
-    document.dispatchEvent(
-      new CustomEvent(frontendEventName("live-navigation"), {
-          detail: { historyMode, url: resolvedUrl },
-      }),
-    );
+    dispatchLiveNavigation(navigation);
     return true;
   } catch {
     return fallbackNavigate(targetUrl, historyMode !== "none");

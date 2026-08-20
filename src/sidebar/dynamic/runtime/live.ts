@@ -22,6 +22,7 @@ import type {
   DynamicSidebarResponseItem,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 const liveRoots = new Set<HTMLElement>();
 const liveConfigs = new WeakMap<HTMLElement, DynamicSidebarLiveConfig>();
@@ -30,6 +31,7 @@ let unsubscribeRooms: DynamicSidebarCleanup[] = [];
 let refreshTimer = 0;
 let refreshInFlight = false;
 let refreshQueued = false;
+let livePageLifecycleBound = false;
 
 function mergeLiveOptions(options?: DynamicSidebarLiveOptions) {
   if (!options) return liveOptions;
@@ -45,7 +47,16 @@ function mergeLiveOptions(options?: DynamicSidebarLiveOptions) {
 }
 
 function visibleLiveRoots() {
-  return Array.from(liveRoots).filter((node) => node.isConnected);
+  const out: HTMLElement[] = [];
+  liveRoots.forEach((node) => {
+      if (node.isConnected) {
+        out.push(node);
+        return;
+      }
+      liveRoots.delete(node);
+      liveConfigs.delete(node);
+  });
+  return out;
 }
 
 function descriptorKeyFromConfig(config: DynamicSidebarLiveConfig) {
@@ -166,6 +177,7 @@ function syncDynamicSidebarRooms() {
 }
 
 function bindDynamicSidebarLiveHost(host: HTMLElement) {
+  bindDynamicSidebarLivePageLifecycle();
   const root = liveRootContent(host) || host;
   if (!(root instanceof HTMLElement)) return null;
   liveRoots.add(root);
@@ -183,11 +195,21 @@ function bindDynamicSidebarLiveHost(host: HTMLElement) {
   return root;
 }
 
+function bindDynamicSidebarLivePageLifecycle() {
+  if (livePageLifecycleBound || typeof document === "undefined") return;
+  livePageLifecycleBound = true;
+  document.addEventListener(frontendEventName("live-content-updated"), () => {
+      syncDynamicSidebarRooms();
+      scheduleDynamicSidebarRefresh(0);
+  });
+}
+
 function bindDynamicSidebarLive(
   root: BindRoot = document,
   options?: DynamicSidebarLiveOptions,
 ) {
   mergeLiveOptions(options);
+  bindDynamicSidebarLivePageLifecycle();
   queryAll<HTMLElement>(root, DYNAMIC_SIDEBAR_LIVE_SELECTOR)
   .forEach(bindDynamicSidebarLiveHost);
 }

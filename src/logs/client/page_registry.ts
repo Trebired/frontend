@@ -10,4 +10,8 @@ function setLogsPartialPage(root: HTMLElement, page: any) {
   logsPartialPages.set(root, page);
 }
 
-export { readLogsPartialPage, setLogsPartialPage };
+function deleteLogsPartialPage(root: HTMLElement) {
+  logsPartialPages.delete(root);
+}
+
+export { deleteLogsPartialPage, readLogsPartialPage, setLogsPartialPage };

@@ -18,7 +18,7 @@
         "socket.io-client": "^4.8.3",
       },
       "devDependencies": {
-        "@trebired/bundler": "^5.6.3",
+        "@trebired/bundler": "^5.6.5",
         "@trebired/code-discipline": "^7.0.3",
         "@trebired/configs": "^0.2.0",
         "@types/bun": "^1.3.14",
@@ -133,7 +133,7 @@
 
     "@socket.io/component-emitter": ["@socket.io/component-emitter@3.1.2", "", {}, "sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA=="],
 
-    "@trebired/bundler": ["@trebired/bundler@5.6.3", "", { "dependencies": { "@package/i18n": "npm:@trebired/i18n@^0.4.1", "@package/logger": "npm:@trebired/logger@^2.5.32", "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.18", "@package/result": "npm:@trebired/result@^1.2.7", "@trebired/utils": "^0.6.0", "esbuild": "^0.28.1", "sass-embedded": "^1.100.0" }, "bin": { "package-bundler": "dist/cli.js", "trebired-bundler": "dist/cli.js" } }, "sha512-XwqfK9bL4ygT470PoNbUg1u5CZ7M3vFXIi8cUnXaVZZuXhU+AGaRl5Qq4rrdlshAGb9wLed/IVEYa0pKiBIIMA=="],
+    "@trebired/bundler": ["@trebired/bundler@5.6.5", "", { "dependencies": { "@package/i18n": "npm:@trebired/i18n@^0.4.1", "@package/logger": "npm:@trebired/logger@^2.5.32", "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.4.18", "@package/result": "npm:@trebired/result@^1.2.7", "@trebired/utils": "^0.6.0", "esbuild": "^0.28.1", "sass-embedded": "^1.100.0" }, "bin": { "package-bundler": "dist/cli.js", "trebired-bundler": "dist/cli.js" } }, "sha512-Do40c8TW3iSnufBsTKjWzswk4EqA7a3Sc8TxfP/AbswpjjxtKh0pdphw8FYAxjIo821e9kXx7d4DCiAqQcUQUQ=="],
 
     "@trebired/code-discipline": ["@trebired/code-discipline@7.0.3", "", { "dependencies": { "@package/logger": "npm:@trebired/logger@^2.5.32", "@package/result": "npm:@trebired/result@^1.2.7", "@trebired/utils": "^0.6.0", "typescript": "^6.0.3" }, "bin": { "code-discipline": "dist/cli.js" } }, "sha512-PAzNtVwKoAYl/tGL9wOgBiQsHoV+poPQLbEHt7EtxjBAggMu/Wlj51xHWWnTU3scFkk814RTp9Gh7AZ8WmWhMA=="],
 

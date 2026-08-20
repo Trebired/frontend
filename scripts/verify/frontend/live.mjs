@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import { settleDom } from "./timing.mjs";
+import {
+  verifyLiveLogsSocketDisposal,
+  verifyLiveNavigationLifecycle,
+  verifyLiveNavigationStaleGuard,
+  verifyLiveScopedSubscriptionDisposal,
+} from "./live-navigation.mjs";
 
 function modalMarkup(marker) {
   return [
@@ -272,6 +278,10 @@ async function verifyLiveRemoteUploadPreservation(context) {
 
 async function verifyFrontendLive(context) {
   await verifyLiveOverlays(context);
+  await verifyLiveNavigationLifecycle(context);
+  await verifyLiveNavigationStaleGuard(context);
+  await verifyLiveLogsSocketDisposal(context);
+  await verifyLiveScopedSubscriptionDisposal(context);
   await verifyLiveChromePortaledOverlayCleanup(context);
   await verifyLiveFileInputPreservation(context);
   await verifyLiveRemoteUploadPreservation(context);
@@ -281,6 +291,10 @@ export {
   verifyFrontendLive,
   verifyLiveChromePortaledOverlayCleanup,
   verifyLiveFileInputPreservation,
+  verifyLiveLogsSocketDisposal,
+  verifyLiveNavigationLifecycle,
+  verifyLiveNavigationStaleGuard,
   verifyLiveRemoteUploadPreservation,
   verifyLiveOverlays,
+  verifyLiveScopedSubscriptionDisposal,
 };

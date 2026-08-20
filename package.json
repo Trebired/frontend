@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "8.6.2",
+  "version": "8.6.3",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -27,6 +27,10 @@
     "./config": {
       "import": "./dist/config/index.js",
       "types": "./dist/config/index.d.ts"
+    },
+    "./live": {
+      "import": "./dist/live/index.js",
+      "types": "./dist/live/index.d.ts"
     },
     "./react": {
       "import": "./dist/react/index.js",
@@ -67,7 +71,7 @@
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
-    "@trebired/bundler": "^5.6.3",
+    "@trebired/bundler": "^5.6.5",
     "@trebired/code-discipline": "^7.0.3",
     "@trebired/configs": "^0.2.0",
     "@types/bun": "^1.3.14",

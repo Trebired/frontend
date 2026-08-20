@@ -20,6 +20,8 @@ type LiveIslandMountOptions = {
 };
 
 const roots = new WeakMap<Element, {render:(node:ReactNode)=>void;unmount:()=>void}>();
+const mountedRoots = new Set<Element>();
+let reactLivePageDisposeBound = false;
 
 function resolveEsmInterop<T>(namespace: any, probe: string): T {
   return (typeof namespace?.[probe] === "function" ? namespace : namespace?.default) as T;
@@ -30,6 +32,7 @@ async function mountReactRoot(
   node: ReactNode,
   options: ReactRootOptions = {},
 ) {
+  bindReactLivePageDispose();
   const client = resolveEsmInterop<typeof import("react-dom/client")>(
     await import("react-dom/client"),
     "createRoot",
@@ -44,6 +47,7 @@ async function mountReactRoot(
   : client.createRoot(root);
   if (options.hydrate !== true) created.render(node as any);
   roots.set(root, created);
+  mountedRoots.add(root);
   return created;
 }
 
@@ -56,7 +60,32 @@ function unmountReactRoot(root: Element) {
   if (!existing) return false;
   existing.unmount();
   roots.delete(root);
+  mountedRoots.delete(root);
   return true;
+}
+
+function unmountReactRootsWithin(root: ParentNode | null) {
+  if (!root) return 0;
+  let count = 0;
+  Array.from(mountedRoots).forEach((target) => {
+      if (!isReactRootWithin(target, root)) return;
+      if (unmountReactRoot(target)) count += 1;
+  });
+  return count;
+}
+
+function isReactRootWithin(target: Element, root: ParentNode) {
+  if (target === root) return true;
+  return root instanceof Node && root.contains(target);
+}
+
+function bindReactLivePageDispose() {
+  if (reactLivePageDisposeBound || typeof document === "undefined") return;
+  reactLivePageDisposeBound = true;
+  document.addEventListener(frontendEventName("live-page-dispose"), (event) => {
+      const root = (event as CustomEvent<{root?:unknown}>).detail?.root;
+      unmountReactRootsWithin(root instanceof HTMLElement ? root : null);
+  });
 }
 
 async function mountLiveIsland(options: LiveIslandMountOptions) {
@@ -93,6 +122,7 @@ export {
   readJsonScript,
   renderReactRoot,
   unmountReactRoot,
+  unmountReactRootsWithin,
 };
 export type { LiveIslandMountOptions, ReactRootOptions };
 

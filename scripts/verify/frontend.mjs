@@ -80,6 +80,7 @@ function installDom() {
       HTMLElement: window.HTMLElement,
       HTMLFormElement: window.HTMLFormElement,
       HTMLInputElement: window.HTMLInputElement,
+      HTMLSelectElement: window.HTMLSelectElement,
       HTMLTextAreaElement: window.HTMLTextAreaElement,
       MouseEvent: window.MouseEvent,
       MutationObserver: window.MutationObserver,

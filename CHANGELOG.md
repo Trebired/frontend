@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 8.6.3
+
+- Added package-owned SPA live page lifecycle events and APIs, including navigation/page IDs, old-page disposal before DOM replacement, and page-scoped cleanup for logs, live cards/lists, dynamic sidebar subscriptions, and React live islands.
+- Added the `@trebired/frontend/live` export for direct lifecycle consumption.
+
 ## 8.6.2
 
 - Updated logger-adapter and package tooling dependency ranges to the current Trebired releases so consumers do not retain stale nested logger packages.

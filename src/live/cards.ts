@@ -1,4 +1,5 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { disconnectLiveSubscriptionHost } from "./subscriptions.js";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 type LiveCleanup = () => void;
@@ -14,6 +15,8 @@ type LiveCardsOptions = {
 
 const LIVE_CARD_SELECTOR = frontendDataSelector("live-card");
 const boundLiveCards = new WeakSet<HTMLElement>();
+const liveCardCleanups = new WeakMap<HTMLElement, LiveCleanup>();
+let liveCardsDisposeBound = false;
 
 function liveCardTarget(host: HTMLElement) {
   const child = host.firstElementChild;
@@ -89,17 +92,52 @@ function bindLiveCardHost(
   const room = (options.room || defaultLiveCardRoom)(host);
   if (!room) return false;
   boundLiveCards.add(host);
-  subscribe(room, (payload) => {
+  const cleanup = subscribe(room, (payload) => {
+      if (!host.isConnected) {
+        disconnectLiveCardHost(host);
+        return;
+      }
       const event = typeof payload.event === "string" ? payload.event : "";
       const expected = String(options.event || "card").trim();
       if (expected && event && event !== expected) return;
       const html = liveCardHtmlFromPayload(payload);
       if (html) swapLiveCardHtml(host, html, options);
   });
+  if (typeof cleanup === "function") liveCardCleanups.set(host, cleanup);
   return true;
 }
 
+function disconnectLiveCardHost(host: HTMLElement) {
+  return disconnectLiveSubscriptionHost(host, {
+      bound: boundLiveCards,
+      cleanups: liveCardCleanups,
+  });
+}
+
+function disconnectLiveCardsWithin(root: ParentNode | null) {
+  liveCardHostsWithin(root).forEach(disconnectLiveCardHost);
+}
+
+function liveCardHostsWithin(root: ParentNode | null) {
+  if (!root || typeof root.querySelectorAll !== "function") return [];
+  const hosts = Array.from(root.querySelectorAll<HTMLElement>(LIVE_CARD_SELECTOR));
+  if (root instanceof HTMLElement && root.matches(LIVE_CARD_SELECTOR)) {
+    hosts.unshift(root);
+  }
+  return hosts;
+}
+
+function bindLiveCardsDispose() {
+  if (liveCardsDisposeBound || typeof document === "undefined") return;
+  liveCardsDisposeBound = true;
+  document.addEventListener(frontendEventName("live-page-dispose"), (event) => {
+      const root = (event as CustomEvent<{root?:unknown}>).detail?.root;
+      disconnectLiveCardsWithin(root instanceof HTMLElement ? root : null);
+  });
+}
+
 function bindLiveCards(root: BindRoot = document, options: LiveCardsOptions = {}) {
+  bindLiveCardsDispose();
   queryAll<HTMLElement>(root, LIVE_CARD_SELECTOR).forEach((host) => {
       bindLiveCardHost(host, options);
   });
@@ -109,6 +147,8 @@ export {
   LIVE_CARD_SELECTOR,
   bindLiveCardHost,
   bindLiveCards,
+  disconnectLiveCardHost,
+  disconnectLiveCardsWithin,
   swapLiveCardHtml,
 };
 export type { LiveCardsOptions, LiveCleanup };
