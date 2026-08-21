@@ -4,6 +4,7 @@ import { normalizeFontsConfig } from "./fonts.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
+import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default-scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import {
   frontendConfigPath,
@@ -104,16 +105,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             semantic: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["semantic"],
             suffixedVariants: true,
         }),
-        scales: Object.freeze({
-            height: Object.freeze({}),
-            lineHeight: Object.freeze({}),
-            padding: Object.freeze({}),
-            radius: Object.freeze({}),
-            spacing: Object.freeze({}),
-            textSize: Object.freeze({}),
-            width: Object.freeze({}),
-            zIndex: Object.freeze({ confetti: "", layerRoot: "", progress: "", steps: Object.freeze({}) }),
-        }) as NormalizedFrontendConfig["design"]["scales"],
+        scales: DEFAULT_FRONTEND_SCALES_CONFIG,
         semantics: Object.freeze({}),
     }),
     forVersion: PACKAGE_VERSION,

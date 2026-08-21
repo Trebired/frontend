@@ -451,6 +451,7 @@
   "#u0knshei0xi3": "./src/theme/browser-sync.ts",
   "#u8nmcwbcma9p": "./src/graph/advanced/contributions_heatmap/i18n/en.ts",
   "#ue31afhvhvc0": "./src/graph/advanced/contributions_heatmap/types.ts",
+  "#uf8dwzp6nque": "./src/config/default-scales.ts",
   "#ufm4lbzrwwf4": "./src/styles/tokens.scss",
   "#uftd88dafhed": "./src/language/source/model.ts",
   "#uovdt6xj8a85": "./src/inputs/advanced/key/value/dom.ts",

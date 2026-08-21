@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.2.0
+
+### Added
+
+- The package now ships default values for every design scale, so an app no longer has to declare them to get a working system. `scales.height`, `lineHeight`, `padding`, `radius`, `spacing`, `textSize`, `width`, and `zIndex` previously all normalized to an empty object when omitted, which meant a config without a `scales` block emitted no `--space-*`, `--radius-*`, or `--height-*` tokens and none of the `.gap-*`, `.radius-*`, `.padding-*`, `.text-*`, or `.lh-*` utility classes. The defaults are the values the Trebired apps were each restating locally, including the `4 / 8 / 12 / 24 / 40` spacing steps that `styles/tokens.scss` already assumed as its `--tbf-gap-*` fallbacks. A declared scale still replaces the default for that scale wholesale, so existing configs are unaffected.
+
 ## 11.1.0
 
 ### Changed
