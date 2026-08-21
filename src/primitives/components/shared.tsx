@@ -36,19 +36,37 @@ function actionTriggerAttrs(options?: BindActionTriggerOptions) {
   };
 }
 
+const NATIVE_TRIGGER_TAGS = new Set(["a", "button", "input", "select", "textarea"]);
+
+function triggerSemanticsAttrs(
+  options: BindActionTriggerOptions,
+  tag: string,
+  existing?: Record<string, unknown>,
+) {
+  if (NATIVE_TRIGGER_TAGS.has(tag)) return {};
+  const attrs: Record<string, unknown> = {};
+  if (existing?.role === undefined) {
+    attrs.role = options.href || options.externalHref ? "link" : "button";
+  }
+  if (existing?.tabIndex === undefined) attrs.tabIndex = 0;
+  return attrs;
+}
+
 function wrapTriggerHostNode(children: ReactNode, options?: BindActionTriggerOptions) {
   if (!options || (!options.action && !options.href && !options.externalHref)) {
     return children;
   }
   if (isValidElement(children) && typeof children.type === "string") {
-    return cloneElement(
-      children as ReactElement<Record<string, unknown>>,
-      actionTriggerAttrs(options),
-    );
+    const element = children as ReactElement<Record<string, unknown>>;
+    return cloneElement(element, {
+        ...actionTriggerAttrs(options),
+        ...triggerSemanticsAttrs(options, element.type as string, element.props),
+    });
   }
   return (
     <span
     {...actionTriggerAttrs(options)}
+    {...triggerSemanticsAttrs(options, "span")}
     className="action-trigger-host"
     style={{ display: "contents" }}
     >

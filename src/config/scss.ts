@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { renderFontsCss } from "./fonts.js";
 import { cssComment, cssString } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
+import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
 import {
   SYSTEM_ORDER,
   THEME_MODE_ATTRIBUTE,
@@ -178,6 +179,55 @@ function renderSystemImports(config: NormalizedFrontendConfig): string[] {
   return lines;
 }
 
+function buttonToneNames(config: NormalizedFrontendConfig): string[] {
+  const button = (config.components as Record<string, any>)?.surfaces?.button;
+  const tones = button && typeof button === "object" ? button.tones : null;
+  if (!tones || typeof tones !== "object" || Array.isArray(tones)) return [];
+  const names: string[] = [];
+  for (const key of Object.keys(tones)) {
+    const name = componentTokenCssName(key);
+    if (name && !names.includes(name)) names.push(name);
+  }
+  return names;
+}
+
+function buttonToneDeclarations(
+  prefix: string,
+  tone: string,
+  state: "" | "state-hover-",
+): string[] {
+  const surface = (part: string) => `--${prefix}-surf-btn-tone-${tone}-${state}${part}`;
+  const primitive = (part: string) => `--${prefix}-ui-btn-tone-${tone}-${state}${part}`;
+  const fallbackBg = state
+  ? "transparent"
+  : `var(--${prefix}-ui-btn-root-bg, transparent)`;
+  return [
+    `  --${prefix}-surf-btn-current-icon: var(${surface("icon")}, var(${primitive("icon")}, currentColor));`,
+    `  border-color: var(${surface("border")}, var(${primitive("border")}, currentColor));`,
+    `  color: var(${surface("color")}, var(${primitive("color")}, currentColor));`,
+    `  background: var(${surface("bg")}, var(${primitive("bg")}, ${fallbackBg}));`,
+  ];
+}
+
+function renderButtonToneRules(config: NormalizedFrontendConfig): string[] {
+  const activeAttr = frontendDataAttr("active");
+  const lines: string[] = [];
+  for (const tone of buttonToneNames(config)) {
+    const selector = `.${FRONTEND_PREFIX}-button--${tone}`;
+    lines.push(
+      `${selector} {`,
+      ...buttonToneDeclarations(config.prefix, tone, ""),
+      "}",
+      `${selector}:hover,`,
+      `${selector}[aria-pressed="true"],`,
+      `${selector}[${activeAttr}="true"] {`,
+      ...buttonToneDeclarations(config.prefix, tone, "state-hover-"),
+      "}",
+    );
+  }
+  return lines;
+}
+
 function generateFrontendScss(
   configInput: FrontendConfig | NormalizedFrontendConfig,
 ): string {
@@ -196,6 +246,7 @@ function generateFrontendScss(
     ...renderThemeCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
+    ...renderButtonToneRules(config),
   ];
   return `${lines.join("\n")}\n`;
 }

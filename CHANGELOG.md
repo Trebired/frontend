@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 10.1.0
+
+### Added
+
+- `components.surfaces.button.tones.<name>` now emits a `.<prefix>-button--<name>` modifier rule, so a consumer can declare its own named button tones from `defineConfig`. Previously only `highlight` had a rule, hardcoded as `--strong` in `surface/styles/index.scss`, so config could recolor that one tone but never declare another. Each declared tone gets a base rule and a `:hover` / `[aria-pressed="true"]` / `[data-<prefix>-active="true"]` rule, both reading `--<prefix>-surf-btn-tone-<name>-*` with the `--<prefix>-ui-btn-tone-<name>-*` primitive fallback, matching the existing `--strong` shape. The hardcoded `--strong` rule is unchanged.
+
+### Fixed
+
+- React-rendered action triggers now carry `role` and `tabIndex` in the server markup instead of having them injected by `bindActionTriggers` after load. `ensureTriggerSemantics()` set them imperatively on any non-native trigger element, which for an SSR-ed page mutated the DOM before React hydrated — React then found `role="button"` and `tabindex="0"` on nodes its element tree never had, and reported an attribute hydration mismatch on every card row. The values are identical to what the binder produced (`link` when a href is present, otherwise `button`), native elements are still skipped, and an author-supplied `role` or `tabIndex` still wins. The binder's `hasAttribute` guards make it a no-op now.
+- `bindTooltips()` no longer rewrites `title` into `aria-description` at bind time. It did this eagerly while caching tooltip text, so on an SSR-ed page it stripped `title` from elements before hydration and React reported a mismatch on every `has-tooltip` element. The rewrite now happens on first hover or focus, which fires well before the browser's native tooltip delay, so the native tooltip is still suppressed and the accessible description is unchanged — `title` simply remains the description source until the tooltip is first used.
+
 ## 10.0.0
 
 ### Breaking

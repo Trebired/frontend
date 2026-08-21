@@ -46,7 +46,7 @@ function suppressControlTooltip(trigger: HTMLElement) {
   trigger.classList.remove("has-tooltip");
 }
 
-function readTooltipText(trigger: HTMLElement | null) {
+function computeTooltipText(trigger: HTMLElement | null) {
   if (!trigger) return "";
   if (tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
   const configured = String(trigger.getAttribute(frontendDataAttr("tooltip")) || "").trim();
@@ -55,11 +55,21 @@ function readTooltipText(trigger: HTMLElement | null) {
   ? String(trigger.getAttribute("aria-label") || "").trim()
   : "";
   const text = configured || title || status;
-  if (title) trigger.removeAttribute("title");
+  tooltipTexts.set(trigger, text);
+  return text;
+}
+
+function applyTooltipSemantics(trigger: HTMLElement | null, text: string) {
+  if (!trigger) return;
+  if (trigger.hasAttribute("title")) trigger.removeAttribute("title");
   if (text && !trigger.getAttribute("aria-description")) {
     trigger.setAttribute("aria-description", text);
   }
-  tooltipTexts.set(trigger, text);
+}
+
+function readTooltipText(trigger: HTMLElement | null) {
+  const text = computeTooltipText(trigger);
+  applyTooltipSemantics(trigger, text);
   return text;
 }
 
@@ -160,7 +170,7 @@ function bindTooltip(trigger: HTMLElement | null) {
     suppressControlTooltip(trigger);
     return false;
   }
-  readTooltipText(trigger);
+  computeTooltipText(trigger);
   const showBoundTooltip = () => showTooltip(trigger);
   const hideBoundTooltip = () => hideTooltip();
   trigger.addEventListener("mouseenter", showBoundTooltip);
