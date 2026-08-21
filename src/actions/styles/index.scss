@@ -163,3 +163,21 @@
     transform: rotate(calc(var(--r) + 180deg));
   }
 }
+
+#{ns.data("action-trigger")},
+#{ns.data("href")},
+#{ns.data("external-href")} {
+  cursor: pointer;
+}
+
+#{ns.data("action-trigger")} *,
+#{ns.data("href")} *,
+#{ns.data("external-href")} * {
+  cursor: inherit;
+}
+
+#{ns.data("action-trigger")}[aria-disabled="true"],
+#{ns.data("href")}[aria-disabled="true"],
+#{ns.data("external-href")}[aria-disabled="true"] {
+  cursor: not-allowed;
+}

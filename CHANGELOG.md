@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.3.0
+
+### Added
+
+- Every action trigger now shows a pointer cursor. `[data-<prefix>-action-trigger]`, `[data-<prefix>-href]`, and `[data-<prefix>-external-href]` get `cursor: pointer` from the actions system, so any element wired as a trigger looks clickable without the application restating it. Descendants inherit the cursor, which matters because the base reset gives `p` and headings `cursor: default` and they would otherwise show an arrow inside a clickable row. A trigger marked `aria-disabled="true"` gets `cursor: not-allowed`.
+
 ## 11.2.0
 
 ### Added
