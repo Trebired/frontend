@@ -92,6 +92,19 @@ body#{ns.data("sidebar-open", "true")} {
   background-color: var(#{ns.css-var("selection-bg")}, color-mix(in srgb, var(#{ns.css-var("focus")}, currentColor) 50%, transparent)) !important;
 }
 
+blockquote,
+dd,
+dl,
+fieldset,
+figure,
+hr,
+ol,
+p,
+pre,
+ul {
+  margin: 0;
+}
+
 h1,
 h2,
 h3,

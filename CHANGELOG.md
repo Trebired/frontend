@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 10.0.0
+
+### Breaking
+
+- Flow elements are reset to `margin: 0`. `blockquote`, `dd`, `dl`, `fieldset`, `figure`, `hr`, `ol`, `p`, `pre`, and `ul` previously kept their user-agent margins — a `<p>` carried `margin: 1em 0`, so every paragraph contributed 16px of vertical space above and below itself, and `ul` and `hr` behaved the same way. `h1`-`h6` were already reset, which made the inconsistency easy to miss. Layouts that relied on those inherited margins for vertical rhythm will close up after upgrading; use `gap` on the containing flex or grid parent, or the `m-*`/`my-*` utilities where a margin is genuinely wanted.
+
 ## 9.1.1
 
 ### Fixed
