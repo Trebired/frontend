@@ -19,14 +19,10 @@ import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
-import {
-  bindLiveCards,
-  bindLiveLists,
-  bindLiveRefresh,
-  bindScrollOverflows,
-  rehydrate,
-  type LiveOptions,
-} from "./live/index.js";
+import { bindLiveCards, bindLiveLists } from "./live/index.js";
+import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
+import { setSpaRebind } from "./spa/config.js";
+import { spaNavigationAdapter, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -49,14 +45,12 @@ type FrontendRuntimeAdapters = ActionAdapters&FrontendLoggingOptions& {
   progress?: ProgressHandle;
   sidebarPersistence?: SidebarRuntimeOptions["persistence"];
   themePersistence?: ThemeRuntimeOptions["persistence"];
-  live?: LiveOptions["skip"];
 };
 
 type FrontendRuntimeOptions = {
   adapters?: FrontendRuntimeAdapters;
   frontend_quiet?: boolean;
   icons?: IconRuntimeOptions;
-  live?: Omit<LiveOptions, "skip">;
   layout?: LayoutRuntimeOptions;
   locale?: LocaleRuntimeOptions;
   observe?: boolean;
@@ -75,6 +69,8 @@ function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
   const adapters = options.adapters || {};
   return {
     ...adapters,
+    navigation: adapters.navigation || spaNavigationAdapter(),
+    reload: adapters.reload || { reload: softReload },
     flash: (adapters.flash || flash) as ActionAdapters["flash"],
     progress: adapters.progress || progress,
   };
@@ -142,23 +138,8 @@ function bindFrontendWidgets(
   bindActionButtons(scope, { adapters });
   bindCopyButtons(scope);
   bindFullscreen(scope);
-  if (options.live?.cards !== false) {
-    bindLiveCards(scope, options.live?.cards || {});
-  }
-  if (options.live?.lists !== false) {
-    bindLiveLists(scope, options.live?.lists || {});
-  }
-}
-
-function bindFrontendLive(scope: BindRoot, options: FrontendRuntimeOptions) {
-  bindLiveRefresh(scope, {
-      ...(options.live || {}),
-      bind(nextRoot) {
-        bindFrontendRuntimeOnce(nextRoot, options);
-        options.live?.bind?.(nextRoot);
-      },
-      skip: options.adapters?.live,
-  });
+  bindLiveCards(scope);
+  bindLiveLists(scope);
 }
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
@@ -166,7 +147,6 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   const adapters = actionAdapters(options);
   bindFrontendShell(scope, options);
   bindFrontendWidgets(scope, options, adapters);
-  bindFrontendLive(scope, options);
 }
 
 function bindFrontendRuntime(
@@ -179,6 +159,7 @@ function bindFrontendRuntime(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
+  setSpaRebind((nextRoot) => bindFrontendRuntimeOnce(nextRoot, options));
   bindFrontendRuntimeOnce(scope, options);
   logger.info("runtime", "bound", {
       observe: options.observe !== false,
@@ -199,6 +180,7 @@ function bindFrontendRuntime(
   }
   return {
     disconnect() {
+      setSpaRebind(null);
       observer?.disconnect();
       logger.info("runtime", "disconnected");
     },
@@ -206,7 +188,7 @@ function bindFrontendRuntime(
   };
 }
 
-export { bindFrontendRuntime, rehydrate };
+export { bindFrontendRuntime };
 export type {
   FrontendLoggingOptions,
   FrontendRuntimeAdapters,
@@ -289,6 +271,17 @@ export *from "./layer/index.js";
 export *from "./language/index.js";
 export *from "./layout/index.js";
 export *from "./live/index.js";
+export *from "./realtime/index.js";
+export {
+  configureSpa,
+  currentPage,
+  onPageChange,
+  registerPageCleanup,
+  softRedirect,
+  softRefresh,
+  softReload,
+} from "./spa/index.js";
+export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
 export *from "./logging/index.js";
 export *from "./logs/index.js";
 export *from "./markdown/index.js";

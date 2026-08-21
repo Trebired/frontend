@@ -16,7 +16,7 @@ import {
   queryElements,
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
-import { rehydrate } from "./regions.js";
+import { rehydrate } from "./navigate.js";
 
 type LiveOverlayRoot =
 BindRoot | string | (() => BindRoot | null | undefined);

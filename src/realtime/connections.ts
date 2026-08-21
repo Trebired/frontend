@@ -1,11 +1,11 @@
 import React from "react";
-import { rehydrate, type LiveOptions } from "./regions.js";
 import {
   emitLiveSocketAck,
   subscribeRoom,
   type LiveSocketPayload,
 } from "./socket.js";
-import { importChildNodes } from "./state.js";
+import { importChildNodes } from "#0e8yn6c3295z";
+import { rehydrate } from "#xhefk4bgh568";
 
 type LiveEventFilter = string | string[] | undefined;
 type LiveFieldTarget = Element | ((value: unknown) => void) | null | undefined;
@@ -15,7 +15,7 @@ type LiveFieldsOptions = {
   room?: string;
   subscribe?: typeof subscribeRoom;
 };
-type LiveRefreshOptions = LiveOptions& {
+type LiveRefreshOptions = {
   anchor?: string;
   event?: LiveEventFilter;
   room?: string;
@@ -138,14 +138,14 @@ function liveRefreshTarget(root: Document | ParentNode, anchor: unknown) {
   return null;
 }
 
-function replaceLiveFragment(anchor: string, doc: Document, options: LiveOptions) {
+function replaceLiveFragment(anchor: string, doc: Document) {
   const fresh = liveRefreshTarget(doc, anchor);
   const current = liveRefreshTarget(document, anchor);
   if (!(fresh instanceof HTMLElement) || !(current instanceof HTMLElement)) {
     return false;
   }
   current.replaceChildren(...importChildNodes(fresh));
-  rehydrate(current, options);
+  rehydrate(current);
   return true;
 }
 
@@ -170,7 +170,7 @@ function connectLiveRefresh(options: LiveRefreshOptions = {}) {
       .then((html) => {
           if (!html) return;
           const doc = new DOMParser().parseFromString(html, "text/html");
-          replaceLiveFragment(anchor, doc, options);
+          replaceLiveFragment(anchor, doc);
       })
       .finally(() => {
           inflight = false;

@@ -70,7 +70,7 @@ function assertMovedBackBeforeUpdate() {
 }
 
 async function verifyLiveOverlays(context) {
-  const { createLiveOverlayState } = await context.importDist("live");
+  const { createLiveOverlayState } = await context.importDist("spa");
   const modalRuntime = await context.importDist("modal");
   document.body.innerHTML = '<div id="live-root"></div><div id="tbf_layer_root"></div>';
   const liveRoot = document.getElementById("live-root");
@@ -158,7 +158,7 @@ function chromeLiveMarkup(marker) {
 }
 
 async function verifyLiveChromePortaledOverlayCleanup(context) {
-  const { softVisit } = await context.importDist("live");
+  const { configureSpa, setSpaRebind, softRedirect } = await context.importDist("spa");
   const { bindPopovers } = await context.importDist("popover");
   document.body.innerHTML = [
     '<div id="tbf_layer_root"></div>',
@@ -178,11 +178,9 @@ async function verifyLiveChromePortaledOverlayCleanup(context) {
       { headers: { "Content-Type": "text/html" } },
     );
   };
-  const result = await softVisit("/welcome", {
-      bind(root) {
-        bindPopovers(root);
-      },
-      chromeIds: ["primary_header"],
+  configureSpa({ chromeIds: ["primary_header"] });
+  setSpaRebind((root) => bindPopovers(root));
+  const result = await softRedirect("/welcome", {
       history: "none",
       preserveState: true,
   });
@@ -202,7 +200,7 @@ async function verifyLiveChromePortaledOverlayCleanup(context) {
 }
 
 async function verifyLiveFileInputPreservation(context) {
-  const { softVisit } = await context.importDist("live");
+  const { configureSpa, setSpaRebind, softRedirect } = await context.importDist("spa");
   const { bindUploads, getUploadFiles } = await context.importDist("inputs");
   const cropValue = '{"x":1,"y":2,"width":3,"height":4}';
   document.body.innerHTML = uploadLiveMarkup("before", cropValue);
@@ -217,10 +215,9 @@ async function verifyLiveFileInputPreservation(context) {
       { headers: { "Content-Type": "text/html" } },
     );
   };
-  const result = await softVisit("/welcome", {
-      bind(root) {
-        bindUploads(root);
-      },
+  configureSpa({});
+  setSpaRebind((root) => bindUploads(root));
+  const result = await softRedirect("/welcome", {
       history: "none",
       preserveState: true,
   });
@@ -244,7 +241,7 @@ async function verifyLiveFileInputPreservation(context) {
 }
 
 async function verifyLiveRemoteUploadPreservation(context) {
-  const { softVisit } = await context.importDist("live");
+  const { configureSpa, setSpaRebind, softRedirect } = await context.importDist("spa");
   const { bindUploads } = await context.importDist("inputs");
   document.body.innerHTML = uploadLiveMarkup("before", "", "/remote-avatar.png");
   globalThis.fetch = async() => {
@@ -253,10 +250,9 @@ async function verifyLiveRemoteUploadPreservation(context) {
       { headers: { "Content-Type": "text/html" } },
     );
   };
-  const result = await softVisit("/welcome", {
-      bind(root) {
-        bindUploads(root);
-      },
+  configureSpa({});
+  setSpaRebind((root) => bindUploads(root));
+  const result = await softRedirect("/welcome", {
       history: "none",
       preserveState: true,
   });

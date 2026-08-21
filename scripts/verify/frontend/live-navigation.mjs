@@ -17,57 +17,52 @@ function mockLiveFetch(markup, title = "Next") {
 }
 
 async function verifyLiveNavigationLifecycle(context) {
-  const live = await context.importDist("live");
-  const { frontendEventName } = await context.importDistRoot();
+  const spa = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup("before");
-  const events = [];
-  const disposeOff = live.onLivePageDispose((detail) => {
-      assert.equal(document.querySelector("[data-tbf-live-content]").textContent, "before");
-      assert.equal(detail.root.getAttribute("data-marker"), "before");
+  const order = [];
+  const unregister = spa.registerPageCleanup(
+    document.querySelector("[data-tbf-live-content]"),
+    () => {
+      order.push("cleanup");
+      assert.equal(
+        document.querySelector("[data-tbf-live-content]").getAttribute("data-marker"),
+        "before",
+        "cleanups must run before the old content is replaced",
+      );
+    },
+  );
+  const off = spa.onPageChange((page) => {
+      order.push("page-change");
+      assert.equal(page.pageId, "/next?tab=1");
+      assert.equal(
+        document.querySelector("[data-tbf-live-content]").getAttribute("data-marker"),
+        "after",
+        "page-change must fire after the new content is in the DOM",
+      );
   });
-  bindLifecycleEventCapture(frontendEventName, events);
   mockLiveFetch(simpleLiveMarkup("after"), "After");
-  const result = await live.softVisit("/next?tab=1", { history: "none" });
-  disposeOff();
+  const result = await spa.softRedirect("/next?tab=1", { history: "none" });
+  off();
+  unregister();
 
   assert.equal(result, true);
-  assertLifecycleEvents(events);
+  assert.deepEqual(order, ["cleanup", "page-change"]);
   assert.equal(document.querySelector("[data-tbf-live-content]").textContent, "after");
-  assert.equal(live.currentLivePage().pageId, "/next?tab=1");
-}
-
-function bindLifecycleEventCapture(frontendEventName, events) {
-  ["live-navigation-start", "live-page-dispose", "live-content-updated", "live-navigation"]
-  .forEach((name) => {
-      document.addEventListener(frontendEventName(name), (event) => {
-          events.push({ detail: event.detail, name });
-        }, { once: true });
-  });
-}
-
-function assertLifecycleEvents(events) {
-  assert.deepEqual(events.map((event) => event.name), [
-      "live-navigation-start",
-      "live-page-dispose",
-      "live-content-updated",
-      "live-navigation",
-  ]);
-  assert.equal(events[0].detail.navigationId, events[3].detail.navigationId);
-  assert.equal(events[3].detail.pageId, "/next?tab=1");
+  assert.equal(spa.currentPage().pageId, "/next?tab=1");
 }
 
 async function verifyLiveNavigationStaleGuard(context) {
-  const live = await context.importDist("live");
+  const spa = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup(
     "stale",
     '<span id="stale_target">old</span>',
   );
-  const staleNavigationId = live.currentLivePage().navigationId;
+  const staleNavigationId = spa.currentPage().navigationId;
   mockLiveFetch(simpleLiveMarkup("fresh", '<span id="fresh_target">new</span>'));
-  const visit = live.softVisit("/fresh", { history: "none" });
+  const visit = spa.softRedirect("/fresh", { history: "none" });
   let staleMutated = false;
   await Promise.resolve().then(() => {
-      if (!live.isCurrentLivePage(staleNavigationId)) return;
+      if (spa.currentPage().navigationId !== staleNavigationId) return;
       staleMutated = true;
       document.getElementById("stale_target")?.setAttribute("data-mutated", "true");
   });
@@ -87,7 +82,7 @@ function logsLiveMarkup(marker = "logs") {
 
 async function verifyLiveLogsSocketDisposal(context) {
   const { bootstrapLogsPartial, disconnectLogsPartial } = await context.importDist("logs");
-  const { softVisit } = await context.importDist("live");
+  const { softRedirect } = await context.importDist("spa");
   document.body.innerHTML = logsLiveMarkup();
   const root = document.getElementById("logs-view-partial");
   const page = bootstrapLogsPartial({
@@ -100,13 +95,14 @@ async function verifyLiveLogsSocketDisposal(context) {
   page.state.pagedLiveSocket = { close() { closed += 1; } };
   mockLiveFetch(simpleLiveMarkup("next"));
 
-  assert.equal(await softVisit("/without-logs", { history: "none" }), true);
+  assert.equal(await softRedirect("/without-logs", { history: "none" }), true);
   assert.equal(closed, 2);
   assert.equal(disconnectLogsPartial(root), false);
 }
 
 async function verifyLiveScopedSubscriptionDisposal(context) {
   const live = await context.importDist("live");
+  const { softRedirect } = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup("before", [
       '<div data-tbf-live-card data-tbf-live-kind="task" data-tbf-live-id="1">Card</div>',
       '<live-list data-live-list-room="tasks"></live-list>',
@@ -119,7 +115,7 @@ async function verifyLiveScopedSubscriptionDisposal(context) {
   live.bindLiveLists(document, { subscribe, reload() {} });
   mockLiveFetch(simpleLiveMarkup("next"));
 
-  assert.equal(await live.softVisit("/next-page", { history: "none" }), true);
+  assert.equal(await softRedirect("/next-page", { history: "none" }), true);
   assert.equal(unsubscribed, 2);
 }
 

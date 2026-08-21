@@ -20,6 +20,7 @@ import {
   textValue,
 } from "#yv4ubgils4dc";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { isSoftNavigableHref } from "#o9lroe7t0ma6";
 
 const DYNAMIC_SIDEBAR_DISABLED_LINK_CLASS = `${frontendClassName("sidebar-link")} sidebar-link-btn`;
 
@@ -142,9 +143,7 @@ function dynamicSidebarLinkActionTrigger(
   options: DynamicSidebarLinkListProps,
 ) {
   return Boolean(
-    href &&
-      href !== "#" &&
-      context.item.navIgnore !== true &&
+    isSoftNavigableHref({ disabled: context.disabled, href }) &&
       options.actionTrigger !== false &&
       !options.wrapLink,
   );

@@ -4,6 +4,23 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.0.0
+
+### Breaking
+
+- The SPA/live-navigation surface is replaced. `src/live/` exported 83 symbols; the system is now six functions. Removed: `bindLiveRouter`, `createLiveNavigationAdapter`, `softVisit`, `refreshLive`, `replaceLiveContent`, `replaceLiveRegions`, `rehydrate`, `contentRoot`, `injectNewScripts`, `seedLoadedScripts`, `isFullReloadOptOut`, `beginLiveNavigation`, `retargetLiveNavigation`, `dispatchLiveNavigation`, `dispatchLivePageDispose`, `dispatchLiveContentUpdated`, `onLivePageDispose`, `currentLivePage`, `isCurrentLivePage`, `livePageIdFromUrl`, `captureFormState`, `restoreFormState`, `captureWizardSteps`, `restoreWizardSteps`, `importChildNodes`, `findMatchingRegion`, `shouldSkipLiveElement`, `bindLiveRefresh`, `bindLiveCardHost`, `disconnectLiveCardHost`, `disconnectLiveCardsWithin`, `swapLiveCardHtml`, `bindLiveListHost`, `disconnectLiveListHost`, `disconnectLiveListsWithin`, `unmountReactRootsWithin`, `disconnectLogsPartialsWithin`, and the `LiveOptions`/`LiveNavigationOptions` types.
+- New API: `configureSpa(options)` once at bootstrap, then `softRedirect(url, options?)`, `softReload(options?)`, `softRefresh(options?)`, `onPageChange(handler)`, `currentPage()`, and `registerPageCleanup(root, dispose)` for components that hold page-scoped resources.
+- `bindFrontendRuntime` no longer brokers navigation. `FrontendRuntimeOptions.live` and `adapters.live` are removed, and `adapters.navigation`/`adapters.reload` now default to the configured SPA, so an app that calls `configureSpa()` does not wire them at all. The runtime registers itself as the rebind hook, so navigated-in content is re-bound automatically.
+- `src/live/overlays.ts` is deleted. Its five exports (`captureLiveOverlayState`, `createLiveOverlayState`, `removeStalePortaledOverlays`, `restoreLiveOverlayState`, `restoreMovedLiveOverlays`) were reachable only through a blanket `export *` and were called by nothing.
+- Modules that were never navigation moved out of `live/`: `socket.ts`, `connections.ts`, and `subscriptions.ts` to `realtime/`, and `scroll-overflow.ts` to `primitives/`. Their exports are unchanged and still re-exported from the package root, so only deep import paths are affected.
+
+### Fixed
+
+- Component-specific navigation logic is gone from the framework. `LiveOptions` carried `cards` and `lists` fields and the runtime special-cased those two widgets by name; live cards, live lists, React islands, log partials, and the dynamic sidebar each carried a private copy of the same `live-page-dispose` listener plus its own `disconnect*Within` helpers. All five now call `registerPageCleanup()` at bind time, or `onPageChange()` where they only needed to react after a swap. Adding a new live widget no longer requires a framework change.
+- Sidebar back links soft-navigate. `dynamicSidebarLinkActionTrigger()` refused a soft trigger whenever `item.navIgnore === true`, but `navIgnore` means "do not participate in active-state highlighting" (`dynamicSidebarLinkActive`), not "do not soft-navigate". Back links set it for the former and lost the latter, so every back link did a full document load. Both sidebars now share one `isSoftNavigableHref()` rule instead of two divergent copies.
+- Browser back/forward soft-navigates. `bindLiveRouter` was the only thing that bound `popstate` and it was exported but never called by anything, so history navigation always did a full load. `configureSpa()` binds it.
+- `softRedirect` drops the dead `updateUrl` option, which was declared on the old options type and never read, and the redundant `push` boolean that duplicated `history`.
+
 ## 10.3.0
 
 ### Added

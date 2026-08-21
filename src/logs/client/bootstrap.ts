@@ -23,10 +23,9 @@ import {
 import { ingestFrontendLogs } from "./ingest.js";
 import { renderLogs } from "./render.js";
 import { replaceLogsPartialData } from "./replace.js";
-import { frontendEventName } from "#5vbaqj4pirp3";
+import { registerPageCleanup } from "#o9lroe7t0ma6";
 
 const logsPartialRoots = new Set<HTMLElement>();
-let logsLivePageDisposeBound = false;
 
 function bootstrapLogsPartial(
   options: {
@@ -36,10 +35,13 @@ function bootstrapLogsPartial(
     connect?: boolean;
   } = {},
 ) {
-  bindLogsLivePageDispose();
   const page: any = createLogsPage(options);
   if (!page.ui.root || !page.ui.box || !page.ui.scrollBox) return null;
   logsPartialRoots.add(page.ui.root);
+  registerPageCleanup(page.ui.root, () => {
+      disconnectLogsPartialRoot(page.ui.root, true);
+      logsPartialRoots.delete(page.ui.root);
+  });
 
   const existing = readLogsPartialPage(page.ui.root);
   if (existing) return bootstrapExistingLogsPartial(existing, options);
@@ -193,41 +195,12 @@ function disconnectLogsPartialRoot(
   return true;
 }
 
-function disconnectLogsPartialsWithin(root: ParentNode | null) {
-  let disconnected = 0;
-  Array.from(logsPartialRoots).forEach((partialRoot) => {
-      if (!shouldDisposeLogsPartial(partialRoot, root)) return;
-      if (disconnectLogsPartialRoot(partialRoot, true)) disconnected += 1;
-      else logsPartialRoots.delete(partialRoot);
-  });
-  return disconnected;
-}
-
-function shouldDisposeLogsPartial(
-  partialRoot: HTMLElement,
-  root: ParentNode | null,
-) {
-  if (!partialRoot.isConnected) return true;
-  if (!(root instanceof Node)) return false;
-  return partialRoot === root || root.contains(partialRoot);
-}
-
-function bindLogsLivePageDispose() {
-  if (logsLivePageDisposeBound || typeof document === "undefined") return;
-  logsLivePageDisposeBound = true;
-  document.addEventListener(frontendEventName("live-page-dispose"), (event) => {
-      const root = (event as CustomEvent<{root?:unknown}>).detail?.root;
-      disconnectLogsPartialsWithin(root instanceof HTMLElement ? root : null);
-  });
-}
-
 function bootstrapLogsPartials(
   options: {
     configByInstance?: Record<string, LogsConfig>;
     connect?: boolean;
   } = {},
 ) {
-  bindLogsLivePageDispose();
   const roots = Array.from(logsPartialRoots).filter((root) => {
       if (root.isConnected) return true;
       logsPartialRoots.delete(root);
@@ -261,7 +234,6 @@ function bootLogsPartialsOnce() {
 }
 
 function bindLogsPartialElement(root: HTMLElement) {
-  bindLogsLivePageDispose();
   logsPartialRoots.add(root);
   const page = bootstrapLogsPartial(buildPartialOptions(root, {}));
   flushFrontendLogsBuffer(ingestFrontendLogs);
@@ -274,5 +246,4 @@ export {
   bootstrapLogsPartial,
   bootstrapLogsPartials,
   disconnectLogsPartial,
-  disconnectLogsPartialsWithin,
 };

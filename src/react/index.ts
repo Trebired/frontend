@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { readJsonScript } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
+import { registerPageCleanup } from "#o9lroe7t0ma6";
 
 type ReactRootOptions = {
   hydrate?: boolean;
@@ -21,7 +22,6 @@ type LiveIslandMountOptions = {
 
 const roots = new WeakMap<Element, {render:(node:ReactNode)=>void;unmount:()=>void}>();
 const mountedRoots = new Set<Element>();
-let reactLivePageDisposeBound = false;
 
 function resolveEsmInterop<T>(namespace: any, probe: string): T {
   return (typeof namespace?.[probe] === "function" ? namespace : namespace?.default) as T;
@@ -32,7 +32,6 @@ async function mountReactRoot(
   node: ReactNode,
   options: ReactRootOptions = {},
 ) {
-  bindReactLivePageDispose();
   const client = resolveEsmInterop<typeof import("react-dom/client")>(
     await import("react-dom/client"),
     "createRoot",
@@ -64,30 +63,6 @@ function unmountReactRoot(root: Element) {
   return true;
 }
 
-function unmountReactRootsWithin(root: ParentNode | null) {
-  if (!root) return 0;
-  let count = 0;
-  Array.from(mountedRoots).forEach((target) => {
-      if (!isReactRootWithin(target, root)) return;
-      if (unmountReactRoot(target)) count += 1;
-  });
-  return count;
-}
-
-function isReactRootWithin(target: Element, root: ParentNode) {
-  if (target === root) return true;
-  return root instanceof Node && root.contains(target);
-}
-
-function bindReactLivePageDispose() {
-  if (reactLivePageDisposeBound || typeof document === "undefined") return;
-  reactLivePageDisposeBound = true;
-  document.addEventListener(frontendEventName("live-page-dispose"), (event) => {
-      const root = (event as CustomEvent<{root?:unknown}>).detail?.root;
-      unmountReactRootsWithin(root instanceof HTMLElement ? root : null);
-  });
-}
-
 async function mountLiveIsland(options: LiveIslandMountOptions) {
   const target =
   typeof options.root === "string"
@@ -104,6 +79,9 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   : child;
   const root = await mountReactRoot(target, node, {
       hydrate: target.childNodes.length > 0,
+  });
+  registerPageCleanup(target instanceof HTMLElement ? target : null, () => {
+      unmountReactRoot(target);
   });
   target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
   target.dispatchEvent(
@@ -122,7 +100,6 @@ export {
   readJsonScript,
   renderReactRoot,
   unmountReactRoot,
-  unmountReactRootsWithin,
 };
 export type { LiveIslandMountOptions, ReactRootOptions };
 

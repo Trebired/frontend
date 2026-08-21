@@ -22,7 +22,7 @@ import type {
   DynamicSidebarResponseItem,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
-import { frontendEventName } from "#5vbaqj4pirp3";
+import { onPageChange } from "#o9lroe7t0ma6";
 
 const liveRoots = new Set<HTMLElement>();
 const liveConfigs = new WeakMap<HTMLElement, DynamicSidebarLiveConfig>();
@@ -198,7 +198,7 @@ function bindDynamicSidebarLiveHost(host: HTMLElement) {
 function bindDynamicSidebarLivePageLifecycle() {
   if (livePageLifecycleBound || typeof document === "undefined") return;
   livePageLifecycleBound = true;
-  document.addEventListener(frontendEventName("live-content-updated"), () => {
+  onPageChange(() => {
       syncDynamicSidebarRooms();
       scheduleDynamicSidebarRefresh(0);
   });

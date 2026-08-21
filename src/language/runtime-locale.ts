@@ -1,6 +1,6 @@
 import { requestJsonPayload } from "#yasd5gi3ad9a";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import { softReload } from "#sida2bfa7lk5";
+import { softReload } from "#o9lroe7t0ma6";
 import { text } from "./shared.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 

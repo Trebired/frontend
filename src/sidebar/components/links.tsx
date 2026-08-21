@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { isSoftNavigableHref } from "#o9lroe7t0ma6";
 
 type SidebarLinkItem = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   active?: boolean;
@@ -59,13 +60,8 @@ function SidebarLinkList(props: SidebarLinkListProps) {
 }
 
 function sidebarLinkTriggerAttrs(item: SidebarLinkItem) {
-  const href = typeof item.href === "string" ? item.href.trim() : "";
-  if (!href || item.disabled) return {};
-  if (item.download !== undefined) return {};
-  if (item.target && item.target !== "_self") return {};
-  if (href.startsWith("#") || href.startsWith("//")) return {};
-  if (/^[a-z][a-z0-9+.-]*:/iu.test(href)) return {};
-  return frontendDataAttrs({ href });
+  if (!isSoftNavigableHref(item)) return {};
+  return frontendDataAttrs({ href: String(item.href).trim() });
 }
 
 function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
