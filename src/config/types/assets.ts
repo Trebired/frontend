@@ -26,7 +26,13 @@ type FrontendFontConfig = {
   sans?: string;
 };
 
+type FrontendFlagsConfig = {
+  countries?: readonly string[];
+  ratio?: "1x1" | "3x2";
+};
+
 type FrontendAssetsConfig = {
+  flags?: FrontendFlagsConfig | readonly string[] | false;
   fonts?: FrontendFontConfig;
   icons?: {
     aliases?: Record<string, FrontendIconAliasValue>;
@@ -51,7 +57,13 @@ type NormalizedFrontendFontConfig = {
   sans: string;
 };
 
+type NormalizedFrontendFlagsConfig = {
+  countries: string[];
+  ratio: "1x1" | "3x2";
+};
+
 type NormalizedFrontendAssetsConfig = {
+  flags: NormalizedFrontendFlagsConfig;
   fonts: NormalizedFrontendFontConfig;
   icons: {
     aliases: Record<string, string>;
@@ -62,6 +74,8 @@ type NormalizedFrontendAssetsConfig = {
 };
 
 export type {
+  FrontendFlagsConfig,
+  NormalizedFrontendFlagsConfig,
   FrontendAssetsConfig,
   FrontendFontConfig,
   FrontendFontDisplay,

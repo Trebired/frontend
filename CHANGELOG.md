@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.4.0
+
+### Changed
+
+- Locale flag CSS is now emitted only for the countries an app actually uses. `language/styles/index.scss` pulled in `country-flag-icons/3x2/flags.css` wholesale, which shipped background rules for 257 countries — 190KB of data-URIs, 52% of the generated `frontend.css` — to render the two flags a typical app shows. The generated config CSS now emits the base sizing rule plus one `.flag\:XX` rule per configured country, reading the SVGs from the `country-flag-icons` dependency the package already had. The default is `["GB", "CZ"]`, matching the built-in locale list, so a default app drops from 257 rules to 2.
+
+### Added
+
+- `assets.flags` config: an array of country codes (`assets: { flags: ["US", "DE"] }`), an object with `countries` and a `ratio` of `"3x2"` (default) or `"1x1"`, or `false` to emit nothing. Codes are validated as two-letter and de-duplicated; a country with no SVG in the dependency is skipped rather than failing the build.
+
 ## 11.3.0
 
 ### Added

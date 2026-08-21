@@ -4,6 +4,7 @@ import { normalizeFontsConfig } from "./fonts.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
+import { DEFAULT_FLAG_COUNTRIES, normalizeFlagsConfig } from "./flags.js";
 import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default-scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import {
@@ -73,13 +74,17 @@ const TOP_LEVEL_FIELDS = [
   "systems",
 ];
 
-const ASSET_FIELDS = ["fonts", "icons"];
+const ASSET_FIELDS = ["flags", "fonts", "icons"];
 const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs"];
 const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
     assets: Object.freeze({
+        flags: Object.freeze({
+            countries: Object.freeze([...DEFAULT_FLAG_COUNTRIES]) as string[],
+            ratio: "3x2",
+        }) as NormalizedFrontendConfig["assets"]["flags"],
         fonts: Object.freeze({
             families: Object.freeze([]) as NormalizedFrontendConfig["assets"]["fonts"]["families"],
             sans: "",
@@ -206,6 +211,7 @@ function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets
   assertKnownFields(icons, ICON_FIELDS, "assets.icons");
   const mode = normalizeIconMode(icons.mode);
   return {
+    flags: normalizeFlagsConfig(source.flags),
     fonts: normalizeFontsConfig(source.fonts),
     icons: {
       aliases: normalizeIconAliases(icons.aliases),

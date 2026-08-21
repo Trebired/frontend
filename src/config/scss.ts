@@ -2,6 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { renderFontsCss } from "./fonts.js";
+import { renderFlagRules } from "./flags.js";
 import { cssComment, cssString } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
 import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
@@ -257,6 +258,7 @@ function generateFrontendScss(
     `/* prefix: ${cssComment(config.prefix)} */`,
     '@use "sass:meta";',
     ...renderFontsCss(config.assets.fonts),
+    ...renderFlagRules(config.assets.flags),
     packageStyleLoad("styles/tokens.scss"),
     packageStyleLoad("styles/utils.scss"),
     ...renderSystemImports(config),
