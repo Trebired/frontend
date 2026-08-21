@@ -5,6 +5,10 @@ import {
   type ServerResponseLike,
 } from "./http.js";
 import {
+  resolveFrontendServerLogger,
+  type FrontendServerLoggerInput,
+} from "./logging.js";
+import {
   readSidebarLiveItems,
   type SidebarLiveDescriptor,
 } from "./sidebar-live.js";
@@ -36,11 +40,6 @@ type LiveRoom = {
   room: string;
 };
 
-type LiveSocketLogger = {
-  info?: (scope: string, message: string, metadata?: Record<string, unknown>) => unknown;
-  warn?: (scope: string, message: string, metadata?: Record<string, unknown>) => unknown;
-};
-
 type LiveSocketSidebarSyncContext = {
   items: SidebarLiveDescriptor[];
   payload: unknown;
@@ -66,7 +65,7 @@ type LiveSocketServerOptions = {
   authenticate?: unknown | readonly unknown[];
   changeEvent?: string;
   deniedEvent?: string;
-  logger?: LiveSocketLogger;
+  logger?: FrontendServerLoggerInput;
   namespace?: string;
   sidebarSync?: false | LiveSocketSidebarSyncOptions;
   subscribedEvent?: string;
@@ -170,6 +169,7 @@ function createLiveSocketServer(
   options: LiveSocketServerOptions = {},
 ): LiveSocketServer {
   const normalized = normalizeLiveSocketOptions(options);
+  const logger = resolveFrontendServerLogger(options.logger);
   const authorizers = new Map<
   string,
   (socket: LiveSocketLike, id: string) => unknown
@@ -268,7 +268,7 @@ function createLiveSocketServer(
       namespace.use?.(middleware);
     }
     namespace.on("connection", bindConnection);
-    options.logger?.info?.("live.socket", "live namespace attached", {
+    logger.info("live.socket", "live namespace attached", {
         namespace: normalized.namespace,
     });
     return true;
@@ -330,7 +330,6 @@ export {
 export type {
   LiveRoom,
   LiveSocketLike,
-  LiveSocketLogger,
   LiveSocketNamespaceLike,
   LiveSocketServer,
   LiveSocketServerLike,

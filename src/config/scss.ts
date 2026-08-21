@@ -66,7 +66,9 @@ function isNormalizedConfig(value: unknown): value is NormalizedFrontendConfig {
 }
 
 function tokenDeclarations(prefix: string, tokens: FrontendThemeTokens): string[] {
-  return flattenThemeTokens(tokens).map(([key, value]) => `  --${prefix}-${key}: ${String(value)};`);
+  return flattenThemeTokens(tokens).map(
+    ([key, value]) => `  --${prefix}-${componentTokenCssName(key)}: ${String(value)};`,
+  );
 }
 
 function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] {

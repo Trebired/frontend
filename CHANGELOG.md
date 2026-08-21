@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 9.0.0
+
+### Breaking
+
+- Heading base styles no longer use `!important`. `styles/utils/base.scss` set `margin`, `font-weight`, and `font-size` on `h1`-`h6` with `!important`, so no application stylesheet could override them at any specificity — every heading on a consuming site was clamped to the reset's sizes. The declarations are unchanged in value but now lose to ordinary application CSS, so headings an app already styled will render at the app's sizes after upgrading.
+- Removed the exported `LiveSocketLogger` type from `@trebired/frontend/server`. `LiveSocketServerOptions.logger` is now typed `FrontendServerLoggerInput`, which accepts any logger-adapter logger, so existing call sites are unaffected.
+
+### Fixed
+
+- Heading font sizes are tokenized. `h1`-`h6` now read `--<prefix>-h1-font-size` through `--<prefix>-h6-font-size`, with the previous literals as fallbacks, so they can be set from `defineConfig` via `design.semantics.h1.fontSize`. The `max-width: 640px` overrides read `--<prefix>-h{n}-font-size-mobile` and fall back to the desktop token, so setting only the desktop token applies at every width.
+- `design.semantics` keys are now kebab-cased like component tokens. `tokenDeclarations()` emitted flattened keys verbatim while `componentTokenDeclarations()` ran them through `componentTokenCssName()`, so `semantics.heading.fontWeight` produced `--<prefix>-heading-fontWeight` and silently did nothing. It now produces `--<prefix>-heading-font-weight`. Keys already written in kebab-case are unaffected.
+- `createLiveSocketServer()` now stamps its own log source. The `live namespace attached` record reports `origin.source` as `@trebired/frontend` instead of inheriting the consuming app's logger identity. `server/live-socket.ts` was the only server module that called the caller-supplied logger object directly rather than routing through `resolveFrontendServerLogger()`, so its records were attributed to whichever app passed the logger in. The `logger` option is the log sink only and can no longer change how this package's own records are attributed.
+
 ## 8.6.3
 
 - Added package-owned SPA live page lifecycle events and APIs, including navigation/page IDs, old-page disposal before DOM replacement, and page-scoped cleanup for logs, live cards/lists, dynamic sidebar subscriptions, and React live islands.
