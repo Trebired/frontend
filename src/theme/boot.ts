@@ -18,7 +18,7 @@ function createThemeBootScript(theme: string = "", options: ThemeModeOptions = {
     "var p=false;try{p=!!(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)}catch(e){}",
     "var k=t||(p?r.light:r.dark);",
     `document.documentElement.setAttribute(${scriptJson(THEME_ATTR)},k);`,
-    "document.documentElement.style.colorScheme=s[k]||'light';",
+    "document.documentElement.style.colorScheme=p?'light':'dark';",
     "})();",
   ].join("");
 }

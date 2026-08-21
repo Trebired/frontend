@@ -42,6 +42,33 @@ function systemPrefersLight(): boolean {
   }
 }
 
+function deviceScheme(): ThemeModeScheme {
+  return systemPrefersLight() ? "light" : "dark";
+}
+
+function applyDeviceScheme(): ThemeModeScheme {
+  const scheme = deviceScheme();
+  if (typeof document !== "undefined") {
+    document.documentElement.style.colorScheme = scheme;
+  }
+  return scheme;
+}
+
+function onDeviceSchemeChange(handler: () => void): () => void {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return () => {};
+  }
+  let query: MediaQueryList | null = null;
+  try {
+    query = window.matchMedia("(prefers-color-scheme: light)");
+  } catch {
+    return () => {};
+  }
+  const listener = () => handler();
+  query.addEventListener?.("change", listener);
+  return () => query?.removeEventListener?.("change", listener);
+}
+
 function systemThemeKey(options: ThemeRuntimeOptions = {}): ThemeValue {
   const registry = getThemeModes(options);
   return systemPrefersLight() ? registry.light : registry.dark;
@@ -75,7 +102,7 @@ function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): Theme
   const next = normalized || systemThemeKey(options);
   const previous = currentDomTheme(options);
   document.documentElement.setAttribute(THEME_ATTR, next);
-  document.documentElement.style.colorScheme = themeScheme(next, options);
+  applyDeviceScheme();
   document.body?.setAttribute(THEME_ATTR, next);
   if (previous !== next) dispatchThemeChange(normalized, next);
   runThemeSync(document);
@@ -112,11 +139,14 @@ function nextTheme(options: ThemeRuntimeOptions = {}): ThemeValue {
 }
 
 export {
+  applyDeviceScheme,
   applyTheme,
   currentDomTheme,
   getEffectiveTheme,
+  deviceScheme,
   nextTheme,
   normalizeTheme,
+  onDeviceSchemeChange,
   readPersistedTheme,
   registerThemeSync,
   runThemeSync,

@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.1.0
+
+### Changed
+
+- The favicon and the native scrollbar now follow the device's `prefers-color-scheme` instead of the theme selected in the app. Both are chrome the browser paints outside the page, so they are detached from the in-app theme: on a dark OS they stay on the dark variant even when the user picks light mode in the app, and vice versa. `applyTheme()` sets `color-scheme` from the device preference rather than the applied mode's scheme, the inline boot script does the same so there is no flash of the wrong scrollbar before hydration, and favicon sync reads `systemThemeKey()` rather than the effective app theme. A `prefers-color-scheme` change now re-syncs both immediately, without touching the app theme.
+- The `theme_effective` cookie is unchanged and still carries the in-app theme, since server rendering depends on it.
+
+### Added
+
+- `deviceScheme()`, `applyDeviceScheme()`, and `onDeviceSchemeChange(handler)` exported from `@trebired/frontend/theme`, for anything else that should track the OS appearance rather than the app theme.
+
 ## 11.0.2
 
 ### Fixed

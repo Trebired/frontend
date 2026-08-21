@@ -1,6 +1,9 @@
 import {
+  applyDeviceScheme,
   getEffectiveTheme,
+  onDeviceSchemeChange,
   registerThemeSync,
+  systemThemeKey,
   type ThemeRuntimeOptions,
 } from "./apply.js";
 
@@ -69,12 +72,16 @@ function syncFavicon(themeKey: string, input: ThemeBrowserSyncOptions["favicon"]
 
 function syncThemeBrowserState() {
   if (typeof document === "undefined") return;
-  const themeKey = getEffectiveTheme(undefined, browserSyncThemeOptions);
   const cookieOptions = normalizeCookieSyncOptions(browserSyncOptions.effectiveCookie);
   try {
-    if (cookieOptions) syncCookieValue(themeKey, cookieOptions);
+    if (cookieOptions) {
+      syncCookieValue(
+        getEffectiveTheme(undefined, browserSyncThemeOptions),
+        cookieOptions,
+      );
+    }
   } catch {}
-  syncFavicon(themeKey, browserSyncOptions.favicon);
+  syncFavicon(systemThemeKey(browserSyncThemeOptions), browserSyncOptions.favicon);
 }
 
 function configureThemeBrowserSync(
@@ -86,6 +93,10 @@ function configureThemeBrowserSync(
   if (!browserSyncRegistered) {
     browserSyncRegistered = true;
     registerThemeSync(syncThemeBrowserState);
+    onDeviceSchemeChange(() => {
+        applyDeviceScheme();
+        syncThemeBrowserState();
+    });
   }
 }
 
