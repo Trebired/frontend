@@ -2,16 +2,14 @@ import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 import { disconnectLiveSubscriptionHost } from "#70l5p0ml3pgq";
 import { registerPageCleanup } from "#o9lroe7t0ma6";
+import type { LiveSubscribe } from "./subscribe.js";
 
 type LiveCleanup = () => void;
 type LiveCardsOptions = {
   bind?: (root: BindRoot) => void;
   event?: string;
   room?: (host: HTMLElement) => string;
-  subscribe?: (
-    room: string,
-    onChange: (payload: Record<string, unknown>) => void,
-  ) => LiveCleanup;
+  subscribe?: LiveSubscribe;
 };
 
 const LIVE_CARD_SELECTOR = frontendDataSelector("live-card");

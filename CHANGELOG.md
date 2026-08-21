@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.0.1
+
+### Fixed
+
+- Live cards and live lists subscribe again. 11.0.0 removed `FrontendRuntimeOptions.live`, which was the only way to pass a `subscribe` implementation to those two widgets, so they bound but never connected. The subscription function is now a single `adapters.subscribe` on `bindFrontendRuntime`, shared by both widgets, replacing the previous `live.cards.subscribe` / `live.lists.subscribe` pair. Both widget option types use one `LiveSubscribe` signature.
+
 ## 11.0.0
 
 ### Breaking

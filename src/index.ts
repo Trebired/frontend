@@ -19,7 +19,7 @@ import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
-import { bindLiveCards, bindLiveLists } from "./live/index.js";
+import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
 import { spaNavigationAdapter, softReload } from "./spa/index.js";
@@ -45,6 +45,7 @@ type FrontendRuntimeAdapters = ActionAdapters&FrontendLoggingOptions& {
   progress?: ProgressHandle;
   sidebarPersistence?: SidebarRuntimeOptions["persistence"];
   themePersistence?: ThemeRuntimeOptions["persistence"];
+  subscribe?: LiveSubscribe;
 };
 
 type FrontendRuntimeOptions = {
@@ -108,7 +109,7 @@ function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
 function bindFrontendWidgets(
   scope: BindRoot,
   options: FrontendRuntimeOptions,
-  adapters: ActionAdapters,
+  adapters: ActionAdapters & { subscribe?: LiveSubscribe },
 ) {
   bindProgress();
   bindIcons(scope, options.icons || {});
@@ -138,8 +139,8 @@ function bindFrontendWidgets(
   bindActionButtons(scope, { adapters });
   bindCopyButtons(scope);
   bindFullscreen(scope);
-  bindLiveCards(scope);
-  bindLiveLists(scope);
+  bindLiveCards(scope, { subscribe: adapters.subscribe });
+  bindLiveLists(scope, { subscribe: adapters.subscribe });
 }
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {

@@ -1,15 +1,12 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { disconnectLiveSubscriptionHost } from "#70l5p0ml3pgq";
 import { softReload } from "#o9lroe7t0ma6";
-import type { LiveSocketPayload } from "#6ltyw193gvyw";
 import { registerPageCleanup } from "#o9lroe7t0ma6";
+import type { LiveSubscribe } from "./subscribe.js";
 
 type LiveListsOptions = {
   reload?: () => unknown;
-  subscribe?: (
-    room: string,
-    onChange: (payload: LiveSocketPayload) => void,
-  ) => () => void;
+  subscribe?: LiveSubscribe;
 };
 
 const LIVE_LIST_SELECTOR = "live-list[data-live-list-room]";

@@ -349,6 +349,7 @@
   "#lptu1jbr5l9d": "./src/language/source/modal.tsx",
   "#lpvfloec7209": "./src/inputs/components/tabs.tsx",
   "#lxlcr5r141p6": "./src/config/interactions.ts",
+  "#lytaqsyqfq8e": "./src/live/subscribe.ts",
   "#lz13pkm89w2x": "./src/layout/components/shell/index.tsx",
   "#lz36j878x0rd": "./src/inputs/status.ts",
   "#m2m352h4xbcb": "./src/server/live.ts",
