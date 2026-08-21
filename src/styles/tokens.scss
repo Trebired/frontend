@@ -51,6 +51,7 @@
   #{ns.css-var("overlay")}: color-mix(in srgb, var(#{ns.css-var("text")}) 48%, transparent);
   #{ns.css-var("transition-fast")}: var(--transition-2, 180ms);
   #{ns.css-var("transition-normal")}: var(--transition-3, 240ms);
+  #{ns.css-var("transition-easing")}: var(--transition-easing, ease);
   #{ns.css-var("gap-xs2")}: var(--space-xs2, 4px);
   #{ns.css-var("gap-xs")}: var(--space-xs, 8px);
   #{ns.css-var("gap-sm")}: var(--space-sm, 12px);

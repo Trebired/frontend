@@ -26,9 +26,9 @@
     #{ns.css-var("surf-btn-root-transition")},
     var(
       #{ns.css-var("ui-btn-root-transition")},
-      background-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
-      border-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
-      color var(#{ns.css-var("transition-fast")}, 180ms) ease
+      background-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+      border-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+      color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
     )
   );
   cursor: pointer;
@@ -39,7 +39,22 @@
   font-weight: var(#{ns.css-var("surf-btn-root-font-weight")}, var(#{ns.css-var("ui-btn-root-font-weight")}, 600));
   line-height: 1.15;
   text-decoration: none;
-  white-space: nowrap;
+  letter-spacing: var(
+    #{ns.css-var("surf-btn-root-letter-spacing")},
+    var(#{ns.css-var("ui-btn-root-letter-spacing")}, normal)
+  );
+  text-transform: var(
+    #{ns.css-var("surf-btn-root-text-transform")},
+    var(#{ns.css-var("ui-btn-root-text-transform")}, none)
+  );
+  white-space: var(
+    #{ns.css-var("surf-btn-root-white-space")},
+    var(#{ns.css-var("ui-btn-root-white-space")}, nowrap)
+  );
+  width: var(
+    #{ns.css-var("surf-btn-root-width")},
+    var(#{ns.css-var("ui-btn-root-width")}, auto)
+  );
 }
 
 #{ns.class("button")}:hover,

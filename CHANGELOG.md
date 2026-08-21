@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 10.3.0
+
+### Added
+
+- Four more `components.surfaces.button.root` tokens: `letterSpacing`, `textTransform`, `whiteSpace`, and `width`, reading `--<prefix>-surf-btn-root-*` with the `--<prefix>-ui-btn-root-*` primitive fallback like the existing `font-*` tokens. `white-space` was previously hardcoded to `nowrap`, so a long button label could not wrap on a narrow screen; it now defaults to `nowrap` and is overridable. The other three make uppercase, tracked, or full-width buttons reachable from config instead of application CSS.
+- `components.surfaces.button.tones.<name>` accepts `borderWidth` and `borderStyle`, emitting `border-width` and `border-style` in the tone rule. A tone could previously only change border *colour*: both `border` and `borderColor` normalize to the same `--<prefix>-surf-btn-tone-<name>-border` slot, which the rule consumed as `border-color`, so a shorthand like `border: "1px solid red"` compiled to `border-color: 1px solid red` and was dropped by the browser. Use `borderWidth`/`borderStyle` for weight and style; `border`/`borderColor` remain the colour slot. Both new slots are emitted only when declared, so a tone never overrides a `root.border` shorthand it did not ask to change.
+- `--<prefix>-transition-easing` token, defaulting to `ease`, alongside `--<prefix>-transition-fast` and `--<prefix>-transition-normal`. The surface button transition now reads it, so easing is themeable rather than fixed.
+
 ## 10.2.0
 
 ### Changed
