@@ -275,9 +275,12 @@ export *from "./live/index.js";
 export *from "./realtime/index.js";
 export {
   configureSpa,
+  createLiveOverlayState,
   currentPage,
   onPageChange,
   registerPageCleanup,
+  rehydrate,
+  removeStalePortaledOverlays,
   softRedirect,
   softRefresh,
   softReload,

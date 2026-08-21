@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.0.2
+
+### Fixed
+
+- Restored three exports that 11.0.0 removed but consumers legitimately use: `createLiveOverlayState` and `removeStalePortaledOverlays` (preserving and cleaning up portaled modals/popovers around a live content update) and `rehydrate` (re-binding a subtree after the app replaces DOM itself). They now come from `spa/`. The 11.0.0 note listing `rehydrate` and the overlay helpers as removed was wrong.
+
 ## 11.0.1
 
 ### Fixed
