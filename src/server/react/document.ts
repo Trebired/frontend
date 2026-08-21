@@ -25,13 +25,44 @@ function defaultNormalizePageId(pageId: unknown) {
   return parts.join("/");
 }
 
+const NONCE_SCRIPT_TYPES = new Set([
+  "",
+  "application/ecmascript",
+  "application/javascript",
+  "application/x-javascript",
+  "importmap",
+  "module",
+  "speculationrules",
+  "text/ecmascript",
+  "text/javascript",
+  "text/jscript",
+  "text/x-javascript",
+]);
+
+function readScriptTypeAttribute(attrs: string): string {
+  const match = /\btype\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/i.exec(attrs);
+  if (!match) return "";
+  return String(match[1] ?? match[2] ?? match[3] ?? "")
+  .split(";")[0]
+  .trim()
+  .toLowerCase();
+}
+
+function scriptTypeAcceptsNonce(attrs: string): boolean {
+  return NONCE_SCRIPT_TYPES.has(readScriptTypeAttribute(attrs));
+}
+
 function applyScriptNonce(html: string, nonce: unknown) {
   const nextNonce = toText(nonce);
   if (!nextNonce) return String(html || "");
   const escaped = escapeHtml(nextNonce);
   return String(html || "").replace(
     /<script\b(?![^>]*\bnonce\s*=)([^>]*)>/gi,
-    (_match, attrs) => `<script nonce="${escaped}"${String(attrs || "")}>`,
+    (match, attrs) => {
+      const attrText = String(attrs || "");
+      if (!scriptTypeAcceptsNonce(attrText)) return String(match);
+      return `<script nonce="${escaped}"${attrText}>`;
+    },
   );
 }
 

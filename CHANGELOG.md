@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 9.1.1
+
+### Fixed
+
+- `applyScriptNonce()` no longer injects a nonce into non-executable `<script>` blocks. It rewrote every nonce-less script tag in the rendered HTML, including the `type="application/json"` config blocks that components such as the dropdown, search controls, and search filter emit inside the hydrated React tree. Those nonces are not in React's element tree, and browsers blank a script's `nonce` content attribute after parsing, so React saw a stray `nonce=""` on the DOM node during hydration and reported an attribute mismatch on every such block. Scripts that CSP actually governs — no `type`, `module`, the JavaScript MIME types, `importmap`, and `speculationrules` — are unchanged; JSON and other data blocks are now left alone, which is correct since they are never executed and `script-src` does not apply to them.
+
 ## 9.1.0
 
 ### Fixed
