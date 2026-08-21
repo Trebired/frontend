@@ -58,6 +58,16 @@ function SidebarLinkList(props: SidebarLinkListProps) {
   );
 }
 
+function sidebarLinkTriggerAttrs(item: SidebarLinkItem) {
+  const href = typeof item.href === "string" ? item.href.trim() : "";
+  if (!href || item.disabled) return {};
+  if (item.download !== undefined) return {};
+  if (item.target && item.target !== "_self") return {};
+  if (href.startsWith("#") || href.startsWith("//")) return {};
+  if (/^[a-z][a-z0-9+.-]*:/iu.test(href)) return {};
+  return frontendDataAttrs({ href });
+}
+
 function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
   const { active, badge, disabled, icon, key: _key, label, separator: _separator, ...rest } = props.item;
   return (
@@ -73,6 +83,7 @@ function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
     className={classNames(frontendClassName("sidebar-link"), props.item.className)}
     {...frontendDataAttrs({ "disabled": dataBool(disabled) })}
     {...frontendDataAttrs({ "sidebar-link": "" })}
+    {...sidebarLinkTriggerAttrs(props.item)}
     tabIndex={disabled ? -1 : props.item.tabIndex}
     >
     {icon ? (

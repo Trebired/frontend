@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 10.2.0
+
+### Changed
+
+- Sidebar links now soft-navigate. `SidebarLinkList` rendered plain `<a href>` elements with no trigger attributes, so every sidebar link — including back links — did a full document load while the rest of the app navigated softly through the action-trigger adapter. Internal links now also carry `data-<prefix>-href`, which the existing `bindActionTriggers()` selector already matches and routes through `options.navigation.navigate`. The `href` attribute is unchanged, so the link is still a real link for middle-click, "open in new tab", copy-link, and no-JS. External hrefs, absolute URLs, protocol-relative URLs, in-page `#` anchors, `target` other than `_self`, `download` links, and disabled items are left alone and navigate natively. The existing `data-<prefix>-full-reload` opt-out still forces a hard load.
+
+### Fixed
+
+- Modifier and non-primary clicks on an action trigger that is a real `<a href>` now fall through to native browser behavior instead of being turned into a same-tab soft navigation. `handleTrigger()` called `preventDefault()` on every click regardless of `metaKey`, `ctrlKey`, `shiftKey`, `altKey`, or mouse button, so ctrl/cmd-click and middle-click could not open a link in a new tab. Triggers that are not anchors with an href are unaffected.
+
 ## 10.1.0
 
 ### Added

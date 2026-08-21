@@ -142,6 +142,24 @@ function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOption
   if (!trigger.hasAttribute("tabindex")) trigger.tabIndex = 0;
 }
 
+function isModifiedClick(event: Event): boolean {
+  const mouse = event as MouseEvent;
+  return Boolean(
+    mouse.metaKey ||
+      mouse.ctrlKey ||
+      mouse.shiftKey ||
+      mouse.altKey ||
+      (typeof mouse.button === "number" && mouse.button !== 0),
+  );
+}
+
+function hasNativeHref(trigger: HTMLElement): boolean {
+  return (
+    trigger instanceof HTMLAnchorElement &&
+    Boolean(String(trigger.getAttribute("href") || "").trim())
+  );
+}
+
 function handleTrigger(
   kind: "click" | "keydown",
   event: Event,
@@ -149,6 +167,7 @@ function handleTrigger(
   options: BindActionTriggerOptions,
 ) {
   if (event.defaultPrevented) return;
+  if (kind === "click" && isModifiedClick(event) && hasNativeHref(trigger)) return;
   const interactiveTarget = closestElement<HTMLElement>(
     event.target,
     INTERACTIVE_TARGET_SELECTOR,
