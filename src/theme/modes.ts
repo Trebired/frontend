@@ -1,4 +1,4 @@
-import { THEME_MODES_GLOBAL_KEY } from "./constants.js";
+import { THEME_MODES_CSS_VAR, THEME_MODES_GLOBAL_KEY } from "./constants.js";
 
 type ThemeModeScheme = "dark" | "light";
 
@@ -117,6 +117,36 @@ function configureThemeModes(options?: ThemeModeOptions | null): ThemeModeRegist
   return registry;
 }
 
+function unquoteCssValue(value: unknown): string {
+  const text = String(value ?? "").trim();
+  const quote = text.charAt(0);
+  if (text.length > 1 && (quote === "\"" || quote === "'") && text.endsWith(quote)) {
+    return text.slice(1, -1).trim();
+  }
+  return text;
+}
+
+function readCssThemeModeOptions(): ThemeModeOptions | null {
+  if (typeof document === "undefined" || typeof window === "undefined") return null;
+  const element = document.documentElement;
+  if (!element || typeof window.getComputedStyle !== "function") return null;
+  let declared = "";
+  try {
+    declared = unquoteCssValue(
+      window.getComputedStyle(element).getPropertyValue(THEME_MODES_CSS_VAR),
+    );
+  } catch {
+    return null;
+  }
+  const modes = declared.split(/\s+/u).filter(Boolean);
+  return modes.length ? { modes } : null;
+}
+
+function configureThemeModesFromCss(): ThemeModeRegistry | null {
+  const options = readCssThemeModeOptions();
+  return options ? configureThemeModes(options) : null;
+}
+
 function hasThemeModeOptions(options: ThemeModeOptions = {}): boolean {
   return Boolean(options.modes?.length || options.dark || options.light);
 }
@@ -145,12 +175,14 @@ export {
   DEFAULT_THEME_MODE_KEYS,
   DEFAULT_THEME_MODE_REGISTRY,
   configureThemeModes,
+  configureThemeModesFromCss,
   findThemeMode,
   getThemeModes,
   hasThemeModeOptions,
   isThemeMode,
   normalizeThemeMode,
   normalizeThemeModeRegistry,
+  readCssThemeModeOptions,
   themeModeKeyOf,
   themeModeKeys,
 };

@@ -3,7 +3,11 @@ import { applyTheme, normalizeTheme, readPersistedTheme } from "./apply.js";
 import type { ThemeRuntimeOptions } from "./apply.js";
 import { configureThemeBrowserSync } from "./browser-sync.js";
 import { bindThemeControls } from "./controls.js";
-import { configureThemeModes, hasThemeModeOptions } from "./modes.js";
+import {
+  configureThemeModes,
+  configureThemeModesFromCss,
+  hasThemeModeOptions,
+} from "./modes.js";
 
 let themeRuntimeApplied = false;
 
@@ -12,6 +16,7 @@ async function bindThemeRuntime(
   options: ThemeRuntimeOptions = {},
 ): Promise<void> {
   if (hasThemeModeOptions(options)) configureThemeModes(options);
+  else configureThemeModesFromCss();
   if (options.sync !== undefined) configureThemeBrowserSync(options.sync, options);
   if (!themeRuntimeApplied) {
     themeRuntimeApplied = true;
@@ -34,12 +39,14 @@ export {
   DEFAULT_THEME_MODE_KEYS,
   DEFAULT_THEME_MODE_REGISTRY,
   configureThemeModes,
+  configureThemeModesFromCss,
   findThemeMode,
   getThemeModes,
   hasThemeModeOptions,
   isThemeMode,
   normalizeThemeMode,
   normalizeThemeModeRegistry,
+  readCssThemeModeOptions,
   themeModeKeys,
 } from "./modes.js";
 export {

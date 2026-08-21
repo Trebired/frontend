@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 9.1.0
+
+### Fixed
+
+- `bindThemeRuntime()` now seeds its mode registry from the generated CSS when the caller passes no theme options. It previously fell through to `DEFAULT_THEME_MODE_REGISTRY` (`{dark: "dark", light: "light"}`), so a single-mode app on a visitor with a dark OS preference had `data-<prefix>-theme="dark"` stamped on the document — a mode with no generated stylesheet behind it. Every palette token vanished, and because stamping the attribute also breaks the `:root:not([data-<prefix>-theme])` guard, both `prefers-color-scheme` fallbacks died with it. The config already reached the browser as `--<prefix>-theme-modes`; the runtime simply never read it.
+- Added a `transition` declaration to the surface button. It reads `--<prefix>-surf-btn-root-transition`, falling back to `--<prefix>-ui-btn-root-transition` and then to `background-color`/`border-color`/`color` at `--<prefix>-transition-fast`, matching the properties the button's hover and pressed states actually change. Hover animation no longer has to be supplied by application CSS.
+
+### Added
+
+- `configureThemeModesFromCss()` and `readCssThemeModeOptions()` are exported from `@trebired/frontend/theme`. The first seeds the registry from `--<prefix>-theme-modes` and returns the resulting registry, or `null` when no frontend CSS is present; the second returns the parsed options without applying them.
+
 ## 9.0.0
 
 ### Breaking

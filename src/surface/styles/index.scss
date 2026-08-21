@@ -22,6 +22,15 @@
   );
   color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(--text-color)));
   background: var(#{ns.css-var("surf-btn-root-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
+  transition: var(
+    #{ns.css-var("surf-btn-root-transition")},
+    var(
+      #{ns.css-var("ui-btn-root-transition")},
+      background-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+      border-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+      color var(#{ns.css-var("transition-fast")}, 180ms) ease
+    )
+  );
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
