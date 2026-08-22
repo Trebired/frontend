@@ -34,7 +34,7 @@ async function verifyStylePackaging(rootDir) {
 
 function assertStructuredExports(packageJson) {
   const exportKeys = Object.keys(packageJson.exports || {}).sort();
-  assert.deepEqual(exportKeys, [".", "./config", "./live", "./react", "./server"]);
+  assert.deepEqual(exportKeys, [".", "./config", "./live", "./react", "./server", "./static-icons"]);
   for (const key of exportKeys) {
     assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
     assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);
