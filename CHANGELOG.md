@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.5.0
+
+### Added
+
+- Static icons no longer require a generated file in the consumer's source tree. `assets.icons.specs` declares the icon specs an app uses, and with `assets.icons.mode: "static"` the cache is materialized in memory at build time and reached through the `@trebired/frontend/static-icons` subpath. The app writes one side-effect import and calls nothing; there is no `src/**/generated/` folder to gitignore, regenerate before each build and dev boot, or sequence ahead of the bundler. Requires `@trebired/bundler` 5.7.0 or newer, which resolves the specifier during the build.
+- `@trebired/frontend/static-icons` ships as a real no-op module, so the import type-checks and runs harmlessly when the build step is absent or the mode is not `"static"`.
+- `generateStaticIconsModule(config, { rootDir })` is exported from `@trebired/frontend/config` for build tooling that wants the generated source directly.
+
+`writeStaticIconCacheModule()` is unchanged, for consumers who deliberately want a checked-in artifact.
+
 ## 11.4.0
 
 ### Changed

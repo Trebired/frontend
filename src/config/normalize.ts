@@ -75,7 +75,7 @@ const TOP_LEVEL_FIELDS = [
 ];
 
 const ASSET_FIELDS = ["flags", "fonts", "icons"];
-const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs"];
+const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
 const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
@@ -94,6 +94,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             endpoint: "/__icons/svg",
             mode: "server",
             packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
+            specs: Object.freeze([]) as unknown as string[],
         }),
     }),
     components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
@@ -200,6 +201,20 @@ function normalizeIconAliases(value: unknown): Record<string, string> {
   return aliases;
 }
 
+function normalizeIconSpecs(value: unknown): string[] {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) {
+    throw invalidConfig("assets.icons.specs must be an array of icon specs");
+  }
+  const specs: string[] = [];
+  value.forEach((entry, index) => {
+      const spec = String(entry || "").trim();
+      if (!spec) throw invalidConfig(`assets.icons.specs.${index} must be a non-empty string`);
+      if (!specs.includes(spec)) specs.push(spec);
+  });
+  return specs.sort();
+}
+
 function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets"] {
   const source = value === undefined
   ? {}
@@ -218,6 +233,7 @@ function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets
       endpoint: normalizeEndpoint(icons.endpoint, mode),
       mode,
       packs: normalizeIconPacks(icons.packs),
+      specs: normalizeIconSpecs(icons.specs),
     },
   };
 }

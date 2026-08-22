@@ -147,3 +147,5 @@ export type {
   FrontendPaletteSemanticToken,
   FrontendPaletteStep,
 } from "./tokens.js";
+export { STATIC_ICONS_SPECIFIER, generateStaticIconsModule } from "./static-icons.js";
+export type { GeneratedStaticIconsModule } from "./static-icons.js";

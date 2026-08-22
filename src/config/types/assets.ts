@@ -39,6 +39,7 @@ type FrontendAssetsConfig = {
     endpoint?: string | false;
     mode?: FrontendIconMode;
     packs?: readonly FrontendIconPack[];
+    specs?: readonly string[];
   };
 };
 
@@ -70,6 +71,7 @@ type NormalizedFrontendAssetsConfig = {
     endpoint: string;
     mode: FrontendIconMode;
     packs: FrontendIconPack[];
+    specs: string[];
   };
 };
 
