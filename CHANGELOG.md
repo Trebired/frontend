@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.6.2
+
+### Fixed
+
+- `@font-face` blocks now carry `unicode-range`. The font emitter wrote one block per subset per weight per style, identical in `font-family`, `font-style`, and `font-weight` and differing only in `src`. With no `unicode-range` those blocks describe the same face, so the last one declared wins and every earlier subset's file is never requested — its glyphs fall back to the next family in the stack. A config declaring `subsets: ["latin", "latin-ext"]` therefore had one subset dead in the browser, and text mixing the two rendered from two different font resources, which also defeats kerning across the boundary because the shaper has no pair to consult. The ranges come from the `unicode.json` that every `@fontsource` package ships, keyed by the same subset names the config uses. Single-subset configs now carry their range too, so adding a second subset later cannot silently break.
+- Fontsource packages are dependencies of the consuming app rather than of this package, so the metadata is resolved from the project root before falling back to this package's own resolution. A package without `unicode.json` degrades to the previous behaviour instead of failing the build.
+
 ## 11.6.1
 
 ### Fixed

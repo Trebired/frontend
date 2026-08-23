@@ -1,3 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
+import { createRequire } from "node:module";
+
 import { assertPlainObject, cssString, invalidConfig } from "./shared.js";
 import { frontendCssVar } from "#5vbaqj4pirp3";
 import type {
@@ -147,7 +151,63 @@ function renderFontsCss(config: NormalizedFrontendFontConfig): string[] {
   return lines;
 }
 
+const unicodeRangeCache = new Map<string, Record<string, string>>();
+
+/**
+ * Fontsource packages are a dependency of the consuming app, not of this
+ * package, so resolve from the project root first and only then from here.
+ */
+function resolveFontsourceUnicodeFile(packageName: string): string | null {
+  const specifier = `@fontsource/${packageName}/package.json`;
+  const bases = [
+    path.join(process.cwd(), "package.json"),
+    import.meta.url,
+  ];
+  for (const base of bases) {
+    try {
+      const entry = createRequire(base).resolve(specifier);
+      const file = path.join(path.dirname(entry), "unicode.json");
+      if (fs.existsSync(file)) return file;
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+/**
+ * Fontsource ships the per-subset unicode ranges in `unicode.json`. Without a
+ * `unicode-range`, two subset faces of the same family differ only by `src`,
+ * so the browser treats them as the same face and the last one wins — the
+ * other subset's file is never used and its glyphs fall back to a system font.
+ */
+function fontsourceUnicodeRanges(packageName: string): Record<string, string> {
+  const cached = unicodeRangeCache.get(packageName);
+  if (cached) return cached;
+  let ranges: Record<string, string> = {};
+  try {
+    const file = resolveFontsourceUnicodeFile(packageName);
+    if (!file) {
+      unicodeRangeCache.set(packageName, {});
+      return {};
+    }
+    const parsed = JSON.parse(fs.readFileSync(file, "utf8"));
+    if (parsed && typeof parsed === "object") {
+      ranges = Object.fromEntries(
+        Object.entries(parsed as Record<string, unknown>)
+        .filter(([, value]) => typeof value === "string" && value.trim())
+        .map(([key, value]) => [key, String(value).trim()]),
+      );
+    }
+  } catch {
+    ranges = {};
+  }
+  unicodeRangeCache.set(packageName, ranges);
+  return ranges;
+}
+
 function fontFaceBlocks(family: NormalizedFrontendFontFamilyConfig): string[] {
+  const ranges = fontsourceUnicodeRanges(family.packageName);
   return family.subsets.flatMap((subset) =>
     family.weights.flatMap((weight) =>
       family.styles.flatMap((style) => [
@@ -157,6 +217,7 @@ function fontFaceBlocks(family: NormalizedFrontendFontFamilyConfig): string[] {
           `  font-display: ${family.display};`,
           `  font-weight: ${weight};`,
           `  src: url(${cssString(fontsourceFileUrl(family.packageName, subset, weight, style))}) format("woff2");`,
+          ...(ranges[subset] ? [`  unicode-range: ${ranges[subset]};`] : []),
           "}",
           "",
       ]),
