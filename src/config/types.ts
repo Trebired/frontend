@@ -140,6 +140,7 @@ type FrontendComponentsConfig = {
   primitives?: FrontendPrimitiveComponentsConfig;
   shell?: FrontendShellComponentsConfig;
   surfaces?: FrontendSurfaceComponentsConfig;
+  typography?: FrontendComponentTokens;
 };
 
 type FrontendActivePressInteractionConfig = {
@@ -152,6 +153,7 @@ type FrontendDesignInteractionsConfig = {
 };
 
 type FrontendDesignConfig = {
+  breakpoints?: Record<string, number>;
   interactions?: FrontendDesignInteractionsConfig;
   palette?: FrontendPaletteConfig;
   scales?: FrontendScalesConfig;
@@ -232,6 +234,7 @@ type NormalizedFrontendComponentsConfig = {
   primitives: Required<FrontendPrimitiveComponentsConfig>;
   shell: Required<FrontendShellComponentsConfig>;
   surfaces: Required<FrontendSurfaceComponentsConfig>;
+  typography: FrontendComponentTokens;
 };
 
 type NormalizedFrontendActivePressInteractionConfig = {
@@ -245,6 +248,7 @@ type NormalizedFrontendDesignInteractionsConfig = {
 };
 
 type NormalizedFrontendDesignConfig = {
+  breakpoints: Record<string, number>;
   interactions: NormalizedFrontendDesignInteractionsConfig;
   palette: NormalizedFrontendPaletteConfig;
   scales: NormalizedFrontendScalesConfig;

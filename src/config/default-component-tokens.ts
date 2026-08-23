@@ -303,6 +303,10 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         sidebar: Object.freeze({}),
         theme: Object.freeze({ option: { states: { current: {} } } }),
     }),
+    typography: Object.freeze({
+        container: Object.freeze({}),
+        heading: Object.freeze({ variants: Object.freeze({}) }),
+    }),
     surfaces: Object.freeze({
         button: Object.freeze({}),
         card: Object.freeze({

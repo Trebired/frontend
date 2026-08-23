@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.6.0
+
+### Added
+
+- `design.breakpoints`, a named map of widths. Defaults are `xs2: 380, xs: 560, sm: 640, md: 768, lg: 900`. Each emits a `--<prefix>-bp-<name>` token, and generated responsive rules read the configured widths, so an app can align to the package instead of guessing.
+- `components.typography.container.px` accepts a single value or a per-breakpoint map (`{ base, md, xs, ... }`) and emits `--<prefix>-container-px`, wrapping each step in the matching media query. Replaces the padding ramp every app restated on its page container.
+- `components.typography.heading.variants.<name>` emits `.<prefix>-heading--<name>`, the same shape as `surfaces.button.tones.<name>`. Slots are `color`, `fontFamily`, `fontSize`, `fontWeight`, `letterSpacing`, `lineHeight`, and `textTransform`; suffixing a slot with a breakpoint name (`fontSizeMd`) emits that value inside the breakpoint's media query. Heading treatment is now independent of heading level, so a hero title, a card title, and an uppercase eyebrow are variants rather than element overrides.
+- `.sr-only` and `.sr-only-focusable` utilities in `styles/utils/a11y.scss`.
+- `[id] { scroll-margin-top: … }` in the base reset, reading `--<prefix>-anchor-offset`, then `--<prefix>-layout-top-offset`, then `--<prefix>-header-height`, so in-page anchors clear a sticky header without app CSS.
+- Base reset now sets `-webkit-font-smoothing: antialiased` / `-moz-osx-font-smoothing: grayscale` on `html, body`, `overflow-x: clip` on `html`, and `max-width: 100%; display: block` on `img`.
+
 ## 11.5.0
 
 ### Added

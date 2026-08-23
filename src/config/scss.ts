@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 
 import { renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
+import { breakpointDeclarations } from "./breakpoints.js";
+import { renderContainerRules, renderHeadingVariantRules } from "./typography.js";
 import { cssComment, cssString } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
 import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
@@ -91,6 +93,7 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
     `  --${config.prefix}-icon-endpoint: ${cssString(config.assets.icons.endpoint)};`,
     `  --${config.prefix}-icon-mode: ${cssString(config.assets.icons.mode)};`,
     `  --${config.prefix}-interaction-active-filter: ${config.design.interactions.activePress.filter};`,
+    ...breakpointDeclarations(config.prefix, config.design.breakpoints),
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
     ...tokenDeclarations(config.prefix, config.design.semantics),
@@ -266,6 +269,8 @@ function generateFrontendScss(
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
     ...renderButtonToneRules(config),
+    ...renderContainerRules(config),
+    ...renderHeadingVariantRules(config),
   ];
   return `${lines.join("\n")}\n`;
 }

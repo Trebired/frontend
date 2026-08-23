@@ -9,6 +9,7 @@ body {
 
 html {
   scrollbar-gutter: stable;
+  overflow-x: clip;
 }
 
 [data-scrollbar-gap="y"],
@@ -47,6 +48,8 @@ body {
   overscroll-behavior-y: none;
   color: var(#{ns.css-var("text")}, #000);
   background-color: var(--background-page, var(#{ns.css-var("surface")}, #fff));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition:
   background-color 0.3s ease,
   border-color 0.3s ease,
@@ -206,6 +209,8 @@ a {
 img {
   -webkit-user-drag: none;
   pointer-events: auto;
+  max-width: 100%;
+  display: block;
 }
 
 form {
@@ -370,4 +375,11 @@ ul {
     margin-right: auto;
     margin-left: auto;
   }
+}
+
+[id] {
+  scroll-margin-top: var(
+    #{ns.css-var("anchor-offset")},
+    var(#{ns.css-var("layout-top-offset")}, var(#{ns.css-var("header-height")}, 0px))
+  );
 }

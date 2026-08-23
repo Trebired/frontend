@@ -5,6 +5,7 @@ import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { DEFAULT_FLAG_COUNTRIES, normalizeFlagsConfig } from "./flags.js";
+import { DEFAULT_FRONTEND_BREAKPOINTS, normalizeBreakpointsConfig } from "./breakpoints.js";
 import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default-scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import {
@@ -76,7 +77,7 @@ const TOP_LEVEL_FIELDS = [
 
 const ASSET_FIELDS = ["flags", "fonts", "icons"];
 const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
-const DESIGN_FIELDS = ["interactions", "palette", "scales", "semantics"];
+const DESIGN_FIELDS = ["breakpoints", "interactions", "palette", "scales", "semantics"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
@@ -99,6 +100,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
     }),
     components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
     design: Object.freeze({
+        breakpoints: Object.freeze({ ...DEFAULT_FRONTEND_BREAKPOINTS }) as Record<string, number>,
         interactions: Object.freeze({
             activePress: Object.freeze({
                 brightness: "0.9",
@@ -260,6 +262,7 @@ function normalizeDesignConfig(
   : assertPlainObject(value, "design") as FrontendDesignConfig;
   assertKnownFields(source, DESIGN_FIELDS, "design");
   return {
+    breakpoints: normalizeBreakpointsConfig((source as Record<string, unknown>).breakpoints),
     interactions: normalizeInteractionsConfig(source.interactions),
     palette: normalizePaletteConfig(source.palette, modeKeys),
     scales: normalizeScalesConfig(source.scales),
