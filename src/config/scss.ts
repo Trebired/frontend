@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -5,7 +6,7 @@ import { renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
 import { breakpointDeclarations } from "./breakpoints.js";
 import { renderContainerRules, renderHeadingVariantRules } from "./typography.js";
-import { cssComment, cssString } from "./shared.js";
+import { cssComment, cssString, invalidConfig } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
 import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
 import {
@@ -249,6 +250,56 @@ function renderButtonToneRules(config: NormalizedFrontendConfig): string[] {
   return lines;
 }
 
+/**
+ * A generated rule that reads `var(--x)` with no fallback is inert unless the
+ * same output declares `--x`. Emitting one half of that pair is silent — the
+ * rule simply does nothing — so the generator refuses to produce it. Only
+ * fallback-less references are checked; a reference with a fallback is allowed
+ * to point at a token declared by the package stylesheets.
+ */
+let packageDeclaredTokens: Set<string> | null = null;
+
+/**
+ * Tokens declared by the package's own stylesheets are concatenated into the
+ * same output at build time, so they count as declared even though they are
+ * not part of the generated string.
+ */
+function packageStyleDeclarations(prefix: string): Set<string> {
+  if (packageDeclaredTokens) return packageDeclaredTokens;
+  const names = new Set<string>();
+  for (const relative of ["styles/tokens.scss", "styles/utils/base.scss"]) {
+    try {
+      const source = fs.readFileSync(packageStylePath(relative), "utf8");
+      for (const match of source.matchAll(/ns\.css-var\("([^"]+)"\)\s*\}?\s*:/gu)) {
+        names.add(`--${prefix}-${match[1] as string}`);
+      }
+    } catch {
+      continue;
+    }
+  }
+  packageDeclaredTokens = names;
+  return names;
+}
+
+function assertGeneratedVariablesResolve(prefix: string, lines: string[]): void {
+  const css = lines.join("\n");
+  const declared = new Set([
+    ...[...css.matchAll(/^\s*(--[A-Za-z0-9_-]+)\s*:/gmu)].map((match) => match[1] as string),
+    ...packageStyleDeclarations(prefix),
+  ]);
+  const missing = new Set<string>();
+  for (const match of css.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)\s*\)/gu)) {
+    const name = match[1] as string;
+    if (!name.startsWith(`--${prefix}-`)) continue;
+    if (!declared.has(name)) missing.add(name);
+  }
+  if (missing.size) {
+    throw invalidConfig(
+      `generated css references undeclared variables :: ${Array.from(missing).sort().join(", ")}`,
+    );
+  }
+}
+
 function generateFrontendScss(
   configInput: FrontendConfig | NormalizedFrontendConfig,
 ): string {
@@ -272,6 +323,7 @@ function generateFrontendScss(
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
   ];
+  assertGeneratedVariablesResolve(config.prefix, lines);
   return `${lines.join("\n")}\n`;
 }
 

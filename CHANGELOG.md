@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.6.3
+
+### Fixed
+
+- Heading variants now declare the variables their rules read. `renderHeadingVariantRules()` emitted only the rule block, referencing `--<prefix>-heading-<variant>-<token>`, while the configured values reached `:root` through the generic component-token path as `--<prefix>-typography-heading-variants-<variant>-<token>`. The two names never met, so every `.<prefix>-heading--<name>` rule resolved to nothing and headings silently fell back to the `h1`-`h6` element defaults. The renderer now emits its own `:root` declarations under the names the rules read, matching how `--<prefix>-surf-btn-tone-*` works for button tones and how `renderContainerRules()` beside it already behaved.
+- `lineHeight` in a heading variant now applies. The declaration side abbreviates it to `line-h` via `componentTokenCssName()`, while the rule side paired the property with the unabbreviated `line-height`, so the value was dropped even once the names otherwise matched. Token names on both sides are now derived through the same abbreviation table, which covers every entry rather than the one that happened to be noticed.
+
+### Added
+
+- The generator refuses to emit CSS that references an undeclared variable. Any `var(--<prefix>-…)` without a fallback in the generated output must be declared either in that same output or by the package's own token stylesheets, otherwise `generateFrontendScss()` throws. Emitting half of a declaration/reference pair is silent — the rule simply does nothing — which is how the heading-variant defect shipped.
+
 ## 11.6.2
 
 ### Fixed

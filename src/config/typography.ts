@@ -67,14 +67,19 @@ function renderContainerRules(config: NormalizedFrontendConfig): string[] {
   return lines;
 }
 
-const HEADING_PROPERTIES: Array<[string, string]> = [
-  ["color", "color"],
-  ["font-family", "font-family"],
-  ["font-size", "font-size"],
-  ["font-weight", "font-weight"],
-  ["letter-spacing", "letter-spacing"],
-  ["line-height", "line-height"],
-  ["text-transform", "text-transform"],
+/**
+ * The token name is derived with the same abbreviation table the declarations
+ * use, so `lineHeight` resolves to `line-h` on both sides. Pairing a property
+ * with its unabbreviated name here silently produced a rule nothing declared.
+ */
+const HEADING_PROPERTIES: string[] = [
+  "color",
+  "font-family",
+  "font-size",
+  "font-weight",
+  "letter-spacing",
+  "line-height",
+  "text-transform",
 ];
 
 function headingVariants(config: NormalizedFrontendConfig): Array<[string, FrontendThemeTokens]> {
@@ -91,22 +96,32 @@ function headingVariants(config: NormalizedFrontendConfig): Array<[string, Front
 
 function renderHeadingVariantRules(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
+  const declarations: string[] = [];
+
   for (const [variant, tokens] of headingVariants(config)) {
-    const declared = new Set(
-      flattenThemeTokens(tokens).map(([key]) => componentTokenCssName(key)),
+    const values = new Map(
+      flattenThemeTokens(tokens).map(([key, value]) => [
+        componentTokenCssName(key),
+        String(value),
+      ]),
     );
+    const cssVarName = (token: string) => `--${config.prefix}-heading-${variant}-${token}`;
     const selector = `.${FRONTEND_PREFIX}-heading--${variant}`;
     const base: string[] = [];
     const responsive = new Map<string, string[]>();
 
-    for (const [property, token] of HEADING_PROPERTIES) {
-      const cssVar = `--${config.prefix}-heading-${variant}-${token}`;
-      if (declared.has(token)) base.push(`  ${property}: var(${cssVar});`);
+    for (const property of HEADING_PROPERTIES) {
+      const token = componentTokenCssName(property);
+      if (values.has(token)) {
+        declarations.push(`  ${cssVarName(token)}: ${values.get(token)};`);
+        base.push(`  ${property}: var(${cssVarName(token)});`);
+      }
       for (const [name] of breakpointEntries(config.design.breakpoints)) {
         const responsiveToken = `${token}-${name}`;
-        if (!declared.has(responsiveToken)) continue;
+        if (!values.has(responsiveToken)) continue;
+        declarations.push(`  ${cssVarName(responsiveToken)}: ${values.get(responsiveToken)};`);
         const list = responsive.get(name) || [];
-        list.push(`  ${property}: var(--${config.prefix}-heading-${variant}-${responsiveToken});`);
+        list.push(`  ${property}: var(${cssVarName(responsiveToken)});`);
         responsive.set(name, list);
       }
     }
@@ -122,7 +137,10 @@ function renderHeadingVariantRules(config: NormalizedFrontendConfig): string[] {
       );
     }
   }
-  return lines;
+
+  return declarations.length
+  ? [":root {", ...declarations, "}", ...lines]
+  : lines;
 }
 
 export { renderContainerRules, renderHeadingVariantRules };
