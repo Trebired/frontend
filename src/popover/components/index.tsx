@@ -3,6 +3,9 @@ import type {
   HTMLAttributes,
   ReactNode,
 } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { ensureLayerRoot } from "#ccvonx3uhbte";
 import { renderCloseButton } from "#5e51rp1mtb3n";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
@@ -18,7 +21,21 @@ type PopoverOpenButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 function PopoverPanel(props: PopoverPanelProps) {
   const { children, className, ...rest } = props;
-  return (
+  const [layerRoot, setLayerRoot] = useState<HTMLElement | null>(null);
+
+  /**
+   * The popover binder moves the panel into the layer root on open. Doing that
+   * imperatively detaches the node from the React root container, and since
+   * React delegates events at that container, every handler inside the panel
+   * stops firing. Rendering through a portal puts the node in the layer root
+   * while keeping it in the React tree, so events bubble by tree position.
+   * The portal is applied after mount so server and first client render match.
+   */
+  useEffect(() => {
+      setLayerRoot(ensureLayerRoot());
+  }, []);
+
+  const panel = (
     <div
     {...rest}
     className={classNames(frontendClassName("popover"), className)}
@@ -29,6 +46,8 @@ function PopoverPanel(props: PopoverPanelProps) {
     {children}
     </div>
   );
+
+  return layerRoot ? createPortal(panel, layerRoot) : panel;
 }
 
 function PopoverOpenButton(props: PopoverOpenButtonProps) {

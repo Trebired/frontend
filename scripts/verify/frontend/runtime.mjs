@@ -40,6 +40,73 @@ async function verifyPopover(context) {
   assert.equal(document.activeElement, trigger);
 }
 
+/**
+ * The popover binder moves the panel into the layer root on open. If the panel
+ * is a plain React child, that detaches it from the React root container and
+ * React's delegated events stop firing inside it. PopoverPanel portals into the
+ * layer root so this keeps working.
+ */
+async function verifyPopoverReactEvents(context) {
+  const React = await import("react");
+  const { createRoot } = await import("react-dom/client");
+  const { bindPopovers } = await context.importDist("popover");
+  const { PopoverOpenButton, PopoverPanel } = await context.importDist("react");
+
+  document.body.innerHTML = '<div id="root"></div>';
+  let clicked = 0;
+
+  function Example() {
+    return React.createElement(
+      React.Fragment,
+      null,
+      React.createElement(
+        PopoverOpenButton,
+        { controls: "react-pop", id: "react-pop-trigger" },
+        "Open",
+      ),
+      React.createElement(
+        PopoverPanel,
+        { id: "react-pop" },
+        React.createElement(
+          "button",
+          { id: "react-pop-option", onClick: () => { clicked += 1; }, type: "button" },
+          "Pick",
+        ),
+      ),
+    );
+  }
+
+  const root = createRoot(document.getElementById("root"));
+  root.render(React.createElement(Example));
+  await settleEffects();
+
+  const panel = document.getElementById("react-pop");
+  assert.ok(panel, "popover panel should be in the document");
+  assert.equal(
+    panel.closest("#tbf_layer_root") !== null,
+    true,
+    "panel should be portalled into the layer root, not left in the React container",
+  );
+
+  bindPopovers(document);
+  document.getElementById("react-pop-trigger").click();
+  await settleEffects();
+  assert.equal(panel.getAttribute("aria-hidden"), "false", "popover should open");
+
+  document.getElementById("react-pop-option").click();
+  await settleEffects();
+  assert.equal(clicked, 1, "React onClick inside the popover panel must fire");
+
+  root.unmount();
+  document.body.innerHTML = "";
+}
+
+async function settleEffects() {
+  for (let i = 0; i < 5; i += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+}
+
 async function verifyWizardSsr(context, wizardModule) {
   const {
     default: wizard,
@@ -145,4 +212,5 @@ async function verifyViewportCenter(context) {
   );
 }
 
-export { verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };
+export {
+  verifyPopoverReactEvents, verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };

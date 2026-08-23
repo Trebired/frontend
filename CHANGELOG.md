@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.6.1
+
+### Fixed
+
+- React event handlers inside `PopoverPanel` and `ModalRoot` fire again. Opening either one called `portalElement()`, which imperatively appends the node to `#tbf_layer_root` under `document.body`. React 17 and later delegate events at the container passed to `createRoot()`, so a node moved outside that container bubbles `body` → `html` → `document` and never reaches the listener: every `onClick` inside a popover or modal was dead, while the binder's own DOM listeners kept working, so the panel opened and closed but nothing inside it responded. Both components now render through `createPortal()` into the layer root, which keeps the node in the React tree — events bubble by tree position rather than DOM position — and makes the binder's `element.parentNode !== root` move a no-op. The portal is applied after mount, so the server render and the first client render still match.
+- `showPopover()` re-resolves its panel by `aria-controls` id instead of trusting the element captured at bind time, so a panel that was remounted (by the portal above, or replaced by a live navigation) is still found.
+
 ## 11.6.0
 
 ### Added

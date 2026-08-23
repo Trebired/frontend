@@ -6,6 +6,9 @@ import type {
 import { renderCloseButton } from "#5e51rp1mtb3n";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { ensureLayerRoot } from "#ccvonx3uhbte";
 
 type ModalRootProps = HTMLAttributes<HTMLDivElement> & {
   children?: ReactNode;
@@ -22,7 +25,19 @@ type ModalOpenButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 function ModalRoot(props: ModalRootProps) {
   const { children, className, labelledBy, role = "dialog", ...rest } = props;
-  return (
+  const [layerRoot, setLayerRoot] = useState<HTMLElement | null>(null);
+
+  /**
+   * `openModal()` moves the modal into the layer root, which detaches it from
+   * the React root container and kills React's delegated events inside it.
+   * Portalling keeps the node in the React tree. Applied after mount so the
+   * server render and the first client render still match.
+   */
+  useEffect(() => {
+      setLayerRoot(ensureLayerRoot());
+  }, []);
+
+  const modal = (
     <div
     {...rest}
     className={classNames(frontendClassName("modal"), className)}
@@ -34,6 +49,8 @@ function ModalRoot(props: ModalRootProps) {
     {children}
     </div>
   );
+
+  return layerRoot ? createPortal(modal, layerRoot) : modal;
 }
 
 function ModalContent(props: ModalContentProps) {
