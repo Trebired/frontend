@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.6.4
+
+### Fixed
+
+- Tooltips stay on one line until the text is genuinely long. The panel had a `max-width` but no intrinsic width, so it took whatever width the layout gave it and wrapped short labels like "Toggle theme" across two rows. It now sizes to `max-content`, capped by the existing `min(380px, 100vw - 24px)`, so it grows to fit the text on a single line and only wraps once it would exceed the cap.
+
 ## 11.6.3
 
 ### Fixed

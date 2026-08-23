@@ -3,6 +3,7 @@
   position: fixed;
   z-index: var(#{ns.css-var("z-tooltip")}, 1100);
   box-sizing: border-box;
+  width: max-content;
   max-width: min(380px, calc(100vw - 24px));
   padding: var(#{ns.css-var("overlay-tooltip-panel-padding")}, 7px 9px);
   border: var(#{ns.css-var("overlay-tooltip-panel-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
