@@ -10,6 +10,7 @@ import { spaConfig } from "./config.js";
 import { softRedirect } from "./navigate.js";
 
 const NON_SOFT_HREF = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/iu;
+const SOFT_REDIRECT_LINK_LISTENER_OPTIONS = { capture: true };
 
 type SoftLinkInput = {
   disabled?: boolean;
@@ -114,10 +115,15 @@ function bindSoftRedirectLinks(
     return { disconnect: () => disconnectBinding(target) };
   }
   const handler = (event: Event) => handleSoftRedirectLinkClick(event);
-  target.addEventListener("click", handler);
+  target.addEventListener("click", handler, SOFT_REDIRECT_LINK_LISTENER_OPTIONS);
   linkBindings.set(target, {
-      cleanup: () => target.removeEventListener("click", handler),
-      refs: 1,
+    cleanup: () =>
+      target.removeEventListener(
+        "click",
+        handler,
+        SOFT_REDIRECT_LINK_LISTENER_OPTIONS,
+      ),
+    refs: 1,
   });
   return { disconnect: () => disconnectBinding(target) };
 }

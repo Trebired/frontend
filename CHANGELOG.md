@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.4
+
+### Fixed
+
+- SPA anchor handling now runs in the capture phase so same-origin links inside selectable cards or other controls still route through `softRedirect` instead of falling through to native navigation.
+
 ## 12.0.3
 
 ### Changed

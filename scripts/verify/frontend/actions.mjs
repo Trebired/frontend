@@ -24,9 +24,11 @@ async function verifySoftRedirectAnchorNavigation(importDistRoot) {
   const { bindFrontendRuntime } = await importDistRoot();
   document.body.innerHTML = [
     '<main data-tbf-live-content>',
+    '<span id="swallowing_control">',
     '<a id="soft" href="/welcome">',
     "<span>Start</span>",
     "</a>",
+    "</span>",
     "</main>",
   ].join("");
   let requested = "";
@@ -45,6 +47,9 @@ async function verifySoftRedirectAnchorNavigation(importDistRoot) {
   const runtime = bindFrontendRuntime(document, {
       observe: false,
       quiet: true,
+  });
+  document.getElementById("swallowing_control").addEventListener("click", (event) => {
+      event.stopPropagation();
   });
   try {
     document.querySelector("#soft span").click();
