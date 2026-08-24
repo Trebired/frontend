@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.7.1
+
+### Fixed
+
+- The top progress bar now starts during full page loads through the normal frontend runtime binding.
+- Browser `fetch()` requests are wrapped once by the progress runtime, so ordinary GET/POST requests show the same top loader. `csrfFetch()` and `requestJson()` still support `progress: false` and strip that internal option before calling the native fetch implementation.
+
 ## 11.7.0
 
 ### Fixed

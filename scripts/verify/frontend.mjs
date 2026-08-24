@@ -38,7 +38,7 @@ async function verifyFrontendMain() {
   installDom();
   await verifyFrontendConfig(context);
   await verifyNamespace(context);
-  await verifyCsrfFetch();
+  await verifyProgressRequests(context);
   await verifyLocaleSwitching();
   await verifyFrontendActions({ importDist, importDistRoot });
   await verifyProductIdentity(context);
@@ -104,17 +104,97 @@ function installDom() {
   globalThis.CSS = window.CSS;
 }
 
-async function verifyCsrfFetch() {
+async function verifyProgressRequests(context) {
+  const rootRuntime = await context.importDistRoot();
   const { csrfFetch } = await importDist("http");
+  const { bindProgress, PROGRESS_ID, progress } = rootRuntime;
+  const activeAttr = "data-tbf-progress-active";
+  function progressRoot() {
+    return document.getElementById(PROGRESS_ID);
+  }
+  function clearProgress() {
+    progress.end(true);
+    const root = progressRoot();
+    if (root) {
+      root.removeAttribute(activeAttr);
+      root.querySelector("span")?.style.setProperty("transform", "scaleX(0)");
+    }
+  }
+  function installPendingFetch() {
+    let captured = null;
+    let release = null;
+    globalThis.fetch = async(_input, init) => {
+      captured = init;
+      return await new Promise((resolve) => {
+          release = () => resolve(new Response("{}", {
+              headers: { "Content-Type": "application/json" },
+          }));
+      });
+    };
+    bindProgress();
+    return {
+      captured: () => captured,
+      release: () => {
+        assert.equal(typeof release, "function", "fetch should have started");
+        release();
+      },
+    };
+  }
+
   document.head.innerHTML = '<meta name="csrf-token" content="token-a">';
-  let captured = null;
-  globalThis.fetch = async(_input, init) => {
-    captured = init;
-    return new Response("{}", { headers: { "Content-Type": "application/json" } });
-  };
-  await csrfFetch("/endpoint", { method: "POST" });
+  document.body.innerHTML = "";
+
+  bindProgress();
+  assert.equal(
+    progressRoot()?.getAttribute(activeAttr),
+    "true",
+    "bindProgress must start progress for the page load request",
+  );
+  window.dispatchEvent(new Event("load"));
+  clearProgress();
+
+  const raw = installPendingFetch();
+  clearProgress();
+  const rawRequest = fetch("/raw", { method: "GET" });
+  await Promise.resolve();
+  assert.equal(
+    progressRoot()?.getAttribute(activeAttr),
+    "true",
+    "raw fetch requests must activate top progress",
+  );
+  raw.release();
+  await rawRequest;
+  clearProgress();
+
+  const csrf = installPendingFetch();
+  clearProgress();
+  const csrfRequest = csrfFetch("/endpoint", { method: "POST" });
+  await Promise.resolve();
+  assert.equal(
+    progressRoot()?.getAttribute(activeAttr),
+    "true",
+    "csrfFetch requests must activate top progress",
+  );
+  csrf.release();
+  await csrfRequest;
+  const captured = csrf.captured();
   assert.equal(captured.credentials, "same-origin");
   assert.equal(new Headers(captured.headers).get("X-CSRF-Token"), "token-a");
+  assert.equal("progress"in captured, false);
+  clearProgress();
+
+  const silent = installPendingFetch();
+  clearProgress();
+  const silentRequest = csrfFetch("/silent", { progress: false });
+  await Promise.resolve();
+  assert.notEqual(
+    progressRoot()?.getAttribute(activeAttr),
+    "true",
+    "progress:false must keep request progress silent",
+  );
+  silent.release();
+  await silentRequest;
+  clearProgress();
 }
 
 async function verifyLocaleSwitching() {

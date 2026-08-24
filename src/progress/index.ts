@@ -2,6 +2,7 @@ import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendElementCl
 
 const PROGRESS_ID = `${FRONTEND_PREFIX}_progress`;
 const MAX_UPLOAD_PROGRESS = 0.95;
+const FETCH_PROGRESS_WRAPPED = "__tbfProgressWrapped";
 
 type ProgressHandle = {
   begin: () => number;
@@ -13,8 +14,17 @@ type ProgressHandle = {
 type PageLoadProgressOptions = {
   minVisibleMs?: number;
 };
+type ProgressFetchInit = RequestInit& {
+  progress?: boolean;
+  tbfProgress?: boolean;
+};
+type WrappedFetch = typeof fetch& {
+  [FETCH_PROGRESS_WRAPPED]?: true;
+};
 
 let activeRequests = 0;
+let pageLoadProgressBooted = false;
+let installedFetch: WrappedFetch | null = null;
 
 function canRenderProgress() {
   return typeof document !== "undefined" && Boolean(document.body);
@@ -65,14 +75,22 @@ function endProgress(force = false) {
   if (activeRequests === 0) {
     const bar = progressBar();
     if (bar) bar.style.transform = "scaleX(1)";
-    window.setTimeout(() => {
+    const schedule =
+    typeof window !== "undefined" && typeof window.setTimeout === "function"
+    ? window.setTimeout.bind(window)
+    : typeof setTimeout === "function"
+    ? setTimeout
+    : null;
+    const finish = () => {
         const root = ensureProgressElement();
         if (root && activeRequests === 0) {
           root.removeAttribute(frontendDataAttr("progress-active"));
           const nextBar = progressBar();
           if (nextBar) nextBar.style.transform = "scaleX(0)";
         }
-      }, 160);
+      };
+    if (schedule) schedule(finish, 160);
+    else finish();
   }
   return activeRequests;
 }
@@ -85,15 +103,12 @@ function setProgressFromEvent(event: ProgressEvent) {
   return setProgress(loaded / total);
 }
 
-function bindProgress() {
-  ensureProgressElement();
-  return progress;
-}
-
 function bootPageLoadProgress(options: PageLoadProgressOptions = {}) {
   if (typeof document === "undefined" || typeof window === "undefined") {
     return false;
   }
+  if (pageLoadProgressBooted) return false;
+  pageLoadProgressBooted = true;
   const minVisibleMs = Math.max(0, Number(options.minVisibleMs) || 0);
   let startedAtMs = 0;
   let started = false;
@@ -111,7 +126,10 @@ function bootPageLoadProgress(options: PageLoadProgressOptions = {}) {
 
   function startPageLoadProgress() {
     if (started) return;
-    if (!document.body || !document.documentElement) return;
+    if (!document.body || !document.documentElement) {
+      window.addEventListener("load", startPageLoadProgress, { once: true });
+      return;
+    }
     started = true;
     startedAtMs = Date.now();
     progress.begin();
@@ -132,6 +150,58 @@ function bootPageLoadProgress(options: PageLoadProgressOptions = {}) {
   return true;
 }
 
+function progressFetchOption(init: RequestInit | undefined) {
+  if (!init || typeof init !== "object") return true;
+  const options = init as ProgressFetchInit;
+  return options.progress !== false && options.tbfProgress !== false;
+}
+
+function stripProgressFetchOptions(init: RequestInit | undefined) {
+  if (!init || typeof init !== "object") return init;
+  const options = init as ProgressFetchInit;
+  if (!("progress" in options) && !("tbfProgress" in options)) return init;
+  const { progress: _progress, tbfProgress: _tbfProgress, ...nativeInit } = options;
+  return nativeInit;
+}
+
+function bindFetchProgress() {
+  if (typeof globalThis.fetch !== "function") return false;
+  const currentFetch = globalThis.fetch as WrappedFetch;
+  if (currentFetch[FETCH_PROGRESS_WRAPPED]) {
+    installedFetch = currentFetch;
+    return false;
+  }
+  if (installedFetch && globalThis.fetch === installedFetch) return false;
+  const originalFetch = currentFetch.bind(globalThis);
+  const wrappedFetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+      const nativeInit = stripProgressFetchOptions(init);
+      if (!progressFetchOption(init)) return originalFetch(input, nativeInit);
+      progress.begin();
+      try {
+        return Promise.resolve(originalFetch(input, nativeInit)).finally(() => {
+            progress.end();
+        });
+      } catch (error) {
+        progress.end();
+        throw error;
+      }
+  }) as WrappedFetch;
+  Object.defineProperty(wrappedFetch, FETCH_PROGRESS_WRAPPED, {
+      value: true,
+  });
+  globalThis.fetch = wrappedFetch;
+  if (typeof window !== "undefined") window.fetch = wrappedFetch;
+  installedFetch = wrappedFetch;
+  return true;
+}
+
+function bindProgress() {
+  ensureProgressElement();
+  bindFetchProgress();
+  bootPageLoadProgress();
+  return progress;
+}
+
 const progress: ProgressHandle = Object.freeze({
     begin: beginProgress,
     boot: ensureProgressElement,
@@ -144,12 +214,14 @@ export {
   MAX_UPLOAD_PROGRESS,
   PROGRESS_ID,
   beginProgress,
+  bindFetchProgress,
   bindProgress,
   bootPageLoadProgress,
   endProgress,
   progress,
   setProgress,
   setProgressFromEvent,
+  stripProgressFetchOptions,
 };
-export type { PageLoadProgressOptions, ProgressHandle };
+export type { PageLoadProgressOptions, ProgressFetchInit, ProgressHandle };
 export *from "./bars.js";

@@ -3,11 +3,11 @@ import { progress as progressHandle } from "#hmj29rrpgtsh";
 type CsrfFetchOptions = RequestInit& {
   csrfHeaderName?: string;
   csrfMetaName?: string;
+  progress?: boolean;
 };
 
 type JsonRequestOptions = Omit<CsrfFetchOptions, "body">& {
   body?: BodyInit | Record<string, unknown>|null;
-  progress?: boolean;
 };
 
 function readCsrfToken(metaName = "csrf-token") {
@@ -40,16 +40,29 @@ function ensureFormCsrfToken(
   return true;
 }
 
-function csrfFetch(input: RequestInfo | URL, init: CsrfFetchOptions = {}) {
-  const headers = new Headers(init.headers || {});
-  const token = readCsrfToken(init.csrfMetaName);
-  const headerName = init.csrfHeaderName || "X-CSRF-Token";
+async function csrfFetch(input: RequestInfo | URL, init: CsrfFetchOptions = {}) {
+  const {
+    csrfHeaderName,
+    csrfMetaName,
+    progress: progressOption,
+    ...fetchInit
+  } = init;
+  const headers = new Headers(fetchInit.headers || {});
+  const token = readCsrfToken(csrfMetaName);
+  const headerName = csrfHeaderName || "X-CSRF-Token";
   if (token) headers.set(headerName, token);
-  return fetch(input, {
-      ...init,
-      credentials: init.credentials || "same-origin",
-      headers,
-  });
+  const showProgress = progressOption !== false;
+  if (showProgress) progressHandle.begin();
+  try {
+    return await fetch(input, {
+        ...fetchInit,
+        credentials: fetchInit.credentials || "same-origin",
+        headers,
+        progress: false,
+    } as RequestInit);
+  } finally {
+    if (showProgress) progressHandle.end();
+  }
 }
 
 function isFormDataBody(value: unknown): value is FormData {
@@ -120,7 +133,10 @@ async function requestJson(input: RequestInfo | URL, options: JsonRequestOptions
   const showProgress = options.progress !== false;
   if (showProgress) progressHandle.begin();
   try {
-    const response = await csrfFetch(input, normalizeJsonRequestOptions(options));
+    const response = await csrfFetch(input, {
+        ...normalizeJsonRequestOptions(options),
+        progress: false,
+    });
     const json = await readJsonSafe(response);
     if (json && typeof json.ok === "boolean") return { json, response };
     return {
