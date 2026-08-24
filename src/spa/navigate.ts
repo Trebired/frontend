@@ -9,6 +9,7 @@ import {
 import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
 import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
+import { progress } from "#hmj29rrpgtsh";
 import {
   beginNavigation,
   emitPageChange,
@@ -164,17 +165,27 @@ function fallbackNavigate(url: string, updateUrl: boolean) {
   return false;
 }
 
+/**
+ * Soft navigation replaces a full page load, so it shows the same progress bar
+ * a document load would. The handle is refcounted, so overlapping requests
+ * keep the bar up until the last one settles.
+ */
 async function fetchDocument(url: string, token: string) {
-  const response = await fetch(url, {
-      credentials: "same-origin",
-      headers: { Accept: "text/html", "X-Requested-With": frontendToken(token) },
-  });
-  if (!response.ok) return null;
-  const html = await response.text();
-  return {
-    doc: new DOMParser().parseFromString(html, "text/html"),
-    url: response.url || url,
-  };
+  progress.begin();
+  try {
+    const response = await fetch(url, {
+        credentials: "same-origin",
+        headers: { Accept: "text/html", "X-Requested-With": frontendToken(token) },
+    });
+    if (!response.ok) return null;
+    const html = await response.text();
+    return {
+      doc: new DOMParser().parseFromString(html, "text/html"),
+      url: response.url || url,
+    };
+  } finally {
+    progress.end();
+  }
 }
 
 async function softRedirect(url: string, options: SoftRedirectOptions = {}) {

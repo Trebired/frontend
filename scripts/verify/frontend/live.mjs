@@ -3,6 +3,7 @@ import { settleDom } from "./timing.mjs";
 import {
   verifyLiveLogsSocketDisposal,
   verifyLiveNavigationLifecycle,
+  verifyLiveNavigationProgress,
   verifyLiveNavigationStaleGuard,
   verifyLiveScopedSubscriptionDisposal,
 } from "./live-navigation.mjs";
@@ -275,6 +276,7 @@ async function verifyLiveRemoteUploadPreservation(context) {
 async function verifyFrontendLive(context) {
   await verifyLiveOverlays(context);
   await verifyLiveNavigationLifecycle(context);
+  await verifyLiveNavigationProgress(context);
   await verifyLiveNavigationStaleGuard(context);
   await verifyLiveLogsSocketDisposal(context);
   await verifyLiveScopedSubscriptionDisposal(context);

@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.7.0
+
+### Fixed
+
+- Soft navigation shows the progress bar. `softRedirect()`, `softReload()`, and `softRefresh()` fetch a document and swap the page in place, but never touched the progress handle, so replacing a full page load also removed all of its loading feedback. They now drive the same bar a document load would.
+- JSON requests show the progress bar by default. `progress.begin()`/`end()` was called from exactly one place, `actions/request.ts`, so anything going through `requestJson()` directly — every non-action fetch in an app — ran with no indication. `requestJson()` now drives it, with `progress: false` to opt out. The handle is refcounted, so callers that already wrap a request do not double-count and overlapping requests keep the bar up until the last one settles.
+
 ## 11.6.4
 
 ### Fixed

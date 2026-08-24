@@ -51,6 +51,29 @@ async function verifyLiveNavigationLifecycle(context) {
   assert.equal(spa.currentPage().pageId, "/next?tab=1");
 }
 
+/**
+ * A soft navigation replaces a document load, so it must drive the same
+ * progress bar. It previously never fired, leaving navigation with no feedback.
+ */
+async function verifyLiveNavigationProgress(context) {
+  const spa = await context.importDist("spa");
+  const { PROGRESS_ID } = await context.importDist("progress");
+  document.body.innerHTML = simpleLiveMarkup("before");
+  mockLiveFetch(simpleLiveMarkup("after"));
+
+  const seen = [];
+  const observer = new MutationObserver(() => {
+      const root = document.getElementById(PROGRESS_ID);
+      seen.push(root?.getAttribute("data-tbf-progress-active") === "true");
+  });
+  observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+
+  assert.equal(await spa.softRedirect("/progress-page", { history: "none" }), true);
+  observer.disconnect();
+
+  assert.ok(seen.some(Boolean), "progress must become active during a soft navigation");
+}
+
 async function verifyLiveNavigationStaleGuard(context) {
   const spa = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup(
@@ -121,6 +144,7 @@ async function verifyLiveScopedSubscriptionDisposal(context) {
 
 export {
   verifyLiveLogsSocketDisposal,
+  verifyLiveNavigationProgress,
   verifyLiveNavigationLifecycle,
   verifyLiveNavigationStaleGuard,
   verifyLiveScopedSubscriptionDisposal,

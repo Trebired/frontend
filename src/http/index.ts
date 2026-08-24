@@ -1,3 +1,5 @@
+import { progress as progressHandle } from "#hmj29rrpgtsh";
+
 type CsrfFetchOptions = RequestInit& {
   csrfHeaderName?: string;
   csrfMetaName?: string;
@@ -5,6 +7,7 @@ type CsrfFetchOptions = RequestInit& {
 
 type JsonRequestOptions = Omit<CsrfFetchOptions, "body">& {
   body?: BodyInit | Record<string, unknown>|null;
+  progress?: boolean;
 };
 
 function readCsrfToken(metaName = "csrf-token") {
@@ -108,14 +111,25 @@ function fallbackJsonFromStatus(status: number, ok: boolean) {
   };
 }
 
+/**
+ * Every JSON request shows the progress bar unless the caller opts out with
+ * `progress: false`. The handle is refcounted, so a caller that already wrapped
+ * the request does not double-count and the bar clears when the last one ends.
+ */
 async function requestJson(input: RequestInfo | URL, options: JsonRequestOptions = {}) {
-  const response = await csrfFetch(input, normalizeJsonRequestOptions(options));
-  const json = await readJsonSafe(response);
-  if (json && typeof json.ok === "boolean") return { json, response };
-  return {
-    json: fallbackJsonFromStatus(response.status, response.ok),
-    response,
-  };
+  const showProgress = options.progress !== false;
+  if (showProgress) progressHandle.begin();
+  try {
+    const response = await csrfFetch(input, normalizeJsonRequestOptions(options));
+    const json = await readJsonSafe(response);
+    if (json && typeof json.ok === "boolean") return { json, response };
+    return {
+      json: fallbackJsonFromStatus(response.status, response.ok),
+      response,
+    };
+  } finally {
+    if (showProgress) progressHandle.end();
+  }
 }
 
 export {
