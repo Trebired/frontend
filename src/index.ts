@@ -22,11 +22,7 @@ import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
-import {
-  bindSoftRedirectLinks,
-  spaNavigationAdapter,
-  softReload,
-} from "./spa/index.js";
+import { spaNavigationAdapter, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -165,7 +161,6 @@ function bindFrontendRuntime(
       quiet: options.quiet,
   });
   setSpaRebind((nextRoot) => bindFrontendRuntimeOnce(nextRoot, options));
-  const softRedirectLinks = bindSoftRedirectLinks(scope);
   bindFrontendRuntimeOnce(scope, options);
   logger.info("runtime", "bound", {
       observe: options.observe !== false,
@@ -187,7 +182,6 @@ function bindFrontendRuntime(
   return {
     disconnect() {
       setSpaRebind(null);
-      softRedirectLinks.disconnect();
       observer?.disconnect();
       logger.info("runtime", "disconnected");
     },

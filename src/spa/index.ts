@@ -34,7 +34,6 @@ function spaNavigationAdapter() {
 
 export { configureSpa, isFullReloadOptOut, spaNavigationAdapter };
 export { registerPageCleanup } from "./cleanup.js";
-export { bindSoftRedirectLinks, isSoftNavigableHref } from "./links.js";
 export { createLiveOverlayState, removeStalePortaledOverlays } from "./overlays.js";
 export { currentPage, onPageChange } from "./page.js";
 export { rehydrate, softRedirect, softRefresh, softReload } from "./navigate.js";
@@ -42,5 +41,4 @@ export { setSpaRebind } from "./config.js";
 export type { SpaOptions } from "./config.js";
 export type { SpaPage } from "./page.js";
 export type { PageCleanup } from "./cleanup.js";
-export type { SoftLinkInput, SoftRedirectLinkBinding } from "./links.js";
 export type { SoftRedirectOptions } from "./navigate.js";

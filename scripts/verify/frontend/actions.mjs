@@ -20,15 +20,13 @@ async function verifyActionConfetti(importDist) {
   assert.equal(count, 1);
 }
 
-async function verifySoftRedirectAnchorNavigation(importDistRoot) {
+async function verifyRuntimeDoesNotInterceptAnchorNavigation(importDistRoot) {
   const { bindFrontendRuntime } = await importDistRoot();
   document.body.innerHTML = [
     '<main data-tbf-live-content>',
-    '<span id="swallowing_control">',
-    '<a id="soft" href="/welcome">',
+    '<a id="plain" href="/welcome">',
     "<span>Start</span>",
     "</a>",
-    "</span>",
     "</main>",
   ].join("");
   let requested = "";
@@ -48,15 +46,16 @@ async function verifySoftRedirectAnchorNavigation(importDistRoot) {
       observe: false,
       quiet: true,
   });
-  document.getElementById("swallowing_control").addEventListener("click", (event) => {
+  document.getElementById("plain").addEventListener("click", (event) => {
       event.stopPropagation();
+      event.preventDefault();
   });
   try {
-    document.querySelector("#soft span").click();
+    document.querySelector("#plain span").click();
     await new Promise((resolve) => setTimeout(resolve, 0));
     await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(requested, "/welcome");
-    assert.equal(document.getElementById("welcome_marker")?.textContent, "Welcome");
+    assert.equal(requested, "");
+    assert.equal(document.getElementById("welcome_marker"), null);
   } finally {
     runtime.disconnect();
     globalThis.fetch = previousFetch;
@@ -65,7 +64,7 @@ async function verifySoftRedirectAnchorNavigation(importDistRoot) {
 }
 
 async function verifyFrontendActions(context) {
-  await verifySoftRedirectAnchorNavigation(context.importDistRoot);
+  await verifyRuntimeDoesNotInterceptAnchorNavigation(context.importDistRoot);
   await verifyActionConfetti(context.importDist);
 }
 

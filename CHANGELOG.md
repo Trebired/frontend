@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.5
+
+### Fixed
+
+- Removed document-wide anchor interception. Sidebar links now invoke `softRedirect` from their owning runtime without navigation attributes or delegated document click handling.
+
 ## 12.0.4
 
 ### Fixed

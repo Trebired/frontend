@@ -13,11 +13,13 @@ import {
 } from "./dynamic/runtime/index.js";
 import { bindSidebarLiveSlots } from "./live.js";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
+import { softRedirect } from "#xhefk4bgh568";
 
 const SIDEBAR_SHELL_SELECTOR = frontendDataSelector("sidebar-shell");
 const SIDEBAR_MINIMIZE_SELECTOR = `${frontendDataSelector("sidebar-minimize")}[aria-controls]`;
 const SIDEBAR_OPEN_SELECTOR = `${frontendDataSelector("sidebar-open")}[aria-controls]`;
 const SIDEBAR_CLOSE_SELECTOR = frontendDataSelector("sidebar-close");
+const SIDEBAR_LINK_SELECTOR = `${frontendDataSelector("sidebar-link")}[href]`;
 const SIDEBAR_BOOT_ATTRIBUTE = frontendDataAttr("sidebar-boot");
 const SIDEBAR_STATE_EVENT = frontendEventName("sidebar-state");
 const SIDEBAR_STORAGE_PREFIX = `${frontendEventName("sidebar")}:`;
@@ -43,7 +45,55 @@ const minimizeButtons = new WeakMap<HTMLElement, HTMLElement[]>();
 const boundMinimizeButtons = new WeakSet<HTMLElement>();
 const boundOpenButtons = new WeakSet<HTMLElement>();
 const boundCloseButtons = new WeakSet<HTMLElement>();
+const boundSidebarLinks = new WeakSet<HTMLAnchorElement>();
 let sharedListenersInstalled = false;
+
+function isModifiedLinkClick(event: MouseEvent) {
+  return Boolean(
+    event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0,
+  );
+}
+
+function sidebarSoftRedirectTarget(link: HTMLAnchorElement) {
+  if (link.hasAttribute("download")) return "";
+  if (link.target && link.target !== "_self") return "";
+  if (link.getAttribute("aria-disabled") === "true") return "";
+  if (link.getAttribute(frontendDataAttr("disabled")) === "true") return "";
+  if (link.closest(frontendDataSelector("full-reload"))) return "";
+
+  const href = String(link.getAttribute("href") || "").trim();
+  if (!href || href.startsWith("#")) return "";
+  try {
+    const url = new URL(href, window.location.href);
+    if (url.origin !== window.location.origin) return "";
+    if (
+      url.hash &&
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search
+    ) {
+      return "";
+    }
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return "";
+  }
+}
+
+function bindSidebarLink(link: HTMLAnchorElement) {
+  if (boundSidebarLinks.has(link)) return;
+  boundSidebarLinks.add(link);
+  link.addEventListener("click", (event) => {
+      if (event.defaultPrevented || isModifiedLinkClick(event)) return;
+      const target = sidebarSoftRedirectTarget(link);
+      if (!target) return;
+      event.preventDefault();
+      void softRedirect(target);
+  });
+}
 
 function storageKey(side: SidebarSide) {
   return `${SIDEBAR_STORAGE_PREFIX}${String(side || "left")}:minimized`;
@@ -273,6 +323,7 @@ function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions 
       bindSidebarOpenButton(button, root);
   });
   queryAll<HTMLElement>(root, SIDEBAR_CLOSE_SELECTOR).forEach(bindSidebarCloseButton);
+  queryAll<HTMLAnchorElement>(root, SIDEBAR_LINK_SELECTOR).forEach(bindSidebarLink);
   bindSidebarLiveSlots(root);
   bindDynamicSidebarLive(root, options.dynamicLive);
   installSharedSidebarListeners();
