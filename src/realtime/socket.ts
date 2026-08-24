@@ -36,6 +36,25 @@ type LiveSocketClient = {
 
 const DEFAULT_ACK_TIMEOUT_MS = 5000;
 
+function liveSocketTransportOptions(options: LiveSocketClientOptions = {}) {
+  const socketOptions =
+  options.socketOptions && typeof options.socketOptions === "object"
+  ? { ...options.socketOptions }
+  : {};
+
+  if (
+    Array.isArray(socketOptions.transports) &&
+      socketOptions.transports.length
+  ) {
+    return socketOptions;
+  }
+
+  return {
+    ...socketOptions,
+    transports: ["websocket"],
+  };
+}
+
 function liveSocketOptions(options: LiveSocketClientOptions = {}) {
   return {
     ackTimeoutMs: Math.max(
@@ -65,7 +84,7 @@ function createLiveSocketClient(
     if (socket) return socket;
     socket = io(normalized.namespace, {
         withCredentials: normalized.withCredentials,
-        ...(options.socketOptions || {}),
+        ...liveSocketTransportOptions(options),
     });
 
     socket.on("connect", () => {

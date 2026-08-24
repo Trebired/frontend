@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 11.7.2
+
+### Fixed
+
+- Live-room subscriptions now use websocket transport by default. `subscribeRoom()` previously let Socket.IO start with HTTP long-polling before upgrading, which could surface periodic network requests even for socket-backed live views. Callers can still override `socketOptions.transports` explicitly.
+
 ## 11.7.1
 
 ### Fixed
