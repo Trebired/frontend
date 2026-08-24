@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.6
+
+### Fixed
+
+- Header brand links now invoke `softRedirect` from the header runtime, matching sidebar-owned soft navigation without restoring document-wide anchor interception.
+
 ## 12.0.5
 
 ### Fixed

@@ -4,7 +4,14 @@ import {
   type BindRoot,
   type Cleanup,
 } from "#er0dlx1gtbzh";
-import { frontendCssVar, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
+import {
+  frontendCssVar,
+  frontendDataAttr,
+  frontendDataSelector,
+  frontendElementClass,
+  frontendEventName,
+} from "#5vbaqj4pirp3";
+import { softRedirect } from "#xhefk4bgh568";
 
 const HEADER_SELECTOR = frontendDataSelector("header");
 const HEADER_PRIMARY_SELECTOR = `${frontendDataSelector("header")}${frontendDataSelector("header-primary")}`;
@@ -13,6 +20,7 @@ const MOBILE_NAV_SELECTOR = frontendDataSelector("mobile-nav");
 const MOBILE_NAV_PANEL_SELECTOR = frontendDataSelector("mobile-nav-panel");
 const MOBILE_NAV_TOGGLE_SELECTOR = frontendDataSelector("mobile-nav-toggle");
 const MOBILE_NAV_CLOSE_SELECTOR = frontendDataSelector("mobile-nav-close");
+const HEADER_BRAND_LINK_SELECTOR = `a.${frontendElementClass("shell-header-brand", "link")}`;
 const HEADER_BOUND_ATTR = frontendDataAttr("header-bound");
 const MOBILE_NAV_BOUND_ATTR = frontendDataAttr("mobile-nav-bound");
 const MOBILE_NAV_EVENT = frontendEventName("mobile-nav");
@@ -29,6 +37,7 @@ type MobileNavState = {
 
 const navStates = new WeakMap<HTMLElement, MobileNavState>();
 const cleanupByRoot = new WeakMap<object, Cleanup>();
+const boundHeaderBrandLinks = new WeakSet<HTMLAnchorElement>();
 
 function elementHeight(element: Element | null) {
   if (!(element instanceof HTMLElement)) return 0;
@@ -160,6 +169,45 @@ function closeOnEscape(event: KeyboardEvent) {
 function bindHeaders(root: BindRoot = document, options: HeaderRuntimeOptions = {}) {
   queryAll<HTMLElement>(root, HEADER_SELECTOR).forEach((header) => {
       header.setAttribute(HEADER_BOUND_ATTR, "true");
+  });
+  queryAll<HTMLAnchorElement>(root, HEADER_BRAND_LINK_SELECTOR).forEach((link) => {
+      if (boundHeaderBrandLinks.has(link)) return;
+      boundHeaderBrandLinks.add(link);
+      link.addEventListener("click", (event) => {
+          if (
+            event.defaultPrevented ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey ||
+              event.button !== 0 ||
+              link.hasAttribute("download") ||
+              (link.target && link.target !== "_self") ||
+              link.getAttribute("aria-disabled") === "true" ||
+              link.getAttribute(frontendDataAttr("disabled")) === "true" ||
+              link.closest(frontendDataSelector("full-reload"))
+          ) {
+            return;
+          }
+          const href = String(link.getAttribute("href") || "").trim();
+          if (!href || href.startsWith("#")) return;
+          let url: URL;
+          try {
+            url = new URL(href, window.location.href);
+          } catch {
+            return;
+          }
+          if (url.origin !== window.location.origin) return;
+          if (
+            url.hash &&
+              url.pathname === window.location.pathname &&
+              url.search === window.location.search
+          ) {
+            return;
+          }
+          event.preventDefault();
+          void softRedirect(`${url.pathname}${url.search}${url.hash}`);
+      });
   });
   queryAll<HTMLElement>(root, MOBILE_NAV_SELECTOR).forEach(bindMobileNav);
   queryAll<HTMLElement>(root, MOBILE_NAV_TOGGLE_SELECTOR).forEach(bindMobileNavToggle);
