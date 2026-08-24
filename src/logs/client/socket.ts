@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import { io } from "#7bf07c0wd67q";
 import { debugLogs } from "./debug.js";
 import { logsT, safeStr } from "./utils.js";
 import { describeEntryConfigCheck, entryMatchesConfig } from "./identity.js";
@@ -137,10 +137,7 @@ function createLogsSocket(context) {
     typeof context.config.socketOptions === "object"
   ? context.config.socketOptions
   : {};
-  return io(context.config.socketNamespace || "/deployments/logs", {
-      transports: ["polling", "websocket"],
-      ...socketOptions,
-  });
+  return io(context.config.socketNamespace || "/deployments/logs", socketOptions);
 }
 
 function startBootstrapTimer(context) {

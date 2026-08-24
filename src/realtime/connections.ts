@@ -4,8 +4,6 @@ import {
   subscribeRoom,
   type LiveSocketPayload,
 } from "./socket.js";
-import { importChildNodes } from "#0e8yn6c3295z";
-import { rehydrate } from "#xhefk4bgh568";
 
 type LiveEventFilter = string | string[] | undefined;
 type LiveFieldTarget = Element | ((value: unknown) => void) | null | undefined;
@@ -14,13 +12,6 @@ type LiveFieldsOptions = {
   fields?: Record<string, LiveFieldTarget>;
   room?: string;
   subscribe?: typeof subscribeRoom;
-};
-type LiveRefreshOptions = {
-  anchor?: string;
-  event?: LiveEventFilter;
-  room?: string;
-  subscribe?: typeof subscribeRoom;
-  url?: string;
 };
 type UseLiveOptions<T> = {
   event?: LiveEventFilter;
@@ -118,68 +109,6 @@ function connectLiveFields(options: LiveFieldsOptions = {}) {
   );
 }
 
-function liveRefreshTarget(root: Document | ParentNode, anchor: unknown) {
-  const value = String(anchor || "").trim();
-  if (!value || !("querySelector"in root)) return null;
-  if (value.startsWith("#")) {
-    const id = value.slice(1);
-    return root instanceof Document
-    ? root.getElementById(id)
-    : root.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
-  }
-  if (/^[A-Za-z][A-Za-z0-9_-]*$/u.test(value)) {
-    return root instanceof Document
-    ? root.getElementById(value)
-    : root.querySelector<HTMLElement>(`#${CSS.escape(value)}`);
-  }
-  if (value.startsWith("[data-") && !/[\s,>+~]/u.test(value)) {
-    return root.querySelector<HTMLElement>(value);
-  }
-  return null;
-}
-
-function replaceLiveFragment(anchor: string, doc: Document) {
-  const fresh = liveRefreshTarget(doc, anchor);
-  const current = liveRefreshTarget(document, anchor);
-  if (!(fresh instanceof HTMLElement) || !(current instanceof HTMLElement)) {
-    return false;
-  }
-  current.replaceChildren(...importChildNodes(fresh));
-  rehydrate(current);
-  return true;
-}
-
-function connectLiveRefresh(options: LiveRefreshOptions = {}) {
-  const room = String(options.room || "").trim();
-  const anchor = String(options.anchor || "").trim();
-  if (!room || !liveRefreshTarget(document, anchor)) return () => {};
-
-  let inflight = false;
-  return liveConnect(
-    room,
-    options.event,
-    () => {
-      if (inflight) return;
-      inflight = true;
-      const url = String(options.url || window.location.href).trim();
-      fetch(url, {
-          credentials: "same-origin",
-          headers: { Accept: "text/html" },
-      })
-      .then((response) => response.ok ? response.text() : "")
-      .then((html) => {
-          if (!html) return;
-          const doc = new DOMParser().parseFromString(html, "text/html");
-          replaceLiveFragment(anchor, doc);
-      })
-      .finally(() => {
-          inflight = false;
-      });
-    },
-    options.subscribe || subscribeRoom,
-  );
-}
-
 function requestSidebarSync(sidebars: unknown[]) {
   const list = Array.isArray(sidebars) ? sidebars : [];
   if (!list.length) return Promise.resolve([]);
@@ -196,10 +125,8 @@ function requestSidebarSync(sidebars: unknown[]) {
 export {
   applyLiveFieldValue,
   connectLiveFields,
-  connectLiveRefresh,
   eventMatches,
   liveConnect,
-  liveRefreshTarget,
   requestSidebarSync,
   useLive,
 };
@@ -207,6 +134,5 @@ export type {
   LiveEventFilter,
   LiveFieldTarget,
   LiveFieldsOptions,
-  LiveRefreshOptions,
   UseLiveOptions,
 };

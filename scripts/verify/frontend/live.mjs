@@ -273,7 +273,23 @@ async function verifyLiveRemoteUploadPreservation(context) {
   );
 }
 
+async function verifySocketTransportPolicy(context) {
+  const root = await context.importDistRoot();
+  assert.deepEqual(
+    root.withWebSocketTransportOptions().transports,
+    ["websocket"],
+  );
+  assert.deepEqual(
+    root.withWebSocketTransportOptions({
+        transports: ["fallback"],
+    }).transports,
+    ["websocket"],
+  );
+  assert.equal("withSocketTransportOptions"in root, false);
+}
+
 async function verifyFrontendLive(context) {
+  await verifySocketTransportPolicy(context);
   await verifyLiveOverlays(context);
   await verifyLiveNavigationLifecycle(context);
   await verifyLiveNavigationProgress(context);

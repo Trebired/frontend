@@ -12,23 +12,20 @@ type SocketIoFactory = typeof socketIo& {
   io: typeof socketIo;
 };
 
-function withSocketTransportOptions(input: Record<string, unknown> = {}) {
+function withWebSocketTransportOptions(input: Record<string, unknown> = {}) {
   const options = input && typeof input === "object" ? { ...input } : {};
-  if (Array.isArray(options.transports) && options.transports.length) {
-    return options;
-  }
   return {
     ...options,
-    transports: ["polling", "websocket"],
+    transports: ["websocket"],
   };
 }
 
 function io(uri?: string, options?: Record<string, unknown>) {
-  return socketIo(uri, withSocketTransportOptions(options || {}));
+  return socketIo(uri, withWebSocketTransportOptions(options || {}));
 }
 
 function socketConnect(uri?: string, options?: Record<string, unknown>) {
-  return connect(uri, withSocketTransportOptions(options || {}));
+  return connect(uri, withWebSocketTransportOptions(options || {}));
 }
 
 const socket = Object.assign(io, socketIo, {
@@ -44,6 +41,6 @@ export {
   socketConnect as connect,
   socket,
   io,
-  withSocketTransportOptions,
+  withWebSocketTransportOptions,
 };
 export type { SocketIoFactory };

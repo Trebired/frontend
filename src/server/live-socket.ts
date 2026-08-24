@@ -73,9 +73,38 @@ type LiveSocketServerOptions = {
   unsubscribeEvent?: string;
 };
 
+type LiveResourcePayloadResolver<TInput = unknown, TData = unknown> = (
+  input: TInput,
+) => TData | null | undefined | Promise<TData | null | undefined>;
+
+type LiveResourceDefinition<TInput = unknown, TData = unknown> = {
+  authorize?: (socket: LiveSocketLike, id: string) => unknown;
+  event: unknown;
+  id?: unknown;
+  kind: unknown;
+  payload?: LiveResourcePayloadResolver<TInput, TData>;
+};
+
+type LiveResourceSubscribe<TInput = unknown> = (
+  emit: (input?: TInput) => void,
+) => unknown;
+
+type LiveSocketResource<TInput = unknown> = {
+  bind: (
+    key: unknown,
+    subscribe: LiveResourceSubscribe<TInput>,
+  ) => () => void;
+  broadcast: (input?: TInput) => Promise<boolean>;
+  register: () => boolean;
+  room: (id?: unknown) => string;
+};
+
 type LiveSocketServer = {
   attach: (server: LiveSocketServerLike) => boolean;
   broadcast: (room: unknown, event: unknown, data: unknown) => boolean;
+  defineResource: <TInput = unknown, TData = unknown>(
+    definition: LiveResourceDefinition<TInput, TData>,
+  ) => LiveSocketResource<TInput>;
   namespace: () => LiveSocketNamespaceLike | null;
   registerRoomAuthorizer: (
     kind: unknown,
@@ -295,9 +324,94 @@ function createLiveSocketServer(
     return true;
   }
 
+  function defineResource<TInput = unknown, TData = unknown>(
+    definition: LiveResourceDefinition<TInput, TData>,
+  ): LiveSocketResource<TInput> {
+    const kind = serverString(definition && definition.kind).trim();
+    const defaultId = serverString(definition && definition.id != null
+      ? definition.id
+      : "global").trim();
+    const event = serverString(definition && definition.event).trim();
+    const bound = new Map<string, () => void>();
+    let registered = false;
+
+    function register() {
+      if (registered) return Boolean(kind && event);
+      registered = true;
+      if (!kind || !event) return false;
+      if (typeof definition.authorize === "function") {
+        return registerRoomAuthorizer(kind, definition.authorize);
+      }
+      return true;
+    }
+
+    function room(id?: unknown) {
+      return liveRoomFor(kind, arguments.length ? id : defaultId);
+    }
+
+    async function resourceData(input?: TInput) {
+      if (typeof definition.payload !== "function") return input;
+      return Promise.resolve(definition.payload(input as TInput));
+    }
+
+    async function resourceBroadcast(input?: TInput) {
+      if (!register()) return false;
+      const targetRoom = room();
+      if (!targetRoom || !event) return false;
+      try {
+        const data = await resourceData(input);
+        if (typeof definition.payload === "function" && data == null) {
+          return false;
+        }
+        return broadcast(targetRoom, event, data);
+      } catch (error: any) {
+        logger.warn("live.socket", "resource broadcast failed", {
+            error: error && error.message ? error.message : String(error),
+            event,
+            kind,
+            room: targetRoom,
+        });
+        return false;
+      }
+    }
+
+    function bind(key: unknown, subscribe: LiveResourceSubscribe<TInput>) {
+      const safeKey = serverString(key).trim();
+      if (!safeKey || typeof subscribe !== "function") return () => {};
+      register();
+      const existing = bound.get(safeKey);
+      if (existing) return existing;
+      const emit = (input?: TInput) => {
+        void resourceBroadcast(input);
+      };
+      const cleanupValue = subscribe(emit);
+      const cleanup =
+      typeof cleanupValue === "function"
+      ? cleanupValue as () => void
+      : () => {};
+      const dispose = () => {
+        try {
+          cleanup();
+        } finally {
+          bound.delete(safeKey);
+        }
+      };
+      bound.set(safeKey, dispose);
+      return dispose;
+    }
+
+    return {
+      bind,
+      broadcast: resourceBroadcast,
+      register,
+      room,
+    };
+  }
+
   return {
     attach,
     broadcast,
+    defineResource,
     namespace: () => activeNamespace,
     registerRoomAuthorizer,
   };
@@ -329,8 +443,12 @@ export {
 };
 export type {
   LiveRoom,
+  LiveResourceDefinition,
+  LiveResourcePayloadResolver,
+  LiveResourceSubscribe,
   LiveSocketLike,
   LiveSocketNamespaceLike,
+  LiveSocketResource,
   LiveSocketServer,
   LiveSocketServerLike,
   LiveSocketServerOptions,

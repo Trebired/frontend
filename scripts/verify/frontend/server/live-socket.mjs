@@ -98,6 +98,71 @@ function verifyBroadcast(server, liveServer, namespace) {
   });
 }
 
+async function verifyLiveResource(server) {
+  const emitted = [];
+  const socket = createSocket(emitted);
+  const namespace = createNamespace();
+  const liveServer = server.createLiveSocketServer();
+  let changeSource = null;
+  const resource = liveServer.defineResource({
+      authorize: (_socket, id) => id === "global",
+      event: "platform-live",
+      id: "global",
+      kind: "platform",
+      payload: (input = {}) => ({
+          lang: input.lang || "",
+          ok: true,
+      }),
+  });
+
+  assert.equal(resource.room(), "platform:global");
+  assert.equal(resource.register(), true);
+  assert.equal(resource.register(), true);
+  assert.equal(liveServer.attach({ of: () => namespace }), true);
+  namespace.connectionHandler(socket);
+  await socket.handlers.subscribe({ room: "platform:global" });
+  assert.deepEqual(socket.joined, ["platform:global"]);
+  await socket.handlers.subscribe({ room: "platform:other" });
+  assert.equal(emitted[1].event, server.DEFAULT_LIVE_DENIED_EVENT);
+
+  const dispose = resource.bind("control", (emit) => {
+      changeSource = emit;
+      return () => {
+        changeSource = null;
+      };
+  });
+  assert.equal(
+    resource.bind("control", () => {
+        throw new Error("duplicate binding should not run");
+    }),
+    dispose,
+  );
+
+  changeSource({ lang: "en" });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(namespace.emitted[0].event, server.DEFAULT_LIVE_CHANGE_EVENT);
+  assert.equal(namespace.emitted[0].payload.event, "platform-live");
+  assert.deepEqual(namespace.emitted[0].payload.data, {
+      lang: "en",
+      ok: true,
+  });
+
+  assert.equal(await resource.broadcast({ lang: "cs" }), true);
+  assert.deepEqual(namespace.emitted[1].payload.data, {
+      lang: "cs",
+      ok: true,
+  });
+
+  const empty = liveServer.defineResource({
+      event: "empty",
+      kind: "empty",
+      payload: () => null,
+  });
+  assert.equal(await empty.broadcast(), false);
+  dispose();
+  assert.equal(changeSource, null);
+}
+
 async function verifyLiveSocketServer(server) {
   const emitted = [];
   const socket = createSocket(emitted);
@@ -110,6 +175,7 @@ async function verifyLiveSocketServer(server) {
   await verifySubscriptions(server, socket, emitted);
   await verifySidebarSync(socket);
   verifyBroadcast(server, liveServer, namespace);
+  await verifyLiveResource(server);
 }
 
 export { verifyLiveSocketServer };

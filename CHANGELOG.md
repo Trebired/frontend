@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.0
+
+### Breaking
+
+- Socket.IO connections created through `@trebired/frontend` now use websocket transport only. Caller-provided transport lists are overridden to `["websocket"]`; HTTP long-polling fallback is no longer exposed.
+- Removed `connectLiveRefresh()` and the related live HTML refresh helpers. Live updates now have to carry socket payloads instead of triggering page/fragment fetches.
+
+### Added
+
+- `createLiveSocketServer()` now exposes `defineResource()`, a package-owned live resource API for idempotent room authorization, room naming, payload broadcasting, and change-source binding.
+
 ## 11.7.2
 
 ### Fixed
