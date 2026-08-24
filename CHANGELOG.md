@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.3
+
+### Changed
+
+- Same-origin anchor clicks are now handled directly by the SPA runtime with `softRedirect`. Sidebar links render as plain anchors and no longer emit action-trigger navigation attributes.
+
 ## 12.0.2
 
 ### Fixed

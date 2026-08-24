@@ -389,6 +389,7 @@
   "#od8up2yxod8x": "./scripts/verify/frontend/server/services.mjs",
   "#ojqk8hhrpft6": "./src/logs/stats_breakdown.tsx",
   "#oohgsil8r9co": "./src/inputs/advanced/radio/index.tsx",
+  "#otbie2kxbbht": "./src/spa/links.ts",
   "#p0bohjc116l9": "./src/inputs/advanced/dropdown/i18n/en.ts",
   "#p0m3f4xaab7z": "./src/graph/advanced/contributions.tsx",
   "#p8aofvpyx6fl": "./src/editor/components/types.ts",

@@ -1,6 +1,5 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { dataBool } from "#ndsvdqv80epr";
-import { actionTriggerAttrs } from "#6mupcizo1mwq";
 import {
   DynamicSidebarCountSlot,
   DynamicSidebarIcon,
@@ -20,7 +19,6 @@ import {
   textValue,
 } from "#yv4ubgils4dc";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
-import { isSoftNavigableHref } from "#o9lroe7t0ma6";
 
 const DYNAMIC_SIDEBAR_DISABLED_LINK_CLASS = `${frontendClassName("sidebar-link")} sidebar-link-btn`;
 
@@ -69,7 +67,6 @@ function dynamicSidebarLinkAttrs(
 }
 
 function DynamicSidebarLinkNode(props: {
-    actionTrigger: boolean;
     context: DynamicSidebarItemContext;
     dynamicDisabled: boolean;
     href: string;
@@ -83,7 +80,6 @@ function DynamicSidebarLinkNode(props: {
     <a
     className={frontendClassName("sidebar-link")}
     {...dynamicSidebarLinkAttrs(context, props.href, props.dynamicDisabled)}
-    {...(props.actionTrigger ? actionTriggerAttrs({ href: props.href }) : {})}
     >
     <DynamicSidebarIcon context={context} render={options.renderIcon} />
     <span className={frontendElementClass("sidebar-link", "label")} {...frontendDataAttrs({ "sidebar-label": "" })}>
@@ -137,18 +133,6 @@ function wrapDynamicSidebarLink(
   return node;
 }
 
-function dynamicSidebarLinkActionTrigger(
-  href: string,
-  context: DynamicSidebarItemContext,
-  options: DynamicSidebarLinkListProps,
-) {
-  return Boolean(
-    isSoftNavigableHref({ disabled: context.disabled, href }) &&
-      options.actionTrigger !== false &&
-      !options.wrapLink,
-  );
-}
-
 function DynamicSidebarLinkRow(props: {
     currentPath: string;
     index: number;
@@ -168,7 +152,6 @@ function DynamicSidebarLinkRow(props: {
   Boolean(textValue(props.item.disabledPath)) && props.item.disabled !== true;
   const node = (
     <DynamicSidebarLinkNode
-    actionTrigger={dynamicSidebarLinkActionTrigger(href, context, props.options)}
     context={context}
     dynamicDisabled={dynamicDisabled}
     href={href}

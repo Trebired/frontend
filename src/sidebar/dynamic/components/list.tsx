@@ -15,7 +15,6 @@ import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function DynamicSidebarLinkList(props: DynamicSidebarLinkListProps) {
   const {
-    actionTrigger: _actionTrigger,
     className,
     currentPath = "",
     items,

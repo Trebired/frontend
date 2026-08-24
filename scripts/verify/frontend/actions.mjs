@@ -20,31 +20,47 @@ async function verifyActionConfetti(importDist) {
   assert.equal(count, 1);
 }
 
-async function verifyActionTriggerNavigation(importDistRoot) {
+async function verifySoftRedirectAnchorNavigation(importDistRoot) {
   const { bindFrontendRuntime } = await importDistRoot();
   document.body.innerHTML = [
-    '<a id="soft" href="/welcome" data-tbf-href="/welcome">',
+    '<main data-tbf-live-content>',
+    '<a id="soft" href="/welcome">',
     "<span>Start</span>",
     "</a>",
+    "</main>",
   ].join("");
-  let navigated = "";
-  bindFrontendRuntime(document, {
-      adapters: {
-        navigation: {
-          navigate(url) {
-            navigated = url;
-          },
-        },
-      },
+  let requested = "";
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async(input) => {
+    requested = String(input);
+    return new Response(
+      [
+        "<!doctype html><html><head><title>Welcome</title></head><body>",
+        '<main data-tbf-live-content><span id="welcome_marker">Welcome</span></main>',
+        "</body></html>",
+      ].join(""),
+      { headers: { "Content-Type": "text/html" } },
+    );
+  };
+  const runtime = bindFrontendRuntime(document, {
       observe: false,
       quiet: true,
   });
-  document.querySelector("#soft span").click();
-  assert.equal(navigated, "/welcome");
+  try {
+    document.querySelector("#soft span").click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(requested, "/welcome");
+    assert.equal(document.getElementById("welcome_marker")?.textContent, "Welcome");
+  } finally {
+    runtime.disconnect();
+    globalThis.fetch = previousFetch;
+    history.replaceState({}, "", "/current");
+  }
 }
 
 async function verifyFrontendActions(context) {
-  await verifyActionTriggerNavigation(context.importDistRoot);
+  await verifySoftRedirectAnchorNavigation(context.importDistRoot);
   await verifyActionConfetti(context.importDist);
 }
 

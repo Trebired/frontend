@@ -78,7 +78,6 @@ type DynamicSidebarStateContext = DynamicSidebarItemContext& {
 
 type DynamicSidebarLinkListProps =
 Omit<HTMLAttributes<HTMLUListElement>, "children">& {
-  actionTrigger?: boolean;
   currentPath?: string;
   items: DynamicSidebarItem[];
   linksId?: string;

@@ -1,7 +1,6 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
-import { isSoftNavigableHref } from "#o9lroe7t0ma6";
 
 type SidebarLinkItem = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   active?: boolean;
@@ -59,11 +58,6 @@ function SidebarLinkList(props: SidebarLinkListProps) {
   );
 }
 
-function sidebarLinkTriggerAttrs(item: SidebarLinkItem) {
-  if (!isSoftNavigableHref(item)) return {};
-  return frontendDataAttrs({ href: String(item.href).trim() });
-}
-
 function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
   const { active, badge, disabled, icon, key: _key, label, separator: _separator, ...rest } = props.item;
   return (
@@ -79,7 +73,6 @@ function SidebarLinkListItem(props: { item: SidebarLinkItem }) {
     className={classNames(frontendClassName("sidebar-link"), props.item.className)}
     {...frontendDataAttrs({ "disabled": dataBool(disabled) })}
     {...frontendDataAttrs({ "sidebar-link": "" })}
-    {...sidebarLinkTriggerAttrs(props.item)}
     tabIndex={disabled ? -1 : props.item.tabIndex}
     >
     {icon ? (
