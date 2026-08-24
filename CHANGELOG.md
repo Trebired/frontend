@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.1
+
+### Fixed
+
+- Modal trigger buttons now render `aria-haspopup="dialog"` before hydration, matching the modal binder's runtime attribute and avoiding React hydration warnings for live islands that contain modal open buttons.
+
 ## 12.0.0
 
 ### Breaking

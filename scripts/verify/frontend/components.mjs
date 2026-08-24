@@ -183,6 +183,11 @@ async function verifyRenderedLayeredSystems(importDist) {
     renderToStaticMarkup(h(react.StatusIcon, { label: "Ready" })),
     renderToStaticMarkup(h(react.PopoverPanel, { id: "p1" }, "Body")),
     renderToStaticMarkup(h(react.ModalRoot, { id: "m1" }, h(react.ModalContent, null, "Body"))),
+    renderToStaticMarkup(h(react.ModalOpenButton, { controls: "m1" }, "Open modal")),
+    renderToStaticMarkup(h(react.Button, {
+          "aria-controls": "m1",
+          "data-tbf-modal-open": "",
+        }, "Open modal")),
     renderToStaticMarkup(h(react.FullscreenTarget, { fullscreenId: "panel" }, "Panel")),
     renderToStaticMarkup(h(react.FullscreenButton, { fullscreenId: "panel" }, "Fullscreen")),
     renderToStaticMarkup(h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null)))),
@@ -202,6 +207,8 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.equal(html.includes("data-tbf-popover-open"), false);
   assert.ok(html.includes("data-tbf-theme-select"));
   assert.ok(html.includes("data-tbf-modal"));
+  assert.ok(html.includes("data-tbf-modal-open"));
+  assert.ok(html.includes('aria-haspopup="dialog"'));
   assert.ok(html.includes("data-tbf-fullscreen-target"));
   assert.ok(html.includes("data-tbf-sidebar-shell"));
   assertNoCustomElementTags(html, "rendered layered components");

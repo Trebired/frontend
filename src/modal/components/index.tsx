@@ -74,6 +74,7 @@ function ModalOpenButton(props: ModalOpenButtonProps) {
     className={classNames(frontendClassName("button"), className)}
     {...frontendDataAttrs({ "modal-open": "" })}
     aria-controls={controls}
+    aria-haspopup="dialog"
     type={type}
     >
     {children}

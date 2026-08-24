@@ -27,8 +27,13 @@ type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
 
 function Button(props: ButtonProps) {
   const { children, className, size, tone, type = "button", ...rest } = props;
+  const ariaHasPopup =
+    rest["aria-haspopup"] ??
+    ((rest as Record<string, unknown>)["data-tbf-modal-open"] === undefined
+      ? undefined
+      : "dialog");
   return (
-    <button {...rest} className={classNames(surfaceClass(frontendClassName("button"), { size, tone }), className)} type={type}>
+    <button {...rest} aria-haspopup={ariaHasPopup} className={classNames(surfaceClass(frontendClassName("button"), { size, tone }), className)} type={type}>
     {children}
     </button>
   );
