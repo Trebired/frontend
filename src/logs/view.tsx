@@ -49,7 +49,6 @@ function view(props: view_props) {
           extendGroup: model.logsExtendGroup,
           extendId: model.logsInstanceId,
           panelClassName: model.panelClassName,
-          scroll: true,
           title: model.title,
           toolbarContent: logsToolbar(model),
     })}

@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.2
+
+### Fixed
+
+- Log views now keep scrolling on the log stream itself instead of the canvas-panel wrapper. This avoids nested scroll targets that could prevent wheel and trackpad scrolling inside logs panels.
+
 ## 12.0.1
 
 ### Fixed

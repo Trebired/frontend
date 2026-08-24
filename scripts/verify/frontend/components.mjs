@@ -17,6 +17,7 @@ async function verifyFrontendComponents(context) {
   await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
+  await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
 }
 
@@ -288,6 +289,26 @@ async function verifyRenderedThemeLive(importDist) {
   assert.ok(html.includes("data-tbf-theme-button"));
   assert.ok(html.includes("data-tbf-live-region"));
   assertNoCustomElementTags(html, "rendered theme/live components");
+}
+
+async function verifyLogsViewScrollContract(importDist, rootDir) {
+  const react = await importDist("react");
+  const html = renderToStaticMarkup(
+    h(react.logs_view, {
+      instanceId: "verify-logs",
+      title: "Logs",
+    }),
+  );
+  assert.ok(html.includes('id="verify-logs-box" class="log-box scroll-min"'));
+  assert.ok(html.includes("log-box-shell"));
+  assert.equal(
+    html.includes("canvas-panel-content scroll"),
+    false,
+    "logs view must leave scrolling to .log-box",
+  );
+  const source = await fs.readFile(path.join(rootDir, "dist", "logs", "styles.scss"), "utf8");
+  assert.ok(source.includes(".log-box-shell"));
+  assert.ok(source.includes("overflow: hidden;"));
 }
 
 async function verifyRootImportIsolation(rootDir) {
