@@ -171,7 +171,7 @@ function contentBlock(
   );
 }
 
-function selectButton(
+function selectCardNode(
   props: BodyProps,
   className: string,
   content: ReactNode,
@@ -179,7 +179,7 @@ function selectButton(
   disabled: boolean,
 ) {
   return (
-    <button
+    <div
     {...((props.dataAttrs || {}) as attr_map)}
     aria-disabled={disabled ? "true" : undefined}
     aria-selected={selected ? "true" : "false"}
@@ -189,13 +189,12 @@ function selectButton(
     data-card-selected={selected ? "true" : undefined}
     data-select-card=""
     data-value={toText(props.select?.value) || undefined}
-    disabled={disabled}
+    role="button"
     style={{ textAlign: "left", width: "100%" }}
-    type={props.select?.buttonType || "button"}
-    value={toText(props.select?.value) || undefined}
+    tabIndex={disabled ? -1 : selected ? 0 : -1}
     >
     {content}
-    </button>
+    </div>
   );
 }
 
@@ -251,7 +250,7 @@ function card_body(props: BodyProps) {
     return searchableBodyNode(
       props,
       wrapTriggerHostNode(
-        selectButton(props, state.baseClassName, content, state.selected, Boolean(state.disabled)),
+        selectCardNode(props, state.baseClassName, content, state.selected, Boolean(state.disabled)),
         props.actionTrigger,
       ),
     );

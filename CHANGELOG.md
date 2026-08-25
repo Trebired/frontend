@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.7
+
+### Fixed
+
+- Select cards now render as action-system div hosts instead of native buttons, so disabled select cards can contain real interactive children without browser-disabled button suppression.
+
 ## 12.0.6
 
 ### Fixed
