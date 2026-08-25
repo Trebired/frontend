@@ -6,12 +6,12 @@
   background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page));
   padding: var(#{ns.css-var("surf-card-root-padding")}, 14px 14px 12px 14px);
   overflow: hidden;
+}
 
-  h2 {
-    margin: var(#{ns.css-var("surf-card-title-margin")}, 0 0 10px 0);
-    font-size: var(#{ns.css-var("surf-card-title-font-size")}, 15px);
-    font-weight: var(#{ns.css-var("surf-card-title-font-weight")}, 700);
-  }
+.card-title {
+  margin: var(#{ns.css-var("surf-card-title-margin")}, 0 0 10px 0);
+  font-size: var(#{ns.css-var("surf-card-title-font-size")}, 15px);
+  font-weight: var(#{ns.css-var("surf-card-title-font-weight")}, 700);
 }
 
 .card-row {

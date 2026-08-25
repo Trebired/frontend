@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.2.0
+
+### Changed
+
+- Card titles are styled by an opt-in `card-title` class instead of the `h2` element.
+  `.card h2` forced 15px/700, so an `h2` rendered smaller and heavier than an `h3` beside
+  it and the heading scale was inverted inside every card. Headings in cards now follow
+  the normal `h1`-`h6` scale. The `surfaces.card.title` tokens are unchanged and now apply
+  to `card-title`; add that class to any element that should keep the compact label look.
+
 ## 12.1.2
 
 ### Fixed
