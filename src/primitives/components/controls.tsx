@@ -23,7 +23,7 @@ import {
   primitiveStatusDotClassName,
   primitiveTextClassName,
 } from "./classes.js";
-import { actionButtonAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
+import { actionButtonAttrs, actionTriggerAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function primitiveTooltipText(tooltip: ButtonProps["tooltip"]) {
@@ -54,7 +54,7 @@ function primitiveButton(props: ButtonProps) {
     variant,
     ...rest
   } = props;
-  return wrapTriggerHostNode(
+  return (
     <FrontendButton
     className={primitiveButtonClassName({
           active,
@@ -68,12 +68,12 @@ function primitiveButton(props: ButtonProps) {
     })}
     {...frontendDataAttrs({ "active": active ? "true" : undefined })}
     {...actionButtonAttrs(actionButton)}
+    {...actionTriggerAttrs(actionTrigger)}
     {...rest}
     {...primitiveTooltipAttrs(primitiveTooltipText(tooltip), title)}
     >
     {children}
-    </FrontendButton>,
-    actionTrigger,
+    </FrontendButton>
   );
 }
 

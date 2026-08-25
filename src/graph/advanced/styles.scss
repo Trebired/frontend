@@ -4,6 +4,13 @@
   --roadmap-line-width: 2px;
   --roadmap-content-gap: 16px;
   min-width: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.roadmap-body {
+  min-width: 0;
 }
 
 .roadmap-item {

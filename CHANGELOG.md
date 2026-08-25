@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.3.0
+
+### Fixed
+
+- Buttons with an `actionTrigger` now fire. The trigger attributes were placed on a wrapper
+  `span` around the `button`, and the action runtime deliberately ignores a click whose
+  target is an interactive element nested inside the trigger, so a button always suppressed
+  its own action. The attributes now sit on the `button` itself, which the trigger runtime
+  already treats as a native host. This affected every `button({ actionTrigger })`.
+- The advanced roadmap no longer emits the prefixed `roadmap` classes alongside its own.
+  Its absolutely positioned marker left the grid defined by `roadmap__item`, so the body
+  was placed in the fixed 16px marker column and rendered as a narrow strip.
+
 ## 12.2.0
 
 ### Changed

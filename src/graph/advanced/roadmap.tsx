@@ -4,7 +4,6 @@ import {
   Text,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendElementClass } from "#5vbaqj4pirp3";
 
 type BindActionOptions = {
   href?: string;
@@ -77,7 +76,7 @@ function renderAdvancedRoadmapItem(
 
   return (
     <li
-    className={`${frontendElementClass("roadmap", "item")} roadmap-item`}
+    className="roadmap-item"
     key={
       item && item.id != null
       ? String(item.id)
@@ -85,10 +84,10 @@ function renderAdvancedRoadmapItem(
     }
     {...dataAttrs}
     >
-    <span className={`${frontendElementClass("roadmap", "marker")} roadmap-marker`}>
+    <span className="roadmap-marker">
     {item && item.icon ? item.icon : null}
     </span>
-    <div className={frontendElementClass("roadmap", "body")}>{content}</div>
+    <div className="roadmap-body">{content}</div>
     </li>
   );
 }
@@ -109,7 +108,7 @@ function roadmapGroup(group: roadmap_group, groupIndex: number) {
     }
     >
     {group && group.title ? <div>{group.title}</div> : null}
-    <ol className={primitiveStackClassName({ className: `${frontendClassName("roadmap")} roadmap-items`, gap: "sm" })}>
+    <ol className={primitiveStackClassName({ className: "roadmap-items", gap: "sm" })}>
     {items.map((item, itemIndex) =>
         renderAdvancedRoadmapItem(item, groupIndex, itemIndex),
     )}
