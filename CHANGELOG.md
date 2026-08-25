@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.1.2
+
+### Fixed
+
+- SPA navigation now dispatches the `live-navigation` event. It had listeners but no
+  dispatcher, so save policies were never torn down on a page switch and the
+  unsaved-changes flash persisted across pages. Root-scoped page cleanup could not cover
+  this because a portaled modal lives outside the replaced content root. This also
+  restores the SPA document-title fallback, which listened for the same dead event.
+
 ## 12.1.1
 
 ### Fixed

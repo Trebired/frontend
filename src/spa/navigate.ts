@@ -136,6 +136,11 @@ function replaceContent(
     currentRoot,
   );
   runPageCleanups(currentRoot);
+  document.dispatchEvent(
+    new CustomEvent(frontendEventName("live-navigation"), {
+        detail: { url: window.location.href },
+    }),
+  );
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
   swapChrome(doc);
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
