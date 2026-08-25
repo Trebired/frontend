@@ -54,6 +54,7 @@
   background: var(#{ns.css-var("overlay-modal-content-bg")}, var(#{ns.css-var("surface")}, #fff));
   box-shadow: var(#{ns.css-var("overlay-modal-content-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
   transform: scale(var(#{ns.css-var("overlay-modal-motion-initial-scale")}, 0.96));
+
   transition:
   transform var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}))
   var(#{ns.css-var("overlay-modal-motion-easing")}, ease);
@@ -61,4 +62,10 @@
 
 #{ns.data("modal")}#{ns.data("open", "true")} #{ns.data("modal-content")} {
   transform: scale(var(#{ns.css-var("overlay-modal-motion-open-scale")}, 1));
+}
+
+#{ns.element-class("modal", "content")} > *,
+
+#{ns.data("modal-content")} > * {
+  flex-shrink: 0;
 }

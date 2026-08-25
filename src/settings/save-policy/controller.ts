@@ -20,9 +20,11 @@ import type {
   SavePolicyState,
 } from "./types.js";
 import { frontendEventName } from "#5vbaqj4pirp3";
+import { registerPageCleanup } from "#o9lroe7t0ma6";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
+const savePolicyCleanups = new WeakMap<SavePolicyController, () => void>();
 const blockedForms = new WeakSet<HTMLFormElement>();
 
 function showUnsavedFlash(state: SavePolicyState) {
@@ -274,6 +276,8 @@ function createSavePolicyController(
       if (state.destroyed) return;
       state.destroyed = true;
       unbind();
+      savePolicyCleanups.get(controller)?.();
+      savePolicyCleanups.delete(controller);
       hideUnsavedFlash(state.unsavedFlashHandle);
       state.unsavedFlashHandle = null;
       savePolicies.delete(state.root);
@@ -306,6 +310,10 @@ function enforceSavePolicy(input: SavePolicyInput) {
   );
   savePolicies.set(root, controller);
   activeSavePolicies.add(controller);
+  savePolicyCleanups.set(
+    controller,
+    registerPageCleanup(root, () => controller.destroy()),
+  );
   bindUnexpectedForms(state);
   captureBaseline(state);
   return controller;

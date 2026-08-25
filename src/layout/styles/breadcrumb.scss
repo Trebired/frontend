@@ -1,6 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 #{ns.class("breadcrumb")} {
   min-width: 0;
+  font-size: var(#{ns.css-var("shell-breadcrumb-font-size")}, 14px);
 }
 
 #{ns.element-class("breadcrumb", "list")} {

@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.1.1
+
+### Fixed
+
+- Modal content no longer collapses its sections. Direct children of a scrollable modal
+  body are now `flex-shrink: 0`, so a card with `overflow: hidden` can no longer be
+  squeezed down to its `min-height` and clip its own content.
+- A save policy is now torn down when its root leaves the page. It registered no page
+  cleanup and relied on a `live-navigation` event that nothing ever dispatched, so the
+  unsaved-changes flash and its `beforeunload` handler survived SPA navigation.
+- Breadcrumbs take a font size from `shell.breadcrumb.fontSize` (`--tbf-shell-breadcrumb-font-size`),
+  defaulting to `14px` instead of inheriting the surrounding 16px.
+
 ## 12.1.0
 
 ### Added
