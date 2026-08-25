@@ -22,7 +22,7 @@ import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
-import { spaNavigationAdapter, softReload } from "./spa/index.js";
+import { bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -134,6 +134,7 @@ function bindFrontendWidgets(
   bindTooltips(scope);
   bindPopovers(scope);
   bindModals(scope);
+  bindSoftRedirectLinks(scope);
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });

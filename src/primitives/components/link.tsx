@@ -5,6 +5,7 @@ import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 type TextLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children?: ReactNode;
   external?: boolean;
+  softRedirect?: boolean;
 };
 
 function linkTarget(target: string | undefined, external: boolean | undefined) {
@@ -17,13 +18,16 @@ function linkRel(rel: string | undefined, target: string | undefined) {
 }
 
 function TextLink(props: TextLinkProps) {
-  const { children, className, external, rel, target, ...rest } = props;
+  const { children, className, external, rel, softRedirect, target, ...rest } = props;
   const resolvedTarget = linkTarget(target, external);
   return (
     <a
     {...rest}
     className={joinClassNames(frontendClassName("text-link"), "text-link", className)}
-    {...frontendDataAttrs({ "text-link": "" })}
+    {...frontendDataAttrs({
+        "text-link": "",
+        "soft-redirect": softRedirect === true ? "" : undefined,
+    })}
     rel={linkRel(rel, resolvedTarget)}
     target={resolvedTarget}
     >

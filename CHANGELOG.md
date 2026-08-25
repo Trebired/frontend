@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.8
+
+### Added
+
+- Added a package-owned `data-tbf-soft-redirect` link marker and runtime binder. `TextLink` can now render `softRedirect={true}` so callers explicitly opt a link into SPA navigation without page-local click interception.
+
 ## 12.0.7
 
 ### Fixed

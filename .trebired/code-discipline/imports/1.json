@@ -454,6 +454,7 @@
   "#tvicwpnoy4rk": "./src/spa/cleanup.ts",
   "#tytcmts991st": "./src/logs/client/ingest.ts",
   "#u0knshei0xi3": "./src/theme/browser-sync.ts",
+  "#u525cvfu2zk3": "./src/spa/links.ts",
   "#u8nmcwbcma9p": "./src/graph/advanced/contributions_heatmap/i18n/en.ts",
   "#ue31afhvhvc0": "./src/graph/advanced/contributions_heatmap/types.ts",
   "#uf8dwzp6nque": "./src/config/default-scales.ts",
