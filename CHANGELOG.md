@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.10
+
+### Fixed
+
+- Tab lists now use the `gap-xs` spacing token by default instead of `gap-sm`.
+
 ## 12.0.9
 
 ### Fixed

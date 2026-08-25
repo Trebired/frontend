@@ -5,7 +5,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 .tabs {
   display: flex;
   width: 100%;
-  gap: var(#{ns.css-var("ui-tabs-list-gap")}, var(#{ns.css-var("gap-sm")}));
+  gap: var(#{ns.css-var("ui-tabs-list-gap")}, var(#{ns.css-var("gap-xs")}));
 
   .tab {
     flex: 1 1 0;
