@@ -37,6 +37,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         modal: Object.freeze({
             backdrop: {
               background: `var(${frontendCssVar("overlay")}, rgb(0 0 0 / 48%))`,
+              blur: "8px",
               opacity: "1",
               padding: "24px",
             },

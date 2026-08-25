@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.1.0
+
+### Added
+
+- The modal backdrop is now blurred by default, and the radius is configurable through
+  `components.overlay.modal.backdrop.blur` (CSS variable
+  `--tbf-overlay-modal-backdrop-blur`). Defaults to `8px`; set it to `0px` to turn the
+  blur off.
+
 ## 12.0.12
 
 ### Fixed

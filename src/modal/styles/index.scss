@@ -9,6 +9,8 @@
   box-sizing: border-box;
   padding: var(#{ns.css-var("overlay-modal-backdrop-padding")}, 24px);
   background: var(#{ns.css-var("overlay-modal-backdrop-bg")}, var(#{ns.css-var("overlay")}, rgb(0 0 0 / 48%)));
+  backdrop-filter: blur(var(#{ns.css-var("overlay-modal-backdrop-blur")}, 8px));
+  -webkit-backdrop-filter: blur(var(#{ns.css-var("overlay-modal-backdrop-blur")}, 8px));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
