@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.12
+
+### Fixed
+
+- A configured dropdown selected-option background is now used exactly as given. It was
+  previously blended 70/30 with the accent colour, so a configured grey rendered tinted
+  with the focus blue. The accent blend is now only the fallback for consumers that do not
+  configure the token, leaving the default appearance unchanged.
+
 ## 12.0.11
 
 ### Added

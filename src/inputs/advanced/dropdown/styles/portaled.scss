@@ -114,10 +114,13 @@
 .options[data-dropdown-portaled="true"]
 .dropdown-list
 li[data-dropdown-selected="true"] {
-  background: color-mix(
-    in srgb,
-    var(#{ns.css-var("ui-dropdown-option-state-selected-bg")}, var(--background-surface-2, transparent)) 70%,
-    var(--accent, var(#{ns.css-var("focus")}, currentColor)) 30%
+  background: var(
+    #{ns.css-var("ui-dropdown-option-state-selected-bg")},
+    color-mix(
+      in srgb,
+      var(--background-surface-2, transparent) 70%,
+      var(--accent, var(#{ns.css-var("focus")}, currentColor)) 30%
+    )
   );
 }
 
