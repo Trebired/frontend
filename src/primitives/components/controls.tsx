@@ -26,6 +26,18 @@ import {
 import { actionButtonAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
+function primitiveTooltipText(tooltip: ButtonProps["tooltip"]) {
+  return typeof tooltip === "string" ? tooltip.trim() : "";
+}
+
+function primitiveTooltipAttrs(tooltipText: string, title: ButtonProps["title"]) {
+  if (!tooltipText) return title ? { title } : {};
+  return {
+    ...frontendDataAttrs({ "tooltip": tooltipText }),
+    "aria-description": tooltipText,
+  };
+}
+
 function primitiveButton(props: ButtonProps) {
   const {
     actionButton,
@@ -35,6 +47,7 @@ function primitiveButton(props: ButtonProps) {
     className,
     icon,
     size,
+    title,
     tone,
     tooltip,
     transparent,
@@ -56,6 +69,7 @@ function primitiveButton(props: ButtonProps) {
     {...frontendDataAttrs({ "active": active ? "true" : undefined })}
     {...actionButtonAttrs(actionButton)}
     {...rest}
+    {...primitiveTooltipAttrs(primitiveTooltipText(tooltip), title)}
     >
     {children}
     </FrontendButton>,

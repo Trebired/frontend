@@ -182,8 +182,7 @@ function save_icon(props: SaveIconButtonProps = {}) {
       className: props.className,
       icon: variant === "icon",
       size: variant === "icon" ? "lg" : undefined,
-      tooltip: variant === "icon",
-      ...(variant === "icon" ? { title: String(props.tooltip || label) } : {}),
+      tooltip: variant === "icon" ? String(props.tooltip || label) : false,
       children: variant === "icon" ? saveIcon : <>{saveIcon} {label}</>,
   });
 }

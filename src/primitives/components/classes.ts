@@ -13,7 +13,7 @@ type PrimitiveButtonClassOptions = {
   icon?: boolean;
   size?: PrimitiveButtonSize;
   tone?: PrimitiveButtonTone;
-  tooltip?: boolean;
+  tooltip?: boolean | string;
   transparent?: boolean;
   variant?: PrimitiveButtonTone | "classic" | "default";
 };

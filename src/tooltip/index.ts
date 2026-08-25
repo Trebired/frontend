@@ -33,16 +33,21 @@ function controlHasText(trigger: HTMLElement) {
   return Boolean(String(trigger.textContent || "").trim());
 }
 
+function hasDeclaredTooltip(trigger: HTMLElement) {
+  return trigger.hasAttribute(frontendDataAttr("tooltip"));
+}
+
 function allowsTooltip(trigger: HTMLElement) {
   if (!isTooltipControl(trigger)) return true;
+  if (hasDeclaredTooltip(trigger)) return true;
   if (trigger.hasAttribute(frontendDataAttr("status-icon"))) return true;
   return !controlHasText(trigger);
 }
 
 function suppressControlTooltip(trigger: HTMLElement) {
   if (!isTooltipControl(trigger) || !controlHasText(trigger)) return;
+  if (hasDeclaredTooltip(trigger)) return;
   trigger.removeAttribute("title");
-  trigger.removeAttribute(frontendDataAttr("tooltip"));
   trigger.classList.remove("has-tooltip");
 }
 

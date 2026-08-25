@@ -4,6 +4,21 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.11
+
+### Added
+
+- `tooltip` on button props now accepts a string, rendering the tooltip marker and
+  `aria-description` server-side instead of relying on a native `title` attribute.
+
+### Fixed
+
+- Icon button tooltips no longer cause React hydration mismatches. The tooltip runtime
+  rewrote `title` into `aria-description` on hover, which could land before a live island
+  called `hydrateRoot`. Declared tooltips now render their final semantics during SSR, so
+  the runtime has nothing left to mutate.
+- An explicitly declared tooltip is never stripped from a control that has text content.
+
 ## 12.0.10
 
 ### Fixed
