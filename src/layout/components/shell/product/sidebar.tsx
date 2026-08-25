@@ -241,6 +241,7 @@ function ProductShellAboutButton(props: ProductShellAboutButtonProps) {
     {...rest}
     aria-label={props["aria-label"] || String(label)}
     className={classNames(frontendClassName("product-shell-about"), className)}
+    {...frontendDataAttrs({ "soft-redirect": "" })}
     href={href}
     title={String(label)}
     >

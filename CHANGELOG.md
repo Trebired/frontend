@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.0.9
+
+### Fixed
+
+- Product shell About controls now emit the explicit soft-redirect marker so sidebar About links use SPA navigation.
+
 ## 12.0.8
 
 ### Added
