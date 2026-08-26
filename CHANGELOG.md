@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.3.2
+
+### Fixed
+
+- Added the missing `grow` utility rule. `primitiveStackClassName({ grow: true })` and its
+  siblings emit a `grow` class, but no stylesheet ever defined it, so every layout relying
+  on it silently kept `flex-grow: 0`. The editor viewer was the visible case: its content
+  pane collapsed to its intrinsic width and left the rest of the row empty. Every other
+  utility in that set (`no-shrink`, `no-stretch`, `fit-content`, ...) was already defined.
+
 ## 12.3.1
 
 ### Fixed

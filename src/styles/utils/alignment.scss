@@ -82,6 +82,11 @@ $frontend-hor-alignments: (
   flex-shrink: 0;
 }
 
+.grow {
+  flex-grow: 1;
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .inline-row.mobile-wrap {
     flex-wrap: wrap;
