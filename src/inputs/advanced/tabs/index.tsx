@@ -224,13 +224,12 @@ function useTabPanelHidden(
 }
 
 function AdvancedTabPanel(props: tab_panel_props) {
-  const hidden =
-  props.hidden === true ||
-    useTabPanelHidden(
+  const routeHidden = useTabPanelHidden(
     props.familyKey,
     props.route,
     props.defaultActive === true,
   );
+  const hidden = props.hidden === true || routeHidden;
   return (
     <div
     {...((props.attributes || {}) as any)}

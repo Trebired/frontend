@@ -217,9 +217,17 @@ function buildCanonical(req: ServerRequestLike) {
   return host ? `${proto}://${host}${path}` : path;
 }
 
-function humanizeFromPath(path: unknown) {
+function humanizeFromPath(
+  path: unknown,
+  options: { capitalize?: boolean } = {},
+) {
   const last = firstSeoText(path, "/").split("/").filter(Boolean).pop() || "";
-  return last.replace(/[-_]+/gu, " ").replace(/\b[a-z]/gu, (char) => char.toUpperCase());
+  const spaced = last.replace(/[-_]+/gu, " ");
+  if (options.capitalize === false) return spaced;
+  return spaced.replace(
+    /(^|\s)([a-z])/gu,
+    (_match, prefix: string, char: string) => `${prefix}${char.toUpperCase()}`,
+  );
 }
 
 function getRobotsTagContent(config: SeoConfig = {}) {

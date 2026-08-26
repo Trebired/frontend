@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.3.1
+
+### Fixed
+
+- `AdvancedTabPanel` called a hook conditionally. `props.hidden === true || useTabPanelHidden(...)`
+  short-circuits, so the hook ran on some renders and not others, varying the hook count for
+  one component. That violates the Rules of Hooks and surfaced as "Internal React error:
+  Expected static flag was missing", corrupting fiber state and leaving controls dead.
+- Path-derived page titles no longer capitalise after a sigil. `humanizeFromPath` used
+  `\b[a-z]`, and a word boundary sits between `@` and the name, so `@user` became `@User`.
+  Only the start of the string and words after whitespace are capitalised now, and
+  `humanizeFromPath(path, { capitalize: false })` skips casing entirely.
+
 ## 12.3.0
 
 ### Fixed
