@@ -4,6 +4,22 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.8.2
+
+### Fixed
+
+- Live islands mismatched hydration whenever the URL carried tab route state
+  (`?tab-<family>=<route>`, written by the tabs runtime on every tab switch via
+  `history.replaceState`). The full-page server render is wrapped in
+  `RenderCurrentUrlProvider` with the request URL, so `useRenderCurrentUrl()` (used by the
+  React tabs implementation to pick the active tab) renders against it. `mountLiveIsland()`
+  hydrates the island as a separate React root with no such ancestor, so it fell back to
+  the empty default and always computed the first tab as active — mismatching the real
+  server HTML the instant the URL pointed at any other tab. Reproduced directly: switch to
+  a non-default tab, hard reload, hydration warning fires and the wrong tab briefly shows.
+  `mountLiveIsland()` now wraps the island in `RenderCurrentUrlProvider` sourced from
+  `window.location.href`, matching what produced the server HTML exactly.
+
 ## 12.8.1
 
 ### Changed

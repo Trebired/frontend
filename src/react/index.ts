@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { readJsonScript } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 import { registerPageCleanup, runSpaRebind } from "#o9lroe7t0ma6";
+import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
 
 type ReactRootOptions = {
   hydrate?: boolean;
@@ -94,9 +95,20 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   : options.initialState || {};
   const react = resolveEsmInterop<typeof import("react")>(await import("react"), "createElement");
   const child = react.createElement(options.component, { initialState: state });
-  const wrapped = options.wrap
+  const userWrapped = options.wrap
   ? options.wrap(child, { initialState: state, root: target })
   : child;
+  /**
+   * The full-page server render is wrapped in `RenderCurrentUrlProvider` with
+   * the request URL, so any tree that reads `useRenderCurrentUrl()` (tabs, for
+   * one) renders against it. This island hydrates as its own React root with no
+   * such ancestor, so without this it falls back to the empty default and
+   * mismatches the moment the URL carries route state, e.g. `?tab-x=y` written
+   * by a previous tab switch.
+   */
+  const wrapped = react.createElement(RenderCurrentUrlProvider, {
+      currentUrl: window.location.href,
+  }, userWrapped);
   /**
    * The tabs, dropdown, checkbox and search binders bail inside an island still
    * marked unhydrated, so they must run again once this one is hydrated. It has
