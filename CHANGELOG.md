@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.4
+
+### Fixed
+
+- The post-hydration rebind added in 12.7.3 ran before React committed, so the tabs binder
+  wrote `data-tabs-owner`, `data-tabs-ready` and `role` into the tree mid-hydration and
+  produced a mismatch. `hydrateRoot()` returns before commit, so the rebind now runs from
+  an effect inside the island instead.
+
 ## 12.7.3
 
 ### Fixed

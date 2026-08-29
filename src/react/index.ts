@@ -74,9 +74,22 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   : options.initialState || {};
   const react = resolveEsmInterop<typeof import("react")>(await import("react"), "createElement");
   const child = react.createElement(options.component, { initialState: state });
-  const node = options.wrap
+  const wrapped = options.wrap
   ? options.wrap(child, { initialState: state, root: target })
   : child;
+  /**
+   * The tabs, dropdown, checkbox and search binders bail inside an island still
+   * marked unhydrated, so they must run again once this one is hydrated. It has
+   * to happen from an effect: `hydrateRoot()` returns before React commits, and
+   * re-binding earlier would mutate the tree mid-hydration and mismatch.
+   */
+  function IslandRuntimeBinder(binderProps: { children?: ReactNode }) {
+    react.useEffect(() => {
+        runSpaRebind(target);
+    }, []);
+    return binderProps.children ?? null;
+  }
+  const node = react.createElement(IslandRuntimeBinder, null, wrapped);
   const root = await mountReactRoot(target, node, {
       hydrate: target.childNodes.length > 0,
   });
@@ -91,12 +104,6 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
    * of those controls stays dead for the life of the page.
    */
   target.setAttribute("data-live-island-hydrated", "true");
-  /**
-   * Those binders already ran and bailed during bootstrap, while the island was
-   * still marked unhydrated. Re-bind now that it is hydrated so a page does not
-   * have to remember to call `rehydrate()` itself.
-   */
-  runSpaRebind(target);
   target.dispatchEvent(
     new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {
         bubbles: true,
