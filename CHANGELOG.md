@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.5
+
+### Fixed
+
+- Dropdown labels could render their option's raw JSON config. An option carries its config
+  in a child `<script type="application/json">`, and the label fallback used `innerText`,
+  which degrades to `textContent` while the option is hidden and therefore included that
+  JSON. The fallback now reads the option text with scripts stripped.
+
 ## 12.7.4
 
 ### Fixed
