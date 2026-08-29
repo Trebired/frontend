@@ -22,6 +22,7 @@ type LiveIslandMountOptions = {
 
 const roots = new WeakMap<Element, {render:(node:ReactNode)=>void;unmount:()=>void}>();
 const mountedRoots = new Set<Element>();
+const remountWatched = new Set<string>();
 
 function resolveEsmInterop<T>(namespace: any, probe: string): T {
   return (typeof namespace?.[probe] === "function" ? namespace : namespace?.default) as T;
@@ -61,6 +62,25 @@ function unmountReactRoot(root: Element) {
   roots.delete(root);
   mountedRoots.delete(root);
   return true;
+}
+
+/**
+ * A soft navigation replaces the island with fresh server HTML, and the page's
+ * client module is not re-executed because its script src is already loaded. So
+ * nothing would mount the new island and every control inside it stays dead.
+ * Re-mount whenever a rehydrate leaves an unhydrated island behind.
+ */
+function watchIslandRemount(options: LiveIslandMountOptions) {
+  const selector = typeof options.root === "string" ? options.root.trim() : "";
+  if (!selector || remountWatched.has(selector)) return;
+  if (typeof document === "undefined") return;
+  remountWatched.add(selector);
+  document.addEventListener(frontendEventName("rehydrate"), () => {
+      const element = document.getElementById(selector.replace(/^#/, ""));
+      if (!(element instanceof Element)) return;
+      if (element.getAttribute("data-live-island-hydrated") === "true") return;
+      void mountLiveIsland(options);
+  });
 }
 
 async function mountLiveIsland(options: LiveIslandMountOptions) {
@@ -111,6 +131,7 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
     }),
   );
   options.onMounted?.(target, state);
+  watchIslandRemount(options);
   return root;
 }
 

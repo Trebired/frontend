@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.8.0
+
+### Fixed
+
+- Live islands are re-mounted after a soft navigation. A soft navigation replaces the
+  island with fresh server HTML, but the page's client module is not re-executed because
+  its script src is already loaded, so nothing re-mounted the island. React never hydrated
+  it and every control inside — tabs, dropdowns, checkboxes, search — stayed dead until a
+  full page load. `mountLiveIsland()` now re-mounts when a rehydrate leaves an unhydrated
+  island behind.
+
 ## 12.7.5
 
 ### Fixed
