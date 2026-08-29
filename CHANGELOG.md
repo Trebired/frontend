@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.8.3
+
+### Fixed
+
+- Search filter-bar inputs (`search()`) now show the search icon. They rendered a raw
+  `<input type="search">` instead of going through the shared `input()` primitive, which is
+  what actually adds the `input-search-wrap`/`input-search-icon` markup — the same primitive
+  the dropdown's own search box already used. The filter bar's search field is the only one
+  that had drifted from it.
+
 ## 12.8.2
 
 ### Fixed

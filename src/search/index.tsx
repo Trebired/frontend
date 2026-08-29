@@ -5,6 +5,7 @@ import {
   search_item,
   search_query_input,
 } from "./item.js";
+import input from "#8y47rueq20kg";
 import {
   InlineRow,
   Text,
@@ -40,16 +41,14 @@ function controlsRow(props: search_props) {
   return (
     <>
     {search_query_input({
-          children: (
-            <input
-            {...(inputId ? { id: inputId } : {})}
-            className="input classic width-lg"
-            type="search"
-            placeholder={toText(props.placeholder)}
-            autoComplete="off"
-            {...((props.inputAttrs || {}) as any)}
-            />
-          ),
+          children: input({
+              ...(inputId ? { id: inputId } : {}),
+              className: "width-lg",
+              type: "search",
+              placeholder: toText(props.placeholder),
+              autoComplete: "off",
+              ...((props.inputAttrs || {}) as any),
+          }),
     })}
     {filters.map((filter, index) => (
           <Fragment key={`search_filter_${index}`}>{filter}</Fragment>
