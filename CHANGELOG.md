@@ -4,6 +4,26 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.6.0
+
+### Added
+
+- Keyboard reload shortcuts (F5, Ctrl+R, Cmd+R) now run through navigation guards, so an
+  unsaved-changes flash appears instead of the browser dialog. Interception only happens
+  when a guard reports pending work, so an ordinary reload is untouched.
+- `registerNavigationGuard(guard, { pending })` takes a cheap predicate used to decide
+  whether a reload shortcut is worth intercepting. `navigationPending()` exposes it.
+- `bindGuardedReload()` is bound automatically by `bindFrontendRuntime`.
+
+### Changed
+
+- Default flash icon size raised from 15px to 18px.
+
+### Note
+
+- The browser reload button, tab close, and address-bar navigation still show the native
+  dialog. Only `beforeunload` can hook those, and it cannot be customised or awaited.
+
 ## 12.5.0
 
 ### Changed

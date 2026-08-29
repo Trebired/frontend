@@ -334,6 +334,7 @@ function enforceSavePolicy(input: SavePolicyInput) {
   const disposePageCleanup = registerPageCleanup(root, () => controller.destroy());
   const disposeNavigationGuard = registerNavigationGuard(
     () => confirmLeaveUnsaved(state),
+    { pending: () => !state.destroyed && state.dirty && !state.saving },
   );
   savePolicyCleanups.set(controller, () => {
       disposePageCleanup();

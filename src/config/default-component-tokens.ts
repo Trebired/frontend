@@ -27,7 +27,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             slots: {
               description: { fontSize: "0.92rem" },
-              icon: { fontWeight: "700", size: "15px" },
+              icon: { fontWeight: "700", size: "18px" },
               progress: { height: "4px" },
               title: { fontWeight: "400" },
             },

@@ -22,7 +22,7 @@ import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
-import { bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
+import { bindGuardedReload, bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -135,6 +135,7 @@ function bindFrontendWidgets(
   bindPopovers(scope);
   bindModals(scope);
   bindSoftRedirectLinks(scope);
+  bindGuardedReload();
   bindActionTriggers(scope, { navigation: adapters.navigation });
   bindActionForms(scope, { adapters });
   bindActionButtons(scope, { adapters });
@@ -278,6 +279,7 @@ export {
   configureSpa,
   createLiveOverlayState,
   currentPage,
+  navigationPending,
   onPageChange,
   registerNavigationGuard,
   registerPageCleanup,
@@ -287,7 +289,7 @@ export {
   softRefresh,
   softReload,
 } from "./spa/index.js";
-export type { NavigationGuard, PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
+export type { NavigationGuard, NavigationGuardOptions, PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
 export *from "./logging/index.js";
 export *from "./logs/index.js";
 export *from "./markdown/index.js";
