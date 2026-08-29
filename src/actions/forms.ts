@@ -11,7 +11,7 @@ import {
 } from "#er0dlx1gtbzh";
 import { syncDropdownHiddenInputs } from "#c0ew0jlb0c87";
 import { ensureFormCsrfToken } from "#v1p6uw62hhsf";
-import { flash as defaultFlash } from "#33o6e7mug9pg";
+import { flash as defaultFlash, hasElementConfirmRequest } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
 import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
@@ -107,9 +107,13 @@ async function confirmActionForm(
   submitter: HTMLElement | null,
   options: SubmitActionFormOptions,
 ) {
-  const configured = options.confirm === true || readBooleanAttribute(form, frontendDataAttr("confirm")) === true;
   if (options.confirm === false) return true;
-  if (!configured && !form.hasAttribute(frontendDataAttr("confirm-title"))) return true;
+  const configured =
+  options.confirm === true ||
+    readBooleanAttribute(form, frontendDataAttr("confirm")) === true ||
+    hasElementConfirmRequest(submitter) ||
+    hasElementConfirmRequest(form);
+  if (!configured) return true;
   const detail: any = { confirm: null, form, submitter };
   const event = dispatchActionFormEvent(form, frontendEventName("action-confirm"), detail, true);
   if (event.defaultPrevented) return false;

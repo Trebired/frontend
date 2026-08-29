@@ -6,7 +6,7 @@ import {
   setControlDisabled,
   type BindRoot,
 } from "#er0dlx1gtbzh";
-import { flash as defaultFlash } from "#33o6e7mug9pg";
+import { flash as defaultFlash, hasElementConfirmRequest } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
 import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
@@ -50,8 +50,11 @@ async function confirmActionButton(
   options: SubmitActionButtonOptions,
 ) {
   if (options.confirm === false) return true;
-  const configured = options.confirm === true || readBooleanAttribute(button, frontendDataAttr("confirm")) === true;
-  if (!configured && !button.hasAttribute(frontendDataAttr("confirm-title"))) return true;
+  const configured =
+  options.confirm === true ||
+    readBooleanAttribute(button, frontendDataAttr("confirm")) === true ||
+    hasElementConfirmRequest(button);
+  if (!configured) return true;
   const detail: any = { button, confirm: null };
   const event = dispatchActionButtonEvent(button, frontendEventName("action-confirm"), detail, true);
   if (event.defaultPrevented) return false;

@@ -4,6 +4,18 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.1
+
+### Fixed
+
+- Confirmations declared with `confirmationVariantAttrs()` were silently skipped. The
+  action form and action button gates only accepted `data-tbf-confirm` or
+  `data-tbf-confirm-title`, but `confirmationVariantAttrs()` emits
+  `data-tbf-confirm-variant` / `-mode` / `-target` / `-text`, so the gate returned early
+  and submitted without asking. Every variant-declared confirmation was affected,
+  including repository, database, organization and app deletion. Both gates now use
+  `hasElementConfirmRequest()`, which already recognised those attributes.
+
 ## 12.7.0
 
 ### Changed
