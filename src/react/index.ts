@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { readJsonScript } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
-import { registerPageCleanup } from "#o9lroe7t0ma6";
+import { registerPageCleanup, runSpaRebind } from "#o9lroe7t0ma6";
 
 type ReactRootOptions = {
   hydrate?: boolean;
@@ -84,6 +84,19 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
       unmountReactRoot(target);
   });
   target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
+  /**
+   * `LiveIslandMount` renders `data-live-island-hydrated="false"`, and the tabs,
+   * dropdown, checkbox and search binders all refuse to bind inside an island
+   * still marked unhydrated. Flip that same attribute here, otherwise every one
+   * of those controls stays dead for the life of the page.
+   */
+  target.setAttribute("data-live-island-hydrated", "true");
+  /**
+   * Those binders already ran and bailed during bootstrap, while the island was
+   * still marked unhydrated. Re-bind now that it is hydrated so a page does not
+   * have to remember to call `rehydrate()` itself.
+   */
+  runSpaRebind(target);
   target.dispatchEvent(
     new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {
         bubbles: true,

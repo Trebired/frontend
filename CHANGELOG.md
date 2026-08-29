@@ -4,6 +4,23 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.3
+
+### Fixed
+
+- Tabs, advanced dropdowns, advanced checkboxes and search were permanently dead inside
+  every live island. `LiveIslandMount` renders `data-live-island-hydrated="false"` and all
+  four binders refuse to bind inside an island still marked unhydrated, but
+  `mountLiveIsland()` only ever set the prefixed `data-tbf-live-hydrated`, so the declared
+  attribute was never flipped. It is now set on hydration.
+- `mountLiveIsland()` re-binds the frontend runtime over the island once hydrated. The
+  binders had already run and bailed during bootstrap, so a page previously had to call
+  `rehydrate()` itself to get working controls.
+
+### Added
+
+- `runSpaRebind` is exported from the package root.
+
 ## 12.7.2
 
 ### Fixed
