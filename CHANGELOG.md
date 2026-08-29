@@ -4,6 +4,27 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.9.0
+
+### Fixed
+
+- Save-policy's unsaved-changes flash could stay visible forever after a genuinely
+  successful save. `showUnsavedFlash()` reused a constant id across calls but never passed
+  `update: true`, so `completeSave()`'s brief re-show (dirty is still true for one tick
+  before `captureBaseline()` clears it, inside `setSaving`) created a second toast element
+  sharing that id. Dismissal only ever removes the first DOM match for an id, so the
+  original toast was orphaned and never cleaned up. `showUnsavedFlash()` now passes
+  `update: true`, matching the flash system's own dedup-by-id convention.
+
+### Added
+
+- `actionForm({ closeModal: true })` and `actionButton({ closeModal: true })` close the
+  nearest containing modal after a successful (or no-op) response, matching `confirm`'s
+  existing opt-in pattern. Also available declaratively via `data-tbf-close-modal` on the
+  form/button, or `closeModal: true` in a form's JSON action config. Opt-in and off by
+  default, since most modal-hosted forms (uploads, connect-provider, template rows) should
+  stay open after a successful sub-action.
+
 ## 12.8.3
 
 ### Fixed

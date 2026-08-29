@@ -15,6 +15,7 @@ import { flash as defaultFlash, hasElementConfirmRequest } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
 import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
+import { MODAL_SELECTOR, closeModal } from "#8rm3pzkj3gge";
 import type {
   ActionJson,
   SubmitActionFormOptions,
@@ -171,6 +172,20 @@ function formSuccessConfig(options: SubmitActionFormOptions, config: Record<stri
   };
 }
 
+function maybeCloseContainingModal(
+  form: HTMLFormElement,
+  options: SubmitActionFormOptions,
+  config: Record<string, unknown>,
+) {
+  const shouldClose =
+  options.closeModal === true ||
+    config.closeModal === true ||
+    readBooleanAttribute(form, frontendDataAttr("close-modal")) === true;
+  if (!shouldClose) return;
+  const modal = form.closest(MODAL_SELECTOR);
+  if (modal instanceof HTMLElement) closeModal(modal);
+}
+
 async function submitActionForm(
   form: HTMLFormElement,
   event?: SubmitEvent,
@@ -213,6 +228,7 @@ async function submitActionForm(
         ui,
         options.adapters,
       );
+      maybeCloseContainingModal(form, options, config);
     }
     options.onComplete?.(ok, json);
     dispatchActionFormEvent(form, frontendEventName("action-complete"), { json, ok, submitter });

@@ -10,6 +10,7 @@ import { flash as defaultFlash, hasElementConfirmRequest } from "#33o6e7mug9pg";
 import { maybeFireActionSuccessConfetti } from "./confetti.js";
 import { handleJson } from "./request.js";
 import { actionResponseOk, handleConfiguredSuccessAction } from "./response.js";
+import { MODAL_SELECTOR, closeModal } from "#8rm3pzkj3gge";
 import type { ActionJson, SubmitActionButtonOptions } from "./types.js";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
@@ -101,6 +102,15 @@ function buttonUi(button: HTMLElement, options: SubmitActionButtonOptions) {
   };
 }
 
+function maybeCloseContainingModal(button: HTMLElement, options: SubmitActionButtonOptions) {
+  const shouldClose =
+  options.closeModal === true ||
+    readBooleanAttribute(button, frontendDataAttr("close-modal")) === true;
+  if (!shouldClose) return;
+  const modal = button.closest(MODAL_SELECTOR);
+  if (modal instanceof HTMLElement) closeModal(modal);
+}
+
 function buttonSuccessConfig(button: HTMLElement, options: SubmitActionButtonOptions) {
   return {
     success:
@@ -148,6 +158,7 @@ async function submitActionButton(
         ui,
         options.adapters,
       );
+      maybeCloseContainingModal(button, options);
     }
     dispatchActionButtonEvent(button, frontendEventName("action-complete"), { json, ok });
     return json;

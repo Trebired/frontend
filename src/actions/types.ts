@@ -61,6 +61,7 @@ type ActionRequestUi = {
 type SubmitActionFormOptions = {
   adapters?: ActionAdapters;
   beforeSubmit?: (form: HTMLFormElement, submitter: HTMLElement | null) => void;
+  closeModal?: boolean;
   confirm?: boolean;
   ignoreResponseAction?: boolean;
   lifecycle?: boolean;
@@ -77,6 +78,7 @@ type SubmitActionFormOptions = {
 type SubmitActionButtonOptions = {
   adapters?: ActionAdapters;
   body?: BodyInit | Record<string, unknown>|null;
+  closeModal?: boolean;
   confirm?: boolean;
   ignoreResponseAction?: boolean;
   keepDisabled?: (json: ActionJson | null) => boolean;
