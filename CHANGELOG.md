@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.6.1
+
+### Fixed
+
+- Confirming Leave on a guarded reload no longer triggers the browser dialog as well. The
+  save policy `beforeunload` handler now stands down once the flash confirm has already
+  approved the reload, so the user is asked once rather than twice.
+
 ## 12.6.0
 
 ### Added

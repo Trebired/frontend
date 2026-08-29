@@ -20,7 +20,7 @@ import type {
   SavePolicyState,
 } from "./types.js";
 import { frontendEventName } from "#5vbaqj4pirp3";
-import { registerNavigationGuard, registerPageCleanup } from "#o9lroe7t0ma6";
+import { registerNavigationGuard, registerPageCleanup, unloadPromptBypassed } from "#o9lroe7t0ma6";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
@@ -192,6 +192,7 @@ function bindSavePolicyEvents(state: SavePolicyState) {
     refreshDirtyState(state);
   };
   const onBeforeUnload = (event: BeforeUnloadEvent) => {
+    if (unloadPromptBypassed()) return;
     if (!state.dirty || state.saving) return;
     event.preventDefault();
     event.returnValue = "";

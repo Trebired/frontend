@@ -39,6 +39,7 @@ export {
   navigationAllowed,
   navigationPending,
   registerNavigationGuard,
+  unloadPromptBypassed,
 } from "./guards.js";
 export type { NavigationGuard, NavigationGuardOptions } from "./guards.js";
 export {

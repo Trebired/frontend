@@ -6,6 +6,11 @@ type NavigationGuardOptions = {
 
 const guards = new Map<NavigationGuard, NavigationGuardOptions>();
 let reloadBound = false;
+let bypassUnloadPrompt = false;
+
+function unloadPromptBypassed() {
+  return bypassUnloadPrompt;
+}
 
 function registerNavigationGuard(
   guard: NavigationGuard,
@@ -54,7 +59,9 @@ function isReloadShortcut(event: KeyboardEvent) {
 }
 
 async function confirmGuardedReload() {
-  if (await navigationAllowed(window.location.href)) window.location.reload();
+  if (!(await navigationAllowed(window.location.href))) return;
+  bypassUnloadPrompt = true;
+  window.location.reload();
 }
 
 function bindGuardedReload() {
@@ -79,5 +86,6 @@ export {
   navigationGuardCount,
   navigationPending,
   registerNavigationGuard,
+  unloadPromptBypassed,
 };
 export type { NavigationGuard, NavigationGuardOptions };
