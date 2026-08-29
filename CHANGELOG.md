@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.8.1
+
+### Changed
+
+- Modal content now uses the `scroll-min` thin scrollbar styling by default, matching the
+  dropdown panels and other scrollable inputs. Previously it used the browser's default
+  scrollbar, which stood out against the rest of the UI.
+
 ## 12.8.0
 
 ### Fixed

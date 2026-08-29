@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "#m8aga4kgmeuh" as *;
 #{ns.class("modal")},
 
 #{ns.data("modal")} {
@@ -40,6 +41,7 @@
 #{ns.element-class("modal", "content")},
 
 #{ns.data("modal-content")} {
+  @include component-scroll-min;
   width: var(#{ns.css-var("overlay-modal-content-width")}, min(720px, calc(100vw - 48px)));
   max-height: var(#{ns.css-var("overlay-modal-content-max-h")}, min(80vh, 720px));
   box-sizing: border-box;
