@@ -34,6 +34,8 @@ function spaNavigationAdapter() {
 
 export { configureSpa, isFullReloadOptOut, spaNavigationAdapter };
 export { registerPageCleanup } from "./cleanup.js";
+export { navigationAllowed, registerNavigationGuard } from "./guards.js";
+export type { NavigationGuard } from "./guards.js";
 export {
   SOFT_REDIRECT_ATTR,
   SOFT_REDIRECT_BOUND_ATTR,

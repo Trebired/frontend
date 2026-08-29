@@ -20,7 +20,7 @@ import type {
   SavePolicyState,
 } from "./types.js";
 import { frontendEventName } from "#5vbaqj4pirp3";
-import { registerPageCleanup } from "#o9lroe7t0ma6";
+import { registerNavigationGuard, registerPageCleanup } from "#o9lroe7t0ma6";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
@@ -105,6 +105,16 @@ function captureBaseline(state: SavePolicyState) {
       state.baseline.set(field, serializeFieldValue(field));
   });
   updateUnsavedState(state, false);
+}
+
+function confirmLeaveUnsaved(state: SavePolicyState) {
+  if (state.destroyed || !state.dirty || state.saving) return true;
+  if (typeof window === "undefined" || typeof window.confirm !== "function") {
+    return true;
+  }
+  return window.confirm(
+    `${state.labels.unsavedMessage}\n${state.labels.unsavedDescription}`,
+  );
 }
 
 function shouldBlockForm(state: SavePolicyState, form: HTMLFormElement) {
@@ -310,10 +320,14 @@ function enforceSavePolicy(input: SavePolicyInput) {
   );
   savePolicies.set(root, controller);
   activeSavePolicies.add(controller);
-  savePolicyCleanups.set(
-    controller,
-    registerPageCleanup(root, () => controller.destroy()),
+  const disposePageCleanup = registerPageCleanup(root, () => controller.destroy());
+  const disposeNavigationGuard = registerNavigationGuard(
+    () => confirmLeaveUnsaved(state),
   );
+  savePolicyCleanups.set(controller, () => {
+      disposePageCleanup();
+      disposeNavigationGuard();
+  });
   bindUnexpectedForms(state);
   captureBaseline(state);
   return controller;

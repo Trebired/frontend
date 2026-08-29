@@ -279,6 +279,7 @@ export {
   createLiveOverlayState,
   currentPage,
   onPageChange,
+  registerNavigationGuard,
   registerPageCleanup,
   rehydrate,
   removeStalePortaledOverlays,
@@ -286,7 +287,7 @@ export {
   softRefresh,
   softReload,
 } from "./spa/index.js";
-export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
+export type { NavigationGuard, PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
 export *from "./logging/index.js";
 export *from "./logs/index.js";
 export *from "./markdown/index.js";

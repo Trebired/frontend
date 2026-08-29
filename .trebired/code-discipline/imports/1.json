@@ -160,6 +160,7 @@
   "#9tbszvfapqrk": "./src/styles/utils.scss",
   "#9w9ch5jtlv9e": "./src/sidebar/dynamic/types.ts",
   "#9wjes84tjrfc": "./src/graph/index.ts",
+  "#9zjbp83m7l2g": "./src/spa/guards.ts",
   "#a0gi42ggclip": "./src/logs/client/bridge.ts",
   "#a14xjd53jcc7": "./src/language/runtime/source/file-tree.ts",
   "#a2miukkwjl2v": "./src/graph/advanced/graph/types.ts",

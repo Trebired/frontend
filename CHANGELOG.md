@@ -4,6 +4,21 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.4.0
+
+### Added
+
+- `registerNavigationGuard(guard)` lets code veto a soft navigation before it starts.
+  `softRedirect()` consults every guard first and returns `false` if any declines; pass
+  `{ force: true }` to bypass them.
+
+### Fixed
+
+- Unsaved changes now prompt on soft navigation, not only on reload. The save policy
+  installed a `beforeunload` handler, which browsers fire only for a real document unload,
+  so an in-app `softRedirect` discarded edits silently. It now also registers a navigation
+  guard using the same condition as `beforeunload` (dirty and not currently saving).
+
 ## 12.3.2
 
 ### Fixed
