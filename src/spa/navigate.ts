@@ -133,11 +133,17 @@ function replaceContent(
   const formState = preserveState ? captureFormState(currentRoot) : null;
   const wizardState = preserveState ? captureWizardSteps(currentRoot) : null;
   config.closeOverlays?.();
+  /**
+   * React roots must unmount before the stale-overlay sweep. A portaled modal
+   * or popover lives in the layer root, which is never inside the content root,
+   * so the sweep would remove every React-owned overlay node and the following
+   * unmount would then fail with NotFoundError on removeChild.
+   */
+  runPageCleanups(currentRoot);
   removeStalePortaledOverlaysFromRoot(
     { portaledSelector: PORTALED_SELECTOR },
     currentRoot,
   );
-  runPageCleanups(currentRoot);
   document.dispatchEvent(
     new CustomEvent(frontendEventName("live-navigation"), {
         detail: { url: window.location.href },

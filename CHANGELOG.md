@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.2
+
+### Fixed
+
+- Soft navigation away from a page with React-rendered modals or popovers threw
+  `NotFoundError: Failed to execute 'removeChild'`. `replaceContent()` swept stale portaled
+  overlays before unmounting React roots, but a portaled overlay lives in the layer root,
+  which is never inside the content root, so every React-owned overlay node was removed
+  before React could unmount it. React roots are now unmounted first and the sweep only
+  collects what is genuinely orphaned.
+
 ## 12.7.1
 
 ### Fixed
