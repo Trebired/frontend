@@ -4,6 +4,29 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.7.0
+
+### Changed
+
+- Unsaved changes now always prompt with the browser's own dialog, on every exit path.
+  The flash confirm is gone. `softRedirect()` performs a real navigation instead of an
+  in-place swap while unsaved work is pending, which lets `beforeunload` fire naturally,
+  so an in-app link and a reload now show the same dialog.
+
+### Removed
+
+- `bindGuardedReload()`, `registerNavigationGuard()`, `navigationAllowed()`,
+  `navigationPending()` and the F5 / Ctrl+R key interception. Chrome ignores
+  `preventDefault()` on the reserved reload shortcut, so it never prevented a reload.
+- Save-policy labels `leaveText`, `stayText`, `leaveDescription`, and the `confirm`
+  member of `SavePolicyFlash`.
+
+### Added
+
+- `registerUnsavedWork(check)` / `hasUnsavedWork()` replace the guard registry.
+- `bindFrontendWidgets` isolates each bind step and logs the failing step name, so one
+  throw no longer silently skips every later bind.
+
 ## 12.6.1
 
 ### Fixed

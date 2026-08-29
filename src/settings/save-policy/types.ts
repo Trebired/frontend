@@ -1,9 +1,6 @@
 type SavePolicyLabels = {
   blockedFormDescription?: string;
   blockedFormMessage?: string;
-  leaveDescription?: string;
-  leaveText?: string;
-  stayText?: string;
   unsavedDescription?: string;
   unsavedMessage?: string;
 };
@@ -14,11 +11,6 @@ type SavePolicyLogger = {
 };
 
 type SavePolicyFlash = {
-  confirm?: (
-    message: unknown,
-    description?: string,
-    options?: Record<string, unknown>,
-  ) => Promise<boolean>;
   error?: (message: unknown, description?: string) => unknown;
   stickyWarn?: (
     message: unknown,

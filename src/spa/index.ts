@@ -34,14 +34,8 @@ function spaNavigationAdapter() {
 
 export { configureSpa, isFullReloadOptOut, spaNavigationAdapter };
 export { registerPageCleanup } from "./cleanup.js";
-export {
-  bindGuardedReload,
-  navigationAllowed,
-  navigationPending,
-  registerNavigationGuard,
-  unloadPromptBypassed,
-} from "./guards.js";
-export type { NavigationGuard, NavigationGuardOptions } from "./guards.js";
+export { hasUnsavedWork, registerUnsavedWork } from "./guards.js";
+export type { UnsavedWorkCheck } from "./guards.js";
 export {
   SOFT_REDIRECT_ATTR,
   SOFT_REDIRECT_BOUND_ATTR,

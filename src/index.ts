@@ -22,7 +22,7 @@ import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
-import { bindGuardedReload, bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
+import { bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -106,43 +106,60 @@ function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
   });
 }
 
+type BindStepLogger = ReturnType<typeof resolveFrontendLogger>;
+
+function runBindStep(logger: BindStepLogger, label: string, step: () => void) {
+  try {
+    step();
+  } catch (error) {
+    logger.warn("runtime", "bind-step-failed", {
+        error: error instanceof Error ? error.message : String(error),
+        step: label,
+    });
+  }
+}
+
 function bindFrontendWidgets(
   scope: BindRoot,
   options: FrontendRuntimeOptions,
   adapters: ActionAdapters & { subscribe?: LiveSubscribe },
 ) {
-  bindProgress();
-  bindIcons(scope, options.icons || {});
-  bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters));
-  bindSourceLanguageRuntime(scope, options.sourceLanguage || {});
-  bindGraphs(scope);
-  bindLogsRuntime(scope);
-  bindCodeBlocks(scope);
-  bindEditors(scope);
-  bindInputControllers(scope, {
+  const logger = resolveFrontendLogger({
+      ...options.adapters,
+      frontend_quiet: options.frontend_quiet,
+      quiet: options.quiet,
+  });
+  runBindStep(logger, "progress", () => bindProgress());
+  runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
+  runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
+  runBindStep(logger, "sourceLanguage", () => bindSourceLanguageRuntime(scope, options.sourceLanguage || {}));
+  runBindStep(logger, "graphs", () => bindGraphs(scope));
+  runBindStep(logger, "logs", () => bindLogsRuntime(scope));
+  runBindStep(logger, "codeBlocks", () => bindCodeBlocks(scope));
+  runBindStep(logger, "editors", () => bindEditors(scope));
+  runBindStep(logger, "inputs", () => bindInputControllers(scope, {
       flash: adapters.flash,
       logging: {
         ...options.adapters,
         frontend_quiet: options.frontend_quiet,
         quiet: options.quiet,
       },
-  });
-  bindAdvancedInputControllers(scope);
-  bindPrimitiveControllers(scope);
-  bindWizard(scope);
-  bindScrollOverflows();
-  bindTooltips(scope);
-  bindPopovers(scope);
-  bindModals(scope);
-  bindSoftRedirectLinks(scope);
-  bindGuardedReload();
-  bindActionTriggers(scope, { navigation: adapters.navigation });
-  bindActionForms(scope, { adapters });
-  bindActionButtons(scope, { adapters });
-  bindCopyButtons(scope);
-  bindFullscreen(scope);
-  bindLiveCards(scope, { subscribe: adapters.subscribe });
-  bindLiveLists(scope, { subscribe: adapters.subscribe });
+  }));
+  runBindStep(logger, "advancedInputs", () => bindAdvancedInputControllers(scope));
+  runBindStep(logger, "primitives", () => bindPrimitiveControllers(scope));
+  runBindStep(logger, "wizard", () => bindWizard(scope));
+  runBindStep(logger, "scrollOverflows", () => bindScrollOverflows());
+  runBindStep(logger, "tooltips", () => bindTooltips(scope));
+  runBindStep(logger, "popovers", () => bindPopovers(scope));
+  runBindStep(logger, "modals", () => bindModals(scope));
+  runBindStep(logger, "softRedirectLinks", () => bindSoftRedirectLinks(scope));
+  runBindStep(logger, "actionTriggers", () => bindActionTriggers(scope, { navigation: adapters.navigation }));
+  runBindStep(logger, "actionForms", () => bindActionForms(scope, { adapters }));
+  runBindStep(logger, "actionButtons", () => bindActionButtons(scope, { adapters }));
+  runBindStep(logger, "copyButtons", () => bindCopyButtons(scope));
+  runBindStep(logger, "fullscreen", () => bindFullscreen(scope));
+  runBindStep(logger, "liveCards", () => bindLiveCards(scope, { subscribe: adapters.subscribe }));
+  runBindStep(logger, "liveLists", () => bindLiveLists(scope, { subscribe: adapters.subscribe }));
 }
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {
@@ -279,17 +296,17 @@ export {
   configureSpa,
   createLiveOverlayState,
   currentPage,
-  navigationPending,
+  hasUnsavedWork,
   onPageChange,
-  registerNavigationGuard,
   registerPageCleanup,
+  registerUnsavedWork,
   rehydrate,
   removeStalePortaledOverlays,
   softRedirect,
   softRefresh,
   softReload,
 } from "./spa/index.js";
-export type { NavigationGuard, NavigationGuardOptions, PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage } from "./spa/index.js";
+export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage, UnsavedWorkCheck } from "./spa/index.js";
 export *from "./logging/index.js";
 export *from "./logs/index.js";
 export *from "./markdown/index.js";

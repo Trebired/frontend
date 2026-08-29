@@ -8,7 +8,7 @@ import {
 } from "#5vbaqj4pirp3";
 import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
-import { navigationAllowed } from "./guards.js";
+import { hasUnsavedWork } from "./guards.js";
 import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
 import { progress } from "#hmj29rrpgtsh";
 import {
@@ -202,8 +202,8 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
   const historyMode: SpaHistoryMode = options.history || "push";
   let navigation: ReturnType<typeof beginNavigation> | null = null;
   try {
-    if (options.force !== true && !(await navigationAllowed(targetUrl))) {
-      return false;
+    if (options.force !== true && hasUnsavedWork()) {
+      return fallbackNavigate(targetUrl, historyMode !== "none");
     }
     navigation = beginNavigation(targetUrl, historyMode);
     const fetched = await fetchDocument(targetUrl, "router");

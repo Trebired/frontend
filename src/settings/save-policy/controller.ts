@@ -20,7 +20,7 @@ import type {
   SavePolicyState,
 } from "./types.js";
 import { frontendEventName } from "#5vbaqj4pirp3";
-import { registerNavigationGuard, registerPageCleanup, unloadPromptBypassed } from "#o9lroe7t0ma6";
+import { registerPageCleanup, registerUnsavedWork } from "#o9lroe7t0ma6";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
@@ -107,27 +107,6 @@ function captureBaseline(state: SavePolicyState) {
   updateUnsavedState(state, false);
 }
 
-async function confirmLeaveUnsaved(state: SavePolicyState) {
-  if (state.destroyed || !state.dirty || state.saving) return true;
-  if (typeof state.flash.confirm === "function") {
-    return await state.flash.confirm(
-      state.labels.unsavedMessage,
-      state.labels.leaveDescription,
-      {
-        cancelText: state.labels.stayText,
-        confirmButtonText: state.labels.leaveText,
-        type: "warn",
-      },
-    );
-  }
-  if (typeof window === "undefined" || typeof window.confirm !== "function") {
-    return true;
-  }
-  return window.confirm(
-    `${state.labels.unsavedMessage}\n${state.labels.unsavedDescription}`,
-  );
-}
-
 function shouldBlockForm(state: SavePolicyState, form: HTMLFormElement) {
   const formId = String(form.id || "").trim();
   if (formId && state.primaryFormIds.includes(formId)) return false;
@@ -192,7 +171,6 @@ function bindSavePolicyEvents(state: SavePolicyState) {
     refreshDirtyState(state);
   };
   const onBeforeUnload = (event: BeforeUnloadEvent) => {
-    if (unloadPromptBypassed()) return;
     if (!state.dirty || state.saving) return;
     event.preventDefault();
     event.returnValue = "";
@@ -333,13 +311,12 @@ function enforceSavePolicy(input: SavePolicyInput) {
   savePolicies.set(root, controller);
   activeSavePolicies.add(controller);
   const disposePageCleanup = registerPageCleanup(root, () => controller.destroy());
-  const disposeNavigationGuard = registerNavigationGuard(
-    () => confirmLeaveUnsaved(state),
-    { pending: () => !state.destroyed && state.dirty && !state.saving },
+  const disposeUnsavedWork = registerUnsavedWork(
+    () => !state.destroyed && state.dirty && !state.saving,
   );
   savePolicyCleanups.set(controller, () => {
       disposePageCleanup();
-      disposeNavigationGuard();
+      disposeUnsavedWork();
   });
   bindUnexpectedForms(state);
   captureBaseline(state);
