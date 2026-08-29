@@ -4,6 +4,23 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.5.0
+
+### Changed
+
+- The unsaved-changes prompt on soft navigation is now a flash confirm dialog with Stay and
+  Leave buttons instead of a native `window.confirm`. `window.confirm` remains the fallback
+  when no flash confirm is available.
+- Navigation guards may return a promise; `softRedirect()` awaits each one. `navigationAllowed()`
+  is now async.
+- New save-policy labels: `leaveDescription`, `leaveText`, `stayText`.
+
+### Note
+
+- A real reload, tab close, or navigation to an external URL still shows the browser native
+  dialog. `beforeunload` cannot be customised or deferred for async UI, so the flash dialog
+  covers in-app navigation only.
+
 ## 12.4.0
 
 ### Added

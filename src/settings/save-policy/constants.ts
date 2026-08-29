@@ -6,6 +6,9 @@ const DEFAULT_UNSAVED_FLASH_ID = frontendToken("save-policy-unsaved");
 const defaultSavePolicyLabels: Required<SavePolicyLabels> = {
   blockedFormDescription: "Use the page save action.",
   blockedFormMessage: "This form cannot be submitted separately.",
+  leaveDescription: "Your changes have not been saved yet and will be lost.",
+  leaveText: "Leave",
+  stayText: "Stay",
   unsavedDescription: "Save before leaving this page.",
   unsavedMessage: "Unsaved changes.",
 };

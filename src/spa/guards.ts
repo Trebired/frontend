@@ -1,4 +1,4 @@
-type NavigationGuard = (url: string) => boolean;
+type NavigationGuard = (url: string) => boolean | Promise<boolean>;
 
 const guards = new Set<NavigationGuard>();
 
@@ -10,11 +10,11 @@ function registerNavigationGuard(guard: NavigationGuard): () => void {
   };
 }
 
-function navigationAllowed(url: string) {
+async function navigationAllowed(url: string) {
   for (const guard of Array.from(guards)) {
     let allowed = true;
     try {
-      allowed = guard(url) !== false;
+      allowed = (await guard(url)) !== false;
     } catch {
       allowed = true;
     }

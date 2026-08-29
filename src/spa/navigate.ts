@@ -197,13 +197,15 @@ async function fetchDocument(url: string, token: string) {
 
 async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
   if (navigationInflight || typeof window === "undefined") return false;
-  const requestedUrl = String(url || window.location.href).trim();
-  if (options.force !== true && !navigationAllowed(requestedUrl)) return false;
+  const targetUrl = String(url || window.location.href).trim();
   navigationInflight = true;
-  const targetUrl = requestedUrl;
   const historyMode: SpaHistoryMode = options.history || "push";
-  let navigation = beginNavigation(targetUrl, historyMode);
+  let navigation: ReturnType<typeof beginNavigation> | null = null;
   try {
+    if (options.force !== true && !(await navigationAllowed(targetUrl))) {
+      return false;
+    }
+    navigation = beginNavigation(targetUrl, historyMode);
     const fetched = await fetchDocument(targetUrl, "router");
     if (!fetched) return fallbackNavigate(targetUrl, historyMode !== "none");
     navigation = retargetNavigation(navigation, fetched.url);

@@ -107,8 +107,19 @@ function captureBaseline(state: SavePolicyState) {
   updateUnsavedState(state, false);
 }
 
-function confirmLeaveUnsaved(state: SavePolicyState) {
+async function confirmLeaveUnsaved(state: SavePolicyState) {
   if (state.destroyed || !state.dirty || state.saving) return true;
+  if (typeof state.flash.confirm === "function") {
+    return await state.flash.confirm(
+      state.labels.unsavedMessage,
+      state.labels.leaveDescription,
+      {
+        cancelText: state.labels.stayText,
+        confirmButtonText: state.labels.leaveText,
+        type: "warn",
+      },
+    );
+  }
   if (typeof window === "undefined" || typeof window.confirm !== "function") {
     return true;
   }
