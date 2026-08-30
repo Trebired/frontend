@@ -62,7 +62,7 @@ function verifyLiveAndRoutedFlash(api) {
 
 async function verifyClassicConfirm(api) {
   const confirmPromise = api.confirm("Confirm");
-  document.querySelector(".tbf-button--strong").click();
+  document.querySelector(".btn.highlight").click();
   assert.equal(await confirmPromise, true);
 }
 
@@ -79,7 +79,7 @@ async function verifyTextConfirm(api) {
   const confirmInput = document.querySelector(".tbf-flash__body input");
   confirmInput.value = "repository-a";
   confirmInput.dispatchEvent(new Event("input", { bubbles: true }));
-  confirmInput.closest(".tbf-flash").querySelector(".tbf-button--strong").click();
+  confirmInput.closest(".tbf-flash").querySelector(".btn.highlight").click();
   assert.equal(await elementConfirmPromise, true);
 }
 

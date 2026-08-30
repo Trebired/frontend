@@ -1,5 +1,51 @@
+@use "@trebired/bundler/namespace" as ns;
+@use "sass:list";
+
 $classic-field-border: var(--border-width) solid var(--border-surface-1);
 $classic-field-focus-color: var(--border-surface-2);
+
+$frontend-input-sizes: (
+  sm: (
+    24px,
+    5px 8px,
+    13px,
+  ),
+  lg: (
+    40px,
+    9px 12px,
+    15px,
+  ),
+);
+
+$frontend-input-tones: (
+  "green": var(#{ns.css-var("tone-green")}, var(#{ns.css-var("tone-success")}, currentColor)),
+  "highlight": var(#{ns.css-var("tone-blue")}, var(#{ns.css-var("tone-info")}, currentColor)),
+  "red": var(#{ns.css-var("tone-red")}, var(#{ns.css-var("tone-error")}, currentColor)),
+  "yellow": var(#{ns.css-var("tone-yellow")}, var(#{ns.css-var("tone-warning")}, currentColor)),
+);
+
+@mixin classic-field-sizes {
+  @each $name, $size in $frontend-input-sizes {
+    &.#{$name} {
+      height: var(#{ns.css-var("ui-input-sizes-")}#{$name}-height, #{list.nth($size, 1)});
+      padding: var(#{ns.css-var("ui-input-sizes-")}#{$name}-padding, #{list.nth($size, 2)});
+      font-size: var(#{ns.css-var("ui-input-sizes-")}#{$name}-font-size, #{list.nth($size, 3)});
+    }
+  }
+}
+
+@mixin classic-field-tones {
+  @each $name, $color in $frontend-input-tones {
+    &.#{$name} {
+      border-color: $color;
+
+      &:focus {
+        border-color: $color;
+        outline-color: $color;
+      }
+    }
+  }
+}
 
 @mixin component-scroll-min {
   --scroll-min-horizontal-gap: 6px;

@@ -1,23 +1,29 @@
 import { joinClassNames } from "#dqy2d22qyujv";
 import { icon } from "#dqy2d22qyujv";
+import {
+  primitiveInputClassName,
+  type PrimitiveInputSize,
+  type PrimitiveInputTone,
+} from "#0rl8rpgzssot";
 
 type InputProps = {
   className?: string;
+  size?: PrimitiveInputSize;
+  tone?: PrimitiveInputTone;
   [key: string]: unknown;
 };
 
 function input(props: InputProps) {
-  const { className, ...rest } = props;
+  const { className, size, tone, ...rest } = props;
   const search = String(rest.type || "").toLowerCase() === "search";
   const classes = splitInputClasses(className);
   const node = (
     <input
-    className={joinClassNames(
-        [
-          "input classic",
-          search ? classes.input : className,
-        ],
-    )}
+    className={primitiveInputClassName({
+          className: search ? classes.input : className,
+          size,
+          tone,
+      })}
     {...rest}
     />
   );

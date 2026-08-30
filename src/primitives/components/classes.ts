@@ -18,6 +18,15 @@ type PrimitiveButtonClassOptions = {
   variant?: PrimitiveButtonTone | "classic" | "default";
 };
 
+type PrimitiveInputSize = "lg" | "md" | "sm";
+type PrimitiveInputTone = PrimitiveButtonTone;
+
+type PrimitiveInputClassOptions = {
+  className?: unknown;
+  size?: PrimitiveInputSize;
+  tone?: PrimitiveInputTone;
+};
+
 type PrimitiveStackClassOptions = {
   center?: boolean;
   className?: unknown;
@@ -93,6 +102,15 @@ function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
     options.active ? "active" : "",
     options.icon && options.tooltip ? "has-tooltip" : "",
     options.transparent ? "transparent" : "",
+    options.className,
+  );
+}
+
+function primitiveInputClassName(options: PrimitiveInputClassOptions = {}) {
+  return appendClassName(
+    "input classic",
+    options.size,
+    options.tone,
     options.className,
   );
 }
@@ -190,6 +208,7 @@ export {
   primitiveGapClass,
   primitiveGridClassName,
   primitiveInlineRowClassName,
+  primitiveInputClassName,
   primitivePaddingClass,
   primitiveStackClassName,
   primitiveStatusDotClassName,
@@ -205,6 +224,9 @@ export type {
   PrimitiveGridAuto,
   PrimitiveGridClassOptions,
   PrimitiveInlineRowClassOptions,
+  PrimitiveInputClassOptions,
+  PrimitiveInputSize,
+  PrimitiveInputTone,
   PrimitivePadding,
   PrimitiveStackClassOptions,
   PrimitiveTextClassOptions,

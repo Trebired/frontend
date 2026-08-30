@@ -7,6 +7,9 @@
 
     height: var(--height-input);
 
+    @include classic-field-sizes;
+    @include classic-field-tones;
+
     &[type="search"] {
       appearance: none;
       -webkit-appearance: none;

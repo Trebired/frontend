@@ -16,7 +16,18 @@ import type {
   PromptOptions,
 } from "./types.js";
 import { toText as text } from "#ndsvdqv80epr";
-import { frontendClassName, frontendDataAttr, frontendElementClass, frontendModifierClass } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
+
+/**
+ * These dialogs build raw DOM (no React), so they can't go through the
+ * `button()`/`input()` primitives directly — instead they use the exact
+ * literal classes those primitives emit ("btn"/"btn highlight"/"input
+ * classic"), not the generic `frontendClassName("button"/"input")` fallback
+ * classes. The fallback classes have their own separate, more generic CSS
+ * (different token names) that drifts visually from the rest of the app.
+ */
+const DIALOG_BUTTON_CLASS = "btn";
+const DIALOG_BUTTON_STRONG_CLASS = "btn highlight";
 
 function finishDialog<T>(
   stack: HTMLElement,
@@ -52,8 +63,8 @@ function confirm(message: unknown, description = "", options: ConfirmOptions = {
       const body = controls.element.querySelector(`.${frontendElementClass("flash", "body")}`);
       const actions = document.createElement("div");
       actions.className = frontendElementClass("flash", "actions");
-      const cancel = makeButton(model.cancelText, frontendClassName("button"));
-      const ok = makeButton(model.confirmButtonText, `${frontendClassName("button")} ${frontendModifierClass("button", "strong")}`);
+      const cancel = makeButton(model.cancelText, DIALOG_BUTTON_CLASS);
+      const ok = makeButton(model.confirmButtonText, DIALOG_BUTTON_STRONG_CLASS);
       const input = createConfirmInput(model, ok);
       if (input) body?.appendChild(input);
       actions.append(cancel, ok);
@@ -86,7 +97,7 @@ function createConfirmInput(options: ConfirmModel, ok: HTMLButtonElement) {
   if (options.confirmMode !== "text" || !confirmationText) return null;
   ok.disabled = true;
   const input = document.createElement("input");
-  input.className = frontendClassName("input");
+  input.className = "input classic";
   input.type = "text";
   input.autocomplete = "off";
   input.placeholder = options.placeholder || confirmationText;
@@ -119,14 +130,14 @@ function createPromptForm(options: PromptOptions) {
   const form = document.createElement("form");
   form.className = frontendElementClass("flash", "form");
   const input = document.createElement("input");
-  input.className = frontendClassName("input");
+  input.className = "input classic";
   input.name = "value";
   input.placeholder = options.placeholder || "";
   input.value = options.value || "";
   const actions = document.createElement("div");
   actions.className = frontendElementClass("flash", "actions");
   actions.append(
-    makeButton(options.cancelText || "Cancel", frontendClassName("button")),
+    makeButton(options.cancelText || "Cancel", DIALOG_BUTTON_CLASS),
     submitButton(options.submitText || "OK"),
   );
   form.append(input, actions);
@@ -134,7 +145,7 @@ function createPromptForm(options: PromptOptions) {
 }
 
 function submitButton(label: string) {
-  const button = makeButton(label, `${frontendClassName("button")} ${frontendModifierClass("button", "strong")}`);
+  const button = makeButton(label, DIALOG_BUTTON_STRONG_CLASS);
   button.type = "submit";
   return button;
 }
@@ -144,7 +155,7 @@ function bindPromptControls(
   finish: (value: string | null) => void,
 ) {
   const input = form.querySelector<HTMLInputElement>("input");
-  const cancel = form.querySelector<HTMLButtonElement>(`.${frontendClassName("button")}:not(.${frontendModifierClass("button", "strong")})`);
+  const cancel = form.querySelector<HTMLButtonElement>(`.${DIALOG_BUTTON_CLASS}:not(.highlight)`);
   form.addEventListener("submit", (event) => {
       event.preventDefault();
       finish(input?.value.trim() || null);

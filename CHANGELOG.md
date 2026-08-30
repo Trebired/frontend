@@ -4,6 +4,26 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.10.0
+
+### Fixed
+
+- The confirm/prompt flash dialogs (`confirm()`, `prompt()`, and the "type the name to
+  confirm" deletion flow) built their input and buttons with raw DOM (`document.createElement`)
+  and styled them with `frontendClassName("input"/"button")`. That's a separate, more generic
+  fallback class (`tbf-input`/`tbf-button`) with its own CSS — different token names than the
+  `input()`/`button()` primitives' real output (`input classic`/`btn`/`btn highlight`), so these
+  dialog controls visibly drifted from the rest of the app's inputs (buttons happened to look
+  right only because `tbf-button`'s fallback tokens coincidentally alias the same `--tbf-ui-btn-*`
+  tokens `btn` uses). They now use the exact literal classes the primitives emit.
+
+### Added
+
+- `input({ size, tone })`: `size` (`sm`/`lg`, base/`md` unchanged) and `tone` (`red`/`yellow`/
+  `green`/`highlight`, reusing the same generic tone-color tokens as pills/dots/icons) bring
+  `input()`'s configurability toward parity with `button()`'s `size`/`tone` props, so consumers
+  don't need to hand-roll one-off input CSS for compact fields or validation states.
+
 ## 12.9.1
 
 ### Fixed
