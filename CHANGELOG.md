@@ -4,6 +4,20 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.9.1
+
+### Fixed
+
+- `closeModal` on the React `action_form`/`action_button` components (and the underlying
+  `ActionForm`/`ActionButton`) was silently dropped: neither component destructured or
+  forwarded it, so it fell into `...rest` and was spread onto the DOM `<form>`/`<button>` as
+  an unrecognized React prop (visible as a "React does not recognize the `closeModal` prop"
+  console warning) instead of reaching `submitActionForm`'s `options`/`config`. The
+  vanilla `actionForm()`/`actionButton()` JS APIs added in 12.9.0 worked correctly; only the
+  React wrappers were affected. `ActionForm` now includes `closeModal` in its
+  `data-tbf-action-config` JSON, and `ActionButton` now sets `data-tbf-close-modal`,
+  matching how both already handle `confirm`.
+
 ## 12.9.0
 
 ### Fixed

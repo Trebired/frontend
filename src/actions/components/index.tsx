@@ -16,6 +16,7 @@ type ActionFormProps = FormHTMLAttributes<HTMLFormElement> & {
   actionConfig?: Record<string, unknown>;
   body?: "json";
   children?: ReactNode;
+  closeModal?: boolean;
   confirm?: boolean;
   ignoreResponseAction?: boolean;
   jsonBody?: boolean;
@@ -30,6 +31,7 @@ type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   actionBody?: Record<string, unknown>;
   actionMethod?: string;
   actionUrl?: string;
+  closeModal?: boolean;
   confirm?: boolean;
   ignoreResponseAction?: boolean;
   success?: "soft-reload";
@@ -49,6 +51,7 @@ function actionConfig(props: ActionFormProps) {
     ...(props.actionConfig || {}),
     ...(props.body ? { body: props.body } : {}),
     ...(props.jsonBody ? { body: "json" } : {}),
+    ...(props.closeModal ? { closeModal: true } : {}),
     ...(props.ignoreResponseAction ? { ignoreResponseAction: true } : {}),
     ...(props.lifecycle ? { lifecycle: true } : {}),
     ...(props.silent ? { silent: true } : {}),
@@ -64,6 +67,7 @@ function ActionForm(props: ActionFormProps) {
     body: _body,
     children,
     className,
+    closeModal: _closeModal,
     confirm,
     ignoreResponseAction: _ignoreResponseAction,
     jsonBody: _jsonBody,
@@ -102,6 +106,7 @@ function ActionButton(props: ActionButtonProps) {
     actionUrl,
     children,
     className,
+    closeModal,
     confirm,
     ignoreResponseAction,
     success,
@@ -117,6 +122,7 @@ function ActionButton(props: ActionButtonProps) {
     {...frontendDataAttrs({ "action-body": actionBody ? jsonScript(actionBody) : undefined })}
     {...frontendDataAttrs({ "action-method": actionMethod })}
     {...frontendDataAttrs({ "action-url": actionUrl })}
+    {...frontendDataAttrs({ "close-modal": dataBool(closeModal) })}
     {...frontendDataAttrs({ "confetti": dataBool(successConfetti) })}
     {...frontendDataAttrs({ "confirm": dataBool(confirm) })}
     {...frontendDataAttrs({ "ignore-response-action": dataBool(ignoreResponseAction) })}
