@@ -4,6 +4,28 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.10.1
+
+### Fixed
+
+- `.card-row[role="button"]` (the select-card layout used by `select()`, e.g. "Empty
+  repository" / "Upload or import" / "Clone repository" mode pickers) never showed
+  `cursor: pointer` despite being interactive — plain `cursor: auto` throughout. Added
+  `cursor: pointer` (and `cursor: not-allowed` for the `aria-disabled="true"` case).
+- The static dropdown's options panel could render far from its trigger when flipped to
+  open *above* it, worse the more times the same dropdown was opened/closed. Root cause:
+  `.dropdown-list li` uses `content-visibility: auto` (a real perf win for long lists), but
+  right after the panel goes from collapsed to measured/shown, the browser doesn't always
+  have an up-to-date relevance check yet, so `positionStaticOptions()`'s
+  `getBoundingClientRect()` measurement could read a stale/placeholder height instead of
+  the option list's true rendered height — worse and inconsistent on repeated opens of the
+  same dropdown. The flip-above offset is computed directly from that height, so a wrong
+  measurement lands the panel well off from the trigger once flipped, overlapping whatever
+  else is on the page above it. Fixed by forcing `content-visibility: visible` on the list
+  items specifically while the panel is being measured or is shown (`data-dropdown-measuring`
+  / `data-dropdown-show`), leaving `auto` deferral in place for the collapsed/hidden state
+  where it doesn't matter because nothing is visible anyway.
+
 ## 12.10.0
 
 ### Fixed

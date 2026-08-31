@@ -37,6 +37,14 @@
   > * {
     min-width: 0;
   }
+
+  &[role="button"] {
+    cursor: pointer;
+
+    &[aria-disabled="true"] {
+      cursor: not-allowed;
+    }
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
