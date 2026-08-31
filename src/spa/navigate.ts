@@ -172,10 +172,28 @@ function replaceContent(
   if (formState) restoreFormState(currentRoot, formState);
   updateDocumentMeta(doc);
   injectNewScripts(doc);
-  if (!preserveState) window.scrollTo(0, 0);
+  if (!preserveState) resetWindowScroll();
   rehydrate(document);
   void navigation;
   return true;
+}
+
+/**
+ * Explicitly instant, never inheriting the root `scroll-behavior`.
+ *
+ * Soft navigation stands in for a document load, and a real load always lands
+ * at the top immediately. Both `scrollTo(0, 0)` and the object form default to
+ * the CSS value, so under `scroll-behavior: smooth` the fresh page painted at
+ * the previous page's offset and then visibly glided upward — an effect no
+ * real navigation produces. This is a scroll *reset*, not a scroll the user
+ * asked for, so it opts out rather than leaving it to `design.scrollBehavior`.
+ */
+function resetWindowScroll() {
+  try {
+    window.scrollTo({ behavior: "instant" as ScrollBehavior, left: 0, top: 0 });
+  } catch {
+    window.scrollTo(0, 0);
+  }
 }
 
 function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string) {

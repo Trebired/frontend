@@ -4,6 +4,18 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.11.1
+
+### Fixed
+
+- Soft navigation's scroll reset is now explicitly instant instead of inheriting the root
+  `scroll-behavior`. `softRedirect()` reset scroll with `window.scrollTo(0, 0)`, and both that and
+  the object form default to the CSS value, so under the default `smooth` the fresh page painted
+  at the previous page's scroll offset and then visibly glided to the top — something a real
+  document load never does. A scroll reset is not a scroll the user asked for, so it opts out
+  directly; consumers no longer have to set `design.scrollBehavior: "auto"` globally, and give up
+  smooth anchor scrolling, just to make router navigation behave.
+
 ## 12.11.0
 
 ### Added
