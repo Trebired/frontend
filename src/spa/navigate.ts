@@ -9,7 +9,10 @@ import {
 import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
 import { hasUnsavedWork } from "./guards.js";
-import { removeStalePortaledOverlaysFromRoot } from "./overlay-dom.js";
+import {
+  overlayPortalRoots,
+  removeStalePortaledOverlaysFromRoot,
+} from "./overlay-dom.js";
 import { progress } from "#hmj29rrpgtsh";
 import {
   beginNavigation,
@@ -95,14 +98,28 @@ function isOpenOverlay(element: Element) {
   );
 }
 
+/**
+ * Freshly rendered markup can collide with a copy of itself that an earlier
+ * page portaled into a layer root — chrome that `swapChrome` re-renders (a
+ * sidebar's theme/language menus) brings back an inline copy of an overlay
+ * whose previous incarnation is still parked in the layer root.
+ *
+ * The discriminator has to be "is this copy portaled?", not "is it outside
+ * `root`?": this runs as `rehydrate(document)` during soft navigation, and
+ * `document.contains()` is true of every node in the page, which made the
+ * whole reconcile a no-op there and let those duplicates pile up one per
+ * navigation.
+ */
 function reconcilePortaledDuplicates(root: ParentNode) {
   if (!root || typeof root.querySelectorAll !== "function") return;
+  const portals = overlayPortalRoots();
+  if (!portals.length) return;
+  const isPortaled = (node: Element) => portals.some((portal) => portal.contains(node));
   root.querySelectorAll("[id]").forEach((freshElement) => {
-      if (!(root instanceof Node) || !root.contains(freshElement)) return;
       const id = (freshElement as HTMLElement).id;
-      if (!id) return;
+      if (!id || isPortaled(freshElement)) return;
       document.querySelectorAll(`[id="${cssEscape(id)}"]`).forEach((otherElement) => {
-          if (otherElement === freshElement || root.contains(otherElement)) return;
+          if (otherElement === freshElement || !isPortaled(otherElement)) return;
           if (isOpenOverlay(otherElement)) {
             otherElement.innerHTML = freshElement.innerHTML;
             freshElement.remove();

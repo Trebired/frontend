@@ -4,6 +4,29 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.10.2
+
+### Fixed
+
+- App-shell overlays (a header's notifications modal, the user menu) stopped working after
+  any soft navigation — their triggers stayed clickable but did nothing, because the
+  overlay element had been deleted from the DOM. `replaceContent()` sweeps portaled
+  overlays it considers stale, and judged staleness by "is this node inside the content
+  root being replaced?". A portaled node lives in a layer root and is therefore *never*
+  inside the content root, so the test matched every portaled overlay indiscriminately,
+  shell-owned ones included. It only bit overlays that had been opened at least once,
+  since opening is what portals them — which is why the failure looked arbitrary.
+  `portalElement()` now records where each element was portaled from, and the sweep
+  removes only overlays that originated inside the root being replaced. Overlays with no
+  recorded origin (authored inside a portal root, or created detached) are left alone.
+- Chrome-hosted overlays re-rendered by `swapChrome()` (a sidebar's theme and language
+  menus) accumulated one duplicate copy per soft navigation. `reconcilePortaledDuplicates()`
+  is meant to collapse exactly this, but skipped any candidate satisfying
+  `root.contains(node)` — and it runs as `rehydrate(document)` during soft navigation,
+  where that is true of every node in the page, making it a no-op on the one path that
+  needed it. It now distinguishes copies by portal-root membership instead, so a freshly
+  rendered inline copy correctly supersedes the stale portaled one.
+
 ## 12.10.1
 
 ### Fixed
