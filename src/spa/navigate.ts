@@ -39,12 +39,23 @@ const LIVE_REGION_SELECTOR = frontendDataSelector("live-region");
 const loadedScriptSrcs = new Set<string>();
 let navigationInflight = false;
 let refreshInflight = false;
+let lastKnownPath = "";
 
 function seedLoadedScripts() {
   if (typeof document === "undefined") return;
   document.querySelectorAll<HTMLScriptElement>("script[src]").forEach((script) => {
       loadedScriptSrcs.add(script.src);
   });
+}
+
+function notePathChange(path?: string) {
+  if (typeof window === "undefined") return;
+  lastKnownPath = path ?? `${window.location.pathname}${window.location.search}`;
+}
+
+function isSamePathAsLastKnown() {
+  if (typeof window === "undefined") return true;
+  return lastKnownPath === `${window.location.pathname}${window.location.search}`;
 }
 
 function injectNewScripts(doc: Document) {
@@ -197,8 +208,9 @@ function resetWindowScroll() {
 }
 
 function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string) {
-  if (mode === "none") return;
   const parsed = new URL(resolvedUrl, window.location.href);
+  notePathChange(`${parsed.pathname}${parsed.search}`);
+  if (mode === "none") return;
   const path = `${parsed.pathname}${parsed.search}${parsed.hash}`;
   if (mode === "replace") history.replaceState({ tbfSpa: true }, "", path);
   else history.pushState({ tbfSpa: true }, "", path);
@@ -326,6 +338,8 @@ async function softRefresh(options: { url?: string } = {}) {
 export {
   LIVE_REGION_SELECTOR,
   contentRoot,
+  isSamePathAsLastKnown,
+  notePathChange,
   rehydrate,
   seedLoadedScripts,
   softRedirect,

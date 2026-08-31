@@ -1,4 +1,4 @@
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { isInUnhydratedIsland, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { spaConfig } from "./config.js";
 import { softRedirect } from "./navigate.js";
@@ -72,6 +72,7 @@ function bindSoftRedirectLink(trigger: HTMLElement | null) {
   if (!(trigger instanceof HTMLElement) || trigger.hasAttribute(SOFT_REDIRECT_BOUND_ATTR)) {
     return false;
   }
+  if (isInUnhydratedIsland(trigger)) return false;
   trigger.setAttribute(SOFT_REDIRECT_BOUND_ATTR, "true");
   ensureSoftRedirectA11y(trigger);
   trigger.addEventListener("click", (event) => runSoftRedirect(event, trigger));

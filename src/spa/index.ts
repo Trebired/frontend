@@ -1,12 +1,30 @@
 import { applySpaOptions, spaConfig, type SpaOptions } from "./config.js";
-import { seedLoadedScripts, softRedirect } from "./navigate.js";
+import {
+  isSamePathAsLastKnown,
+  notePathChange,
+  seedLoadedScripts,
+  softRedirect,
+} from "./navigate.js";
 
 let popstateBound = false;
+
+function scrollToHash(hash: string) {
+  const id = hash.replace(/^#/, "");
+  const target = id ? document.getElementById(id) : null;
+  if (target) target.scrollIntoView();
+  else window.scrollTo({ left: 0, top: 0 });
+}
 
 function bindPopstate() {
   if (popstateBound || typeof window === "undefined") return;
   popstateBound = true;
+  notePathChange();
   window.addEventListener("popstate", () => {
+      if (isSamePathAsLastKnown()) {
+        scrollToHash(window.location.hash);
+        return;
+      }
+      notePathChange();
       void softRedirect(window.location.href, { history: "none" });
   });
 }

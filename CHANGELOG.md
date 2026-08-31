@@ -4,6 +4,31 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.1
+
+### Fixed
+
+- `bindPopstate()` (`src/spa/index.ts`) treated every `popstate` event as a real navigation and
+  called `softRedirect()` unconditionally. Chromium also fires `popstate` for a same-document
+  fragment change (clicking a same-page `<a href="#section">`), which `softRedirectTarget()`
+  (`src/spa/links.ts`) already excludes from *click* handling but `bindPopstate()` had no
+  counterpart exclusion for. A same-page hash click therefore triggered a wasted fetch,
+  `replaceContent()` cycle, and progress-bar flash against the current page. `bindPopstate()` now
+  tracks the last known pathname+search (updated by every `applyHistoryMode()` call as well as by
+  the handler itself) and, when only the hash changed, scrolls to the target element directly
+  instead of re-fetching.
+- `rehydrate()` (`src/spa/navigate.ts`) ran `runSpaRebind()` — which binds soft-redirect links,
+  among other things — before dispatching `"tbf:rehydrate"`, the event `mountLiveIsland`'s
+  `watchIslandRemount` (`src/react/index.ts`) listens for to know when to (re)hydrate a React
+  island. Rebinding a soft-redirect trigger inside swapped content added
+  `data-tbf-soft-redirect-bound`/`role`/`tabindex` attributes to that DOM before the island
+  hydrated over it, so React logged a hydration-mismatch warning for every soft-redirect link
+  inside a React-hydrated region on every soft navigation. `bindSoftRedirectLink()`
+  (`src/spa/links.ts`) now skips elements inside `[data-live-island-hydrated='false']`, the same
+  guard the tabs/dropdown/checkbox/search binders already use — the island's own
+  `IslandRuntimeBinder` effect re-runs `runSpaRebind()` scoped to the island once it hydrates, so
+  those links still end up bound.
+
 ## 12.12.0
 
 ### Fixed
