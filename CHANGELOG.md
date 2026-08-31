@@ -4,6 +4,26 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.11.0
+
+### Added
+
+- `design.scrollBehavior` (`"smooth"` | `"auto"`, default `"smooth"`) makes the root
+  `scroll-behavior` configurable. It was hardcoded in the static base stylesheet since 11.0.0 with
+  no way to override it from config. Because programmatic scrolls that pass no explicit
+  `behavior` — `window.scrollTo({ top: 0 })`, `element.scrollIntoView()` — inherit the CSS value,
+  that silently animated *every* such call in consuming apps, including scroll resets a
+  client-side router needs to be instant: the new page painted at the previous page's offset and
+  visibly glided to the top. Set `"auto"` and no declaration is emitted at all, so those scrolls
+  are instant and callers that do want animation opt in per call. The declaration is now also
+  scoped to `html` rather than `html, body` — the viewport takes `scroll-behavior` from the root
+  element, so the `body` copy was redundant and only made the value harder to override.
+
+### Changed
+
+- `@trebired/utils` stays on `^0.8.0`; the rest of the `@trebired` packages moved onto that same
+  range, so projects combining them no longer resolve two copies of `@trebired/utils`.
+
 ## 12.10.2
 
 ### Fixed

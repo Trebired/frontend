@@ -165,6 +165,17 @@ function renderThemeCss(config: NormalizedFrontendConfig): string[] {
   ];
 }
 
+/**
+ * Emitted only for "smooth", and scoped to `html`: the viewport takes
+ * `scroll-behavior` from the root element, so a `body` copy is redundant and
+ * only makes the value harder to override. With "auto" nothing is emitted, so
+ * programmatic scrolls stay instant unless a caller opts in per call.
+ */
+function renderScrollBehaviorCss(config: NormalizedFrontendConfig): string[] {
+  if (config.design.scrollBehavior !== "smooth") return [];
+  return ["", ...renderBlock("html", ["  scroll-behavior: smooth;"])];
+}
+
 function renderScalesRootBlock(vars: string[]): string[] {
   if (!vars.length) return [];
   return ["", ...renderBlock(":root", vars)];
@@ -316,6 +327,7 @@ function generateFrontendScss(
     packageStyleLoad("styles/tokens.scss"),
     packageStyleLoad("styles/utils.scss"),
     ...renderSystemImports(config),
+    ...renderScrollBehaviorCss(config),
     ...renderThemeCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),

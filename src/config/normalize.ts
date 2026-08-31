@@ -77,7 +77,15 @@ const TOP_LEVEL_FIELDS = [
 
 const ASSET_FIELDS = ["flags", "fonts", "icons"];
 const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
-const DESIGN_FIELDS = ["breakpoints", "interactions", "palette", "scales", "semantics"];
+const DESIGN_FIELDS = [
+  "breakpoints",
+  "interactions",
+  "palette",
+  "scales",
+  "scrollBehavior",
+  "semantics",
+];
+const SCROLL_BEHAVIORS = ["auto", "smooth"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
@@ -114,6 +122,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             suffixedVariants: true,
         }),
         scales: DEFAULT_FRONTEND_SCALES_CONFIG,
+        scrollBehavior: "smooth",
         semantics: Object.freeze({}),
     }),
     forVersion: PACKAGE_VERSION,
@@ -266,8 +275,22 @@ function normalizeDesignConfig(
     interactions: normalizeInteractionsConfig(source.interactions),
     palette: normalizePaletteConfig(source.palette, modeKeys),
     scales: normalizeScalesConfig(source.scales),
+    scrollBehavior: normalizeScrollBehavior(source.scrollBehavior),
     semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
   };
+}
+
+function normalizeScrollBehavior(
+  value: unknown,
+): NormalizedFrontendConfig["design"]["scrollBehavior"] {
+  if (value === undefined) return DEFAULT_FRONTEND_CONFIG.design.scrollBehavior;
+  const raw = typeof value === "string" ? value.trim() : "";
+  if (!SCROLL_BEHAVIORS.includes(raw)) {
+    throw invalidConfig(
+      `design.scrollBehavior must be one of ${SCROLL_BEHAVIORS.join(", ")}`,
+    );
+  }
+  return raw as NormalizedFrontendConfig["design"]["scrollBehavior"];
 }
 
 function normalizeSystems(value: unknown): Record<FrontendSystemKey, boolean> {

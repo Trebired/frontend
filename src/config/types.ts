@@ -152,11 +152,24 @@ type FrontendDesignInteractionsConfig = {
   activePress?: FrontendActivePressInteractionConfig;
 };
 
+type FrontendScrollBehavior = "auto" | "smooth";
+
 type FrontendDesignConfig = {
   breakpoints?: Record<string, number>;
   interactions?: FrontendDesignInteractionsConfig;
   palette?: FrontendPaletteConfig;
   scales?: FrontendScalesConfig;
+  /**
+   * Root `scroll-behavior`. Defaults to "smooth".
+   *
+   * Programmatic scrolls (`window.scrollTo({ top: 0 })`,
+   * `element.scrollIntoView()`) inherit this when they don't pass an explicit
+   * `behavior`, so "smooth" animates them — including scroll resets that a
+   * client-side router needs to be instant. Set "auto" to opt out; nothing is
+   * emitted then, and callers that do want animation can still pass
+   * `behavior: "smooth"` per call.
+   */
+  scrollBehavior?: FrontendScrollBehavior;
   semantics?: FrontendThemeTokens;
 };
 
@@ -252,6 +265,7 @@ type NormalizedFrontendDesignConfig = {
   interactions: NormalizedFrontendDesignInteractionsConfig;
   palette: NormalizedFrontendPaletteConfig;
   scales: NormalizedFrontendScalesConfig;
+  scrollBehavior: FrontendScrollBehavior;
   semantics: FrontendThemeTokens;
 };
 
@@ -330,6 +344,7 @@ export type {
   FrontendRuntimeConfig,
   FrontendScaleSteps,
   FrontendScalesConfig,
+  FrontendScrollBehavior,
   FrontendShellComponentsConfig,
   FrontendSurfaceComponentsConfig,
   FrontendSystemKey,

@@ -40,11 +40,16 @@ textarea {
   font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
 }
 
+/**
+ * `scroll-behavior` is deliberately not set here. It is emitted from config
+ * (`design.scrollBehavior`, default "smooth") onto `html` only, so consumers
+ * can opt out — programmatic scrolls with no explicit `behavior` inherit the
+ * CSS value, which made every router scroll reset animate.
+ */
 html,
 body {
   margin: 0;
   padding: 0;
-  scroll-behavior: smooth;
   overscroll-behavior-y: none;
   color: var(#{ns.css-var("text")}, #000);
   background-color: var(--background-page, var(#{ns.css-var("surface")}, #fff));
