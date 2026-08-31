@@ -62,5 +62,13 @@
     @include classic-field-focus;
 
     min-height: var(--height-xs3, 50px);
+
+    /**
+     * Tones only, not `classic-field-sizes`: that mixin sets a fixed `height`
+     * for the sm/lg input sizes, which would fight a textarea's natural
+     * multi-line growth. `min-height` above is the textarea's own sizing
+     * knob.
+     */
+    @include classic-field-tones;
   }
 }

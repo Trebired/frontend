@@ -58,6 +58,13 @@ type CsrfInputProps = {
   token: unknown;
 };
 
+type FlagProps = {
+  className?: string;
+  country: string;
+  label?: string;
+  style?: CSSProperties;
+};
+
 type AvatarProps = {
   alt?: string;
   className?: string;
@@ -277,6 +284,7 @@ export type {
   CardSegmentRow,
   CardSegmentsProps,
   CsrfInputProps,
+  FlagProps,
   PillProps,
   SelectCardItem,
   SelectCardsProps,

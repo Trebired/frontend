@@ -262,6 +262,75 @@ function renderButtonToneRules(config: NormalizedFrontendConfig): string[] {
 }
 
 /**
+ * `Card` (`src/surface/components/index.tsx`) accepts a `tone` prop and emits
+ * `.tbf-card--<tone>` via the same `surfaceClass()` helper `Button` uses for
+ * its own tones, but until this, only the button side of that pairing had a
+ * config-driven generator producing matching CSS. A configured card tone
+ * therefore added a class with nothing to select it: accepted, silently
+ * inert. Mirrors `buttonToneEntries`/`buttonToneDeclarations` exactly, one
+ * tier down (no icon slot, and hover only matters together with
+ * `interactive`).
+ */
+function cardToneEntries(
+  config: NormalizedFrontendConfig,
+): Array<[string, Set<string>]> {
+  const card = (config.components as Record<string, any>)?.surfaces?.card;
+  const tones = card && typeof card === "object" ? card.tones : null;
+  if (!tones || typeof tones !== "object" || Array.isArray(tones)) return [];
+  const entries: Array<[string, Set<string>]> = [];
+  const seen = new Set<string>();
+  for (const [key, value] of Object.entries(tones)) {
+    const name = componentTokenCssName(key);
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    const declared = new Set<string>(
+      flattenThemeTokens((value || {}) as FrontendThemeTokens).map(
+        ([tokenKey]) => componentTokenCssName(tokenKey),
+      ),
+    );
+    entries.push([name, declared]);
+  }
+  return entries;
+}
+
+function cardToneDeclarations(
+  prefix: string,
+  tone: string,
+  state: "" | "state-hover-",
+  declared: Set<string>,
+): string[] {
+  const surface = (part: string) => `--${prefix}-surf-card-tone-${tone}-${state}${part}`;
+  const primitive = (part: string) => `--${prefix}-ui-card-tone-${tone}-${state}${part}`;
+  const fallbackBg = state
+  ? "transparent"
+  : `var(--${prefix}-ui-card-root-bg, transparent)`;
+  return [
+    `  border-color: var(${surface("border")}, var(${primitive("border")}, currentColor));`,
+    ...(declared.has(`${state}color`)
+      ? [`  color: var(${surface("color")}, var(${primitive("color")}, inherit));`]
+      : []),
+    `  background: var(${surface("bg")}, var(${primitive("bg")}, ${fallbackBg}));`,
+  ];
+}
+
+function renderCardToneRules(config: NormalizedFrontendConfig): string[] {
+  const interactiveAttr = frontendDataAttr("interactive");
+  const lines: string[] = [];
+  for (const [tone, declared] of cardToneEntries(config)) {
+    const selector = `.${FRONTEND_PREFIX}-card--${tone}`;
+    lines.push(
+      `${selector} {`,
+      ...cardToneDeclarations(config.prefix, tone, "", declared),
+      "}",
+      `${selector}[${interactiveAttr}="true"]:hover {`,
+      ...cardToneDeclarations(config.prefix, tone, "state-hover-", declared),
+      "}",
+    );
+  }
+  return lines;
+}
+
+/**
  * A generated rule that reads `var(--x)` with no fallback is inert unless the
  * same output declares `--x`. Emitting one half of that pair is silent — the
  * rule simply does nothing — so the generator refuses to produce it. Only
@@ -332,6 +401,7 @@ function generateFrontendScss(
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
     ...renderButtonToneRules(config),
+    ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
   ];

@@ -79,12 +79,12 @@ $frontend-input-tones: (
 
 @mixin classic-field-base {
   @include component-scroll-min;
-  padding: 7px 9px;
+  padding: var(#{ns.css-var("ui-input-root-padding")}, 7px 9px);
   border-radius: var(--radius-sm);
   border: $classic-field-border;
   background: var(--background-surface-1);
   color: var(--text-color);
-  font-size: 14px;
+  font-size: var(#{ns.css-var("ui-input-root-font-size")}, 14px);
   outline: var(--border-width) solid transparent;
   outline-offset: 2px;
   transition: all 120ms ease;

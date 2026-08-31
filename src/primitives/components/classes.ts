@@ -27,6 +27,11 @@ type PrimitiveInputClassOptions = {
   tone?: PrimitiveInputTone;
 };
 
+type PrimitiveTextareaClassOptions = {
+  className?: unknown;
+  tone?: PrimitiveInputTone;
+};
+
 type PrimitiveStackClassOptions = {
   center?: boolean;
   className?: unknown;
@@ -110,6 +115,14 @@ function primitiveInputClassName(options: PrimitiveInputClassOptions = {}) {
   return appendClassName(
     "input classic",
     options.size,
+    options.tone,
+    options.className,
+  );
+}
+
+function primitiveTextareaClassName(options: PrimitiveTextareaClassOptions = {}) {
+  return appendClassName(
+    "textarea classic",
     options.tone,
     options.className,
   );
@@ -212,6 +225,7 @@ export {
   primitivePaddingClass,
   primitiveStackClassName,
   primitiveStatusDotClassName,
+  primitiveTextareaClassName,
   primitiveTextClassName,
 };
 export type {
@@ -229,6 +243,7 @@ export type {
   PrimitiveInputTone,
   PrimitivePadding,
   PrimitiveStackClassOptions,
+  PrimitiveTextareaClassOptions,
   PrimitiveTextClassOptions,
   PrimitiveTextSize,
 };

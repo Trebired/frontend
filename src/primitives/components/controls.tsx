@@ -6,6 +6,7 @@ import type {
   ButtonProps,
   CardProps,
   CsrfInputProps,
+  FlagProps,
   PillProps,
   SeparatorProps,
   StatusDotProps,
@@ -119,6 +120,27 @@ function csrfInput(props: CsrfInputProps) {
   const value = toText(props.token);
   if (props.optional === true && !value) return null;
   return <input type="hidden" name="_csrf" value={value} />;
+}
+
+/**
+ * Renders the `.flag\:<COUNTRY>` class `renderFlagRules()` (`config/flags.ts`)
+ * generates from `assets.flags` — one data-URI background per configured
+ * country. Without this, consuming that CSS means hand-writing the class name
+ * (`className="flag:GB"`) into application markup, the exact drift the rest
+ * of the package's primitives exist to avoid.
+ */
+function flag(props: FlagProps) {
+  const country = String(props.country || "").trim().toUpperCase();
+  if (!country) return null;
+  const label = props.label ?? country;
+  return (
+    <span
+    aria-label={label}
+    className={joinClassNames(`flag:${country}`, props.className)}
+    role="img"
+    style={props.style}
+    />
+  );
 }
 
 function avatar(props: AvatarProps) {
@@ -282,6 +304,7 @@ export {
   primitiveCard as card,
   circle,
   csrfInput,
+  flag,
   list,
   masonry,
   pill,

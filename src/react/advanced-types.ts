@@ -5,6 +5,7 @@ export type {
   dropdown_props,
 } from "#79y0zfcyhzga";
 export type { InputProps } from "#8y47rueq20kg";
+export type { TextareaProps } from "#xd6hyo2z47kx";
 export type {
   key_value_input_dom_field,
   key_value_input_dom_props,

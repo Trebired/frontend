@@ -4,6 +4,36 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.0
+
+### Fixed
+
+- `Card` (`src/surface/components/index.tsx`) accepted a `tone` prop and emitted `.tbf-card--<tone>`
+  via the same `surfaceClass()` helper `Button` uses for its own tones, but only the button side of
+  that pairing had a config-driven generator (`renderButtonToneRules`) producing matching CSS. A
+  configured card tone (`components.surfaces.card.tones.<name>`) therefore added a class with
+  nothing to select it: accepted, silently inert. Added `renderCardToneRules`, mirroring the button
+  generator exactly.
+- `classic-field-base` (the mixin every "classic" field — input, textarea, checkbox, radio,
+  dropdown — shares) hardcoded `padding: 7px 9px` and `font-size: 14px` as plain values with no
+  token indirection, unlike the button's full `ui-btn-root-*` treatment. Reconfiguring a field's
+  default padding or font size meant opting every input into a `size` variant; there was no way to
+  change the *default*. Both now read `ui-input-root-padding`/`ui-input-root-font-size`
+  (`components.primitives.input.root.{padding,fontSize}`), falling back to the previous values.
+
+### Added
+
+- `textarea()` (and `Textarea` via `@trebired/frontend/react`), a primitive for the `.textarea.classic`
+  styles `styles/input.scss` already shipped with no component to reach them. Consumers needing a
+  multi-line field previously had to either hand-write the package's own `className="textarea classic"`
+  (which the Trebired Writing Standard forbids: reaching for CSS or copied class names over a
+  package primitive) or hand-roll the field. Supports `tone`, matching `input()`; does not support
+  `size`, since that mixin sets a fixed `height`, which would fight a textarea's natural multi-line
+  growth — `min-height` remains the textarea's own sizing knob.
+- `flag()` (and `Flag` via `@trebired/frontend/react`), a primitive rendering the `.flag\:<COUNTRY>`
+  class `assets.flags` already generates. Previously the only way to use a configured flag was to
+  hand-write that class name into application markup.
+
 ## 12.11.1
 
 ### Fixed

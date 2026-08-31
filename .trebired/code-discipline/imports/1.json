@@ -506,6 +506,7 @@
   "#x7j9ldmr27xv": "./src/logs/client/filters.ts",
   "#x8t7l15mfk1m": "./src/language/runtime/source/index.ts",
   "#xb7hv37sq5h5": "./src/primitives/components/types.ts",
+  "#xd6hyo2z47kx": "./src/inputs/advanced/textarea/index.tsx",
   "#xf0nky7w9fvx": "./src/code/language.ts",
   "#xf8ohz4v1v3y": "./scripts/verify/frontend/html-assertions.mjs",
   "#xg7o2yaxu7q0": "./scripts/verify/frontend/components.mjs",

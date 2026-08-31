@@ -190,6 +190,7 @@ export { default as checkbox } from "#2ne919slwy5h";
 export { default as disclosure } from "#7xsqb2bbtamg";
 export { default as dropdown } from "#79y0zfcyhzga";
 export { default as input } from "#8y47rueq20kg";
+export { default as textarea } from "#xd6hyo2z47kx";
 export { createKeyValueInputElement, default as key_value_input } from "#0cw58fkldqsp";
 export { default as radio } from "#oohgsil8r9co";
 export { status_input } from "#ayzv8371lu6f";
@@ -247,6 +248,7 @@ export type {
   dropdown_props,
   graph_props,
   InputProps,
+  TextareaProps,
   key_value_input_dom_field,
   key_value_input_dom_props,
   key_value_input_field,
