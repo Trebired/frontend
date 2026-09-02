@@ -4,6 +4,24 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.4
+
+### Fixed
+
+- Switching theme mode (light/dark) transitioned every element at its own locally-configured
+  color/background/border-color duration — tuned per component for hover/focus feedback (120ms on
+  the sidebar, 180ms on surfaces, undeclared and instant elsewhere) — because a theme switch just
+  changes the CSS vars those same properties read, and the browser can't tell "this changed from a
+  theme switch" from "this changed from a hover." The result looked staggered: some elements
+  settled into the new colors well before others. `styles/utils/base.scss` already had a
+  `[data-theme-switching="true"]` rule scaffolded for this, but nothing ever set that attribute,
+  and the rule itself disabled transitions entirely (`transition: none !important`) rather than
+  unifying them — trading "staggered" for "no transition," not a fix. `theme/apply.ts`'s
+  `applyTheme()` now sets `data-tbf-theme-switching="true"` for the duration of a switch (cleared
+  on `transitionend`, debounced, with a fallback timeout for e.g. `prefers-reduced-motion` where
+  nothing transitions at all), and the CSS rule forces one shared `transition-normal` duration for
+  every color-affecting property instead of disabling transitions.
+
 ## 12.12.3
 
 ### Fixed

@@ -1,5 +1,5 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
-import { THEME_ATTR, THEME_CHANGE_EVENT } from "./constants.js";
+import { THEME_ATTR, THEME_CHANGE_EVENT, THEME_SWITCHING_ATTR } from "./constants.js";
 import { findThemeMode, getThemeModes, themeModeKeyOf } from "./modes.js";
 import type { ThemeBrowserSyncOptions } from "./browser-sync.js";
 import type { ThemeModeOptions, ThemeModeScheme } from "./modes.js";
@@ -96,11 +96,51 @@ function dispatchThemeChange(theme: ThemeValue, themeKey: ThemeValue): void {
   );
 }
 
+let themeSwitchQuietTimer: ReturnType<typeof setTimeout> | null = null;
+let themeSwitchFallbackTimer: ReturnType<typeof setTimeout> | null = null;
+
+function endThemeSwitch(): void {
+  document.documentElement.removeAttribute(THEME_SWITCHING_ATTR);
+  document.documentElement.removeEventListener("transitionend", onThemeSwitchTransitionEnd);
+  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
+  if (themeSwitchFallbackTimer) clearTimeout(themeSwitchFallbackTimer);
+  themeSwitchQuietTimer = null;
+  themeSwitchFallbackTimer = null;
+}
+
+function onThemeSwitchTransitionEnd(): void {
+  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
+  themeSwitchQuietTimer = setTimeout(endThemeSwitch, 50);
+}
+
+/**
+ * Every element's own color/background/border transition (tuned for its own
+ * hover/focus feedback) also fires when a CSS var it reads changes value on
+ * theme switch — so without this, each element settles on its own local
+ * duration and the switch looks staggered. `data-tbf-theme-switching`
+ * forces one shared transition (see styles/utils/base.scss) for the
+ * switch's duration, so every element moves together. Cleared on
+ * `transitionend` (debounced, since many elements fire it) rather than a
+ * fixed delay, so it stays correct if an app customizes the transition
+ * duration; the fallback timer is just a safety net in case nothing
+ * transitions at all (e.g. `prefers-reduced-motion`).
+ */
+function beginThemeSwitch(): void {
+  if (typeof document === "undefined") return;
+  document.documentElement.setAttribute(THEME_SWITCHING_ATTR, "true");
+  document.documentElement.addEventListener("transitionend", onThemeSwitchTransitionEnd);
+  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
+  themeSwitchQuietTimer = setTimeout(endThemeSwitch, 50);
+  if (themeSwitchFallbackTimer) clearTimeout(themeSwitchFallbackTimer);
+  themeSwitchFallbackTimer = setTimeout(endThemeSwitch, 1000);
+}
+
 function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): ThemeValue {
   if (typeof document === "undefined") return getEffectiveTheme(theme, options);
   const normalized = normalizeTheme(theme, options);
   const next = normalized || systemThemeKey(options);
   const previous = currentDomTheme(options);
+  beginThemeSwitch();
   document.documentElement.setAttribute(THEME_ATTR, next);
   applyDeviceScheme();
   document.body?.setAttribute(THEME_ATTR, next);

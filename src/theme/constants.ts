@@ -10,6 +10,7 @@ const THEME_MODES_CSS_VAR = frontendCssVar("theme-modes");
 const THEME_MODES_GLOBAL_KEY = `${FRONTEND_PREFIX}.frontend.theme.modes`;
 const THEME_TOGGLE_SELECTOR = frontendDataSelector("theme-button");
 const THEME_SELECT_SELECTOR = frontendDataSelector("theme-select");
+const THEME_SWITCHING_ATTR = frontendDataAttr("theme-switching");
 const THEME_OPTION_SELECTOR = frontendDataSelector("theme-value");
 const THEME_LABEL_SELECTOR = frontendDataSelector("theme-label");
 
@@ -24,6 +25,7 @@ export {
   THEME_MODES_GLOBAL_KEY,
   THEME_OPTION_SELECTOR,
   THEME_SELECT_SELECTOR,
+  THEME_SWITCHING_ATTR,
   THEME_TOGGLE_SELECTOR,
   THEME_VALUE_ATTR,
 };
