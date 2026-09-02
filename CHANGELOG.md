@@ -4,6 +4,20 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.3
+
+### Fixed
+
+- `bindIcon()` (`src/icons/index.ts`) had no `isInUnhydratedIsland()` guard, unlike the
+  tabs/dropdown/checkbox/search/soft-redirect binders — it mutated an icon host's attributes
+  (`applyElementAttrs()` sets every non-excluded key from the bind options as a raw attribute,
+  including `mode`) unconditionally, even for icons inside an island still mid-hydration. Same
+  failure shape as the 12.12.2 soft-redirect-link fix, just a sibling binder that had been missed:
+  a `mode="static"` (or any other passed-through icon attribute) mismatch warning on every
+  navigation for icons inside a `LiveIslandMount`-wrapped region. `bindIcon()` now skips elements
+  inside `[data-live-island-hydrated='false']`, matching every other binder; the island's own
+  post-hydration rebind picks them up once it's safe.
+
 ## 12.12.2
 
 ### Fixed

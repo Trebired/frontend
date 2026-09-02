@@ -1,4 +1,4 @@
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { isInUnhydratedIsland, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import {
   buildIconUrl,
   iconSpec,
@@ -245,6 +245,7 @@ function readHostSpec(host: Element): string {
 
 function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions = {}): boolean {
   if (!(host instanceof Element)) return false;
+  if (isInUnhydratedIsland(host)) return false;
   const spec = readHostSpec(host);
   if (!spec) return false;
   void renderIconElement(host, spec, {
