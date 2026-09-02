@@ -110,6 +110,24 @@ function isOpenOverlay(element: Element) {
 }
 
 /**
+ * `replaceChildren()` swaps a swap zone's contents but never its own
+ * attributes, so if an app points `LiveIslandMount`'s `rootId` at the SPA's
+ * own content selector (or a live-region root), the wrapper node is never
+ * replaced — only its children are — and `data-live-island-hydrated` stays
+ * "true" from the first navigation onward. Every later swap then inherits a
+ * stale "true" on brand-new unhydrated children: `watchIslandRemount` never
+ * re-mounts, and the tabs/dropdown/checkbox/search/soft-redirect binders
+ * treat the fresh markup as already hydrated and bind it immediately.
+ */
+function syncIslandRootHydration(current: Element, next: Element) {
+  if (!current.hasAttribute("data-live-island-root")) return;
+  const attr = "data-live-island-hydrated";
+  const nextValue = next.getAttribute(attr);
+  if (nextValue === null) current.removeAttribute(attr);
+  else current.setAttribute(attr, nextValue);
+}
+
+/**
  * Freshly rendered markup can collide with a copy of itself that an earlier
  * page portaled into a layer root — chrome that `swapChrome` re-renders (a
  * sidebar's theme/language menus) brings back an inline copy of an overlay
@@ -178,6 +196,7 @@ function replaceContent(
     }),
   );
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
+  syncIslandRootHydration(currentRoot, nextRoot);
   swapChrome(doc);
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
   if (formState) restoreFormState(currentRoot, formState);
@@ -315,6 +334,7 @@ function replaceLiveRegions(doc: Document) {
       const wizardState = captureWizardSteps(current);
       runPageCleanups(current);
       current.replaceChildren(...importChildNodes(next));
+      syncIslandRootHydration(current, next);
       restoreWizardSteps(current, wizardState);
       restoreFormState(current, formState);
       rehydrate(current);

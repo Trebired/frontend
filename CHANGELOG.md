@@ -4,6 +4,26 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.2
+
+### Fixed
+
+- `replaceContent()`/`replaceLiveRegions()` (`src/spa/navigate.ts`) call `replaceChildren()` on a
+  swap zone, which replaces its contents but never its own attributes. An app that points
+  `LiveIslandMount`'s `rootId` at the SPA's own content selector (`DEFAULT_CONTENT_SELECTOR` is
+  `#live_content` among others, and that's a natural id to reuse) gets a wrapper that's never
+  itself replaced — only its children are — so `data-live-island-hydrated` flips to `"true"` on
+  the first navigation and then stays `"true"` forever. Every later swap inherited that stale
+  `"true"` on brand-new unhydrated children: `watchIslandRemount` stopped re-mounting the island
+  after the first navigation (the 12.12.1 fix for the soft-redirect-link mismatch warning made
+  this worse, not better — the same guard that now correctly skips premature binding also now
+  correctly keeps skipping *forever*, since nothing was resetting the flag), and the
+  tabs/dropdown/checkbox/search/soft-redirect binders bound the fresh markup as if it were already
+  hydrated. Added `syncIslandRootHydration()`, called right after each swap resets a live-island
+  root's `data-live-island-hydrated` back to whatever the freshly fetched markup says (always
+  `"false"` for a fresh `LiveIslandMount` render), so a coincident content/island root now behaves
+  the same as a nested one.
+
 ## 12.12.1
 
 ### Fixed
