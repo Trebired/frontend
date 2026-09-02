@@ -1,4 +1,5 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 import { THEME_ATTR, THEME_CHANGE_EVENT, THEME_SWITCHING_ATTR } from "./constants.js";
 import { findThemeMode, getThemeModes, themeModeKeyOf } from "./modes.js";
 import type { ThemeBrowserSyncOptions } from "./browser-sync.js";
@@ -74,8 +75,18 @@ function systemThemeKey(options: ThemeRuntimeOptions = {}): ThemeValue {
   return systemPrefersLight() ? registry.light : registry.dark;
 }
 
+/**
+ * A view-transition switch commits the attribute from its callback, which the
+ * browser runs a frame later — so between `applyTheme()` and that commit the
+ * DOM still reads the old theme. `pendingTheme` holds the value already
+ * decided on, otherwise a second toggle click landing inside that window
+ * computes `nextTheme()` from the stale one and switches back.
+ */
+let pendingTheme: ThemeValue = "";
+
 function currentDomTheme(options: ThemeRuntimeOptions = {}): ThemeValue {
   if (typeof document === "undefined") return "";
+  if (pendingTheme) return pendingTheme;
   return normalizeTheme(document.documentElement.getAttribute(THEME_ATTR), options);
 }
 
@@ -96,56 +107,129 @@ function dispatchThemeChange(theme: ThemeValue, themeKey: ThemeValue): void {
   );
 }
 
-let themeSwitchQuietTimer: ReturnType<typeof setTimeout> | null = null;
-let themeSwitchFallbackTimer: ReturnType<typeof setTimeout> | null = null;
+type ThemeSwitchMode = "instant" | "uniform";
+type ViewTransitionHandle = { finished: Promise<unknown> };
+
+const THEME_SWITCH_BUFFER_MS = 120;
+const THEME_SWITCH_DEFAULT_MS = 240;
+
+let themeSwitchTimer: ReturnType<typeof setTimeout> | null = null;
 
 function endThemeSwitch(): void {
+  if (typeof document === "undefined") return;
   document.documentElement.removeAttribute(THEME_SWITCHING_ATTR);
-  document.documentElement.removeEventListener("transitionend", onThemeSwitchTransitionEnd);
-  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
-  if (themeSwitchFallbackTimer) clearTimeout(themeSwitchFallbackTimer);
-  themeSwitchQuietTimer = null;
-  themeSwitchFallbackTimer = null;
-}
-
-function onThemeSwitchTransitionEnd(): void {
-  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
-  themeSwitchQuietTimer = setTimeout(endThemeSwitch, 50);
+  if (themeSwitchTimer) clearTimeout(themeSwitchTimer);
+  themeSwitchTimer = null;
 }
 
 /**
- * Every element's own color/background/border transition (tuned for its own
- * hover/focus feedback) also fires when a CSS var it reads changes value on
- * theme switch — so without this, each element settles on its own local
- * duration and the switch looks staggered. `data-tbf-theme-switching`
- * forces one shared transition (see styles/utils/base.scss) for the
- * switch's duration, so every element moves together. Cleared on
- * `transitionend` (debounced, since many elements fire it) rather than a
- * fixed delay, so it stays correct if an app customizes the transition
- * duration; the fallback timer is just a safety net in case nothing
- * transitions at all (e.g. `prefers-reduced-motion`).
+ * Suppresses (`"instant"`) or unifies (`"uniform"`) per-element transitions
+ * for the length of a switch — see `styles/utils/base.scss`. The hold is a
+ * plain timer: a `transitionend` listener would receive one bubbled event per
+ * element per property, which on a real page is tens of thousands of events.
  */
-function beginThemeSwitch(): void {
+function beginThemeSwitch(mode: ThemeSwitchMode, holdMs: number): void {
   if (typeof document === "undefined") return;
-  document.documentElement.setAttribute(THEME_SWITCHING_ATTR, "true");
-  document.documentElement.addEventListener("transitionend", onThemeSwitchTransitionEnd);
-  if (themeSwitchQuietTimer) clearTimeout(themeSwitchQuietTimer);
-  themeSwitchQuietTimer = setTimeout(endThemeSwitch, 50);
-  if (themeSwitchFallbackTimer) clearTimeout(themeSwitchFallbackTimer);
-  themeSwitchFallbackTimer = setTimeout(endThemeSwitch, 1000);
+  document.documentElement.setAttribute(THEME_SWITCHING_ATTR, mode);
+  if (themeSwitchTimer) clearTimeout(themeSwitchTimer);
+  themeSwitchTimer = setTimeout(endThemeSwitch, holdMs);
 }
 
-function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): ThemeValue {
-  if (typeof document === "undefined") return getEffectiveTheme(theme, options);
-  const normalized = normalizeTheme(theme, options);
-  const next = normalized || systemThemeKey(options);
-  const previous = currentDomTheme(options);
-  beginThemeSwitch();
+function themeSwitchDurationMs(): number {
+  try {
+    const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue(frontendCssVar("transition-normal"))
+    .trim();
+    if (raw.endsWith("ms")) return Number.parseFloat(raw) || THEME_SWITCH_DEFAULT_MS;
+    if (raw.endsWith("s")) return (Number.parseFloat(raw) || 0.24) * 1000;
+  } catch {
+    // an unreadable token just means the default hold below
+  }
+  return THEME_SWITCH_DEFAULT_MS;
+}
+
+function prefersReducedMotion(): boolean {
+  try {
+    return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  } catch {
+    return false;
+  }
+}
+
+function startViewTransition(run: () => void): ViewTransitionHandle | null {
+  const start = (
+    document as unknown as {
+      startViewTransition?: (callback: () => void) => ViewTransitionHandle;
+    }
+  ).startViewTransition;
+  if (typeof start !== "function") return null;
+  try {
+    return start.call(document, run);
+  } catch {
+    return null;
+  }
+}
+
+function commitTheme(
+  next: ThemeValue,
+  normalized: ThemeValue,
+  previous: ThemeValue,
+  options: ThemeRuntimeOptions,
+): void {
+  pendingTheme = "";
   document.documentElement.setAttribute(THEME_ATTR, next);
   applyDeviceScheme();
   document.body?.setAttribute(THEME_ATTR, next);
   if (previous !== next) dispatchThemeChange(normalized, next);
   runThemeSync(document);
+  void options;
+}
+
+/**
+ * A theme switch changes the CSS vars every element reads at once, and the
+ * browser cannot tell that from a hover — so each element animated on its own
+ * locally tuned duration and the switch looked staggered. Animating them
+ * together instead is not the fix either: a page's worth of `background-color`
+ * /`box-shadow` transitions are main-thread paint work, which janks (and the
+ * stagger comes back, since paint lands in chunks) and still leaves out
+ * everything that has no transitionable property at all — gradients, images,
+ * native scrollbars.
+ *
+ * So the whole page cross-fades as a single compositor-driven animation via
+ * the View Transitions API, with per-element transitions suppressed
+ * underneath. That is uniform by construction: one animation, not thousands.
+ * Browsers without the API fall back to one shared duration for the
+ * color-affecting properties, which is the best a per-element approach can do.
+ */
+function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): ThemeValue {
+  if (typeof document === "undefined") return getEffectiveTheme(theme, options);
+  const normalized = normalizeTheme(theme, options);
+  const next = normalized || systemThemeKey(options);
+  const previous = currentDomTheme(options);
+  const commit = () => commitTheme(next, normalized, previous, options);
+
+  if (previous === next) {
+    commit();
+    return next;
+  }
+  const hold = themeSwitchDurationMs() + THEME_SWITCH_BUFFER_MS;
+  if (prefersReducedMotion()) {
+    beginThemeSwitch("instant", THEME_SWITCH_BUFFER_MS);
+    commit();
+    return next;
+  }
+  pendingTheme = next;
+  const transition = startViewTransition(() => {
+      beginThemeSwitch("instant", hold);
+      commit();
+  });
+  if (transition) {
+    void Promise.resolve(transition.finished).then(endThemeSwitch, endThemeSwitch);
+    return next;
+  }
+  pendingTheme = "";
+  beginThemeSwitch("uniform", hold);
+  commit();
   return next;
 }
 

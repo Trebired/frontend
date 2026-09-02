@@ -4,6 +4,30 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.5
+
+### Fixed
+
+- Theme switching is now one page-level cross-fade instead of a transition per element,
+  superseding 12.12.4's approach, which did not fix the stagger and made the switch slow and
+  laggy. Forcing a shared duration onto `*` meant a page's worth of simultaneous
+  `background-color`/`box-shadow` transitions — all main-thread paint work, so the switch janked
+  and the stagger came back as paint landed in chunks — while a root `transitionend` listener took
+  one bubbled event per element per property (8012 of them on a 4000-element page). It also could
+  never be complete: anything without a transitionable property (gradients, images, native
+  scrollbars) still snapped instantly while everything else animated. `applyTheme()` now runs the
+  switch through the View Transitions API, cross-fading the whole page as a single
+  compositor-driven animation with per-element transitions suppressed underneath — uniform by
+  construction, since there is one animation rather than thousands. On the same 4000-element page
+  this takes bubbled `transitionend` events from 8012 to 0 and roughly halves the worst frame
+  time. Browsers without the API fall back to one shared duration across the color-affecting
+  properties (`box-shadow` excluded, being the expensive one). `prefers-reduced-motion` switches
+  instantly, as before.
+- `getEffectiveTheme()`/`currentDomTheme()` now report the theme a switch has already committed to
+  while that switch is still in flight. A view transition applies the DOM change from a callback
+  the browser runs a frame later, so without this a second toggle click landing inside that window
+  read the old value and computed `nextTheme()` back to where it started.
+
 ## 12.12.4
 
 ### Fixed

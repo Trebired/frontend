@@ -62,19 +62,37 @@ body {
 }
 
 /**
- * Every element normally transitions color/background/border at its own
- * pace (tuned for its own hover/focus feedback), so a theme switch — which
- * changes the CSS vars every one of them reads at once — looked staggered
- * instead of uniform. Force one shared transition for everything while a
- * switch is in flight (see theme/apply.ts's beginThemeSwitch()), instead of
- * disabling transitions during the switch, which just traded "staggered"
- * for "no transition at all".
+ * Theme switching animates the whole page as one cross-fade rather than
+ * per element — see the comment on `applyTheme()` in theme/apply.ts for
+ * why per-element transitions cannot be made uniform. Here the live DOM
+ * only has to stop animating underneath the cross-fade, so it snaps
+ * straight to the new theme while the snapshot fades over it.
  */
-#{ns.data("theme-switching", "true")},
-#{ns.data("theme-switching", "true")} *,
-#{ns.data("theme-switching", "true")} *::before,
-#{ns.data("theme-switching", "true")} *::after {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow, outline-color !important;
+#{ns.data("theme-switching", "instant")},
+#{ns.data("theme-switching", "instant")} *,
+#{ns.data("theme-switching", "instant")} *::before,
+#{ns.data("theme-switching", "instant")} *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(#{ns.css-var("transition-normal")}, 240ms);
+  animation-timing-function: ease;
+}
+
+/**
+ * Fallback for browsers without the View Transitions API: one shared
+ * duration for the color-affecting properties. `box-shadow` is deliberately
+ * left out — animating it on every element is expensive enough to jank the
+ * switch, which reintroduces the very stagger this is fixing.
+ */
+#{ns.data("theme-switching", "uniform")},
+#{ns.data("theme-switching", "uniform")} *,
+#{ns.data("theme-switching", "uniform")} *::before,
+#{ns.data("theme-switching", "uniform")} *::after {
+  transition-property: background-color, border-color, color, fill, stroke, outline-color !important;
   transition-duration: var(#{ns.css-var("transition-normal")}, 240ms) !important;
   transition-timing-function: ease !important;
   animation: none !important;
