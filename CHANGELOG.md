@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.6
+
+### Fixed
+
+- Soft navigation to a URL carrying a fragment (`/page#section`) reset scroll to the top and
+  dropped the fragment from the history entry. A real document load lands on the anchor and keeps
+  it in the address bar, so soft navigation now does the same: `replaceContent()` scrolls to the
+  target element when the requested URL has a fragment, falling back to the top when it matches
+  nothing, and `applyHistoryMode()` restores the fragment that `fetch()` strips from `response.url`.
+  Applications no longer need an `onPageChange()` handler to scroll to the anchor themselves.
+
 ## 12.12.5
 
 ### Fixed

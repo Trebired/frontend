@@ -48,6 +48,14 @@ function seedLoadedScripts() {
   });
 }
 
+function hashOf(url: string) {
+  try {
+    return new URL(url, window.location.href).hash;
+  } catch {
+    return "";
+  }
+}
+
 function notePathChange(path?: string) {
   if (typeof window === "undefined") return;
   lastKnownPath = path ?? `${window.location.pathname}${window.location.search}`;
@@ -171,6 +179,7 @@ function replaceContent(
   doc: Document,
   navigation: SpaNavigation,
   preserveState: boolean,
+  targetHash: string,
 ) {
   const config = spaConfig();
   const currentRoot = contentRoot(document);
@@ -202,7 +211,7 @@ function replaceContent(
   if (formState) restoreFormState(currentRoot, formState);
   updateDocumentMeta(doc);
   injectNewScripts(doc);
-  if (!preserveState) resetWindowScroll();
+  if (!preserveState) applyLandingScroll(targetHash);
   rehydrate(document);
   void navigation;
   return true;
@@ -226,11 +235,32 @@ function resetWindowScroll() {
   }
 }
 
-function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string) {
+/**
+ * A real document load at `/page#section` lands on the fragment, not the top,
+ * so a soft navigation carrying one has to do the same. Instant for the same
+ * reason `resetWindowScroll` is: the page just changed underneath, and gliding
+ * to the anchor is an effect no real navigation produces. Falls back to the top
+ * when the fragment matches nothing, which is also what a real load does.
+ */
+function applyLandingScroll(targetHash: string) {
+  const id = String(targetHash || "").replace(/^#/, "");
+  const target = id ? document.getElementById(id) : null;
+  if (!target) {
+    resetWindowScroll();
+    return;
+  }
+  try {
+    target.scrollIntoView({ behavior: "instant" as ScrollBehavior, block: "start" });
+  } catch {
+    target.scrollIntoView();
+  }
+}
+
+function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string, targetHash = "") {
   const parsed = new URL(resolvedUrl, window.location.href);
   notePathChange(`${parsed.pathname}${parsed.search}`);
   if (mode === "none") return;
-  const path = `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  const path = `${parsed.pathname}${parsed.search}${parsed.hash || targetHash}`;
   if (mode === "replace") history.replaceState({ tbfSpa: true }, "", path);
   else history.pushState({ tbfSpa: true }, "", path);
 }
@@ -272,6 +302,7 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
   const targetUrl = String(url || window.location.href).trim();
   navigationInflight = true;
   const historyMode: SpaHistoryMode = options.history || "push";
+  const targetHash = hashOf(targetUrl);
   let navigation: ReturnType<typeof beginNavigation> | null = null;
   try {
     if (options.force !== true && hasUnsavedWork()) {
@@ -281,10 +312,10 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
     const fetched = await fetchDocument(targetUrl, "router");
     if (!fetched) return fallbackNavigate(targetUrl, historyMode !== "none");
     navigation = retargetNavigation(navigation, fetched.url);
-    if (!replaceContent(fetched.doc, navigation, options.preserveState === true)) {
+    if (!replaceContent(fetched.doc, navigation, options.preserveState === true, targetHash)) {
       return fallbackNavigate(targetUrl, historyMode !== "none");
     }
-    applyHistoryMode(historyMode, fetched.url);
+    applyHistoryMode(historyMode, fetched.url, targetHash);
     emitPageChange(navigation);
     return true;
   } catch {
