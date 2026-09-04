@@ -23,7 +23,7 @@ async function verifyActionConfetti(importDist) {
 async function verifyRuntimeDoesNotInterceptAnchorNavigation(importDistRoot) {
   const { bindFrontendRuntime } = await importDistRoot();
   document.body.innerHTML = [
-    '<main data-tbf-live-content>',
+    "<main data-tbf-live-content>",
     '<a id="plain" href="/welcome">',
     "<span>Start</span>",
     "</a>",

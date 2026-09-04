@@ -153,10 +153,6 @@ function renderFontsCss(config: NormalizedFrontendFontConfig): string[] {
 
 const unicodeRangeCache = new Map<string, Record<string, string>>();
 
-/**
- * Fontsource packages are a dependency of the consuming app, not of this
- * package, so resolve from the project root first and only then from here.
- */
 function resolveFontsourceUnicodeFile(packageName: string): string | null {
   const specifier = `@fontsource/${packageName}/package.json`;
   const bases = [
@@ -175,12 +171,6 @@ function resolveFontsourceUnicodeFile(packageName: string): string | null {
   return null;
 }
 
-/**
- * Fontsource ships the per-subset unicode ranges in `unicode.json`. Without a
- * `unicode-range`, two subset faces of the same family differ only by `src`,
- * so the browser treats them as the same face and the last one wins — the
- * other subset's file is never used and its glyphs fall back to a system font.
- */
 function fontsourceUnicodeRanges(packageName: string): Record<string, string> {
   const cached = unicodeRangeCache.get(packageName);
   if (cached) return cached;

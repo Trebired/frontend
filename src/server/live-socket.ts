@@ -1,198 +1,36 @@
+import { readSidebarLiveItems } from "./sidebar-live.js";
+import { serverObject, serverString } from "./http.js";
+import { resolveFrontendServerLogger } from "./logging.js";
 import {
-  serverObject,
-  serverString,
-  type ServerRequestLike,
-  type ServerResponseLike,
-} from "./http.js";
-import {
-  resolveFrontendServerLogger,
-  type FrontendServerLoggerInput,
-} from "./logging.js";
-import {
-  readSidebarLiveItems,
-  type SidebarLiveDescriptor,
-} from "./sidebar-live.js";
-
-type LiveSocketLike = {
-  emit?: (event: string, payload?: unknown) => unknown;
-  handshake?: Record<string, unknown>;
-  join?: (room: string) => unknown;
-  leave?: (room: string) => unknown;
-  login_session?: unknown;
-  on?: (event: string, handler: (...args: any[]) => unknown) => unknown;
-  viewer?: unknown;
-};
-
-type LiveSocketNamespaceLike = {
-  on?: (event: string, handler: (socket: LiveSocketLike) => unknown) => unknown;
-  to?: (room: string) => { emit?: (event: string, payload?: unknown) => unknown };
-  use?: (middleware: unknown) => unknown;
-};
-
-type LiveSocketServerLike =
-LiveSocketNamespaceLike& {
-  of?: (namespace: string) => LiveSocketNamespaceLike;
-};
-
-type LiveRoom = {
-  id: string;
-  kind: string;
-  room: string;
-};
-
-type LiveSocketSidebarSyncContext = {
-  items: SidebarLiveDescriptor[];
-  payload: unknown;
-  req: ServerRequestLike;
-  res: ServerResponseLike;
-  socket: LiveSocketLike;
-};
-
-type LiveSocketSidebarSyncOptions = {
-  event?: string;
-  readItems?: (payload: unknown) => SidebarLiveDescriptor[];
-  resolve: (
-    context: LiveSocketSidebarSyncContext,
-  ) => unknown | Promise<unknown>;
-  responseEvent?: string;
-  withContext?: (
-    context: LiveSocketSidebarSyncContext,
-    run: () => Promise<unknown>,
-  ) => Promise<unknown>;
-};
-
-type LiveSocketServerOptions = {
-  authenticate?: unknown | readonly unknown[];
-  changeEvent?: string;
-  deniedEvent?: string;
-  logger?: FrontendServerLoggerInput;
-  namespace?: string;
-  sidebarSync?: false | LiveSocketSidebarSyncOptions;
-  subscribedEvent?: string;
-  subscribeEvent?: string;
-  unsubscribeEvent?: string;
-};
-
-type LiveResourcePayloadResolver<TInput = unknown, TData = unknown> = (
-  input: TInput,
-) => TData | null | undefined | Promise<TData | null | undefined>;
-
-type LiveResourceDefinition<TInput = unknown, TData = unknown> = {
-  authorize?: (socket: LiveSocketLike, id: string) => unknown;
-  event: unknown;
-  id?: unknown;
-  kind: unknown;
-  payload?: LiveResourcePayloadResolver<TInput, TData>;
-};
-
-type LiveResourceSubscribe<TInput = unknown> = (
-  emit: (input?: TInput) => void,
-) => unknown;
-
-type LiveSocketResource<TInput = unknown> = {
-  bind: (
-    key: unknown,
-    subscribe: LiveResourceSubscribe<TInput>,
-  ) => () => void;
-  broadcast: (input?: TInput) => Promise<boolean>;
-  register: () => boolean;
-  room: (id?: unknown) => string;
-};
-
-type LiveSocketServer = {
-  attach: (server: LiveSocketServerLike) => boolean;
-  broadcast: (room: unknown, event: unknown, data: unknown) => boolean;
-  defineResource: <TInput = unknown, TData = unknown>(
-    definition: LiveResourceDefinition<TInput, TData>,
-  ) => LiveSocketResource<TInput>;
-  namespace: () => LiveSocketNamespaceLike | null;
-  registerRoomAuthorizer: (
-    kind: unknown,
-    authorize: (socket: LiveSocketLike, id: string) => unknown,
-  ) => boolean;
-};
-
-const DEFAULT_LIVE_NAMESPACE = "/live";
-const DEFAULT_LIVE_CHANGE_EVENT = "resource:change";
-const DEFAULT_LIVE_SUBSCRIBE_EVENT = "subscribe";
-const DEFAULT_LIVE_UNSUBSCRIBE_EVENT = "unsubscribe";
-const DEFAULT_LIVE_SUBSCRIBED_EVENT = "live:subscribed";
-const DEFAULT_LIVE_DENIED_EVENT = "live:denied";
-const DEFAULT_LIVE_SIDEBAR_SYNC_EVENT = "sidebar:sync";
-
-function liveRoomFor(kind: unknown, id: unknown): string {
-  const safeKind = serverString(kind).trim();
-  const safeId = serverString(id).trim();
-  return safeKind && safeId ? `${safeKind}:${safeId}` : "";
-}
-
-function parseLiveRoom(room: unknown): LiveRoom | null {
-  const text = serverString(room).trim();
-  const separator = text.indexOf(":");
-  if (separator <= 0 || separator >= text.length - 1) return null;
-  return {
-    kind: text.slice(0, separator),
-    id: text.slice(separator + 1),
-    room: text,
-  };
-}
-
-function liveSocketRequest(socket: LiveSocketLike): ServerRequestLike {
-  const handshake = serverObject(socket && socket.handshake);
-  const request = serverObject(handshake.request);
-  return Object.assign(
-    Object.create(request ? Object.getPrototypeOf(request) : Object.prototype),
-    request,
-    {
-      address: handshake.address || "",
-      cookies: serverObject(request.cookies),
-      headers: serverObject(handshake.headers || request.headers),
-      ip: handshake.address || "",
-      login_session: socket && socket.login_session ? socket.login_session : null,
-      viewer: socket && socket.viewer ? socket.viewer : null,
-    },
-  );
-}
-
-function liveSocketResponse(socket: LiveSocketLike): ServerResponseLike {
-  return {
-    locals: {
-      isAuthenticated: Boolean(socket && socket.viewer),
-      login_session: socket && socket.login_session ? socket.login_session : null,
-      viewer: socket && socket.viewer ? socket.viewer : null,
-    },
-  };
-}
-
-function normalizeLiveSocketOptions(options: LiveSocketServerOptions = {}) {
-  return {
-    changeEvent: serverString(options.changeEvent || DEFAULT_LIVE_CHANGE_EVENT),
-    deniedEvent: serverString(options.deniedEvent || DEFAULT_LIVE_DENIED_EVENT),
-    namespace: serverString(options.namespace || DEFAULT_LIVE_NAMESPACE),
-    sidebarSync: options.sidebarSync,
-    subscribedEvent: serverString(
-      options.subscribedEvent || DEFAULT_LIVE_SUBSCRIBED_EVENT,
-    ),
-    subscribeEvent: serverString(
-      options.subscribeEvent || DEFAULT_LIVE_SUBSCRIBE_EVENT,
-    ),
-    unsubscribeEvent: serverString(
-      options.unsubscribeEvent || DEFAULT_LIVE_UNSUBSCRIBE_EVENT,
-    ),
-  };
-}
-
-function liveSocketMiddlewareList(options: LiveSocketServerOptions) {
-  if (Array.isArray(options.authenticate)) return [...options.authenticate];
-  return options.authenticate ? [options.authenticate] : [];
-}
-
-function resolveLiveSocketNamespace(
-  server: LiveSocketServerLike,
-  namespace: string,
-) {
-  return typeof server?.of === "function" ? server.of(namespace) : server;
-}
+  DEFAULT_LIVE_CHANGE_EVENT,
+  DEFAULT_LIVE_DENIED_EVENT,
+  DEFAULT_LIVE_NAMESPACE,
+  DEFAULT_LIVE_SIDEBAR_SYNC_EVENT,
+  DEFAULT_LIVE_SUBSCRIBED_EVENT,
+  DEFAULT_LIVE_SUBSCRIBE_EVENT,
+  DEFAULT_LIVE_UNSUBSCRIBE_EVENT,
+  liveRoomFor,
+  liveSocketMiddlewareList,
+  liveSocketRequest,
+  liveSocketResponse,
+  normalizeLiveSocketOptions,
+  parseLiveRoom,
+  resolveLiveSocketNamespace,
+} from "./live-socket/shared.js";
+import type {
+  LiveResourceDefinition,
+  LiveResourcePayloadResolver,
+  LiveResourceSubscribe,
+  LiveRoom,
+  LiveSocketLike,
+  LiveSocketNamespaceLike,
+  LiveSocketResource,
+  LiveSocketServer,
+  LiveSocketServerLike,
+  LiveSocketServerOptions,
+  LiveSocketSidebarSyncContext,
+  LiveSocketSidebarSyncOptions,
+} from "./live-socket/types.js";
 
 function createLiveSocketServer(
   options: LiveSocketServerOptions = {},
@@ -324,7 +162,7 @@ function createLiveSocketServer(
     return true;
   }
 
-  function defineResource<TInput = unknown, TData = unknown>(
+  function defineResource<TInput=unknown, TData=unknown>(
     definition: LiveResourceDefinition<TInput, TData>,
   ): LiveSocketResource<TInput> {
     const kind = serverString(definition && definition.kind).trim();
@@ -332,7 +170,7 @@ function createLiveSocketServer(
       ? definition.id
       : "global").trim();
     const event = serverString(definition && definition.event).trim();
-    const bound = new Map<string, () => void>();
+    const bound = new Map<string, ()=>void>();
     let registered = false;
 
     function register() {
@@ -387,7 +225,7 @@ function createLiveSocketServer(
       const cleanupValue = subscribe(emit);
       const cleanup =
       typeof cleanupValue === "function"
-      ? cleanupValue as () => void
+      ? cleanupValue as() => void
       : () => {};
       const dispose = () => {
         try {

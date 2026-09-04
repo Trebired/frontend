@@ -72,7 +72,7 @@ function injectNewScripts(doc: Document) {
       if (!src || loadedScriptSrcs.has(src)) return;
       loadedScriptSrcs.add(src);
       const fresh = document.createElement("script");
-      fresh.type = script.type || "module";
+      fresh.type = script.type ||"module";
       fresh.src = src;
       document.body.appendChild(fresh);
   });
@@ -117,16 +117,6 @@ function isOpenOverlay(element: Element) {
   );
 }
 
-/**
- * `replaceChildren()` swaps a swap zone's contents but never its own
- * attributes, so if an app points `LiveIslandMount`'s `rootId` at the SPA's
- * own content selector (or a live-region root), the wrapper node is never
- * replaced — only its children are — and `data-live-island-hydrated` stays
- * "true" from the first navigation onward. Every later swap then inherits a
- * stale "true" on brand-new unhydrated children: `watchIslandRemount` never
- * re-mounts, and the tabs/dropdown/checkbox/search/soft-redirect binders
- * treat the fresh markup as already hydrated and bind it immediately.
- */
 function syncIslandRootHydration(current: Element, next: Element) {
   if (!current.hasAttribute("data-live-island-root")) return;
   const attr = "data-live-island-hydrated";
@@ -135,18 +125,6 @@ function syncIslandRootHydration(current: Element, next: Element) {
   else current.setAttribute(attr, nextValue);
 }
 
-/**
- * Freshly rendered markup can collide with a copy of itself that an earlier
- * page portaled into a layer root — chrome that `swapChrome` re-renders (a
- * sidebar's theme/language menus) brings back an inline copy of an overlay
- * whose previous incarnation is still parked in the layer root.
- *
- * The discriminator has to be "is this copy portaled?", not "is it outside
- * `root`?": this runs as `rehydrate(document)` during soft navigation, and
- * `document.contains()` is true of every node in the page, which made the
- * whole reconcile a no-op there and let those duplicates pile up one per
- * navigation.
- */
 function reconcilePortaledDuplicates(root: ParentNode) {
   if (!root || typeof root.querySelectorAll !== "function") return;
   const portals = overlayPortalRoots();
@@ -188,12 +166,6 @@ function replaceContent(
   const formState = preserveState ? captureFormState(currentRoot) : null;
   const wizardState = preserveState ? captureWizardSteps(currentRoot) : null;
   config.closeOverlays?.();
-  /**
-   * React roots must unmount before the stale-overlay sweep. A portaled modal
-   * or popover lives in the layer root, which is never inside the content root,
-   * so the sweep would remove every React-owned overlay node and the following
-   * unmount would then fail with NotFoundError on removeChild.
-   */
   runPageCleanups(currentRoot);
   removeStalePortaledOverlaysFromRoot(
     { portaledSelector: PORTALED_SELECTOR },
@@ -217,31 +189,14 @@ function replaceContent(
   return true;
 }
 
-/**
- * Explicitly instant, never inheriting the root `scroll-behavior`.
- *
- * Soft navigation stands in for a document load, and a real load always lands
- * at the top immediately. Both `scrollTo(0, 0)` and the object form default to
- * the CSS value, so under `scroll-behavior: smooth` the fresh page painted at
- * the previous page's offset and then visibly glided upward — an effect no
- * real navigation produces. This is a scroll *reset*, not a scroll the user
- * asked for, so it opts out rather than leaving it to `design.scrollBehavior`.
- */
 function resetWindowScroll() {
   try {
-    window.scrollTo({ behavior: "instant" as ScrollBehavior, left: 0, top: 0 });
+    window.scrollTo({ behavior: "instant"as ScrollBehavior, left: 0, top: 0 });
   } catch {
     window.scrollTo(0, 0);
   }
 }
 
-/**
- * A real document load at `/page#section` lands on the fragment, not the top,
- * so a soft navigation carrying one has to do the same. Instant for the same
- * reason `resetWindowScroll` is: the page just changed underneath, and gliding
- * to the anchor is an effect no real navigation produces. Falls back to the top
- * when the fragment matches nothing, which is also what a real load does.
- */
 function applyLandingScroll(targetHash: string) {
   const id = String(targetHash || "").replace(/^#/, "");
   const target = id ? document.getElementById(id) : null;
@@ -250,7 +205,7 @@ function applyLandingScroll(targetHash: string) {
     return;
   }
   try {
-    target.scrollIntoView({ behavior: "instant" as ScrollBehavior, block: "start" });
+    target.scrollIntoView({ behavior: "instant"as ScrollBehavior, block: "start" });
   } catch {
     target.scrollIntoView();
   }
@@ -274,11 +229,6 @@ function fallbackNavigate(url: string, updateUrl: boolean) {
   return false;
 }
 
-/**
- * Soft navigation replaces a full page load, so it shows the same progress bar
- * a document load would. The handle is refcounted, so overlapping requests
- * keep the bar up until the last one settles.
- */
 async function fetchDocument(url: string, token: string) {
   progress.begin();
   try {
@@ -303,7 +253,7 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
   navigationInflight = true;
   const historyMode: SpaHistoryMode = options.history || "push";
   const targetHash = hashOf(targetUrl);
-  let navigation: ReturnType<typeof beginNavigation> | null = null;
+  let navigation: ReturnType<typeof beginNavigation>|null = null;
   try {
     if (options.force !== true && hasUnsavedWork()) {
       return fallbackNavigate(targetUrl, historyMode !== "none");

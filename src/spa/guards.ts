@@ -15,7 +15,6 @@ function hasUnsavedWork() {
     try {
       if (check() === true) return true;
     } catch {
-      // a broken check must not strand the user on the page
     }
   }
   return false;

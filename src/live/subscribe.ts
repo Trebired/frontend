@@ -1,4 +1,4 @@
-type LiveSubscribePayload = Record<string, unknown> & {
+type LiveSubscribePayload = Record<string, unknown>& {
   data?: unknown;
   event?: string;
   room?: string;

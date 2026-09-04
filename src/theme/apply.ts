@@ -75,13 +75,6 @@ function systemThemeKey(options: ThemeRuntimeOptions = {}): ThemeValue {
   return systemPrefersLight() ? registry.light : registry.dark;
 }
 
-/**
- * A view-transition switch commits the attribute from its callback, which the
- * browser runs a frame later — so between `applyTheme()` and that commit the
- * DOM still reads the old theme. `pendingTheme` holds the value already
- * decided on, otherwise a second toggle click landing inside that window
- * computes `nextTheme()` from the stale one and switches back.
- */
 let pendingTheme: ThemeValue = "";
 
 function currentDomTheme(options: ThemeRuntimeOptions = {}): ThemeValue {
@@ -113,7 +106,7 @@ type ViewTransitionHandle = { finished: Promise<unknown> };
 const THEME_SWITCH_BUFFER_MS = 120;
 const THEME_SWITCH_DEFAULT_MS = 240;
 
-let themeSwitchTimer: ReturnType<typeof setTimeout> | null = null;
+let themeSwitchTimer: ReturnType<typeof setTimeout>|null = null;
 
 function endThemeSwitch(): void {
   if (typeof document === "undefined") return;
@@ -122,12 +115,6 @@ function endThemeSwitch(): void {
   themeSwitchTimer = null;
 }
 
-/**
- * Suppresses (`"instant"`) or unifies (`"uniform"`) per-element transitions
- * for the length of a switch — see `styles/utils/base.scss`. The hold is a
- * plain timer: a `transitionend` listener would receive one bubbled event per
- * element per property, which on a real page is tens of thousands of events.
- */
 function beginThemeSwitch(mode: ThemeSwitchMode, holdMs: number): void {
   if (typeof document === "undefined") return;
   document.documentElement.setAttribute(THEME_SWITCHING_ATTR, mode);
@@ -143,7 +130,6 @@ function themeSwitchDurationMs(): number {
     if (raw.endsWith("ms")) return Number.parseFloat(raw) || THEME_SWITCH_DEFAULT_MS;
     if (raw.endsWith("s")) return (Number.parseFloat(raw) || 0.24) * 1000;
   } catch {
-    // an unreadable token just means the default hold below
   }
   return THEME_SWITCH_DEFAULT_MS;
 }
@@ -185,22 +171,6 @@ function commitTheme(
   void options;
 }
 
-/**
- * A theme switch changes the CSS vars every element reads at once, and the
- * browser cannot tell that from a hover — so each element animated on its own
- * locally tuned duration and the switch looked staggered. Animating them
- * together instead is not the fix either: a page's worth of `background-color`
- * /`box-shadow` transitions are main-thread paint work, which janks (and the
- * stagger comes back, since paint lands in chunks) and still leaves out
- * everything that has no transitionable property at all — gradients, images,
- * native scrollbars.
- *
- * So the whole page cross-fades as a single compositor-driven animation via
- * the View Transitions API, with per-element transitions suppressed
- * underneath. That is uniform by construction: one animation, not thousands.
- * Browsers without the API fall back to one shared duration for the
- * color-affecting properties, which is the best a per-element approach can do.
- */
 function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): ThemeValue {
   if (typeof document === "undefined") return getEffectiveTheme(theme, options);
   const normalized = normalizeTheme(theme, options);

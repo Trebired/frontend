@@ -156,7 +156,7 @@ function isModifiedClick(event: Event): boolean {
 function hasNativeHref(trigger: HTMLElement): boolean {
   return (
     trigger instanceof HTMLAnchorElement &&
-    Boolean(String(trigger.getAttribute("href") || "").trim())
+      Boolean(String(trigger.getAttribute("href") || "").trim())
   );
 }
 

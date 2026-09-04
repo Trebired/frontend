@@ -2,7 +2,7 @@ import type {
   NormalizedFrontendScalesConfig,
   NormalizedFrontendZIndexScaleConfig,
   FrontendScaleSteps,
-} from "./types.js";
+} from "#tf6lk8wu8qd2";
 
 const DEFAULT_HEIGHT_SCALE: FrontendScaleSteps = {
   lg: 400, md: 300, sm: 200, xl: 500, xl2: 600, xl3: 700, xl4: 800,

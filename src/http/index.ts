@@ -41,12 +41,7 @@ function ensureFormCsrfToken(
 }
 
 async function csrfFetch(input: RequestInfo | URL, init: CsrfFetchOptions = {}) {
-  const {
-    csrfHeaderName,
-    csrfMetaName,
-    progress: progressOption,
-    ...fetchInit
-  } = init;
+  const { csrfHeaderName, csrfMetaName, progress: progressOption, ...fetchInit } = init;
   const headers = new Headers(fetchInit.headers || {});
   const token = readCsrfToken(csrfMetaName);
   const headerName = csrfHeaderName || "X-CSRF-Token";
@@ -59,7 +54,7 @@ async function csrfFetch(input: RequestInfo | URL, init: CsrfFetchOptions = {}) 
         credentials: fetchInit.credentials || "same-origin",
         headers,
         progress: false,
-    } as RequestInit);
+      } as RequestInit);
   } finally {
     if (showProgress) progressHandle.end();
   }
@@ -124,11 +119,6 @@ function fallbackJsonFromStatus(status: number, ok: boolean) {
   };
 }
 
-/**
- * Every JSON request shows the progress bar unless the caller opts out with
- * `progress: false`. The handle is refcounted, so a caller that already wrapped
- * the request does not double-count and the bar clears when the last one ends.
- */
 async function requestJson(input: RequestInfo | URL, options: JsonRequestOptions = {}) {
   const showProgress = options.progress !== false;
   if (showProgress) progressHandle.begin();

@@ -157,9 +157,8 @@ async function verifyRenderedActions(importDist) {
   assertNoCustomElementTags(html, "rendered action components");
 }
 
-async function verifyRenderedLayeredSystems(importDist) {
-  const react = await importDist("react");
-  const html = [
+function renderLayeredSystemsMarkup(react) {
+  return [
     renderToStaticMarkup(h(react.BootScript, {
           layout: { hasHeader: true, hasLeftSidebar: true },
           nonce: "n",
@@ -193,6 +192,9 @@ async function verifyRenderedLayeredSystems(importDist) {
     renderToStaticMarkup(h(react.FullscreenButton, { fullscreenId: "panel" }, "Fullscreen")),
     renderToStaticMarkup(h(react.SidebarShell, { id: "side" }, h(react.Sidebar, null, h(react.SidebarList, null)))),
   ].join("");
+}
+
+function assertLayeredSystemsMarkup(html) {
   assert.ok(html.includes("data-tbf-status-icon"));
   assert.ok(html.includes("data-tbf-layout-boot"));
   assert.ok(html.includes("data-tbf-sidebar-boot"));
@@ -213,6 +215,11 @@ async function verifyRenderedLayeredSystems(importDist) {
   assert.ok(html.includes("data-tbf-fullscreen-target"));
   assert.ok(html.includes("data-tbf-sidebar-shell"));
   assertNoCustomElementTags(html, "rendered layered components");
+}
+
+async function verifyRenderedLayeredSystems(importDist) {
+  const react = await importDist("react");
+  assertLayeredSystemsMarkup(renderLayeredSystemsMarkup(react));
 }
 
 async function verifyRenderedSeoDocument(importDist) {
@@ -295,8 +302,8 @@ async function verifyLogsViewScrollContract(importDist, rootDir) {
   const react = await importDist("react");
   const html = renderToStaticMarkup(
     h(react.logs_view, {
-      instanceId: "verify-logs",
-      title: "Logs",
+        instanceId: "verify-logs",
+        title: "Logs",
     }),
   );
   assert.ok(html.includes('id="verify-logs-box" class="log-box scroll-min"'));

@@ -40,12 +40,6 @@ textarea {
   font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
 }
 
-/**
- * `scroll-behavior` is deliberately not set here. It is emitted from config
- * (`design.scrollBehavior`, default "smooth") onto `html` only, so consumers
- * can opt out — programmatic scrolls with no explicit `behavior` inherit the
- * CSS value, which made every router scroll reset animate.
- */
 html,
 body {
   margin: 0;
@@ -61,16 +55,12 @@ body {
   box-shadow 0.3s ease;
 }
 
-/**
- * Theme switching animates the whole page as one cross-fade rather than
- * per element — see the comment on `applyTheme()` in theme/apply.ts for
- * why per-element transitions cannot be made uniform. Here the live DOM
- * only has to stop animating underneath the cross-fade, so it snaps
- * straight to the new theme while the snapshot fades over it.
- */
 #{ns.data("theme-switching", "instant")},
+
 #{ns.data("theme-switching", "instant")} *,
+
 #{ns.data("theme-switching", "instant")} *::before,
+
 #{ns.data("theme-switching", "instant")} *::after {
   transition: none !important;
   animation: none !important;
@@ -82,15 +72,12 @@ body {
   animation-timing-function: ease;
 }
 
-/**
- * Fallback for browsers without the View Transitions API: one shared
- * duration for the color-affecting properties. `box-shadow` is deliberately
- * left out — animating it on every element is expensive enough to jank the
- * switch, which reintroduces the very stagger this is fixing.
- */
 #{ns.data("theme-switching", "uniform")},
+
 #{ns.data("theme-switching", "uniform")} *,
+
 #{ns.data("theme-switching", "uniform")} *::before,
+
 #{ns.data("theme-switching", "uniform")} *::after {
   transition-property: background-color, border-color, color, fill, stroke, outline-color !important;
   transition-duration: var(#{ns.css-var("transition-normal")}, 240ms) !important;

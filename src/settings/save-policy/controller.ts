@@ -24,17 +24,10 @@ import { registerPageCleanup, registerUnsavedWork } from "#o9lroe7t0ma6";
 
 const activeSavePolicies = new Set<SavePolicyController>();
 const savePolicies = new WeakMap<HTMLElement, SavePolicyController>();
-const savePolicyCleanups = new WeakMap<SavePolicyController, () => void>();
+const savePolicyCleanups = new WeakMap<SavePolicyController, ()=>void>();
 const blockedForms = new WeakSet<HTMLFormElement>();
 
 function showUnsavedFlash(state: SavePolicyState) {
-  /**
-   * `update: true` replaces any existing toast sharing this id instead of
-   * stacking a duplicate. Without it, the brief re-show inside `setSaving`
-   * (dirty is still true for one tick before `captureBaseline` clears it) can
-   * create a second element that `hideUnsavedFlash` never targets, since
-   * dismissal only ever removes the first DOM match for the id.
-   */
   return state.flash.stickyWarn?.(
     state.labels.unsavedMessage,
     state.labels.unsavedDescription,

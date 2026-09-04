@@ -107,20 +107,6 @@
   contain-intrinsic-height: auto var(--height-input);
 }
 
-/**
- * `content-visibility: auto` above defers layout of off-screen options for
- * long lists, using `contain-intrinsic-height` as a placeholder size. Right
- * after the panel goes from collapsed (see the zero-size rule below) to
- * either being measured or shown, the browser hasn't always run the
- * relevance check that would make it lay these out for real yet — so
- * `getBoundingClientRect()` on the panel during `positionStaticOptions()`
- * can read the placeholder-based (wrong, and inconsistent run to run) height
- * instead of the true one, landing the panel far from its trigger once
- * flipped above it. Forcing full layout only while genuinely measuring or
- * shown keeps the (still real, list can be scrolled) auto behavior for the
- * collapsed/hidden state, where it doesn't matter because nothing is visible
- * anyway.
- */
 .options[data-dropdown-portaled="true"][data-dropdown-measuring="true"] .dropdown-list li,
 .options[data-dropdown-portaled="true"][data-dropdown-show="true"] .dropdown-list li {
   content-visibility: visible;

@@ -122,13 +122,6 @@ function csrfInput(props: CsrfInputProps) {
   return <input type="hidden" name="_csrf" value={value} />;
 }
 
-/**
- * Renders the `.flag\:<COUNTRY>` class `renderFlagRules()` (`config/flags.ts`)
- * generates from `assets.flags` — one data-URI background per configured
- * country. Without this, consuming that CSS means hand-writing the class name
- * (`className="flag:GB"`) into application markup, the exact drift the rest
- * of the package's primitives exist to avoid.
- */
 function flag(props: FlagProps) {
   const country = String(props.country || "").trim().toUpperCase();
   if (!country) return null;

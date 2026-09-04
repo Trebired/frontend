@@ -11,6 +11,8 @@ import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
+import { verifyProgressRequests } from "./frontend/progress.mjs";
+import { verifySidebar } from "./frontend/sidebar.mjs";
 import { verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
@@ -53,7 +55,7 @@ async function verifyFrontendMain() {
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
-  await verifySidebar();
+  await verifySidebar(context);
   await verifyUpload();
   await verifyFrontendLogging(context);
   await verifyFrontendSource(context);
@@ -102,99 +104,6 @@ function installDom() {
   window.CSS ||= {};
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
-}
-
-async function verifyProgressRequests(context) {
-  const rootRuntime = await context.importDistRoot();
-  const { csrfFetch } = await importDist("http");
-  const { bindProgress, PROGRESS_ID, progress } = rootRuntime;
-  const activeAttr = "data-tbf-progress-active";
-  function progressRoot() {
-    return document.getElementById(PROGRESS_ID);
-  }
-  function clearProgress() {
-    progress.end(true);
-    const root = progressRoot();
-    if (root) {
-      root.removeAttribute(activeAttr);
-      root.querySelector("span")?.style.setProperty("transform", "scaleX(0)");
-    }
-  }
-  function installPendingFetch() {
-    let captured = null;
-    let release = null;
-    globalThis.fetch = async(_input, init) => {
-      captured = init;
-      return await new Promise((resolve) => {
-          release = () => resolve(new Response("{}", {
-              headers: { "Content-Type": "application/json" },
-          }));
-      });
-    };
-    bindProgress();
-    return {
-      captured: () => captured,
-      release: () => {
-        assert.equal(typeof release, "function", "fetch should have started");
-        release();
-      },
-    };
-  }
-
-  document.head.innerHTML = '<meta name="csrf-token" content="token-a">';
-  document.body.innerHTML = "";
-
-  bindProgress();
-  assert.equal(
-    progressRoot()?.getAttribute(activeAttr),
-    "true",
-    "bindProgress must start progress for the page load request",
-  );
-  window.dispatchEvent(new Event("load"));
-  clearProgress();
-
-  const raw = installPendingFetch();
-  clearProgress();
-  const rawRequest = fetch("/raw", { method: "GET" });
-  await Promise.resolve();
-  assert.equal(
-    progressRoot()?.getAttribute(activeAttr),
-    "true",
-    "raw fetch requests must activate top progress",
-  );
-  raw.release();
-  await rawRequest;
-  clearProgress();
-
-  const csrf = installPendingFetch();
-  clearProgress();
-  const csrfRequest = csrfFetch("/endpoint", { method: "POST" });
-  await Promise.resolve();
-  assert.equal(
-    progressRoot()?.getAttribute(activeAttr),
-    "true",
-    "csrfFetch requests must activate top progress",
-  );
-  csrf.release();
-  await csrfRequest;
-  const captured = csrf.captured();
-  assert.equal(captured.credentials, "same-origin");
-  assert.equal(new Headers(captured.headers).get("X-CSRF-Token"), "token-a");
-  assert.equal("progress"in captured, false);
-  clearProgress();
-
-  const silent = installPendingFetch();
-  clearProgress();
-  const silentRequest = csrfFetch("/silent", { progress: false });
-  await Promise.resolve();
-  assert.notEqual(
-    progressRoot()?.getAttribute(activeAttr),
-    "true",
-    "progress:false must keep request progress silent",
-  );
-  silent.release();
-  await silentRequest;
-  clearProgress();
 }
 
 async function verifyLocaleSwitching() {
@@ -319,80 +228,6 @@ async function verifyFullscreen() {
   closeFullscreenTarget({ immediate: true });
   assert.equal(panel.hasAttribute("data-tbf-fullscreen-active"), false);
   assert.equal(document.querySelector("[data-tbf-fullscreen-overlay]"), null);
-}
-
-async function verifySidebar() {
-  const { bindSidebars } = await importDist("sidebar");
-  document.body.innerHTML = [
-    '<button id="sidebar-min" data-tbf-sidebar-minimize aria-controls="side">Toggle</button>',
-    '<button id="sidebar-open" data-tbf-sidebar-open aria-controls="side">Open</button>',
-    '<div id="side" data-tbf-sidebar-shell data-tbf-sidebar-side="left">',
-    "<aside data-tbf-sidebar>",
-    '<button id="sidebar-close" data-tbf-sidebar-close>Close</button>',
-    '<a id="sidebar-link" data-tbf-sidebar-link href="/welcome">Welcome</a>',
-    '<a id="sidebar-modified" data-tbf-sidebar-link href="/modified">Modified</a>',
-    '<a id="sidebar-external" data-tbf-sidebar-link href="https://external.test/">External</a>',
-    '<a id="sidebar-download" data-tbf-sidebar-link href="/download" download>Download</a>',
-    '<a id="sidebar-target" data-tbf-sidebar-link href="/target" target="_blank">Target</a>',
-    '<a id="sidebar-hash" data-tbf-sidebar-link href="#section">Section</a>',
-    "</aside>",
-    "</div>",
-    '<main data-tbf-live-content><span id="current-marker">Current</span></main>',
-  ].join("");
-  const previousFetch = globalThis.fetch;
-  let requested = "";
-  globalThis.fetch = async(input) => {
-    requested = String(input);
-    return new Response(
-      [
-        "<!doctype html><html><head><title>Welcome</title></head><body>",
-        '<main data-tbf-live-content><span id="welcome-marker">Welcome</span></main>',
-        "</body></html>",
-      ].join(""),
-      { headers: { "Content-Type": "text/html" } },
-    );
-  };
-  bindSidebars(document);
-  const shell = document.getElementById("side");
-  assert.equal(shell.getAttribute("data-tbf-sidebar-minimized"), "false");
-  document.getElementById("sidebar-min").click();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.equal(shell.getAttribute("data-tbf-sidebar-minimized"), "true");
-  assert.equal(document.body.getAttribute("data-tbf-sidebar-left-minimized"), "true");
-  document.getElementById("sidebar-open").click();
-  assert.equal(shell.getAttribute("data-tbf-sidebar-open"), "true");
-  document.getElementById("sidebar-close").click();
-  assert.equal(shell.getAttribute("data-tbf-sidebar-open"), "false");
-  try {
-    const modified = document.getElementById("sidebar-modified");
-    modified.addEventListener("click", (event) => event.preventDefault());
-    modified.dispatchEvent(new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        ctrlKey: true,
-    }));
-    for (const id of [
-      "sidebar-external",
-      "sidebar-download",
-      "sidebar-target",
-      "sidebar-hash",
-    ]) {
-      const link = document.getElementById(id);
-      link.addEventListener("click", (event) => event.preventDefault());
-      link.click();
-    }
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(requested, "");
-
-    document.getElementById("sidebar-link").click();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(requested, "/welcome");
-    assert.equal(document.getElementById("welcome-marker")?.textContent, "Welcome");
-  } finally {
-    globalThis.fetch = previousFetch;
-    history.replaceState({}, "", "/current");
-  }
 }
 
 async function verifyUpload() {

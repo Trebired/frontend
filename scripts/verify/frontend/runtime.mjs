@@ -40,12 +40,6 @@ async function verifyPopover(context) {
   assert.equal(document.activeElement, trigger);
 }
 
-/**
- * The popover binder moves the panel into the layer root on open. If the panel
- * is a plain React child, that detaches it from the React root container and
- * React's delegated events stop firing inside it. PopoverPanel portals into the
- * layer root so this keeps working.
- */
 async function verifyPopoverReactEvents(context) {
   const React = await import("react");
   const { createRoot } = await import("react-dom/client");

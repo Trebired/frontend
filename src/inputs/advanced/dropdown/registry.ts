@@ -164,11 +164,6 @@ function dropdownOptionValue(option: HTMLElement | null) {
   return dropdownOptionConfig(option).value || "";
 }
 
-/**
- * An option carries its config in a child `<script type="application/json">`.
- * `innerText` degrades to `textContent` while the option is hidden, which pulls
- * that JSON in, so the fallback has to read the text with scripts stripped.
- */
 function optionFallbackLabel(option: HTMLElement | null) {
   if (!(option instanceof HTMLElement)) return "";
   const clone = option.cloneNode(true) as HTMLElement;

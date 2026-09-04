@@ -143,7 +143,7 @@ function contentColumn(
 ) {
   const titleClassName = resolvedTitleClassName(props);
   return (
-    <Stack gap="xs">
+    <Stack gap="xs" grow>
     {titleRow(props, titleClassName, showTitleMeta, showActions)}
     {props.subtitle ? <div className={resolvedSubtitleClassName(props)}>{props.subtitle}</div> : null}
     {showSegments ? props.segments : null}

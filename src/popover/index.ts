@@ -66,11 +66,6 @@ function setPopoverExpanded(entry: PopoverEntry, open: boolean) {
   entry.popover.setAttribute("aria-hidden", open ? "false" : "true");
 }
 
-/**
- * The panel can be replaced after binding — a React portal remounts it, and a
- * live navigation can swap it — so resolve the current node by id instead of
- * trusting the one captured at bind time.
- */
 function currentPopoverElement(entry: PopoverEntry): HTMLElement {
   const id = String(entry.trigger.getAttribute("aria-controls") || "").trim();
   if (!id) return entry.popover;

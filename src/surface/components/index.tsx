@@ -6,7 +6,7 @@ import type {
 import { classNames } from "#ndsvdqv80epr";
 import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
-import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: SurfaceSize;
@@ -28,12 +28,15 @@ type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
 function Button(props: ButtonProps) {
   const { children, className, size, tone, type = "button", ...rest } = props;
   const ariaHasPopup =
-    rest["aria-haspopup"] ??
-    ((rest as Record<string, unknown>)["data-tbf-modal-open"] === undefined
-      ? undefined
-      : "dialog");
+  rest["aria-haspopup"] ??
+  ((rest as Record<string, unknown>)[frontendDataAttr("modal-open")] === undefined
+    ? undefined
+    : "dialog");
   return (
-    <button {...rest} aria-haspopup={ariaHasPopup} className={classNames(surfaceClass(frontendClassName("button"), { size, tone }), className)} type={type}>
+    <button {...rest} aria-haspopup={ariaHasPopup} className={classNames(
+        surfaceClass(frontendClassName("button"), { size, tone }),
+        className
+    )} type={type}>
     {children}
     </button>
   );

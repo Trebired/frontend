@@ -1,4 +1,4 @@
-import { isInUnhydratedIsland, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { isInUnhydratedIsland, isModifiedMouseClick, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { spaConfig } from "./config.js";
 import { softRedirect } from "./navigate.js";
@@ -6,16 +6,6 @@ import { softRedirect } from "./navigate.js";
 const SOFT_REDIRECT_ATTR = frontendDataAttr("soft-redirect");
 const SOFT_REDIRECT_SELECTOR = frontendDataSelector("soft-redirect");
 const SOFT_REDIRECT_BOUND_ATTR = frontendDataAttr("soft-redirect-bound");
-
-function isModifiedClick(event: MouseEvent) {
-  return Boolean(
-    event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      event.button !== 0,
-  );
-}
 
 function softRedirectTarget(trigger: HTMLElement) {
   if (trigger.getAttribute("aria-disabled") === "true") return "";
@@ -58,7 +48,7 @@ function ensureSoftRedirectA11y(trigger: HTMLElement) {
 
 function runSoftRedirect(event: Event, trigger: HTMLElement) {
   if (event.defaultPrevented) return;
-  if (event instanceof MouseEvent && isModifiedClick(event)) {
+  if (event instanceof MouseEvent && isModifiedMouseClick(event)) {
     if (trigger instanceof HTMLAnchorElement) return;
   }
   const target = softRedirectTarget(trigger);

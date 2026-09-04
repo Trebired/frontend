@@ -27,15 +27,9 @@ function ModalRoot(props: ModalRootProps) {
   const { children, className, labelledBy, role = "dialog", ...rest } = props;
   const [layerRoot, setLayerRoot] = useState<HTMLElement | null>(null);
 
-  /**
-   * `openModal()` moves the modal into the layer root, which detaches it from
-   * the React root container and kills React's delegated events inside it.
-   * Portalling keeps the node in the React tree. Applied after mount so the
-   * server render and the first client render still match.
-   */
   useEffect(() => {
       setLayerRoot(ensureLayerRoot());
-  }, []);
+    }, []);
 
   const modal = (
     <div

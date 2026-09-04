@@ -51,10 +51,6 @@ async function verifyLiveNavigationLifecycle(context) {
   assert.equal(spa.currentPage().pageId, "/next?tab=1");
 }
 
-/**
- * A soft navigation replaces a document load, so it must drive the same
- * progress bar. It previously never fired, leaving navigation with no feedback.
- */
 async function verifyLiveNavigationProgress(context) {
   const spa = await context.importDist("spa");
   const { PROGRESS_ID } = await context.importDist("progress");

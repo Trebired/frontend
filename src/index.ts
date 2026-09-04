@@ -122,7 +122,7 @@ function runBindStep(logger: BindStepLogger, label: string, step: () => void) {
 function bindFrontendWidgets(
   scope: BindRoot,
   options: FrontendRuntimeOptions,
-  adapters: ActionAdapters & { subscribe?: LiveSubscribe },
+  adapters: ActionAdapters& { subscribe?: LiveSubscribe },
 ) {
   const logger = resolveFrontendLogger({
       ...options.adapters,
@@ -138,12 +138,12 @@ function bindFrontendWidgets(
   runBindStep(logger, "codeBlocks", () => bindCodeBlocks(scope));
   runBindStep(logger, "editors", () => bindEditors(scope));
   runBindStep(logger, "inputs", () => bindInputControllers(scope, {
-      flash: adapters.flash,
-      logging: {
-        ...options.adapters,
-        frontend_quiet: options.frontend_quiet,
-        quiet: options.quiet,
-      },
+        flash: adapters.flash,
+        logging: {
+          ...options.adapters,
+          frontend_quiet: options.frontend_quiet,
+          quiet: options.quiet,
+        },
   }));
   runBindStep(logger, "advancedInputs", () => bindAdvancedInputControllers(scope));
   runBindStep(logger, "primitives", () => bindPrimitiveControllers(scope));

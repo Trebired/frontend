@@ -1,4 +1,4 @@
-import type { NormalizedFrontendComponentsConfig } from "./types.js";
+import type { NormalizedFrontendComponentsConfig } from "#tf6lk8wu8qd2";
 import { frontendCssVar } from "#5vbaqj4pirp3";
 
 const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({

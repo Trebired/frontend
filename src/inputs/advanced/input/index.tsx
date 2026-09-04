@@ -23,7 +23,7 @@ function input(props: InputProps) {
           className: search ? classes.input : className,
           size,
           tone,
-      })}
+    })}
     {...rest}
     />
   );

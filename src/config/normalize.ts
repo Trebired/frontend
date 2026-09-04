@@ -6,7 +6,7 @@ import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
 import { DEFAULT_FLAG_COUNTRIES, normalizeFlagsConfig } from "./flags.js";
 import { DEFAULT_FRONTEND_BREAKPOINTS, normalizeBreakpointsConfig } from "./breakpoints.js";
-import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default-scales.js";
+import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default/scales.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import {
   frontendConfigPath,

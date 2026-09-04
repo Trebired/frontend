@@ -4,7 +4,7 @@ import { breakpointEntries } from "./breakpoints.js";
 import { flattenThemeTokens } from "./theme.js";
 import type { FrontendThemeTokens, NormalizedFrontendConfig } from "./types.js";
 
-type ResponsiveValue = string | number | Record<string, string | number>;
+type ResponsiveValue = string | number | Record<string, string|number>;
 
 const CONTAINER_DEFAULT_PX: Record<string, string> = {
   base: "24px",
@@ -16,16 +16,12 @@ function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-/**
- * A responsive value is either one value for every width, or a map keyed by
- * `base` plus any configured breakpoint name.
- */
 function responsiveSteps(
   value: ResponsiveValue,
   breakpoints: Record<string, number>,
-): Array<[string | null, string]> {
+): Array<[string|null, string]> {
   if (!isPlainRecord(value)) return [[null, String(value)]];
-  const steps: Array<[string | null, string]> = [];
+  const steps: Array<[string|null, string]> = [];
   if (value.base !== undefined) steps.push([null, String(value.base)]);
   for (const [name] of breakpointEntries(breakpoints)) {
     if (value[name] !== undefined) steps.push([name, String(value[name])]);
@@ -53,25 +49,20 @@ function containerConfig(config: NormalizedFrontendConfig): ResponsiveValue {
 function renderContainerRules(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
   for (const [breakpoint, value] of responsiveSteps(
-    containerConfig(config),
-    config.design.breakpoints,
+      containerConfig(config),
+      config.design.breakpoints,
   )) {
     lines.push(
       ...wrapInBreakpoint(breakpoint, config.design.breakpoints, [
-        ":root {",
-        `  --${config.prefix}-container-px: ${value};`,
-        "}",
+          ":root {",
+          `  --${config.prefix}-container-px: ${value};`,
+          "}",
       ]),
     );
   }
   return lines;
 }
 
-/**
- * The token name is derived with the same abbreviation table the declarations
- * use, so `lineHeight` resolves to `line-h` on both sides. Pairing a property
- * with its unabbreviated name here silently produced a rule nothing declared.
- */
 const HEADING_PROPERTIES: string[] = [
   "color",
   "font-family",
@@ -101,8 +92,8 @@ function renderHeadingVariantRules(config: NormalizedFrontendConfig): string[] {
   for (const [variant, tokens] of headingVariants(config)) {
     const values = new Map(
       flattenThemeTokens(tokens).map(([key, value]) => [
-        componentTokenCssName(key),
-        String(value),
+          componentTokenCssName(key),
+          String(value),
       ]),
     );
     const cssVarName = (token: string) => `--${config.prefix}-heading-${variant}-${token}`;
@@ -130,9 +121,9 @@ function renderHeadingVariantRules(config: NormalizedFrontendConfig): string[] {
     for (const [name, body] of responsive) {
       lines.push(
         ...wrapInBreakpoint(name, config.design.breakpoints, [
-          `${selector} {`,
-          ...body,
-          "}",
+            `${selector} {`,
+            ...body,
+            "}",
         ]),
       );
     }

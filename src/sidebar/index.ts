@@ -1,6 +1,7 @@
 import {
   browserLocalStorage,
   cssEscape,
+  isModifiedMouseClick,
   queryAll,
   resolveDocumentTarget,
   setAriaExpanded,
@@ -48,16 +49,6 @@ const boundCloseButtons = new WeakSet<HTMLElement>();
 const boundSidebarLinks = new WeakSet<HTMLAnchorElement>();
 let sharedListenersInstalled = false;
 
-function isModifiedLinkClick(event: MouseEvent) {
-  return Boolean(
-    event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      event.button !== 0,
-  );
-}
-
 function sidebarSoftRedirectTarget(link: HTMLAnchorElement) {
   if (link.hasAttribute("download")) return "";
   if (link.target && link.target !== "_self") return "";
@@ -87,7 +78,7 @@ function bindSidebarLink(link: HTMLAnchorElement) {
   if (boundSidebarLinks.has(link)) return;
   boundSidebarLinks.add(link);
   link.addEventListener("click", (event) => {
-      if (event.defaultPrevented || isModifiedLinkClick(event)) return;
+      if (event.defaultPrevented || isModifiedMouseClick(event)) return;
       const target = sidebarSoftRedirectTarget(link);
       if (!target) return;
       event.preventDefault();

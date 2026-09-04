@@ -59,24 +59,6 @@ function closeStaleOverlayNode(
   node.remove();
 }
 
-/**
- * A portaled overlay is stale only when it was portaled *out of the root being
- * replaced* — that is what makes it an orphan once that root's content goes
- * away.
- *
- * Current position cannot answer this: every portaled node lives in a portal
- * root and is therefore never contained by the content root, so a
- * `!root.contains(node)` test matches all of them indiscriminately. That
- * deleted persistent app-shell overlays (a header's notifications modal, a
- * user menu) on every soft navigation, but only once they had been opened —
- * opening is what portals them — leaving their triggers bound to an element
- * that no longer existed and silently dead.
- *
- * `layerPortalOrigin` reports where the node actually came from, so ownership
- * decides. An overlay with no recorded origin was never portaled by us (it was
- * authored inside a portal root, or created detached) and is nobody's orphan,
- * so it is left alone.
- */
 function isStalePortaledOverlay(node: HTMLElement, root: HTMLElement) {
   const origin = layerPortalOrigin(node);
   if (!origin) return false;

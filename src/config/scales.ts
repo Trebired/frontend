@@ -8,7 +8,7 @@ import {
   DEFAULT_TEXT_SIZE_SCALE,
   DEFAULT_WIDTH_SCALE,
   DEFAULT_Z_INDEX_SCALE,
-} from "./default-scales.js";
+} from "./default/scales.js";
 import type {
   NormalizedFrontendScalesConfig,
   NormalizedFrontendZIndexScaleConfig,

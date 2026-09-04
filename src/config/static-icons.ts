@@ -28,7 +28,7 @@ async function generateStaticIconsModule(
   const cache = buildStaticIconCache(specs, {
       packs: icons.packs,
       rootDir: options.rootDir,
-  } as never);
+    } as never);
   const entries = Object.keys(cache);
   if (!entries.length) return emptyStaticIconsModule();
 

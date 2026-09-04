@@ -4,6 +4,17 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.12.7
+
+### Fixed
+
+- A card's `actions` slot rendered next to the title instead of at the right edge of the card. The
+  slot is wrapped in `.right` (`margin-left: auto`), but `card_body`'s content column was a flex
+  item with the default `flex-grow: 0`, so it shrank to its content (107px inside a 1319px card)
+  and left `margin-left: auto` no free space to distribute. The column now uses `Stack`'s existing
+  `grow` option, so it fills the card body and both the `width: "full"` and width-fit title paths
+  put actions flush right.
+
 ## 12.12.6
 
 ### Fixed

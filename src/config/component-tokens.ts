@@ -1,6 +1,6 @@
 import { assertPlainObject, invalidConfig, isPlainObject } from "./shared.js";
 import { normalizeThemeTokens } from "./theme.js";
-import { DEFAULT_FRONTEND_COMPONENTS_CONFIG } from "./default-component-tokens.js";
+import { DEFAULT_FRONTEND_COMPONENTS_CONFIG } from "./default/component-tokens.js";
 import type {
   NormalizedFrontendComponentsConfig,
   FrontendComponentTokens,

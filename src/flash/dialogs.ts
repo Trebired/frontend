@@ -18,14 +18,6 @@ import type {
 import { toText as text } from "#ndsvdqv80epr";
 import { frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
 
-/**
- * These dialogs build raw DOM (no React), so they can't go through the
- * `button()`/`input()` primitives directly — instead they use the exact
- * literal classes those primitives emit ("btn"/"btn highlight"/"input
- * classic"), not the generic `frontendClassName("button"/"input")` fallback
- * classes. The fallback classes have their own separate, more generic CSS
- * (different token names) that drifts visually from the rest of the app.
- */
 const DIALOG_BUTTON_CLASS = "btn";
 const DIALOG_BUTTON_STRONG_CLASS = "btn highlight";
 

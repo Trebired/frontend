@@ -54,16 +54,6 @@ function installFullscreenLayerListener(): void {
   });
 }
 
-/**
- * Where each element lived before it was portaled into the layer root.
- *
- * Portaling is destructive to provenance: once an overlay is moved into the
- * layer root, nothing about the node says which part of the page owns it, and
- * "is it inside the content root?" answers `false` for every portaled node —
- * shell-owned ones (a header's notifications modal) exactly as much as ones
- * belonging to the page content being replaced. Recording the original parent
- * lets callers tell those apart instead of guessing from current position.
- */
 const layerPortalOrigins = new WeakMap<HTMLElement, Node>();
 
 function mountLayerPortalElement(element: HTMLElement | null) {
@@ -77,10 +67,6 @@ function mountLayerPortalElement(element: HTMLElement | null) {
   return root;
 }
 
-/**
- * The node this element was portaled out of, or null when it was never
- * portaled (already sat in a portal root, or was created detached).
- */
 function layerPortalOrigin(element: HTMLElement | null) {
   return element ? layerPortalOrigins.get(element) || null : null;
 }

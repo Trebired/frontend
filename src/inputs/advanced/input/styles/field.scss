@@ -19,8 +19,11 @@ $frontend-input-sizes: (
 
 $frontend-input-tones: (
   "green": var(#{ns.css-var("tone-green")}, var(#{ns.css-var("tone-success")}, currentColor)),
+
   "highlight": var(#{ns.css-var("tone-blue")}, var(#{ns.css-var("tone-info")}, currentColor)),
+
   "red": var(#{ns.css-var("tone-red")}, var(#{ns.css-var("tone-error")}, currentColor)),
+
   "yellow": var(#{ns.css-var("tone-yellow")}, var(#{ns.css-var("tone-warning")}, currentColor)),
 );
 

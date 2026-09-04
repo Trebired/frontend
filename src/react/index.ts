@@ -65,12 +65,6 @@ function unmountReactRoot(root: Element) {
   return true;
 }
 
-/**
- * A soft navigation replaces the island with fresh server HTML, and the page's
- * client module is not re-executed because its script src is already loaded. So
- * nothing would mount the new island and every control inside it stays dead.
- * Re-mount whenever a rehydrate leaves an unhydrated island behind.
- */
 function watchIslandRemount(options: LiveIslandMountOptions) {
   const selector = typeof options.root === "string" ? options.root.trim() : "";
   if (!selector || remountWatched.has(selector)) return;
@@ -98,27 +92,13 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   const userWrapped = options.wrap
   ? options.wrap(child, { initialState: state, root: target })
   : child;
-  /**
-   * The full-page server render is wrapped in `RenderCurrentUrlProvider` with
-   * the request URL, so any tree that reads `useRenderCurrentUrl()` (tabs, for
-   * one) renders against it. This island hydrates as its own React root with no
-   * such ancestor, so without this it falls back to the empty default and
-   * mismatches the moment the URL carries route state, e.g. `?tab-x=y` written
-   * by a previous tab switch.
-   */
   const wrapped = react.createElement(RenderCurrentUrlProvider, {
       currentUrl: window.location.href,
-  }, userWrapped);
-  /**
-   * The tabs, dropdown, checkbox and search binders bail inside an island still
-   * marked unhydrated, so they must run again once this one is hydrated. It has
-   * to happen from an effect: `hydrateRoot()` returns before React commits, and
-   * re-binding earlier would mutate the tree mid-hydration and mismatch.
-   */
+    }, userWrapped);
   function IslandRuntimeBinder(binderProps: { children?: ReactNode }) {
     react.useEffect(() => {
         runSpaRebind(target);
-    }, []);
+      }, []);
     return binderProps.children ?? null;
   }
   const node = react.createElement(IslandRuntimeBinder, null, wrapped);
@@ -129,12 +109,6 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
       unmountReactRoot(target);
   });
   target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
-  /**
-   * `LiveIslandMount` renders `data-live-island-hydrated="false"`, and the tabs,
-   * dropdown, checkbox and search binders all refuse to bind inside an island
-   * still marked unhydrated. Flip that same attribute here, otherwise every one
-   * of those controls stays dead for the life of the page.
-   */
   target.setAttribute("data-live-island-hydrated", "true");
   target.dispatchEvent(
     new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {

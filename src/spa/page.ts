@@ -8,7 +8,7 @@ type SpaPage = {
   url: string;
 };
 
-type SpaNavigation = SpaPage & {
+type SpaNavigation = SpaPage& {
   from: SpaPage;
   historyMode: SpaHistoryMode;
 };

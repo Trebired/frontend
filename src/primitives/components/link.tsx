@@ -25,8 +25,8 @@ function TextLink(props: TextLinkProps) {
     {...rest}
     className={joinClassNames(frontendClassName("text-link"), "text-link", className)}
     {...frontendDataAttrs({
-        "text-link": "",
-        "soft-redirect": softRedirect === true ? "" : undefined,
+          "text-link": "",
+          "soft-redirect": softRedirect === true ? "" : undefined,
     })}
     rel={linkRel(rel, resolvedTarget)}
     target={resolvedTarget}

@@ -26,17 +26,17 @@ function defaultNormalizePageId(pageId: unknown) {
 }
 
 const NONCE_SCRIPT_TYPES = new Set([
-  "",
-  "application/ecmascript",
-  "application/javascript",
-  "application/x-javascript",
-  "importmap",
-  "module",
-  "speculationrules",
-  "text/ecmascript",
-  "text/javascript",
-  "text/jscript",
-  "text/x-javascript",
+    "",
+    "application/ecmascript",
+    "application/javascript",
+    "application/x-javascript",
+    "importmap",
+    "module",
+    "speculationrules",
+    "text/ecmascript",
+    "text/javascript",
+    "text/jscript",
+    "text/x-javascript",
 ]);
 
 function readScriptTypeAttribute(attrs: string): string {

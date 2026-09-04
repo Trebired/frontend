@@ -82,13 +82,13 @@ function endProgress(force = false) {
     ? setTimeout
     : null;
     const finish = () => {
-        const root = ensureProgressElement();
-        if (root && activeRequests === 0) {
-          root.removeAttribute(frontendDataAttr("progress-active"));
-          const nextBar = progressBar();
-          if (nextBar) nextBar.style.transform = "scaleX(0)";
-        }
-      };
+      const root = ensureProgressElement();
+      if (root && activeRequests === 0) {
+        root.removeAttribute(frontendDataAttr("progress-active"));
+        const nextBar = progressBar();
+        if (nextBar) nextBar.style.transform = "scaleX(0)";
+      }
+    };
     if (schedule) schedule(finish, 160);
     else finish();
   }
@@ -159,7 +159,7 @@ function progressFetchOption(init: RequestInit | undefined) {
 function stripProgressFetchOptions(init: RequestInit | undefined) {
   if (!init || typeof init !== "object") return init;
   const options = init as ProgressFetchInit;
-  if (!("progress" in options) && !("tbfProgress" in options)) return init;
+  if (!("progress"in options) && !("tbfProgress"in options)) return init;
   const { progress: _progress, tbfProgress: _tbfProgress, ...nativeInit } = options;
   return nativeInit;
 }

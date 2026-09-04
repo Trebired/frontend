@@ -35,7 +35,6 @@ function runPageCleanups(removed: HTMLElement | null) {
     try {
       entry.dispose();
     } catch {
-      // a failing disposer must not block the rest of the teardown
     }
   }
 }

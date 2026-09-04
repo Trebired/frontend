@@ -196,6 +196,16 @@ function isInUnhydratedIsland(node: unknown) {
   );
 }
 
+function isModifiedMouseClick(event: MouseEvent) {
+  return Boolean(
+    event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0,
+  );
+}
+
 function setHidden(element: Element | null | undefined, hidden: boolean) {
   if (element instanceof HTMLElement) element.hidden = hidden;
 }
@@ -299,6 +309,7 @@ export {
   formDataStringRecord,
   isInteractiveTarget,
   isInUnhydratedIsland,
+  isModifiedMouseClick,
   onReady,
   parseJsonText,
   queryAll,
