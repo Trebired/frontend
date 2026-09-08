@@ -153,28 +153,28 @@ function assertLoadedScss(loaded) {
 function assertNormalizeFrontendConfig(config, context) {
   assert.equal(
     config.normalizeFrontendConfig({
-        design: { interactions: { activePress: { enabled: false } } },
         forVersion: context.packageVersion,
+        design: { interactions: { activePress: { enabled: false } } },
     }).design.interactions.activePress.filter,
     "none"
   );
   assert.equal(
     config.normalizeFrontendConfig({
-        assets: { icons: { endpoint: false, mode: "static" } },
         forVersion: context.packageVersion,
+        assets: { icons: { endpoint: false, mode: "static" } },
     }).assets.icons.endpoint,
     ""
   );
   assert.equal(
     config.normalizeFrontendConfig({
-        design: { interactions: { activePress: { enabled: true } } },
         forVersion: context.packageVersion,
+        design: { interactions: { activePress: { enabled: true } } },
     }).design.interactions.activePress.filter,
     "brightness(0.9)"
   );
   assert.throws(() => config.normalizeFrontendConfig({
-        assets: { icons: { endpoint: false } },
         forVersion: context.packageVersion,
+        assets: { icons: { endpoint: false } },
     }), /endpoint/u);
 }
 

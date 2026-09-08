@@ -1,5 +1,6 @@
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import { DEFAULT_FRONTEND_COMPONENTS_CONFIG, normalizeComponentsConfig } from "./component-tokens.js";
+import { normalizeFaviconConfig } from "./favicon.js";
 import { normalizeFontsConfig } from "./fonts.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
@@ -75,7 +76,7 @@ const TOP_LEVEL_FIELDS = [
   "systems",
 ];
 
-const ASSET_FIELDS = ["flags", "fonts", "icons"];
+const ASSET_FIELDS = ["favicon", "flags", "fonts", "icons"];
 const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
 const DESIGN_FIELDS = [
   "breakpoints",
@@ -90,6 +91,13 @@ const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
 
 const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
     assets: Object.freeze({
+        favicon: Object.freeze({
+            dark: "",
+            default: "",
+            ico: Object.freeze([]) as number[],
+            light: "",
+            sizes: Object.freeze([]) as number[],
+        }) as NormalizedFrontendConfig["assets"]["favicon"],
         flags: Object.freeze({
             countries: Object.freeze([...DEFAULT_FLAG_COUNTRIES]) as string[],
             ratio: "3x2",
@@ -237,6 +245,7 @@ function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets
   assertKnownFields(icons, ICON_FIELDS, "assets.icons");
   const mode = normalizeIconMode(icons.mode);
   return {
+    favicon: normalizeFaviconConfig(source.favicon),
     flags: normalizeFlagsConfig(source.flags),
     fonts: normalizeFontsConfig(source.fonts),
     icons: {
@@ -332,6 +341,7 @@ function normalizeForVersion(
   options: NormalizeOptions,
 ): string {
   return resolveForVersion({
+      config,
       configPath: options.configPath,
       forVersion: config.forVersion,
       label: "frontend",

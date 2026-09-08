@@ -147,5 +147,11 @@ export type {
   FrontendPaletteSemanticToken,
   FrontendPaletteStep,
 } from "./tokens.js";
+export { DEFAULT_FAVICON_ICO, DEFAULT_FAVICON_SIZES, generateFaviconAssets } from "./favicon.js";
+export type {
+  GeneratedFaviconAssets,
+  GeneratedFaviconFile,
+  GeneratedFaviconLink,
+} from "./favicon.js";
 export { STATIC_ICONS_SPECIFIER, generateStaticIconsModule } from "./static-icons.js";
 export type { GeneratedStaticIconsModule } from "./static-icons.js";

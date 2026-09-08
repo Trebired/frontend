@@ -16,4 +16,4 @@ cd-report-*.txt
 .env
 .env.*
 !.env.example
-.trebired/code-discipline/generated/
+.trebired/code-discipline/generated/reports/

@@ -31,7 +31,16 @@ type FrontendFlagsConfig = {
   ratio?: "1x1" | "3x2";
 };
 
+type FrontendFaviconConfig = {
+  dark?: string;
+  default?: string;
+  ico?: readonly number[] | false;
+  light?: string;
+  sizes?: readonly number[];
+};
+
 type FrontendAssetsConfig = {
+  favicon?: FrontendFaviconConfig | string | false;
   flags?: FrontendFlagsConfig | readonly string[] | false;
   fonts?: FrontendFontConfig;
   icons?: {
@@ -63,7 +72,16 @@ type NormalizedFrontendFlagsConfig = {
   ratio: "1x1" | "3x2";
 };
 
+type NormalizedFrontendFaviconConfig = {
+  dark: string;
+  default: string;
+  ico: number[];
+  light: string;
+  sizes: number[];
+};
+
 type NormalizedFrontendAssetsConfig = {
+  favicon: NormalizedFrontendFaviconConfig;
   flags: NormalizedFrontendFlagsConfig;
   fonts: NormalizedFrontendFontConfig;
   icons: {
@@ -76,6 +94,8 @@ type NormalizedFrontendAssetsConfig = {
 };
 
 export type {
+  FrontendFaviconConfig,
+  NormalizedFrontendFaviconConfig,
   FrontendFlagsConfig,
   NormalizedFrontendFlagsConfig,
   FrontendAssetsConfig,

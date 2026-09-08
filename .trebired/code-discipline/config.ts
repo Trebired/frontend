@@ -8,19 +8,19 @@ const PREFIX_PATTERN_ALLOWED_FILES = [
 ];
 
 export default defineConfig({
-  presets: {
-    use: ["@trebired/configs"],
-  },
-  rules: {
-    bannedPatterns: {
-      excludeDirs: [{ type: "folder", pattern: "scripts/verify" }],
-      patterns: [
-        { value: "tbf-", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
-        { value: "tbf_", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
-        { value: "tbf:", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
-        { value: "data-tbf", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
-        { value: "--tbf", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
-      ],
+    presets: {
+      use: ["@trebired/configs"],
     },
-  },
+    rules: {
+      bannedPatterns: {
+        excludeDirs: [{ type: "folder", pattern: "scripts/verify" }],
+        patterns: [
+          { value: "tbf-", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
+          { value: "tbf_", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
+          { value: "tbf:", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
+          { value: "data-tbf", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
+          { value: "--tbf", allowedFiles: PREFIX_PATTERN_ALLOWED_FILES },
+        ],
+      },
+    },
 });

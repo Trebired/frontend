@@ -4,6 +4,19 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.14.0
+
+- Added `assets.favicon` to the frontend config. It names one source SVG per browser colour scheme (`default`, plus optional `light` and `dark`), with optional `sizes` and `ico` size lists. A bare string is shorthand for `default`. Sources must be `.svg`; anything else fails normalization.
+- Added `generateFaviconAssets()`, exported from `@trebired/frontend/config`. It reads the configured SVGs and returns the files to emit plus the `<link>` descriptors to render, so a consuming build never writes generated icons back into the source tree.
+- Added raster output: PNG at each configured size (180 is emitted as `apple-touch-icon.png`) and a hand-built `favicon.ico` container, since the rasterizer cannot write ICO.
+- Added `sharp` as an optional peer dependency. When it is absent the generator returns the SVG sources and their links and reports `rasterized: false` instead of failing the build.
+- Changed the `.trebired/bundler/config.ts` `forVersion` from `5.6.3` to `5.9.0`, which had drifted behind the installed bundler and was failing `prepare:generated`.
+
+## 12.13.0
+
+- Changed the `forVersion` check to pass the config object to `resolveForVersion()`, which `@trebired/utils` 0.9.0 requires. A config that does not declare `forVersion` as its first key now fails instead of loading.
+- Updated the `@trebired/utils` dependency range to `^0.9.0`.
+
 ## 12.12.7
 
 ### Fixed
