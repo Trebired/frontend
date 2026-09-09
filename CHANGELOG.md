@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.1
+
+- Retargeted the local `.trebired/bundler/config.ts` at 5.13.1. It still named 5.11.2, so a fresh install of `@trebired/bundler` 5.13 failed the build.
+
 ## 12.16.0
 
 - Added a `media` system owning the image and slideshow primitives every Trebired site was otherwise hand-rolling: `ExpandableImage` (a gallery lightbox with previous/next), `Lightbox`, `Carousel` and `MapEmbed`, all exported from the React entrypoint, with their styles behind the new `media` system key.
