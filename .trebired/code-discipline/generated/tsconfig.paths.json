@@ -592,6 +592,9 @@
       "#c0ew0jlb0c87": [
         "../../../src/inputs/advanced/dropdown/shared.ts"
       ],
+      "#c0ufaze3282x": [
+        "../../../src/language/routing/index.ts"
+      ],
       "#c1t1f0t76p85": [
         "../../../src/code/monaco.ts"
       ],
@@ -931,6 +934,9 @@
       "#i7fdfb5wfd4a": [
         "../../../scripts/verify/frontend/server/probe.mjs"
       ],
+      "#i9d177bypfxw": [
+        "../../../src/language/routing/boot.ts"
+      ],
       "#ieim4iimrwal": [
         "../../../src/layout/index.ts"
       ],
@@ -1198,6 +1204,9 @@
       "#p0m3f4xaab7z": [
         "../../../src/graph/advanced/contributions.tsx"
       ],
+      "#p27ebzt0h2i3": [
+        "../../../scripts/verify/frontend/locale.mjs"
+      ],
       "#p8aofvpyx6fl": [
         "../../../src/editor/components/types.ts"
       ],
@@ -1432,6 +1441,9 @@
       "#v1ysq9e5o1ym": [
         "../../../src/inputs/styles/upload.scss"
       ],
+      "#v22t8z1nsxv6": [
+        "../../../src/language/routing/options.ts"
+      ],
       "#v5ivu5zwa0a7": [
         "../../../src/graph/advanced/contributions_heatmap/model.ts"
       ],
@@ -1579,6 +1591,9 @@
       "#xoshbfjcymfw": [
         "../../../src/graph/advanced/runtime/modal.ts"
       ],
+      "#xp296eiocpdg": [
+        "../../../src/language/routing/runtime.ts"
+      ],
       "#xpy3g4zz7ui5": [
         "../../../src/sidebar/dynamic/runtime/types.ts"
       ],
@@ -1591,6 +1606,9 @@
       "#xz5oe3tx9xqe": [
         "../../../src/inputs/advanced/dropdown/static/position.ts"
       ],
+      "#y0akvvg7irrc": [
+        "../../../src/react/locale.tsx"
+      ],
       "#y2lnly185oli": [
         "../../../src/logs/view.tsx"
       ],
@@ -1599,6 +1617,9 @@
       ],
       "#ybhrhm4jyu26": [
         "../../../src/sidebar/live.ts"
+      ],
+      "#ycfynf3jpt53": [
+        "../../../src/language/routing/path.ts"
       ],
       "#yf1o70q7eshd": [
         "../../../src/tooltip/index.ts"

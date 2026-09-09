@@ -256,3 +256,5 @@ export type {
   wizard_props,
   wizard_step,
 } from "#b99m28a51fja";
+export { LocaleContext, LocaleProvider, useLocale } from "./locale.js";
+export type { LocaleProviderProps, LocaleState } from "./locale.js";

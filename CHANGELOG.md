@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.15.0
+
+- Added locale-prefixed routing, so a statically prerendered site can serve the visitor's language from the server instead of correcting it after hydration. `createLocaleBootScript()` emits a blocking head script that resolves the locale before first paint and redirects to the prefixed URL, mirroring `createThemeBootScript()`. `localeShellRoutes()` expands a route list into one prerendered document per locale, `parseLocalePathname()` and `buildLocalePathname()` convert between prefixed and bare paths, and `configureLocaleRouting()`, `currentLocale()` and `setCurrentLocale()` own the runtime state.
+- Added `LocaleProvider` and `useLocale()` to the React entrypoint. The provider supplies the locale during server rendering and again at hydration, so the two agree and the island is never re-rendered to correct the language.
+- The existing `bindLocaleSwitchers()` server model (`POST /ui/lang/set` plus reload) is unchanged. Applications with a backend keep using it; statically prerendered sites use the routing API.
+
 ## 12.14.2
 
 - Updated the shipped `.trebired/logger/config.ts` `forVersion` to `2.7.0` and the `@trebired/code-discipline` / `@trebired/configs` ranges to `^7.2.0` / `^0.4.0`. The logger config named an older release, so under `@trebired/logger` 2.7 the version check threw and this package's log prefix was dropped.

@@ -9,6 +9,7 @@ import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
+import { verifyLocaleRouting } from "./frontend/locale.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
@@ -40,6 +41,7 @@ async function verifyFrontendMain() {
   const window = installDom();
   await verifyFrontendConfig(context);
   await verifyNamespace(context);
+  await verifyLocaleRouting(context);
   await verifyProgressRequests(context);
   await verifyLocaleSwitching();
   await verifyFrontendActions({ importDist, importDistRoot });
