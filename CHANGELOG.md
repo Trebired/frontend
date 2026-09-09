@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.14.1
+
+- Updated the shipped `.trebired/logger/config.ts` `forVersion` to `2.7.0` and the `@trebired/code-discipline` / `@trebired/configs` ranges to `^7.2.0` / `^0.4.0`. The logger config named an older release, so under `@trebired/logger` 2.7 the version check threw and this package's log prefix was dropped.
+
 ## 12.14.0
 
 - Added `assets.favicon` to the frontend config. It names one source SVG per browser colour scheme (`default`, plus optional `light` and `dark`), with optional `sizes` and `ico` size lists. A bare string is shorthand for `default`. Sources must be `.svg`; anything else fails normalization.
