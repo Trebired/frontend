@@ -164,6 +164,7 @@ function showPane(pane, animate) {
   );
 
   paneAnimations.set(pane, nextAnimation);
+  void nextAnimation.finished?.catch(() => undefined);
   const finish = () => {
     if (paneAnimations.get(pane) === nextAnimation) paneAnimations.delete(pane);
     pane.style.willChange = "";

@@ -4,9 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
-## 12.14.1
+## 12.14.2
 
 - Updated the shipped `.trebired/logger/config.ts` `forVersion` to `2.7.0` and the `@trebired/code-discipline` / `@trebired/configs` ranges to `^7.2.0` / `^0.4.0`. The logger config named an older release, so under `@trebired/logger` 2.7 the version check threw and this package's log prefix was dropped.
+- Retargeted the local `.trebired/bundler/config.ts` at 5.11.2. It named 5.9.0, so a fresh install of `@trebired/bundler` 5.11 failed the build.
+- Attached a rejection handler to the tab pane animation's `finished` promise. Cancelling a pane animation (any rapid tab switch) rejected it with an `AbortError` that nothing owned, surfacing as an unhandled rejection in the browser console.
 
 ## 12.14.0
 

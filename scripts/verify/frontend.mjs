@@ -37,7 +37,7 @@ async function verifyFrontendMain() {
     rootDir,
     sourceDir,
   };
-  installDom();
+  const window = installDom();
   await verifyFrontendConfig(context);
   await verifyNamespace(context);
   await verifyProgressRequests(context);
@@ -62,7 +62,16 @@ async function verifyFrontendMain() {
   await verifyFrontendServer(context);
   await verifyFrontendComponents({ importDist, rootDir });
   await verifyFrontendTheme({ importDist, packageVersion, rootDir });
+  await closeDom(window);
   console.log("Frontend verification succeeded.");
+}
+
+async function closeDom(window) {
+  for (const animation of window.document.getAnimations?.() ?? []) {
+    animation.finished.catch(() => undefined);
+    animation.cancel();
+  }
+  await window.happyDOM.close();
 }
 
 function installDom() {
@@ -104,6 +113,7 @@ function installDom() {
   window.CSS ||= {};
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
+  return window;
 }
 
 async function verifyLocaleSwitching() {
