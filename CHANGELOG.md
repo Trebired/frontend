@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.2
+
+- Added `media` to the system allow-list. 12.16.0 registered the system's styles and type but not its key, so declaring `systems: { media: true }` failed the build with `unsupported system media`.
+
 ## 12.16.1
 
 - Retargeted the local `.trebired/bundler/config.ts` at 5.13.1. It still named 5.11.2, so a fresh install of `@trebired/bundler` 5.13 failed the build.

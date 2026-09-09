@@ -50,6 +50,7 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "logs",
   "layer",
   "icons",
+  "media",
   "progress",
   "flash",
   "tooltip",
