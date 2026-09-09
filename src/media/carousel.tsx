@@ -1,6 +1,7 @@
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { useCarouselState } from "./carousel-state.js";
+import { useResolvedLang } from "./lang.js";
 
 const ICON_CHEVRON_LEFT = "remixicon:arrow-left-s-line";
 const ICON_CHEVRON_RIGHT = "remixicon:arrow-right-s-line";
@@ -21,8 +22,9 @@ type CarouselProps = {
 
 function Carousel(props: CarouselProps) {
   const slides = props.slides ?? [];
+  const lang = useResolvedLang(props.lang);
   const state = useCarouselState(slides.length, props.intervalMs ?? 5000);
-  const label = (key: string, vars?: Record<string, unknown>) => sourceLanguageMessage(key, props.lang, vars);
+  const label = (key: string, vars?: Record<string, unknown>) => sourceLanguageMessage(key, lang, vars);
   const showControls = props.controls !== false && slides.length > 1;
   const showIndicators = props.indicators !== false && slides.length > 1;
 

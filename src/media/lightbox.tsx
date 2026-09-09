@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { captureFocus, trapTabKey } from "./focus-trap.js";
+import { useResolvedLang } from "./lang.js";
 import { lockBodyScroll } from "./scroll-lock.js";
 
 const ICON_CHEVRON_LEFT = "remixicon:arrow-left-s-line";
@@ -56,8 +57,9 @@ function useLightboxShell(close: () => void, showNext: () => void, showPrevious:
 }
 
 function Lightbox(props: LightboxProps) {
+  const lang = useResolvedLang(props.lang);
   const panel = useLightboxShell(props.close, props.showNext, props.showPrevious);
-  const label = (key: string, vars?: Record<string, unknown>) => sourceLanguageMessage(key, props.lang, vars);
+  const label = (key: string, vars?: Record<string, unknown>) => sourceLanguageMessage(key, lang, vars);
   const state = props.visible ? " is-visible" : "";
 
   const node = (

@@ -3,6 +3,7 @@ import { useId } from "react";
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { useGalleryState } from "./gallery-state.js";
+import { useResolvedLang } from "./lang.js";
 import { Lightbox } from "./lightbox.js";
 
 const ICON_MAXIMIZE = "remixicon:fullscreen-line";
@@ -24,11 +25,12 @@ function galleryAlt(alt: string, length: number, index: number): string {
 function ExpandableImage(props: ExpandableImageProps) {
   const gallery = props.images?.length ? [...props.images] : [props.src];
   const start = Math.min(Math.max(props.index ?? 0, 0), gallery.length - 1);
+  const lang = useResolvedLang(props.lang);
   const titleId = useId();
   const state = useGalleryState(gallery.length, start);
 
   const thumbnailAlt = galleryAlt(props.alt, gallery.length, start);
-  const label = sourceLanguageMessage("mediaExpand", props.lang, { alt: thumbnailAlt });
+  const label = sourceLanguageMessage("mediaExpand", lang, { alt: thumbnailAlt });
 
   return (
     <>
@@ -55,7 +57,7 @@ function ExpandableImage(props: ExpandableImageProps) {
         close={state.close}
         hasNext={state.activeIndex < gallery.length - 1}
         hasPrevious={state.activeIndex > 0}
-        lang={props.lang}
+        lang={lang}
         showNext={state.showNext}
         showPrevious={state.showPrevious}
         src={gallery[state.activeIndex] ?? props.src}

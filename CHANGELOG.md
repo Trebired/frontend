@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.3
+
+- `ExpandableImage`, `Lightbox` and `Carousel` now take their language from `LocaleProvider` when no `lang` prop is given. They previously defaulted to English, so a Czech page that did not pass `lang` explicitly rendered English control labels.
+
 ## 12.16.2
 
 - Added `media` to the system allow-list. 12.16.0 registered the system's styles and type but not its key, so declaring `systems: { media: true }` failed the build with `unsupported system media`.

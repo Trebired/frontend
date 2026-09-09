@@ -450,6 +450,7 @@
   "#s2sjj85bt9pa": "./src/layout/components/shell/product/index.ts",
   "#s4ylmmgj1kig": "./src/progress/components/index.tsx",
   "#s6z2nml2f5vt": "./src/styles/utils/alignment.scss",
+  "#s7ubri2oq8dk": "./src/media/lang.ts",
   "#s8ycbv8d4kos": "./src/server/assets.ts",
   "#savw6pzo5sa6": "./src/realtime/index.ts",
   "#sf68mrloxp0r": "./src/language/source/visualizer.tsx",

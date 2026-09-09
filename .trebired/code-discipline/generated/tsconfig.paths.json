@@ -1354,6 +1354,9 @@
       "#s6z2nml2f5vt": [
         "../../../src/styles/utils/alignment.scss"
       ],
+      "#s7ubri2oq8dk": [
+        "../../../src/media/lang.ts"
+      ],
       "#s8ycbv8d4kos": [
         "../../../src/server/assets.ts"
       ],

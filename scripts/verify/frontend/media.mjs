@@ -48,6 +48,17 @@ function verifyCarouselMarkup(react, render) {
   assert.equal(render(react.Carousel, { slides: [] }), "", "an empty carousel renders nothing");
 }
 
+function verifyContextLocale(react, createElement, renderToStaticMarkup) {
+  const node = createElement(
+    react.LocaleProvider,
+    { locale: "cs" },
+    createElement(react.ExpandableImage, { alt: "Bar", src: "/a.jpg" }),
+  );
+  const html = renderToStaticMarkup(node);
+  assert.match(html, /Zvetsit fotografii: Bar/u, "locale must come from LocaleProvider when no lang prop is given");
+  assert.doesNotMatch(html, /Expand photo/u, "must not fall back to english inside a czech provider");
+}
+
 function verifyLocalizedLabels(react, render) {
   const cs = render(react.ExpandableImage, { alt: "Bar", lang: "cs", src: "/a.jpg" });
   const en = render(react.ExpandableImage, { alt: "Bar", lang: "en", src: "/a.jpg" });
@@ -69,6 +80,7 @@ async function verifyMedia(context) {
   verifyMapEmbed(react, render);
   verifyCarouselMarkup(react, render);
   verifyLocalizedLabels(react, render);
+  verifyContextLocale(react, createElement, renderToStaticMarkup);
 }
 
 export { verifyMedia };
