@@ -40,6 +40,9 @@
       "#0lq9fxjqobez": [
         "../../../src/config/scss.ts"
       ],
+      "#0mdb644lpzkk": [
+        "../../../src/media/carousel-state.ts"
+      ],
       "#0rl8rpgzssot": [
         "../../../src/primitives/components/classes.ts"
       ],
@@ -307,6 +310,9 @@
       "#5vbaqj4pirp3": [
         "../../../src/namespace/index.ts"
       ],
+      "#5x2658viyxv1": [
+        "../../../src/media/carousel.tsx"
+      ],
       "#60ahxyab7r9m": [
         "../../../src/server/theme.ts"
       ],
@@ -340,6 +346,9 @@
       "#6o6fqz7svsts": [
         "../../../src/icons/server-context.ts"
       ],
+      "#6wbag3hira71": [
+        "../../../src/media/styles/index.scss"
+      ],
       "#6xiwpx0dvg9b": [
         "../../../src/layer/styles/index.scss"
       ],
@@ -360,6 +369,9 @@
       ],
       "#79y0zfcyhzga": [
         "../../../src/inputs/advanced/dropdown/index.tsx"
+      ],
+      "#7awiit6z40vk": [
+        "../../../scripts/verify/frontend/media.mjs"
       ],
       "#7b8bn65jhw4r": [
         "../../../src/logs/client/identity.ts"
@@ -582,6 +594,9 @@
       ],
       "#buvyckbx24ra": [
         "../../../src/inputs/advanced/dropdown/index.client.ts"
+      ],
+      "#bvjpd7gp9unk": [
+        "../../../src/media/gallery-state.ts"
       ],
       "#bvrb69l1upaf": [
         "../../../src/config/normalize.ts"
@@ -808,6 +823,9 @@
       "#ftky4711z79n": [
         "../../../src/logs/client/dom.ts"
       ],
+      "#fuumbbxo1f9l": [
+        "../../../src/media/lightbox.tsx"
+      ],
       "#fwdmm996jtkw": [
         "../../../src/logs/i18n/en.ts"
       ],
@@ -861,6 +879,9 @@
       ],
       "#gyandm2bkspq": [
         "../../../src/logging/browser.ts"
+      ],
+      "#gykas4xgh0pc": [
+        "../../../src/media/styles/lightbox.scss"
       ],
       "#gzxmlc2wghx4": [
         "../../../src/inputs/advanced/dropdown/static/value.ts"
@@ -925,6 +946,9 @@
       "#i2ih70lrihw1": [
         "../../../src/server/render/mode.ts"
       ],
+      "#i2iu6i9ep6fc": [
+        "../../../src/media/map-embed.tsx"
+      ],
       "#i3oaed3jc28j": [
         "../../../src/language/runtime/source/parse.ts"
       ],
@@ -987,6 +1011,9 @@
       ],
       "#jug9z8qra4yv": [
         "../../../src/server/logging.ts"
+      ],
+      "#jzrj9x0owt64": [
+        "../../../src/media/scroll-lock.ts"
       ],
       "#k0q2s2kidqtq": [
         "../../../src/language/format.ts"
@@ -1087,6 +1114,9 @@
       "#lpvfloec7209": [
         "../../../src/inputs/components/tabs.tsx"
       ],
+      "#lqba84qf9kzf": [
+        "../../../src/media/styles/carousel.scss"
+      ],
       "#lxlcr5r141p6": [
         "../../../src/config/interactions.ts"
       ],
@@ -1173,6 +1203,9 @@
       ],
       "#o3tma6wa05fh": [
         "../../../src/config/default/scales.ts"
+      ],
+      "#o49famu4th8y": [
+        "../../../src/media/focus-trap.ts"
       ],
       "#o52bosx1o4df": [
         "../../../src/graph/components/index.tsx"
@@ -1503,6 +1536,9 @@
       ],
       "#wavczpl1zxvg": [
         "../../../src/theme/components/index.tsx"
+      ],
+      "#wc3raybjs1zm": [
+        "../../../src/media/expandable-image.tsx"
       ],
       "#wc88wb41y3qz": [
         "../../../src/config/flags.ts"

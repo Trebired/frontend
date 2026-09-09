@@ -26,6 +26,7 @@ type FrontendSystemKey =
 |"layout"
 |"language"
 |"logs"
+|"media"
 |"modal"
 |"popover"
 |"primitives"

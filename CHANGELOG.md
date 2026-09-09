@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.0
+
+- Added a `media` system owning the image and slideshow primitives every Trebired site was otherwise hand-rolling: `ExpandableImage` (a gallery lightbox with previous/next), `Lightbox`, `Carousel` and `MapEmbed`, all exported from the React entrypoint, with their styles behind the new `media` system key.
+- The lightbox now renders through a portal, traps Tab inside the dialog, moves focus in on open and restores it to the trigger on close. The application implementations it replaces did none of that, so background content stayed reachable behind an `aria-modal` dialog.
+- Body scroll locking is reference counted through `lockBodyScroll()`, which returns an idempotent release and restores the previous `overflow` value rather than clearing it. Two overlapping locks no longer unlock each other.
+- The lightbox close timer is cleared on unmount and on reopen, so closing and unmounting within the animation window no longer leaves a pending timer.
+- `Carousel` honours `prefers-reduced-motion` and pauses on hover and focus. It renders nothing for an empty slide list and omits controls for a single slide.
+- Labels for all of the above resolve through the package message tables in Czech and English instead of being hardcoded by the consuming application.
+
 ## 12.15.0
 
 - Added locale-prefixed routing, so a statically prerendered site can serve the visitor's language from the server instead of correcting it after hydration. `createLocaleBootScript()` emits a blocking head script that resolves the locale before first paint and redirects to the prefixed URL, mirroring `createThemeBootScript()`. `localeShellRoutes()` expands a route list into one prerendered document per locale, `parseLocalePathname()` and `buildLocalePathname()` convert between prefixed and bare paths, and `configureLocaleRouting()`, `currentLocale()` and `setCurrentLocale()` own the runtime state.
