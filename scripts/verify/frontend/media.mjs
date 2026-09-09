@@ -55,16 +55,16 @@ function verifyContextLocale(react, createElement, renderToStaticMarkup) {
     createElement(react.ExpandableImage, { alt: "Bar", src: "/a.jpg" }),
   );
   const html = renderToStaticMarkup(node);
-  assert.match(html, /Zvetsit fotografii: Bar/u, "locale must come from LocaleProvider when no lang prop is given");
+  assert.match(html, /Zvětšit fotografii: Bar/u, "locale must come from LocaleProvider when no lang prop is given");
   assert.doesNotMatch(html, /Expand photo/u, "must not fall back to english inside a czech provider");
 }
 
 function verifyLocalizedLabels(react, render) {
   const cs = render(react.ExpandableImage, { alt: "Bar", lang: "cs", src: "/a.jpg" });
   const en = render(react.ExpandableImage, { alt: "Bar", lang: "en", src: "/a.jpg" });
-  assert.match(cs, /Zvetsit fotografii: Bar/u, "czech label must come from the package table");
+  assert.match(cs, /Zvětšit fotografii: Bar/u, "czech label must come from the package table");
   assert.match(en, /Expand photo: Bar/u, "english label must come from the package table");
-  assert.doesNotMatch(en, /Zvetsit/u, "english render must not leak czech");
+  assert.doesNotMatch(en, /Zvětšit/u, "english render must not leak czech");
 }
 
 async function verifyMedia(context) {

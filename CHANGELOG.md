@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.4
+
+- Restored Czech diacritics in the media labels (`Zvětšit fotografii`, `Předchozí`, `Další`, `Zavřít`, `Snímek`). They were added without them in 12.16.0, which regressed the labels for the application implementations they replaced.
+
 ## 12.16.3
 
 - `ExpandableImage`, `Lightbox` and `Carousel` now take their language from `LocaleProvider` when no `lang` prop is given. They previously defaulted to English, so a Czech page that did not pass `lang` explicitly rendered English control labels.
