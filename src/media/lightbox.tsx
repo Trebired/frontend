@@ -102,7 +102,7 @@ function Lightbox(props: LightboxProps) {
         </button>
     )}
 
-    <div className="tbf-lightbox-viewer" onClick={stop}>
+    <div className={`tbf-lightbox-viewer${state}`} onClick={stop}>
     <h2 className="sr-only" id={props.titleId}>{props.alt}</h2>
     <img alt={props.alt} className="tbf-lightbox-img" src={props.src} />
     <p className="tbf-lightbox-caption">{props.alt}</p>

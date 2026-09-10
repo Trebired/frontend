@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.17.1
+
+- Fixed the lightbox showing an empty dark overlay. The viewer that holds the image starts transparent for the enter transition, and only the backdrop was ever marked visible, so the image loaded but was never shown. Every `ExpandableImage` since 12.16.0 was affected. The verification now opens a lightbox and asserts the viewer becomes visible.
+
 ## 12.17.0
 
 - Added `controlsPlacement` to `Carousel`. `"sides"` keeps the existing arrows at either edge and the dots centred; `"bottom"` groups the previous and next buttons at the bottom left, moves the dots to the bottom right, gives the controls a frosted background, and lays a dark gradient over the lower part of the image so they stay legible on bright slides. It defaults to `"sides"`, so existing carousels are unchanged.

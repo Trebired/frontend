@@ -73,6 +73,40 @@ function verifyLocalizedLabels(react, render) {
   assert.doesNotMatch(en, /Zvětšit/u, "english render must not leak czech");
 }
 
+async function verifyOpenLightboxShowsImage(react) {
+  const { createElement } = await import("react");
+  const { createRoot } = await import("react-dom/client");
+  const { flushSync } = await import("react-dom");
+  const host = document.createElement("div");
+  document.body.appendChild(host);
+  const root = createRoot(host);
+  const props = {
+    alt: "Bar",
+    close: () => undefined,
+    hasNext: false,
+    hasPrevious: false,
+    lang: "en",
+    showNext: () => undefined,
+    showPrevious: () => undefined,
+    src: "/a.jpg",
+    titleId: "t1",
+  };
+
+  flushSync(() => root.render(createElement(react.Lightbox, { ...props, visible: false })));
+  const hidden = document.querySelector(".tbf-lightbox-viewer");
+  assert.ok(hidden, "the lightbox viewer must render into the document");
+  assert.ok(!hidden.classList.contains("is-visible"), "the viewer must start hidden for the enter transition");
+
+  flushSync(() => root.render(createElement(react.Lightbox, { ...props, visible: true })));
+  const shown = document.querySelector(".tbf-lightbox-viewer");
+  assert.ok(shown.classList.contains("is-visible"), "an open lightbox must mark its viewer visible, or the image stays transparent");
+  assert.ok(document.querySelector(".tbf-lightbox").classList.contains("is-visible"));
+  assert.equal(document.querySelector(".tbf-lightbox-img").getAttribute("src"), "/a.jpg");
+
+  flushSync(() => root.unmount());
+  host.remove();
+}
+
 async function verifyIconSpecsCoverAllUsage(context, root) {
   const dir = path.join(context.sourceDir, "media");
   const files = await fs.readdir(dir);
@@ -106,6 +140,7 @@ async function verifyMedia(context) {
   verifyLocalizedLabels(react, render);
   verifyContextLocale(react, createElement, renderToStaticMarkup);
   await verifyIconSpecsCoverAllUsage(context, root);
+  await verifyOpenLightboxShowsImage(react);
 }
 
 export { verifyMedia };
