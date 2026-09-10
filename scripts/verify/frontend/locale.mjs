@@ -145,6 +145,15 @@ function verifyFetchedDocumentSwap(api) {
   assert.equal(english.getElementById("h").textContent, "Hello");
 }
 
+function verifyRoutePath(api) {
+  api.configureLocaleRouting(ROUTING);
+  assert.equal(api.stripLocalePrefix("/cs/about/"), "/about", "a locale url must resolve to its route");
+  assert.equal(api.stripLocalePrefix("/cs"), "/");
+  assert.equal(api.stripLocalePrefix("/about/"), "/about");
+  assert.equal(api.stripLocalePrefix("/csx/about"), "/csx/about", "only a whole locale segment is a prefix");
+  assert.equal(api.stripLocalePrefix("/en/about"), "/en/about", "the default locale is never prefixed");
+}
+
 function verifyInPlaceSwitch(api) {
   api.configureLocaleRouting(ROUTING);
   const root = document.documentElement;
@@ -174,6 +183,7 @@ async function verifyLocaleRouting(context) {
   verifyIndexableRoutes(api);
   verifyParseTimeSwap(api);
   verifyFetchedDocumentSwap(api);
+  verifyRoutePath(api);
   verifyInPlaceSwitch(api);
 }
 

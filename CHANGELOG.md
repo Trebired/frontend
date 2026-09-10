@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.2
+
+- Added `currentRoutePath()` and `stripLocalePrefix()`. A page served at a locale URL such as `/en/about` is prerendered from the `/about` route, but an application reading `location.pathname` rendered `/en/about` on the client, so the hydrated tree did not match the prerendered one and React discarded it. Resolve the route with `currentRoutePath()`; it removes a configured non-default locale segment and a trailing slash.
+
 ## 13.1.1
 
 - `createLocaleShellRoutes()` and `createLocaleBootScript()` now accept every `@trebired/seo` `localeStrategy`, so the site config can be passed through unchanged. 13.1.0 typed the strategy as `"none" | "prefix"`, which rejected seo's `"query"`. With `"query"` each route is served once and the boot script reads the `lang` query parameter, so a crawler following a `?lang=` alternate renders that locale; as with `"prefix"`, a saved choice wins and the browser language is not used.

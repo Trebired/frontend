@@ -16,10 +16,12 @@ export type { LocaleRouting, LocaleRoutingOptions, LocaleStrategy } from "./opti
 export {
   configureLocaleRouting,
   currentLocale,
+  currentRoutePath,
   getLocaleRouting,
   onLocaleChanged,
   persistLocale,
   setCurrentLocale,
+  stripLocalePrefix,
 } from "./runtime.js";
 export type { LocaleListener } from "./runtime.js";
 export { applyLocaleMeta, applyLocaleView, readLocaleMeta } from "./view.js";

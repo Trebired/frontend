@@ -29,6 +29,19 @@ function currentLocale(): string {
   return resolveLocale(document.documentElement.lang) || routing.defaultLocale;
 }
 
+function stripLocalePrefix(pathname: string): string {
+  const trimmed = String(pathname || "/").replace(/\/+$/u, "") || "/";
+  const [, first = "", ...rest] = trimmed.split("/");
+  const prefixed = configured && first !== routing.defaultLocale && routing.locales.includes(first);
+  if (!prefixed) return trimmed;
+  return `/${rest.join("/")}`.replace(/\/+$/u, "") || "/";
+}
+
+function currentRoutePath(): string {
+  if (typeof window === "undefined") return "/";
+  return stripLocalePrefix(window.location.pathname);
+}
+
 function persistLocale(locale: string): void {
   if (typeof document === "undefined") return;
   const name = encodeURIComponent(routing.cookieName);
@@ -63,9 +76,11 @@ function onLocaleChanged(listener: LocaleListener): () => void {
 export {
   configureLocaleRouting,
   currentLocale,
+  currentRoutePath,
   getLocaleRouting,
   onLocaleChanged,
   persistLocale,
   setCurrentLocale,
+  stripLocalePrefix,
 };
 export type { LocaleListener };
