@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.0.0
+
+- Statically prerendered sites now serve every language from one URL and switch language in place. 12.15.0 gave each locale its own prefixed URL and changed language by navigating to it, so every switch reloaded the page and a saved preference redirected before paint.
+- `createLocaleDocumentBody()` composes a route's prerendered bodies: the default locale as live markup, every other locale in an inert `<template>`, a title and description per locale, and a short inline script. `createLocaleBootScript()` resolves the locale before first paint (stored choice, then the `ui_lang` cookie the server runtime also reads, then the browser language) and sets `<html lang>`. When that differs from the prerendered locale, the inline script swaps the matching template in while the document is still parsing, so a reload shows the right language without waiting for the application bundle. Templates are inert, so their images and frames do not load and crawlers index the default locale.
+- `setCurrentLocale()` no longer navigates. It persists the choice, updates `<html lang>`, the title and the description, and notifies `onLocaleChanged()` listeners. `LocaleProvider` and `useLocale()` follow it, so every React root re-renders in place. Pass `locale` to `LocaleProvider` only when rendering on the server.
+- Soft navigation applies the same swap to the document it fetches, so moving between routes stays in the chosen language.
+- Removed `parseLocalePathname()`, `buildLocalePathname()`, `localeShellRoutes()`, `localeShellOutFile()`, `normalizePathname()` and `localeHref()`. Prerender each route once per locale and pass the bodies to `createLocaleDocumentBody()`; set `@trebired/seo`'s `localeStrategy` to `"none"`.
+- The server-backed `bindLocaleSwitchers()` model is unchanged.
+
 ## 12.18.0
 
 - Added the `components.media` token group, so an application can shape `ExpandableImage` and the lightbox from its frontend config instead of overriding package CSS. `expandableImage.icon` sets the hover badge's size, radius, background and blur. `lightbox` sets the backdrop colour and blur, the close and navigation controls (size, wide-screen size, radius, background, blur, hover background), the image radius and shadow, and the caption colour, size and weight. The defaults are the values the styles used before, so an application that sets nothing renders exactly as it did.

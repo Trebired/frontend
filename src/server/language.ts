@@ -9,8 +9,9 @@ import {
   type ServerRequestLike,
   type ServerResponseLike,
 } from "./http.js";
+import { DEFAULT_LOCALE_COOKIE_NAME } from "#v22t8z1nsxv6";
 
-const DEFAULT_LANGUAGE_COOKIE_NAME = "ui_lang";
+const DEFAULT_LANGUAGE_COOKIE_NAME = DEFAULT_LOCALE_COOKIE_NAME;
 const DEFAULT_LANGUAGE_KEYS = Object.freeze(["en"]);
 
 type LanguageServerOptions = {

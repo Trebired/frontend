@@ -511,6 +511,9 @@
       "#a14xjd53jcc7": [
         "../../../src/language/runtime/source/file-tree.ts"
       ],
+      "#a20nnfiycmtv": [
+        "../../../src/spa/fetch-document.ts"
+      ],
       "#a2miukkwjl2v": [
         "../../../src/graph/advanced/graph/types.ts"
       ],
@@ -732,6 +735,9 @@
       ],
       "#ea48edhq8nzv": [
         "../../../src/logs/client/socket/entries.ts"
+      ],
+      "#eck6shyxffsw": [
+        "../../../src/language/routing/view.ts"
       ],
       "#edzljmojf94k": [
         "../../../src/inputs/advanced/dropdown/dynamic.ts"
@@ -1660,9 +1666,6 @@
       "#ybhrhm4jyu26": [
         "../../../src/sidebar/live.ts"
       ],
-      "#ycfynf3jpt53": [
-        "../../../src/language/routing/path.ts"
-      ],
       "#yf1o70q7eshd": [
         "../../../src/tooltip/index.ts"
       ],
@@ -1683,6 +1686,9 @@
       ],
       "#ysjai7soiapa": [
         "../../../src/inputs/advanced/dropdown/registry.ts"
+      ],
+      "#ytljhycwjty9": [
+        "../../../src/language/routing/document.ts"
       ],
       "#yv4ubgils4dc": [
         "../../../src/sidebar/dynamic/tree.ts"

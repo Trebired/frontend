@@ -1,30 +1,37 @@
 import { normalizeLocaleRouting } from "./options.js";
 import type { LocaleRoutingOptions } from "./options.js";
+import { LOCALE_PENDING_ATTR, LOCALE_RENDERED_ATTR } from "./view.js";
 
 function scriptJson(value: unknown): string {
   return JSON.stringify(value ?? null).replace(/</gu, "\\u003c");
 }
 
-function readStoredLocaleSource(): string[] {
+function matchSource(): string[] {
   return [
-    "var r='';try{r=window.localStorage.getItem(K)||''}catch(e){}",
-    "if(L.indexOf(r)<0)r='';",
+    "function m(v){var t=String(v||'').trim().toLowerCase().replace(/_/g,'-');",
+    "if(L.indexOf(t)>=0)return t;var b=t.split('-')[0];return L.indexOf(b)>=0?b:''}",
   ];
 }
 
-function explicitPrefixSource(): string[] {
+function storedLocaleSource(): string[] {
   return [
-    "var s=p.split('/');var u=L.indexOf(s[1])>=0?s[1]:'';",
-    "if(u){try{window.localStorage.setItem(K,u)}catch(e){}d.lang=u;return}",
+    "var n='';try{n=m(window.localStorage.getItem(K))}catch(e){}",
+    "if(!n){try{var c=('; '+d.cookie).split('; '+C+'=');",
+    "if(c.length>1)n=m(decodeURIComponent(c[1].split(';')[0]))}catch(e){}}",
   ];
 }
 
 function navigatorLocaleSource(): string[] {
   return [
     "if(!n){try{var g=navigator.languages||[navigator.language||''];",
-    "for(var i=0;i<g.length;i++){var t=String(g[i]||'').trim().toLowerCase().replace(/_/g,'-');",
-    "var b=t.split('-')[0];",
-    "if(L.indexOf(t)>=0){n=t;break}if(L.indexOf(b)>=0){n=b;break}}}catch(e){}}",
+    "for(var i=0;i<g.length&&!n;i++)n=m(g[i])}catch(e){}}",
+  ];
+}
+
+function pendingSource(): string[] {
+  return [
+    "if(n!==r){h.setAttribute(P,'');h.style.visibility='hidden';",
+    "d.addEventListener('DOMContentLoaded',function(){h.removeAttribute(P);h.style.visibility=''})}",
   ];
 }
 
@@ -33,14 +40,14 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}): string {
   return [
     "(function(){",
     `var L=${scriptJson(routing.locales)},D=${scriptJson(routing.defaultLocale)},`,
-    `K=${scriptJson(routing.storageKey)};`,
-    "var d=document.documentElement;var p=location.pathname||'/';",
-    ...explicitPrefixSource(),
-    ...readStoredLocaleSource(),
-    "var n=r;",
+    `K=${scriptJson(routing.storageKey)},C=${scriptJson(routing.cookieName)},`,
+    `R=${scriptJson(LOCALE_RENDERED_ATTR)},P=${scriptJson(LOCALE_PENDING_ATTR)};`,
+    "var d=document,h=d.documentElement,r=h.lang||D;h.setAttribute(R,r);",
+    ...matchSource(),
+    ...storedLocaleSource(),
     ...navigatorLocaleSource(),
-    "if(n&&n!==D){location.replace('/'+n+(p==='/'?'':p)+location.search+location.hash);return}",
-    "d.lang=D;",
+    "n=n||D;h.lang=n;",
+    ...pendingSource(),
     "})();",
   ].join("");
 }

@@ -4,16 +4,15 @@ import {
   frontendDataAttr,
   frontendDataSelector,
   frontendEventName,
-  frontendToken,
 } from "#5vbaqj4pirp3";
 import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
+import { fetchDocument } from "./fetch-document.js";
 import { hasUnsavedWork } from "./guards.js";
 import {
   overlayPortalRoots,
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
-import { progress } from "#hmj29rrpgtsh";
 import {
   beginNavigation,
   emitPageChange,
@@ -227,24 +226,6 @@ function fallbackNavigate(url: string, updateUrl: boolean) {
   }
   window.location.reload();
   return false;
-}
-
-async function fetchDocument(url: string, token: string) {
-  progress.begin();
-  try {
-    const response = await fetch(url, {
-        credentials: "same-origin",
-        headers: { Accept: "text/html", "X-Requested-With": frontendToken(token) },
-    });
-    if (!response.ok) return null;
-    const html = await response.text();
-    return {
-      doc: new DOMParser().parseFromString(html, "text/html"),
-      url: response.url || url,
-    };
-  } finally {
-    progress.end();
-  }
 }
 
 async function softRedirect(url: string, options: SoftRedirectOptions = {}) {

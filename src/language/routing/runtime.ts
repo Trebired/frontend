@@ -1,15 +1,18 @@
-import { matchLocale, normalizeLocaleRouting } from "./options.js";
+import { cleanLocale, matchLocale, normalizeLocaleRouting } from "./options.js";
 import type { LocaleRouting, LocaleRoutingOptions } from "./options.js";
-import { buildLocalePathname, parseLocalePathname } from "./path.js";
+import { LOCALE_RENDERED_ATTR, applyLocaleMeta } from "./view.js";
 
 type LocaleListener = (locale: string) => void;
 
 const listeners = new Set<LocaleListener>();
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 let routing: LocaleRouting = normalizeLocaleRouting();
+let configured = false;
 
 function configureLocaleRouting(options: LocaleRoutingOptions): LocaleRouting {
   routing = normalizeLocaleRouting(options);
+  configured = true;
   return routing;
 }
 
@@ -17,13 +20,19 @@ function getLocaleRouting(): LocaleRouting {
   return routing;
 }
 
+function resolveLocale(value: unknown): string {
+  return configured ? matchLocale(value, routing) : cleanLocale(value);
+}
+
 function currentLocale(): string {
-  if (typeof window === "undefined") return routing.defaultLocale;
-  return parseLocalePathname(window.location.pathname, routing).locale;
+  if (typeof document === "undefined") return routing.defaultLocale;
+  return resolveLocale(document.documentElement.lang) || routing.defaultLocale;
 }
 
 function persistLocale(locale: string): void {
-  if (typeof window === "undefined") return;
+  if (typeof document === "undefined") return;
+  const name = encodeURIComponent(routing.cookieName);
+  document.cookie = `${name}=${encodeURIComponent(locale)}; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax`;
   try {
     window.localStorage.setItem(routing.storageKey, locale);
   } catch {
@@ -31,19 +40,16 @@ function persistLocale(locale: string): void {
   }
 }
 
-function localeHref(locale: string): string {
-  const parsed = parseLocalePathname(window.location.pathname, routing);
-  const pathname = buildLocalePathname(parsed.pathname, locale, routing);
-  return `${pathname}${window.location.search}${window.location.hash}`;
-}
-
 function setCurrentLocale(locale: unknown): boolean {
-  const next = matchLocale(locale, routing);
-  if (!next || typeof window === "undefined") return false;
+  const next = resolveLocale(locale);
+  if (!next || typeof document === "undefined") return false;
   persistLocale(next);
   if (next === currentLocale()) return false;
+  const root = document.documentElement;
+  root.lang = next;
+  root.setAttribute(LOCALE_RENDERED_ATTR, next);
+  applyLocaleMeta(document, next);
   for (const listener of listeners) listener(next);
-  window.location.assign(localeHref(next));
   return true;
 }
 
@@ -58,7 +64,6 @@ export {
   configureLocaleRouting,
   currentLocale,
   getLocaleRouting,
-  localeHref,
   onLocaleChanged,
   persistLocale,
   setCurrentLocale,

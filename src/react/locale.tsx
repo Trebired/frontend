@@ -15,21 +15,27 @@ type LocaleState = {
 
 const LocaleContext = createContext<string>("");
 
+function useCurrentLocale(): string {
+  const [locale, setLocale] = useState<string>(currentLocale);
+
+  useEffect(() => {
+      const stop = onLocaleChanged(setLocale);
+      setLocale(currentLocale());
+      return stop;
+    }, []);
+
+  return locale;
+}
+
 function LocaleProvider(props: LocaleProviderProps) {
-  const locale = props.locale || currentLocale();
-  return createElement(LocaleContext.Provider, { value: locale }, props.children);
+  const live = useCurrentLocale();
+  return createElement(LocaleContext.Provider, { value: props.locale || live }, props.children);
 }
 
 function useLocale(): LocaleState {
   const provided = useContext(LocaleContext);
-  const [locale, setState] = useState<string>(() => provided || currentLocale());
-
-  useEffect(() => {
-      if (provided) return undefined;
-      return onLocaleChanged(setState);
-    }, [provided]);
-
-  return { locale: provided || locale, setLocale: setCurrentLocale };
+  const live = useCurrentLocale();
+  return { locale: provided || live, setLocale: setCurrentLocale };
 }
 
 export { LocaleContext, LocaleProvider, useLocale };
