@@ -72,6 +72,60 @@
   background: oklch(100% 0 0 / 95%);
 }
 
+.tbf-carousel--controls-bottom::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, oklch(24% 0.03 250 / 42%), oklch(24% 0.03 250 / 10%) 50%, transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-nav,
+.tbf-carousel--controls-bottom .tbf-carousel-dots {
+  z-index: 2;
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-nav {
+  top: auto;
+  bottom: 1rem;
+  transform: none;
+  background: oklch(100% 0 0 / 16%);
+  backdrop-filter: blur(12px);
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-nav:hover {
+  background: oklch(100% 0 0 / 26%);
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-nav-prev {
+  left: 1rem;
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-nav-next {
+  right: auto;
+  left: 4.25rem;
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-dots {
+  bottom: 2.0625rem;
+  left: auto;
+  right: 1rem;
+  align-items: center;
+  transform: none;
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-dot {
+  height: 0.625rem;
+  width: 0.625rem;
+  background: oklch(100% 0 0 / 45%);
+}
+
+.tbf-carousel--controls-bottom .tbf-carousel-dot.is-active {
+  width: 1.75rem;
+  background: oklch(100% 0 0 / 100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tbf-carousel-slide {
     transition: none;

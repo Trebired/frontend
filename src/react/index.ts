@@ -265,6 +265,7 @@ export {
   MapEmbed,
 } from "#wi9q25odclpm";
 export type {
+  CarouselControlsPlacement,
   CarouselProps,
   CarouselSlide,
   ExpandableImageProps,

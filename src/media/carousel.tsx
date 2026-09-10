@@ -10,9 +10,12 @@ type CarouselSlide = {
   src: string;
 };
 
+type CarouselControlsPlacement = "bottom" | "sides";
+
 type CarouselProps = {
   className?: string;
   controls?: boolean;
+  controlsPlacement?: CarouselControlsPlacement;
   indicators?: boolean;
   intervalMs?: number;
   lang?: string;
@@ -29,9 +32,11 @@ function Carousel(props: CarouselProps) {
 
   if (!slides.length) return null;
 
+  const placement = props.controlsPlacement === "bottom" ? " tbf-carousel--controls-bottom" : "";
+
   return (
     <div
-    className={["tbf-carousel", props.className].filter(Boolean).join(" ")}
+    className={[`tbf-carousel${placement}`, props.className].filter(Boolean).join(" ")}
     onBlur={state.onLeave}
     onFocus={state.onEnter}
     onMouseEnter={state.onEnter}
@@ -87,4 +92,4 @@ function Carousel(props: CarouselProps) {
 }
 
 export { Carousel };
-export type { CarouselProps, CarouselSlide };
+export type { CarouselControlsPlacement, CarouselProps, CarouselSlide };

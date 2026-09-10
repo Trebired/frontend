@@ -48,6 +48,10 @@ function verifyCarouselMarkup(react, render) {
   const single = render(react.Carousel, { lang: "en", slides: [slides[0]] });
   assert.doesNotMatch(single, /Next slide/u, "a single slide must not render controls");
   assert.equal(render(react.Carousel, { slides: [] }), "", "an empty carousel renders nothing");
+
+  const bottom = render(react.Carousel, { controlsPlacement: "bottom", lang: "en", slides });
+  assert.match(bottom, /tbf-carousel--controls-bottom/u, "bottom placement must add its modifier");
+  assert.doesNotMatch(html, /tbf-carousel--controls-bottom/u, "default placement must stay on the sides");
 }
 
 function verifyContextLocale(react, createElement, renderToStaticMarkup) {

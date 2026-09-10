@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.17.0
+
+- Added `controlsPlacement` to `Carousel`. `"sides"` keeps the existing arrows at either edge and the dots centred; `"bottom"` groups the previous and next buttons at the bottom left, moves the dots to the bottom right, gives the controls a frosted background, and lays a dark gradient over the lower part of the image so they stay legible on bright slides. It defaults to `"sides"`, so existing carousels are unchanged.
+
 ## 12.16.5
 
 - Added `MEDIA_ICON_SPECS`, the icon specs the media system renders internally. An application enabling `media` had to know that `ExpandableImage` draws `remixicon:fullscreen-line` and the lightbox draws the chevrons, and register them in its own `assets.icons.specs`. Without them the client had no glyph for those icons while the server render did, so every page carrying a gallery failed hydration and regenerated the tree. Spread `MEDIA_ICON_SPECS` into the application's spec list.

@@ -6,7 +6,7 @@ export {
   MEDIA_ICON_SPECS,
 } from "./icons.js";
 export { Carousel } from "./carousel.js";
-export type { CarouselProps, CarouselSlide } from "./carousel.js";
+export type { CarouselControlsPlacement, CarouselProps, CarouselSlide } from "./carousel.js";
 export { prefersReducedMotion, useCarouselState } from "./carousel-state.js";
 export type { CarouselState } from "./carousel-state.js";
 export { ExpandableImage } from "./expandable-image.js";
