@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.16.5
+
+- Added `MEDIA_ICON_SPECS`, the icon specs the media system renders internally. An application enabling `media` had to know that `ExpandableImage` draws `remixicon:fullscreen-line` and the lightbox draws the chevrons, and register them in its own `assets.icons.specs`. Without them the client had no glyph for those icons while the server render did, so every page carrying a gallery failed hydration and regenerated the tree. Spread `MEDIA_ICON_SPECS` into the application's spec list.
+
 ## 12.16.4
 
 - Restored Czech diacritics in the media labels (`Zvětšit fotografii`, `Předchozí`, `Další`, `Zavřít`, `Snímek`). They were added without them in 12.16.0, which regressed the labels for the application implementations they replaced.

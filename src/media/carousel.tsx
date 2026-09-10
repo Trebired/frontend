@@ -1,10 +1,9 @@
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
+import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT } from "./icons.js";
 import { useCarouselState } from "./carousel-state.js";
 import { useResolvedLang } from "./lang.js";
 
-const ICON_CHEVRON_LEFT = "remixicon:arrow-left-s-line";
-const ICON_CHEVRON_RIGHT = "remixicon:arrow-right-s-line";
 
 type CarouselSlide = {
   alt?: string;
@@ -56,7 +55,7 @@ function Carousel(props: CarouselProps) {
         onClick={state.showPrevious}
         type="button"
         >
-        <Icon spec={ICON_CHEVRON_LEFT} />
+        <Icon spec={ICON_MEDIA_CHEVRON_LEFT} />
         </button>
         <button
         aria-label={label("mediaSlideNext")}
@@ -64,7 +63,7 @@ function Carousel(props: CarouselProps) {
         onClick={state.showNext}
         type="button"
         >
-        <Icon spec={ICON_CHEVRON_RIGHT} />
+        <Icon spec={ICON_MEDIA_CHEVRON_RIGHT} />
         </button>
         </>
     )}

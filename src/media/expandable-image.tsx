@@ -2,11 +2,11 @@ import { useId } from "react";
 
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
+import { ICON_MEDIA_MAXIMIZE } from "./icons.js";
 import { useGalleryState } from "./gallery-state.js";
 import { useResolvedLang } from "./lang.js";
 import { Lightbox } from "./lightbox.js";
 
-const ICON_MAXIMIZE = "remixicon:fullscreen-line";
 
 type ExpandableImageProps = {
   alt: string;
@@ -47,7 +47,7 @@ function ExpandableImage(props: ExpandableImageProps) {
     src={props.src}
     />
     <span className="tbf-expandable-image-icon">
-    <Icon spec={ICON_MAXIMIZE} />
+    <Icon spec={ICON_MEDIA_MAXIMIZE} />
     </span>
     </button>
 

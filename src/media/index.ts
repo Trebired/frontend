@@ -1,3 +1,10 @@
+export {
+  ICON_MEDIA_CHEVRON_LEFT,
+  ICON_MEDIA_CHEVRON_RIGHT,
+  ICON_MEDIA_CLOSE,
+  ICON_MEDIA_MAXIMIZE,
+  MEDIA_ICON_SPECS,
+} from "./icons.js";
 export { Carousel } from "./carousel.js";
 export type { CarouselProps, CarouselSlide } from "./carousel.js";
 export { prefersReducedMotion, useCarouselState } from "./carousel-state.js";

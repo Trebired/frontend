@@ -4,12 +4,10 @@ import { createPortal } from "react-dom";
 import { Icon } from "#lbkpzw8nphru";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { captureFocus, trapTabKey } from "./focus-trap.js";
+import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT, ICON_MEDIA_CLOSE } from "./icons.js";
 import { useResolvedLang } from "./lang.js";
 import { lockBodyScroll } from "./scroll-lock.js";
 
-const ICON_CHEVRON_LEFT = "remixicon:arrow-left-s-line";
-const ICON_CHEVRON_RIGHT = "remixicon:arrow-right-s-line";
-const ICON_CLOSE = "remixicon:close-line";
 
 type LightboxProps = {
   alt: string;
@@ -73,7 +71,7 @@ function Lightbox(props: LightboxProps) {
     tabIndex={-1}
     >
     <button aria-label={label("mediaClose")} className="tbf-lightbox-close" onClick={props.close} type="button">
-    <Icon spec={ICON_CLOSE} />
+    <Icon spec={ICON_MEDIA_CLOSE} />
     </button>
 
     {props.hasPrevious && (
@@ -86,7 +84,7 @@ function Lightbox(props: LightboxProps) {
         }}
         type="button"
         >
-        <Icon spec={ICON_CHEVRON_LEFT} />
+        <Icon spec={ICON_MEDIA_CHEVRON_LEFT} />
         </button>
     )}
 
@@ -100,7 +98,7 @@ function Lightbox(props: LightboxProps) {
         }}
         type="button"
         >
-        <Icon spec={ICON_CHEVRON_RIGHT} />
+        <Icon spec={ICON_MEDIA_CHEVRON_RIGHT} />
         </button>
     )}
 

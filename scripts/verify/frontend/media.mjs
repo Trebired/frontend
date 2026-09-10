@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import path from "node:path";
 
 function verifyScrollLockNesting(api) {
   document.body.style.overflow = "scroll";
@@ -67,6 +69,24 @@ function verifyLocalizedLabels(react, render) {
   assert.doesNotMatch(en, /Zvětšit/u, "english render must not leak czech");
 }
 
+async function verifyIconSpecsCoverAllUsage(context, root) {
+  const dir = path.join(context.sourceDir, "media");
+  const files = await fs.readdir(dir);
+  const used = new Set();
+  for (const name of files) {
+    if (!name.endsWith(".ts") && !name.endsWith(".tsx")) continue;
+    const source = await fs.readFile(path.join(dir, name), "utf8");
+    for (const match of source.matchAll(/"(remixicon:[a-z0-9-]+)"/gu)) used.add(match[1]);
+  }
+  assert.ok(used.size > 0, "expected the media source to reference icon specs");
+  for (const spec of used) {
+    assert.ok(
+      root.MEDIA_ICON_SPECS.includes(spec),
+      `${spec} is rendered by the media system but missing from MEDIA_ICON_SPECS`,
+    );
+  }
+}
+
 async function verifyMedia(context) {
   const { createElement } = await import("react");
   const react = await context.importDist("react");
@@ -81,6 +101,7 @@ async function verifyMedia(context) {
   verifyCarouselMarkup(react, render);
   verifyLocalizedLabels(react, render);
   verifyContextLocale(react, createElement, renderToStaticMarkup);
+  await verifyIconSpecsCoverAllUsage(context, root);
 }
 
 export { verifyMedia };
