@@ -1,6 +1,6 @@
 import { FRONTEND_PREFIX } from "#5vbaqj4pirp3";
 
-type LocaleStrategy = "none" | "prefix";
+type LocaleStrategy = "none" | "prefix" | "query";
 
 type LocaleRoutingOptions = {
   cookieName?: string;

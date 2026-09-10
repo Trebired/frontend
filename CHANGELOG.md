@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.1
+
+- `createLocaleShellRoutes()` and `createLocaleBootScript()` now accept every `@trebired/seo` `localeStrategy`, so the site config can be passed through unchanged. 13.1.0 typed the strategy as `"none" | "prefix"`, which rejected seo's `"query"`. With `"query"` each route is served once and the boot script reads the `lang` query parameter, so a crawler following a `?lang=` alternate renders that locale; as with `"prefix"`, a saved choice wins and the browser language is not used.
+
 ## 13.1.0
 
 - Added `createLocaleShellRoutes()`, so a statically prerendered site can have every language indexed without sending visitors anywhere. It renders each route once per locale and returns the documents to write. With `strategy: "none"` each route is served once in the default locale. With `strategy: "prefix"` each non-default locale also gets its own URL (`/en`, `/en/about`), rendered in that locale with the others as switchable templates and carrying that locale's head, so its canonical URL and `hreflang` links come from `@trebired/seo`. Pass `@trebired/seo`'s `localeStrategy` as the strategy; that config is the one switch.

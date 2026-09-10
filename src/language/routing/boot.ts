@@ -28,6 +28,12 @@ function navigatorLocaleSource(): string[] {
   ];
 }
 
+function queryLocaleSource(): string[] {
+  return [
+    "if(!n){try{var q=/[?&]lang=([^&#]*)/.exec(location.search);if(q)n=m(decodeURIComponent(q[1]))}catch(e){}}",
+  ];
+}
+
 function pendingSource(): string[] {
   return [
     "if(n!==r){h.setAttribute(P,'');h.style.visibility='hidden';",
@@ -41,7 +47,8 @@ type LocaleBootOptions = {
 
 function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: LocaleBootOptions = {}): string {
   const routing = normalizeLocaleRouting(options);
-  const detectBrowser = boot.strategy !== "prefix";
+  const detectBrowser = !boot.strategy || boot.strategy === "none";
+  const readQuery = boot.strategy === "query";
   return [
     "(function(){",
     `var L=${scriptJson(routing.locales)},D=${scriptJson(routing.defaultLocale)},`,
@@ -50,6 +57,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     "var d=document,h=d.documentElement,r=h.lang||D;h.setAttribute(R,r);",
     ...matchSource(),
     ...storedLocaleSource(),
+    ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),
     "n=n||r;h.lang=n;",
     ...pendingSource(),

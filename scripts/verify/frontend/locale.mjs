@@ -30,6 +30,7 @@ function runBootScript(source, options = {}) {
   const languages = options.languages || ["de-DE"];
   const scope = {
     document: { addEventListener: (type) => listeners.push(type), cookie: options.cookie || "", documentElement: root },
+    location: { search: options.search || "" },
     navigator: { language: languages[0], languages },
     window: { localStorage: { getItem: (key) => store.get(key) ?? null } },
   };
@@ -40,7 +41,7 @@ function runBootScript(source, options = {}) {
 
 function verifyBootScript(api) {
   const source = api.createLocaleBootScript(ROUTING);
-  assert.doesNotMatch(source, /location/u, "resolving the locale must never navigate");
+  assert.doesNotMatch(source, /location\.(?:replace|assign|reload)|location\.href\s*=/u, "resolving the locale must never navigate");
 
   const none = runBootScript(source);
   assert.equal(none.lang, "en");
@@ -83,6 +84,14 @@ function verifyIndexableRoutes(api) {
   assert.equal(crawler.lang, "en", "with indexed urls the browser language must not rewrite a page's language");
   assert.equal(crawler.attrs.has(PENDING), false);
   assert.equal(runBootScript(source, { stored: "cs" }).lang, "cs", "a saved choice must still apply");
+
+  const query = api.createLocaleBootScript(ROUTING, { strategy: "query" });
+  assert.doesNotMatch(query, /location\.(?:replace|assign|reload)|location\.href\s*=/u);
+  assert.equal(runBootScript(query, { search: "?lang=cs" }).lang, "cs", "a query locale url must render in its locale");
+  assert.equal(runBootScript(query, { languages: ["cs-CZ"] }).lang, "en", "query urls must not follow the browser language");
+  assert.equal(runBootScript(query, { search: "?lang=en", stored: "cs" }).lang, "cs", "a saved choice must win over the url");
+  const queried = api.createLocaleShellRoutes({ ...options, strategy: "query" });
+  assert.deepEqual(queried.map((route) => route.path), ["/", "/about"], "query urls share the default document");
 }
 
 function resetDocument() {
