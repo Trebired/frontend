@@ -122,6 +122,11 @@ type FrontendFeedbackComponentsConfig = {
   flash?: FrontendComponentTokens;
 };
 
+type FrontendMediaComponentsConfig = {
+  expandableImage?: FrontendComponentTokens;
+  lightbox?: FrontendComponentTokens;
+};
+
 type FrontendShellComponentsConfig = {
   header?: FrontendComponentTokens;
   language?: FrontendComponentTokens;
@@ -137,6 +142,7 @@ type FrontendDataComponentsConfig = {
 type FrontendComponentsConfig = {
   data?: FrontendDataComponentsConfig;
   feedback?: FrontendFeedbackComponentsConfig;
+  media?: FrontendMediaComponentsConfig;
   overlays?: FrontendOverlayComponentsConfig;
   primitives?: FrontendPrimitiveComponentsConfig;
   shell?: FrontendShellComponentsConfig;
@@ -234,6 +240,7 @@ type NormalizedFrontendScalesConfig = {
 type NormalizedFrontendComponentsConfig = {
   data: Required<FrontendDataComponentsConfig>;
   feedback: Required<FrontendFeedbackComponentsConfig>;
+  media: Required<FrontendMediaComponentsConfig>;
   overlays: Required<FrontendOverlayComponentsConfig>;
   primitives: Required<FrontendPrimitiveComponentsConfig>;
   shell: Required<FrontendShellComponentsConfig>;

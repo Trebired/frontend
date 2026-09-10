@@ -165,6 +165,12 @@
   font-size: var(#{ns.css-var("surf-btn-sizes-sm-font-size")}, var(#{ns.css-var("ui-btn-sizes-sm-font-size")}, 11px));
 }
 
+#{ns.modifier("button", "md")} {
+  min-height: var(#{ns.css-var("surf-btn-sizes-md-height")}, var(#{ns.css-var("ui-btn-sizes-md-height")}, 28px));
+  padding-inline: var(#{ns.css-var("surf-btn-sizes-md-px")}, var(#{ns.css-var("ui-btn-sizes-md-px")}, 12px));
+  font-size: var(#{ns.css-var("surf-btn-sizes-md-font-size")}, var(#{ns.css-var("ui-btn-sizes-md-font-size")}, 12px));
+}
+
 #{ns.modifier("button", "lg")} {
   min-height: var(#{ns.css-var("surf-btn-sizes-lg-height")}, var(#{ns.css-var("ui-btn-sizes-lg-height")}, 34px));
   padding-inline: var(#{ns.css-var("surf-btn-sizes-lg-px")}, var(#{ns.css-var("ui-btn-sizes-lg-px")}, 14px));

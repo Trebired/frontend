@@ -13,12 +13,12 @@ function verifyPathHelpers(api) {
       locale: "cs",
       pathname: "/about",
       prefixed: true,
-    });
+  });
   assert.deepEqual(api.parseLocalePathname("/about", routing), {
       locale: "en",
       pathname: "/about",
       prefixed: false,
-    });
+  });
   assert.equal(api.parseLocalePathname("/cs", routing).pathname, "/");
 }
 
@@ -27,10 +27,10 @@ function verifyShellRoutes(api) {
   const routes = api.localeShellRoutes(["/", "/about"], routing);
   assert.deepEqual(routes.map((route) => route.path), ["/", "/about", "/cs", "/cs/about"]);
   assert.deepEqual(routes.map((route) => route.outFile), [
-    "index.html",
-    "about/index.html",
-    "cs/index.html",
-    "cs/about/index.html",
+      "index.html",
+      "about/index.html",
+      "cs/index.html",
+      "cs/about/index.html",
   ]);
   assert.deepEqual(routes.map((route) => route.sourcePath), ["/", "/about", "/", "/about"]);
 }

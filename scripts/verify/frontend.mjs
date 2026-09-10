@@ -72,7 +72,7 @@ async function verifyFrontendMain() {
 
 async function closeDom(window) {
   for (const animation of window.document.getAnimations?.() ?? []) {
-    animation.finished.catch(() => undefined);
+    animation.finished.catch (() => undefined);
     animation.cancel();
   }
   await window.happyDOM.close();

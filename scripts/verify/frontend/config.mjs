@@ -106,6 +106,9 @@ function assertDefaultConfig(defaults, context) {
   assert.ok(defaults.generatedScss.includes("--tbf-icon-mode: \"server\";"));
   assert.ok(defaults.generatedScss.includes("--tbf-overlay-modal-content-width: min(720px, calc(100vw - 48px));"));
   assert.ok(defaults.generatedScss.includes("--tbf-ui-upload-preview-size: 64px;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-media-lightbox-control-radius: 0;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-media-lightbox-control-state-hover-bg: "));
+  assert.ok(defaults.generatedScss.includes("--tbf-media-expandable-image-icon-size: 2.5rem;"));
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
   }

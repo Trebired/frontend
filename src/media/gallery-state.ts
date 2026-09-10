@@ -16,22 +16,22 @@ function useGalleryState(length: number, initialIndex: number): GalleryState {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(initialIndex);
-  const closeTimer = useRef<number | undefined>(undefined);
+  const closeTimer = useRef<number|undefined>(undefined);
 
   const activeIndex = Math.min(Math.max(index, 0), Math.max(length - 1, 0));
 
   const close = useCallback(() => {
-    setVisible(false);
-    window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setOpen(false), CLOSE_ANIMATION_MS);
-  }, []);
+      setVisible(false);
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = window.setTimeout(() => setOpen(false), CLOSE_ANIMATION_MS);
+    }, []);
 
   const expand = useCallback((next: number) => {
-    window.clearTimeout(closeTimer.current);
-    setIndex(next);
-    setOpen(true);
-    window.requestAnimationFrame(() => setVisible(true));
-  }, []);
+      window.clearTimeout(closeTimer.current);
+      setIndex(next);
+      setOpen(true);
+      window.requestAnimationFrame(() => setVisible(true));
+    }, []);
 
   const showPrevious = useCallback(() => setIndex((current) => Math.max(current - 1, 0)), []);
   const showNext = useCallback(() => setIndex((current) => Math.min(current + 1, length - 1)), [length]);

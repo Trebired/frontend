@@ -1,12 +1,12 @@
 import { useId } from "react";
 
 import { Icon } from "#lbkpzw8nphru";
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { ICON_MEDIA_MAXIMIZE } from "./icons.js";
 import { useGalleryState } from "./gallery-state.js";
 import { useResolvedLang } from "./lang.js";
 import { Lightbox } from "./lightbox.js";
-
 
 type ExpandableImageProps = {
   alt: string;
@@ -36,17 +36,17 @@ function ExpandableImage(props: ExpandableImageProps) {
     <>
     <button
     aria-label={label}
-    className={["tbf-expandable-image", props.className].filter(Boolean).join(" ")}
+    className={[frontendClassName("expandable-image"), props.className].filter(Boolean).join(" ")}
     onClick={() => state.expand(start)}
     type="button"
     >
     <img
     alt={thumbnailAlt}
-    className={["tbf-expandable-image-img", props.imageClassName].filter(Boolean).join(" ")}
+    className={[frontendClassName("expandable-image-img"), props.imageClassName].filter(Boolean).join(" ")}
     loading="lazy"
     src={props.src}
     />
-    <span className="tbf-expandable-image-icon">
+    <span className={frontendClassName("expandable-image-icon")}>
     <Icon spec={ICON_MEDIA_MAXIMIZE} />
     </span>
     </button>

@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 12.18.0
+
+- Added the `components.media` token group, so an application can shape `ExpandableImage` and the lightbox from its frontend config instead of overriding package CSS. `expandableImage.icon` sets the hover badge's size, radius, background and blur. `lightbox` sets the backdrop colour and blur, the close and navigation controls (size, wide-screen size, radius, background, blur, hover background), the image radius and shadow, and the caption colour, size and weight. The defaults are the values the styles used before, so an application that sets nothing renders exactly as it did.
+- Fixed the `md` button size being ignored. `surfaceClass` emits `--md` like the other sizes, but there was no rule for it, so a default-size button fell back to the root height and font size and rendered smaller than the configured `sizes.md`.
+
 ## 12.17.1
 
 - Fixed the lightbox showing an empty dark overlay. The viewer that holds the image starts transparent for the enter transition, and only the backdrop was ever marked visible, so the image loaded but was never shown. Every `ExpandableImage` since 12.16.0 was affected. The verification now opens a lightbox and asserts the viewer becomes visible.

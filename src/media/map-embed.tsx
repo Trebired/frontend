@@ -1,3 +1,5 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
+
 type MapEmbedProps = {
   className?: string;
   src: string;
@@ -8,7 +10,7 @@ function MapEmbed({ className, src, title }: MapEmbedProps) {
   return (
     <iframe
     allowFullScreen
-    className={["tbf-map-embed", className].filter(Boolean).join(" ")}
+    className={[frontendClassName("map-embed"), className].filter(Boolean).join(" ")}
     height="100%"
     loading="lazy"
     referrerPolicy="no-referrer-when-downgrade"

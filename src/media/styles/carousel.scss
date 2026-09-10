@@ -1,9 +1,13 @@
-.tbf-carousel {
+@use "@trebired/bundler/namespace" as ns;
+
+$bottom: ns.modifier("carousel", "controls-bottom");
+
+#{ns.class("carousel")} {
   position: relative;
   overflow: hidden;
 }
 
-.tbf-carousel-slide {
+#{ns.class("carousel-slide")} {
   position: absolute;
   inset: 0;
   height: 100%;
@@ -13,12 +17,12 @@
   transition: opacity 1000ms ease;
 }
 
-.tbf-carousel-slide.is-active {
+#{ns.class("carousel-slide")}.is-active {
   position: relative;
   opacity: 1;
 }
 
-.tbf-carousel-nav {
+#{ns.class("carousel-nav")} {
   position: absolute;
   top: 50%;
   display: flex;
@@ -35,19 +39,19 @@
   transition: background 180ms ease;
 }
 
-.tbf-carousel-nav:hover {
+#{ns.class("carousel-nav")}:hover {
   background: oklch(14.5% 0 0 / 55%);
 }
 
-.tbf-carousel-nav-prev {
+#{ns.class("carousel-nav-prev")} {
   left: 0.75rem;
 }
 
-.tbf-carousel-nav-next {
+#{ns.class("carousel-nav-next")} {
   right: 0.75rem;
 }
 
-.tbf-carousel-dots {
+#{ns.class("carousel-dots")} {
   position: absolute;
   bottom: 0.9rem;
   left: 50%;
@@ -56,7 +60,7 @@
   transform: translateX(-50%);
 }
 
-.tbf-carousel-dot {
+#{ns.class("carousel-dot")} {
   height: 0.5rem;
   width: 0.5rem;
   border: none;
@@ -67,12 +71,12 @@
   transition: background 180ms ease, width 180ms ease;
 }
 
-.tbf-carousel-dot.is-active {
+#{ns.class("carousel-dot")}.is-active {
   width: 1.75rem;
   background: oklch(100% 0 0 / 95%);
 }
 
-.tbf-carousel--controls-bottom::after {
+#{$bottom}::after {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -81,12 +85,13 @@
   pointer-events: none;
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-nav,
-.tbf-carousel--controls-bottom .tbf-carousel-dots {
+#{$bottom} #{ns.class("carousel-nav")},
+
+#{$bottom} #{ns.class("carousel-dots")} {
   z-index: 2;
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-nav {
+#{$bottom} #{ns.class("carousel-nav")} {
   top: auto;
   bottom: 1rem;
   transform: none;
@@ -94,20 +99,20 @@
   backdrop-filter: blur(12px);
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-nav:hover {
+#{$bottom} #{ns.class("carousel-nav")}:hover {
   background: oklch(100% 0 0 / 26%);
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-nav-prev {
+#{$bottom} #{ns.class("carousel-nav-prev")} {
   left: 1rem;
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-nav-next {
+#{$bottom} #{ns.class("carousel-nav-next")} {
   right: auto;
   left: 4.25rem;
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-dots {
+#{$bottom} #{ns.class("carousel-dots")} {
   bottom: 2.0625rem;
   left: auto;
   right: 1rem;
@@ -115,19 +120,19 @@
   transform: none;
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-dot {
+#{$bottom} #{ns.class("carousel-dot")} {
   height: 0.625rem;
   width: 0.625rem;
   background: oklch(100% 0 0 / 45%);
 }
 
-.tbf-carousel--controls-bottom .tbf-carousel-dot.is-active {
+#{$bottom} #{ns.class("carousel-dot")}.is-active {
   width: 1.75rem;
   background: oklch(100% 0 0 / 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tbf-carousel-slide {
+  #{ns.class("carousel-slide")} {
     transition: none;
   }
 }

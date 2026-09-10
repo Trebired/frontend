@@ -1,5 +1,6 @@
 import type { NormalizedFrontendComponentsConfig } from "#tf6lk8wu8qd2";
 import { frontendCssVar } from "#5vbaqj4pirp3";
+import { DEFAULT_MEDIA_COMPONENTS_CONFIG } from "./media-tokens.js";
 
 const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     data: Object.freeze({
@@ -33,6 +34,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
         }),
     }),
+    media: DEFAULT_MEDIA_COMPONENTS_CONFIG,
     overlays: Object.freeze({
         modal: Object.freeze({
             backdrop: {
