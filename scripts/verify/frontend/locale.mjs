@@ -58,6 +58,33 @@ function verifyBootScript(api) {
   assert.equal(runBootScript(source, { stored: "de" }).lang, "en", "an unsupported stored value must fall back");
 }
 
+function verifyIndexableRoutes(api) {
+  const routing = api.normalizeLocaleRouting(ROUTING);
+  const options = {
+    meta: (path, locale) => ({ ...META[locale], canonical: `${locale}${path}` }),
+    paths: ["/", "/about"],
+    render: (path, locale) => BODIES[locale].replace("</header>", ` ${path}</header>`),
+    routing,
+  };
+
+  const single = api.createLocaleShellRoutes(options);
+  assert.deepEqual(single.map((route) => route.path), ["/", "/about"], "without a strategy each route is served once");
+
+  const indexed = api.createLocaleShellRoutes({ ...options, strategy: "prefix" });
+  assert.deepEqual(indexed.map((route) => route.path), ["/", "/cs", "/about", "/cs/about"]);
+  const czech = indexed.find((route) => route.path === "/cs/about");
+  assert.equal(czech.meta.lang, "cs");
+  assert.equal(czech.meta.canonical, "cs/about", "each indexed url must carry its own locale's head");
+  assert.match(czech.body, /^<!--tbf:locale-start--><header id="h">Ahoj \/about<\/header>/u, "the url's locale must be the live markup");
+  assert.match(czech.body, /<template data-tbf-locale-view="en"><header id="h">Hello \/about/u, "other locales must stay switchable");
+
+  const source = api.createLocaleBootScript(ROUTING, { strategy: "prefix" });
+  const crawler = runBootScript(source, { languages: ["cs-CZ"] });
+  assert.equal(crawler.lang, "en", "with indexed urls the browser language must not rewrite a page's language");
+  assert.equal(crawler.attrs.has(PENDING), false);
+  assert.equal(runBootScript(source, { stored: "cs" }).lang, "cs", "a saved choice must still apply");
+}
+
 function resetDocument() {
   const root = document.documentElement;
   root.lang = "";
@@ -135,6 +162,7 @@ async function verifyLocaleRouting(context) {
   const api = await context.importDistRoot();
   verifyMatching(api);
   verifyBootScript(api);
+  verifyIndexableRoutes(api);
   verifyParseTimeSwap(api);
   verifyFetchedDocumentSwap(api);
   verifyInPlaceSwitch(api);

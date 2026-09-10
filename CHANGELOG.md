@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.0
+
+- Added `createLocaleShellRoutes()`, so a statically prerendered site can have every language indexed without sending visitors anywhere. It renders each route once per locale and returns the documents to write. With `strategy: "none"` each route is served once in the default locale. With `strategy: "prefix"` each non-default locale also gets its own URL (`/en`, `/en/about`), rendered in that locale with the others as switchable templates and carrying that locale's head, so its canonical URL and `hreflang` links come from `@trebired/seo`. Pass `@trebired/seo`'s `localeStrategy` as the strategy; that config is the one switch.
+- Visitors are never redirected to those URLs. Switching language still re-renders in place and leaves the URL alone; a visitor arriving on a locale URL from a search result sees their saved language if they have one.
+- `createLocaleBootScript()` takes the same `strategy`. With `"prefix"` it no longer picks the browser language, so a crawler rendering a page with an English browser indexes each URL in its own language instead of seeing it swapped. A saved choice still applies.
+
 ## 13.0.0
 
 - Statically prerendered sites now serve every language from one URL and switch language in place. 12.15.0 gave each locale its own prefixed URL and changed language by navigating to it, so every switch reloaded the page and a saved preference redirected before paint.

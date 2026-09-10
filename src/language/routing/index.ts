@@ -1,5 +1,8 @@
 export { createLocaleBootScript } from "./boot.js";
+export type { LocaleBootOptions } from "./boot.js";
 export { createLocaleDocumentBody } from "./document.js";
+export { createLocaleShellRoutes } from "./shell.js";
+export type { LocaleShellRoute, LocaleShellRoutesOptions } from "./shell.js";
 export type { LocaleDocumentBodyOptions } from "./document.js";
 export {
   DEFAULT_LOCALE_COOKIE_NAME,
@@ -9,7 +12,7 @@ export {
   normalizeLocaleRouting,
   pickLocale,
 } from "./options.js";
-export type { LocaleRouting, LocaleRoutingOptions } from "./options.js";
+export type { LocaleRouting, LocaleRoutingOptions, LocaleStrategy } from "./options.js";
 export {
   configureLocaleRouting,
   currentLocale,

@@ -1,5 +1,7 @@
 import { FRONTEND_PREFIX } from "#5vbaqj4pirp3";
 
+type LocaleStrategy = "none" | "prefix";
+
 type LocaleRoutingOptions = {
   cookieName?: string;
   defaultLocale?: string;
@@ -57,4 +59,4 @@ export {
   normalizeLocaleRouting,
   pickLocale,
 };
-export type { LocaleRouting, LocaleRoutingOptions };
+export type { LocaleRouting, LocaleRoutingOptions, LocaleStrategy };

@@ -694,6 +694,9 @@
       "#dqy2d22qyujv": [
         "../../../src/inputs/advanced/_shared.tsx"
       ],
+      "#dveygzk0qhvt": [
+        "../../../src/language/routing/shell.ts"
+      ],
       "#dwrbehrrh3dg": [
         "../../../src/inputs/upload/drop.ts"
       ],

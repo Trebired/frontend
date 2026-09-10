@@ -1,5 +1,5 @@
 import { normalizeLocaleRouting } from "./options.js";
-import type { LocaleRoutingOptions } from "./options.js";
+import type { LocaleRoutingOptions, LocaleStrategy } from "./options.js";
 import { LOCALE_PENDING_ATTR, LOCALE_RENDERED_ATTR } from "./view.js";
 
 function scriptJson(value: unknown): string {
@@ -35,8 +35,13 @@ function pendingSource(): string[] {
   ];
 }
 
-function createLocaleBootScript(options: LocaleRoutingOptions = {}): string {
+type LocaleBootOptions = {
+  strategy?: LocaleStrategy;
+};
+
+function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: LocaleBootOptions = {}): string {
   const routing = normalizeLocaleRouting(options);
+  const detectBrowser = boot.strategy !== "prefix";
   return [
     "(function(){",
     `var L=${scriptJson(routing.locales)},D=${scriptJson(routing.defaultLocale)},`,
@@ -45,11 +50,12 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}): string {
     "var d=document,h=d.documentElement,r=h.lang||D;h.setAttribute(R,r);",
     ...matchSource(),
     ...storedLocaleSource(),
-    ...navigatorLocaleSource(),
-    "n=n||D;h.lang=n;",
+    ...(detectBrowser ? navigatorLocaleSource() : []),
+    "n=n||r;h.lang=n;",
     ...pendingSource(),
     "})();",
   ].join("");
 }
 
 export { createLocaleBootScript };
+export type { LocaleBootOptions };
