@@ -18,3 +18,5 @@ export type { LightboxProps } from "./lightbox.js";
 export { MapEmbed } from "./map-embed.js";
 export type { MapEmbedProps } from "./map-embed.js";
 export { lockBodyScroll } from "./scroll-lock.js";
+export { mediaAvailable, mediaImage, mediaState } from "./state.js";
+export type { MediaState } from "./state.js";

@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.3
+
+- Restored `mediaState()`, `mediaImage()` and `mediaAvailable()` and the `MediaState` type. They read an image URL and an availability flag from a media value (a URL string, or an object carrying `image`, `url`, `avatar_url` or `avatarUrl` and `available`). 12.16.0 replaced `src/media/index.ts` with the image, lightbox and carousel primitives and dropped them without a changelog entry, so applications resolving avatars and organization icons through them failed to typecheck from 12.16.0 on. The verification now asserts they stay exported.
+
 ## 13.1.2
 
 - Added `currentRoutePath()` and `stripLocalePrefix()`. A page served at a locale URL such as `/en/about` is prerendered from the `/about` route, but an application reading `location.pathname` rendered `/en/about` on the client, so the hydrated tree did not match the prerendered one and React discarded it. Resolve the route with `currentRoutePath()`; it removes a configured non-default locale segment and a trailing slash.

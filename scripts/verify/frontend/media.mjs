@@ -20,6 +20,18 @@ function verifyScrollLockNesting(api) {
   document.body.style.overflow = "";
 }
 
+function verifyMediaState(api) {
+  for (const name of ["mediaAvailable", "mediaImage", "mediaState"]) {
+    assert.equal(typeof api[name], "function", `${name} must stay exported from the root entrypoint`);
+  }
+  assert.equal(api.mediaImage("/a.png"), "/a.png");
+  assert.equal(api.mediaImage({ avatar_url: "/b.png" }), "/b.png");
+  assert.equal(api.mediaImage(null), "");
+  assert.equal(api.mediaAvailable("/a.png"), true);
+  assert.equal(api.mediaAvailable({ available: false, image: "/a.png" }), false);
+  assert.deepEqual(api.mediaState({ available: true, id: 7, url: "/c.png" }), { available: true, id: "7", image: "/c.png" });
+}
+
 function verifyReducedMotion(api) {
   assert.equal(typeof api.prefersReducedMotion, "function");
   assert.equal(api.prefersReducedMotion(), false, "must not throw and must default to false");
@@ -135,6 +147,7 @@ async function verifyMedia(context) {
   verifyExports(react);
   verifyScrollLockNesting(root);
   verifyReducedMotion(root);
+  verifyMediaState(root);
   verifyMapEmbed(react, render);
   verifyCarouselMarkup(react, render);
   verifyLocalizedLabels(react, render);
