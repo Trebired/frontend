@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.8
+
+- Fixed the page shifting sideways when panel fullscreen opened and closed. Locking the page scroll added padding to the body to stand in for the scrollbar it hides, but the root already reserves that space with `scrollbar-gutter: stable`, so the padding moved the whole layout by a scrollbar width and moved it back on close. The padding is now only added when the root does not reserve the gutter.
+
 ## 13.1.7
 
 - Added an open and close animation to panel fullscreen. The panel fades in and scales up from 98.5% when it opens, and fades back out before it returns to its place when it closes. The close now waits for the panel's own transition instead of a fixed 180 ms, so the fade is no longer cut off. With `prefers-reduced-motion: reduce` the panel appears and disappears without motion.

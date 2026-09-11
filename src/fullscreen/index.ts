@@ -101,12 +101,22 @@ function clearStoredPanelId(group: string) {
   storage()?.removeItem(`${FULLSCREEN_STORAGE_PREFIX}${group}`);
 }
 
+function rootReservesScrollbarGutter() {
+  try {
+    return String(window.getComputedStyle(document.documentElement).scrollbarGutter || "").includes("stable");
+  } catch {
+    return false;
+  }
+}
+
 function lockDocumentScroll(lock: boolean) {
   if (!document.body) return;
   if (lock) {
     originalBodyOverflow = document.body.style.overflow;
     originalBodyPaddingRight = document.body.style.paddingRight;
-    const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+    const scrollbarGap = rootReservesScrollbarGutter()
+    ? 0
+    : Math.max(0, window.innerWidth - document.documentElement.clientWidth);
     if (scrollbarGap > 0) {
       const currentPadding = Number.parseFloat(window.getComputedStyle(document.body).paddingRight || "0") || 0;
       document.body.style.paddingRight = `${currentPadding + scrollbarGap}px`;
