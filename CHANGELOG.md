@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.5
+
+- Changed the verification scripts and examples to print through `@trebired/logger-adapter` instead of `console` and `process.stdout`.
+
 ## 13.1.4
 
 - Fixed the interface not responding after a soft navigation into a page with different chrome, such as signing in. Soft navigation replaced only the content and the configured `chromeIds`, so everything a page renders at the top level of the body stayed as the previous page left it. Arriving from the sign-in page, the user menu, the notifications modal and its template, and the mobile bottom bar were never inserted, and their triggers opened nothing until a full reload. Soft navigation now mirrors the new page's body-level shell and configured chrome: it replaces what both pages render, inserts what is new beside the same neighbours it has in the new page, and removes what the new page no longer renders. A chrome element the previous page lacked, such as the sidebar after signing in, used to be inserted at the top of the body; it now lands in its own container. Scripts, the content region and the runtime roots (layer, progress, flash) are left alone.

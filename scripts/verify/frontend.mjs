@@ -20,6 +20,9 @@ import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
+import { resolveLogger } from "@package/logger-adapter";
+
+const log = resolveLogger({ source: "@trebired/frontend" });
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const distDir = path.join(rootDir, "dist");
@@ -67,7 +70,7 @@ async function verifyFrontendMain() {
   await verifyFrontendComponents({ importDist, rootDir });
   await verifyFrontendTheme({ importDist, packageVersion, rootDir });
   await closeDom(window);
-  console.log("Frontend verification succeeded.");
+  log.info("verify.frontend", "Frontend verification succeeded.");
 }
 
 async function closeDom(window) {

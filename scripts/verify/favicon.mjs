@@ -3,6 +3,9 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveLogger } from "@package/logger-adapter";
+
+const log = resolveLogger({ source: "@trebired/frontend" });
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const { generateFaviconAssets, loadConfig } = await import(
@@ -90,14 +93,14 @@ if (generated.rasterized) {
     linkFor(generated.links, (link) => link.rel === "apple-touch-icon"),
     "emits apple-touch-icon link",
   );
-  console.log("Favicon verification succeeded (raster path).");
+  log.info("verify.favicon", "Favicon verification succeeded (raster path).");
 } else {
   assert.equal(generated.files.length, 2, "without sharp only the svg sources are emitted");
   assert.ok(
     !linkFor(generated.links, (link) => link.href === "/favicon.ico"),
     "no ico link without a rasterizer",
   );
-  console.log("Favicon verification succeeded (svg-only fallback, sharp absent).");
+  log.info("verify.favicon", "Favicon verification succeeded (svg-only fallback, sharp absent).");
 }
 
 await writeProject(false);
