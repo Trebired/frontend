@@ -7,6 +7,7 @@ import {
   verifyLiveNavigationStaleGuard,
   verifyLiveScopedSubscriptionDisposal,
 } from "./live-navigation.mjs";
+import { verifyLiveShell } from "./shell.mjs";
 
 function modalMarkup(marker) {
   return [
@@ -299,6 +300,7 @@ async function verifyFrontendLive(context) {
   await verifyLiveChromePortaledOverlayCleanup(context);
   await verifyLiveFileInputPreservation(context);
   await verifyLiveRemoteUploadPreservation(context);
+  await verifyLiveShell(context);
 }
 
 export {

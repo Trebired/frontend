@@ -448,6 +448,9 @@
       "#8jyu9kdf4nqq": [
         "../../../src/inputs/advanced/i18n/cs.ts"
       ],
+      "#8li0ub6a30xn": [
+        "../../../src/spa/shell.ts"
+      ],
       "#8rm3pzkj3gge": [
         "../../../src/modal/index.ts"
       ],
@@ -486,6 +489,9 @@
       ],
       "#9l2c2snvln7y": [
         "../../../src/primitives/components/link.tsx"
+      ],
+      "#9nk0macwdvtl": [
+        "../../../scripts/verify/frontend/shell.mjs"
       ],
       "#9r9eh5d3jidb": [
         "../../../src/styles/utils/text/extra.scss"
@@ -531,6 +537,9 @@
       ],
       "#aakzbesjkjqa": [
         "../../../src/react/title.tsx"
+      ],
+      "#air3o8hiiqf1": [
+        "../../../scripts/verify/frontend/bottom-bar.mjs"
       ],
       "#aj7ca2lpqxst": [
         "../../../scripts/verify/frontend/server/observability.mjs"
@@ -1333,6 +1342,9 @@
       "#rky4mukal7q2": [
         "../../../src/actions/confetti.ts"
       ],
+      "#rl9raqgicvkt": [
+        "../../../src/spa/close.ts"
+      ],
       "#rmmv8vkb3dbt": [
         "../../../src/react/boot.tsx"
       ],
@@ -1590,6 +1602,9 @@
       ],
       "#wwj1o2wv6dor": [
         "../../../src/icons/server/index.ts"
+      ],
+      "#wx6aeo50d9rb": [
+        "../../../src/spa/closers.ts"
       ],
       "#x1k03ygo8xtf": [
         "../../../src/styles/utils/spacing/inline.scss"

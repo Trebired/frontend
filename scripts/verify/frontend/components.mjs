@@ -4,6 +4,7 @@ import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { assertNoCustomElementTags } from "./html-assertions.mjs";
+import { verifyBottomBar } from "./bottom-bar.mjs";
 import { verifyRenderedUpload, verifyUploadStyles } from "./upload-components.mjs";
 
 async function verifyFrontendComponents(context) {
@@ -17,6 +18,7 @@ async function verifyFrontendComponents(context) {
   await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
+  await verifyBottomBar(context.importDist, context.rootDir);
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
 }

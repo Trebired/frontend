@@ -302,6 +302,14 @@
   text-decoration: none;
 }
 
+button#{ns.element-class("mobile-bottom-bar", "item")} {
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
 #{ns.element-class("mobile-bottom-bar", "item")}#{ns.data("active", "true")} {
   color: var(#{ns.css-var("text")}, #000);
 }

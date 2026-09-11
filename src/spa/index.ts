@@ -5,6 +5,7 @@ import {
   seedLoadedScripts,
   softRedirect,
 } from "./navigate.js";
+import { seedShell } from "./shell.js";
 
 let popstateBound = false;
 
@@ -32,6 +33,7 @@ function bindPopstate() {
 function configureSpa(options: SpaOptions = {}) {
   applySpaOptions(options);
   seedLoadedScripts();
+  seedShell();
   bindPopstate();
 }
 

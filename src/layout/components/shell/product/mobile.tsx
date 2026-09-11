@@ -103,8 +103,9 @@ function ProductShellBottomBar(props: ProductShellBottomBarProps) {
     {bottomBarItem(profileHref, productShellLabel(labels, "profile"), profileIcon, itemClassName)}
     <MobileNavToggleButton
     aria-label={productShellLabel(labels, "menu")}
-    className={classNames(itemClassName, menuToggleClassName)}
+    className={classNames(frontendElementClass("mobile-bottom-bar", "item"), itemClassName, menuToggleClassName)}
     controls="mobile_nav_shell"
+    surface={false}
     >
     {menuIcon}
     <span className={frontendElementClass("mobile-bottom-bar", "label")}>

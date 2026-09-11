@@ -4,7 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
-## 13.1.3
+## 13.1.4
+
+- Fixed the interface not responding after a soft navigation into a page with different chrome, such as signing in. Soft navigation replaced only the content and the configured `chromeIds`, so everything a page renders at the top level of the body stayed as the previous page left it. Arriving from the sign-in page, the user menu, the notifications modal and its template, and the mobile bottom bar were never inserted, and their triggers opened nothing until a full reload. Soft navigation now mirrors the new page's body-level shell and configured chrome: it replaces what both pages render, inserts what is new beside the same neighbours it has in the new page, and removes what the new page no longer renders. A chrome element the previous page lacked, such as the sidebar after signing in, used to be inserted at the top of the body; it now lands in its own container. Scripts, the content region and the runtime roots (layer, progress, flash) are left alone.
+- Soft navigation now closes every open modal, popover, dropdown, tooltip and mobile navigation before swapping the page, and removes portaled overlays whose original container left the document, such as the theme menu of a replaced sidebar. Flash messages are not overlays and stay.
+- Fixed the address bar keeping the requested URL when the server redirected a soft navigation. A soft reload of the sign-in page that the server redirects to the home page rendered the home page but kept showing `/login`; the address bar now follows the redirect.
+- Fixed the menu item in `ProductShellBottomBar` rendering as a framed button instead of a bar item. The toggle took only the application's `itemClassName` and always carried the button surface, so it never got the bar item's layout and stood out from Apps and Profile. It now carries the bar item class and no surface.
+- Added `surface` to `MobileNavToggleButton`. It defaults to `true`, so a standalone toggle keeps the button look; `false` drops the button surface.
+- Buttons used as bottom bar items, such as an application's notifications slot, now reset the browser's button background, border and font, so they match the link items instead of showing a grey box.
 
 - Restored `mediaState()`, `mediaImage()` and `mediaAvailable()` and the `MediaState` type. They read an image URL and an availability flag from a media value (a URL string, or an object carrying `image`, `url`, `avatar_url` or `avatarUrl` and `available`). 12.16.0 replaced `src/media/index.ts` with the image, lightbox and carousel primitives and dropped them without a changelog entry, so applications resolving avatars and organization icons through them failed to typecheck from 12.16.0 on. The verification now asserts they stay exported.
 

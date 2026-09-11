@@ -23,6 +23,7 @@ type MobileNavProps = HTMLAttributes<HTMLElement> & {
 
 type MobileNavToggleButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   controls: string;
+  surface?: boolean;
 };
 
 function AppHeader(props: AppHeaderProps) {
@@ -79,13 +80,13 @@ function MobileNav(props: MobileNavProps) {
 }
 
 function MobileNavToggleButton(props: MobileNavToggleButtonProps) {
-  const { children, className, controls, type = "button", ...rest } = props;
+  const { children, className, controls, surface = true, type = "button", ...rest } = props;
   return (
     <button
     {...rest}
     aria-controls={controls}
     aria-expanded={props["aria-expanded"] ?? false}
-    className={classNames(`${frontendClassName("button")} ${frontendElementClass("mobile-nav", "toggle")}`, className)}
+    className={classNames(surface ? frontendClassName("button") : "", frontendElementClass("mobile-nav", "toggle"), className)}
     {...frontendDataAttrs({ "mobile-nav-toggle": "" })}
     type={type}
     >

@@ -12,6 +12,7 @@ import {
   frontendEventName,
 } from "#5vbaqj4pirp3";
 import { softRedirect } from "#xhefk4bgh568";
+import { registerOverlayCloser } from "#wx6aeo50d9rb";
 
 const HEADER_SELECTOR = frontendDataSelector("header");
 const HEADER_PRIMARY_SELECTOR = `${frontendDataSelector("header")}${frontendDataSelector("header-primary")}`;
@@ -86,6 +87,12 @@ function openMobileNav(nav: HTMLElement) {
 function closeMobileNav(nav: HTMLElement) {
   return applyMobileNavState(nav, false);
 }
+
+registerOverlayCloser(() => {
+    queryAll<HTMLElement>(document, MOBILE_NAV_SELECTOR).forEach((nav) => {
+        if (navStates.get(nav)?.open) closeMobileNav(nav);
+    });
+});
 
 function toggleMobileNav(nav: HTMLElement) {
   const state = navStates.get(nav);

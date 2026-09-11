@@ -9,10 +9,13 @@ import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
 import { fetchDocument } from "./fetch-document.js";
 import { hasUnsavedWork } from "./guards.js";
+import { closeAllOverlays } from "./close.js";
 import {
   overlayPortalRoots,
+  removeOrphanedPortaledOverlays,
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
+import { syncShell } from "./shell.js";
 import {
   beginNavigation,
   emitPageChange,
@@ -82,24 +85,6 @@ function contentRoot(root: Document) {
   return element instanceof HTMLElement ? element : null;
 }
 
-function swapChrome(doc: Document) {
-  spaConfig().chromeIds.forEach((id) => {
-      const current = document.getElementById(id);
-      const next = doc.getElementById(id);
-      if (!current && !next) return;
-      if (current && next) {
-        current.replaceWith(document.importNode(next, true));
-      } else if (current) {
-        current.remove();
-      } else if (next) {
-        document.body.insertBefore(
-          document.importNode(next, true),
-          document.body.firstChild,
-        );
-      }
-  });
-}
-
 function updateDocumentMeta(doc: Document) {
   const title = doc.querySelector("title");
   if (title?.textContent) document.title = title.textContent;
@@ -164,6 +149,7 @@ function replaceContent(
   if (!currentRoot || !nextRoot) return false;
   const formState = preserveState ? captureFormState(currentRoot) : null;
   const wizardState = preserveState ? captureWizardSteps(currentRoot) : null;
+  closeAllOverlays();
   config.closeOverlays?.();
   runPageCleanups(currentRoot);
   removeStalePortaledOverlaysFromRoot(
@@ -177,7 +163,8 @@ function replaceContent(
   );
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
   syncIslandRootHydration(currentRoot, nextRoot);
-  swapChrome(doc);
+  syncShell(doc);
+  removeOrphanedPortaledOverlays({ portaledSelector: PORTALED_SELECTOR });
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
   if (formState) restoreFormState(currentRoot, formState);
   updateDocumentMeta(doc);
@@ -210,13 +197,19 @@ function applyLandingScroll(targetHash: string) {
   }
 }
 
-function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string, targetHash = "") {
+function pathOf(url: string) {
+  const parsed = new URL(url, window.location.href);
+  return `${parsed.pathname}${parsed.search}`;
+}
+
+function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string, targetHash = "", requestedUrl = resolvedUrl) {
   const parsed = new URL(resolvedUrl, window.location.href);
   notePathChange(`${parsed.pathname}${parsed.search}`);
-  if (mode === "none") return;
+  const redirected = pathOf(requestedUrl) !== pathOf(resolvedUrl);
+  if (mode === "none" && !redirected) return;
   const path = `${parsed.pathname}${parsed.search}${parsed.hash || targetHash}`;
-  if (mode === "replace") history.replaceState({ tbfSpa: true }, "", path);
-  else history.pushState({ tbfSpa: true }, "", path);
+  if (mode === "push") history.pushState({ tbfSpa: true }, "", path);
+  else history.replaceState({ tbfSpa: true }, "", path);
 }
 
 function fallbackNavigate(url: string, updateUrl: boolean) {
@@ -246,7 +239,7 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
     if (!replaceContent(fetched.doc, navigation, options.preserveState === true, targetHash)) {
       return fallbackNavigate(targetUrl, historyMode !== "none");
     }
-    applyHistoryMode(historyMode, fetched.url, targetHash);
+    applyHistoryMode(historyMode, fetched.url, targetHash, targetUrl);
     emitPageChange(navigation);
     return true;
   } catch {

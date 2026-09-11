@@ -80,8 +80,20 @@ function removeStalePortaledOverlaysFromRoot(
   });
 }
 
+function removeOrphanedPortaledOverlays(options: LivePortaledOverlayOptions = {}) {
+  const selector = normalizeSelectorList(options.portaledSelector);
+  if (!selector) return;
+  overlayPortalRoots().forEach((portal) => {
+      queryElements(portal, selector).forEach((node) => {
+          const origin = layerPortalOrigin(node);
+          if (origin && !origin.isConnected) closeStaleOverlayNode(node, options);
+      });
+  });
+}
+
 export {
   overlayPortalRoots,
   queryElements,
+  removeOrphanedPortaledOverlays,
   removeStalePortaledOverlaysFromRoot,
 };
