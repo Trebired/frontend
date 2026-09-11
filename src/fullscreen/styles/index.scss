@@ -43,6 +43,23 @@
   border-radius: 0 !important;
   background: var(#{ns.css-var("page")}, #fff);
   pointer-events: auto;
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+  opacity var(#{ns.css-var("transition-normal")}, 180ms) ease,
+  transform var(#{ns.css-var("transition-normal")}, 180ms) ease;
+}
+
+#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")}#{ns.data("fullscreen-full", "true")} {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} {
+    transform: none;
+    transition: none;
+  }
 }
 
 #{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} > * {

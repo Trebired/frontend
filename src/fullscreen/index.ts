@@ -263,6 +263,7 @@ function closeFullscreenTarget(options: { immediate?: boolean } = {}) {
   const state = panelState;
   if (!state) return false;
   panelState = null;
+  state.target.removeAttribute(frontendDataAttr("fullscreen-full"));
   state.overlay.removeAttribute(frontendDataAttr("open"));
   state.overlay.setAttribute("aria-hidden", "true");
   clearStoredPanelId(state.group);
@@ -274,8 +275,22 @@ function closeFullscreenTarget(options: { immediate?: boolean } = {}) {
     syncPanelTriggers();
   };
   if (options.immediate) finish();
-  else window.setTimeout(finish, 180);
+  else window.setTimeout(finish, closeTransitionMs(state.target));
   return true;
+}
+
+function closeTransitionMs(target: HTMLElement) {
+  let raw = "";
+  try {
+    raw = window.getComputedStyle(target).transitionDuration;
+  } catch {}
+  const longest = String(raw || "")
+  .split(",")
+  .map((part) => part.trim())
+  .map((part) => part.endsWith("ms") ? Number.parseFloat(part) : Number.parseFloat(part) * 1000)
+  .filter(Number.isFinite)
+  .reduce((max, value) => Math.max(max, value), 0);
+  return longest > 0 ? Math.min(longest, 600) : 180;
 }
 
 function toggleFullscreenTarget(id: string, group = "default", trigger: HTMLElement | null = null) {

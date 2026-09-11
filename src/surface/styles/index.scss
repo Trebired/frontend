@@ -239,9 +239,9 @@
   display: flex;
   min-width: 0;
   flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(#{ns.css-var("gap-sm")}, 8px);
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(#{ns.css-var("gap-xs")}, 8px);
 }
 
 #{ns.element-class("canvas-panel", "header")}.card {
@@ -257,16 +257,17 @@
   gap: 2px;
 }
 
-#{ns.element-class("canvas-panel", "titles")} span {
+#{ns.element-class("canvas-panel", "subtitle")} {
   color: var(#{ns.css-var("text-muted")}, #666);
   font-size: 0.9rem;
 }
 
 #{ns.element-class("canvas-panel", "actions")} {
   display: flex;
-  flex: 0 0 auto;
+  min-width: 0;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: var(#{ns.css-var("gap-xs")}, 8px);
 }
 
 #{ns.element-class("canvas-panel", "body")} {

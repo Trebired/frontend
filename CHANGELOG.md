@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.7
+
+- Added an open and close animation to panel fullscreen. The panel fades in and scales up from 98.5% when it opens, and fades back out before it returns to its place when it closes. The close now waits for the panel's own transition instead of a fixed 180 ms, so the fade is no longer cut off. With `prefers-reduced-motion: reduce` the panel appears and disappears without motion.
+- Changed the canvas panel header to show the title above the toolbar instead of beside it. The title is a plain `span` with no special weight, and the gap between the title and the toolbar, like the gap between the logs toolbar rows, is `gap-xs`. The subtitle has its own class, so the muted subtitle style no longer applies to every span in the header.
+
 ## 13.1.6
 
 - Fixed panel fullscreen being unusable. The target moves into the layer root, which is `pointer-events: none`, and nothing turned pointer events back on, so every click fell through to the dimming overlay and closed fullscreen. The target was also stacked under that overlay: `applyZIndex()` treated a missing `behind` reference as the fallback itself and returned fallback minus one step, so the overlay got 1110 and the target, asking for 1121, got 1101. A missing `behind` or `ahead` reference is now ignored, so `applyZIndex({ fallback })` returns the fallback exactly. Every layer placed that way sits one step higher than before, in the same order.
