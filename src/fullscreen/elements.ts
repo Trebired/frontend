@@ -1,6 +1,7 @@
 import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 const FULLSCREEN_RESTORE_MS = 320;
+const FULLSCREEN_RESTORE_MAX_MS = 900;
 
 export function createPlaceholder(target: HTMLElement) {
   const rect = target.getBoundingClientRect();
@@ -23,8 +24,28 @@ export function createOverlay(id: string, group: string) {
   return overlay;
 }
 
+export function longestDurationMs(raw: unknown) {
+  return String(raw || "")
+  .split(",")
+  .map((part) => part.trim())
+  .map((part) => part.endsWith("ms") ? Number.parseFloat(part) : Number.parseFloat(part) * 1000)
+  .filter(Number.isFinite)
+  .reduce((max, value) => Math.max(max, value), 0);
+}
+
+function restoreDurationMs(target: HTMLElement) {
+  let raw = "";
+  try {
+    raw = window.getComputedStyle(target).animationDuration;
+  } catch {}
+  const longest = longestDurationMs(raw);
+  return longest > 0 ? Math.min(longest + 60, FULLSCREEN_RESTORE_MAX_MS) : FULLSCREEN_RESTORE_MS;
+}
+
 export function animateRestoredTarget(target: HTMLElement) {
   const attribute = frontendDataAttr("fullscreen-restoring");
   target.setAttribute(attribute, "true");
-  window.setTimeout(() => target.removeAttribute(attribute), FULLSCREEN_RESTORE_MS);
+  window.requestAnimationFrame(() => {
+      window.setTimeout(() => target.removeAttribute(attribute), restoreDurationMs(target));
+  });
 }

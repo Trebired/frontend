@@ -17,7 +17,7 @@ import {
   fullscreenSupported,
   toggleFullscreen,
 } from "./native.js";
-import { animateRestoredTarget, createOverlay, createPlaceholder } from "./elements.js";
+import { animateRestoredTarget, createOverlay, createPlaceholder, longestDurationMs } from "./elements.js";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const FULLSCREEN_BASE_Z_INDEX = 1010;
@@ -275,12 +275,7 @@ function closeTransitionMs(target: HTMLElement) {
   try {
     raw = window.getComputedStyle(target).transitionDuration;
   } catch {}
-  const longest = String(raw || "")
-  .split(",")
-  .map((part) => part.trim())
-  .map((part) => part.endsWith("ms") ? Number.parseFloat(part) : Number.parseFloat(part) * 1000)
-  .filter(Number.isFinite)
-  .reduce((max, value) => Math.max(max, value), 0);
+  const longest = longestDurationMs(raw);
   return longest > 0 ? Math.min(longest, 600) : 180;
 }
 

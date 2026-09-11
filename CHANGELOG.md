@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.10
+
+- Changed the fullscreen restore animation to clear itself from the panel's own animation duration instead of a fixed 320 ms, so a theme with a slower `transition-normal` no longer has the animation cut off part way. The duration parser the close already used is now shared between the two.
+
 ## 13.1.9
 
 - Added an animation to the swap between a fullscreened panel and the placeholder that holds its place in the page. The placeholder fades in and scales up when the panel leaves, and the panel does the same when it returns, so closing fullscreen no longer snaps the original content back into the page with no transition. With `prefers-reduced-motion: reduce` both appear without motion. Switching directly from one fullscreen panel to another restores the first one without the animation.
