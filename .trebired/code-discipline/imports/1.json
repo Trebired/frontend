@@ -513,6 +513,7 @@
   "#vnoeqwsaz83t": "./src/inputs/advanced/dropdown/styles/base.scss",
   "#vo5ds2njj5cm": "./src/styles/utils/spacing/block.scss",
   "#vu2zckbtt5gr": "./src/graph/advanced/runtime/boot.tsx",
+  "#vubhewub1c2b": "./src/fullscreen/elements.ts",
   "#vuk08leruwgb": "./src/surface/index.ts",
   "#vw1309rgh9r2": "./src/language/runtime-locale.ts",
   "#vw4m67rwpaql": "./src/settings/save-policy/index.ts",

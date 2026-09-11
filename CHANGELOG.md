@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.9
+
+- Added an animation to the swap between a fullscreened panel and the placeholder that holds its place in the page. The placeholder fades in and scales up when the panel leaves, and the panel does the same when it returns, so closing fullscreen no longer snaps the original content back into the page with no transition. With `prefers-reduced-motion: reduce` both appear without motion. Switching directly from one fullscreen panel to another restores the first one without the animation.
+
 ## 13.1.8
 
 - Fixed the page shifting sideways when panel fullscreen opened and closed. Locking the page scroll added padding to the body to stand in for the scrollbar it hides, but the root already reserves that space with `scrollbar-gutter: stable`, so the padding moved the whole layout by a scrollbar width and moved it back on close. The padding is now only added when the root does not reserve the gutter.

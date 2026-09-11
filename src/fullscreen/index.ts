@@ -17,7 +17,8 @@ import {
   fullscreenSupported,
   toggleFullscreen,
 } from "./native.js";
-import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
+import { animateRestoredTarget, createOverlay, createPlaceholder } from "./elements.js";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const FULLSCREEN_BASE_Z_INDEX = 1010;
 const FULLSCREEN_TRIGGER_SELECTOR = [
@@ -132,27 +133,6 @@ function lockDocumentScroll(lock: boolean) {
   document.body.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
 }
 
-function createPlaceholder(target: HTMLElement) {
-  const rect = target.getBoundingClientRect();
-  const placeholder = document.createElement("div");
-  placeholder.className = frontendClassName("fullscreen-placeholder");
-  placeholder.setAttribute(frontendDataAttr("fullscreen-placeholder"), "");
-  placeholder.style.width = `${Math.max(0, rect.width)}px`;
-  placeholder.style.height = `${Math.max(0, rect.height)}px`;
-  return placeholder;
-}
-
-function createOverlay(id: string, group: string) {
-  const overlay = document.createElement("div");
-  overlay.className = frontendClassName("fullscreen-overlay");
-  overlay.setAttribute(frontendDataAttr("fullscreen-overlay"), "");
-  overlay.setAttribute(frontendDataAttr("fullscreen-id"), id);
-  overlay.setAttribute(frontendDataAttr("fullscreen-group"), group);
-  overlay.setAttribute("aria-hidden", "true");
-  overlay.setAttribute("role", "presentation");
-  return overlay;
-}
-
 function dispatchPanelEvent(name: string, state: FullscreenPanelState) {
   state.target.dispatchEvent(new CustomEvent(name, {
         bubbles: true,
@@ -252,13 +232,14 @@ function openFullscreenTarget(
   return target;
 }
 
-function restoreFullscreenTarget(state: FullscreenPanelState) {
+function restoreFullscreenTarget(state: FullscreenPanelState, animate = false) {
   state.target.removeAttribute(frontendDataAttr("fullscreen-active"));
   state.target.removeAttribute(frontendDataAttr("fullscreen-full"));
   state.target.removeAttribute("aria-modal");
   clearZIndex(state.target);
   if (state.originalStyle == null) state.target.removeAttribute("style");
   else state.target.setAttribute("style", state.originalStyle);
+  if (animate) animateRestoredTarget(state.target);
   if (state.placeholder.parentNode) {
     state.placeholder.parentNode.insertBefore(state.target, state.placeholder);
   } else if (state.originalParent) {
@@ -278,7 +259,7 @@ function closeFullscreenTarget(options: { immediate?: boolean } = {}) {
   state.overlay.setAttribute("aria-hidden", "true");
   clearStoredPanelId(state.group);
   const finish = () => {
-    restoreFullscreenTarget(state);
+    restoreFullscreenTarget(state, !options.immediate);
     lockDocumentScroll(false);
     state.trigger?.focus({ preventScroll: true });
     dispatchPanelEvent(frontendEventName("fullscreen-close"), state);

@@ -35,6 +35,26 @@ async function verifyFullscreenStacking(context) {
   assert.equal(target.hasAttribute("data-tbf-fullscreen-active"), false);
 }
 
+async function verifyFullscreenRestoreAnimation(context) {
+  const fullscreen = await context.importDist("fullscreen");
+  document.body.innerHTML = [
+    '<div id="restore-panel" data-tbf-fullscreen-target',
+    ' data-tbf-fullscreen-id="restore" data-tbf-fullscreen-group="verify">panel</div>',
+  ].join("");
+  const target = document.getElementById("restore-panel");
+  fullscreen.registerFullscreenTarget(target);
+  fullscreen.openFullscreenTarget("restore", "verify");
+  const placeholder = document.querySelector("[data-tbf-fullscreen-placeholder]");
+  assert.ok(placeholder, "opening leaves a placeholder to animate in");
+  fullscreen.closeFullscreenTarget();
+  await new Promise((resolve) => setTimeout(resolve, 260));
+  assert.equal(target.isConnected, true, "the target returns to the document");
+  assert.equal(target.getAttribute("data-tbf-fullscreen-restoring"), "true", "the restored target animates back in");
+  await new Promise((resolve) => setTimeout(resolve, 420));
+  assert.equal(target.hasAttribute("data-tbf-fullscreen-restoring"), false, "the restore attribute is cleared");
+  document.body.innerHTML = "";
+}
+
 async function verifyBindRootBatching(context) {
   const { collectAddedBindRoots } = await context.importDist("dom");
   document.body.innerHTML = '<div id="batch-list"></div><div id="batch-single"></div>';
@@ -57,6 +77,7 @@ async function verifyBindRootBatching(context) {
 async function verifyLayering(context) {
   await verifyZIndexFallback(context);
   await verifyFullscreenStacking(context);
+  await verifyFullscreenRestoreAnimation(context);
   await verifyBindRootBatching(context);
 }
 
