@@ -306,8 +306,12 @@ function updateStatsCopy(
   }
 }
 
-export function updateLogStats(page: LogsPage, filtered: FilteredLogItem[]) {
-  const loadedSummary = buildStatsSummaryFromItems(getFilteredLoadedLogs(page));
+export function updateLogStats(
+  page: LogsPage,
+  filtered: FilteredLogItem[],
+  loadedFiltered?: FilteredLogItem[],
+) {
+  const loadedSummary = buildStatsSummaryFromItems(loadedFiltered || getFilteredLoadedLogs(page));
   const totalSummary = hasUsableSummary(page.state.totalStats)
   ? page.state.totalStats
   : fallbackTotalSummary(page);

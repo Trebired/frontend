@@ -19,7 +19,7 @@ import {
 } from "./native.js";
 import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const FULLSCREEN_BASE_Z_INDEX = 1120;
+const FULLSCREEN_BASE_Z_INDEX = 1010;
 const FULLSCREEN_TRIGGER_SELECTOR = [
   frontendDataSelector("fullscreen-trigger"),
   frontendDataSelector("fullscreen-toggle"),

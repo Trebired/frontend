@@ -74,9 +74,11 @@ export function openLogDetail(
   setTextContent(ui.detailRawEl, prettyJson(entry));
 
   if (metaWrap) metaWrap.hidden = !metaText;
-  refreshDetailCodeBlocks(modal);
 
   openModal(modal, trigger instanceof HTMLElement ? trigger : null);
+  window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => refreshDetailCodeBlocks(modal));
+  });
 }
 
 export function toggleMarkedLog(

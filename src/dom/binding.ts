@@ -36,8 +36,43 @@ function firstHTMLFormChild(host: Element | null | undefined) {
   return child instanceof HTMLFormElement ? child : null;
 }
 
+const PARENT_BATCH_THRESHOLD = 8;
+
 function observeTarget(root: BindRoot) {
   return root instanceof Document ? root.documentElement : root;
+}
+
+function groupAddedNodesByParent(records: MutationRecord[]) {
+  const byParent = new Map<Node|null, Array<Element|DocumentFragment>>();
+  records.forEach((record) => {
+      record.addedNodes.forEach((node) => {
+          if (!(node instanceof Element || node instanceof DocumentFragment)) return;
+          const nodes = byParent.get(node.parentNode) || [];
+          nodes.push(node);
+          byParent.set(node.parentNode, nodes);
+      });
+  });
+  return byParent;
+}
+
+function hasAncestorIn(node: Node, roots: Set<Node>) {
+  let current = node.parentNode;
+  while (current) {
+    if (roots.has(current)) return true;
+    current = current.parentNode;
+  }
+  return false;
+}
+
+function collectAddedBindRoots(records: MutationRecord[]): Array<Element|DocumentFragment> {
+  const candidates: Array<Element|DocumentFragment> = [];
+  groupAddedNodesByParent(records).forEach((nodes, parent) => {
+      if (parent instanceof Element && nodes.length > PARENT_BATCH_THRESHOLD) candidates.push(parent);
+      else candidates.push(...nodes);
+  });
+  const connected = candidates.filter((node) => !(node instanceof Element) || node.isConnected);
+  const roots = new Set<Node>(connected);
+  return connected.filter((node) => !hasAncestorIn(node, roots));
 }
 
 function bindElements(
@@ -62,13 +97,7 @@ function bindElements(
   options.observe === false || typeof MutationObserver !== "function"
   ? null
   : new MutationObserver((records) => {
-      records.forEach((record) => {
-          record.addedNodes.forEach((node) => {
-              if (node instanceof Element || node instanceof DocumentFragment) {
-                bind(node);
-              }
-          });
-      });
+      collectAddedBindRoots(records).forEach((node) => bind(node));
   });
   observer?.observe(observeTarget(root), { childList: true, subtree: true });
   return {
@@ -116,6 +145,7 @@ function bindFirstChildFormElements(
 }
 
 export {
+  collectAddedBindRoots,
   bindElements,
   bindElementsOnReady,
   bindFirstChildElements,

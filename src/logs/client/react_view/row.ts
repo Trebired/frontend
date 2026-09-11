@@ -145,7 +145,7 @@ function highlightedStyle(view) {
   };
 }
 
-function LogRow({ view, onOpen, onToggleMarker }) {
+function LogRowView({ view, onOpen, onToggleMarker }) {
   function open(event) {
     if (typeof onOpen === "function") onOpen(view.logKey, event.currentTarget);
   }
@@ -177,5 +177,7 @@ function LogRow({ view, onOpen, onToggleMarker }) {
     stackBlock(view),
   );
 }
+
+const LogRow = React.memo(LogRowView);
 
 export { LogRow };

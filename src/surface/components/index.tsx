@@ -85,7 +85,7 @@ function CanvasPanel(props: CanvasPanelProps) {
 function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreenId" | "subtitle" | "title">) {
   if (!props.title && !props.subtitle && !props.actions && !props.fullscreenId) return null;
   return (
-    <div className={frontendElementClass("canvas-panel", "header")}>
+    <div className={classNames(frontendElementClass("canvas-panel", "header"), "card")}>
     <div className={frontendElementClass("canvas-panel", "titles")}>
     {props.title ? <strong>{props.title}</strong> : null}
     {props.subtitle ? <span>{props.subtitle}</span> : null}

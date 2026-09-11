@@ -238,11 +238,16 @@
 #{ns.element-class("canvas-panel", "header")} {
   display: flex;
   min-width: 0;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: var(#{ns.css-var("gap-sm")}, 8px);
-  padding: 10px 12px;
-  border-block-end: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+}
+
+#{ns.element-class("canvas-panel", "header")}.card {
+  min-height: 0;
+  padding: 8px 10px;
+  overflow: visible;
 }
 
 #{ns.element-class("canvas-panel", "titles")} {

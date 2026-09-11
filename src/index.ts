@@ -34,6 +34,7 @@ import { bindTooltips } from "./tooltip/index.js";
 import { bindPortals, ensureLayerRoot } from "./layer/index.js";
 import { bindWizard } from "./wizard/index.js";
 import { bindRoot as resolveRootScope, type BindRoot, type Cleanup } from "./dom/index.js";
+import { collectAddedBindRoots } from "./dom/binding.js";
 import { flash } from "./flash/index.js";
 import { progress } from "./progress/index.js";
 import {
@@ -187,13 +188,7 @@ function bindFrontendRuntime(
   let observer: MutationObserver | null = null;
   if (options.observe !== false && typeof MutationObserver === "function") {
     observer = new MutationObserver((records) => {
-        records.forEach((record) => {
-            record.addedNodes.forEach((node) => {
-                if (node instanceof Element || node instanceof DocumentFragment) {
-                  bindFrontendRuntimeOnce(node, options);
-                }
-            });
-        });
+        collectAddedBindRoots(records).forEach((node) => bindFrontendRuntimeOnce(node, options));
     });
     const target = scope instanceof Document ? scope.documentElement : scope;
     observer.observe(target, { childList: true, subtree: true });

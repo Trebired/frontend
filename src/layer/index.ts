@@ -118,6 +118,7 @@ function resolveReferenceValue(
   current: HTMLElement | null,
   fallback = null,
 ) {
+  if (value == null || value === "") return null;
   if (value instanceof HTMLElement) return resolveElementZIndex(value, fallback);
   if (typeof value === "number" && Number.isFinite(value)) return value;
   const numeric = parseNumber(value);

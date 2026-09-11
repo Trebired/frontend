@@ -45,7 +45,24 @@ export function logsHistoryPageSize(config: any): number {
   : LOGS_PAGE_SIZE;
 }
 
+const TIMESTAMP_LABEL_CACHE_LIMIT = 5000;
+const timestampLabelCache = new Map<string, string>();
+
 export function formatTimestamp(iso: unknown): string {
+  const lang =
+  typeof document !== "undefined" && document.documentElement
+  ? document.documentElement.lang || ""
+  : "";
+  const key = `${lang}|${safeStr(iso)}`;
+  const cached = timestampLabelCache.get(key);
+  if (cached !== undefined) return cached;
+  const label = formatTimestampUncached(iso);
+  if (timestampLabelCache.size >= TIMESTAMP_LABEL_CACHE_LIMIT) timestampLabelCache.clear();
+  timestampLabelCache.set(key, label);
+  return label;
+}
+
+function formatTimestampUncached(iso: unknown): string {
   const localS: any = safeStr(iso);
   if (!localS) return "";
 

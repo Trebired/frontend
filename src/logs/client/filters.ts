@@ -218,8 +218,11 @@ export function hasHiddenRenderedHistory(
   return source.length > logsLiveRenderCap(page);
 }
 
-export function getRenderedLogs(page: LogsPage): FilteredLogItem[] {
-  const filtered = getFilteredLoadedLogs(page);
+export function getRenderedLogs(
+  page: LogsPage,
+  loadedFiltered?: FilteredLogItem[],
+): FilteredLogItem[] {
+  const filtered = loadedFiltered || getFilteredLoadedLogs(page);
   if (page && page.state && page.state.isHistoryExpanded) {
     return filtered;
   }

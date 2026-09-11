@@ -1318,6 +1318,9 @@
       "#qsb4858ln9g5": [
         "../../../src/layout/components/index.tsx"
       ],
+      "#qxjurtbzfrr6": [
+        "../../../scripts/verify/frontend/layering.mjs"
+      ],
       "#r58exi37vhhz": [
         "../../../src/config/scales.ts"
       ],

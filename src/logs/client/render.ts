@@ -1,5 +1,5 @@
 import { debugLogs } from "./debug.js";
-import { getRenderedLogs } from "./filters.js";
+import { getFilteredLoadedLogs, getRenderedLogs } from "./filters.js";
 import { entryMatchesConfig, makeLogKey } from "./identity.js";
 import { renderLogViewport } from "./react_view.js";
 import { updateLogStats } from "./stats.js";
@@ -79,7 +79,17 @@ function syncRawButton(button: HTMLElement | null, rawMode: boolean) {
   button.setAttribute("title", rawMode ? logsT("fancyMode") : logsT("rawMode"));
 }
 
+const pageViewportHandlers = new WeakMap<LogsPage, ReturnType<typeof createViewportHandlers>>();
+
 function viewportHandlers(page: LogsPage) {
+  const cached = pageViewportHandlers.get(page);
+  if (cached) return cached;
+  const handlers = createViewportHandlers(page);
+  pageViewportHandlers.set(page, handlers);
+  return handlers;
+}
+
+function createViewportHandlers(page: LogsPage) {
   return {
     onOpen: function(logKey, trigger) {
       openLogDetail(page, logKey, trigger);
@@ -160,7 +170,8 @@ function renderLogs(page: LogsPage) {
   const { state } = page;
   if (!ui.box) return;
 
-  const filtered: any = getRenderedLogs(page);
+  const loadedFiltered = getFilteredLoadedLogs(page);
+  const filtered: any = getRenderedLogs(page, loadedFiltered);
   const rawMode = state.rawMode === true;
   const rawLines = rawMode ? buildRawLogText(page) : "";
   const searchQuery = ui.searchInput ? safeStr(ui.searchInput.value) : "";
@@ -168,7 +179,7 @@ function renderLogs(page: LogsPage) {
 
   syncRawModeUi(page);
   syncMetadataButton(page);
-  updateLogStats(page, filtered);
+  updateLogStats(page, filtered, loadedFiltered);
 
   if (!filtered.length && !(rawMode && rawLines)) {
     renderEmptyLogs(page, { hasAnyLoadedLogs, rawMode, searchQuery });

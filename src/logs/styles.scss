@@ -57,11 +57,11 @@
   width: 100%;
 }
 
-.extend-target .logs-toolbar-search-field {
+#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} .logs-toolbar-search-field {
   display: flex;
 }
 
-.extend-target .logs-toolbar-search-toggle {
+#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} .logs-toolbar-search-toggle {
   display: none;
 }
 

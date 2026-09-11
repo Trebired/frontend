@@ -42,10 +42,15 @@
   overflow: hidden;
   border-radius: 0 !important;
   background: var(#{ns.css-var("page")}, #fff);
+  pointer-events: auto;
 }
 
 #{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} > * {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto !important;
   min-height: 0;
+  max-height: none !important;
 }
 
 #{ns.class("fullscreen-placeholder")},

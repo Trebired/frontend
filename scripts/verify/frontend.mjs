@@ -19,6 +19,7 @@ import { verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewpor
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
+import { verifyLayering } from "./frontend/layering.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 import { resolveLogger } from "@package/logger-adapter";
 
@@ -62,6 +63,7 @@ async function verifyFrontendMain() {
   await verifyModal();
   await verifyLayout();
   await verifyFullscreen();
+  await verifyLayering(context);
   await verifySidebar(context);
   await verifyUpload();
   await verifyFrontendLogging(context);

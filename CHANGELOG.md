@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.6
+
+- Fixed panel fullscreen being unusable. The target moves into the layer root, which is `pointer-events: none`, and nothing turned pointer events back on, so every click fell through to the dimming overlay and closed fullscreen. The target was also stacked under that overlay: `applyZIndex()` treated a missing `behind` reference as the fallback itself and returned fallback minus one step, so the overlay got 1110 and the target, asking for 1121, got 1101. A missing `behind` or `ahead` reference is now ignored, so `applyZIndex({ fallback })` returns the fallback exactly. Every layer placed that way sits one step higher than before, in the same order.
+- Changed the fullscreen base z-index from 1120 to 1010, below popovers and modals. A modal opened from a fullscreened panel, such as a log's detail, used to open behind it.
+- Fixed a fullscreened panel keeping its inline height instead of filling the screen. Its direct children now grow to the full height.
+- Fixed the logs view ignoring fullscreen: its search field and toggle rules still used the removed `.extend-target` class, so the search field never appeared in fullscreen. They now follow the fullscreen-active attribute.
+- Changed the canvas panel header, which holds the toolbar, to a `.card`. It was transparent over the panel's dot grid. It keeps `overflow: visible` so toolbar dropdowns are not clipped.
+- Improved the logs view. Each render filtered every loaded log twice (for the rows and again for the stats), rebuilt every row view and re-rendered every row. Rows are now memoized, keep their view object until their entry, marker, highlight or metadata setting changes, and share stable handlers, so an update only re-renders what changed. Timestamp labels are cached and the loaded logs are filtered once per render. Opening a log's detail no longer waits for its code blocks to be highlighted: the modal opens first and the highlighting follows two frames later. Opening a detail dropped from about 200 ms to 50 to 125 ms with 200 rows loaded.
+- Improved how the runtime binds added markup. Both the runtime observer and `bindElements()` ran a full bind pass over every added node, so mounting 200 log rows meant 200 passes of every binder. Added nodes are now grouped: a parent that gained more than eight children is bound once, and nodes inside another added node are skipped. `collectAddedBindRoots()` is exported from the `dom` entry. Re-rendering 200 log rows went from about 170 ms to about 115 ms of scripting.
+
 ## 13.1.5
 
 - Changed the verification scripts and examples to print through `@trebired/logger-adapter` instead of `console` and `process.stdout`.
