@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.12
+
+- Fixed the dark-mode favicon never showing when both `assets.favicon.light` and `assets.favicon.dark` are configured. The generator always added an unconditional `<link rel="icon">` to the default svg ahead of the two scheme-scoped links; having no `media` attribute, it always matches, so it sat as a third same-type candidate and browsers could settle on it regardless of the visitor's color scheme. That link is no longer emitted once both variants exist; its `id` (the one `syncFavicon` targets) moves onto the light variant's link instead. Configuring only one of `light`/`dark` is unaffected.
+
 ## 13.1.11
 
 - Fixed graphs showing the loading spinner forever when a series legitimately has no data. `renderGraphRenderState` treated "no points" as "still loading", so a metric that is empty because nothing is being measured (a deployment's GPU usage when the process never touches the GPU) could never leave the loading state. An explicitly passed `loading` value is now authoritative; callers that omit it keep the previous inference.

@@ -21,6 +21,7 @@ async function writeProject(favicon) {
   const brand = path.join(tempRoot, "brand");
   await fs.mkdir(brand, { recursive: true });
   await fs.writeFile(path.join(brand, "favicon.svg"), LIGHT_SVG);
+  await fs.writeFile(path.join(brand, "favicon-light.svg"), LIGHT_SVG);
   await fs.writeFile(path.join(brand, "favicon-dark.svg"), DARK_SVG);
   const dir = path.join(tempRoot, ".trebired", "frontend");
   await fs.mkdir(dir, { recursive: true });
@@ -102,6 +103,27 @@ if (generated.rasterized) {
   );
   log.info("verify.favicon", "Favicon verification succeeded (svg-only fallback, sharp absent).");
 }
+
+await writeProject({
+    dark: "brand/favicon-dark.svg",
+    default: "brand/favicon.svg",
+    light: "brand/favicon-light.svg",
+});
+
+const bothLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFrom: tempRoot });
+const both = await generateFaviconAssets(bothLoaded.config, { rootDir: tempRoot });
+
+const svgIconLinks = both.links.filter((link) => link.type === "image/svg+xml");
+assert.equal(svgIconLinks.length, 2, "no unconditional default link competes with the scheme links");
+
+const bothLightLink = linkFor(both.links, (link) => link.href === "/favicon-light.svg");
+assert.equal(bothLightLink.media, "(prefers-color-scheme: light)");
+assert.equal(bothLightLink.id, "app_favicon", "the light variant keeps the id syncFavicon targets");
+
+const bothDarkLink = linkFor(both.links, (link) => link.href === "/favicon-dark.svg");
+assert.equal(bothDarkLink.media, "(prefers-color-scheme: dark)");
+assert.equal(bothDarkLink.id, undefined, "only one link owns the syncFavicon id");
+log.info("verify.favicon", "Favicon verification succeeded (light and dark variants, no unconditional link).");
 
 await writeProject(false);
 const disabledLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFrom: tempRoot });

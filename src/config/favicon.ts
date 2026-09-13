@@ -82,25 +82,32 @@ function pngOutputName(size: number): string {
   return size === APPLE_TOUCH_SIZE ? "apple-touch-icon.png" : `icon-${size}.png`;
 }
 
+function schemeLink(scheme: FaviconScheme, carriesDefaultId: boolean): GeneratedFaviconLink {
+  return {
+    href: `/${svgOutputName(scheme)}`,
+    ...(carriesDefaultId ? { id: "app_favicon" } : {}),
+    media: `(prefers-color-scheme: ${scheme})`,
+    rel: "icon",
+    type: "image/svg+xml",
+  };
+}
+
 function svgLinks(favicon: NormalizedFrontendFaviconConfig): GeneratedFaviconLink[] {
-  const links: GeneratedFaviconLink[] = [{
+  const hasBothSchemes = Boolean(favicon.light && favicon.dark);
+  const defaultLink: GeneratedFaviconLink[] = hasBothSchemes
+  ? []
+  : [{
       href: `/${svgOutputName(null)}`,
       id: "app_favicon",
       rel: "icon",
       type: "image/svg+xml",
   }];
 
-  for (const scheme of ["light", "dark"] as FaviconScheme[]) {
-    if (!favicon[scheme]) continue;
-    links.push({
-        href: `/${svgOutputName(scheme)}`,
-        media: `(prefers-color-scheme: ${scheme})`,
-        rel: "icon",
-        type: "image/svg+xml",
-    });
-  }
+  const schemeLinks = (["light", "dark"] as FaviconScheme[])
+  .filter((scheme) => favicon[scheme])
+  .map((scheme) => schemeLink(scheme, hasBothSchemes && scheme === "light"));
 
-  return links;
+  return [...defaultLink, ...schemeLinks];
 }
 
 async function readSvgSources(
