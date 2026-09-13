@@ -281,12 +281,13 @@ function graphPropsHaveData(props) {
   );
 }
 
-function renderGraphRenderState(graph, props, loading = false) {
+function renderGraphRenderState(graph, props, loading?: boolean) {
   if (!graph || typeof graph.render !== "function") return;
   const next = props && typeof props === "object" ? props : {};
   graph.render({
       ...next,
-      loading: loading === true || !graphPropsHaveData(next),
+      loading:
+      loading === undefined ? !graphPropsHaveData(next) : loading === true,
   });
 }
 

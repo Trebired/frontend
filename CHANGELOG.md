@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.11
+
+- Fixed graphs showing the loading spinner forever when a series legitimately has no data. `renderGraphRenderState` treated "no points" as "still loading", so a metric that is empty because nothing is being measured (a deployment's GPU usage when the process never touches the GPU) could never leave the loading state. An explicitly passed `loading` value is now authoritative; callers that omit it keep the previous inference.
+
 ## 13.1.10
 
 - Changed the fullscreen restore animation to clear itself from the panel's own animation duration instead of a fixed 320 ms, so a theme with a slower `transition-normal` no longer has the animation cut off part way. The duration parser the close already used is now shared between the two.
