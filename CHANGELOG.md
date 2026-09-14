@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.13
+
+- Fixed the favicon ignoring dark mode in Chromium browsers when both `assets.favicon.light` and `assets.favicon.dark` are configured. 13.1.12 only reordered the svg links, but Chromium (Chrome, Brave, Edge) never used them: whenever any raster `rel="icon"` link is present it takes the `.ico` or PNG, which is baked from the default svg and cannot follow the color scheme. It also ignores `media` on icon links. Both were confirmed against a real Brave 153 favicon database under forced light and dark schemes.
+- With both variants configured, `favicon.svg` is now one adaptive svg composed from the light and dark sources, switching with `prefers-color-scheme` inside the file, and it is the only `rel="icon"` link. `favicon.ico` and the PNG sizes are still written for surfaces that request them directly, and `apple-touch-icon` stays linked. `favicon-light.svg` and `favicon-dark.svg` are still emitted. Configuring only one variant is unchanged.
+
 ## 13.1.12
 
 - Fixed the dark-mode favicon never showing when both `assets.favicon.light` and `assets.favicon.dark` are configured. The generator always added an unconditional `<link rel="icon">` to the default svg ahead of the two scheme-scoped links; having no `media` attribute, it always matches, so it sat as a third same-type candidate and browsers could settle on it regardless of the visitor's color scheme. That link is no longer emitted once both variants exist; its `id` (the one `syncFavicon` targets) moves onto the light variant's link instead. Configuring only one of `light`/`dark` is unaffected.

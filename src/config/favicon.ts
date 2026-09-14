@@ -82,52 +82,86 @@ function pngOutputName(size: number): string {
   return size === APPLE_TOUCH_SIZE ? "apple-touch-icon.png" : `icon-${size}.png`;
 }
 
-function schemeLink(scheme: FaviconScheme, carriesDefaultId: boolean): GeneratedFaviconLink {
-  return {
-    href: `/${svgOutputName(scheme)}`,
-    ...(carriesDefaultId ? { id: "app_favicon" } : {}),
-    media: `(prefers-color-scheme: ${scheme})`,
-    rel: "icon",
-    type: "image/svg+xml",
-  };
+const ADAPTIVE_FAVICON_STYLE = [
+  "<style>.favicon-dark{display:none}",
+  "@media (prefers-color-scheme: dark){.favicon-light{display:none}.favicon-dark{display:inline}}</style>",
+].join("");
+
+function svgViewBox(source: string): string {
+  const match = /<svg\b[^>]*\bviewBox="([^"]+)"/iu.exec(source);
+  return match ? match[1] : "0 0 64 64";
+}
+
+function nestedSchemeSvg(source: string, scheme: FaviconScheme): string {
+  const clean = source.replace(/<\?xml[^>]*\?>/giu, "").replace(/<!DOCTYPE[^>]*>/giu, "").trim();
+  const open = /<svg\b([^>]*)>/iu.exec(clean);
+  if (!open) return "";
+  const attributes = open[1].replace(/\s(?:width|height|class)="[^"]*"/giu, "");
+  const body = clean.slice(open.index + open[0].length);
+  return `<svg${attributes} class="favicon-${scheme}" width="100%" height="100%">${body}`;
+}
+
+function adaptiveFaviconSvg(light: Uint8Array, dark: Uint8Array): Uint8Array {
+  const decoder = new TextDecoder();
+  const lightSource = decoder.decode(light);
+  const svg = [
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${svgViewBox(lightSource)}">`,
+    ADAPTIVE_FAVICON_STYLE,
+    nestedSchemeSvg(lightSource, "light"),
+    nestedSchemeSvg(decoder.decode(dark), "dark"),
+    "</svg>\n",
+  ].join("");
+  return new TextEncoder().encode(svg);
+}
+
+function hasSchemeVariants(favicon: NormalizedFrontendFaviconConfig): boolean {
+  return Boolean(favicon.light && favicon.dark);
 }
 
 function svgLinks(favicon: NormalizedFrontendFaviconConfig): GeneratedFaviconLink[] {
-  const hasBothSchemes = Boolean(favicon.light && favicon.dark);
-  const defaultLink: GeneratedFaviconLink[] = hasBothSchemes
-  ? []
-  : [{
-      href: `/${svgOutputName(null)}`,
-      id: "app_favicon",
-      rel: "icon",
-      type: "image/svg+xml",
-  }];
+  const primary: GeneratedFaviconLink = {
+    href: `/${svgOutputName(null)}`,
+    id: "app_favicon",
+    rel: "icon",
+    type: "image/svg+xml",
+  };
+  if (hasSchemeVariants(favicon)) return [primary];
 
   const schemeLinks = (["light", "dark"] as FaviconScheme[])
   .filter((scheme) => favicon[scheme])
-  .map((scheme) => schemeLink(scheme, hasBothSchemes && scheme === "light"));
+  .map((scheme) => ({
+        href: `/${svgOutputName(scheme)}`,
+        media: `(prefers-color-scheme: ${scheme})`,
+        rel: "icon",
+        type: "image/svg+xml",
+  }));
+  return [primary, ...schemeLinks];
+}
 
-  return [...defaultLink, ...schemeLinks];
+type SvgSources = {
+  files: GeneratedFaviconFile[];
+  primary: Uint8Array;
+};
+
+async function readSvgSource(rootDir: string, source: string): Promise<Uint8Array|null> {
+  if (!source) return null;
+  return new Uint8Array(await fs.readFile(path.resolve(rootDir, source)));
 }
 
 async function readSvgSources(
   favicon: NormalizedFrontendFaviconConfig,
   rootDir: string,
-): Promise<GeneratedFaviconFile[]> {
-  const files: GeneratedFaviconFile[] = [];
-  const entries: [FaviconScheme | null, string][] = [
-    [null, favicon.default],
-    ["light", favicon.light],
-    ["dark", favicon.dark],
-  ];
-
-  for (const [scheme, source] of entries) {
-    if (!source) continue;
-    const contents = await fs.readFile(path.resolve(rootDir, source));
-    files.push({ contents: new Uint8Array(contents), path: svgOutputName(scheme) });
-  }
-
-  return files;
+): Promise<SvgSources> {
+  const primary = await readSvgSource(rootDir, favicon.default) as Uint8Array;
+  const light = await readSvgSource(rootDir, favicon.light);
+  const dark = await readSvgSource(rootDir, favicon.dark);
+  const files: GeneratedFaviconFile[] = [{
+      contents: light && dark ? adaptiveFaviconSvg(light, dark) : primary,
+      path: svgOutputName(null),
+  }];
+  if (light) files.push({ contents: light, path: svgOutputName("light") });
+  if (dark) files.push({ contents: dark, path: svgOutputName("dark") });
+  return { files, primary };
 }
 
 async function loadSharp(): Promise<((input:Uint8Array)=>SharpInstance)|null> {
@@ -219,18 +253,19 @@ async function generateFaviconAssets(
   if (!favicon?.default) return emptyFaviconAssets();
 
   const rootDir = options.rootDir || process.cwd();
-  const files = await readSvgSources(favicon, rootDir);
+  const { files, primary } = await readSvgSources(favicon, rootDir);
   const links = svgLinks(favicon);
   if (!favicon.sizes.length && !favicon.ico.length) return { files, links, rasterized: false };
 
   const sharp = await loadSharp();
   if (!sharp) return { files, links, rasterized: false };
 
-  const primary = files[0].contents;
   const rasters = await renderRasters(sharp, primary, favicon);
+  const raster = rasterLinks(favicon.sizes, favicon.ico)
+  .filter((link) => !hasSchemeVariants(favicon) || link.rel !== "icon");
   return {
     files: [...files, ...rasters],
-    links: [...rasterLinks(favicon.sizes, favicon.ico), ...links],
+    links: [...raster, ...links],
     rasterized: true,
   };
 }
