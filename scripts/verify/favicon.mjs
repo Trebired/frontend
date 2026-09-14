@@ -113,17 +113,24 @@ await writeProject({
 const bothLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFrom: tempRoot });
 const both = await generateFaviconAssets(bothLoaded.config, { rootDir: tempRoot });
 
-const svgIconLinks = both.links.filter((link) => link.type === "image/svg+xml");
-assert.equal(svgIconLinks.length, 2, "no unconditional default link competes with the scheme links");
+const iconLinks = both.links.filter((link) => link.rel === "icon");
+assert.equal(iconLinks.length, 1, "Chromium prefers any raster rel=icon over svg, so only the adaptive svg is linked");
+assert.equal(iconLinks[0].href, "/favicon.svg");
+assert.equal(iconLinks[0].id, "app_favicon", "the adaptive link keeps the id syncFavicon targets");
+assert.equal(iconLinks[0].media, undefined, "the adaptive svg switches itself, so its link carries no media");
 
-const bothLightLink = linkFor(both.links, (link) => link.href === "/favicon-light.svg");
-assert.equal(bothLightLink.media, "(prefers-color-scheme: light)");
-assert.equal(bothLightLink.id, "app_favicon", "the light variant keeps the id syncFavicon targets");
+const adaptive = new TextDecoder().decode(byPath(both.files, "favicon.svg").contents);
+assert.match(adaptive, /@media \(prefers-color-scheme: dark\)/u, "favicon.svg switches on the color scheme");
+assert.match(adaptive, /class="favicon-light"[^>]*>.*fill="#ffffff"/su, "favicon.svg embeds the light source");
+assert.match(adaptive, /class="favicon-dark"[^>]*>.*fill="#101010"/su, "favicon.svg embeds the dark source");
+assert.ok(byPath(both.files, "favicon-light.svg"), "the light source is still emitted");
+assert.ok(byPath(both.files, "favicon-dark.svg"), "the dark source is still emitted");
 
-const bothDarkLink = linkFor(both.links, (link) => link.href === "/favicon-dark.svg");
-assert.equal(bothDarkLink.media, "(prefers-color-scheme: dark)");
-assert.equal(bothDarkLink.id, undefined, "only one link owns the syncFavicon id");
-log.info("verify.favicon", "Favicon verification succeeded (light and dark variants, no unconditional link).");
+if (both.rasterized) {
+  assert.ok(byPath(both.files, "favicon.ico"), "rasters are still written for surfaces that request them directly");
+  assert.ok(linkFor(both.links, (link) => link.rel === "apple-touch-icon"), "the apple touch icon stays linked");
+}
+log.info("verify.favicon", "Favicon verification succeeded (light and dark variants, one adaptive svg link).");
 
 await writeProject(false);
 const disabledLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFrom: tempRoot });
