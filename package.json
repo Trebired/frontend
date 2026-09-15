@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "13.1.13",
+  "version": "13.1.14",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -63,7 +63,7 @@
     "verify:favicon": "bun ./scripts/verify/favicon.mjs"
   },
   "dependencies": {
-    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.5.1",
+    "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.6.0",
     "@trebired/utils": "^0.9.4",
     "chart.js": "^4.5.1",
     "country-flag-icons": "^1.6.20",
