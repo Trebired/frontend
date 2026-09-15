@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.14
+
+- Moved to `@trebired/logger-adapter` 0.6.0, which depends on `@trebired/logger` 3.0.0.
+- Updated the shipped `.trebired/logger/config.ts` `forVersion` to `3.0.0`. The logger checks `forVersion` by major and minor version, so under `@trebired/logger` 3.0 the old `2.7.0` value failed the check and this package's log prefix was dropped.
+
 ## 13.1.13
 
 - Fixed the favicon ignoring dark mode in Chromium browsers when both `assets.favicon.light` and `assets.favicon.dark` are configured. 13.1.12 only reordered the svg links, but Chromium (Chrome, Brave, Edge) never used them: whenever any raster `rel="icon"` link is present it takes the `.ico` or PNG, which is baked from the default svg and cannot follow the color scheme. It also ignores `media` on icon links. Both were confirmed against a real Brave 153 favicon database under forced light and dark schemes.
