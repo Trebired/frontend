@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.15
+
+- Added `contextFields` to `status_input`'s `statusCheck`. It maps request body keys to element ids; the check sends those elements' current values with the field and runs again when one of them changes. A repository name can now be checked against the owner picked in the same form. Inputs without `contextFields` send the same body as before.
+
 ## 13.1.14
 
 - Moved to `@trebired/logger-adapter` 0.6.0, which depends on `@trebired/logger` 3.0.0.

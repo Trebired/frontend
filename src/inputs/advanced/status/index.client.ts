@@ -11,6 +11,7 @@ type MatchStatusConfig = {
 };
 
 type StatusFieldConfig = {
+  contextFields?: Record<string, string>;
   debounceMs?: number;
   endpoint?: string;
   errorReasons?: Record<string, string>;
@@ -132,6 +133,21 @@ function dispatchBackendStatusChecked(input: HTMLInputElement, detail: any) {
   );
 }
 
+function contextFieldElements(config: StatusFieldConfig) {
+  const fields = config.contextFields && typeof config.contextFields === "object" ? config.contextFields : {};
+  return Object.entries(fields)
+  .map(([key, id]) => ({ element: document.getElementById(String(id || "")), key }))
+  .filter((item) => item.key && item.element);
+}
+
+function contextFieldValues(config: StatusFieldConfig) {
+  const values: Record<string, string> = {};
+  for (const { element, key } of contextFieldElements(config)) {
+    values[key] = String((element as HTMLInputElement).value ?? "").trim();
+  }
+  return values;
+}
+
 async function checkBackendStatusInput(
   input: HTMLInputElement,
   config: StatusFieldConfig = inputConfigs.get(input) || {},
@@ -168,7 +184,7 @@ async function checkBackendStatusInput(
   const requestId = (backendStatusRequestIds.get(input) || 0) + 1;
   backendStatusRequestIds.set(input, requestId);
   const response = await requestJson(endpoint, {
-      body: {[field]: value },
+      body: { ...contextFieldValues(config), [field]: value },
       method: "POST",
   }).catch (() => null);
 
@@ -203,6 +219,12 @@ function bindBackendStatusInput(
           void checkBackendStatusInput(input);
         }, debounceMs);
   });
+
+  for (const { element } of contextFieldElements(options)) {
+    element?.addEventListener("change", function() {
+        if (input.value) void checkBackendStatusInput(input);
+    });
+  }
 
   void checkBackendStatusInput(input, options);
   return true;

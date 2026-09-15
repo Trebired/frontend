@@ -5,6 +5,7 @@ import "./index.client.js";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type BackendStatusCheckConfig = {
+  contextFields?: Record<string, string>;
   endpoint: string;
   errorReasons?: Record<string, string>;
   field?: string;
@@ -40,6 +41,7 @@ type status_input_props = {
 
 function backendStatusConfig(check: BackendStatusCheckConfig, name: string) {
   return {
+    contextFields: check.contextFields || {},
     endpoint: check.endpoint,
     errorReasons: check.errorReasons || {},
     field: check.field || name,
