@@ -23,6 +23,8 @@ const tooltipState: TooltipState = {
 };
 const tooltipTexts = new WeakMap<HTMLElement, string>();
 const tooltipCleanups = new WeakMap<HTMLElement, ()=>void>();
+let pointerPressActive = false;
+let keyboardNavActive = false;
 let listenersInstalled = false;
 
 function isTooltipControl(trigger: HTMLElement) {
@@ -152,16 +154,23 @@ function bindTooltip(trigger: HTMLElement | null) {
     return false;
   }
   computeTooltipText(trigger);
-  const showBoundTooltip = () => showTooltip(trigger);
+  const hoverBoundTooltip = () => {
+    if (pointerPressActive) return;
+    showTooltip(trigger);
+  };
+  const focusBoundTooltip = () => {
+    if (!keyboardNavActive) return;
+    showTooltip(trigger);
+  };
   const hideBoundTooltip = () => hideTooltip();
-  trigger.addEventListener("mouseenter", showBoundTooltip);
+  trigger.addEventListener("mouseenter", hoverBoundTooltip);
   trigger.addEventListener("mouseleave", hideBoundTooltip);
-  trigger.addEventListener("focusin", showBoundTooltip);
+  trigger.addEventListener("focusin", focusBoundTooltip);
   trigger.addEventListener("focusout", hideBoundTooltip);
   tooltipCleanups.set(trigger, () => {
-      trigger.removeEventListener("mouseenter", showBoundTooltip);
+      trigger.removeEventListener("mouseenter", hoverBoundTooltip);
       trigger.removeEventListener("mouseleave", hideBoundTooltip);
-      trigger.removeEventListener("focusin", showBoundTooltip);
+      trigger.removeEventListener("focusin", focusBoundTooltip);
       trigger.removeEventListener("focusout", hideBoundTooltip);
   });
   installTooltipListeners();
@@ -176,9 +185,21 @@ function installTooltipListeners() {
   if (listenersInstalled || typeof document === "undefined") return;
   listenersInstalled = true;
   document.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") keyboardNavActive = true;
       if (event.key === "Escape") hideTooltip();
   });
-  document.addEventListener("pointerdown", () => hideTooltip(), true);
+  document.addEventListener("pointerdown", () => {
+      pointerPressActive = true;
+      keyboardNavActive = false;
+      hideTooltip();
+    }, true);
+  document.addEventListener(
+    "mousemove",
+    () => {
+      pointerPressActive = false;
+    },
+    { capture: true, passive: true },
+  );
   document.addEventListener("visibilitychange", () => {
       if (document.visibilityState !== "visible") hideTooltip();
   });
