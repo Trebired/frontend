@@ -136,12 +136,48 @@ async function verifyModalSaveRace(context) {
   await wait(300);
 }
 
+async function verifyHiddenLayersDoNotRaiseZIndex(context) {
+  const layer = await context.importDist("layer");
+  const modal = await context.importDist("modal");
+  document.body.innerHTML = [
+    '<div id="z-one" data-tbf-modal><div data-tbf-modal-content>one</div></div>',
+    '<div id="z-two" data-tbf-modal><div data-tbf-modal-content>two</div></div>',
+  ].join("");
+  const one = document.getElementById("z-one");
+  const two = document.getElementById("z-two");
+  const zValues = [];
+  for (let round = 0; round < 4; round += 1) {
+    for (const element of [one, two]) {
+      modal.openModal(element);
+      zValues.push(Number(element.style.zIndex));
+      modal.closeModal(element);
+    }
+  }
+  assert.equal(new Set(zValues).size, 1, `closed modals must not push later modals higher (got ${zValues.join(",")})`);
+  modal.openModal(one);
+  modal.openModal(two);
+  assert.ok(Number(two.style.zIndex) > Number(one.style.zIndex), "a modal opened over an open modal still stacks above it");
+  modal.closeModal(two);
+  modal.closeModal(one);
+  const root = layer.ensureLayerRoot();
+  let inserted = 0;
+  const observer = new MutationObserver((records) => records.forEach((r) => { inserted += r.addedNodes.length; }));
+  const last = root.lastElementChild;
+  observer.observe(root, { childList: true });
+  layer.moveLayerElementToTop(last);
+  await Promise.resolve();
+  observer.disconnect();
+  assert.equal(inserted, 0, "the last layer element must not be re-inserted, which would drop its computed style");
+  await wait(300);
+}
+
 async function verifyLayering(context) {
   await verifyZIndexFallback(context);
   await verifyFullscreenStacking(context);
   await verifyFullscreenRestoreAnimation(context);
   await verifySharedScrollLock(context);
   await verifyModalSaveRace(context);
+  await verifyHiddenLayersDoNotRaiseZIndex(context);
   await verifyBindRootBatching(context);
 }
 

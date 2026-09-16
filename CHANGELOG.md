@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.3
+
+- Fixed modals appearing without their fade-in, which once it started happened to every modal on the page. Closed modals carry `visibility 0s linear <duration>` so a closing modal stays visible while it fades out. `openModal` sets `data-opening` and then `data-open` a frame later, and the opening state only changed `visibility`, so it kept that delayed transition. When the browser recalculated styles between the two steps, the switch to visible waited the full duration: the fade played while the modal was still hidden, and the modal then appeared at once. Whether that recalculation happened was incidental. `promoteZIndex` reads the computed z-index of every layer it has promoted, so on a fresh page (nothing promoted yet) modals animated, and after the first popover or modal had been promoted every later open recalculated and lost its animation.
+  - The opening state now uses the open state's `visibility 0s`, so a modal is visible from its first frame, at opacity 0.
+  - `openModal` commits the opening state itself instead of depending on whether something else forced a style recalculation.
+  - `moveLayerElementToTop` no longer re-inserts an element that is already the last one in the layer root; re-inserting a node discards the computed style a transition starts from.
+- Hidden layers (`aria-hidden="true"`) no longer count when `promoteZIndex` picks the next z-index. Closed modals and popovers kept their inline z-index and stayed in the set, so every open climbed another step (1100, 1110, 1120, …) for the life of the page.
+- Action forms ignore a submit while the same form is still saving, so pressing Enter again or clicking twice no longer sends a second request. `submitActionForm` returns `null` for the ignored submit.
+
 ## 13.2.2
 
 - Fixed save modals flickering closed and open again and then leaving the page unusable. When a live update re-rendered a page while its modal was open, rebinding ran `prepareModal` over every modal and stripped `data-open` from the open one. The live overlay state then saw it as closed and reopened it, restarting its animation. If the save response closed the modal while that reopen was still pending, the queued open frame set `data-open` again after the close, and the close timer then marked the modal `inert`. The result was a modal that looked open but was `inert` and no longer tracked, so it ignored clicks and Escape.

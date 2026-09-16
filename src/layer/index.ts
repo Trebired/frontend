@@ -73,7 +73,9 @@ function layerPortalOrigin(element: HTMLElement | null) {
 
 function moveLayerElementToTop(element: HTMLElement | null) {
   const root = mountLayerPortalElement(element);
-  if (root && element && element.parentNode === root) root.appendChild(element);
+  if (root && element && element.parentNode === root && root.lastElementChild !== element) {
+    root.appendChild(element);
+  }
   return root;
 }
 
@@ -156,6 +158,7 @@ function highestResolvedZIndex(current: HTMLElement | null, fallback = null) {
       continue;
     }
     if (current && (element === current || element.contains(current))) continue;
+    if (element.getAttribute("aria-hidden") === "true") continue;
     const value = resolveElementZIndex(element, null);
     if (value !== null) max = max === null ? value : Math.max(max, value);
   }

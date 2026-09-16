@@ -131,6 +131,12 @@ function isOpenOnTop(modal: HTMLElement) {
     modal.getAttribute(frontendDataAttr("open")) === "true";
 }
 
+function commitOpeningFrame(modal: HTMLElement) {
+  try {
+    window.getComputedStyle(modal).opacity;
+  } catch {}
+}
+
 function modalCloseCount(modal: HTMLElement | null | undefined) {
   return modal ? closeCounts.get(modal) || 0 : 0;
 }
@@ -151,6 +157,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   });
   modal.setAttribute(frontendDataAttr("opening"), "true");
   modal.setAttribute("aria-hidden", "false");
+  commitOpeningFrame(modal);
   setTopStates();
   syncScrollLock();
   dispatchModalEvent(modal, frontendEventName("modal-open"), { trigger });
