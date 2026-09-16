@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.5
+
+- Brand-coloured icons no longer cause a hydration mismatch. The server styles such an icon with its brand colour, but the client seeds its icon cache from the server markup and kept only the SVG, so the client render produced no `style` and React reported the attribute as unmatched. A server-rendered brand icon now carries its colour in `data-tbf-icon-brand-color`, and harvesting reads it back into the cache.
+
 ## 13.2.4
 
 - `Icon` no longer uses hooks, so calling it as a plain function (`icon({ spec })`, the call style this component API invites) is safe. Its `useRef`/`useEffect` pair became a ref callback — `renderIconElement` already returns early when the same spec is rendered — and a `useMemo` whose dependencies included objects rebuilt on every render was dropped. Rendered as a function, those hooks counted as the *calling* component's, so a component whose icon count changed between renders crashed React with "Rendered more hooks than during the previous render" / "Expected static flag was missing", and any state or effect in that component was misattributed. Rendering `<Icon />` as an element behaved correctly before and is unchanged.

@@ -59,10 +59,12 @@ assert.ok(byPath(generated.files, "favicon.svg"), "emits favicon.svg");
 assert.ok(byPath(generated.files, "favicon-dark.svg"), "emits favicon-dark.svg");
 
 const svgLink = linkFor(generated.links, (link) => link.href === "/favicon.svg");
+
 assert.equal(svgLink.type, "image/svg+xml");
 assert.equal(svgLink.id, "app_favicon", "primary link keeps the id syncFavicon targets");
 
 const darkLink = linkFor(generated.links, (link) => link.href === "/favicon-dark.svg");
+
 assert.equal(darkLink.media, "(prefers-color-scheme: dark)");
 
 assert.notDeepEqual(
@@ -114,12 +116,14 @@ const bothLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFr
 const both = await generateFaviconAssets(bothLoaded.config, { rootDir: tempRoot });
 
 const iconLinks = both.links.filter((link) => link.rel === "icon");
+
 assert.equal(iconLinks.length, 1, "Chromium prefers any raster rel=icon over svg, so only the adaptive svg is linked");
 assert.equal(iconLinks[0].href, "/favicon.svg");
 assert.equal(iconLinks[0].id, "app_favicon", "the adaptive link keeps the id syncFavicon targets");
 assert.equal(iconLinks[0].media, undefined, "the adaptive svg switches itself, so its link carries no media");
 
 const adaptive = new TextDecoder().decode(byPath(both.files, "favicon.svg").contents);
+
 assert.match(adaptive, /@media \(prefers-color-scheme: dark\)/u, "favicon.svg switches on the color scheme");
 assert.match(adaptive, /class="favicon-light"[^>]*>.*fill="#ffffff"/su, "favicon.svg embeds the light source");
 assert.match(adaptive, /class="favicon-dark"[^>]*>.*fill="#101010"/su, "favicon.svg embeds the dark source");
@@ -133,8 +137,10 @@ if (both.rasterized) {
 log.info("verify.favicon", "Favicon verification succeeded (light and dark variants, one adaptive svg link).");
 
 await writeProject(false);
+
 const disabledLoaded = await loadConfig(tempRoot, { defaultIfMissing: true, searchFrom: tempRoot });
 const disabled = await generateFaviconAssets(disabledLoaded.config, { rootDir: tempRoot });
+
 assert.deepEqual(disabled.files, [], "disabled favicon emits nothing");
 assert.deepEqual(disabled.links, [], "disabled favicon emits no links");
 

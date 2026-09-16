@@ -146,6 +146,7 @@
   "#8bxcsshlrjh4": "./src/logs/client/render.ts",
   "#8egdy32zm0ku": "./src/layout/components/mobile.tsx",
   "#8f21tdnsct1q": "./src/react/assets.tsx",
+  "#8g75p9e51kcx": "./scripts/verify/frontend/icons/react.mjs",
   "#8hbbsu47ineq": "./src/runtime/index.ts",
   "#8jyu9kdf4nqq": "./src/inputs/advanced/i18n/cs.ts",
   "#8li0ub6a30xn": "./src/spa/shell.ts",
