@@ -243,6 +243,20 @@ function readHostSpec(host: Element): string {
   return text(host.getAttribute(frontendDataAttr("icon")) || host.getAttribute("data-icon-spec"));
 }
 
+function harvestInlineIcon(host: Element): boolean {
+  const parsed = parseIconSpec(readHostSpec(host));
+  if (!parsed || readIconCacheEntry(parsed.spec) || !hasInlineSvg(host)) return false;
+  const svg = text(host.innerHTML);
+  if (!/^<svg\b/iu.test(svg)) return false;
+  storeIconCacheEntry(parsed.spec, { svg });
+  renderedIconSpecs.set(host, parsed.spec);
+  return true;
+}
+
+function harvestInlineIcons(root: BindRoot = document): number {
+  return queryAll<Element>(root, ICON_SELECTOR).filter(harvestInlineIcon).length;
+}
+
 function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions = {}): boolean {
   if (!(host instanceof Element)) return false;
   if (isInUnhydratedIsland(host)) return false;
@@ -257,6 +271,7 @@ function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions 
 }
 
 function bindIcons(root: BindRoot = document, options: IconRuntimeOptions = {}): void {
+  harvestInlineIcons(root);
   queryAll<Element>(root, ICON_SELECTOR).forEach((host) => bindIcon(host, options));
 }
 
@@ -266,6 +281,7 @@ const icons = Object.freeze({
     bindAll: bindIcons,
     buildUrl: buildIconUrl,
     createElement: createIconElement,
+    harvestInline: harvestInlineIcons,
     mergeAliases: mergeIconAliases,
     normalizeAliasKey: normalizeIconAliasKey,
     normalizeAliases: normalizeIconAliasMap,
@@ -287,6 +303,7 @@ export {
   buildIconUrl,
   createIconElement,
   defaultIconAliases,
+  harvestInlineIcons,
   icons,
   iconSpec,
   mergeIconAliases,

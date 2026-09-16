@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.16
+
+- Fixed tooltips appearing with no entrance animation while still animating on close. Before showing a tooltip the runtime measured the layer by writing inline `transform`, `opacity`, `transition: none` and `left`/`top` onto it and reading `getBoundingClientRect()`. That read forced a style flush while the layer was held at the open transform, so the browser took that as the state to animate from and the opening slide and scale had nothing left to travel. The layer is now measured with `offsetWidth`/`offsetHeight`, which needs no style mutation at all, so the closed state is intact when `data-open` is set and the tooltip animates in exactly as it animates out.
+- Fixed a hydration mismatch for every icon rendered inside a hydrated React island. On the server `Icon` inlines the SVG through the active server renderer; in the browser the icon cache starts empty, so the same component rendered no children and React found the server's `<svg>` unmatched, discarded the tree and rebuilt it on the client. The runtime now harvests the server-rendered SVG markup out of the DOM into the icon cache before an island hydrates (and at the start of `bindIcons`), so the client render carries the same markup and React skips those children instead of failing. This also spares those icons a `/__icons/svg` round trip. Exposed as `harvestInlineIcons` / `icons.harvestInline`.
+
 ## 13.1.15
 
 - Added `contextFields` to `status_input`'s `statusCheck`. It maps request body keys to element ids; the check sends those elements' current values with the field and runs again when one of them changes. A repository name can now be checked against the owner picked in the same form. Inputs without `contextFields` send the same body as before.
