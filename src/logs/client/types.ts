@@ -40,7 +40,6 @@ export interface LogsUi {
   scrollBox: HTMLElement | null;
   box: HTMLElement | null;
   reactRoot: HTMLElement | null;
-  loadedEl: HTMLElement | null;
   jumpToBottomButton: HTMLButtonElement | null;
   metadataButton: HTMLButtonElement | null;
   rawModeButton: HTMLButtonElement | null;

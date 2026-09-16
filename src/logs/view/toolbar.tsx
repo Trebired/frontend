@@ -8,7 +8,6 @@ import checkbox from "#2ne919slwy5h";
 import dropdown from "#79y0zfcyhzga";
 import {
   button,
-  pill,
   primitiveButtonClassName,
   primitiveCardClassName,
   primitiveGapClass,
@@ -97,13 +96,6 @@ function searchField(model: any) {
 function primaryToolbarRow(model: any) {
   return (
     <div className="logs-toolbar-row logs-toolbar-row-primary">
-    {pill({
-          children: (
-            <>
-            <span id={model.ids.loaded}>0</span> {model.t("loadedSuffix")}
-            </>
-          ),
-    })}
     <div className="logs-toolbar-filter" data-logs-raw-hide="">
     {groupDropdown(model)}
     </div>

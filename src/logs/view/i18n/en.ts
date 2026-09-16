@@ -4,7 +4,6 @@ export default defineMessages({
     title: "Logs",
     productFallback: "Product",
     all: "all",
-    loadedSuffix: "loaded",
     searchLogs: "Search logs...",
     searchLogsAction: "Search logs",
     exportLogs: "Export logs",

@@ -140,7 +140,6 @@ export function getLogsDom(
     scrollBox: logBox,
     box: logBox,
     reactRoot: queryById(resolvedRoot, ids.reactRoot),
-    loadedEl: queryById(resolvedRoot, ids.loaded),
     jumpToBottomButton: queryById(
       resolvedRoot,
       ids.jumpButton,

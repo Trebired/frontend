@@ -225,12 +225,6 @@ function updateLoadedStats(
     ui.totalEl.textContent = String(loadedTotalValue);
   }
 
-  if (ui.loadedEl) {
-    ui.loadedEl.textContent = String(
-      Array.isArray(filtered) ? filtered.length : 0,
-    );
-  }
-
   if (ui.visibleEl) {
     ui.visibleEl.textContent = String(
       Array.isArray(filtered) ? filtered.length : 0,
