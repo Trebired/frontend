@@ -87,7 +87,7 @@ function RuntimeGraphCanvas(props) {
         display: "block",
         height: "100%",
         opacity:
-        props.showWarning || props.modalWaiting
+        props.showWarning || props.showEmpty || props.modalWaiting
         ? 0
         : props.showLoader
         ? 0.35
@@ -100,7 +100,7 @@ function RuntimeGraphCanvas(props) {
 }
 
 function GraphWarning(props) {
-  if (!props.showWarning) return null;
+  if (!props.showWarning && !props.showEmpty) return null;
 
   return React.createElement(
     "div",
@@ -108,7 +108,9 @@ function GraphWarning(props) {
       className: primitiveInlineRowClassName(),
       style: {
         alignItems: "center",
-        color: `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`,
+        color: props.showEmpty
+        ? `var(${frontendCssVar("text-muted")}, currentColor)`
+        : `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`,
         inset: 0,
         justifyContent: "center",
         pointerEvents: "none",
@@ -117,14 +119,21 @@ function GraphWarning(props) {
     },
     React.createElement(
       "div",
-      { className: "center" },
+      { className: "center column gap-xs" },
       icon({
           spec: props.stateIcon,
           style: {
-            fontSize: "56px",
+            fontSize: props.showEmpty ? "40px" : "56px",
             lineHeight: 1,
           },
       }),
+      props.stateMessage
+      ? React.createElement(
+        "span",
+        { className: "text-sm", style: { maxWidth: "min(340px, 80%)" } },
+        props.stateMessage,
+      )
+      : null,
     ),
   );
 }

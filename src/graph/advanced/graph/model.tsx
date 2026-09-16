@@ -82,6 +82,7 @@ function graphBootJson(props: graph_props, model: any) {
       loading: model.isLoading,
       state: model.resolvedState,
       stateIcon: model.resolvedStateIcon,
+      stateMessage: model.resolvedStateMessage,
       stateTone: model.resolvedStateTone,
       min: model.minValue,
       max: model.maxValue,
@@ -141,6 +142,7 @@ function readGraphModel(props: graph_props) {
       props.stateIcon,
       "remixicon error-warning-line",
     ),
+    resolvedStateMessage: toString(props.stateMessage, toString(props.description)),
     resolvedStateTone: toString(props.stateTone),
     rightDetails: Array.isArray(props.rightDetails) ? props.rightDetails : [],
     rootAttrs:

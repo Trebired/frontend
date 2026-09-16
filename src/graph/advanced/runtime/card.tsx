@@ -9,6 +9,7 @@ import {
 } from "./card/units.js";
 import { GraphCardFrame } from "./render.js";
 import {
+  getDefaultEmptyIcon,
   getDefaultWarningIcon,
   graphUnitFamily,
   normalizeGraphState,
@@ -16,20 +17,33 @@ import {
   registerGraphRoot,
 } from "./utils.js";
 
+function stateMessageText(props) {
+  const message =
+  typeof props.stateMessage === "string" ? props.stateMessage.trim() : "";
+  if (message) return message;
+  return typeof props.description === "string" ? props.description.trim() : "";
+}
+
 function frameState(props, modalWaiting) {
   const graphState = normalizeGraphState(props);
   const showWarning = graphState === "warning";
+  const showEmpty = graphState === "empty";
   return {
     loaderHtml:
     typeof props.loaderHtml === "string" && props.loaderHtml.trim()
     ? props.loaderHtml
     : '<div class="loader md" aria-hidden="true"></div>',
-    showLoader: !showWarning && (graphState === "loading" || modalWaiting),
+    showEmpty,
+    showLoader:
+    !showWarning && !showEmpty && (graphState === "loading" || modalWaiting),
     showWarning,
     stateIcon:
     typeof props.stateIcon === "string" && props.stateIcon.trim()
     ? props.stateIcon.trim()
+    : showEmpty
+    ? getDefaultEmptyIcon()
     : getDefaultWarningIcon(),
+    stateMessage: stateMessageText(props),
   };
 }
 

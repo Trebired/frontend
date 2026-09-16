@@ -15,7 +15,14 @@ import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
 import { verifySidebar } from "./frontend/sidebar.mjs";
-import { verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
+import {
+  verifyGraphEmptyState,
+  verifyNamespace,
+  verifyPopover,
+  verifyPopoverReactEvents,
+  verifyViewportCenter,
+  verifyWizard,
+} from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
@@ -58,6 +65,7 @@ async function verifyFrontendMain() {
   await verifyPopover(context);
   await verifyPopoverReactEvents(context);
   await verifyViewportCenter(context);
+  await verifyGraphEmptyState(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);
   await verifyModal();

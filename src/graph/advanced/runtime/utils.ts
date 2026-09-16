@@ -265,6 +265,7 @@ function normalizeGraphState(props) {
   const state =
   typeof props.state === "string" ? props.state.trim().toLowerCase() : "";
   if (state === "warning") return "warning";
+  if (state === "empty") return "empty";
   if (props.loading === true) return "loading";
   if (state === "loading" || state === "ok") return state;
   return props.loading === true ? "loading" : "ok";
@@ -295,8 +296,13 @@ function getDefaultWarningIcon() {
   return "remixicon error-warning-line";
 }
 
+function getDefaultEmptyIcon() {
+  return "remixicon line-chart-line";
+}
+
 export {
   cssEscapeIdent,
+  getDefaultEmptyIcon,
   describeGraphNode,
   getDefaultWarningIcon,
   getGraphColorProbe,
