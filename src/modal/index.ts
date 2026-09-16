@@ -9,7 +9,7 @@ import {
   moveLayerElementToTop,
   portalElement,
   stackZIndex,
-  applyZIndex,
+  promoteZIndex,
 } from "#ccvonx3uhbte";
 import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass, frontendEventName } from "#5vbaqj4pirp3";
 
@@ -131,7 +131,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   if (existingIndex >= 0) modalStack.splice(existingIndex, 1);
   const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   modalStack.push({ modal, restoreFocus: active, trigger });
-  applyZIndex(modal, {
+  promoteZIndex(modal, {
       fallback: stackZIndex(MODAL_BASE_Z_INDEX, modalStack.length - 1),
   });
   modal.setAttribute(frontendDataAttr("opening"), "true");

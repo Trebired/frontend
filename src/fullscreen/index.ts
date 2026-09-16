@@ -5,10 +5,10 @@ import {
   type BindRoot,
 } from "#er0dlx1gtbzh";
 import {
-  applyZIndex,
   clearZIndex,
   moveLayerElementToTop,
   portalElement,
+  promoteZIndex,
 } from "#ccvonx3uhbte";
 import {
   enterFullscreen,
@@ -202,8 +202,10 @@ function openFullscreenTarget(
   portalElement(overlay);
   moveLayerElementToTop(overlay);
   moveLayerElementToTop(target);
-  const overlayZ = applyZIndex(overlay, { fallback: FULLSCREEN_BASE_Z_INDEX });
-  applyZIndex(target, { fallback: overlayZ == null ? FULLSCREEN_BASE_Z_INDEX + 1 : overlayZ + 1 });
+  const overlayZ = promoteZIndex(overlay, { fallback: FULLSCREEN_BASE_Z_INDEX });
+  promoteZIndex(target, {
+      fallback: (overlayZ == null ? FULLSCREEN_BASE_Z_INDEX : overlayZ) + 1,
+  });
   target.setAttribute(frontendDataAttr("fullscreen-active"), "true");
   target.setAttribute("aria-modal", "true");
   lockDocumentScroll(true);

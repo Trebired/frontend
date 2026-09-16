@@ -178,6 +178,10 @@ function installTooltipListeners() {
   document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") hideTooltip();
   });
+  document.addEventListener("pointerdown", () => hideTooltip(), true);
+  document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible") hideTooltip();
+  });
   window.addEventListener("resize", () => {
       if (tooltipState.shown && tooltipState.openTrigger && tooltipState.layer) {
         placeTooltip(tooltipState.openTrigger, tooltipState.layer);
