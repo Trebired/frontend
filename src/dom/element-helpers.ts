@@ -145,12 +145,34 @@ function readHostJsonConfig<T>(
   }
 }
 
+let programmaticFocusDepth = 0;
+
+function focusProgrammatically(
+  element: HTMLElement | null | undefined,
+  options?: FocusOptions,
+) {
+  if (!element || typeof element.focus !== "function") return false;
+  programmaticFocusDepth += 1;
+  try {
+    element.focus(options);
+  } finally {
+    programmaticFocusDepth -= 1;
+  }
+  return true;
+}
+
+function isProgrammaticFocus() {
+  return programmaticFocusDepth > 0;
+}
+
 export {
   clearChildren,
   cloneTemplateElement,
   cloneTemplateElementById,
   dataSelector,
   elementById,
+  focusProgrammatically,
+  isProgrammaticFocus,
   readHostJsonConfig,
   replaceHtml,
   scopedElementById,

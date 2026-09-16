@@ -1,5 +1,6 @@
 import {
   cssEscape,
+  focusProgrammatically,
   queryAll,
   resolveDocumentTarget,
   requestDomFrame,
@@ -69,7 +70,7 @@ function focusModal(modal: HTMLElement) {
     modal.querySelector<HTMLElement>(FOCUSABLE_SELECTOR) ||
     modal;
   if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-  target.focus({ preventScroll: true });
+  focusProgrammatically(target, { preventScroll: true });
 }
 
 function focusableModalElements(modal: HTMLElement): HTMLElement[] {
@@ -167,7 +168,9 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
   setTopStates();
   lockBodyScroll(false);
   const restoreTarget = entry.trigger || entry.restoreFocus;
-  if (restoreTarget?.isConnected) restoreTarget.focus({ preventScroll: true });
+  if (restoreTarget?.isConnected) {
+    focusProgrammatically(restoreTarget, { preventScroll: true });
+  }
   dispatchModalEvent(modal, frontendEventName("modal-close"), { trigger: entry.trigger });
   return true;
 }
