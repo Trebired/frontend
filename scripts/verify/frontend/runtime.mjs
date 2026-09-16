@@ -183,6 +183,25 @@ async function verifyWizard(context) {
   await verifyWizardSizing(wizardModule.bindWizardRoot);
 }
 
+async function verifyGraphEmptyState(context) {
+  const react = await context.importDist("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const empty = renderToStaticMarkup(createElement(react.cpu_graph, {
+        datasets: [],
+        id: "empty_graph",
+        state: "empty",
+        stateMessage: "No samples recorded yet.",
+  }));
+  assert.ok(empty.includes('"state":"empty"'), "an empty graph keeps its state in the boot payload");
+  assert.ok(empty.includes("No samples recorded yet."), "an empty graph carries its message for the reader");
+  const filled = renderToStaticMarkup(createElement(react.cpu_graph, {
+        datasets: [{ label: "cpu", points: [{ label: "now", value: 12 }] }],
+        id: "filled_graph",
+  }));
+  assert.ok(!filled.includes('"state":"empty"'), "a graph with data is not marked empty");
+}
+
 async function verifyViewportCenter(context) {
   const { ViewportCenter } = await context.importDist("react");
   const React = await import("react");
@@ -207,4 +226,4 @@ async function verifyViewportCenter(context) {
 }
 
 export {
-  verifyPopoverReactEvents, verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };
+  verifyGraphEmptyState, verifyPopoverReactEvents, verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };

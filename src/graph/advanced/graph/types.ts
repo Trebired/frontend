@@ -58,6 +58,7 @@ type graph_props = {
   scroll?: boolean;
   state?: string;
   stateIcon?: string;
+  stateMessage?: string;
   stateTone?: string;
   stroke?: string;
   subtitle?: string;

@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.6
+
+- Graph cards accept `state: "empty"`, which draws a muted icon and an optional `stateMessage` over the empty plot area instead of leaving a blank canvas with no explanation. The existing `warning` state now shows its message too, and both read `stateMessage` (falling back to `description`).
+
 ## 13.2.5
 
 - Brand-coloured icons no longer cause a hydration mismatch. The server styles such an icon with its brand colour, but the client seeds its icon cache from the server markup and kept only the SVG, so the client render produced no `style` and React reported the attribute as unmatched. A server-rendered brand icon now carries its colour in `data-tbf-icon-brand-color`, and harvesting reads it back into the cache.
