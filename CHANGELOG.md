@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.22
+
+- Fixed fullscreen panels appearing with no entrance animation while still animating on close. The panel's entry state (`opacity: 0`, a slight scale-down) is declared on the same rule that carries the transition, so setting it started a 240ms fade *out* from the panel's current appearance; a frame later the open state set opacity back to 1 and the two cancelled out. The backdrop was unaffected because a freshly inserted element cannot transition from its initial style, which is why only the panel looked instant. The entry state is now applied with transitions suppressed, so the panel has a committed starting frame and animates in the way it animates out.
+
 ## 13.1.21
 
 - The logs toolbar's loaded-count pill no longer carries a fixed width. It was rendered with a `width-xs` class, so the pill stayed one size no matter what it held and the count sat in a box wider than its text. The pill is `inline-flex` and already refuses to wrap, so it now sizes to its own content.

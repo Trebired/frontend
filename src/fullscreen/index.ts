@@ -134,6 +134,20 @@ function lockDocumentScroll(lock: boolean) {
   document.body.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
 }
 
+function flushPendingStyles(elements: Array<HTMLElement|null>) {
+  for (const element of elements) {
+    if (element) void element.offsetWidth;
+  }
+}
+
+function applyEntryState(target: HTMLElement) {
+  const previousTransition = target.style.transition;
+  target.style.transition = "none";
+  target.setAttribute(frontendDataAttr("fullscreen-active"), "true");
+  flushPendingStyles([target]);
+  target.style.transition = previousTransition;
+}
+
 function dispatchPanelEvent(name: string, state: FullscreenPanelState) {
   state.target.dispatchEvent(new CustomEvent(name, {
         bubbles: true,
@@ -207,7 +221,7 @@ function openFullscreenTarget(
   promoteZIndex(target, {
       fallback: (overlayZ == null ? FULLSCREEN_BASE_Z_INDEX : overlayZ) + 1,
   });
-  target.setAttribute(frontendDataAttr("fullscreen-active"), "true");
+  applyEntryState(target);
   target.setAttribute("aria-modal", "true");
   lockDocumentScroll(true);
   panelState = {
@@ -223,6 +237,7 @@ function openFullscreenTarget(
   };
   if (targetShouldPersist(target)) writeStoredPanelId(group, id);
   overlay.addEventListener("click", () => closeFullscreenTarget(), { once: true });
+  flushPendingStyles([overlay]);
   window.requestAnimationFrame(() => {
       if (panelState?.target !== target) return;
       overlay.setAttribute(frontendDataAttr("open"), "true");
