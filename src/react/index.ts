@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { readJsonScript } from "#er0dlx1gtbzh";
+import { harvestInlineIcons } from "#e55z7pkijewq";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 import { registerPageCleanup, runSpaRebind } from "#o9lroe7t0ma6";
 import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
@@ -102,9 +103,9 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
     return binderProps.children ?? null;
   }
   const node = react.createElement(IslandRuntimeBinder, null, wrapped);
-  const root = await mountReactRoot(target, node, {
-      hydrate: target.childNodes.length > 0,
-  });
+  const hydrate = target.childNodes.length > 0;
+  if (hydrate) harvestInlineIcons(target);
+  const root = await mountReactRoot(target, node, { hydrate });
   registerPageCleanup(target instanceof HTMLElement ? target : null, () => {
       unmountReactRoot(target);
   });

@@ -99,31 +99,7 @@ function ensureTooltipLayer() {
 }
 
 function measureLayer(layer: HTMLElement) {
-  const wasOpen = layer.hasAttribute(frontendDataAttr("open"));
-  const previous = {
-    left: layer.style.left,
-    opacity: layer.style.opacity,
-    top: layer.style.top,
-    transform: layer.style.transform,
-    transition: layer.style.transition,
-    visibility: layer.style.visibility,
-  };
-  layer.style.transition = "none";
-  layer.style.transform = "translate3d(0, 0, 0) scale(1)";
-  layer.style.visibility = "hidden";
-  layer.style.opacity = "0";
-  layer.style.left = "0px";
-  layer.style.top = "0px";
-  layer.setAttribute(frontendDataAttr("open"), "true");
-  const rect = layer.getBoundingClientRect();
-  layer.style.visibility = previous.visibility;
-  layer.style.opacity = previous.opacity;
-  layer.style.left = previous.left;
-  layer.style.top = previous.top;
-  layer.style.transform = previous.transform;
-  layer.style.transition = previous.transition;
-  if (!wasOpen) layer.removeAttribute(frontendDataAttr("open"));
-  return rect;
+  return { height: layer.offsetHeight, width: layer.offsetWidth };
 }
 
 function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
