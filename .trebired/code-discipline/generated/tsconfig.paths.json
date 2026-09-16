@@ -562,6 +562,9 @@
       "#awiesfak8uw2": [
         "../../../src/inputs/advanced/input/affix.ts"
       ],
+      "#axubisqt0yil": [
+        "../../../src/inputs/advanced/tabs/url.ts"
+      ],
       "#ayzv8371lu6f": [
         "../../../src/inputs/advanced/status/index.tsx"
       ],
@@ -1314,6 +1317,9 @@
       ],
       "#qq0hbx8lfn3p": [
         "../../../src/actions/labels.ts"
+      ],
+      "#qrayaphp1n9f": [
+        "../../../src/server/tabs.ts"
       ],
       "#qsb4858ln9g5": [
         "../../../src/layout/components/index.tsx"

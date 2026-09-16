@@ -90,6 +90,24 @@ Runtime components that submit HTTP actions, expect data-attribute request/respo
 
 The React entrypoint renders package-owned document, layout, header, sidebar, portal, upload, tabs, tooltip, popover, modal, fullscreen, flash, text-link, language, and theme controls. The markup is generic and configured through `.trebired/frontend/config.ts`.
 
+### Tab Routes
+
+Tabs keep their selection in the query string, one `tab-<familyKey>` parameter per family, so nested tabs are addressed by one parameter per level. `tabRouteUrl(url, steps)` builds that URL from `{ familyKey, route }` steps. On the server, `tabSectionRedirect({ sections, target })` turns a path segment into a redirect to the tabbed page, so a path such as `/@someone/repositories` can land on the matching nested tab:
+
+```ts
+app.get("/@:username/:section", tabSectionRedirect({
+  sections: {
+    repositories: [
+      { familyKey: "profile", route: "platform" },
+      { familyKey: "profile-sections", route: "repositories" },
+    ],
+  },
+  target: (req) => `/@${req.params?.username}`,
+}));
+```
+
+Unknown sections fall through to the next handler. The request's own query is kept, and `redirectToTabs(req, res, { target, steps })` does the same for a handler that has already resolved its steps.
+
 ## Configuration
 
 ### Design

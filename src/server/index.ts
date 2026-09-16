@@ -28,4 +28,5 @@ export *from "./services.js";
 export *from "./sidebar.js";
 export *from "./sidebar-live.js";
 export *from "./static.js";
+export *from "./tabs.js";
 export *from "./theme.js";

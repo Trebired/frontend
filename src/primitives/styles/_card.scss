@@ -78,6 +78,15 @@
   > .column > .inline-row:first-child > :last-child:not(:first-child) {
     flex: 0 0 auto;
   }
+
+  &.title-only {
+    align-items: center;
+  }
+}
+
+.card-icon img {
+  border-radius: var(#{ns.css-var("surf-card-icon-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
+  object-fit: cover;
 }
 
 .card-body-divider {

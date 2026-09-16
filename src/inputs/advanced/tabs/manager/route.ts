@@ -1,16 +1,12 @@
 import { toString } from "#dqy2d22qyujv";
 import { ownedNodes, panelIdForTab, simplifyRouteToken } from "./dom.js";
 import { registeredTabRoots } from "./registry.js";
+import { routeParamNameForFamily } from "#axubisqt0yil";
 
 function familyKeyForRoot(root) {
   return root instanceof HTMLElement
   ? toString(root.getAttribute("data-tabs-family-key"))
   : "";
-}
-
-function routeParamNameForFamily(familyKey) {
-  const value = toString(familyKey);
-  return value ? `tab-${value}` : "";
 }
 
 function routeParamNameForRoot(root) {
