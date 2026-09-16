@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.2
+
+- Fixed save modals flickering closed and open again and then leaving the page unusable. When a live update re-rendered a page while its modal was open, rebinding ran `prepareModal` over every modal and stripped `data-open` from the open one. The live overlay state then saw it as closed and reopened it, restarting its animation. If the save response closed the modal while that reopen was still pending, the queued open frame set `data-open` again after the close, and the close timer then marked the modal `inert`. The result was a modal that looked open but was `inert` and no longer tracked, so it ignored clicks and Escape.
+  - `prepareModal` (and so `bindModals` and `rehydrate`) now leaves a modal that is currently open untouched.
+  - `openModal` on a modal that is already open on top does nothing instead of restarting its animation.
+  - A pending open frame is dropped if the modal was closed in the meantime, and the close timer no longer makes a modal that was reopened during its close transition `inert`.
+  - `createLiveOverlayState().restore()` skips modals that are already open and modals closed since the snapshot was taken, so it only restores state that a DOM replacement actually lost. Added `modalCloseCount(modal)`; snapshots carry an optional `closeCount`.
+
 ## 13.2.1
 
 - Opening a modal no longer scrolls a sticky header out of view. The scroll lock set `overflow: hidden` on `<body>`, which turns body into a scroll container; a `position: sticky` header then sticks to body instead of the viewport, and on a scrolled page it was carried away with the content (at 600px scrolled, the header sat at `top: -600px` until the modal closed). The lock now goes on the root element, whose overflow applies to the viewport without creating a new scroll container.

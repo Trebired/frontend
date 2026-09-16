@@ -7,6 +7,7 @@ import {
 import {
   MODAL_CONTENT_SELECTOR,
   MODAL_SELECTOR,
+  modalCloseCount,
   openModal,
 } from "#8rm3pzkj3gge";
 import { frontendDataAttr } from "#5vbaqj4pirp3";
@@ -23,6 +24,7 @@ BindRoot | string | (() => BindRoot | null | undefined);
 
 type LiveOverlayModalSnapshot = {
   activePanels: string[];
+  closeCount?: number;
   id: string;
   scrollTop: number;
 };
@@ -47,6 +49,7 @@ type RestoreLiveOverlayStateOptions = {
 };
 
 const DEFAULT_MODAL_SELECTOR = `${MODAL_SELECTOR}[id]`;
+const snapshotElements = new WeakMap<LiveOverlayModalSnapshot, HTMLElement>();
 const DROPDOWN_ROOT_SELECTOR = "[data-dropdown-root]";
 const DROPDOWN_SHOW_ATTR = "data-dropdown-show";
 const DROPDOWN_OPEN_ATTR = "data-dropdown-open";
@@ -134,11 +137,16 @@ function captureLiveOverlayState(
   options: LiveOverlayStateOptions = {},
 ): LiveOverlaySnapshot {
   return {
-    modals: uniqueOpenModals(options).map((modal) => ({
+    modals: uniqueOpenModals(options).map((modal) => {
+        const snapshot = {
           activePanels: modalActivePanels(modal),
+          closeCount: modalCloseCount(modal),
           id: modal.id,
           scrollTop: modalContentScrollTop(modal),
-    })),
+        };
+        snapshotElements.set(snapshot, modal);
+        return snapshot;
+    }),
     windowScrollY:
     options.preserveWindowScroll === true && typeof window !== "undefined"
     ? window.scrollY
@@ -165,10 +173,17 @@ function restoreModalTabs(modal: HTMLElement, activePanels: string[]) {
   });
 }
 
+function closedSinceSnapshot(snapshot: LiveOverlayModalSnapshot, modal: HTMLElement) {
+  if (snapshotElements.get(snapshot) !== modal) return false;
+  return modalCloseCount(modal) !== (snapshot.closeCount || 0);
+}
+
 function restoreModalSnapshot(snapshot: LiveOverlayModalSnapshot) {
   if (typeof document === "undefined") return;
   const modal = document.getElementById(snapshot.id);
   if (!(modal instanceof HTMLElement)) return;
+  const alreadyOpen = modal.getAttribute(OPEN_ATTR) === "true" || modal.getAttribute(OPENING_ATTR) === "true";
+  if (alreadyOpen || closedSinceSnapshot(snapshot, modal)) return;
   bindOwnedTabs(modal, { force: true });
   restoreModalTabs(modal, snapshot.activePanels);
   openModal(modal, null);

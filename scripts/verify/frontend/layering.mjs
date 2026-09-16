@@ -95,11 +95,53 @@ async function verifySharedScrollLock(context) {
   assert.equal(root.style.overflow, "", "closing overlays out of order must still restore scrolling");
 }
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function verifyModalSaveRace(context) {
+  const modal = await context.importDist("modal");
+  const spa = await context.importDist("spa");
+  document.body.innerHTML = '<div id="race-modal" data-tbf-modal><div data-tbf-modal-content>form</div></div>';
+  const element = document.getElementById("race-modal");
+  modal.openModal(element);
+  await wait(50);
+  assert.equal(element.getAttribute("data-tbf-open"), "true");
+  modal.bindModals(document);
+  assert.equal(element.getAttribute("data-tbf-open"), "true", "rebinding must not reset a modal that is open");
+  assert.equal(element.getAttribute("aria-hidden"), "false");
+  const overlays = spa.createLiveOverlayState();
+  overlays.preserve();
+  modal.openModal(element);
+  assert.equal(element.getAttribute("data-tbf-open"), "true", "reopening an open modal must not restart its animation");
+  overlays.restore({ consume: false });
+  modal.closeModal(element);
+  overlays.restore();
+  await wait(300);
+  assert.equal(element.hasAttribute("data-tbf-open"), false, "a modal closed after the snapshot must stay closed");
+  assert.equal(element.getAttribute("aria-hidden"), "true");
+  assert.equal(document.documentElement.style.overflow, "", "closing must release the scroll lock");
+
+  modal.openModal(element);
+  modal.closeModal(element);
+  await wait(300);
+  assert.equal(element.hasAttribute("data-tbf-open"), false, "an open frame queued before a close must not reopen the modal");
+
+  modal.openModal(element);
+  await wait(50);
+  modal.closeModal(element);
+  modal.openModal(element);
+  await wait(300);
+  assert.equal(element.getAttribute("data-tbf-open"), "true", "a modal reopened during its close transition stays open");
+  assert.equal(element.hasAttribute("inert"), false, "the stale close timer must not make a reopened modal inert");
+  modal.closeModal(element);
+  await wait(300);
+}
+
 async function verifyLayering(context) {
   await verifyZIndexFallback(context);
   await verifyFullscreenStacking(context);
   await verifyFullscreenRestoreAnimation(context);
   await verifySharedScrollLock(context);
+  await verifyModalSaveRace(context);
   await verifyBindRootBatching(context);
 }
 

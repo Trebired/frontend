@@ -37,6 +37,7 @@ type ModalEntry = {
 
 const modalStack: ModalEntry[] = [];
 const triggerBindings = new WeakMap<HTMLElement, ()=>void>();
+const closeCounts = new WeakMap<HTMLElement, number>();
 let listenersInstalled = false;
 let releaseScrollLock: (() => void) | null = null;
 
@@ -55,9 +56,14 @@ function findModalTarget(root: BindRoot, trigger: HTMLElement) {
   return resolveDocumentTarget(`#${id}`);
 }
 
+function isStacked(modal: HTMLElement) {
+  return modalStack.some((entry) => entry.modal === modal);
+}
+
 function prepareModal(modal: HTMLElement) {
   modal.setAttribute(frontendDataAttr("modal"), "");
   if (!modal.hasAttribute("role")) modal.setAttribute("role", "dialog");
+  if (isStacked(modal)) return;
   if (!modal.hasAttribute("aria-hidden")) modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute(frontendDataAttr("open"));
   modal.removeAttribute(frontendDataAttr("opening"));
@@ -120,14 +126,24 @@ function setTopStates() {
   });
 }
 
+function isOpenOnTop(modal: HTMLElement) {
+  return modalStack[modalStack.length - 1]?.modal === modal &&
+    modal.getAttribute(frontendDataAttr("open")) === "true";
+}
+
+function modalCloseCount(modal: HTMLElement | null | undefined) {
+  return modal ? closeCounts.get(modal) || 0 : 0;
+}
+
 function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement | null = null) {
   const modal = resolveDocumentTarget(modalOrSelector);
   if (!(modal instanceof HTMLElement)) return null;
+  if (isOpenOnTop(modal)) return modal;
+  const existingIndex = modalStack.findIndex((entry) => entry.modal === modal);
+  if (existingIndex >= 0) modalStack.splice(existingIndex, 1);
   prepareModal(modal);
   portalElement(modal);
   moveLayerElementToTop(modal);
-  const existingIndex = modalStack.findIndex((entry) => entry.modal === modal);
-  if (existingIndex >= 0) modalStack.splice(existingIndex, 1);
   const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   modalStack.push({ modal, restoreFocus: active, trigger });
   promoteZIndex(modal, {
@@ -139,6 +155,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   syncScrollLock();
   dispatchModalEvent(modal, frontendEventName("modal-open"), { trigger });
   requestDomFrame(() => {
+      if (!isStacked(modal)) return;
       modal.removeAttribute(frontendDataAttr("opening"));
       modal.setAttribute(frontendDataAttr("open"), "true");
       focusModal(modal);
@@ -155,10 +172,13 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
   const index = modalStack.findIndex((entry) => entry.modal === modal);
   if (index < 0) return false;
   const [entry] = modalStack.splice(index, 1);
+  closeCounts.set(modal, modalCloseCount(modal) + 1);
+  modal.removeAttribute(frontendDataAttr("opening"));
   modal.removeAttribute(frontendDataAttr("open"));
   modal.setAttribute(frontendDataAttr("closing"), "true");
   modal.setAttribute("aria-hidden", "true");
   window.setTimeout(() => {
+      if (isStacked(modal)) return;
       modal.removeAttribute(frontendDataAttr("closing"));
       modal.removeAttribute(frontendDataAttr("top"));
       modal.toggleAttribute("inert", true);
@@ -262,6 +282,7 @@ export {
   closeAllModals,
   closeModal,
   createModal,
+  modalCloseCount,
   openModal,
   prepareModal,
 };
