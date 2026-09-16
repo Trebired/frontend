@@ -98,7 +98,6 @@ function primaryToolbarRow(model: any) {
   return (
     <div className="logs-toolbar-row logs-toolbar-row-primary">
     {pill({
-          className: "width-xs",
           children: (
             <>
             <span id={model.ids.loaded}>0</span> {model.t("loadedSuffix")}
