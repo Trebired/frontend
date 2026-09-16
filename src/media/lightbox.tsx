@@ -7,7 +7,7 @@ import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { captureFocus, trapTabKey } from "./focus-trap.js";
 import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT, ICON_MEDIA_CLOSE } from "./icons.js";
 import { useResolvedLang } from "./lang.js";
-import { lockBodyScroll } from "./scroll-lock.js";
+import { lockBodyScroll } from "#f3dd7yszexpp";
 
 type LightboxProps = {
   alt: string;
