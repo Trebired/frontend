@@ -4,7 +4,6 @@ export default defineMessages({
     title: "Logy",
     productFallback: "Produkt",
     all: "vše",
-    loadedSuffix: "načteno",
     searchLogs: "Hledat v logách...",
     searchLogsAction: "Hledat v logách",
     exportLogs: "Exportovat logy",

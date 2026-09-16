@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.23
+
+- Removed the loaded-count pill from the logs toolbar entirely, along with everything that only existed to feed it: the `loaded` id in the logs view model, the client's `loadedEl` element handle and the stats code that wrote the count into it, and the `loadedSuffix` message. The loaded count remains available in the stats tabs. Anything that looked the pill up by id (such as `#logs-view-loaded`) now finds nothing and should drop that reference.
+
 ## 13.1.22
 
 - Fixed fullscreen panels appearing with no entrance animation while still animating on close. The panel's entry state (`opacity: 0`, a slight scale-down) is declared on the same rule that carries the transition, so setting it started a 240ms fade *out* from the panel's current appearance; a frame later the open state set opacity back to 1 and the two cancelled out. The backdrop was unaffected because a freshly inserted element cannot transition from its initial style, which is why only the panel looked instant. The entry state is now applied with transitions suppressed, so the panel has a committed starting frame and animates in the way it animates out.

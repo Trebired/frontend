@@ -66,7 +66,6 @@ function logIds(
     levelInputName: `${logsInstanceSnake}_level`,
     levelList: logId("level-list"),
     levelStats: logId("level-stats"),
-    loaded: logId("loaded"),
     metadataButton: logId("metadata-button"),
     platformToggle:
     logsInstanceId === "logs-view"
