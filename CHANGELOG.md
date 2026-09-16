@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.0
+
+- Added tab route helpers. `tabRouteUrl(url, steps)` (root and server entrypoints) writes a `tab-<familyKey>` query parameter for each `{ familyKey, route }` step, keeping the URL's other parameters and hash, so a link can point straight at a nested tab. `@trebired/frontend/server` adds `redirectToTabs(req, res, { target, steps, status })` and `tabSectionRedirect({ sections, target, param, status })`, an express-style handler that maps a path segment (`:section` by default, matched case-insensitively) to tab steps and redirects to the tabbed page with the request's query preserved. Unknown sections call `next()`. Soft navigation already follows the redirect, so the SPA lands on the selected tab as well.
+- Card icons that are images now get a rounded corner (`--tbf-surf-card-icon-radius`, falling back to the medium radius) and `object-fit: cover`, instead of rendering as a square.
+- A card whose body holds only a title — no subtitle, segments or extra content — now centers that title vertically against its icon. It previously stayed pinned to the top where the missing detail rows would have started. Such bodies carry a `title-only` class.
+
 ## 13.1.23
 
 - Removed the loaded-count pill from the logs toolbar entirely, along with everything that only existed to feed it: the `loaded` id in the logs view model, the client's `loadedEl` element handle and the stats code that wrote the count into it, and the `loadedSuffix` message. The loaded count remains available in the stats tabs. Anything that looked the pill up by id (such as `#logs-view-loaded`) now finds nothing and should drop that reference.

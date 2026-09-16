@@ -18,6 +18,7 @@ async function verifyFrontendServer(context) {
   await verifyLiveSocketServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
+  verifyTabRedirectServer(server, root);
   await verifyIconServerAttachment(server);
   verifyRootNavigation(root);
   verifySeoServer(server);
@@ -31,6 +32,31 @@ async function verifyFrontendServer(context) {
   verifyReactRenderServer(server);
   verifyPermissionStateServer(server);
   await verifyFallbackServer(server);
+}
+
+function verifyTabRedirectServer(server, root) {
+  const steps = [
+    { familyKey: "profile", route: "platform" },
+    { familyKey: "profile-sections", route: "repositories" },
+  ];
+  assert.equal(root.tabRouteUrl, server.tabRouteUrl);
+  assert.equal(
+    server.tabRouteUrl("/@someone?tab-profile=github&q=1#top", steps),
+    "/@someone?tab-profile=platform&q=1&tab-profile-sections=repositories#top",
+  );
+  const redirect = server.tabSectionRedirect({
+      sections: { orgs: [steps[0], { familyKey: "profile-sections", route: "organizations" }], repositories: steps },
+      target: (req) => `/@${req.params.username}`,
+  });
+  const res = serverResponseProbe();
+  redirect({ originalUrl: "/@someone/Repositories?q=1", params: { section: "Repositories", username: "someone" } }, res);
+  assert.equal(res.statusCode, 302);
+  assert.equal(res.headers.Location, "/@someone?q=1&tab-profile=platform&tab-profile-sections=repositories");
+  let nextCalls = 0;
+  const unknown = serverResponseProbe();
+  redirect({ params: { section: "constructor", username: "someone" } }, unknown, () => nextCalls++);
+  assert.equal(nextCalls, 1);
+  assert.equal(unknown.headers.Location, undefined);
 }
 
 async function verifyThemeServer(server) {

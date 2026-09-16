@@ -282,6 +282,8 @@ export {
   updateDropdownRootConfig,
   updateEmptyState,
 } from "./inputs/advanced/index.js";
+export { tabRouteUrl } from "./inputs/advanced/tabs/url.js";
+export type { TabRouteStep } from "./inputs/advanced/tabs/url.js";
 export *from "./layer/index.js";
 export *from "./language/index.js";
 export *from "./layout/index.js";

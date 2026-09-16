@@ -152,6 +152,10 @@ function contentColumn(
   );
 }
 
+function titleOnly(props: BodyProps, showSegments: boolean) {
+  return !props.subtitle && !(showSegments && props.segments) && !props.extra;
+}
+
 function contentBlock(
   props: BodyProps,
   bodyClassName: string,
@@ -164,7 +168,12 @@ function contentBlock(
   },
 ) {
   return (
-    <div className={primitiveInlineRowClassName({ className: joinClassNames("card-body", bodyClassName), gap: "xs" })}>
+    <div
+    className={primitiveInlineRowClassName({
+          className: joinClassNames("card-body", titleOnly(props, options.showSegments) ? "title-only" : "", bodyClassName),
+          gap: "xs",
+    })}
+    >
     {options.hasIcon ? iconBlock(props, options.showDivider) : null}
     {contentColumn(props, options.showTitleMeta, options.showActions, options.showSegments)}
     </div>
