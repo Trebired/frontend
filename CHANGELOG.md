@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.17
+
+- Graph detail rows now render their `id` and `attrs` onto the value element, matching what `key_value` already did with `id`. Until now the graph renderer kept only the label and the formatted value, so a row's identifier never reached the DOM and nothing could address it afterwards — every live updater targeting `#someRowId` or `[data-something]` inside a graph's stat groups wrote to elements that did not exist, leaving the rendered numbers frozen at their server-rendered values.
+- Added `softRedirect` to `BreadcrumbItem`. With it the item's link carries the same soft-redirect marker `TextLink` emits, so the SPA runtime handles the click instead of the browser performing a full page load. Items without the prop are unchanged.
+
 ## 13.1.16
 
 - Fixed tooltips appearing with no entrance animation while still animating on close. Before showing a tooltip the runtime measured the layer by writing inline `transform`, `opacity`, `transition: none` and `left`/`top` onto it and reading `getBoundingClientRect()`. That read forced a style flush while the layer was held at the open transform, so the browser took that as the state to animate from and the opening slide and scale had nothing left to travel. The layer is now measured with `offsetWidth`/`offsetHeight`, which needs no style mutation at all, so the closed state is intact when `data-open` is set and the tooltip animates in exactly as it animates out.

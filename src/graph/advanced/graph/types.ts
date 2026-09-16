@@ -5,6 +5,7 @@ type point = {
 
 type key_value_row = {
   attrs?: Record<string, unknown>;
+  id?: string;
   label?: unknown;
   unit?: string;
   value?: unknown;
