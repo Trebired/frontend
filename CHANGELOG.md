@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.4
+
+- `Icon` no longer uses hooks, so calling it as a plain function (`icon({ spec })`, the call style this component API invites) is safe. Its `useRef`/`useEffect` pair became a ref callback — `renderIconElement` already returns early when the same spec is rendered — and a `useMemo` whose dependencies included objects rebuilt on every render was dropped. Rendered as a function, those hooks counted as the *calling* component's, so a component whose icon count changed between renders crashed React with "Rendered more hooks than during the previous render" / "Expected static flag was missing", and any state or effect in that component was misattributed. Rendering `<Icon />` as an element behaved correctly before and is unchanged.
+
 ## 13.2.3
 
 - Fixed modals appearing without their fade-in, which once it started happened to every modal on the page. Closed modals carry `visibility 0s linear <duration>` so a closing modal stays visible while it fades out. `openModal` sets `data-opening` and then `data-open` a frame later, and the opening state only changed `visibility`, so it kept that delayed transition. When the browser recalculated styles between the two steps, the switch to visible waited the full duration: the fade played while the modal was still hidden, and the modal then appeared at once. Whether that recalculation happened was incidental. `promoteZIndex` reads the computed z-index of every layer it has promoted, so on a fresh page (nothing promoted yet) modals animated, and after the first popover or modal had been promoted every later open recalculated and lost its animation.
