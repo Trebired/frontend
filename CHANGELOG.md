@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.21
+
+- The logs toolbar's loaded-count pill no longer carries a fixed width. It was rendered with a `width-xs` class, so the pill stayed one size no matter what it held and the count sat in a box wider than its text. The pill is `inline-flex` and already refuses to wrap, so it now sizes to its own content.
+
 ## 13.1.20
 
 - A tooltip no longer comes back when the modal its trigger opened is closed. 13.1.18 hid it on pointer press, but closing a modal restores focus to the trigger, and once the overlay is gone the browser replays `mouseenter` on whatever sits under the still-stationary pointer — so the tooltip reappeared and stayed until the pointer happened to move. Both signals are synthetic, so tooltips now require real intent: a hover opens one only after the pointer has actually moved since the last press, and focus opens one only when the user moved focus themselves — focus that the app restores (closing a modal, leaving fullscreen) no longer counts. Hovering, moving between elements and tabbing through controls behave as before.
