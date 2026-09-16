@@ -74,10 +74,32 @@ async function verifyBindRootBatching(context) {
   document.body.innerHTML = "";
 }
 
+async function verifySharedScrollLock(context) {
+  const fullscreen = await context.importDist("fullscreen");
+  const modal = await context.importDist("modal");
+  const root = document.documentElement;
+  document.body.innerHTML = [
+    '<div id="lock-panel" data-tbf-fullscreen-target data-tbf-fullscreen-id="lock" data-tbf-fullscreen-group="verify">',
+    '<div id="lock-modal" data-tbf-modal><div data-tbf-modal-content>modal</div></div></div>',
+  ].join("");
+  root.style.overflow = "";
+  document.body.style.overflow = "";
+  fullscreen.registerFullscreenTarget(document.getElementById("lock-panel"));
+  fullscreen.openFullscreenTarget("lock", "verify");
+  modal.openModal(document.getElementById("lock-modal"));
+  assert.equal(root.style.overflow, "hidden", "overlays lock scrolling on the root element");
+  assert.equal(document.body.style.overflow, "", "body must not become a scroll container, or sticky headers scroll away");
+  fullscreen.closeFullscreenTarget({ immediate: true });
+  assert.equal(root.style.overflow, "hidden", "closing the fullscreen panel must keep the modal's lock");
+  modal.closeModal(document.getElementById("lock-modal"));
+  assert.equal(root.style.overflow, "", "closing overlays out of order must still restore scrolling");
+}
+
 async function verifyLayering(context) {
   await verifyZIndexFallback(context);
   await verifyFullscreenStacking(context);
   await verifyFullscreenRestoreAnimation(context);
+  await verifySharedScrollLock(context);
   await verifyBindRootBatching(context);
 }
 

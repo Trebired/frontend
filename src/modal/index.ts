@@ -12,6 +12,7 @@ import {
   stackZIndex,
   promoteZIndex,
 } from "#ccvonx3uhbte";
+import { lockBodyScroll } from "#f3dd7yszexpp";
 import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass, frontendEventName } from "#5vbaqj4pirp3";
 
 const MODAL_BASE_Z_INDEX = 1060;
@@ -37,7 +38,7 @@ type ModalEntry = {
 const modalStack: ModalEntry[] = [];
 const triggerBindings = new WeakMap<HTMLElement, ()=>void>();
 let listenersInstalled = false;
-let originalBodyOverflow = "";
+let releaseScrollLock: (() => void) | null = null;
 
 function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
   modal.dispatchEvent(new CustomEvent(name, {
@@ -102,14 +103,11 @@ function trapModalFocus(event: KeyboardEvent): void {
   }
 }
 
-function lockBodyScroll(lock: boolean) {
-  if (!document.body) return;
-  if (lock && modalStack.length === 1) {
-    originalBodyOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-  }
-  if (!lock && modalStack.length === 0) {
-    document.body.style.overflow = originalBodyOverflow;
+function syncScrollLock() {
+  if (modalStack.length && !releaseScrollLock) releaseScrollLock = lockBodyScroll();
+  if (!modalStack.length && releaseScrollLock) {
+    releaseScrollLock();
+    releaseScrollLock = null;
   }
 }
 
@@ -138,7 +136,7 @@ function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement |
   modal.setAttribute(frontendDataAttr("opening"), "true");
   modal.setAttribute("aria-hidden", "false");
   setTopStates();
-  lockBodyScroll(true);
+  syncScrollLock();
   dispatchModalEvent(modal, frontendEventName("modal-open"), { trigger });
   requestDomFrame(() => {
       modal.removeAttribute(frontendDataAttr("opening"));
@@ -166,7 +164,7 @@ function closeModal(modalOrSelector?: HTMLElement | string | null) {
       modal.toggleAttribute("inert", true);
     }, 220);
   setTopStates();
-  lockBodyScroll(false);
+  syncScrollLock();
   const restoreTarget = entry.trigger || entry.restoreFocus;
   if (restoreTarget?.isConnected) {
     focusProgrammatically(restoreTarget, { preventScroll: true });

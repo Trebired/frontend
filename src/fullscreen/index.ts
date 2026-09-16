@@ -5,6 +5,7 @@ import {
   resolveDocumentTarget,
   type BindRoot,
 } from "#er0dlx1gtbzh";
+import { lockBodyScroll } from "#f3dd7yszexpp";
 import {
   clearZIndex,
   moveLayerElementToTop,
@@ -57,8 +58,7 @@ const targetRegistry = new Map<string, HTMLElement>();
 const boundTriggers = new WeakSet<HTMLElement>();
 let panelState: FullscreenPanelState | null = null;
 let panelListenersInstalled = false;
-let originalBodyOverflow = "";
-let originalBodyPaddingRight = "";
+let releaseScrollLock: (() => void) | null = null;
 
 function readNativeTriggerTarget(trigger: HTMLElement, fallback?: Element | string | null): Element | string | null {
   const value = trigger.getAttribute(frontendDataAttr("fullscreen-target"));
@@ -103,35 +103,17 @@ function clearStoredPanelId(group: string) {
   storage()?.removeItem(`${FULLSCREEN_STORAGE_PREFIX}${group}`);
 }
 
-function rootReservesScrollbarGutter() {
-  try {
-    return String(window.getComputedStyle(document.documentElement).scrollbarGutter || "").includes("stable");
-  } catch {
-    return false;
-  }
-}
-
 function lockDocumentScroll(lock: boolean) {
-  if (!document.body) return;
   if (lock) {
-    originalBodyOverflow = document.body.style.overflow;
-    originalBodyPaddingRight = document.body.style.paddingRight;
-    const scrollbarGap = rootReservesScrollbarGutter()
-    ? 0
-    : Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-    if (scrollbarGap > 0) {
-      const currentPadding = Number.parseFloat(window.getComputedStyle(document.body).paddingRight || "0") || 0;
-      document.body.style.paddingRight = `${currentPadding + scrollbarGap}px`;
-    }
-    document.body.style.overflow = "hidden";
+    if (!releaseScrollLock) releaseScrollLock = lockBodyScroll();
     document.documentElement.setAttribute(frontendDataAttr("fullscreen-scroll-locked"), "true");
-    document.body.setAttribute(frontendDataAttr("fullscreen-scroll-locked"), "true");
+    document.body?.setAttribute(frontendDataAttr("fullscreen-scroll-locked"), "true");
     return;
   }
-  document.body.style.overflow = originalBodyOverflow;
-  document.body.style.paddingRight = originalBodyPaddingRight;
+  releaseScrollLock?.();
+  releaseScrollLock = null;
   document.documentElement.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
-  document.body.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
+  document.body?.removeAttribute(frontendDataAttr("fullscreen-scroll-locked"));
 }
 
 function flushPendingStyles(elements: Array<HTMLElement|null>) {

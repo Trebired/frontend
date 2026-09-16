@@ -802,6 +802,9 @@
       "#f1earyowcgbb": [
         "../../../src/inputs/advanced/search.tsx"
       ],
+      "#f3dd7yszexpp": [
+        "../../../src/layer/scroll-lock.ts"
+      ],
       "#f7tqndj2qq9o": [
         "../../../src/server/react/render.ts"
       ],
@@ -1035,9 +1038,6 @@
       ],
       "#jug9z8qra4yv": [
         "../../../src/server/logging.ts"
-      ],
-      "#jzrj9x0owt64": [
-        "../../../src/media/scroll-lock.ts"
       ],
       "#k0q2s2kidqtq": [
         "../../../src/language/format.ts"

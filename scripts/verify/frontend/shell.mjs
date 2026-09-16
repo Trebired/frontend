@@ -79,16 +79,16 @@ async function verifySoftNavigationClosesOverlays(context) {
     '<div id="settings_modal" data-tbf-modal><div data-tbf-modal-content>modal</div></div>',
   ].join("");
   spa.configureSpa({ chromeIds: ["primary_header", "mobile_nav_shell"] });
-  document.body.style.overflow = "scroll";
+  document.documentElement.style.overflow = "scroll";
   modal.openModal(document.getElementById("settings_modal"));
   layout.openMobileNav(document.getElementById("mobile_nav_shell"));
-  assert.equal(document.body.style.overflow, "hidden");
+  assert.equal(document.documentElement.style.overflow, "hidden");
   mockFetch(`${LOGIN_BODY}<nav id="mobile_nav_shell" data-tbf-mobile-nav><div data-tbf-mobile-nav-panel></div></nav>`);
 
   assert.equal(await spa.softRedirect("/other", { history: "none" }), true);
-  assert.equal(document.body.style.overflow, "scroll", "a soft navigation must close open modals and release their scroll lock");
+  assert.equal(document.documentElement.style.overflow, "scroll", "a soft navigation must close open modals and release their scroll lock");
   assert.equal(document.body.getAttribute("data-tbf-mobile-nav-open"), "false", "a soft navigation must close the mobile nav");
-  document.body.style.overflow = "";
+  document.documentElement.style.overflow = "";
 }
 
 async function verifyRedirectUpdatesAddress(context) {

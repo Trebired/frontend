@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.2.1
+
+- Opening a modal no longer scrolls a sticky header out of view. The scroll lock set `overflow: hidden` on `<body>`, which turns body into a scroll container; a `position: sticky` header then sticks to body instead of the viewport, and on a scrolled page it was carried away with the content (at 600px scrolled, the header sat at `top: -600px` until the modal closed). The lock now goes on the root element, whose overflow applies to the viewport without creating a new scroll container.
+- Modals, fullscreen panels and the media lightbox now share one reference-counted scroll lock (`lockBodyScroll`, which keeps its name). Each used to save and restore `overflow` on its own, so closing overlays out of order could restore another overlay's `hidden` and leave the page unable to scroll — for example a modal opened from a fullscreen panel and closed after the panel. The scrollbar-width padding that fullscreen already applied now applies to every lock, so opening a modal no longer shifts the page sideways. Code that read `document.body.style.overflow` to detect a lock should read `document.documentElement.style.overflow`.
+
 ## 13.2.0
 
 - Added tab route helpers. `tabRouteUrl(url, steps)` (root and server entrypoints) writes a `tab-<familyKey>` query parameter for each `{ familyKey, route }` step, keeping the URL's other parameters and hash, so a link can point straight at a nested tab. `@trebired/frontend/server` adds `redirectToTabs(req, res, { target, steps, status })` and `tabSectionRedirect({ sections, target, param, status })`, an express-style handler that maps a path segment (`:section` by default, matched case-insensitively) to tab steps and redirects to the tabbed page with the request's query preserved. Unknown sections call `next()`. Soft navigation already follows the redirect, so the SPA lands on the selected tab as well.

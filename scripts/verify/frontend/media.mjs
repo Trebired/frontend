@@ -3,21 +3,24 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 function verifyScrollLockNesting(api) {
-  document.body.style.overflow = "scroll";
+  const root = document.documentElement;
+  root.style.overflow = "scroll";
+  document.body.style.overflow = "";
 
   const releaseOuter = api.lockBodyScroll();
-  assert.equal(document.body.style.overflow, "hidden", "first lock must hide overflow");
+  assert.equal(root.style.overflow, "hidden", "first lock must hide overflow");
+  assert.equal(document.body.style.overflow, "", "the lock must not make body a scroll container, which strands sticky headers");
 
   const releaseInner = api.lockBodyScroll();
   releaseInner();
-  assert.equal(document.body.style.overflow, "hidden", "nested release must not unlock early");
+  assert.equal(root.style.overflow, "hidden", "nested release must not unlock early");
 
   releaseInner();
-  assert.equal(document.body.style.overflow, "hidden", "double release must be idempotent");
+  assert.equal(root.style.overflow, "hidden", "double release must be idempotent");
 
   releaseOuter();
-  assert.equal(document.body.style.overflow, "scroll", "last release must restore the previous value");
-  document.body.style.overflow = "";
+  assert.equal(root.style.overflow, "scroll", "last release must restore the previous value");
+  root.style.overflow = "";
 }
 
 function verifyMediaState(api) {
