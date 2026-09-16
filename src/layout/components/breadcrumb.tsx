@@ -10,6 +10,7 @@ type BreadcrumbItemProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   current?: boolean;
   icon?: ReactNode;
   itemKey?: string;
+  softRedirect?: boolean;
 };
 
 function Breadcrumb(props: BreadcrumbProps) {
@@ -27,7 +28,7 @@ function Breadcrumb(props: BreadcrumbProps) {
 }
 
 function BreadcrumbItem(props: BreadcrumbItemProps) {
-  const { children, className, current, href, icon, itemKey, ...rest } = props;
+  const { children, className, current, href, icon, itemKey, softRedirect, ...rest } = props;
   const content = (
     <>
     {icon ? <span className={frontendElementClass("breadcrumb", "icon")} {...frontendDataAttrs({ "breadcrumb-icon": "" })}>{icon}</span> : null}
@@ -42,6 +43,7 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
         className={classNames(frontendElementClass("breadcrumb", "link"), className)}
         {...frontendDataAttrs({ "breadcrumb-item": "" })}
         {...frontendDataAttrs({ "breadcrumb-key": itemKey })}
+        {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
         href={href}
         >
         {content}

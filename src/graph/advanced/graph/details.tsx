@@ -8,9 +8,11 @@ import {
 } from "#hzrmwbvgt2ax";
 
 function graphDetailValueProps(row: key_value_row) {
-  return row.value_attrs && typeof row.value_attrs === "object"
-  ? row.value_attrs
-  : {};
+  return {
+    ...(row.attrs && typeof row.attrs === "object" ? row.attrs : {}),
+    ...(row.value_attrs && typeof row.value_attrs === "object" ? row.value_attrs : {}),
+    ...(row.id ? { id: String(row.id) } : {}),
+  };
 }
 
 function formatGraphDetailValue(row: key_value_row) {
