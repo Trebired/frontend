@@ -1,5 +1,6 @@
 import {
   browserLocalStorage as storage,
+  focusProgrammatically,
   queryAll,
   resolveDocumentTarget,
   type BindRoot,
@@ -263,7 +264,7 @@ function closeFullscreenTarget(options: { immediate?: boolean } = {}) {
   const finish = () => {
     restoreFullscreenTarget(state, !options.immediate);
     lockDocumentScroll(false);
-    state.trigger?.focus({ preventScroll: true });
+    focusProgrammatically(state.trigger, { preventScroll: true });
     dispatchPanelEvent(frontendEventName("fullscreen-close"), state);
     syncPanelTriggers();
   };

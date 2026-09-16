@@ -1,4 +1,4 @@
-import { clampNumber, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { clampNumber, isProgrammaticFocus, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
@@ -24,7 +24,6 @@ const tooltipState: TooltipState = {
 const tooltipTexts = new WeakMap<HTMLElement, string>();
 const tooltipCleanups = new WeakMap<HTMLElement, ()=>void>();
 let pointerPressActive = false;
-let keyboardNavActive = false;
 let listenersInstalled = false;
 
 function isTooltipControl(trigger: HTMLElement) {
@@ -159,7 +158,7 @@ function bindTooltip(trigger: HTMLElement | null) {
     showTooltip(trigger);
   };
   const focusBoundTooltip = () => {
-    if (!keyboardNavActive) return;
+    if (isProgrammaticFocus()) return;
     showTooltip(trigger);
   };
   const hideBoundTooltip = () => hideTooltip();
@@ -185,12 +184,10 @@ function installTooltipListeners() {
   if (listenersInstalled || typeof document === "undefined") return;
   listenersInstalled = true;
   document.addEventListener("keydown", (event) => {
-      if (event.key === "Tab") keyboardNavActive = true;
       if (event.key === "Escape") hideTooltip();
   });
   document.addEventListener("pointerdown", () => {
       pointerPressActive = true;
-      keyboardNavActive = false;
       hideTooltip();
     }, true);
   document.addEventListener(
