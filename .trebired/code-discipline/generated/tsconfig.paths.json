@@ -442,6 +442,9 @@
       "#8f21tdnsct1q": [
         "../../../src/react/assets.tsx"
       ],
+      "#8g75p9e51kcx": [
+        "../../../scripts/verify/frontend/icons/react.mjs"
+      ],
       "#8hbbsu47ineq": [
         "../../../src/runtime/index.ts"
       ],

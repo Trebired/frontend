@@ -7,7 +7,7 @@ import {
   parseIconSpec,
   text,
 } from "#bu1nq95e3k0f";
-import { readIconCacheEntry, renderIconElement } from "#e55z7pkijewq";
+import { BRAND_COLOR_ATTR, readIconCacheEntry, renderIconElement } from "#e55z7pkijewq";
 import { applySvgColor } from "#bu1nq95e3k0f";
 import { getActiveIconServerRenderer } from "#6o6fqz7svsts";
 import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
@@ -84,6 +84,8 @@ function Icon(props: IconProps) {
     "aria-label": rest["aria-label"] || label || undefined,
     className: classNames(frontendClassName("icon"), "icon-glyph", className),
     [frontendDataAttr("icon")]: normalizedSpec || undefined,
+    [BRAND_COLOR_ATTR]:
+    !color && colorMode === "brand" && colorValue ? colorValue : undefined,
     ref: (element: Element | null) => {
       if (!element || !normalizedSpec) return;
       void renderIconElement(element, normalizedSpec, { color, endpoint, mode });

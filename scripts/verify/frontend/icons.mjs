@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { verifyBrandColorSurvivesHydration, verifyIconCallableFromComponentBody } from "./icons/react.mjs";
 
 async function verifyIcons(context) {
   const iconRuntime = await context.importDistRoot();
@@ -17,47 +18,7 @@ async function verifyIcons(context) {
   await verifyIconRuntime(iconRuntime);
   verifyIconReact(iconReact, iconServer, context.rootDir);
   await verifyIconCallableFromComponentBody(iconReact);
-}
-
-async function verifyIconCallableFromComponentBody(iconReact) {
-  const { createRoot } = await import("react-dom/client");
-  const { act } = await import("react");
-  const host = document.createElement("div");
-  document.body.appendChild(host);
-  const errors = [];
-  const previousError = console.error;
-  console.error = (...args) => errors.push(String(args[0]));
-  function Card({ specs }) {
-    return h("div", null, specs.map((spec, index) => h("span", { key: index }, iconReact.Icon({ spec }))));
-  }
-  const root = createRoot(host);
-  const thrown = [];
-  const render = async(specs) => {
-    try {
-      await act(async() => root.render(h(Card, { specs })));
-    } catch (error) {
-      thrown.push(String(error && error.message ? error.message : error));
-    }
-  };
-  try {
-    await render(["remixicon:add-line"]);
-    await render(["remixicon:add-line", "remixicon:save-3-line", "remixicon:edit-line"]);
-    await render([]);
-    await render(["remixicon:add-line", "remixicon:save-3-line"]);
-    const hookMessage = [
-      "Icon called as a function must hold no hooks of its own,",
-      "or they count as the calling component's and a changing icon count breaks it:",
-      thrown.join(" | "),
-    ].join(" ");
-    assert.deepEqual(thrown, [], hookMessage);
-    assert.equal(host.querySelectorAll("[data-tbf-icon]").length, 2, "icons render when called as a function");
-  } finally {
-    await act(async() => root.unmount());
-    console.error = previousError;
-    host.remove();
-  }
-  const hookErrors = errors.filter((message) => /hook|static flag|Rendered more|Rendered fewer/iu.test(message));
-  assert.deepEqual(hookErrors, [], `calling Icon as a function must not change the caller's hook count: ${hookErrors.join(" | ")}`);
+  verifyBrandColorSurvivesHydration(iconRuntime, iconReact, iconServer, context.rootDir);
 }
 
 function verifyIconAliases(iconRuntime) {

@@ -51,6 +51,7 @@ type StaticIconCacheRegistration = {
 
 const ICON_SELECTOR = `${frontendDataSelector("icon")},[data-icon-spec]`;
 const CUSTOM_COLOR_VAR = frontendCssVar("icon-color");
+const BRAND_COLOR_ATTR = frontendDataAttr("icon-brand-color");
 const LEGACY_CUSTOM_COLOR_VAR = "--icon-custom-color";
 const svgFetchCache = new Map<string, Promise<string>>();
 const iconCacheEntries = new Map<string, IconCacheEntry>();
@@ -243,12 +244,17 @@ function readHostSpec(host: Element): string {
   return text(host.getAttribute(frontendDataAttr("icon")) || host.getAttribute("data-icon-spec"));
 }
 
+function harvestedBrandColor(host: Element) {
+  const value = text(host.getAttribute(BRAND_COLOR_ATTR));
+  return value ? { colorMode: "brand", colorValue: value } : {};
+}
+
 function harvestInlineIcon(host: Element): boolean {
   const parsed = parseIconSpec(readHostSpec(host));
   if (!parsed || readIconCacheEntry(parsed.spec) || !hasInlineSvg(host)) return false;
   const svg = text(host.innerHTML);
   if (!/^<svg\b/iu.test(svg)) return false;
-  storeIconCacheEntry(parsed.spec, { svg });
+  storeIconCacheEntry(parsed.spec, { svg, ...harvestedBrandColor(host) });
   renderedIconSpecs.set(host, parsed.spec);
   return true;
 }
@@ -295,6 +301,7 @@ const icons = Object.freeze({
 });
 
 export {
+  BRAND_COLOR_ATTR,
   CUSTOM_COLOR_VAR,
   ICON_SELECTOR,
   appendIcon,
