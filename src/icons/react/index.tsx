@@ -1,4 +1,4 @@
-import { createElement, useEffect, useMemo, useRef } from "react";
+import { createElement } from "react";
 import type { CSSProperties, HTMLAttributes } from "react";
 
 import {
@@ -70,7 +70,6 @@ function Icon(props: IconProps) {
     title,
     ...rest
   } = props;
-  const ref = useRef<Element | null>(null);
   const resolvedSpec = resolveSpec(props);
   const parsed = parseIconSpec(resolvedSpec);
   const normalizedSpec = parsed ? parsed.spec : normalizeSpace(resolvedSpec);
@@ -78,32 +77,25 @@ function Icon(props: IconProps) {
   const svgMarkup = text(cacheEntry?.svg);
   const colorMode = text(cacheEntry?.colorMode);
   const colorValue = text(cacheEntry?.colorValue);
-
-  useEffect(() => {
-      if (!ref.current || !normalizedSpec) return undefined;
-      void renderIconElement(ref.current, normalizedSpec, { color, endpoint, mode });
-      return undefined;
-    }, [color, endpoint, mode, normalizedSpec]);
-
-  const elementProps = useMemo(() => {
-      const hidden = label || rest["aria-label"] ? undefined : "true";
-      const out: Record<string, unknown> = {
-        ...rest,
-        "aria-hidden": rest["aria-hidden"] ?? hidden,
-        "aria-label": rest["aria-label"] || label || undefined,
-        className: classNames(frontendClassName("icon"), "icon-glyph", className),
-        [frontendDataAttr("icon")]: normalizedSpec || undefined,
-        ref,
-        style: resolveStyle({ ...props, color }, colorMode, colorValue),
-        title,
-      };
-      if (svgMarkup) {
-        out.dangerouslySetInnerHTML = {
-          __html: color ? applySvgColor(svgMarkup, color) : svgMarkup,
-        };
-      }
-      return out;
-    }, [className, color, colorMode, colorValue, label, normalizedSpec, props, rest, svgMarkup, title]);
+  const hidden = label || rest["aria-label"] ? undefined : "true";
+  const elementProps: Record<string, unknown> = {
+    ...rest,
+    "aria-hidden": rest["aria-hidden"] ?? hidden,
+    "aria-label": rest["aria-label"] || label || undefined,
+    className: classNames(frontendClassName("icon"), "icon-glyph", className),
+    [frontendDataAttr("icon")]: normalizedSpec || undefined,
+    ref: (element: Element | null) => {
+      if (!element || !normalizedSpec) return;
+      void renderIconElement(element, normalizedSpec, { color, endpoint, mode });
+    },
+    style: resolveStyle({ ...props, color }, colorMode, colorValue),
+    title,
+  };
+  if (svgMarkup) {
+    elementProps.dangerouslySetInnerHTML = {
+      __html: color ? applySvgColor(svgMarkup, color) : svgMarkup,
+    };
+  }
 
   return createElement(tag, elementProps);
 }
