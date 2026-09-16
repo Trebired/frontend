@@ -29,6 +29,13 @@
   visibility: visible;
 }
 
+#{ns.data("modal")}#{ns.data("opening", "true")} {
+  transition:
+  opacity var(#{ns.css-var("overlay-modal-motion-duration")}, var(#{ns.css-var("transition-normal")}))
+  var(#{ns.css-var("overlay-modal-motion-easing")}, ease),
+  visibility 0s;
+}
+
 #{ns.data("modal")}#{ns.data("open", "true")} {
   opacity: var(#{ns.css-var("overlay-modal-backdrop-opacity")}, 1);
   pointer-events: auto;

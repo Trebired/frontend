@@ -26,6 +26,7 @@ const ACTION_FORM_SELECTOR = `form${frontendDataSelector("action")}`;
 const ACTION_CONFIG_SELECTOR =
 `script[type="application/json"]${frontendDataSelector("action-config")}`;
 const boundForms = new WeakMap<HTMLFormElement, EventListener>();
+const submittingForms = new WeakSet<HTMLFormElement>();
 
 function submitterFor(
   formOrEvent?: HTMLFormElement | SubmitEvent,
@@ -193,11 +194,14 @@ async function submitActionForm(
 ) {
   event?.preventDefault();
   event?.stopImmediatePropagation();
+  if (submittingForms.has(form)) return null;
   const submitter = submitterFor(form, event);
   syncDropdownHiddenInputs(form);
   if (!(await confirmActionForm(form, submitter, options))) return null;
+  if (submittingForms.has(form)) return null;
   const config = readActionFormConfig(form);
   const ui = formUi(options, config);
+  submittingForms.add(form);
   setControlDisabled(submitter, true);
   try {
     ensureFormCsrfToken(form);
@@ -243,6 +247,7 @@ async function submitActionForm(
     });
     throw error;
   } finally {
+    submittingForms.delete(form);
     setControlDisabled(submitter, false);
   }
 }

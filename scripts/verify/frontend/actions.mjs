@@ -63,9 +63,44 @@ async function verifyRuntimeDoesNotInterceptAnchorNavigation(importDistRoot) {
   }
 }
 
+function withTimeout(promise, label) {
+  return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timed out`)), 2000)),
+  ]);
+}
+
+async function verifyActionFormSubmitsOnce(importDist) {
+  const { submitActionForm } = await importDist("actions");
+  document.body.innerHTML = '<form id="once" action="/save" method="post"><input name="bio" value="x"><button type="submit">Save</button></form>';
+  const form = document.getElementById("once");
+  const pending = [];
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = () => new Promise((resolve) => {
+      pending.push(() => resolve(new Response(JSON.stringify({ ok: true }), { headers: { "Content-Type": "application/json" } })));
+  });
+  const settle = async() => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    pending.splice(0).forEach((release) => release());
+  };
+  try {
+    const first = submitActionForm(form, undefined, { ui: { silent: true } });
+    const second = submitActionForm(form, undefined, { ui: { silent: true } });
+    await settle();
+    await withTimeout(Promise.all([first, second]), "concurrent submits");
+    assert.equal(await second, null, "a submit while the form is saving must be ignored");
+    const third = submitActionForm(form, undefined, { ui: { silent: true } });
+    await settle();
+    assert.notEqual(await withTimeout(third, "follow-up submit"), null, "the form accepts a new submit once the previous one finished");
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+}
+
 async function verifyFrontendActions(context) {
   await verifyRuntimeDoesNotInterceptAnchorNavigation(context.importDistRoot);
   await verifyActionConfetti(context.importDist);
+  await verifyActionFormSubmitsOnce(context.importDist);
 }
 
 export { verifyFrontendActions };
