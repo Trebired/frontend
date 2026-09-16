@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.1.18
+
+- Fullscreen panels now take a z-index above whatever is currently on top instead of a fixed base value. The base sat below the modal range, so fullscreening a panel that lives inside an open modal (a logs view, a graph) put the expanded panel underneath the modal it came from. Overlay and panel now climb above the current top layer, the same way tooltips, popovers and dropdowns already did.
+- Modals do the same when they open, so a modal opened from inside a fullscreened panel lands above it. Modals still stack among themselves in open order.
+- Tooltips now hide on any pointer press and when the tab stops being visible. A tooltip shown by hovering a button stayed on screen after the button was clicked, because opening a modal over the pointer never produces a `mouseleave`.
+
 ## 13.1.17
 
 - Graph detail rows now render their `id` and `attrs` onto the value element, matching what `key_value` already did with `id`. Until now the graph renderer kept only the label and the formatted value, so a row's identifier never reached the DOM and nothing could address it afterwards — every live updater targeting `#someRowId` or `[data-something]` inside a graph's stat groups wrote to elements that did not exist, leaving the rendered numbers frozen at their server-rendered values.
