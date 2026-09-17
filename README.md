@@ -108,7 +108,7 @@ A header with no links and no `menuActions` has no toggle and keeps its actions 
 
 The header is the hydration root, so it renders itself as the `<header>` element. Server markup wraps it with `siteHeaderRootHtml(html)`, which the client hydrates through `SITE_HEADER_ROOT_SELECTOR`; the wrapper is `display: contents`, so the header still sticks to the viewport.
 
-Every value a site would restyle is a token under `components.shell.header`: `root` (position, background, border, backdropFilter), `height`, `maxWidth`, `paddingInline`, `brand`, `link`, `toggle`, `menu` and the motion pair `motionDuration` and `motionEasing`.
+Every value a site would restyle is a token under `components.shell.header`: `root` (position, background, border, backdropFilter), `height`, `maxWidth`, `paddingInline`, `brand`, `link`, `menu` and the motion pair `motionDuration` and `motionEasing`. The toggle is a fixed 3rem button with a 2rem icon in every site, so only its color and radius are tokens.
 
 ### Bottom Bar
 
