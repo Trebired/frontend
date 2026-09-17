@@ -33,14 +33,6 @@ function resolvedGraphStateMessage(props: graph_props, isLoading: boolean) {
   : "";
 }
 
-function graphFullscreenIds(props: graph_props, graphId: string) {
-  if (props.extendId === false) return { group: "", id: "" };
-  return {
-    group: String(props.extendGroup || "graphs"),
-    id: String(props.extendId || `${graphId}_fullscreen`),
-  };
-}
-
 function toGraphId(value: unknown) {
   const raw = toString(value);
   return raw || `graph_${Math.random().toString(36).slice(2, 10)}`;
@@ -102,8 +94,6 @@ function renderUnitDropdown(model: any) {
 function graphBootJson(props: graph_props, model: any) {
   return stringifyJsonForHtml({
       id: model.graphId,
-      fullscreen_group: model.fullscreenGroup,
-      fullscreen_id: model.fullscreenId,
       type: model.graphType,
       title: props.title,
       subtitle: props.subtitle,
@@ -168,8 +158,6 @@ function readGraphModel(props: graph_props) {
     ...graphNumericRange(props),
     ...unitState,
     descriptionValue: toString(props.description),
-    fullscreenGroup: graphFullscreenIds(props, graphId).group,
-    fullscreenId: graphFullscreenIds(props, graphId).id,
     graphId,
     graphType,
     groups: truthyArray(props.groups),

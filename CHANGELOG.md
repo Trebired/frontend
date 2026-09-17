@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.11.0
+
+- Graphs have no fullscreen control. A graph card is already as large as its page gives it, and the button sat in every title row, so `extendId` and `extendGroup` are gone with it. Fullscreen itself is unchanged for the components that need it, such as media and logs.
+- The unit dropdown in a graph's title row is as wide as the unit it shows. It was pinned to a fixed narrow width, which cut "KB/s" down to "K".
+
 ## 13.10.0
 
 - A graph card no longer takes `rootClassName`, `bodyClassName` or `scroll`. They let one page give its graphs a different height, padding, gap and scrolling than every other page's, which is what the platform's bandwidth graphs did: taller cards with `padding-xs` inside while the hardware, storage and deployment graphs used the card's own spacing. Every graph is now the same card, and the uniform-shell test compares the rendered class lists instead of checking them one at a time.
