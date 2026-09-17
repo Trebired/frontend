@@ -44,4 +44,18 @@ async function verifyCopyComponents(context) {
   document.body.innerHTML = "";
 }
 
-export { verifyCopyComponents };
+async function verifyLocaleEndonyms(context) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const react = await context.importDist("react");
+  const html = renderToStaticMarkup(createElement(react.LocaleSwitcher, {
+        lang: "en",
+        locales: [{ code: "en", label: "English" }, { code: "cs", label: "Czech" }, { code: "pl" }, { code: "de" }],
+  }));
+  for (const name of ["English", "Čeština", "Polski", "Deutsch"]) {
+    assert.ok(html.includes(`<span>${name}</span>`), `the switcher names ${name} in its own language`);
+  }
+  assert.ok(!html.includes("<span>Czech</span>"), "an English label does not override the language's own name");
+}
+
+export { verifyCopyComponents, verifyLocaleEndonyms };

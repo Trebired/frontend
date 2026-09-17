@@ -47,11 +47,22 @@ const LANGUAGE_FLAG_COUNTRIES: Record<string, string> = {
 
 const DEFAULT_LOCALES: LocaleOption[] = [
   { code: "en", flagCountry: "GB", label: "English", shortLabel: "EN" },
-  { code: "cs", flagCountry: "CZ", label: "Czech", shortLabel: "CS" },
+  { code: "cs", flagCountry: "CZ", label: "Čeština", shortLabel: "CS" },
 ];
 
+function localeEndonym(code: string) {
+  if (!code) return "";
+  try {
+    const name = text(new Intl.DisplayNames([code], { type: "language" }).of(code));
+    if (!name || name.toLowerCase() === code.toLowerCase()) return "";
+    return name.charAt(0).toLocaleUpperCase(code) + name.slice(1);
+  } catch {
+    return "";
+  }
+}
+
 function localizedLocaleLabel(option: LocaleOption, lang?: string) {
-  return text(option.label) || translate(lang, option.code) || option.code;
+  return localeEndonym(text(option.code)) || text(option.label) || translate(lang, option.code) || option.code;
 }
 
 function normalizeFlagCountry(input: unknown) {
