@@ -27,7 +27,7 @@ import {
   verifyWizard,
 } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
-import { verifyCopyComponents } from "./frontend/copy.mjs";
+import { verifyCopyComponents, verifyLocaleEndonyms } from "./frontend/copy.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { verifyLayering } from "./frontend/layering.mjs";
@@ -73,6 +73,7 @@ async function verifyFrontendMain() {
   await verifyGraphShellIsUniform(context);
   await verifyGraphTimeLabels(context);
   await verifyCopyComponents(context);
+  await verifyLocaleEndonyms(context);
   await verifyGraphMountsOnBind(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);
