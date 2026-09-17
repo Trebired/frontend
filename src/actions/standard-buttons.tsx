@@ -48,6 +48,16 @@ type CopyCardProps = {
   value?: string;
 };
 
+type CopyValueProps = {
+  children?: ReactNode;
+  className?: string;
+  copyValue?: string;
+  id?: string;
+  lang?: string;
+  tooltip?: string;
+  value: string;
+};
+
 type CopyCodeCardProps = {
   className?: string;
   description?: ReactNode;
@@ -251,6 +261,41 @@ function copy_card(props: CopyCardProps) {
   );
 }
 
+function copyValueId(value: string) {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+  return `copy_value_${hash.toString(36)}`;
+}
+
+function copyValueShown(props: CopyValueProps, id: string, value: string) {
+  if (props.children) {
+    return <span className="text-break" id={id}>{props.children}</span>;
+  }
+  return <code className="text-break" id={id}>{value}</code>;
+}
+
+function copy_value(props: CopyValueProps) {
+  const value = String(props.value || "");
+  const id = String(props.id || "").trim() || copyValueId(value);
+  const literal = typeof props.copyValue === "string" ? { value: props.copyValue } : {};
+  return (
+    <span className={primitiveInlineRowClassName({ className: props.className, fit: true, gap: "xs", verticalCenter: true })}>
+    {copyValueShown(props, id, value)}
+    {copy_button({
+          className: "no-shrink",
+          lang: props.lang,
+          size: "sm",
+          target: `#${id}`,
+          title: props.tooltip,
+          tooltip: props.tooltip,
+          ...literal,
+    })}
+    </span>
+  );
+}
+
 function copy_code_card(props: CopyCodeCardProps) {
   return copy_card({
       children: code_block({ id: props.id, value: props.value, wrap: true }),
@@ -282,6 +327,7 @@ export {
   copy_button,
   copy_card,
   copy_code_card,
+  copy_value,
   create_button,
   delete_button,
   drop_button,
@@ -301,6 +347,7 @@ export type {
   CopyButtonProps,
   CopyCardProps,
   CopyCodeCardProps,
+  CopyValueProps,
   RemoveConfirmationProps,
   SaveIconButtonProps,
   StandardActionButtonProps,

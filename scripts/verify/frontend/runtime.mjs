@@ -244,6 +244,15 @@ async function verifyGraphTimeLabels(context) {
   assert.ok(copy.includes('class="label">Token</span>'), "copy_card renders its title on the left");
   assert.ok(copy.includes('aria-controls="copy_probe"'), "copy_card wires the copy button to its target");
   assert.ok(copy.includes("btn icon sm") || copy.includes(" sm "), "copy_card uses the fixed small copy button");
+  const inline = renderToStaticMarkup(createElement(react.copy_value, { value: "a1b2c3d4" }));
+  const again = renderToStaticMarkup(createElement(react.copy_value, { value: "a1b2c3d4" }));
+  assert.ok(/<code class="text-break" id="copy_value_[a-z0-9]+">a1b2c3d4<\/code>/u.test(inline), "copy_value shows the value as code by default");
+  assert.ok(!inline.includes('"value":'), "copy_value copies what is shown, so live text updates are copied too");
+  assert.equal(inline, again, "copy_value renders the same id on server and client");
+  const short = renderToStaticMarkup(createElement(react.copy_value, {
+        value: "a1b2c3d4", copyValue: "a1b2c3d4e5f6", children: createElement("code", null, "a1b2c3d4"),
+  }));
+  assert.ok(short.includes('"value":"a1b2c3d4e5f6"'), "copyValue copies a literal that differs from what is shown");
   const code = renderToStaticMarkup(createElement(react.copy_code_card, { id: "code_probe", label: "Remote", value: "git@x" }));
   assert.ok(code.includes('class="label">Remote</span>') && code.includes("git@x"), "copy_code_card is built on copy_card");
 }
