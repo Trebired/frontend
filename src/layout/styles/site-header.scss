@@ -35,7 +35,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 #{ns.element-class("site-header", "bar")} {
   position: relative;
   display: flex;
-  min-height: token("height", 4rem);
+  min-height: 5rem;
   align-items: center;
   justify-content: space-between;
   gap: token("gap", 1rem);
@@ -65,7 +65,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 #{ns.element-class("site-header", "brand")} img {
   display: block;
   width: auto;
-  height: token("brand-logo-height", 2.5rem);
+  height: 3.5rem;
   max-width: token("brand-logo-max-width", 220px);
   object-fit: contain;
 }
@@ -95,7 +95,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 
 #{ns.element-class("site-header", "menu-link")} {
   color: token("link-color", var(#{ns.css-var("text-muted")}, #555));
-  font-size: token("link-font-size", 0.875rem);
+  font-size: 0.875rem;
   font-weight: token("link-font-weight", 500);
   letter-spacing: token("link-letter-spacing", normal);
   text-decoration: none;
@@ -214,7 +214,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 
 #{ns.element-class("site-header", "menu-body")} {
   min-height: 0;
-  max-height: calc(100dvh - #{token("height", 4rem)});
+  max-height: calc(100dvh - 5rem);
   overflow: hidden;
 }
 
@@ -248,7 +248,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   padding: token("menu-link-padding", 0.5rem 0);
   border-radius: token("menu-link-radius", 0);
   color: token("menu-link-color", var(#{ns.css-var("text")}, #000));
-  font-size: token("menu-link-font-size", 1rem);
+  font-size: 1rem;
   font-weight: token("menu-link-font-weight", 600);
 }
 
