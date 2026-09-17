@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.10.0
+
+- A graph card no longer takes `rootClassName`, `bodyClassName` or `scroll`. They let one page give its graphs a different height, padding, gap and scrolling than every other page's, which is what the platform's bandwidth graphs did: taller cards with `padding-xs` inside while the hardware, storage and deployment graphs used the card's own spacing. Every graph is now the same card, and the uniform-shell test compares the rendered class lists instead of checking them one at a time.
+
 ## 13.9.0
 
 - The header's sizes are fixed for every site instead of being tokens: the bar is 5rem tall, a brand logo 3.5rem, navigation links 0.875rem and menu links 1rem, the measurements machynka.cz already used. A header that reads as the same component on four sites should not be a different height on each. Colors, fonts, borders, spacing and the brand's own type size stay configurable, since a brand is a logo on one site and fluid text on another.
