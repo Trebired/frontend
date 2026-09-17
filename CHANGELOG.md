@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.3.1
+
+- The graph's fullscreen button now sits in the title row, next to the title and unit control, instead of in a row of its own above the card. It is rendered by the graph card and calls the fullscreen API directly, switching between its open and exit states from the fullscreen events, so it works for cards mounted after the runtime has bound. The graph's fullscreen id and group travel to the card in its boot payload (`fullscreen_id`, `fullscreen_group`).
+- Graph cards use the default `sm` spacing: the shell, plot frame, header, legend, detail groups and state overlays move from `padding-xs`/`gap-xs` to `padding-sm`/`gap-sm`.
+
 ## 13.3.0
 
 - Graph cards now mount themselves when the runtime binds, so a graph that arrives through a soft navigation initialises like one on a freshly loaded page. Until now only page code calling `createGraphRoot` mounted a card, and the SPA never re-runs a page's script after the first visit, so returning to a page left every graph as an empty frame until a hard reload. Added `mountGraphCards(root)`; `createGraphRoot` reuses the controller already mounted for a card instead of mounting a second React root over it.
