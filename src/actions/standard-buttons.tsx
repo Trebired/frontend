@@ -1,16 +1,9 @@
 import { createElement, type ReactNode } from "react";
-import { code_block } from "#c55llzkpl4ob";
 import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
 import { actionLabel, type ActionLabelKey } from "./labels.js";
 import { copyTargetId } from "./clipboard.js";
-import {
-  primitiveCardClassName,
-  primitiveInlineRowClassName,
-  primitiveTextClassName,
-  type PrimitiveButtonSize,
-  type PrimitiveButtonTone,
-} from "#0rl8rpgzssot";
+import { type PrimitiveButtonSize, type PrimitiveButtonTone } from "#0rl8rpgzssot";
 import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type StandardActionButtonProps = {
@@ -35,36 +28,6 @@ type CopyButtonProps = {
   title?: string;
   tooltip?: string;
   value?: string;
-};
-
-type CopyCardProps = {
-  children?: ReactNode;
-  className?: string;
-  description?: ReactNode;
-  lang?: string;
-  target: string;
-  title: ReactNode;
-  tooltip?: string;
-  value?: string;
-};
-
-type CopyValueProps = {
-  children?: ReactNode;
-  className?: string;
-  copyValue?: string;
-  id?: string;
-  lang?: string;
-  tooltip?: string;
-  value: string;
-};
-
-type CopyCodeCardProps = {
-  className?: string;
-  description?: ReactNode;
-  id: string;
-  label: ReactNode;
-  lang?: string;
-  value: string;
 };
 
 type SaveIconButtonProps = StandardActionButtonProps & {
@@ -239,75 +202,6 @@ function copy_button(props: CopyButtonProps) {
   );
 }
 
-function copy_card(props: CopyCardProps) {
-  return (
-    <div className={primitiveCardClassName({ className: props.className, gap: "sm" })}>
-    <div className={primitiveInlineRowClassName({ between: true, gap: "sm", verticalCenter: true })}>
-    <span className="label">{props.title}</span>
-    <div className="right">
-    {copy_button({
-          lang: props.lang,
-          size: "sm",
-          target: props.target,
-          title: props.tooltip,
-          tooltip: props.tooltip,
-          value: props.value,
-    })}
-    </div>
-    </div>
-    {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
-    {props.children}
-    </div>
-  );
-}
-
-function copyValueId(value: string) {
-  let hash = 0;
-  for (let index = 0; index < value.length; index += 1) {
-    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
-  }
-  return `copy_value_${hash.toString(36)}`;
-}
-
-function copyValueShown(props: CopyValueProps, id: string, value: string) {
-  if (props.children) {
-    return <span className="text-break" id={id}>{props.children}</span>;
-  }
-  return <code className="text-break" id={id}>{value}</code>;
-}
-
-function copy_value(props: CopyValueProps) {
-  const value = String(props.value || "");
-  const id = String(props.id || "").trim() || copyValueId(value);
-  const literal = typeof props.copyValue === "string" ? { value: props.copyValue } : {};
-  return (
-    <span className={primitiveInlineRowClassName({ className: props.className, fit: true, gap: "xs", verticalCenter: true })}>
-    {copyValueShown(props, id, value)}
-    {copy_button({
-          className: "no-shrink",
-          lang: props.lang,
-          size: "sm",
-          target: `#${id}`,
-          title: props.tooltip,
-          tooltip: props.tooltip,
-          ...literal,
-    })}
-    </span>
-  );
-}
-
-function copy_code_card(props: CopyCodeCardProps) {
-  return copy_card({
-      children: code_block({ id: props.id, value: props.value, wrap: true }),
-      className: props.className,
-      description: props.description,
-      lang: props.lang,
-      target: `#${props.id}`,
-      title: props.label,
-      value: props.value,
-  });
-}
-
 function removeConfirmationAttrs(props: RemoveConfirmationProps = {}) {
   return {
     [frontendDataAttr("confirm-confirm-text")]: actionLabel(
@@ -325,9 +219,6 @@ export {
   add_button,
   cancel_button,
   copy_button,
-  copy_card,
-  copy_code_card,
-  copy_value,
   create_button,
   delete_button,
   drop_button,
@@ -345,9 +236,6 @@ export {
 };
 export type {
   CopyButtonProps,
-  CopyCardProps,
-  CopyCodeCardProps,
-  CopyValueProps,
   RemoveConfirmationProps,
   SaveIconButtonProps,
   StandardActionButtonProps,

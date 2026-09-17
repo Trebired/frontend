@@ -865,6 +865,9 @@
       "#fzfi2jetusop": [
         "../../../src/logs/i18n/cs.ts"
       ],
+      "#g0evlkujhynl": [
+        "../../../scripts/verify/frontend/copy.mjs"
+      ],
       "#g2ob19azzp0m": [
         "../../../scripts/verify/frontend/logging.mjs"
       ],
@@ -1116,6 +1119,9 @@
       ],
       "#kwgj7f15gqem": [
         "../../../src/primitives/components/display.tsx"
+      ],
+      "#l75icbim0gxu": [
+        "../../../src/actions/copy-components.tsx"
       ],
       "#la43e00pulrp": [
         "../../../src/wizard/nav.ts"

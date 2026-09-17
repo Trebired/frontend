@@ -168,9 +168,6 @@ export {
   add_button,
   cancel_button,
   copy_button,
-  copy_card,
-  copy_code_card,
-  copy_value,
   create_button,
   delete_button,
   drop_button,
@@ -188,10 +185,9 @@ export {
 } from "#k632wzgl64a3";
 export type {
   CopyButtonProps,
-  CopyCardProps,
-  CopyCodeCardProps,
-  CopyValueProps,
   RemoveConfirmationProps,
   SaveIconButtonProps,
   StandardActionButtonProps,
 } from "#k632wzgl64a3";
+export { copy_card, copy_code_card, copy_value } from "#l75icbim0gxu";
+export type { CopyCardProps, CopyCodeCardProps, CopyValueProps } from "#l75icbim0gxu";

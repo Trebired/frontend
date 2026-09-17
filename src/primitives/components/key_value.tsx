@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { key_value_props, key_value_row } from "./types.js";
 import { joinClassNames, toText } from "./shared.js";
 import { separator } from "./controls.js";
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 import {
   primitiveCardClassName,
   primitiveGridClassName,
@@ -66,6 +67,7 @@ function isRenderableValueNode(value: unknown) {
 
 function keyValueRowValueProps(row: key_value_row) {
   return {
+    ...frontendDataAttrs({ "key-value-value": "" }),
     ...(row.id ? { id: String(row.id) } : {}),
     ...(row.attributes ? { "data-attrs-html": row.attributes } : {}),
     ...(row.value_attributes ? { "data-value-attrs-html": row.value_attributes } : {}),
@@ -114,6 +116,7 @@ function key_value_row_item(
           fit: layout === "inline",
           gap: "xs2",
     })}
+    {...frontendDataAttrs({ "key-value-row": "" })}
     key={`${String(row.label || "row")}_${index}`}
     >
     {layout === "inline" && index > 0 ? (
@@ -121,6 +124,7 @@ function key_value_row_item(
       ) : null}
     <span
     className={primitiveTextClassName({ className: "lh-xs", muted: true })}
+    {...frontendDataAttrs({ "key-value-label": "" })}
     {...(row.label_attributes ? { "data-label-attrs-html": row.label_attributes } : {})}
     >
     {String(row.label || "")}:
