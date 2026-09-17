@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.8.1
+
+- The mobile menu toggle is one fixed size everywhere: a 3rem button with a 2rem icon, the size machynka.cz already used. It was a per-site token, so each site could pick a different hit target for the same control; the built-in burger grew to match. Only the toggle's color and radius remain tokens.
+
 ## 13.8.0
 
 - Added `SiteHeader`, which owns a content site's whole header: the sticky bar, the brand, the desktop navigation, the actions and the mobile menu behind the toggle. Sites described their own header in markup and CSS, and their mobile menus drifted apart: two of them centred and shrank the open menu because the panel's `margin: 0 auto` let it collapse to its content, indenting the links and stranding the divider mid-row, and neither offered the language menu on a phone. The menu is now one full-width panel under the bar that lists the links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. Links are passed as data.
