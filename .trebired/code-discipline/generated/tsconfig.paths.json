@@ -1495,6 +1495,9 @@
       "#u8nmcwbcma9p": [
         "../../../src/graph/advanced/contributions_heatmap/i18n/en.ts"
       ],
+      "#uctpnjosv6it": [
+        "../../../src/language/names.ts"
+      ],
       "#ue31afhvhvc0": [
         "../../../src/graph/advanced/contributions_heatmap/types.ts"
       ],
