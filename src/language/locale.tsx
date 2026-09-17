@@ -1,6 +1,7 @@
 import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
 import { normalizedLang, text, translate } from "./shared.js";
+import { languageName } from "./names.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
 import { hasFlag } from "country-flag-icons";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
@@ -50,19 +51,8 @@ const DEFAULT_LOCALES: LocaleOption[] = [
   { code: "cs", flagCountry: "CZ", label: "Čeština", shortLabel: "CS" },
 ];
 
-function localeEndonym(code: string) {
-  if (!code) return "";
-  try {
-    const name = text(new Intl.DisplayNames([code], { type: "language" }).of(code));
-    if (!name || name.toLowerCase() === code.toLowerCase()) return "";
-    return name.charAt(0).toLocaleUpperCase(code) + name.slice(1);
-  } catch {
-    return "";
-  }
-}
-
 function localizedLocaleLabel(option: LocaleOption, lang?: string) {
-  return localeEndonym(text(option.code)) || text(option.label) || translate(lang, option.code) || option.code;
+  return languageName(option.code) || text(option.label) || translate(lang, option.code) || option.code;
 }
 
 function normalizeFlagCountry(input: unknown) {

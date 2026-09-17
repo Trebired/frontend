@@ -56,6 +56,9 @@ async function verifyLocaleEndonyms(context) {
     assert.ok(html.includes(`<span>${name}</span>`), `the switcher names ${name} in its own language`);
   }
   assert.ok(!html.includes("<span>Czech</span>"), "an English label does not override the language's own name");
+  const root = await context.importDistRoot();
+  assert.equal(root.languageName("cs"), "Čeština", "languageName is exported for apps with their own language menus");
+  assert.equal(root.languageName(""), "", "languageName returns an empty string for an empty code");
 }
 
 export { verifyCopyComponents, verifyLocaleEndonyms };

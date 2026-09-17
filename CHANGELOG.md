@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.7.0
+
+- Added `languageName(code)`, exported from the package root: the name of a language written in that language ("Čeština", "Deutsch"), capitalised with that language's casing rules and identical on the server and in every browser. It is what the language switcher uses, and apps with their own language menus can use it instead of hardcoding language names. It returns an empty string when the runtime cannot name the language.
+
 ## 13.6.1
 
 - The language switcher names each language in that language ("Čeština", "Deutsch", "Polski") instead of in English ("Czech"). A speaker looking for their own language can now recognise it whatever the page's current language is. Names come from `Intl.DisplayNames` with the language itself as the display locale; the first letter is capitalised with that language's casing rules, so the server and every browser render the same text (runtimes disagree on whether "čeština" is capitalised). A `label` on the locale option is used only when the runtime cannot name the language.
