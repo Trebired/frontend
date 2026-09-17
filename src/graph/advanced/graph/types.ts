@@ -39,7 +39,7 @@ type graph_props = {
   datasets?: dataset[];
   description?: string;
   extendGroup?: string;
-  extendId?: string;
+  extendId?: string | false;
   fill?: string;
   groups?: key_value_group[];
   id?: string;

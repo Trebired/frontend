@@ -267,8 +267,8 @@ function normalizeGraphState(props) {
   if (state === "warning") return "warning";
   if (state === "empty") return "empty";
   if (props.loading === true) return "loading";
-  if (state === "loading" || state === "ok") return state;
-  return props.loading === true ? "loading" : "ok";
+  if (state === "loading") return state;
+  return graphPropsHaveData(props) ? "ok" : "empty";
 }
 
 function graphPropsHaveData(props) {

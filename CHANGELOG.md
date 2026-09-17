@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.3.0
+
+- Graph cards now mount themselves when the runtime binds, so a graph that arrives through a soft navigation initialises like one on a freshly loaded page. Until now only page code calling `createGraphRoot` mounted a card, and the SPA never re-runs a page's script after the first visit, so returning to a page left every graph as an empty frame until a hard reload. Added `mountGraphCards(root)`; `createGraphRoot` reuses the controller already mounted for a card instead of mounting a second React root over it.
+- Every graph renders the same shell. The card previously had two layouts — a plain one, and a richer one that appeared only when the caller happened to pass `toolbarContent`, `extendId`, `rootClassName`, `rootAttrs` or `scroll` — so graphs differed in structure and spacing depending on props unrelated to layout. There is now one shell for all of them.
+- Fullscreen is part of that shell: a graph gets its own fullscreen target and button without the caller wiring `extendId`/`extendGroup`. Pass them to group graphs deliberately, or `extendId: false` to opt out. A toolbar holding only the fullscreen button no longer renders as a bordered strip above the plot.
+- A graph never renders as a blank canvas. With no renderable points or datasets it shows an icon and "No data yet." on both the server-rendered card and after live updates, without the caller opting in; `state`, `stateIcon` and `stateMessage` still override it. The error fallback shows an error icon alongside its message.
+- `readGraphBootData` no longer depends on the `HTMLTemplateElement` global, which threw where that global is absent.
+
 ## 13.2.6
 
 - Graph cards accept `state: "empty"`, which draws a muted icon and an optional `stateMessage` over the empty plot area instead of leaving a blank canvas with no explanation. The existing `warning` state now shows its message too, and both read `stateMessage` (falling back to `description`).

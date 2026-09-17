@@ -1,5 +1,6 @@
 import { parseJsonText, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { mountGraphCards } from "./advanced/runtime/boot.js";
 
 const GRAPH_SELECTOR = frontendDataSelector("graph");
 const GRAPH_CANVAS_SELECTOR = `canvas${frontendDataSelector("graph-canvas")}`;
@@ -103,6 +104,14 @@ function bindGraph(root: HTMLElement | null) {
 
 function bindGraphs(root: BindRoot = document) {
   queryAll<HTMLElement>(root, GRAPH_SELECTOR).forEach(bindGraph);
+  mountGraphCards(bindRootNode(root));
+}
+
+function bindRootNode(root: BindRoot): ParentNode {
+  if (root && typeof(root as ParentNode).querySelectorAll === "function") {
+    return root as ParentNode;
+  }
+  return document;
 }
 
 export {

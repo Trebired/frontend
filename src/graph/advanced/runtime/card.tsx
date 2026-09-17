@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createLocalTranslator } from "#4fte8m1x62rd";
+import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
 import { resolveGraphUnitMeasurement } from "./chart.js";
 import { useGraphChart } from "./card/chart.js";
 import {
@@ -17,11 +19,15 @@ import {
   registerGraphRoot,
 } from "./utils.js";
 
-function stateMessageText(props) {
+function stateMessageText(props, graphState) {
   const message =
   typeof props.stateMessage === "string" ? props.stateMessage.trim() : "";
   if (message) return message;
-  return typeof props.description === "string" ? props.description.trim() : "";
+  const description =
+  typeof props.description === "string" ? props.description.trim() : "";
+  if (description) return description;
+  if (graphState !== "empty") return "";
+  return createLocalTranslator(import.meta.url, documentLang())("empty.noData");
 }
 
 function frameState(props, modalWaiting) {
@@ -43,7 +49,7 @@ function frameState(props, modalWaiting) {
     : showEmpty
     ? getDefaultEmptyIcon()
     : getDefaultWarningIcon(),
-    stateMessage: stateMessageText(props),
+    stateMessage: stateMessageText(props, graphState),
   };
 }
 

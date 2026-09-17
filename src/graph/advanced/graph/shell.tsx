@@ -65,17 +65,35 @@ function renderGraphToolbar(props: graph_props) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
   const hasFullscreen = Boolean(props.extendId && props.extendGroup);
   if (!props.toolbarContent && !hasFullscreen) return null;
+  const actions = hasFullscreen ? graphFullscreenActions(props, localT) : null;
+
+  if (!props.toolbarContent) {
+    return (
+      <InlineRow className="canvas-panel-toolbar" gap="sm" wrap>
+      {actions}
+      </InlineRow>
+    );
+  }
 
   return (
     <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar padding-xs", gap: "sm", wrap: true })}>
     {props.toolbarContent}
-    {hasFullscreen ? graphFullscreenActions(props, localT) : null}
+    {actions}
     </Card>
   );
 }
 
+function stateOverlayColor(model: any) {
+  if (model.resolvedState === "empty") {
+    return `var(${frontendCssVar("text-muted")}, currentColor)`;
+  }
+  return model.resolvedStateTone === "warn"
+  ? `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`
+  : `var(${frontendCssVar("status-error-color")}, var(${frontendCssVar("focus")}, currentColor))`;
+}
+
 function graphShellStateOverlay(model: any) {
-  if (model.resolvedState === "warning") {
+  if (model.resolvedState === "warning" || model.resolvedState === "empty") {
     return (
       <InlineRow
       style={{
@@ -83,20 +101,20 @@ function graphShellStateOverlay(model: any) {
           inset: 0,
           alignItems: "center",
           justifyContent: "center",
-          color:
-          model.resolvedStateTone === "warn"
-          ? `var(${frontendCssVar("status-warning-color")}, var(${frontendCssVar("focus")}, currentColor))`
-          : `var(${frontendCssVar("status-error-color")}, var(${frontendCssVar("focus")}, currentColor))`,
+          color: stateOverlayColor(model),
       }}
       >
-      <div className="center">
+      <div className="center column gap-xs">
       {icon({
             spec: model.resolvedStateIcon,
             style: {
-              fontSize: "56px",
+              fontSize: model.resolvedState === "empty" ? "40px" : "56px",
               lineHeight: 1,
             },
       })}
+      {model.resolvedStateMessage ? (
+          <Text as="span" size="sm">{model.resolvedStateMessage}</Text>
+        ) : null}
       </div>
       </InlineRow>
     );
@@ -165,15 +183,12 @@ function renderGraphTemplates(model: any) {
   );
 }
 
-function hasEnhancedShell(props: graph_props) {
-  return (
-    Boolean(props.toolbarContent) ||
-      Boolean(props.extendId) ||
-      Boolean(props.extendGroup) ||
-      Boolean(props.rootClassName) ||
-      Boolean(props.rootAttrs && typeof props.rootAttrs === "object") ||
-      props.scroll === true
-  );
+function graphFullscreenIds(props: graph_props, model: any) {
+  if (props.extendId === false) return { group: "", id: "" };
+  return {
+    group: String(props.extendGroup || "graphs"),
+    id: String(props.extendId || `${model.graphId}_fullscreen`),
+  };
 }
 
 function enhancedRootClassName(props: graph_props) {
@@ -193,26 +208,24 @@ function enhancedRootClassName(props: graph_props) {
   );
 }
 
-function renderEnhancedGraphShell(props: graph_props, model: any) {
+function renderGraphShell(props: graph_props, model: any) {
+  const fullscreen = graphFullscreenIds(props, model);
   const target = (
     <Card
     {...model.rootAttrs}
     className={enhancedRootClassName(props)}
     style={{ minHeight: 0 }}
     >
-    {renderGraphToolbar(props)}
+    {renderGraphToolbar({ ...props, ...fullscreenToolbarProps(fullscreen) })}
     {renderGraphCanvas(model, "graph-shell-mount")}
     {renderGraphDetails(model)}
     </Card>
   );
-  const content =
-  props.extendId && props.extendGroup
-  ? (
-    <FullscreenTarget fullscreenId={props.extendId} group={props.extendGroup}>
+  const content = fullscreen.id ? (
+    <FullscreenTarget fullscreenId={fullscreen.id} group={fullscreen.group}>
     {target}
     </FullscreenTarget>
-  )
-  : target;
+  ) : target;
 
   return (
     <>
@@ -222,22 +235,8 @@ function renderEnhancedGraphShell(props: graph_props, model: any) {
   );
 }
 
-function renderSimpleGraphShell(model: any) {
-  return (
-    <>
-    <Card className={primitiveStackClassName({ gap: "sm" })}>
-    {renderGraphCanvas(model)}
-    {renderGraphDetails(model)}
-    </Card>
-    {renderGraphTemplates(model)}
-    </>
-  );
-}
-
-function renderGraphShell(props: graph_props, model: any) {
-  return hasEnhancedShell(props)
-  ? renderEnhancedGraphShell(props, model)
-  : renderSimpleGraphShell(model);
+function fullscreenToolbarProps(fullscreen: { group: string; id: string }) {
+  return { extendGroup: fullscreen.group, extendId: fullscreen.id };
 }
 
 export { renderGraphShell };
