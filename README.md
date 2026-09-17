@@ -90,6 +90,30 @@ Runtime components that submit HTTP actions, expect data-attribute request/respo
 
 The React entrypoint renders package-owned document, layout, header, sidebar, portal, upload, tabs, tooltip, popover, modal, fullscreen, flash, text-link, language, and theme controls. The markup is generic and configured through `.trebired/frontend/config.ts`.
 
+### Site Header
+
+`SiteHeader` is the whole header of a content site: the sticky bar, the brand, the desktop navigation, the actions beside it, and the mobile menu behind the toggle. The menu is a full-width panel under the bar; it lists the same links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. Pass the links as data, not markup:
+
+```tsx
+<SiteHeader
+  actions={<LanguageMenu />}
+  brand="Restaurace Střílky"
+  brandHref="#top"
+  labels={{ closeMenu: t("menuClose"), navigation: t("navLabel"), openMenu: t("menuOpen") }}
+  links={sections.map((section) => ({ href: hrefs[section], key: section, label: t(`nav.${section}`) }))}
+/>
+```
+
+A header with no links and no `menuActions` has no toggle and keeps its actions visible on a phone. `menuActions` replaces `actions` inside the menu when the two should differ, `menuIcon` and `closeIcon` replace the built-in burger, and `softRedirect` marks the links for soft navigation.
+
+The header is the hydration root, so it renders itself as the `<header>` element. Server markup wraps it with `siteHeaderRootHtml(html)`, which the client hydrates through `SITE_HEADER_ROOT_SELECTOR`; the wrapper is `display: contents`, so the header still sticks to the viewport.
+
+Every value a site would restyle is a token under `components.shell.header`: `root` (position, background, border, backdropFilter), `height`, `maxWidth`, `paddingInline`, `brand`, `link`, `toggle`, `menu` and the motion pair `motionDuration` and `motionEasing`.
+
+### Bottom Bar
+
+`BottomBar` renders the mobile bar at the bottom of the viewport from an `items` array. An item with `href` is a link, one with `controls` toggles a mobile nav, one with `onClick` alone is a button, and one with `node` renders whatever it carries. `ProductShellBottomBar` is that component with a product shell's own items. `components.shell.bottomBar` tokens cover its height, background, border, radius, shadow and item colors.
+
 ### Tab Routes
 
 Tabs keep their selection in the query string, one `tab-<familyKey>` parameter per family, so nested tabs are addressed by one parameter per level. `tabRouteUrl(url, steps)` builds that URL from `{ familyKey, route }` steps. On the server, `tabSectionRedirect({ sections, target })` turns a path segment into a redirect to the tabbed page, so a path such as `/@someone/repositories` can land on the matching nested tab:

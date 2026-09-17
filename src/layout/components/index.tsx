@@ -269,9 +269,11 @@ export {
   RenderCurrentUrlProvider,
   ViewportCenter,
 };
+export * from "./bottom_bar.js";
 export * from "./breadcrumb.js";
 export * from "./header.js";
 export * from "./mobile.js";
+export * from "./site/header.js";
 export * from "./shell/index.js";
 export type {
   LayoutBootScriptProps,

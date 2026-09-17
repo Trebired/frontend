@@ -16,10 +16,7 @@ import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
 import { verifySidebar } from "./frontend/sidebar.mjs";
 import {
-  verifyGraphEmptyState,
-  verifyGraphMountsOnBind,
-  verifyGraphShellIsUniform,
-  verifyGraphTimeLabels,
+  verifyGraphs,
   verifyNamespace,
   verifyPopover,
   verifyPopoverReactEvents,
@@ -28,6 +25,7 @@ import {
 } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyCopyComponents, verifyLocaleEndonyms } from "./frontend/copy.mjs";
+import { verifySiteChrome } from "./frontend/site-header.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { verifyLayering } from "./frontend/layering.mjs";
@@ -69,12 +67,10 @@ async function verifyFrontendMain() {
   await verifyPopover(context);
   await verifyPopoverReactEvents(context);
   await verifyViewportCenter(context);
-  await verifyGraphEmptyState(context);
-  await verifyGraphShellIsUniform(context);
-  await verifyGraphTimeLabels(context);
   await verifyCopyComponents(context);
   await verifyLocaleEndonyms(context);
-  await verifyGraphMountsOnBind(context);
+  await verifySiteChrome(context);
+  await verifyGraphs(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);
   await verifyModal();

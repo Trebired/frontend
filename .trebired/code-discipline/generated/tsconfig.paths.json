@@ -94,6 +94,9 @@
       "#1noxad072ety": [
         "../../../src/editor/content.ts"
       ],
+      "#1nyd7ni8cpfq": [
+        "../../../src/layout/components/site/header_state.ts"
+      ],
       "#1oddqcc3hg5a": [
         "../../../src/graph/advanced/runtime/card/units.ts"
       ],
@@ -426,6 +429,9 @@
       ],
       "#84xpb8ep71dz": [
         "../../../src/inputs/advanced/toggle/i18n/en.ts"
+      ],
+      "#86xbht2xl19o": [
+        "../../../src/layout/components/bottom_bar.tsx"
       ],
       "#874sewd5eea2": [
         "../../../src/graph/advanced/runtime/dropdown.ts"
@@ -1114,6 +1120,9 @@
       "#kr652d3st9at": [
         "../../../src/config/shared.ts"
       ],
+      "#kuao06o756nt": [
+        "../../../scripts/verify/frontend/site-header.mjs"
+      ],
       "#kv9urtb9dbq5": [
         "../../../src/language/shared.ts"
       ],
@@ -1176,6 +1185,9 @@
       ],
       "#m8aga4kgmeuh": [
         "../../../src/inputs/advanced/input/styles/field.scss"
+      ],
+      "#mbgipuoecdab": [
+        "../../../src/layout/components/site/header.tsx"
       ],
       "#mcb435mvk9yx": [
         "../../../src/sidebar/dynamic/runtime/dom.ts"
@@ -1479,6 +1491,9 @@
       ],
       "#tt5o16i4oko7": [
         "../../../src/actions/buttons.ts"
+      ],
+      "#tuddf4ijoxzw": [
+        "../../../src/layout/styles/site-header.scss"
       ],
       "#tvicwpnoy4rk": [
         "../../../src/spa/cleanup.ts"

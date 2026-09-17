@@ -183,6 +183,13 @@ async function verifyWizard(context) {
   await verifyWizardSizing(wizardModule.bindWizardRoot);
 }
 
+async function verifyGraphs(context) {
+  await verifyGraphEmptyState(context);
+  await verifyGraphShellIsUniform(context);
+  await verifyGraphTimeLabels(context);
+  await verifyGraphMountsOnBind(context);
+}
+
 async function verifyGraphEmptyState(context) {
   const react = await context.importDist("react");
   const { renderToStaticMarkup } = await import("react-dom/server");
@@ -278,6 +285,7 @@ async function verifyViewportCenter(context) {
 }
 
 export {
+  verifyGraphs,
   verifyGraphEmptyState,
   verifyGraphMountsOnBind,
   verifyGraphShellIsUniform,

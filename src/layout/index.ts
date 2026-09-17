@@ -15,6 +15,8 @@ const LAYOUT_PORTAL_ROOT_ID = `${FRONTEND_PREFIX}_layout_portal_root`;
 const LAYOUT_PORTAL_ROOT_SELECTOR = frontendDataSelector("layout-portal-root");
 const LAYOUT_BODY_ATTRIBUTE = frontendDataAttr("layout");
 const LAYOUT_MOBILE_BODY_ATTRIBUTE = frontendDataAttr("layout-mobile");
+const SITE_HEADER_ROOT_ATTRIBUTE = frontendDataAttr("site-header-root");
+const SITE_HEADER_ROOT_SELECTOR = frontendDataSelector("site-header-root");
 
 type LayoutSide = "left" | "right";
 
@@ -87,6 +89,10 @@ function bindLayouts(root: BindRoot = document, options: LayoutRuntimeOptions = 
   if (root === document) syncLayoutBodyState(document, options);
 }
 
+function siteHeaderRootHtml(headerHtml: string) {
+  return `<div ${SITE_HEADER_ROOT_ATTRIBUTE}="">${headerHtml}</div>`;
+}
+
 function ensureLayoutPortalRoot() {
   if (typeof document === "undefined") return null;
   const existing = document.getElementById(LAYOUT_PORTAL_ROOT_ID);
@@ -129,12 +135,15 @@ export {
   LAYOUT_PORTAL_ROOT_ID,
   LAYOUT_PORTAL_ROOT_SELECTOR,
   LAYOUT_ROOT_SELECTOR,
+  SITE_HEADER_ROOT_ATTRIBUTE,
+  SITE_HEADER_ROOT_SELECTOR,
   applyLayoutBodyState,
   bindLayoutRoot,
   bindLayouts,
   createLayoutBootScript,
   ensureLayoutPortalRoot,
   readLayoutBodyState,
+  siteHeaderRootHtml,
   syncLayoutBodyState,
 };
 export *from "./breadcrumb.js";
