@@ -230,9 +230,12 @@ async function verifyGraphShellIsUniform(context) {
   }
   const unit = renderToStaticMarkup(createElement(react.download_graph, { datasets: [], id: "unit_graph" }));
   assert.ok(!unit.includes("fullscreen"), "a unit graph offers no fullscreen control either");
+  assert.ok(unit.includes("dropdown-fit"), "the unit dropdown sizes itself to the unit it shows");
   const runtime = await fs.readFile(path.join(context.distDir, "graph", "advanced", "runtime", "render.js"), "utf8");
   assert.ok(!runtime.includes("width-xs2"), "the unit dropdown is not squeezed into a fixed width");
-  assert.ok(runtime.includes('className: "width-fit"'), "the unit dropdown is as wide as the unit it shows");
+  assert.ok(runtime.includes('className: "width-fit"'), "the unit dropdown mount does not cap its width");
+  const dropdownStyles = await fs.readFile(path.join(context.distDir, "inputs", "advanced", "dropdown", "styles", "base.scss"), "utf8");
+  assert.match(dropdownStyles, /&\.dropdown-fit \{[^}]*width: fit-content;/su, "a fitted dropdown is as wide as its label");
 }
 
 async function verifyGraphTimeLabels(context) {
