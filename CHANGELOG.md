@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.4.0
+
+- Added `copy_card`: a card with a title on the left, a fixed small copy button on the right, an optional description, and any content below. `copy_code_card` is now built on it, so both share one header layout and one button size. Pass `target` (the element to copy) and optionally `value`, `tooltip` and `description`.
+- Graph time axes label themselves from the data. When `bottomDetails` is not given and the points are timestamped, the first, middle and last ticks show the real, localised age of those samples ("41s ago", "5m ago", "now") instead of fixed strings that were wrong whenever the sampling rate or window changed.
+- The graph card uses the card's own default padding (`card` class) instead of a padding utility, and its detail groups do the same.
+
 ## 13.3.1
 
 - The graph's fullscreen button now sits in the title row, next to the title and unit control, instead of in a row of its own above the card. It is rendered by the graph card and calls the fullscreen API directly, switching between its open and exit states from the fullscreen events, so it works for cards mounted after the runtime has bound. The graph's fullscreen id and group travel to the card in its boot payload (`fullscreen_id`, `fullscreen_group`).

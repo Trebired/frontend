@@ -216,9 +216,36 @@ async function verifyGraphShellIsUniform(context) {
     assert.ok(html.includes('"fullscreen_id":'), `${label} graph hands its fullscreen id to the title row`);
     assert.ok(!html.includes("canvas-panel-toolbar"), `${label} graph has no separate fullscreen strip`);
     assert.ok(!/\b(padding|gap)-xs\b/u.test(html), `${label} graph spaces with sm, not xs`);
+    assert.ok(!/class="[^"]*graph-shell[^"]*padding-/u.test(html), `${label} graph card relies on the card's own padding`);
   }
   const optedOut = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "no_fs_graph", extendId: false }));
   assert.ok(!optedOut.includes("data-tbf-fullscreen-target"), "fullscreen can still be turned off");
+}
+
+async function verifyGraphTimeLabels(context) {
+  const root = await context.importDistRoot();
+  const now = Date.now();
+  const config = root.buildChartConfig({
+      datasets: [{ label: "cpu", points: [300, 150, 0].map((ago, index) => ({
+                label: new Date(now - ago * 1000).toISOString(), value: index,
+          })) }],
+      lang: "en",
+  });
+  const tick = config.options.scales.x.ticks.callback;
+  assert.equal(tick(0, 0), "5m ago", "the first tick is labelled from its real timestamp");
+  assert.equal(tick(2, 2), "now", "the last tick is labelled now");
+  const react = await context.importDist("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const copy = renderToStaticMarkup(createElement(react.copy_card, {
+        target: "#copy_probe", title: "Token", tooltip: "Copy token",
+        children: createElement("code", { id: "copy_probe" }, "abc"),
+  }));
+  assert.ok(copy.includes('class="label">Token</span>'), "copy_card renders its title on the left");
+  assert.ok(copy.includes('aria-controls="copy_probe"'), "copy_card wires the copy button to its target");
+  assert.ok(copy.includes("btn icon sm") || copy.includes(" sm "), "copy_card uses the fixed small copy button");
+  const code = renderToStaticMarkup(createElement(react.copy_code_card, { id: "code_probe", label: "Remote", value: "git@x" }));
+  assert.ok(code.includes('class="label">Remote</span>') && code.includes("git@x"), "copy_code_card is built on copy_card");
 }
 
 async function verifyGraphMountsOnBind(context) {
@@ -266,6 +293,7 @@ export {
   verifyGraphEmptyState,
   verifyGraphMountsOnBind,
   verifyGraphShellIsUniform,
+  verifyGraphTimeLabels,
   verifyNamespace,
   verifyPopover,
   verifyPopoverReactEvents,

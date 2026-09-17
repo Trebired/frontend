@@ -68,7 +68,7 @@ function renderGroupedDetails(groups: key_value_group[]) {
     <Stack gap="sm">
     {safeGroups.map((group, groupIndex) => (
           <div
-          className={primitiveCardClassName({ gap: "sm", padding: "sm" })}
+          className={primitiveCardClassName({ gap: "sm" })}
           key={`graph_group_${group.title || "group"}_${groupIndex}`}
           >
           {group.title ? <h4>{group.title}</h4> : null}
@@ -100,7 +100,7 @@ function renderRowDetails(rows: key_value_row[]) {
     <Grid gap="sm">
     {safeRows.map((row, rowIndex) => (
           <div
-          className={primitiveCardClassName({ gap: "sm", padding: "sm" })}
+          className={primitiveCardClassName({ gap: "sm" })}
           key={`graph_row_${String(row.label || "row")}_${rowIndex}`}
           >
           <span className="label lh-xs">{String(row.label || "")}</span>

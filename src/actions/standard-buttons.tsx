@@ -37,6 +37,17 @@ type CopyButtonProps = {
   value?: string;
 };
 
+type CopyCardProps = {
+  children?: ReactNode;
+  className?: string;
+  description?: ReactNode;
+  lang?: string;
+  target: string;
+  title: ReactNode;
+  tooltip?: string;
+  value?: string;
+};
+
 type CopyCodeCardProps = {
   className?: string;
   description?: ReactNode;
@@ -218,24 +229,38 @@ function copy_button(props: CopyButtonProps) {
   );
 }
 
-function copy_code_card(props: CopyCodeCardProps) {
+function copy_card(props: CopyCardProps) {
   return (
-    <div className={primitiveCardClassName({ className: props.className, gap: "xs" })}>
-    <div className={primitiveInlineRowClassName({ between: true, gap: "xs", wrap: true })}>
-    <span className="label">{props.label}</span>
+    <div className={primitiveCardClassName({ className: props.className, gap: "sm" })}>
+    <div className={primitiveInlineRowClassName({ between: true, gap: "sm", verticalCenter: true })}>
+    <span className="label">{props.title}</span>
     <div className="right">
     {copy_button({
           lang: props.lang,
           size: "sm",
-          target: `#${props.id}`,
+          target: props.target,
+          title: props.tooltip,
+          tooltip: props.tooltip,
           value: props.value,
     })}
     </div>
     </div>
     {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
-    {code_block({ id: props.id, value: props.value, wrap: true })}
+    {props.children}
     </div>
   );
+}
+
+function copy_code_card(props: CopyCodeCardProps) {
+  return copy_card({
+      children: code_block({ id: props.id, value: props.value, wrap: true }),
+      className: props.className,
+      description: props.description,
+      lang: props.lang,
+      target: `#${props.id}`,
+      title: props.label,
+      value: props.value,
+  });
 }
 
 function removeConfirmationAttrs(props: RemoveConfirmationProps = {}) {
@@ -255,6 +280,7 @@ export {
   add_button,
   cancel_button,
   copy_button,
+  copy_card,
   copy_code_card,
   create_button,
   delete_button,
@@ -273,6 +299,7 @@ export {
 };
 export type {
   CopyButtonProps,
+  CopyCardProps,
   CopyCodeCardProps,
   RemoveConfirmationProps,
   SaveIconButtonProps,

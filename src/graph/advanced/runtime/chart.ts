@@ -1,5 +1,6 @@
 import { convertGraphUnitValue } from "./units.js";
 import { resolveCanvasColor } from "./utils.js";
+import { timestampBottomDetails } from "./time_labels.js";
 
 function pointTime(label) {
   const parsed = Date.parse(String(label || ""));
@@ -278,7 +279,11 @@ function buildChartConfig(options) {
   const aligned = alignDatasets(datasets);
   const pointCount = aligned.labels.length;
   const yAxis = getYAxisConfig(options, datasets);
-  const bottomTickMap = getBottomTickMap(pointCount, options.bottomDetails);
+  const bottomDetails =
+  Array.isArray(options.bottomDetails) && options.bottomDetails.length
+  ? options.bottomDetails
+  : timestampBottomDetails(aligned.labels, options.lang);
+  const bottomTickMap = getBottomTickMap(pointCount, bottomDetails);
 
   return {
     type: "line",
