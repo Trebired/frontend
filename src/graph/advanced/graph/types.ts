@@ -35,7 +35,6 @@ type legend_item = {
 
 type graph_props = {
   bottomDetails?: any[];
-  bodyClassName?: string;
   datasets?: dataset[];
   description?: string;
   extendGroup?: string;
@@ -53,9 +52,7 @@ type graph_props = {
   precision?: number | null;
   rightDetails?: any[];
   rootAttrs?: Record<string, unknown>;
-  rootClassName?: string;
   rows?: key_value_row[];
-  scroll?: boolean;
   state?: string;
   stateIcon?: string;
   stateMessage?: string;

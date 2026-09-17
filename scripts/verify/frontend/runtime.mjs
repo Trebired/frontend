@@ -215,8 +215,12 @@ async function verifyGraphShellIsUniform(context) {
   const { createElement } = await import("react");
   const plain = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "plain_graph" }));
   const decorated = renderToStaticMarkup(createElement(react.cpu_graph, {
-        datasets: [], id: "decorated_graph", rootClassName: "height-xl", scroll: true,
+        bodyClassName: "column gap-sm padding-xs flex-1", datasets: [], id: "decorated_graph",
+        rootClassName: "height-xl", scroll: true,
   }));
+  const shellClass = (html) => (html.match(/class="([^"]*graph-shell[^"]*)"/u) || [])[1];
+  assert.equal(shellClass(decorated), shellClass(plain),
+  "a caller cannot give one graph a different height, padding or scrolling than the rest");
   for (const [label, html] of [["plain", plain], ["decorated", decorated]]) {
     assert.ok(html.includes("graph-shell-mount"), `${label} graph uses the shared shell`);
     assert.ok(html.includes("data-tbf-fullscreen-target"), `${label} graph gets fullscreen from the package`);

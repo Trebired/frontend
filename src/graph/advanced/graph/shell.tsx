@@ -1,7 +1,6 @@
 import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
-import { appendClassName } from "#4fte8m1x62rd";
 import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
 import { FullscreenTarget } from "#vbkfq413o3u7";
 import { frontendCssVar } from "#5vbaqj4pirp3";
@@ -116,19 +115,11 @@ function renderGraphTemplates(model: any) {
   );
 }
 
-function enhancedRootClassName(props: graph_props) {
-  const enhancedRootClass = appendClassName(
-    props.rootClassName,
-    props.bodyClassName || "",
-  );
-  return appendClassName(
-    enhancedRootClass,
-    primitiveCardClassName({
-        className: "graph-shell flex-1",
-        gap: "sm",
-        scroll: props.scroll === true,
-    }),
-  );
+function graphRootClassName() {
+  return primitiveCardClassName({
+      className: "graph-shell flex-1",
+      gap: "sm",
+  });
 }
 
 function renderGraphShell(props: graph_props, model: any) {
@@ -136,7 +127,7 @@ function renderGraphShell(props: graph_props, model: any) {
   const target = (
     <Card
     {...model.rootAttrs}
-    className={enhancedRootClassName(props)}
+    className={graphRootClassName()}
     style={{ minHeight: 0 }}
     >
     {renderGraphToolbar(props)}
