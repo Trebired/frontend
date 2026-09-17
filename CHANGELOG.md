@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.9.0
+
+- The header's sizes are fixed for every site instead of being tokens: the bar is 5rem tall, a brand logo 3.5rem, navigation links 0.875rem and menu links 1rem, the measurements machynka.cz already used. A header that reads as the same component on four sites should not be a different height on each. Colors, fonts, borders, spacing and the brand's own type size stay configurable, since a brand is a logo on one site and fluid text on another.
+
 ## 13.8.1
 
 - The mobile menu toggle is one fixed size everywhere: a 3rem button with a 2rem icon, the size machynka.cz already used. It was a per-site token, so each site could pick a different hit target for the same control; the built-in burger grew to match. Only the toggle's color and radius remain tokens.
