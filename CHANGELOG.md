@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.5.0
+
+- Added `copy_value`: an inline value with the fixed small copy button beside it, for commit hashes, URLs, fingerprints, commands and similar values inside rows and lists (`copy_card` covers the titled card). It shows the value as code by default or renders `children` (a link, a pill), and copies the text actually shown, so a value a page updates in place is copied as it currently reads. Pass `copyValue` to copy something different from what is shown, such as a full commit hash behind a short one. Without an `id`, a stable id is derived from the value so server and client markup match.
+
 ## 13.4.0
 
 - Added `copy_card`: a card with a title on the left, a fixed small copy button on the right, an optional description, and any content below. `copy_code_card` is now built on it, so both share one header layout and one button size. Pass `target` (the element to copy) and optionally `value`, `tooltip` and `description`.
