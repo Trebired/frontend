@@ -2,7 +2,7 @@ import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { appendClassName } from "#4fte8m1x62rd";
-import { InlineRow, Text, primitiveInlineRowClassName, primitiveStackClassName } from "#hzrmwbvgt2ax";
+import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
 import { FullscreenTarget } from "#vbkfq413o3u7";
 import { frontendCssVar } from "#5vbaqj4pirp3";
 
@@ -10,7 +10,7 @@ function renderGraphToolbar(props: graph_props) {
   if (!props.toolbarContent) return null;
 
   return (
-    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar padding-sm", gap: "sm", wrap: true })}>
+    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar", gap: "sm", wrap: true })}>
     {props.toolbarContent}
     </Card>
   );
@@ -123,12 +123,10 @@ function enhancedRootClassName(props: graph_props) {
   );
   return appendClassName(
     enhancedRootClass,
-    primitiveStackClassName({
-        className: appendClassName(
-          "graph-shell padding-sm flex-1",
-          props.scroll === true ? "scroll scroll-min" : "",
-        ),
+    primitiveCardClassName({
+        className: "graph-shell flex-1",
         gap: "sm",
+        scroll: props.scroll === true,
     }),
   );
 }

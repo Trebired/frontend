@@ -19,6 +19,7 @@ import {
   verifyGraphEmptyState,
   verifyGraphMountsOnBind,
   verifyGraphShellIsUniform,
+  verifyGraphTimeLabels,
   verifyNamespace,
   verifyPopover,
   verifyPopoverReactEvents,
@@ -69,6 +70,7 @@ async function verifyFrontendMain() {
   await verifyViewportCenter(context);
   await verifyGraphEmptyState(context);
   await verifyGraphShellIsUniform(context);
+  await verifyGraphTimeLabels(context);
   await verifyGraphMountsOnBind(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);

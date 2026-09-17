@@ -168,6 +168,7 @@ export {
   add_button,
   cancel_button,
   copy_button,
+  copy_card,
   copy_code_card,
   create_button,
   delete_button,
@@ -186,6 +187,7 @@ export {
 } from "#k632wzgl64a3";
 export type {
   CopyButtonProps,
+  CopyCardProps,
   CopyCodeCardProps,
   RemoveConfirmationProps,
   SaveIconButtonProps,
