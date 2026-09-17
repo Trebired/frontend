@@ -128,6 +128,7 @@ type FrontendMediaComponentsConfig = {
 };
 
 type FrontendShellComponentsConfig = {
+  bottomBar?: FrontendComponentTokens;
   header?: FrontendComponentTokens;
   language?: FrontendComponentTokens;
   sidebar?: FrontendComponentTokens;

@@ -302,6 +302,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     }),
     shell: Object.freeze({
         breadcrumb: Object.freeze({ fontSize: "14px" }),
+        bottomBar: Object.freeze({}),
         header: Object.freeze({ brand: { tag: { offsetY: "0" } } }),
         language: Object.freeze({ option: { states: { current: {} } } }),
         sidebar: Object.freeze({}),

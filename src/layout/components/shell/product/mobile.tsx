@@ -2,12 +2,9 @@ import { classNames } from "#ndsvdqv80epr";
 import {
   MobileNav,
   MobileNavCloseButton,
-  MobileNavToggleButton,
 } from "#beon2qdcbsoe";
-import {
-  MobileBottomBar,
-  MobileBottomBarItem,
-} from "#8egdy32zm0ku";
+import type { ReactNode } from "react";
+import { BottomBar, type BottomBarItem } from "#86xbht2xl19o";
 import { ShellSupportLinks } from "#4sx52pc9h7zp";
 import { productShellLabel, readProductShellState } from "./state.js";
 import type {
@@ -67,19 +64,6 @@ function ProductShellMobileNav(props: ProductShellMobileNavProps) {
   );
 }
 
-function bottomBarItem(
-  href: string,
-  label: string,
-  icon: unknown,
-  className: string | undefined,
-) {
-  return (
-    <MobileBottomBarItem className={className} href={href} icon={icon as any}>
-    {label}
-    </MobileBottomBarItem>
-  );
-}
-
 function ProductShellBottomBar(props: ProductShellBottomBarProps) {
   const {
     appIcon,
@@ -93,26 +77,25 @@ function ProductShellBottomBar(props: ProductShellBottomBarProps) {
     profileIcon,
     ...rest
   } = props;
+  const items: BottomBarItem[] = [
+    { href: appsHref, icon: appIcon as ReactNode, key: "apps", label: productShellLabel(labels, "apps") },
+    { key: "notifications", node: notifications as ReactNode },
+    { href: profileHref, icon: profileIcon as ReactNode, key: "profile", label: productShellLabel(labels, "profile") },
+    {
+      className: menuToggleClassName,
+      controls: "mobile_nav_shell",
+      icon: menuIcon as ReactNode,
+      key: "menu",
+      label: productShellLabel(labels, "menu"),
+    },
+  ];
   return (
-    <MobileBottomBar
+    <BottomBar
     {...rest}
     aria-label={props["aria-label"] || productShellLabel(labels, "mobilePrimaryNavigation")}
-    >
-    {bottomBarItem(appsHref, productShellLabel(labels, "apps"), appIcon, itemClassName)}
-    {notifications}
-    {bottomBarItem(profileHref, productShellLabel(labels, "profile"), profileIcon, itemClassName)}
-    <MobileNavToggleButton
-    aria-label={productShellLabel(labels, "menu")}
-    className={classNames(frontendElementClass("mobile-bottom-bar", "item"), itemClassName, menuToggleClassName)}
-    controls="mobile_nav_shell"
-    surface={false}
-    >
-    {menuIcon}
-    <span className={frontendElementClass("mobile-bottom-bar", "label")}>
-    {productShellLabel(labels, "menu")}
-    </span>
-    </MobileNavToggleButton>
-    </MobileBottomBar>
+    itemClassName={itemClassName}
+    items={items.filter((item) => item.key !== "notifications" || Boolean(item.node))}
+    />
   );
 }
 

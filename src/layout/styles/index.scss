@@ -1,6 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "./chrome";
 @use "./breadcrumb";
+@use "./site-header";
 
 :root {
   #{ns.css-var("layout-top-offset")}: 0px;

@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.8.0
+
+- Added `SiteHeader`, which owns a content site's whole header: the sticky bar, the brand, the desktop navigation, the actions and the mobile menu behind the toggle. Sites described their own header in markup and CSS, and their mobile menus drifted apart: two of them centred and shrank the open menu because the panel's `margin: 0 auto` let it collapse to its content, indenting the links and stranding the divider mid-row, and neither offered the language menu on a phone. The menu is now one full-width panel under the bar that lists the links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. Links are passed as data.
+- `siteHeaderRootHtml(html)` and `SITE_HEADER_ROOT_SELECTOR` wrap the server-rendered header for hydration. The wrapper is `display: contents`, so the header keeps sticking to the viewport.
+- Added `BottomBar`, the mobile bottom bar built from an `items` array: links, mobile-nav toggles, buttons and custom nodes. The bar existed only as `ProductShellBottomBar`, whose items were fixed to one product's apps, notifications, profile and menu; that component is now this one with those items.
+- Every value a site would restyle in either component is a token: `components.shell.header` (`root`, `height`, `maxWidth`, `paddingInline`, `brand`, `link`, `toggle`, `menu`, motion) and `components.shell.bottomBar` (height, background, border, radius, shadow, item colors).
+
 ## 13.7.0
 
 - Added `languageName(code)`, exported from the package root: the name of a language written in that language ("Čeština", "Deutsch"), capitalised with that language's casing rules and identical on the server and in every browser. It is what the language switcher uses, and apps with their own language menus can use it instead of hardcoding language names. It returns an empty string when the runtime cannot name the language.
