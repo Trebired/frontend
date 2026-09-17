@@ -261,7 +261,11 @@ function GraphFallbackBody(props) {
       },
       React.createElement(
         "div",
-        { className: "center" },
+        { className: "center column gap-xs" },
+        icon({
+            spec: "remixicon error-warning-line",
+            style: { fontSize: "40px", lineHeight: 1 },
+        }),
         React.createElement(
           "span",
           { className: primitiveTextClassName({ muted: true, size: "sm" }) },

@@ -2,6 +2,7 @@ export {
   default as createGraphRuntime,
   createGraphRoot,
   createGraphRoot as createServerGraphRoot,
+  mountGraphCards,
 } from "./boot.js";
 export { GraphCard } from "./card.js";
 export { GraphCardFrame, GraphErrorBoundary, GraphFrameFallback } from "./render.js";

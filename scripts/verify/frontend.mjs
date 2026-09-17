@@ -17,6 +17,8 @@ import { verifyProgressRequests } from "./frontend/progress.mjs";
 import { verifySidebar } from "./frontend/sidebar.mjs";
 import {
   verifyGraphEmptyState,
+  verifyGraphMountsOnBind,
+  verifyGraphShellIsUniform,
   verifyNamespace,
   verifyPopover,
   verifyPopoverReactEvents,
@@ -66,6 +68,8 @@ async function verifyFrontendMain() {
   await verifyPopoverReactEvents(context);
   await verifyViewportCenter(context);
   await verifyGraphEmptyState(context);
+  await verifyGraphShellIsUniform(context);
+  await verifyGraphMountsOnBind(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);
   await verifyModal();

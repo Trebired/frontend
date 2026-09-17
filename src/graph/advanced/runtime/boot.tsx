@@ -10,11 +10,10 @@ function readGraphBootData(bootId) {
   if (!key || typeof document === "undefined") return null;
   const element = document.getElementById(key);
   if (!element) return null;
+  const content = (element as HTMLTemplateElement).content;
   const raw =
-  element instanceof HTMLTemplateElement
-  ? element.content && typeof element.content.textContent === "string"
-  ? element.content.textContent
-  : element.textContent
+  content && typeof content.textContent === "string"
+  ? content.textContent
   : element.textContent;
   return parseJsonText(raw || "", null);
 }
@@ -179,6 +178,8 @@ function createGraphController(boot, mountEl) {
   };
 }
 
+const controllersByMount = new WeakMap<HTMLElement, any>();
+
 export function createGraphRoot(bootId) {
   const bootInfo = resolveGraphBoot(bootId);
   if (!bootInfo.boot || !bootInfo.boot.id) {
@@ -192,12 +193,35 @@ export function createGraphRoot(bootId) {
     return null;
   }
 
+  const existing = controllersByMount.get(mountInfo.mountEl);
+  if (existing) return existing;
+
   logRootCreated(bootId, bootInfo.inputId, bootInfo.boot, mountInfo.mountEl);
-  return createGraphController(bootInfo.boot, mountInfo.mountEl);
+  const controller = createGraphController(bootInfo.boot, mountInfo.mountEl);
+  controllersByMount.set(mountInfo.mountEl, controller);
+  return controller;
+}
+
+export function mountGraphCards(root: ParentNode | Document = document) {
+  const scope =
+  root && typeof (root as ParentNode).querySelectorAll === "function"
+  ? (root as ParentNode)
+  : document;
+  const mounts = Array.from(
+    scope.querySelectorAll<HTMLElement>("[id$=\"_mount\"].graph-shell-mount"),
+  );
+  let mounted = 0;
+  for (const mountEl of mounts) {
+    if (controllersByMount.has(mountEl)) continue;
+    const graphId = String(mountEl.id || "").replace(/_mount$/u, "");
+    if (graphId && createGraphRoot(graphId)) mounted += 1;
+  }
+  return mounted;
 }
 
 const graph = Object.freeze({
     createGraphRoot,
+    mountGraphCards,
 });
 
 export default graph;

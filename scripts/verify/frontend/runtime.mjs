@@ -187,19 +187,54 @@ async function verifyGraphEmptyState(context) {
   const react = await context.importDist("react");
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement } = await import("react");
-  const empty = renderToStaticMarkup(createElement(react.cpu_graph, {
-        datasets: [],
-        id: "empty_graph",
-        state: "empty",
-        stateMessage: "No samples recorded yet.",
-  }));
-  assert.ok(empty.includes('"state":"empty"'), "an empty graph keeps its state in the boot payload");
-  assert.ok(empty.includes("No samples recorded yet."), "an empty graph carries its message for the reader");
+  const empty = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "empty_graph" }));
+  assert.ok(empty.includes('"state":"empty"'), "a graph with no data marks itself empty without the caller asking");
+  assert.ok(empty.includes("No data yet."), "an empty graph explains itself");
+  assert.ok(empty.includes("line-chart-line"), "an empty graph shows an icon instead of a blank canvas");
   const filled = renderToStaticMarkup(createElement(react.cpu_graph, {
         datasets: [{ label: "cpu", points: [{ label: "now", value: 12 }] }],
         id: "filled_graph",
   }));
   assert.ok(!filled.includes('"state":"empty"'), "a graph with data is not marked empty");
+  const custom = renderToStaticMarkup(createElement(react.cpu_graph, {
+        datasets: [], id: "custom_graph", state: "empty", stateMessage: "No samples recorded yet.",
+  }));
+  assert.ok(custom.includes("No samples recorded yet."), "an explicit message still wins");
+}
+
+async function verifyGraphShellIsUniform(context) {
+  const react = await context.importDist("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const plain = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "plain_graph" }));
+  const decorated = renderToStaticMarkup(createElement(react.cpu_graph, {
+        datasets: [], id: "decorated_graph", rootClassName: "height-xl", scroll: true,
+  }));
+  for (const [label, html] of [["plain", plain], ["decorated", decorated]]) {
+    assert.ok(html.includes("graph-shell-mount"), `${label} graph uses the shared shell`);
+    assert.ok(html.includes("canvas-panel-toolbar"), `${label} graph renders the same toolbar row`);
+    assert.ok(html.includes("data-tbf-fullscreen-target"), `${label} graph gets fullscreen from the package`);
+  }
+  const optedOut = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "no_fs_graph", extendId: false }));
+  assert.ok(!optedOut.includes("data-tbf-fullscreen-target"), "fullscreen can still be turned off");
+}
+
+async function verifyGraphMountsOnBind(context) {
+  const react = await context.importDist("react");
+  const root = await context.importDistRoot();
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  document.body.innerHTML = renderToStaticMarkup(createElement(react.cpu_graph, {
+        datasets: [{ label: "cpu", points: [{ label: "now", value: 5 }] }],
+        id: "soft_nav_graph",
+  }));
+  const mount = document.getElementById("soft_nav_graph_mount");
+  assert.ok(mount, "the graph mount is present in server markup");
+  assert.equal(mount.getAttribute("data-graph-root"), null, "nothing is mounted before binding");
+  const mounted = root.mountGraphCards(document);
+  assert.ok(mounted >= 1, "binding mounts graph cards that a soft navigation brought in");
+  assert.equal(root.mountGraphCards(document), 0, "already mounted graphs are not mounted twice");
+  document.body.innerHTML = "";
 }
 
 async function verifyViewportCenter(context) {
@@ -226,4 +261,12 @@ async function verifyViewportCenter(context) {
 }
 
 export {
-  verifyGraphEmptyState, verifyPopoverReactEvents, verifyNamespace, verifyPopover, verifyViewportCenter, verifyWizard };
+  verifyGraphEmptyState,
+  verifyGraphMountsOnBind,
+  verifyGraphShellIsUniform,
+  verifyNamespace,
+  verifyPopover,
+  verifyPopoverReactEvents,
+  verifyViewportCenter,
+  verifyWizard,
+};

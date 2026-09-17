@@ -5,6 +5,34 @@ import { truthyArray } from "#4fte8m1x62rd";
 import dropdown from "#79y0zfcyhzga";
 import type { graph_props, dataset, legend_item, point } from "./types.js";
 
+function graphHasData(props: graph_props) {
+  if (truthyArray(props.points).length) return true;
+  return truthyArray<dataset>(props.datasets).some(
+    (entry) => truthyArray(entry && (entry as any).points).length > 0,
+  );
+}
+
+function resolvedGraphState(props: graph_props, isLoading: boolean) {
+  const explicit = toString(props.state);
+  if (explicit) return explicit;
+  if (isLoading) return "loading";
+  return graphHasData(props) ? "ok" : "empty";
+}
+
+function defaultGraphStateIcon(state: string) {
+  if (state === "empty") return "remixicon line-chart-line";
+  return "remixicon error-warning-line";
+}
+
+function resolvedGraphStateMessage(props: graph_props, isLoading: boolean) {
+  const explicit = toString(props.stateMessage, toString(props.description));
+  if (explicit) return explicit;
+  const localT = createLocalTranslator(import.meta.url, props.lang);
+  return resolvedGraphState(props, isLoading) === "empty"
+  ? localT("empty.noData")
+  : "";
+}
+
 function toGraphId(value: unknown) {
   const raw = toString(value);
   return raw || `graph_${Math.random().toString(36).slice(2, 10)}`;
@@ -137,12 +165,12 @@ function readGraphModel(props: graph_props) {
     lang: props.lang,
     legendItems: truthyArray<legend_item>(props.legend),
     pointItems: truthyArray<point>(props.points),
-    resolvedState: toString(props.state, isLoading ? "loading" : "ok"),
+    resolvedState: resolvedGraphState(props, isLoading),
     resolvedStateIcon: toString(
       props.stateIcon,
-      "remixicon error-warning-line",
+      defaultGraphStateIcon(resolvedGraphState(props, isLoading)),
     ),
-    resolvedStateMessage: toString(props.stateMessage, toString(props.description)),
+    resolvedStateMessage: resolvedGraphStateMessage(props, isLoading),
     resolvedStateTone: toString(props.stateTone),
     rightDetails: Array.isArray(props.rightDetails) ? props.rightDetails : [],
     rootAttrs:
