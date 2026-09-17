@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.6.0
+
+- `copy_card` titles render as an `h3`, matching other cards, instead of a small label.
+- `copy_card` takes `rows` (the standard key/value rows) and renders them itself. Its copy button then copies those rows as `Label: value` lines, read from the page at the moment of the click, so values a page updates live are copied as currently shown; rows hidden inside the card are skipped. `emptyText` is shown when `rows` is an empty array, and the copy button is left out when there is nothing to copy.
+- `copy_card` also takes `actions` (extra header content beside the copy button), `intro` (content above the rows) and `id`, which now names the card itself; its rows container derives `<id>_rows`.
+- Key/value rows carry `data-tbf-key-value-row`, `data-tbf-key-value-label` and `data-tbf-key-value-value` markers. Copy buttons whose target has `data-tbf-copy-mode="rows"` read them.
+- The copy components moved into their own module; imports from `@trebired/frontend/react` are unchanged.
+
 ## 13.5.0
 
 - Added `copy_value`: an inline value with the fixed small copy button beside it, for commit hashes, URLs, fingerprints, commands and similar values inside rows and lists (`copy_card` covers the titled card). It shows the value as code by default or renders `children` (a link, a pill), and copies the text actually shown, so a value a page updates in place is copied as it currently reads. Pass `copyValue` to copy something different from what is shown, such as a full commit hash behind a short one. Without an `id`, a stable id is derived from the value so server and client markup match.

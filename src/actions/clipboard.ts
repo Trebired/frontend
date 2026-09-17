@@ -24,8 +24,28 @@ function normalizeClipboardText(value: unknown) {
   .trim();
 }
 
+function readKeyValueRows(target: Element) {
+  return Array.from(target.querySelectorAll(frontendDataSelector("key-value-row")))
+  .filter((row) => {
+      const hidden = row.closest("[hidden]");
+      return !hidden || !target.contains(hidden);
+  })
+  .map((row) => {
+      const label = normalizeClipboardText(
+        row.querySelector(frontendDataSelector("key-value-label"))?.textContent,
+      ).replace(/:\s*$/u, "");
+      const value = normalizeClipboardText(
+        row.querySelector(frontendDataSelector("key-value-value"))?.textContent,
+      ).replace(/\s+/gu, " ");
+      return label ? `${label}: ${value}` : value;
+  })
+  .filter(Boolean)
+  .join("\n");
+}
+
 function readTargetValue(target: Element | null) {
   if (!target) return "";
+  if (target.getAttribute(frontendDataAttr("copy-mode")) === "rows") return readKeyValueRows(target);
   if (
     target instanceof HTMLInputElement ||
       target instanceof HTMLTextAreaElement ||
