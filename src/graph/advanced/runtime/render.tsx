@@ -3,6 +3,7 @@ import { createLocalTranslator, icon } from "#4fte8m1x62rd";
 import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
 import { graphUnitLabel } from "./units.js";
 import { resolveCanvasColor } from "./utils.js";
+import { GraphFullscreenControl } from "./fullscreen_control.js";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import {
   primitiveGridClassName,
@@ -20,7 +21,7 @@ const GRAPH_FRAME_CHROME_CLASS = "radius-md border";
 function graphFrameClassName() {
   return [
     GRAPH_FRAME_CLASS,
-    primitivePaddingClass("xs"),
+    primitivePaddingClass("sm"),
     GRAPH_FRAME_CHROME_CLASS,
   ].join(" ");
 }
@@ -30,7 +31,7 @@ function GraphTitle(props) {
 
   return React.createElement(
     "div",
-    { className: primitiveInlineRowClassName({ gap: "xs", verticalCenter: true, wrap: true }) },
+    { className: primitiveInlineRowClassName({ gap: "sm", verticalCenter: true, wrap: true }) },
     React.createElement("h4", null, props.title),
     typeof props.subtitle === "string" && props.subtitle.trim()
     ? React.createElement(
@@ -62,19 +63,23 @@ function GraphUnitControls(props) {
 }
 
 function GraphHeader(props) {
-  if (!props.title) return null;
+  if (!props.title && !props.fullscreen_id) return null;
 
   return React.createElement(
     "div",
-    { className: primitiveInlineRowClassName({ gap: "sm" }) },
+    { className: primitiveInlineRowClassName({ gap: "sm", verticalCenter: true }) },
     React.createElement(GraphTitle, props),
     React.createElement(
       "div",
       { className: "right" },
       React.createElement(
         "div",
-        { className: primitiveInlineRowClassName({ gap: "xs", verticalCenter: true, wrap: true }) },
+        { className: primitiveInlineRowClassName({ fit: true, gap: "sm", noShrink: true, noStretch: true, verticalCenter: true }) },
         React.createElement(GraphUnitControls, props),
+        React.createElement(GraphFullscreenControl, {
+            fullscreenGroup: props.fullscreen_group,
+            fullscreenId: props.fullscreen_id,
+        }),
       ),
     ),
   );
@@ -119,7 +124,7 @@ function GraphWarning(props) {
     },
     React.createElement(
       "div",
-      { className: "center column gap-xs" },
+      { className: "center column gap-sm" },
       icon({
           spec: props.stateIcon,
           style: {
@@ -194,7 +199,7 @@ function GraphLegendView(props) {
           className: primitiveInlineRowClassName({
               className: primitiveTextClassName({ muted: true, size: "sm" }),
               fit: true,
-              gap: "xs",
+              gap: "sm",
           }),
         },
         React.createElement("span", {
@@ -223,7 +228,7 @@ function GraphCardFrame(props) {
     {
       className: primitiveStackClassName({
           className: GRAPH_CARD_ROOT_CLASS,
-          gap: "xs",
+          gap: "sm",
       }),
       ref: props.rootRef,
       "data-graph-root": props.graphId || "",
@@ -261,7 +266,7 @@ function GraphFallbackBody(props) {
       },
       React.createElement(
         "div",
-        { className: "center column gap-xs" },
+        { className: "center column gap-sm" },
         icon({
             spec: "remixicon error-warning-line",
             style: { fontSize: "40px", lineHeight: 1 },
@@ -282,7 +287,7 @@ function GraphFrameFallback(props) {
     {
       className: primitiveStackClassName({
           className: GRAPH_CARD_ROOT_CLASS,
-          gap: "xs",
+          gap: "sm",
       }),
     },
     React.createElement(GraphHeader, props),

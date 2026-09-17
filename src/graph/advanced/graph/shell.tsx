@@ -1,84 +1,17 @@
-import { Card, createLocalTranslator, icon } from "#4fte8m1x62rd";
+import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { appendClassName } from "#4fte8m1x62rd";
-import {
-  InlineRow,
-  Text,
-  primitiveButtonClassName,
-  primitiveInlineRowClassName,
-  primitiveStackClassName,
-} from "#hzrmwbvgt2ax";
-import {
-  FullscreenCloseButton,
-  FullscreenOpenButton,
-  FullscreenTarget,
-} from "#vbkfq413o3u7";
-import { frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
-
-function graphFullscreenButton(
-  props: graph_props,
-  mode: "open" | "close",
-  label: string,
-) {
-  const iconSpec =
-  mode === "open"
-  ? "remixicon fullscreen-line"
-  : "remixicon fullscreen-exit-line";
-  const commonProps = {
-    title: label,
-    "aria-label": label,
-    fullscreenId: String(props.extendId || ""),
-    group: String(props.extendGroup || "default"),
-    className: primitiveButtonClassName({ icon: true, size: "md", tooltip: true }),
-  };
-
-  return mode === "close" ? (
-    <FullscreenCloseButton
-    {...commonProps}
-    {...frontendDataAttrs({ "fullscreen-hidden": "true" })}
-    >
-    {icon({ spec: iconSpec })}
-    </FullscreenCloseButton>
-  ) : (
-    <FullscreenOpenButton {...commonProps}>
-    {icon({ spec: iconSpec })}
-    </FullscreenOpenButton>
-  );
-}
-
-function graphFullscreenActions(
-  props: graph_props,
-  t: ReturnType<typeof createLocalTranslator>,
-) {
-  return (
-    <div className="right">
-    <InlineRow gap="xs">
-    {graphFullscreenButton(props, "open", t("display.fullscreen"))}
-    {graphFullscreenButton(props, "close", t("display.exitFullscreen"))}
-    </InlineRow>
-    </div>
-  );
-}
+import { InlineRow, Text, primitiveInlineRowClassName, primitiveStackClassName } from "#hzrmwbvgt2ax";
+import { FullscreenTarget } from "#vbkfq413o3u7";
+import { frontendCssVar } from "#5vbaqj4pirp3";
 
 function renderGraphToolbar(props: graph_props) {
-  const localT = createLocalTranslator(import.meta.url, props.lang);
-  const hasFullscreen = Boolean(props.extendId && props.extendGroup);
-  if (!props.toolbarContent && !hasFullscreen) return null;
-  const actions = hasFullscreen ? graphFullscreenActions(props, localT) : null;
-
-  if (!props.toolbarContent) {
-    return (
-      <InlineRow className="canvas-panel-toolbar" gap="sm" wrap>
-      {actions}
-      </InlineRow>
-    );
-  }
+  if (!props.toolbarContent) return null;
 
   return (
-    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar padding-xs", gap: "sm", wrap: true })}>
+    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar padding-sm", gap: "sm", wrap: true })}>
     {props.toolbarContent}
-    {actions}
     </Card>
   );
 }
@@ -104,7 +37,7 @@ function graphShellStateOverlay(model: any) {
           color: stateOverlayColor(model),
       }}
       >
-      <div className="center column gap-xs">
+      <div className="center column gap-sm">
       {icon({
             spec: model.resolvedStateIcon,
             style: {
@@ -141,7 +74,7 @@ function renderGraphCanvas(model: any, mountClassName = "") {
   return (
     <div id={`${model.graphId}_mount`} className={mountClassName}>
     <div
-    className="bg-canvas padding-xs radius-md border"
+    className="bg-canvas padding-sm radius-md border"
     style={{
         height: "220px",
         position: "relative",
@@ -183,14 +116,6 @@ function renderGraphTemplates(model: any) {
   );
 }
 
-function graphFullscreenIds(props: graph_props, model: any) {
-  if (props.extendId === false) return { group: "", id: "" };
-  return {
-    group: String(props.extendGroup || "graphs"),
-    id: String(props.extendId || `${model.graphId}_fullscreen`),
-  };
-}
-
 function enhancedRootClassName(props: graph_props) {
   const enhancedRootClass = appendClassName(
     props.rootClassName,
@@ -200,7 +125,7 @@ function enhancedRootClassName(props: graph_props) {
     enhancedRootClass,
     primitiveStackClassName({
         className: appendClassName(
-          "graph-shell padding-xs flex-1",
+          "graph-shell padding-sm flex-1",
           props.scroll === true ? "scroll scroll-min" : "",
         ),
         gap: "sm",
@@ -209,14 +134,14 @@ function enhancedRootClassName(props: graph_props) {
 }
 
 function renderGraphShell(props: graph_props, model: any) {
-  const fullscreen = graphFullscreenIds(props, model);
+  const fullscreen = { group: model.fullscreenGroup, id: model.fullscreenId };
   const target = (
     <Card
     {...model.rootAttrs}
     className={enhancedRootClassName(props)}
     style={{ minHeight: 0 }}
     >
-    {renderGraphToolbar({ ...props, ...fullscreenToolbarProps(fullscreen) })}
+    {renderGraphToolbar(props)}
     {renderGraphCanvas(model, "graph-shell-mount")}
     {renderGraphDetails(model)}
     </Card>
@@ -233,10 +158,6 @@ function renderGraphShell(props: graph_props, model: any) {
     {renderGraphTemplates(model)}
     </>
   );
-}
-
-function fullscreenToolbarProps(fullscreen: { group: string; id: string }) {
-  return { extendGroup: fullscreen.group, extendId: fullscreen.id };
 }
 
 export { renderGraphShell };

@@ -212,8 +212,10 @@ async function verifyGraphShellIsUniform(context) {
   }));
   for (const [label, html] of [["plain", plain], ["decorated", decorated]]) {
     assert.ok(html.includes("graph-shell-mount"), `${label} graph uses the shared shell`);
-    assert.ok(html.includes("canvas-panel-toolbar"), `${label} graph renders the same toolbar row`);
     assert.ok(html.includes("data-tbf-fullscreen-target"), `${label} graph gets fullscreen from the package`);
+    assert.ok(html.includes('"fullscreen_id":'), `${label} graph hands its fullscreen id to the title row`);
+    assert.ok(!html.includes("canvas-panel-toolbar"), `${label} graph has no separate fullscreen strip`);
+    assert.ok(!/\b(padding|gap)-xs\b/u.test(html), `${label} graph spaces with sm, not xs`);
   }
   const optedOut = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "no_fs_graph", extendId: false }));
   assert.ok(!optedOut.includes("data-tbf-fullscreen-target"), "fullscreen can still be turned off");

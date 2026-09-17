@@ -112,6 +112,8 @@ function GraphCard(props) {
       ...frameState(props, state.modalWaiting),
       canvasRef: state.chart.canvasRef,
       frameRef: state.chart.frameRef,
+      fullscreen_group: props.fullscreen_group,
+      fullscreen_id: props.fullscreen_id,
       graphId: props.id || "",
       graphType: props.type || "",
       legendItems: Array.isArray(props.legend) ? props.legend : [],
