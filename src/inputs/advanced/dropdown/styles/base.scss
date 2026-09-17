@@ -102,6 +102,23 @@
     content: "";
   }
 
+  &.dropdown-fit {
+    width: fit-content;
+    min-width: 0;
+
+    &::before {
+      position: absolute;
+      inset: 0;
+    }
+
+    [data-dropdown-label] {
+      position: relative;
+      inset: auto;
+      width: max-content;
+      padding-right: var(--dd-arrow-space);
+    }
+  }
+
   [data-dropdown-label] {
     position: absolute;
     inset: 0 var(--dd-arrow-space) 0 0;

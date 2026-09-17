@@ -83,7 +83,7 @@ function renderUnitDropdown(model: any) {
       value: model.defaultUnitScale,
       options: model.unitOptions,
       placeholder: localT("fields.unit"),
-      className: "",
+      className: "dropdown-fit",
       wrapperClassName: "",
       hideChecks: true,
       rootProps: { "data-graph-unit-dropdown": model.graphId },
