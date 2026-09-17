@@ -223,14 +223,16 @@ async function verifyGraphShellIsUniform(context) {
   "a caller cannot give one graph a different height, padding or scrolling than the rest");
   for (const [label, html] of [["plain", plain], ["decorated", decorated]]) {
     assert.ok(html.includes("graph-shell-mount"), `${label} graph uses the shared shell`);
-    assert.ok(html.includes("data-tbf-fullscreen-target"), `${label} graph gets fullscreen from the package`);
-    assert.ok(html.includes('"fullscreen_id":'), `${label} graph hands its fullscreen id to the title row`);
-    assert.ok(!html.includes("canvas-panel-toolbar"), `${label} graph has no separate fullscreen strip`);
+    assert.ok(!html.includes("fullscreen"), `${label} graph offers no fullscreen control`);
+    assert.ok(!html.includes("canvas-panel-toolbar"), `${label} graph has no toolbar strip`);
     assert.ok(!/\b(padding|gap)-xs\b/u.test(html), `${label} graph spaces with sm, not xs`);
     assert.ok(!/class="[^"]*graph-shell[^"]*padding-/u.test(html), `${label} graph card relies on the card's own padding`);
   }
-  const optedOut = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "no_fs_graph", extendId: false }));
-  assert.ok(!optedOut.includes("data-tbf-fullscreen-target"), "fullscreen can still be turned off");
+  const unit = renderToStaticMarkup(createElement(react.download_graph, { datasets: [], id: "unit_graph" }));
+  assert.ok(!unit.includes("fullscreen"), "a unit graph offers no fullscreen control either");
+  const runtime = await fs.readFile(path.join(context.distDir, "graph", "advanced", "runtime", "render.js"), "utf8");
+  assert.ok(!runtime.includes("width-xs2"), "the unit dropdown is not squeezed into a fixed width");
+  assert.ok(runtime.includes('className: "width-fit"'), "the unit dropdown is as wide as the unit it shows");
 }
 
 async function verifyGraphTimeLabels(context) {

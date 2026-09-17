@@ -2,7 +2,6 @@ import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
-import { FullscreenTarget } from "#vbkfq413o3u7";
 import { frontendCssVar } from "#5vbaqj4pirp3";
 
 function renderGraphToolbar(props: graph_props) {
@@ -123,7 +122,6 @@ function graphRootClassName() {
 }
 
 function renderGraphShell(props: graph_props, model: any) {
-  const fullscreen = { group: model.fullscreenGroup, id: model.fullscreenId };
   const target = (
     <Card
     {...model.rootAttrs}
@@ -135,15 +133,9 @@ function renderGraphShell(props: graph_props, model: any) {
     {renderGraphDetails(model)}
     </Card>
   );
-  const content = fullscreen.id ? (
-    <FullscreenTarget fullscreenId={fullscreen.id} group={fullscreen.group}>
-    {target}
-    </FullscreenTarget>
-  ) : target;
-
   return (
     <>
-    {content}
+    {target}
     {renderGraphTemplates(model)}
     </>
   );

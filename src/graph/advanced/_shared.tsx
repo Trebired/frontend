@@ -28,8 +28,6 @@ const messages: Record<string, string> = {
   "contributionCommitsOnDate": "{count} contributions on {date}",
   "contributionRepoCount": "{count} repository",
   "contributionReposCount": "{count} repositories",
-  "display.exitFullscreen": "Exit fullscreen",
-  "display.fullscreen": "Fullscreen",
   "empty.noContributions": "No contributions yet.",
   "empty.noData": "No data yet.",
   "feedback.graphUnavailable": "Graph unavailable.",

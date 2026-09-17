@@ -3,7 +3,6 @@ import { createLocalTranslator, icon } from "#4fte8m1x62rd";
 import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
 import { graphUnitLabel } from "./units.js";
 import { resolveCanvasColor } from "./utils.js";
-import { GraphFullscreenControl } from "./fullscreen_control.js";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import {
   primitiveGridClassName,
@@ -47,7 +46,7 @@ function GraphUnitControls(props) {
   if (props.unitSelectable) {
     return React.createElement("div", {
         ref: props.unitDropdownRef,
-        className: "width-xs2",
+        className: "width-fit",
     });
   }
 
@@ -63,7 +62,7 @@ function GraphUnitControls(props) {
 }
 
 function GraphHeader(props) {
-  if (!props.title && !props.fullscreen_id) return null;
+  if (!props.title && !props.unitSelectable && !props.unitMeasurement) return null;
 
   return React.createElement(
     "div",
@@ -76,10 +75,6 @@ function GraphHeader(props) {
         "div",
         { className: primitiveInlineRowClassName({ fit: true, gap: "sm", noShrink: true, noStretch: true, verticalCenter: true }) },
         React.createElement(GraphUnitControls, props),
-        React.createElement(GraphFullscreenControl, {
-            fullscreenGroup: props.fullscreen_group,
-            fullscreenId: props.fullscreen_id,
-        }),
       ),
     ),
   );
