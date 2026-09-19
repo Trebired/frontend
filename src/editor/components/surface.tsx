@@ -19,6 +19,7 @@ import {
 } from "#vbkfq413o3u7";
 import type { EditorBodyProps, EditorLabels, EditorSurfaceProps } from "./types.js";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { Title } from "#7ly3b59upz0n";
 
 const EDITOR_FULLSCREEN_GROUP = "editor_surface";
 const EDITOR_EXTEND_ID = "editor_surface_panel";
@@ -230,7 +231,7 @@ function editorHeader(state: ReturnType<typeof readSurfaceState>) {
       layout: "none",
       children: (
         <>
-        <h3>{state.title}</h3>
+        <Title>{state.title}</Title>
         <div className="right">
         <InlineRow gap="xs">
         {state.actions}

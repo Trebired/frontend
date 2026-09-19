@@ -267,7 +267,7 @@ function createModal(options: {
   content.className = frontendElementClass("modal", "content");
   content.setAttribute(frontendDataAttr("modal-content"), "");
   if (options.title) {
-    const title = document.createElement("h2");
+    const title = document.createElement("h3");
     title.textContent = options.title;
     content.appendChild(title);
   }

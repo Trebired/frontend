@@ -10,6 +10,7 @@ import {
   type PrimitiveTextClassOptions,
   type PrimitiveTextSize,
 } from "./classes.js";
+import { HeadingScope, Title } from "#7ly3b59upz0n";
 
 type StackProps = HTMLAttributes<HTMLDivElement> &
 Omit<PrimitiveStackClassOptions, "className">;
@@ -112,13 +113,12 @@ function Text(props: TextProps) {
 }
 
 function TitleDescription(props: TitleDescriptionProps) {
-  const { children, className, description, descriptionSize, gap = "sm", level = 3, title, ...rest } = props;
-  const Heading = `h${level}` as "h2" | "h3" | "h4";
+  const { children, className, description, descriptionSize, gap = "sm", level, title, ...rest } = props;
   return (
     <Stack {...rest} className={className} gap={gap}>
-    <Heading>{title}</Heading>
+    <Title level={level}>{title}</Title>
     {description ? <Text as="p" muted size={descriptionSize}>{description}</Text> : null}
-    {children}
+    {children ? <HeadingScope>{children}</HeadingScope> : null}
     </Stack>
   );
 }

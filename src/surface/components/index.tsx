@@ -7,6 +7,7 @@ import { classNames } from "#ndsvdqv80epr";
 import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { HeadingScope } from "#7ly3b59upz0n";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: SurfaceSize;
@@ -51,7 +52,7 @@ function Card(props: CardProps) {
     {...frontendDataAttrs({ "card": "" })}
     {...frontendDataAttrs({ "interactive": interactive ? "true" : undefined })}
     >
-    {children}
+    <HeadingScope>{children}</HeadingScope>
     </div>
   );
 }

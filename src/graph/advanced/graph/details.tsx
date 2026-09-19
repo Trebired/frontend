@@ -1,3 +1,4 @@
+import { HeadingScope, Title } from "#7ly3b59upz0n";
 import { toString } from "#4fte8m1x62rd";
 import type { key_value_group, key_value_row } from "./types.js";
 import {
@@ -71,7 +72,7 @@ function renderGroupedDetails(groups: key_value_group[]) {
           className={primitiveCardClassName({ gap: "sm" })}
           key={`graph_group_${group.title || "group"}_${groupIndex}`}
           >
-          {group.title ? <h4>{group.title}</h4> : null}
+          {group.title ? <HeadingScope><Title>{group.title}</Title></HeadingScope> : null}
           <Grid gap="sm">
           {group.rows.map((row, rowIndex) => (
                 <Stack

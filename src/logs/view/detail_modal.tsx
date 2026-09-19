@@ -8,6 +8,7 @@ import {
   card,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
+import { Title } from "#7ly3b59upz0n";
 
 function copyAction(target: string, title: string, tooltip: string) {
   return copy_button({
@@ -46,7 +47,7 @@ function detailTitle(model: any) {
   return (
     <Stack className="title-desc" gap="sm">
     <InlineRow gap="sm">
-    <h3>{model.t("logEntry")}</h3>
+    <Title>{model.t("logEntry")}</Title>
     <div className="right">
     {copyAction(
         `#${model.ids.detailRaw}`,

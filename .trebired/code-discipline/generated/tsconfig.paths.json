@@ -394,6 +394,9 @@
       "#7k5l8ya2kc7a": [
         "../../../src/flash/components/index.tsx"
       ],
+      "#7ly3b59upz0n": [
+        "../../../src/heading/index.tsx"
+      ],
       "#7pos3jago314": [
         "../../../src/layout/styles/breadcrumb.scss"
       ],
@@ -1443,6 +1446,9 @@
       ],
       "#skdjg5ik9dpu": [
         "../../../src/logs/view/model.ts"
+      ],
+      "#swfduhum0kob": [
+        "../../../scripts/verify/frontend/headings.mjs"
       ],
       "#sxnylgdztq2x": [
         "../../../src/actions/response.ts"

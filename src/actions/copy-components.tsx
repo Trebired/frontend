@@ -9,6 +9,7 @@ import { key_value } from "#kkjo6xogukzx";
 import type { key_value_row } from "#xb7hv37sq5h5";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
 import { copy_button } from "./standard-buttons.js";
+import { HeadingScope, Title, type HeadingLevel } from "#7ly3b59upz0n";
 
 type CopyCardTitleLevel = "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -68,13 +69,9 @@ function copyCardRowsId(props: CopyCardProps) {
   return stableId("copy_card", (props.rows || []).map((row) => String((row && row.label) || "")).join("|"));
 }
 
-const COPY_CARD_TITLE_LEVELS: CopyCardTitleLevel[] = ["h2", "h3", "h4", "h5", "h6"];
-
 function copyCardTitle(props: CopyCardProps) {
-  const Heading = COPY_CARD_TITLE_LEVELS.includes(props.titleAs as CopyCardTitleLevel)
-  ? props.titleAs as CopyCardTitleLevel
-  : "h3";
-  return <Heading>{props.title}</Heading>;
+  const override = /^h[2-6]$/u.test(String(props.titleAs || "")) ? Number(String(props.titleAs).slice(1)) as HeadingLevel : undefined;
+  return <Title level={override}>{props.title}</Title>;
 }
 
 function copyCardHeader(props: CopyCardProps, target: string) {
@@ -122,12 +119,15 @@ function copy_card(props: CopyCardProps) {
     <div
     className={primitiveCardClassName({ className: props.className, gap: "sm" })}
     {...(props.id ? { id: props.id } : {})}
+    {...frontendDataAttrs({ "card": "" })}
     >
+    <HeadingScope>
     {copyCardHeader(props, target)}
     {props.description ? <p className={primitiveTextClassName({ muted: true })}>{props.description}</p> : null}
     {props.intro}
     {copyCardRows(props, rowsId)}
     {props.children}
+    </HeadingScope>
     </div>
   );
 }

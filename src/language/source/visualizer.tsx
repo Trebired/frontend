@@ -21,6 +21,7 @@ import {
 import { source_language_tabs_content } from "./tabs.js";
 import type { SourceLanguageVisualizerProps } from "#2w72xmq6rvza";
 import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { Title } from "#7ly3b59upz0n";
 
 function headerCard(model: SourceLanguageScanModel) {
   return card({
@@ -28,7 +29,7 @@ function headerCard(model: SourceLanguageScanModel) {
       layout: "none",
       children: (
         <>
-        <h3>{translate(model.lang, "languages")}</h3>
+        <Title>{translate(model.lang, "languages")}</Title>
         {button({
               type: "button",
               [frontendDataAttr("source-language-reset")]: "",

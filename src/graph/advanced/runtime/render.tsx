@@ -31,7 +31,7 @@ function GraphTitle(props) {
   return React.createElement(
     "div",
     { className: primitiveInlineRowClassName({ gap: "sm", verticalCenter: true, wrap: true }) },
-    React.createElement("h4", null, props.title),
+    React.createElement(`h${Math.min(6, Math.max(2, Number(props.titleLevel) || 3))}`, null, props.title),
     typeof props.subtitle === "string" && props.subtitle.trim()
     ? React.createElement(
       "span",

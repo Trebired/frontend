@@ -2,6 +2,7 @@ import { createElement, Fragment, type ReactNode } from "react";
 import { Stack, Text, card } from "#hzrmwbvgt2ax";
 import search, { search_panel } from "#xkgew618b00p";
 import { toText as text } from "#ndsvdqv80epr";
+import { Title } from "#7ly3b59upz0n";
 
 type EntityListLive = {
   event?: string;
@@ -38,7 +39,7 @@ function listHeader<T>(props: EntityListProps<T>) {
   if (!props.title && !props.description) return null;
   return (
     <>
-    {props.title ? <h3>{props.title}</h3> : null}
+    {props.title ? <Title>{props.title}</Title> : null}
     {props.description ? <Text as="p" muted>{props.description}</Text> : null}
     </>
   );

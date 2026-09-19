@@ -90,6 +90,12 @@ Runtime components that submit HTTP actions, expect data-attribute request/respo
 
 The React entrypoint renders package-owned document, layout, header, sidebar, portal, upload, tabs, tooltip, popover, modal, fullscreen, flash, text-link, language, and theme controls. The markup is generic and configured through `.trebired/frontend/config.ts`.
 
+### Headings
+
+Heading levels come from where a heading sits, not from the call site. Render titles with `Title`, never a hand-written `<h3>`. A heading outside any card is `h3`, a card's own title is `h3`, and every card nested inside another adds one level: a card inside a card is `h4`, one more is `h5`. A modal starts over: its title is `h3` and a card inside it is `h4`. `copy_card`, `copy_code_card`, graph cards and `TitleDescription` follow the same rule, and a `TitleDescription`'s children sit one level below its title.
+
+Pass `level` to `Title` (or `titleAs` to a copy card) only for a page hero title, which is `h2`. `HeadingScope` sets the depth explicitly, for markup rendered on its own, such as a fragment swapped into a card later.
+
 ### Site Header
 
 `SiteHeader` is the whole header of a content site: the sticky bar, the brand, the desktop navigation, the actions beside it, and the mobile menu behind the toggle. The menu is a full-width panel under the bar; it lists the same links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. Pass the links as data, not markup:
