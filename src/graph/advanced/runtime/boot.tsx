@@ -1,3 +1,4 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { parseJsonText } from "#er0dlx1gtbzh";
@@ -147,6 +148,7 @@ function createGraphController(boot, mountEl) {
   let props = {
     ...boot,
     modalWaiting: graphIsWaitingForModal(mountEl),
+    titleLevel: Number(mountEl.getAttribute(frontendDataAttr("heading-level"))) || 3,
   };
 
   function render(nextProps) {

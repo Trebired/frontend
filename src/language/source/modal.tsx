@@ -18,6 +18,7 @@ import {
 import { text, translate } from "#kv9urtb9dbq5";
 import type { SourceLanguageModalProps } from "#2w72xmq6rvza";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { Title } from "#7ly3b59upz0n";
 
 function extensionText(extensions: any[], lang?: string, locale?: string) {
   if (!extensions.length) return translate(lang, "none");
@@ -108,7 +109,7 @@ function filesHeader(
   return (
     <Stack className="title-desc" gap="sm">
     <InlineRow gap="sm">
-    <h4>{translate(props.lang, "files")}</h4>
+    <Title>{translate(props.lang, "files")}</Title>
     {model.matchingPathsText ? (
         <div className="right">
         {copy_button({

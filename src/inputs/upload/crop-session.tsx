@@ -99,7 +99,7 @@ function CropperView(props: CropperViewProps) {
   const useImageLabel = props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel;
   return h("div", { className: frontendClassName("upload-crop") },
     h("div", { className: frontendElementClass("upload-crop", "header") },
-      h("h2", { className: frontendElementClass("upload-crop", "title") }, props.title),
+      h("h3", { className: frontendElementClass("upload-crop", "title") }, props.title),
       props.description
       ? h("p", { className: frontendElementClass("upload-crop", "description") }, props.description)
       : null,

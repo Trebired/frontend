@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.13.0
+
+- Added `Title` and `HeadingScope`. Heading levels now follow nesting instead of being chosen at every call site, where the same card was `h3` on one page and `h4` on another. A heading outside any card and a card's own title are `h3`, each card nested inside another adds a level, and a modal starts over at `h3`. Every `Card` adds a level to its contents, and `ModalContent` resets it.
+- `copy_card`, `copy_code_card`, graph cards, graph stat group labels, entity lists, the log entry modal, the language panels, the editor surface, steps and `TitleDescription` take their level from the same rule. A graph records its level on its mount, so the title the runtime draws in the browser matches. `titleAs` and `level` remain as explicit overrides, meant for a page hero title.
+- Programmatic modals (`createModal`, the image crop modal) title themselves `h3`, like every other modal.
+
 ## 13.12.0
 
 - `copy_card` and `copy_code_card` take `titleAs` (`"h2"` to `"h6"`, default `"h3"`), so a copy card nested under a section heading can use a smaller title than the section it sits in. An unknown value falls back to `h3`.

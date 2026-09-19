@@ -119,6 +119,7 @@ function GraphCard(props) {
       selectedScale: state.selectedScale,
       subtitle: props.subtitle,
       title: props.title,
+      titleLevel: props.titleLevel,
       rootRef,
       unitDropdownRef: state.unitDropdownRef,
       unitMeasurement: state.unitMeasurement,

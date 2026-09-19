@@ -6,6 +6,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
+import { Title } from "#7ly3b59upz0n";
 
 type SharedStepsPanelProps = {
   beforeList?: ReactNode;
@@ -79,7 +80,7 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
         </section>
       ),
       hidden: props.hidden === true,
-      label: <h4 data-steps-title="">{model.title}</h4>,
+      label: <Title data-steps-title="">{model.title}</Title>,
       panelClassName: primitiveStackClassName({ gap: "sm" }),
       panelId: `${model.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "steps"}_panel`,
       rootClassName: primitiveStackClassName({ gap: "sm" }),

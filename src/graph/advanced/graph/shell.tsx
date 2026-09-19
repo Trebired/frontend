@@ -1,8 +1,9 @@
+import { HeadingDepth, headingLevelForDepth } from "#7ly3b59upz0n";
 import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function renderGraphToolbar(props: graph_props) {
   if (!props.toolbarContent) return null;
@@ -70,7 +71,15 @@ function graphShellStateOverlay(model: any) {
 
 function renderGraphCanvas(model: any, mountClassName = "") {
   return (
-    <div id={`${model.graphId}_mount`} className={mountClassName}>
+    <HeadingDepth>
+    {(depth) => renderGraphMount(model, mountClassName, headingLevelForDepth(depth))}
+    </HeadingDepth>
+  );
+}
+
+function renderGraphMount(model: any, mountClassName: string, titleLevel: number) {
+  return (
+    <div id={`${model.graphId}_mount`} className={mountClassName} {...frontendDataAttrs({ "heading-level": titleLevel })}>
     <div
     className="bg-canvas padding-sm radius-md border"
     style={{

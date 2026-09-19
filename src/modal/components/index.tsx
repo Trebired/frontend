@@ -9,6 +9,7 @@ import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElement
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ensureLayerRoot } from "#ccvonx3uhbte";
+import { HeadingScope } from "#7ly3b59upz0n";
 
 type ModalRootProps = HTMLAttributes<HTMLDivElement> & {
   children?: ReactNode;
@@ -55,7 +56,7 @@ function ModalContent(props: ModalContentProps) {
     className={classNames(frontendElementClass("modal", "content"), className)}
     {...frontendDataAttrs({ "modal-content": "" })}
     >
-    {children}
+    <HeadingScope depth={1}>{children}</HeadingScope>
     </div>
   );
 }
