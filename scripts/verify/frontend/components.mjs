@@ -9,6 +9,7 @@ import { verifyRenderedUpload, verifyUploadStyles } from "./upload-components.mj
 
 async function verifyFrontendComponents(context) {
   await verifyLayoutStyles(context.rootDir);
+  await verifyAvatarsStayRound(context.rootDir);
   await verifyModalStyles(context.rootDir);
   await verifyTooltipStyles(context.rootDir);
   await verifyThemeStyles(context.rootDir);
@@ -21,6 +22,14 @@ async function verifyFrontendComponents(context) {
   await verifyBottomBar(context.importDist, context.rootDir);
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
+}
+
+async function verifyAvatarsStayRound(rootDir) {
+  const card = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_card.scss"), "utf8");
+  assert.ok(card.includes(".card-icon img:not(.avatar) {"), "the card icon radius must not square off avatars");
+  assert.ok(!/\.card-icon img \{/u.test(card), "no card icon rule may reach avatars");
+  const controls = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_controls.scss"), "utf8");
+  assert.match(controls, /\.avatar \{\n {2}border-radius: 50%;/u, "avatars are circles");
 }
 
 async function verifyLayoutStyles(rootDir) {
