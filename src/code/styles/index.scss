@@ -33,6 +33,11 @@
   user-select: text;
 }
 
+[data-code] code.pre-wrap,
+#{ns.data("code-content")}.pre-wrap {
+  min-width: 0;
+}
+
 [data-code] code *,
 #{ns.data("code-content")} *,
 

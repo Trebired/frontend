@@ -56,6 +56,16 @@ function markSnippet(host: Element, target: Element) {
   target.setAttribute(DATA_CODE_CONTENT_ATTR, "");
 }
 
+function restoreBreakableSpaces(target: Element) {
+  if (!target.classList.contains("pre-wrap")) return;
+  const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node.nodeValue && node.nodeValue.includes("\u00a0")) {
+      node.nodeValue = node.nodeValue.replace(/\u00a0/gu, " ");
+    }
+  }
+}
+
 async function renderCodeHost(host: Element, monacoRef: any, themeName: string) {
   const target = codeRenderTarget(host);
   if (!(target instanceof Element)) return false;
@@ -71,6 +81,7 @@ async function renderCodeHost(host: Element, monacoRef: any, themeName: string) 
       tabSize: 2,
       theme: themeName,
   });
+  restoreBreakableSpaces(target);
   host.setAttribute(DATA_CODE_RENDERED_ATTR, "1");
   codeState.set(host, { languageId, source, themeName });
   return true;
