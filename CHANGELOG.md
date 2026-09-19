@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.11.2
+
+- Avatars inside cards are round again. The card icon rule that rounds a card's image into a soft square also matched avatars, and being more specific than `.avatar` it replaced their circle with the square radius, so every user card showed a square picture. The rule now leaves avatars alone.
+
 ## 13.11.1
 
 - The graph unit dropdown really is as wide as its unit now. 13.11.0 widened the element the dropdown mounts into, but a dropdown lays its label over the field absolutely and its root is full width, so the control stayed as narrow as its padding and "Mb/s" was cut to "M". A dropdown given the `dropdown-fit` class puts the label in flow and takes its width from it, which is what the unit control uses.

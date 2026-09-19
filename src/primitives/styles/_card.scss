@@ -84,7 +84,7 @@
   }
 }
 
-.card-icon img {
+.card-icon img:not(.avatar) {
   border-radius: var(#{ns.css-var("surf-card-icon-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
   object-fit: cover;
 }
