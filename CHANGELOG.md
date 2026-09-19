@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.12.0
+
+- `copy_card` and `copy_code_card` take `titleAs` (`"h2"` to `"h6"`, default `"h3"`), so a copy card nested under a section heading can use a smaller title than the section it sits in. An unknown value falls back to `h3`.
+- Wrapped code blocks (`code_block` with `wrap`, which `copy_code_card` uses) now actually wrap. The code element kept `min-width: max-content`, which lets unwrapped code scroll sideways but also held wrapped code at its longest line, so a known-hosts entry or public key ran past the card edge. Wrapped code may now shrink, breaks long unbroken tokens, and after highlighting its spaces are ordinary spaces again: the highlighter writes non-breaking spaces, which left a line nowhere to break except at hyphens.
+
 ## 13.11.2
 
 - Avatars inside cards are round again. The card icon rule that rounds a card's image into a soft square also matched avatars, and being more specific than `.avatar` it replaced their circle with the square radius, so every user card showed a square picture. The rule now leaves avatars alone.

@@ -47,7 +47,7 @@ function code_block(props: CodeBlockProps) {
     >
     <code
     {...(props.id ? { id: String(props.id) } : {})}
-    className={joinClassNames(wrap ? "pre-wrap" : "", props.codeClassName)}
+    className={joinClassNames(wrap ? "pre-wrap text-break" : "", props.codeClassName)}
     {...frontendDataAttrs({ "code-content": "" })}
     {...codeProps}
     >

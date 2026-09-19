@@ -10,6 +10,8 @@ import type { key_value_row } from "#xb7hv37sq5h5";
 import { frontendDataAttrs } from "#5vbaqj4pirp3";
 import { copy_button } from "./standard-buttons.js";
 
+type CopyCardTitleLevel = "h2" | "h3" | "h4" | "h5" | "h6";
+
 type CopyCardProps = {
   actions?: ReactNode;
   children?: ReactNode;
@@ -22,6 +24,7 @@ type CopyCardProps = {
   rows?: key_value_row[];
   target?: string;
   title: ReactNode;
+  titleAs?: CopyCardTitleLevel;
   tooltip?: string;
   value?: string;
 };
@@ -42,6 +45,7 @@ type CopyCodeCardProps = {
   id: string;
   label: ReactNode;
   lang?: string;
+  titleAs?: CopyCardTitleLevel;
   value: string;
 };
 
@@ -64,11 +68,20 @@ function copyCardRowsId(props: CopyCardProps) {
   return stableId("copy_card", (props.rows || []).map((row) => String((row && row.label) || "")).join("|"));
 }
 
+const COPY_CARD_TITLE_LEVELS: CopyCardTitleLevel[] = ["h2", "h3", "h4", "h5", "h6"];
+
+function copyCardTitle(props: CopyCardProps) {
+  const Heading = COPY_CARD_TITLE_LEVELS.includes(props.titleAs as CopyCardTitleLevel)
+  ? props.titleAs as CopyCardTitleLevel
+  : "h3";
+  return <Heading>{props.title}</Heading>;
+}
+
 function copyCardHeader(props: CopyCardProps, target: string) {
   const canCopy = Boolean(target || typeof props.value === "string");
   return (
     <div className={primitiveInlineRowClassName({ between: true, gap: "sm", verticalCenter: true })}>
-    <h3>{props.title}</h3>
+    {copyCardTitle(props)}
     <div className="right">
     <div className={primitiveInlineRowClassName({ fit: true, gap: "xs", verticalCenter: true })}>
     {props.actions}
@@ -154,9 +167,10 @@ function copy_code_card(props: CopyCodeCardProps) {
       lang: props.lang,
       target: `#${props.id}`,
       title: props.label,
+      titleAs: props.titleAs,
       value: props.value,
   });
 }
 
 export { copy_card, copy_code_card, copy_value };
-export type { CopyCardProps, CopyCodeCardProps, CopyValueProps };
+export type { CopyCardProps, CopyCardTitleLevel, CopyCodeCardProps, CopyValueProps };
