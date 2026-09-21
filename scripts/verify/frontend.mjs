@@ -30,6 +30,7 @@ import { verifyHeadingLevels } from "./frontend/headings.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { verifyLayering } from "./frontend/layering.mjs";
+import { verifySelectCards } from "./frontend/select-cards.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 import { resolveLogger } from "@package/logger-adapter";
 
@@ -79,6 +80,7 @@ async function verifyFrontendMain() {
   await verifyLayout();
   await verifyFullscreen();
   await verifyLayering(context);
+  await verifySelectCards(context);
   await verifySidebar(context);
   await verifyUpload();
   await verifyFrontendLogging(context);
@@ -118,6 +120,7 @@ function installDom() {
       HTMLInputElement: window.HTMLInputElement,
       HTMLSelectElement: window.HTMLSelectElement,
       HTMLTextAreaElement: window.HTMLTextAreaElement,
+      KeyboardEvent: window.KeyboardEvent,
       MouseEvent: window.MouseEvent,
       MutationObserver: window.MutationObserver,
       Node: window.Node,
