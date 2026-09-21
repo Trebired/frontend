@@ -213,6 +213,7 @@ type BodyProps = {
   select?: {
     buttonType?: "button" | "reset" | "submit";
     disabled?: boolean;
+    focusable?: boolean;
     selected?: boolean;
     value?: string;
   };
@@ -255,6 +256,7 @@ type SelectCardsProps = {
   icon?: boolean;
   items: SelectCardItem[];
   layout?: "column" | "grid";
+  name?: string;
 };
 
 type CardItemProps = {

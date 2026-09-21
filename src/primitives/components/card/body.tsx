@@ -200,7 +200,7 @@ function selectCardNode(
     data-value={toText(props.select?.value) || undefined}
     role="button"
     style={{ textAlign: "left", width: "100%" }}
-    tabIndex={disabled ? -1 : selected ? 0 : -1}
+    tabIndex={disabled ? -1 : selected || props.select?.focusable ? 0 : -1}
     >
     {content}
     </div>
@@ -283,39 +283,49 @@ function selectExtra(item: SelectCardItem): ReactNode {
   );
 }
 
+function selectFocusIndex(items: SelectCardItem[]) {
+  if (items.some((item) => item.selected === true && item.disabled !== true)) return -1;
+  return items.findIndex((item) => item.disabled !== true);
+}
+
+function selectCardItem(item: SelectCardItem, index: number, showIcon: boolean, focusIndex: number) {
+  const value = toText(item.value);
+  const key = toText(item.id, value || `select-card-${index}`);
+  return (
+    <span key={key} style={{ display: "contents" }}>
+    {card_body({
+          className: joinClassNames("height-max", item.className),
+          dataAttrs: item.attrs,
+          extra: selectExtra(item),
+          icon: showIcon && item.iconSpec ? <Icon spec={item.iconSpec} /> : null,
+          meta: item.titleMeta,
+          select: {
+            buttonType: item.buttonType,
+            disabled: item.disabled === true,
+            focusable: index === focusIndex,
+            selected: item.selected === true,
+            value,
+          },
+          showDivider: showIcon,
+          subtitle: item.description,
+          title: item.title || "",
+          titleWidthFit: false,
+          width: "full",
+    })}
+    </span>
+  );
+}
+
 function select(props: SelectCardsProps) {
   const items = Array.isArray(props.items) ? props.items.filter(Boolean) : [];
-  const showIcon = props.icon === true;
+  const focusIndex = selectFocusIndex(items);
+  const chosen = items.find((item) => item.selected === true && item.disabled !== true);
   return (
-    <div className={selectLayoutClassName(props)} {...((props.attrs || {}) as attr_map)}>
-    {items.map((item, index) => {
-          const value = toText(item.value);
-          const key = toText(item.id, value || `select-card-${index}`);
-          const selected = item.selected === true;
-          const disabled = item.disabled === true;
-          return (
-            <span key={key} style={{ display: "contents" }}>
-            {card_body({
-                  className: joinClassNames("height-max", item.className),
-                  dataAttrs: item.attrs,
-                  extra: selectExtra(item),
-                  icon: showIcon && item.iconSpec ? <Icon spec={item.iconSpec} /> : null,
-                  meta: item.titleMeta,
-                  select: {
-                    buttonType: item.buttonType,
-                    disabled,
-                    selected,
-                    value,
-                  },
-                  showDivider: showIcon,
-                  subtitle: item.description,
-                  title: item.title || "",
-                  titleWidthFit: false,
-                  width: "full",
-            })}
-            </span>
-          );
-    })}
+    <div className={selectLayoutClassName(props)} data-select-cards="" {...((props.attrs || {}) as attr_map)}>
+    {props.name ? (
+        <input data-select-cards-input="" name={props.name} type="hidden" value={toText(chosen && chosen.value)} />
+      ) : null}
+    {items.map((item, index) => selectCardItem(item, index, props.icon === true, focusIndex))}
     </div>
   );
 }

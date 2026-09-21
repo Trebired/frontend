@@ -316,6 +316,9 @@
       "#5x2658viyxv1": [
         "../../../src/media/carousel.tsx"
       ],
+      "#5zd51tnvt4yt": [
+        "../../../src/inputs/select_cards.ts"
+      ],
       "#60ahxyab7r9m": [
         "../../../src/server/theme.ts"
       ],
@@ -735,6 +738,9 @@
       ],
       "#e0jb65059m6h": [
         "../../../src/spa/page.ts"
+      ],
+      "#e14w1m4ernce": [
+        "../../../scripts/verify/frontend/select-cards.mjs"
       ],
       "#e17ghseag2t1": [
         "../../../src/theme/boot.ts"

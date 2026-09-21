@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 13.14.0
+
+- Select cards now select. `card_select` rendered a selected and an excluded state but nothing switched it, so every page wired its own clicks, and one that looked only for native buttons left the cards dead. The input runtime now owns them: a click or Enter/Space selects a card, arrow keys move the selection and skip disabled cards, and the `selected`/`excluded` classes, `aria-selected`, the card data attributes and the roving `tabindex` follow. A change fires `SELECT_CARD_EVENT` once, with the chosen value.
+- Added `name` to `card_select`. A named group renders a hidden field that carries the selected value, so the cards submit with a form.
+- With nothing selected, the first enabled card is focusable, so the group is reachable from the keyboard.
+- Added `bindSelectCards`, `selectCard`, `selectedCardValue`, `SELECT_CARD_EVENT`, `SELECT_CARD_SELECTOR` and `SELECT_CARDS_SELECTOR`.
+
 ## 13.13.0
 
 - Added `Title` and `HeadingScope`. Heading levels now follow nesting instead of being chosen at every call site, where the same card was `h3` on one page and `h4` on another. A heading outside any card and a card's own title are `h3`, each card nested inside another adds a level, and a modal starts over at `h3`. Every `Card` adds a level to its contents, and `ModalContent` resets it.

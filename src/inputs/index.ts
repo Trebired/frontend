@@ -26,6 +26,7 @@ import {
 import { matchesAccept, parseAcceptList } from "./upload/files.js";
 import type { UploadRuntimeOptions } from "./upload/types.js";
 import { bindChoiceControls } from "./choice.js";
+import { bindSelectCards } from "./select_cards.js";
 import { bindDisclosures } from "./disclosure.js";
 import { bindDropdowns } from "./dropdown.js";
 import { bindSearchControls } from "./search.js";
@@ -86,6 +87,7 @@ function bindInputControllers(
   queryAll<HTMLElement>(root, CLEAR_SELECTOR).forEach(bindClearButton);
   queryAll<HTMLElement>(root, PASSWORD_TOGGLE_SELECTOR).forEach(bindPasswordToggle);
   bindChoiceControls(root);
+  bindSelectCards(root);
   bindDisclosures(root);
   bindDropdowns(root);
   bindSearchControls(root);
@@ -121,6 +123,7 @@ export {
   uploadManager,
 };
 export *from "./choice.js";
+export *from "./select_cards.js";
 export *from "./disclosure.js";
 export *from "./dropdown.js";
 export *from "./search.js";
