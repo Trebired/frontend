@@ -6,6 +6,7 @@ import { softRedirect } from "./navigate.js";
 const SOFT_REDIRECT_ATTR = frontendDataAttr("soft-redirect");
 const SOFT_REDIRECT_SELECTOR = frontendDataSelector("soft-redirect");
 const SOFT_REDIRECT_BOUND_ATTR = frontendDataAttr("soft-redirect-bound");
+const boundTriggers = new WeakSet<HTMLElement>();
 
 function softRedirectTarget(trigger: HTMLElement) {
   if (trigger.getAttribute("aria-disabled") === "true") return "";
@@ -59,11 +60,11 @@ function runSoftRedirect(event: Event, trigger: HTMLElement) {
 }
 
 function bindSoftRedirectLink(trigger: HTMLElement | null) {
-  if (!(trigger instanceof HTMLElement) || trigger.hasAttribute(SOFT_REDIRECT_BOUND_ATTR)) {
+  if (!(trigger instanceof HTMLElement) || boundTriggers.has(trigger)) {
     return false;
   }
   if (isInUnhydratedIsland(trigger)) return false;
-  trigger.setAttribute(SOFT_REDIRECT_BOUND_ATTR, "true");
+  boundTriggers.add(trigger);
   ensureSoftRedirectA11y(trigger);
   trigger.addEventListener("click", (event) => runSoftRedirect(event, trigger));
   trigger.addEventListener("keydown", (event) => {
