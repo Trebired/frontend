@@ -34,3 +34,45 @@
   font-size: 0.95rem;
   line-height: 1.6;
 }
+
+#{ns.class("embed-frame-mark")} {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+#{ns.class("embed-frame-fullscreen")} {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid
+    var(--border-surface-1, var(#{ns.css-var("border")}, currentColor));
+  border-radius: 999px;
+  background: var(--background-surface-1, var(#{ns.css-var("surface")}, transparent));
+  color: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#{ns.class("embed-frame")}:hover #{ns.class("embed-frame-fullscreen")},
+#{ns.class("embed-frame")}:focus-within #{ns.class("embed-frame-fullscreen")} {
+  opacity: 0.8;
+}
+
+#{ns.class("embed-frame-fullscreen")}:hover,
+#{ns.class("embed-frame-fullscreen")}:focus-visible {
+  opacity: 1;
+}
+
+#{ns.class("embed-frame")} object {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
