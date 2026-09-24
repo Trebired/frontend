@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.20.0
+
+- Smooth scrolling no longer animates the browser's scroll restoration. With `design.scrollBehavior: "smooth"`, reloading a page that was scrolled made the browser ease its way back to the saved position over a few hundred milliseconds, which looks like the page sliding or fading itself into place. The generated stylesheet now pairs `html { scroll-behavior: smooth }` with `html[data-…-scroll-settling] { scroll-behavior: auto }`, so the restore lands in one frame.
+- The settling window now ends on the first user input — `pointerdown`, `keydown`, `wheel` or `touchstart` — instead of on `load`. Scroll restoration frequently lands after `load` fires, so ending the window there left the animation in place on slower pages. Any scroll or anchor click a visitor makes is preceded by one of those events, so smooth scrolling is active by the time it can matter.
+
 ## 13.19.0
 
 - The scroll-state boot script now gets the state right on a reload or a back/forward navigation. The browser restores the scroll position after the boot script runs, so the first value was always "not scrolled"; the script now remembers the position in `sessionStorage` on `pagehide` and seeds the state from it when the navigation is a reload or a history traversal, and the real position takes over as soon as the page has loaded.

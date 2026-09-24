@@ -69,9 +69,10 @@ function scrollStateUpdateSource(): string[] {
 function scrollStateSettleSource(): string[] {
   return [
     "h.setAttribute(G,'');",
-    "window.addEventListener('load',function(){S=0;u();",
-    "var f=function(){h.removeAttribute(G)};",
-    "if(window.requestAnimationFrame)window.requestAnimationFrame(f);else f()});",
+    "var r=function(){h.removeAttribute(G)};",
+    "['pointerdown','keydown','wheel','touchstart'].forEach(function(n){",
+    "window.addEventListener(n,r,{capture:true,once:true,passive:true})});",
+    "window.addEventListener('load',function(){S=0;u()});",
   ];
 }
 

@@ -8,6 +8,7 @@ import { breakpointDeclarations } from "./breakpoints.js";
 import { renderContainerRules, renderHeadingVariantRules } from "./typography.js";
 import { cssComment, cssString, invalidConfig } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import {
   SYSTEM_ORDER,
   THEME_MODE_ATTRIBUTE,
@@ -168,7 +169,13 @@ function renderThemeCss(config: NormalizedFrontendConfig): string[] {
 
 function renderScrollBehaviorCss(config: NormalizedFrontendConfig): string[] {
   if (config.design.scrollBehavior !== "smooth") return [];
-  return ["", ...renderBlock("html", ["  scroll-behavior: smooth;"])];
+  const settling = `html[${frontendDataAttr("scroll-settling")}]`;
+  return [
+    "",
+    ...renderBlock("html", ["  scroll-behavior: smooth;"]),
+    "",
+    ...renderBlock(settling, ["  scroll-behavior: auto;"]),
+  ];
 }
 
 function renderScalesRootBlock(vars: string[]): string[] {
