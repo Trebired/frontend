@@ -1,7 +1,7 @@
 import { createContext, createElement, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-import { currentLocale, onLocaleChanged, setCurrentLocale } from "#c0ufaze3282x";
+import { clearLocalePending, currentLocale, onLocaleChanged, setCurrentLocale } from "#c0ufaze3282x";
 
 type LocaleProviderProps = {
   children?: ReactNode;
@@ -21,6 +21,7 @@ function useCurrentLocale(): string {
   useEffect(() => {
       const stop = onLocaleChanged(setLocale);
       setLocale(currentLocale());
+      clearLocalePending();
       return stop;
     }, []);
 
