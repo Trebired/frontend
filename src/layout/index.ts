@@ -1,5 +1,6 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { bindBreadcrumbs } from "./breadcrumb.js";
+import { bindScrollState, type ScrollStateOptions } from "./scroll.js";
 import {
   HEADER_PRIMARY_SELECTOR,
   HEADER_SECONDARY_SELECTOR,
@@ -31,6 +32,7 @@ type LayoutBodyState = {
 type LayoutRuntimeOptions = {
   header?: HeaderRuntimeOptions;
   mobile?: boolean;
+  scroll?: ScrollStateOptions;
 };
 
 function layoutSideSelector(side: LayoutSide) {
@@ -86,7 +88,9 @@ function bindLayouts(root: BindRoot = document, options: LayoutRuntimeOptions = 
   });
   bindHeaders(root, options.header || {});
   bindBreadcrumbs(root);
-  if (root === document) syncLayoutBodyState(document, options);
+  if (root !== document) return;
+  bindScrollState(options.scroll);
+  syncLayoutBodyState(document, options);
 }
 
 function siteHeaderRootHtml(headerHtml: string) {
@@ -147,6 +151,7 @@ export {
   syncLayoutBodyState,
 };
 export *from "./breadcrumb.js";
+export *from "./scroll.js";
 export *from "./header.js";
 export *from "./state.js";
 export type { LayoutBodyState, LayoutRuntimeOptions, LayoutSide };
