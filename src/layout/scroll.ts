@@ -1,7 +1,10 @@
-import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const SCROLL_STATE_ATTRIBUTE = frontendDataAttr("scrolled");
 const SCROLL_STATE_SELECTOR = frontendDataSelector("scrolled", "true");
+const SCROLL_SETTLING_ATTRIBUTE = frontendDataAttr("scroll-settling");
+const SCROLL_SETTLING_SELECTOR = frontendDataSelector("scroll-settling");
+const SCROLL_STORAGE_PREFIX = `${FRONTEND_PREFIX}:scroll:`;
 const DEFAULT_SCROLL_THRESHOLD = 24;
 
 type ScrollStateOptions = {
@@ -45,21 +48,61 @@ function bindScrollState(options: ScrollStateOptions = {}): () => void {
   };
 }
 
+function scrollStateSeedSource(): string[] {
+  return [
+    `var K=${JSON.stringify(SCROLL_STORAGE_PREFIX)}+location.pathname+location.search,N='',S=0;`,
+    "try{N=(performance.getEntriesByType('navigation')[0]||{}).type||''}catch(e){}",
+    "if(N==='reload'||N==='back_forward'){try{S=parseFloat(sessionStorage.getItem(K))||0}catch(e){}}",
+    "window.addEventListener('pagehide',function(){",
+    "try{sessionStorage.setItem(K,String(window.scrollY||window.pageYOffset||0))}catch(e){}});",
+  ];
+}
+
+function scrollStateUpdateSource(): string[] {
+  return [
+    "var u=function(){var v=window.scrollY||window.pageYOffset||0;",
+    "if(S){if(v)S=0;else v=S}",
+    "h.setAttribute(A,v>T?'true':'false')};",
+  ];
+}
+
+function scrollStateSettleSource(): string[] {
+  return [
+    "h.setAttribute(G,'');",
+    "window.addEventListener('load',function(){S=0;u();",
+    "var f=function(){h.removeAttribute(G)};",
+    "if(window.requestAnimationFrame)window.requestAnimationFrame(f);else f()});",
+  ];
+}
+
+function scrollStateListenerSource(): string[] {
+  return [
+    "window.addEventListener('scroll',u,{passive:true});",
+    "window.addEventListener('resize',u,{passive:true});",
+    "window.addEventListener('pageshow',u);",
+    "document.addEventListener('DOMContentLoaded',u);",
+    "if(window.requestAnimationFrame)window.requestAnimationFrame(u);",
+  ];
+}
+
 function createScrollStateBootScript(options: ScrollStateOptions = {}): string {
   return [
     "(function(){try{",
-    `var A=${JSON.stringify(SCROLL_STATE_ATTRIBUTE)},T=${scrollStateThreshold(options)};`,
-    "var h=document.documentElement;",
-    "var u=function(){h.setAttribute(A,(window.scrollY||window.pageYOffset||0)>T?'true':'false')};",
+    `var A=${JSON.stringify(SCROLL_STATE_ATTRIBUTE)},G=${JSON.stringify(SCROLL_SETTLING_ATTRIBUTE)};`,
+    `var T=${scrollStateThreshold(options)},h=document.documentElement;`,
+    ...scrollStateSeedSource(),
+    ...scrollStateUpdateSource(),
     "u();",
-    "window.addEventListener('scroll',u,{passive:true});",
-    "window.addEventListener('resize',u,{passive:true});",
+    ...scrollStateSettleSource(),
+    ...scrollStateListenerSource(),
     "}catch(e){}})();",
   ].join("");
 }
 
 export {
   DEFAULT_SCROLL_THRESHOLD,
+  SCROLL_SETTLING_ATTRIBUTE,
+  SCROLL_SETTLING_SELECTOR,
   SCROLL_STATE_ATTRIBUTE,
   SCROLL_STATE_SELECTOR,
   applyScrollState,

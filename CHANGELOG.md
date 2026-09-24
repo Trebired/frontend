@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.19.0
+
+- The scroll-state boot script now gets the state right on a reload or a back/forward navigation. The browser restores the scroll position after the boot script runs, so the first value was always "not scrolled"; the script now remembers the position in `sessionStorage` on `pagehide` and seeds the state from it when the navigation is a reload or a history traversal, and the real position takes over as soon as the page has loaded.
+- Added `data-…-scroll-settling`, set on `<html>` until the page has loaded and the state has settled. Styles that transition on the scroll state can switch the transition off while it is present, so a late correction lands in one frame instead of animating.
+- The boot script also re-reads the state on `DOMContentLoaded`, on `pageshow` and in the first animation frame.
+
 ## 13.18.0
 
 - Added the scroll-state system, so a header that changes appearance once the page is scrolled no longer has to compute that in React. `createScrollStateBootScript()` returns a boot script that sets `data-…-scrolled` on `<html>` before the first paint and keeps it current from then on, so the correct header is painted immediately even when a reload restores a scrolled position.
