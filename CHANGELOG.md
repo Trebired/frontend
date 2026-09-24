@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.18.0
+
+- Added the scroll-state system, so a header that changes appearance once the page is scrolled no longer has to compute that in React. `createScrollStateBootScript()` returns a boot script that sets `data-…-scrolled` on `<html>` before the first paint and keeps it current from then on, so the correct header is painted immediately even when a reload restores a scrolled position.
+- `bindScrollState()` binds the same state from the runtime for apps that do not use a boot script, and does nothing when the boot script already owns it. `bindLayouts` calls it, with the threshold configurable through `scroll` in the layout runtime options.
+- `applyScrollState()`, `readScrollState()`, `SCROLL_STATE_ATTRIBUTE` and `SCROLL_STATE_SELECTOR` are exported for stylesheets and code that need the state directly. The threshold defaults to 24 pixels.
+
 ## 13.17.0
 
 - The locale boot script no longer keeps the document hidden until `DOMContentLoaded`. It still hides the page when the visitor's stored locale differs from the rendered one, but `LocaleProvider` now clears that pending state as soon as the localized tree has committed, so the hidden window lasts only until the correct text is on screen instead of until every deferred script has run.
