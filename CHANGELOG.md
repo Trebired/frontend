@@ -1,5 +1,13 @@
 # Changelog
 
+## 13.21.0
+
+- `EmbedFrame` now renders the embed in an `<object type="text/html">` instead of an `<iframe>`, so a refused embed raises an `error` event and the component shows its own failure state. An `<iframe>` gives the embedding page nothing to act on: a document blocked by `frame-ancestors` or `X-Frame-Options` fires `load` exactly like a successful one, and `contentWindow.location`, `contentDocument` and `origin` throw in both cases, so the browser's own "refused to connect" page was the only thing a visitor ever saw.
+- The failure state now covers refusal as well as timeout, and its default text says so. `labels.error` still overrides it.
+- The status marks are Remix Icon artwork, inlined rather than resolved through the icon runtime so they render on static sites with no icon endpoint. The failure mark is `error-warning-line`.
+- `allowFullScreen` is honoured with a hover-revealed control that fullscreens the embed's own wrapper through the frontend fullscreen system, because `<object>` carries no `allowfullscreen` attribute. `labels.fullscreen` sets its label.
+- Passing `sandbox` keeps the old `<iframe>` element, since `<object>` cannot carry a sandbox. Failure detection is unavailable in that mode.
+
 ## 13.20.0
 
 - Smooth scrolling no longer animates the browser's scroll restoration. With `design.scrollBehavior: "smooth"`, reloading a page that was scrolled made the browser ease its way back to the saved position over a few hundred milliseconds, which looks like the page sliding or fading itself into place. The generated stylesheet now pairs `html { scroll-behavior: smooth }` with `html[data-…-scroll-settling] { scroll-behavior: auto }`, so the restore lands in one frame.
