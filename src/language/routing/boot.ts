@@ -34,7 +34,8 @@ function queryLocaleSource(): string[] {
   ];
 }
 
-function pendingSource(): string[] {
+function pendingSource(hide: boolean): string[] {
+  if (!hide) return ["if(n!==r){h.setAttribute(P,'')}"];
   return [
     "if(n!==r){h.setAttribute(P,'');h.style.visibility='hidden';",
     "d.addEventListener('DOMContentLoaded',function(){h.removeAttribute(P);h.style.visibility=''})}",
@@ -42,6 +43,7 @@ function pendingSource(): string[] {
 }
 
 type LocaleBootOptions = {
+  hideUntilReady?: boolean;
   strategy?: LocaleStrategy;
 };
 
@@ -60,7 +62,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),
     "n=n||r;h.lang=n;",
-    ...pendingSource(),
+    ...pendingSource(boot.hideUntilReady !== false),
     "})();",
   ].join("");
 }

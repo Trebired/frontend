@@ -24,5 +24,6 @@ export {
   stripLocalePrefix,
 } from "./runtime.js";
 export type { LocaleListener } from "./runtime.js";
-export { applyLocaleMeta, applyLocaleView, readLocaleMeta } from "./view.js";
+export { applyLocaleMeta, applyLocaleView,
+  clearLocalePending, readLocaleMeta } from "./view.js";
 export type { LocaleMeta } from "./view.js";

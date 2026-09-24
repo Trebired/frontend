@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.17.0
+
+- The locale boot script no longer keeps the document hidden until `DOMContentLoaded`. It still hides the page when the visitor's stored locale differs from the rendered one, but `LocaleProvider` now clears that pending state as soon as the localized tree has committed, so the hidden window lasts only until the correct text is on screen instead of until every deferred script has run.
+- Added `clearLocalePending()` for apps that apply the locale themselves and want to reveal the document at that point.
+- Added `hideUntilReady` to `createLocaleBootScript`'s boot options. It defaults to `true`, matching the previous behaviour; setting it to `false` marks the document as pending without ever hiding it, for sites that prefer a brief flash of the rendered locale over a blank page.
+
 ## 13.16.0
 
 - Soft-redirect links are no longer marked with a `data-…-soft-redirect-bound` attribute. The binding is tracked in a `WeakSet` instead, so the DOM a browser holds after a soft redirect matches the server-rendered markup exactly.

@@ -71,7 +71,15 @@ function applyLocaleView(doc: Document, locale: string): boolean {
   return true;
 }
 
+function clearLocalePending(doc: Document = document): void {
+  const root = doc?.documentElement;
+  if (!root || !root.hasAttribute(LOCALE_PENDING_ATTR)) return;
+  root.removeAttribute(LOCALE_PENDING_ATTR);
+  root.style.visibility = "";
+}
+
 export {
+  clearLocalePending,
   LOCALE_END_MARK,
   LOCALE_META_ATTR,
   LOCALE_PENDING_ATTR,
