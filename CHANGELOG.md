@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.16.0
+
+- Soft-redirect links are no longer marked with a `data-…-soft-redirect-bound` attribute. The binding is tracked in a `WeakSet` instead, so the DOM a browser holds after a soft redirect matches the server-rendered markup exactly.
+- This removes a React hydration mismatch: the runtime binds the freshly swapped links before the rehydrate event fires, so any chrome that re-hydrates after a navigation used to find an attribute React had not rendered.
+- `SOFT_REDIRECT_BOUND_ATTR` is still exported for compatibility but is no longer written to any element.
+
 ## 13.15.0
 
 - Added `EmbedFrame`, the embed system every site should use instead of writing an `<iframe>` by hand. It assigns the `src` only once the host document has finished loading, so a slow or unreachable embed can no longer hold the page's `load` event open and leave the browser tab spinning.
