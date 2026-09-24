@@ -1159,6 +1159,9 @@
       "#lh941e0cjcmv": [
         "../../../src/graph/advanced/styles.scss"
       ],
+      "#liixcgj450ba": [
+        "../../../src/media/styles/embed.scss"
+      ],
       "#lptu1jbr5l9d": [
         "../../../src/language/source/modal.tsx"
       ],
@@ -1659,6 +1662,9 @@
       ],
       "#wx6aeo50d9rb": [
         "../../../src/spa/closers.ts"
+      ],
+      "#wxwncfjvldfr": [
+        "../../../src/media/embed-frame.tsx"
       ],
       "#x1k03ygo8xtf": [
         "../../../src/styles/utils/spacing/inline.scss"

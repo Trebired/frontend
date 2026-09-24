@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.15.0
+
+- Added `EmbedFrame`, the embed system every site should use instead of writing an `<iframe>` by hand. It assigns the `src` only once the host document has finished loading, so a slow or unreachable embed can no longer hold the page's `load` event open and leave the browser tab spinning.
+- `EmbedFrame` shows the standard `loader-circle` while the frame is loading, and on timeout it blanks the frame to cancel the pending request and shows a warning mark with an explanatory message. The timeout defaults to 10 seconds and is set with `timeoutMs`.
+- `labels.loading` and `labels.error` override the built-in English strings, and `onState` reports `loading`, `ready` or `error` to the host.
+- `MapEmbed` now renders through `EmbedFrame`, so existing map embeds get the loading, timeout and failure handling without a code change. It gained optional `labels` and `timeoutMs`.
+
 All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
