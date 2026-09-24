@@ -53,6 +53,17 @@ function verifyMapEmbed(react, render) {
   assert.match(html, /title="Map"/u);
 }
 
+function verifyEmbedFrame(react, render) {
+  const html = render(react.EmbedFrame, { src: "https://example.test/thing", title: "Thing" });
+  assert.doesNotMatch(html, /src="https:\/\/example\.test/u, "the embed must not carry src in SSR, or it blocks the document load event");
+  assert.match(html, /data-embed-state="loading"/u, "the embed must start in the loading state");
+  assert.match(html, /loader-circle/u, "the embed must show the standard loader while loading");
+  assert.match(html, /role="status"/u, "the embed status must be announced");
+
+  const labelled = render(react.EmbedFrame, { labels: { loading: "Nahr\u00e1v\u00e1m" }, src: "https://example.test/x", title: "X" });
+  assert.match(labelled, /Nahr\u00e1v\u00e1m/u, "labels must override the built-in strings");
+}
+
 function verifyCarouselMarkup(react, render) {
   const slides = [{ alt: "One", src: "/a.jpg" }, { alt: "Two", src: "/b.jpg" }];
   const html = render(react.Carousel, { lang: "en", slides });
@@ -152,6 +163,7 @@ async function verifyMedia(context) {
   verifyReducedMotion(root);
   verifyMediaState(root);
   verifyMapEmbed(react, render);
+  verifyEmbedFrame(react, render);
   verifyCarouselMarkup(react, render);
   verifyLocalizedLabels(react, render);
   verifyContextLocale(react, createElement, renderToStaticMarkup);

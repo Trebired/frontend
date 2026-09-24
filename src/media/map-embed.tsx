@@ -1,23 +1,23 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { EmbedFrame, type EmbedFrameLabels } from "./embed-frame.js";
 
 type MapEmbedProps = {
   className?: string;
+  labels?: EmbedFrameLabels;
   src: string;
+  timeoutMs?: number;
   title: string;
 };
 
-function MapEmbed({ className, src, title }: MapEmbedProps) {
+function MapEmbed({ className, labels, src, timeoutMs, title }: MapEmbedProps) {
   return (
-    <iframe
+    <EmbedFrame
     allowFullScreen
-    className={[frontendClassName("map-embed"), className].filter(Boolean).join(" ")}
-    height="100%"
-    loading="lazy"
+    className={className}
+    labels={labels}
     referrerPolicy="no-referrer-when-downgrade"
     src={src}
-    style={{ border: 0 }}
+    timeoutMs={timeoutMs}
     title={title}
-    width="100%"
     />
   );
 }

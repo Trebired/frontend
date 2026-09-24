@@ -262,6 +262,7 @@ export { LocaleContext, LocaleProvider, useLocale } from "./locale.js";
 export type { LocaleProviderProps, LocaleState } from "./locale.js";
 export {
   Carousel,
+  EmbedFrame,
   ExpandableImage,
   Lightbox,
   MapEmbed,
@@ -270,6 +271,9 @@ export type {
   CarouselControlsPlacement,
   CarouselProps,
   CarouselSlide,
+  EmbedFrameLabels,
+  EmbedFrameProps,
+  EmbedFrameState,
   ExpandableImageProps,
   LightboxProps,
   MapEmbedProps,
