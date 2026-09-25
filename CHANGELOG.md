@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.27.0
+
+- `LocaleSwitcher` gained a `trigger` prop. The default, `"icon"`, is unchanged: a translate glyph in an icon button. `"locale"` renders the current locale's own face instead — its flag and short code — which is what a public site's language control usually looks like, and which previously could only be had by not using the component.
+- The option rows already knew how to draw a locale's flag, with the region fallbacks and `country-flag-icons` guard; the trigger now reuses that same helper rather than a second implementation, so a locale that renders as a code in the list renders as a code in the trigger too.
+- `icon` and `tooltip` are only applied to the trigger button in `"icon"` mode, since a flag-and-code face is not an icon button and should not be sized or described as one.
+
 ## 13.26.0
 
 - `Button` gained an `inverse` tone. The existing tones (`green`, `highlight`, `red`, `yellow`) are all status colours, so a site that wants the ordinary "solid button in the text colour" had no way to ask for it and ended up hand-writing the rule. `tone="inverse"` fills the button with `--tbf-text` and sets its label to `--tbf-page`, so it inverts with the theme instead of hard-coding black on white.
