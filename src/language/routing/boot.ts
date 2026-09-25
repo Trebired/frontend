@@ -2,6 +2,8 @@ import { normalizeLocaleRouting } from "./options.js";
 import type { LocaleRoutingOptions, LocaleStrategy } from "./options.js";
 import { LOCALE_PENDING_ATTR, LOCALE_RENDERED_ATTR } from "./view.js";
 
+const LOCALE_HANDOFF_QUERY = "setlang";
+
 function scriptJson(value: unknown): string {
   return JSON.stringify(value ?? null).replace(/</gu, "\\u003c");
 }
@@ -13,9 +15,27 @@ function matchSource(): string[] {
   ];
 }
 
+function handoffLocaleSource(): string[] {
+  return [
+    "var n='';",
+    `try{var q=new RegExp('[?&]'+H+'=([^&#]*)').exec(location.search);`,
+    "if(q)n=m(decodeURIComponent(q[1]))}catch(e){}",
+    "if(n){try{window.localStorage.setItem(K,n)}catch(e){}",
+    "try{d.cookie=C+'='+n+';path=/;max-age=31536000;samesite=lax'}catch(e){}",
+    "try{var u=new URL(location.href);u.searchParams.delete(H);",
+    "history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(e){}}",
+  ];
+}
+
+function queryLocaleSource(): string[] {
+  return [
+    "if(!n){try{var w=/[?&]lang=([^&#]*)/.exec(location.search);if(w)n=m(decodeURIComponent(w[1]))}catch(e){}}",
+  ];
+}
+
 function storedLocaleSource(): string[] {
   return [
-    "var n='';try{n=m(window.localStorage.getItem(K))}catch(e){}",
+    "if(!n){try{n=m(window.localStorage.getItem(K))}catch(e){}}",
     "if(!n){try{var c=('; '+d.cookie).split('; '+C+'=');",
     "if(c.length>1)n=m(decodeURIComponent(c[1].split(';')[0]))}catch(e){}}",
   ];
@@ -25,12 +45,6 @@ function navigatorLocaleSource(): string[] {
   return [
     "if(!n){try{var g=navigator.languages||[navigator.language||''];",
     "for(var i=0;i<g.length&&!n;i++)n=m(g[i])}catch(e){}}",
-  ];
-}
-
-function queryLocaleSource(): string[] {
-  return [
-    "if(!n){try{var q=/[?&]lang=([^&#]*)/.exec(location.search);if(q)n=m(decodeURIComponent(q[1]))}catch(e){}}",
   ];
 }
 
@@ -55,9 +69,11 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     "(function(){",
     `var L=${scriptJson(routing.locales)},D=${scriptJson(routing.defaultLocale)},`,
     `K=${scriptJson(routing.storageKey)},C=${scriptJson(routing.cookieName)},`,
-    `R=${scriptJson(LOCALE_RENDERED_ATTR)},P=${scriptJson(LOCALE_PENDING_ATTR)};`,
+    `R=${scriptJson(LOCALE_RENDERED_ATTR)},P=${scriptJson(LOCALE_PENDING_ATTR)},`,
+    `H=${scriptJson(LOCALE_HANDOFF_QUERY)};`,
     "var d=document,h=d.documentElement,r=h.lang||D;h.setAttribute(R,r);",
     ...matchSource(),
+    ...handoffLocaleSource(),
     ...storedLocaleSource(),
     ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),
@@ -67,5 +83,5 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
   ].join("");
 }
 
-export { createLocaleBootScript };
+export { createLocaleBootScript, LOCALE_HANDOFF_QUERY };
 export type { LocaleBootOptions };

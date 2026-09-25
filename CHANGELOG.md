@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.24.0
+
+- Added a locale handoff between sites. `LOCALE_HANDOFF_QUERY`, the `setlang` query parameter, tells a site which locale the visitor is reading in right now. The boot script honours it whatever the url strategy is, writes it to storage and the cookie so it sticks, and removes it from the url so the address stays clean and sharing it cannot force a language on someone else.
+- `setlang` is deliberately not `lang`. A `lang` url is a view of a page, so a visitor's own saved choice still outranks it, exactly as before, and that is now covered by a test rather than left implicit. A handoff is a live statement from a sibling site as the visitor follows a link, so it outranks the saved choice and replaces it.
+- This is what a group of sites on separate origins needs: browser storage is per origin, and a cookie set on one domain does not reach another, so without a handoff the language was lost on every hop between sites.
+
 ## 13.23.0
 
 - `EmbedFrame` splits its failure state into a fixed headline and the reason on its own line beneath it, instead of running both into one sentence.

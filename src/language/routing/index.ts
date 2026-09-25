@@ -1,4 +1,4 @@
-export { createLocaleBootScript } from "./boot.js";
+export { createLocaleBootScript, LOCALE_HANDOFF_QUERY } from "./boot.js";
 export type { LocaleBootOptions } from "./boot.js";
 export { createLocaleDocumentBody } from "./document.js";
 export { createLocaleShellRoutes } from "./shell.js";
