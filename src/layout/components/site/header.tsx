@@ -24,7 +24,7 @@ type SiteHeaderSurface = "solid" | "transparent" | "blurred";
 type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   actions?: ReactNode;
   brand: ReactNode;
-  brandHref?: string;
+  brandHref?: false | string;
   closeIcon?: ReactNode;
   labels?: SiteHeaderLabels;
   links?: SiteHeaderLink[];
@@ -70,6 +70,28 @@ function SiteHeaderLinks(props: {
 
 function closeOnLink(event: MouseEvent<HTMLElement>, close: () => void) {
   if (event.target instanceof Element && event.target.closest("a[href]")) close();
+}
+
+function SiteHeaderBrand(props: {
+    brand: ReactNode;
+    brandHref: false | string;
+    labels?: SiteHeaderLabels;
+    softRedirect?: boolean;
+}) {
+  const className = frontendElementClass(block, "brand");
+  if (props.brandHref === false) {
+    return <div className={className}>{props.brand}</div>;
+  }
+  return (
+    <a
+    aria-label={props.labels?.home}
+    className={className}
+    href={props.brandHref}
+    {...frontendDataAttrs({ "soft-redirect": props.softRedirect ? "" : undefined })}
+    >
+    {props.brand}
+    </a>
+  );
 }
 
 function SiteHeaderBurger() {
@@ -145,14 +167,12 @@ function SiteHeader(props: SiteHeaderProps) {
     ref={state.headerRef}
     >
     <div className={frontendElementClass(block, "bar")}>
-    <a
-    aria-label={labels?.home}
-    className={frontendElementClass(block, "brand")}
-    href={brandHref}
-    {...frontendDataAttrs({ "soft-redirect": softRedirect ? "" : undefined })}
-    >
-    {brand}
-    </a>
+    <SiteHeaderBrand
+    brand={brand}
+    brandHref={brandHref}
+    labels={labels}
+    softRedirect={softRedirect}
+    />
     {links.length ? (
         <nav aria-label={labels?.navigation} className={frontendElementClass(block, "nav")}>
         <SiteHeaderLinks element="link" links={links} softRedirect={softRedirect} />
