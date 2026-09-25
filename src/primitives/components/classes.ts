@@ -2,7 +2,8 @@ import { appendClassName, joinClassNames, toText } from "./shared.js";
 
 type PrimitiveGap = "2xs" | "lg" | "md" | "sm" | "xs" | "xs2";
 type PrimitiveButtonSize = "lg" | "md" | "sm";
-type PrimitiveButtonTone = "green" | "highlight" | "red" | "yellow";
+type PrimitiveStatusTone = "green" | "highlight" | "red" | "yellow";
+type PrimitiveButtonTone = PrimitiveStatusTone | "inverse";
 type PrimitiveTextSize = "lg" | "md" | "sm" | "xs";
 type PrimitiveGridAuto = "lg" | "md" | "sm";
 type PrimitivePadding = "lg" | "md" | "sm" | "xs";
@@ -19,7 +20,7 @@ type PrimitiveButtonClassOptions = {
 };
 
 type PrimitiveInputSize = "lg" | "md" | "sm";
-type PrimitiveInputTone = PrimitiveButtonTone;
+type PrimitiveInputTone = PrimitiveStatusTone;
 
 type PrimitiveInputClassOptions = {
   className?: unknown;

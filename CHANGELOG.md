@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.26.0
+
+- `Button` gained an `inverse` tone. The existing tones (`green`, `highlight`, `red`, `yellow`) are all status colours, so a site that wants the ordinary "solid button in the text colour" had no way to ask for it and ended up hand-writing the rule. `tone="inverse"` fills the button with `--tbf-text` and sets its label to `--tbf-page`, so it inverts with the theme instead of hard-coding black on white.
+- It is tokenised like every other tone: `--tbf-ui-btn-tone-inverse-bg`, `-color`, `-border`, `-icon` and the matching `-state-hover-*` set.
+- `PrimitiveInputTone` no longer aliases `PrimitiveButtonTone`. The two unions had been the same type, so adding a button-only tone would have let `Input` accept a value it has no styles for. Inputs now reference the status tones directly, which is what they always meant.
+
 ## 13.25.0
 
 - `SiteHeader` gained a `surface` prop: `"solid"` (the default, unchanged), `"transparent"` or `"blurred"`. It emits `data-tbf-site-header-surface` and the stylesheet applies the chosen surface to the header root **and** its mobile menu in the same rule, so the menu can no longer end up a different material from the bar it hangs off. `"blurred"` is a translucent tint plus `backdrop-filter`, not an opaque fill: a header over a dark hero stays dark, because the page shows through rather than being painted over.
