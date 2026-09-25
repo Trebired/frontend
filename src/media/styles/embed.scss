@@ -35,6 +35,17 @@
   line-height: 1.6;
 }
 
+#{ns.class("embed-frame-headline")} {
+  color: var(--text-color, var(#{ns.css-var("text")}, currentColor));
+  font-weight: 600;
+}
+
+#{ns.class("embed-frame-reason")} {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
 #{ns.class("embed-frame-mark")} {
   font-size: 1.9rem;
   line-height: 1;

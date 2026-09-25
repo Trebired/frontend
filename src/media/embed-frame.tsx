@@ -25,7 +25,7 @@ type EmbedFrameProps = {
 };
 
 type EmbedFrameState = "error" | "loading" | "ready";
-type EmbedFrameFailureReason = "blocked" | "timeout";
+type EmbedFrameFailureReason = "offline" | "refused" | "timeout" | "unreachable";
 
 type EmbedRefs = {
   frameRef: React.RefObject<HTMLIFrameElement | null>;
@@ -39,8 +39,21 @@ const DEFAULT_LABELS: Required<EmbedFrameLabels> = {
   loading: "Loading…",
 };
 
-function failureMessage(reason: EmbedFrameFailureReason, lang?: string): string {
-  return sourceLanguageMessage(reason === "blocked" ? "embedFailedBlocked" : "embedFailedTimeout", lang);
+const FAILURE_KEYS: Record<EmbedFrameFailureReason, string> = {
+  offline: "embedFailedOffline",
+  refused: "embedFailedRefused",
+  timeout: "embedFailedTimeout",
+  unreachable: "embedFailedUnreachable",
+};
+
+async function classifyFailure(src: string): Promise<EmbedFrameFailureReason> {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return "offline";
+  try {
+    await fetch(src, { cache: "no-store", mode: "no-cors" });
+    return "refused";
+  } catch {
+    return "unreachable";
+  }
 }
 
 const REMIX_PATHS = {
@@ -81,13 +94,14 @@ function whenDocumentSettled(run: () => void): () => void {
   return () => window.removeEventListener("load", run);
 }
 
-function EmbedStatus({ label, state }: { label: string; state: EmbedFrameState }) {
+function EmbedStatus({ headline, reason }: { headline: string; reason?: string }) {
   return (
     <div className={frontendClassName("embed-frame-status")} role="status">
-    {state === "error"
+    {reason
       ? <RemixIcon name="error-warning-line" className={frontendClassName("embed-frame-mark")} />
       : <div className="loader-circle lg" aria-hidden="true" />}
-    <p>{label}</p>
+    <p className={frontendClassName("embed-frame-headline")}>{headline}</p>
+    {reason ? <p className={frontendClassName("embed-frame-reason")}>{reason}</p> : null}
     </div>
   );
 }
@@ -151,7 +165,9 @@ function bindEmbedLifecycle(
     settle("error", reason);
     clearEmbedSource(refs);
   };
-  const onError = () => fail("blocked");
+  const onError = () => {
+    void classifyFailure(props.src).then(fail);
+  };
   const start = () => {
     if (refs.objectRef.current) refs.objectRef.current.data = props.src;
     if (refs.frameRef.current) refs.frameRef.current.src = props.src;
@@ -202,9 +218,11 @@ export function EmbedFrame(props: EmbedFrameProps) {
   const { failureReason, frameRef, objectRef, state } = useEmbedLifecycle(props);
   const { allowFullScreen, aspectRatio, className, labels, sandbox } = props;
   const lang = useResolvedLang(props.lang);
-  const text = state === "error"
-  ? failureMessage(failureReason, lang)
+  const failed = state === "error";
+  const headline = failed
+  ? sourceLanguageMessage("embedFailed", lang)
   : labels?.loading || DEFAULT_LABELS.loading;
+  const reason = failed ? sourceLanguageMessage(FAILURE_KEYS[failureReason], lang) : undefined;
 
   return (
     <div
@@ -214,7 +232,7 @@ export function EmbedFrame(props: EmbedFrameProps) {
     style={aspectRatio ? { aspectRatio } : undefined}
     >
     <EmbedSurface props={props} refs={{ frameRef, objectRef }} />
-    {state === "ready" ? null : <EmbedStatus label={text} state={state} />}
+    {state === "ready" ? null : <EmbedStatus headline={headline} reason={reason} />}
     {allowFullScreen && typeof sandbox !== "string" && state === "ready" ? (
         <FullscreenButton
         label={labels?.fullscreen || DEFAULT_LABELS.fullscreen}
