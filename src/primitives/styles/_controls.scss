@@ -91,6 +91,25 @@
     }
   }
 
+  &.inverse {
+    --button-icon-color: var(#{ns.css-var("ui-btn-tone-inverse-icon")}, currentColor);
+    background: var(#{ns.css-var("ui-btn-tone-inverse-bg")}, var(#{ns.css-var("text")}, currentColor));
+    color: var(#{ns.css-var("ui-btn-tone-inverse-color")}, var(#{ns.css-var("page")}, canvas));
+    border-color: var(#{ns.css-var("ui-btn-tone-inverse-border")}, transparent);
+
+    &:hover,
+    &[aria-pressed="true"],
+    &#{ns.data("active", "true")} {
+      --button-icon-color: var(#{ns.css-var("ui-btn-tone-inverse-state-hover-icon")}, currentColor);
+      background: var(
+        #{ns.css-var("ui-btn-tone-inverse-state-hover-bg")},
+        color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 88%, var(#{ns.css-var("page")}, canvas))
+      );
+      border-color: var(#{ns.css-var("ui-btn-tone-inverse-state-hover-border")}, transparent);
+      color: var(#{ns.css-var("ui-btn-tone-inverse-state-hover-color")}, var(#{ns.css-var("page")}, canvas));
+    }
+  }
+
   &.red {
     border-inline-color: var(#{ns.css-var("ui-btn-tone-red-inline-border")}, currentColor);
 
