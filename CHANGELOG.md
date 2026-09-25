@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.21.1
+
+- `EmbedFrame` no longer blanks an embed that has already loaded. The timeout fired regardless of the state it found, so it cleared the source of a working embed once the deadline passed. It is cancelled on load and returns early if the state has settled.
+
 ## 13.21.0
 
 - `EmbedFrame` now renders the embed in an `<object type="text/html">` instead of an `<iframe>`, so a refused embed raises an `error` event and the component shows its own failure state. An `<iframe>` gives the embedding page nothing to act on: a document blocked by `frame-ancestors` or `X-Frame-Options` fires `load` exactly like a successful one, and `contentWindow.location`, `contentDocument` and `origin` throw in both cases, so the browser's own "refused to connect" page was the only thing a visitor ever saw.
