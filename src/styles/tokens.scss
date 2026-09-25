@@ -67,6 +67,8 @@
   #{ns.css-var("z-modal")}: var(--z-modal, var(--z-index-md, 1010));
   #{ns.css-var("z-floating-ui")}: var(--z-floating-ui, var(--z-index-lg, 1020));
   #{ns.css-var("z-tooltip")}: var(--z-tooltip, var(--z-index-xl, 1100));
+  #{ns.css-var("runtime-progress-color")}: var(--progress-color, var(#{ns.css-var("focus")}, #000));
+  #{ns.css-var("runtime-progress-color-inverse")}: var(--progress-color-inverse, var(#{ns.css-var("page")}, #fff));
   #{ns.css-var("z-progress")}: var(--z-progress, 99999);
   #{ns.css-var("z-confetti")}: var(--z-confetti, 99998);
 }
