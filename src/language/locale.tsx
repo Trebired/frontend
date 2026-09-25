@@ -101,13 +101,29 @@ function localeOptionIcon(option: LocaleOption) {
   );
 }
 
+function localeTriggerFace(props: LocaleSwitcherProps, current: string) {
+  if (props.trigger !== "locale") return <Icon spec="remixicon translate-2" />;
+  const locales = Array.isArray(props.locales) && props.locales.length ? props.locales : DEFAULT_LOCALES;
+  const active = locales.find((entry) => normalizedLang(entry.code) === current) || locales[0];
+  if (!active) return <Icon spec="remixicon translate-2" />;
+  return (
+    <>
+    {localeOptionIcon(active)}
+    <span className={frontendClassName("locale-code")}>
+    {text(active.shortLabel, active.code).slice(0, 3).toUpperCase()}
+    </span>
+    </>
+  );
+}
+
 function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitcherProps) {
   const current = normalizedLang(props.lang);
+  const locale = props.trigger === "locale";
   return button({
       type: "button",
       className: props.className,
-      icon: true,
-      tooltip: true,
+      icon: !locale,
+      tooltip: !locale,
       id: triggerId,
       "aria-controls": popoverId,
       "aria-haspopup": "menu",
@@ -115,7 +131,7 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
       "aria-label": translate(current, "label"),
       [frontendDataAttr("popover-trigger")]: "",
       title: translate(current, "label"),
-      children: <Icon spec="remixicon translate-2" />,
+      children: localeTriggerFace(props, current),
   });
 }
 

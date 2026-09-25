@@ -9,12 +9,15 @@ type LocaleOption = {
   shortLabel?: string;
 };
 
+type LocaleSwitcherTrigger = "icon" | "locale";
+
 type LocaleSwitcherProps = {
   className?: string;
   endpoint?: string;
   id?: string;
   lang?: string;
   locales?: LocaleOption[];
+  trigger?: LocaleSwitcherTrigger;
 };
 
 type SourceLanguageBucket = "everything" | "repository" | "supporting";
@@ -54,6 +57,7 @@ type SourceLanguageVisualizerProps = {
 export type {
   LocaleOption,
   LocaleSwitcherProps,
+  LocaleSwitcherTrigger,
   SourceLanguageBucket,
   SourceLanguageCardProps,
   SourceLanguageModalProps,
