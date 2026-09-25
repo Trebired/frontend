@@ -144,8 +144,12 @@ function useEmbedLifecycle(props: EmbedFrameProps): EmbedRefs & { state: EmbedFr
         setState(next);
         report.current?.(next);
       };
-      const onLoad = () => settle("ready");
+      const onLoad = () => {
+        window.clearTimeout(timer);
+        settle("ready");
+      };
       const onError = () => {
+        if (settled.current) return;
         settle("error");
         if (objectRef.current) objectRef.current.removeAttribute("data");
         if (frameRef.current) frameRef.current.src = "about:blank";
