@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.29.0
+
+- Fixed the `blurred` header surface: the mobile menu was not blurring anything. The preset put `backdrop-filter` on the header root and again on the menu, but an element with a `backdrop-filter` becomes a backdrop root for its descendants, so the menu's own filter sampled an empty backdrop and did nothing. The page showed through the open menu unblurred and the links were unreadable over busy content.
+- The surface now paints the bar and the menu, which are siblings, and the root carries nothing. Both get the tint, the filter and the edge, so they stay one material without one nesting inside the other's backdrop root.
+- `transparent` is split the same way, and its bar and menu are explicitly cleared rather than relying on the root.
+
 ## 13.28.0
 
 - `SiteHeader` accepts `brandHref={false}`. The brand slot was always wrapped in an `<a href>`, so a header whose brand opens a menu rather than navigating home had to nest a button inside a link: invalid markup, and the click bubbles to the anchor and navigates instead of opening. With `false` the same slot renders as a plain element and the content owns its own interaction.
