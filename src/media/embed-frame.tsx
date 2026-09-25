@@ -25,6 +25,11 @@ type EmbedFrameProps = {
 
 type EmbedFrameState = "error" | "loading" | "ready";
 
+type EmbedRefs = {
+  frameRef: React.RefObject<HTMLIFrameElement | null>;
+  objectRef: React.RefObject<HTMLObjectElement | null>;
+};
+
 const DEFAULT_TIMEOUT_MS = 10000;
 
 const DEFAULT_LABELS: Required<Omit<EmbedFrameLabels, "open">> = {
@@ -32,17 +37,6 @@ const DEFAULT_LABELS: Required<Omit<EmbedFrameLabels, "open">> = {
   fullscreen: "Toggle fullscreen",
   loading: "Loading…",
 };
-
-function whenDocumentSettled(run: () => void): () => void {
-  if (typeof document === "undefined") return () => undefined;
-  if (document.readyState === "complete") {
-    run();
-    return () => undefined;
-  }
-
-  window.addEventListener("load", run, { once: true });
-  return () => window.removeEventListener("load", run);
-}
 
 const REMIX_PATHS = {
   "error-warning-line":
@@ -71,6 +65,17 @@ function RemixIcon({ className, name }: { className?: string; name: RemixIconNam
   );
 }
 
+function whenDocumentSettled(run: () => void): () => void {
+  if (typeof document === "undefined") return () => undefined;
+  if (document.readyState === "complete") {
+    run();
+    return () => undefined;
+  }
+
+  window.addEventListener("load", run, { once: true });
+  return () => window.removeEventListener("load", run);
+}
+
 function EmbedStatus({ label, state }: { label: string; state: EmbedFrameState }) {
   return (
     <div className={frontendClassName("embed-frame-status")} role="status">
@@ -93,9 +98,9 @@ function FullscreenButton({ label, target }: { label: string; target: HTMLElemen
     title={label}
     className={frontendClassName("embed-frame-fullscreen")}
     onClick={() => {
-          if (!target) return;
-          toggleFullscreen(target);
-          setActive((value) => !value);
+        if (!target) return;
+        toggleFullscreen(target);
+        setActive((value) => !value);
     }}
     >
     <RemixIcon name={active ? "fullscreen-exit-line" : "fullscreen-line"} />
@@ -103,56 +108,52 @@ function FullscreenButton({ label, target }: { label: string; target: HTMLElemen
   );
 }
 
-export function EmbedFrame({
-    allowFullScreen,
-    aspectRatio,
-    className,
-    labels,
-    onState,
-    referrerPolicy,
-    sandbox,
-    src,
-    timeoutMs,
-    title,
-}: EmbedFrameProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
+function EmbedSurface({ props, refs }: { props: EmbedFrameProps; refs: EmbedRefs }) {
+  if (typeof props.sandbox === "string") {
+    return (
+      <iframe
+      ref={refs.frameRef}
+      allowFullScreen={props.allowFullScreen}
+      loading="lazy"
+      referrerPolicy={props.referrerPolicy}
+      sandbox={props.sandbox}
+      title={props.title}
+      />
+    );
+  }
+  return <object ref={refs.objectRef} type="text/html" aria-label={props.title} />;
+}
+
+function useEmbedLifecycle(props: EmbedFrameProps): EmbedRefs & { state: EmbedFrameState } {
   const objectRef = useRef<HTMLObjectElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
+  const report = useRef(props.onState);
   const settled = useRef(false);
   const [state, setState] = useState<EmbedFrameState>("loading");
-  const sandboxed = typeof sandbox === "string";
+  const { src, timeoutMs } = props;
 
-  function settle(next: EmbedFrameState) {
-    if (settled.current) return;
-    settled.current = true;
-    setState(next);
-    onState?.(next);
-  }
-
-  function clearSource() {
-    if (objectRef.current) objectRef.current.removeAttribute("data");
-    if (frameRef.current) frameRef.current.src = "about:blank";
-  }
-
+  report.current = props.onState;
   useEffect(() => {
       let timer = 0;
       settled.current = false;
       setState("loading");
-
       const target: HTMLElement | null = objectRef.current || frameRef.current;
+      const settle = (next: EmbedFrameState) => {
+        if (settled.current) return;
+        settled.current = true;
+        setState(next);
+        report.current?.(next);
+      };
       const onLoad = () => settle("ready");
       const onError = () => {
         settle("error");
-        clearSource();
+        if (objectRef.current) objectRef.current.removeAttribute("data");
+        if (frameRef.current) frameRef.current.src = "about:blank";
       };
-
       const start = () => {
         if (objectRef.current) objectRef.current.data = src;
         if (frameRef.current) frameRef.current.src = src;
-        timer = window.setTimeout(() => {
-            if (settled.current) return;
-            onError();
-        }, timeoutMs && timeoutMs > 0 ? timeoutMs : DEFAULT_TIMEOUT_MS);
+        timer = window.setTimeout(onError, timeoutMs && timeoutMs > 0 ? timeoutMs : DEFAULT_TIMEOUT_MS);
       };
 
       target?.addEventListener("load", onLoad);
@@ -166,9 +167,16 @@ export function EmbedFrame({
       };
     }, [src, timeoutMs]);
 
+  return { frameRef, objectRef, state };
+}
+
+export function EmbedFrame(props: EmbedFrameProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { frameRef, objectRef, state } = useEmbedLifecycle(props);
+  const { allowFullScreen, aspectRatio, className, labels, sandbox } = props;
   const text = state === "error"
-    ? labels?.error || DEFAULT_LABELS.error
-    : labels?.loading || DEFAULT_LABELS.loading;
+  ? labels?.error || DEFAULT_LABELS.error
+  : labels?.loading || DEFAULT_LABELS.loading;
 
   return (
     <div
@@ -177,24 +185,9 @@ export function EmbedFrame({
     data-embed-state={state}
     style={aspectRatio ? { aspectRatio } : undefined}
     >
-    {sandboxed ? (
-        <iframe
-        ref={frameRef}
-        allowFullScreen={allowFullScreen}
-        loading="lazy"
-        referrerPolicy={referrerPolicy}
-        sandbox={sandbox}
-        title={title}
-        />
-      ) : (
-        <object
-        ref={objectRef}
-        type="text/html"
-        aria-label={title}
-        />
-      )}
+    <EmbedSurface props={props} refs={{ frameRef, objectRef }} />
     {state === "ready" ? null : <EmbedStatus label={text} state={state} />}
-    {allowFullScreen && !sandboxed && state === "ready" ? (
+    {allowFullScreen && typeof sandbox !== "string" && state === "ready" ? (
         <FullscreenButton
         label={labels?.fullscreen || DEFAULT_LABELS.fullscreen}
         target={rootRef.current}

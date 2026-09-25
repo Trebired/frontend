@@ -7,6 +7,7 @@
 - The status marks are Remix Icon artwork, inlined rather than resolved through the icon runtime so they render on static sites with no icon endpoint. The failure mark is `error-warning-line`.
 - `allowFullScreen` is honoured with a hover-revealed control that fullscreens the embed's own wrapper through the frontend fullscreen system, because `<object>` carries no `allowfullscreen` attribute. `labels.fullscreen` sets its label.
 - Passing `sandbox` keeps the old `<iframe>` element, since `<object>` cannot carry a sandbox. Failure detection is unavailable in that mode.
+- `MapEmbed` no longer sets `referrerPolicy`, which `<object>` does not carry and which only restated the browser default.
 
 ## 13.20.0
 

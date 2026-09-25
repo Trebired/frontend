@@ -48,9 +48,8 @@ function verifyExports(react) {
 
 function verifyMapEmbed(react, render) {
   const html = render(react.MapEmbed, { src: "https://example.test/map", title: "Map" });
-  assert.match(html, /loading="lazy"/u, "map embed must stay lazy");
-  assert.match(html, /referrerpolicy="no-referrer-when-downgrade"/iu, "map embed must keep its referrer policy");
-  assert.match(html, /title="Map"/u);
+  assert.match(html, /<object/u, "map embed must render an object, the only element that reports a refused embed");
+  assert.match(html, /aria-label="Map"/u, "the embed surface must carry its title");
 }
 
 function verifyEmbedFrame(react, render) {
@@ -62,6 +61,13 @@ function verifyEmbedFrame(react, render) {
 
   const labelled = render(react.EmbedFrame, { labels: { loading: "Nahr\u00e1v\u00e1m" }, src: "https://example.test/x", title: "X" });
   assert.match(labelled, /Nahr\u00e1v\u00e1m/u, "labels must override the built-in strings");
+
+  assert.match(html, /<object/u, "the default surface must be an object, which raises error when an embed is refused");
+  assert.doesNotMatch(html, /<iframe/u, "an iframe reports a refused embed as a successful load, so it must not be the default");
+
+  const sandboxed = render(react.EmbedFrame, { sandbox: "allow-scripts", src: "https://example.test/s", title: "S" });
+  assert.match(sandboxed, /<iframe/u, "sandbox must fall back to an iframe, since object carries no sandbox attribute");
+  assert.match(sandboxed, /sandbox="allow-scripts"/u, "the sandbox value must reach the element");
 }
 
 function verifyCarouselMarkup(react, render) {
