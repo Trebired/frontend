@@ -50,7 +50,7 @@
   width: 2rem;
   height: 2rem;
   border: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid
-    var(--border-surface-1, var(#{ns.css-var("border")}, currentColor));
+  var(--border-surface-1, var(#{ns.css-var("border")}, currentColor));
   border-radius: 999px;
   background: var(--background-surface-1, var(#{ns.css-var("surface")}, transparent));
   color: inherit;
@@ -60,11 +60,13 @@
 }
 
 #{ns.class("embed-frame")}:hover #{ns.class("embed-frame-fullscreen")},
+
 #{ns.class("embed-frame")}:focus-within #{ns.class("embed-frame-fullscreen")} {
   opacity: 0.8;
 }
 
 #{ns.class("embed-frame-fullscreen")}:hover,
+
 #{ns.class("embed-frame-fullscreen")}:focus-visible {
   opacity: 1;
 }
