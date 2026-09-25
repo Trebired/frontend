@@ -90,6 +90,15 @@ function verifyIndexableRoutes(api) {
   assert.equal(runBootScript(query, { search: "?lang=cs" }).lang, "cs", "a query locale url must render in its locale");
   assert.equal(runBootScript(query, { languages: ["cs-CZ"] }).lang, "en", "query urls must not follow the browser language");
   assert.equal(runBootScript(query, { search: "?lang=en", stored: "cs" }).lang, "cs", "a saved choice must win over the url");
+  const prefix = api.createLocaleBootScript(ROUTING, { strategy: "prefix" });
+  assert.equal(runBootScript(prefix, { search: "?setlang=cs" }).lang, "cs",
+  "a handoff must be honoured whatever the url strategy is");
+  assert.equal(runBootScript(prefix, { search: "?setlang=cs", stored: "en" }).lang, "cs",
+  "a handoff is a live statement of what the visitor is reading, so it outranks the saved choice");
+  assert.equal(runBootScript(query, { search: "?lang=en", stored: "cs" }).lang, "cs",
+  "a plain lang url must still lose to the saved choice");
+  assert.match(prefix, /searchParams\.delete/u, "the handoff must be taken out of the url once applied");
+
   const queried = api.createLocaleShellRoutes({ ...options, strategy: "query" });
   assert.deepEqual(queried.map((route) => route.path), ["/", "/about"], "query urls share the default document");
 }
