@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.22.0
+
+- `EmbedFrame`'s failure text is no longer something a caller can set. `labels.error` is removed from `EmbedFrameLabels`; a refused or unresponsive embed now shows one of two fixed, translated messages owned by the package itself, distinguishing why it failed: `embedFailedBlocked` when the content raised an error (a CSP `frame-ancestors` or `X-Frame-Options` refusal, or a genuine connection failure) and `embedFailedTimeout` when it never responded within the deadline. The unused `labels.open` field is removed as well; nothing ever read it.
+- Added a `lang` prop, resolved the same way `Carousel` resolves its `lang` (an explicit prop, falling back to the ambient locale context), so the fixed failure text renders in the visitor's language instead of always in English.
+- `loading` and `fullscreen` stay overridable through `labels`, since those describe the host page's own wording, not the reason an embed failed.
+- `MapEmbed` gained the same `lang` prop and passes it straight through.
+
 ## 13.21.1
 
 - `EmbedFrame` no longer blanks an embed that has already loaded. The timeout fired regardless of the state it found, so it cleared the source of a working embed once the deadline passed. It is cancelled on load and returns early if the state has settled.
