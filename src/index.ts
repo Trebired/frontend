@@ -27,7 +27,7 @@ import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
-import { bindProgress, type ProgressHandle } from "./progress/index.js";
+import { bindProgress, type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
 import { bindTooltips } from "./tooltip/index.js";
@@ -56,6 +56,7 @@ type FrontendRuntimeOptions = {
   layout?: LayoutRuntimeOptions;
   locale?: LocaleRuntimeOptions;
   observe?: boolean;
+  progress?: ProgressBindOptions;
   quiet?: boolean;
   sidebar?: SidebarRuntimeOptions;
   sourceLanguage?: SourceLanguageRuntimeOptions;
@@ -130,7 +131,7 @@ function bindFrontendWidgets(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
-  runBindStep(logger, "progress", () => bindProgress());
+  runBindStep(logger, "progress", () => bindProgress(options.progress || {}));
   runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
   runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
   runBindStep(logger, "sourceLanguage", () => bindSourceLanguageRuntime(scope, options.sourceLanguage || {}));

@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.25.0
+
+- `SiteHeader` gained a `surface` prop: `"solid"` (the default, unchanged), `"transparent"` or `"blurred"`. It emits `data-tbf-site-header-surface` and the stylesheet applies the chosen surface to the header root **and** its mobile menu in the same rule, so the menu can no longer end up a different material from the bar it hangs off. `"blurred"` is a translucent tint plus `backdrop-filter`, not an opaque fill: a header over a dark hero stays dark, because the page shows through rather than being painted over.
+- The tint and the filter are tokens, `--tbf-shell-header-surface-bg`, `--tbf-shell-header-surface-backdrop-filter` and `--tbf-shell-header-surface-border-color`, so a site that wants a dark material sets the tint rather than forking the component. The default tint is 12% of `--tbf-page`, which is low enough that it does not force the header light.
+- The page-load progress bar can be inverted. It resolved to one colour forever, which is only ever right on half a site: a bar fixed to the top of the viewport sits over whatever the header sits over, so a black bar disappears on a dark page. `--tbf-runtime-progress-color` (`--progress-color`, defaulting to the focus colour) is now paired with `--tbf-runtime-progress-color-inverse` (`--progress-color-inverse`, defaulting to the page colour), and `data-tbf-progress-inverse="true"` on the progress root selects the second.
+- The attribute is driven by `progress.setInverse(on)` / `progress.inverse()`, exported as `setProgressInverse` and `readProgressInverse`, or set once at boot through `bindProgress({ inverse })` and the new `progress` field on the frontend runtime options. The bar transitions its colour, so flipping it mid-navigation does not flash.
+
 ## 13.24.0
 
 - Added a locale handoff between sites. `LOCALE_HANDOFF_QUERY`, the `setlang` query parameter, tells a site which locale the visitor is reading in right now. The boot script honours it whatever the url strategy is, writes it to storage and the cookie so it sticks, and removes it from the url so the address stays clean and sharing it cannot force a language on someone else.

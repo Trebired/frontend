@@ -1,6 +1,7 @@
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
 
 const PROGRESS_ID = `${FRONTEND_PREFIX}_progress`;
+const PROGRESS_INVERSE_ATTR = frontendDataAttr("progress-inverse");
 const MAX_UPLOAD_PROGRESS = 0.95;
 const FETCH_PROGRESS_WRAPPED = "__tbfProgressWrapped";
 
@@ -8,11 +9,16 @@ type ProgressHandle = {
   begin: () => number;
   boot: () => HTMLElement | null;
   end: (force?: boolean) => number;
+  inverse: () => boolean;
   set: (value: number) => number;
   setFromProgressEvent: (event: ProgressEvent) => number;
+  setInverse: (inverse: boolean) => boolean;
 };
 type PageLoadProgressOptions = {
   minVisibleMs?: number;
+};
+type ProgressBindOptions = PageLoadProgressOptions& {
+  inverse?: boolean;
 };
 type ProgressFetchInit = RequestInit& {
   progress?: boolean;
@@ -41,6 +47,18 @@ function ensureProgressElement() {
   root.innerHTML = `<span class="${frontendElementClass("progress", "bar")}"></span>`;
   document.body.appendChild(root);
   return root;
+}
+
+function readProgressInverse() {
+  const root = ensureProgressElement();
+  return root?.getAttribute(PROGRESS_INVERSE_ATTR) === "true";
+}
+
+function setProgressInverse(inverse: boolean) {
+  const next = inverse === true;
+  const root = ensureProgressElement();
+  if (root) root.setAttribute(PROGRESS_INVERSE_ATTR, next ? "true" : "false");
+  return next;
 }
 
 function progressBar() {
@@ -195,10 +213,11 @@ function bindFetchProgress() {
   return true;
 }
 
-function bindProgress() {
+function bindProgress(options: ProgressBindOptions = {}) {
   ensureProgressElement();
+  if (typeof options.inverse === "boolean") setProgressInverse(options.inverse);
   bindFetchProgress();
-  bootPageLoadProgress();
+  bootPageLoadProgress(options);
   return progress;
 }
 
@@ -206,22 +225,27 @@ const progress: ProgressHandle = Object.freeze({
     begin: beginProgress,
     boot: ensureProgressElement,
     end: endProgress,
+    inverse: readProgressInverse,
     set: setProgress,
     setFromProgressEvent: setProgressFromEvent,
+    setInverse: setProgressInverse,
 });
 
 export {
   MAX_UPLOAD_PROGRESS,
   PROGRESS_ID,
+  PROGRESS_INVERSE_ATTR,
   beginProgress,
   bindFetchProgress,
   bindProgress,
   bootPageLoadProgress,
   endProgress,
   progress,
+  readProgressInverse,
   setProgress,
   setProgressFromEvent,
+  setProgressInverse,
   stripProgressFetchOptions,
 };
-export type { PageLoadProgressOptions, ProgressFetchInit, ProgressHandle };
+export type { PageLoadProgressOptions, ProgressBindOptions, ProgressFetchInit, ProgressHandle };
 export *from "./bars.js";
