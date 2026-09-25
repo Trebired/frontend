@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.28.0
+
+- `SiteHeader` accepts `brandHref={false}`. The brand slot was always wrapped in an `<a href>`, so a header whose brand opens a menu rather than navigating home had to nest a button inside a link: invalid markup, and the click bubbles to the anchor and navigates instead of opening. With `false` the same slot renders as a plain element and the content owns its own interaction.
+- The anchor path is unchanged and still the default, including its `aria-label` from `labels.home` and the soft-redirect attribute.
+
 ## 13.27.0
 
 - `LocaleSwitcher` gained a `trigger` prop. The default, `"icon"`, is unchanged: a translate glyph in an icon button. `"locale"` renders the current locale's own face instead — its flag and short code — which is what a public site's language control usually looks like, and which previously could only be had by not using the component.
