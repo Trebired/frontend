@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.23.0
+
+- `EmbedFrame` splits its failure state into a fixed headline and the reason on its own line beneath it, instead of running both into one sentence.
+- The failure reason is now one of four rather than two. Pairing the element's `error` event with a `no-cors` probe of the same URL separates a server that answered but will not be framed (CSP `frame-ancestors`, `X-Frame-Options`, or a 404) from one that could not be reached at all (closed port, bad DNS, TLS failure); `navigator.onLine` splits off the case where the visitor is simply offline; and a deadline with no event at all stays the timeout. The keys are `embedFailedRefused`, `embedFailedUnreachable`, `embedFailedOffline` and `embedFailedTimeout`, under the shared `embedFailed` headline.
+- `embedFailedBlocked` is removed. It carried the wording "This content refused to load here", which was both vague about the cause and untrue for an unreachable host.
+- The Czech strings for these keys carry their diacritics. The rest of the shared message table is written without them, which is wrong for text this visible on a public page.
+
 ## 13.22.0
 
 - `EmbedFrame`'s failure text is no longer something a caller can set. `labels.error` is removed from `EmbedFrameLabels`; a refused or unresponsive embed now shows one of two fixed, translated messages owned by the package itself, distinguishing why it failed: `embedFailedBlocked` when the content raised an error (a CSP `frame-ancestors` or `X-Frame-Options` refusal, or a genuine connection failure) and `embedFailedTimeout` when it never responded within the deadline. The unused `labels.open` field is removed as well; nothing ever read it.
