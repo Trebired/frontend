@@ -129,7 +129,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   align-items: center;
   justify-content: center;
   padding: 0;
-  margin-inline-end: -0.5rem;
+  margin-inline-end: token("toggle-offset", -0.5rem);
   border: 0;
   border-radius: token("toggle-radius", 0.5rem);
   color: token("toggle-color", inherit);

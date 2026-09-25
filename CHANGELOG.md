@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.30.0
+
+- The site header's menu toggle pulls itself toward the container edge with a negative margin for optical alignment. That is now the `--tbf-shell-header-toggle-offset` token instead of a hard-coded value, so a site whose own rules forbid margins can set it to `0` from config rather than writing an override it is not allowed to write.
+
 ## 13.29.0
 
 - Fixed the `blurred` header surface: the mobile menu was not blurring anything. The preset put `backdrop-filter` on the header root and again on the menu, but an element with a `backdrop-filter` becomes a backdrop root for its descendants, so the menu's own filter sampled an empty backdrop and did nothing. The page showed through the open menu unblurred and the links were unreadable over busy content.
