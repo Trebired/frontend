@@ -60,7 +60,18 @@ function verifyEmbedFrame(react, render) {
   assert.match(html, /role="status"/u, "the embed status must be announced");
 
   const labelled = render(react.EmbedFrame, { labels: { loading: "Nahr\u00e1v\u00e1m" }, src: "https://example.test/x", title: "X" });
-  assert.match(labelled, /Nahr\u00e1v\u00e1m/u, "labels must override the built-in strings");
+  assert.match(labelled, /Nahr\u00e1v\u00e1m/u, "the loading label must still override the built-in string");
+
+  const noErrorOverride = render(react.EmbedFrame, {
+      labels: { error: "custom text a caller must not be able to set" },
+      src: "https://example.test/y",
+      title: "Y",
+  });
+  assert.doesNotMatch(
+    noErrorOverride,
+    /custom text a caller must not be able to set/u,
+    "the failure text is fixed and reason-based, not something a caller can override",
+  );
 
   assert.match(html, /<object/u, "the default surface must be an object, which raises error when an embed is refused");
   assert.doesNotMatch(html, /<iframe/u, "an iframe reports a refused embed as a successful load, so it must not be the default");
