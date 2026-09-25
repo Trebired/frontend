@@ -276,7 +276,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 
 #{ns.data("site-header-surface", "transparent")},
 
-#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "menu")} {
+#{ns.data("site-header-surface", "blurred")} {
   border-block-end-color: token("surface-border-color", transparent);
   background: transparent;
   backdrop-filter: none;
@@ -284,12 +284,22 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   box-shadow: none;
 }
 
-#{ns.data("site-header-surface", "blurred")},
+#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "bar")},
+
+#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "menu")} {
+  border-block-end-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+#{ns.data("site-header-surface", "blurred")} #{ns.element-class("site-header", "bar")},
 
 #{ns.data("site-header-surface", "blurred")} #{ns.element-class("site-header", "menu")} {
-  border-block-end-color: token(
-    "surface-border-color",
-    color-mix(in srgb, currentColor 12%, transparent)
+  border-block-end: token(
+    "surface-border",
+    var(#{ns.css-var("border-width")}, 1px) solid token("surface-border-color", color-mix(in srgb, currentColor 12%, transparent))
   );
   background: token(
     "surface-bg",
