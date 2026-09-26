@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.42.0
+
+- A hairline cell now rescopes `text-muted` to its own surface. The cell already set its own text colour, but muted text inside it still resolved against whatever surface the panel sat on — so a light cell inside an inverted section rendered its muted text in the inverted palette and disappeared.
+
 ## 13.41.0
 
 - The locale switcher's `trigger="locale"` face is now a real component with its own tokens (`shell.language.trigger`: gap, height, padding, border colour, radius, font size and weight). It was an unstyled button that every site had to re-dress with its own class to get a compact chip, and the code badge inside it needed a second override to undo the standalone chip styling.
