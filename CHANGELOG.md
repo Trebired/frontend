@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.37.0
+
+- Added the `text-outline` utility: text drawn as an outline, with the glyph interiors letting the background through. Sites were hand-rolling this with `-webkit-text-stroke` plus a `paint-order` guard and their own fallback, which is easy to get wrong \u2014 without `paint-order: stroke fill` the stroke is painted centred on the glyph edge and eats half the letterform.
+- It is tokenised through `components.typography.outline`: `width`, `color` (defaults to `currentColor`), `fill` (the interior, transparent by default) and `fallback`, the flat colour used where `-webkit-text-stroke` or `paint-order` is unsupported. The fallback is the base declaration and the stroke is applied inside `@supports`, so a browser without either still gets readable text rather than an invisible one.
+
 ## 13.36.0
 
 - The locale switcher's code chip follows the colour it sits in. It was `color: var(--text-color-muted)` with a `--border-surface-1` border, both fixed to the page's own palette, so a switcher placed on an inverted surface such as a dark site header rendered the code in mid grey against a dark background and the chip was close to unreadable. Both are now mixed from `currentColor`, which keeps the muted look relative to the trigger and works on any background.
