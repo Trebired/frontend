@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.43.0
+
+- Added `SiteFooter`, the counterpart to `SiteHeader`. It takes a `brand`, a `tagline`, `columns` of headed link lists and a `note` row, lays them out as a brand block beside an auto-fitting column grid, and carries `tone="muted" | "inverse"` — the inverse tone rescoping `text-muted` the way `Section` does. The package shipped a header but left every site to rebuild the footer, which is the same shape on all of them: a mark, a line of copy, two to four link columns and a copyright row.
+
 ## 13.42.0
 
 - A hairline cell now rescopes `text-muted` to its own surface. The cell already set its own text colour, but muted text inside it still resolved against whatever surface the panel sat on — so a light cell inside an inverted section rendered its muted text in the inverted palette and disappeared.

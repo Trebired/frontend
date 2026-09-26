@@ -2,6 +2,7 @@
 @use "./chrome";
 @use "./breadcrumb";
 @use "./site-header";
+@use "./site-footer";
 
 :root {
   #{ns.css-var("layout-top-offset")}: 0px;
