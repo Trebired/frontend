@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.39.0
+
+- Added the padding utilities `padding-xs2` through `padding-lg`, their `padding-block-*`, `padding-top-*` and `padding-bottom-*` forms, plus `width-full`, `radius-md` and `radius-sm`. The package had margin utilities (`mt-*`, `ml-*`) and gap utilities but no padding ones, so every consuming site wrote a class per padded box — and the package's own graph shell, code block, editor surface and file explorer already set `padding-sm`, `padding-xs`, `width-full` and `radius-md` on elements, class names that were defined nowhere and therefore did nothing.
+
 ## 13.38.0
 
 - `text-outline` draws its outline with a ring of `text-shadow` offsets instead of `-webkit-text-stroke`. A stroke is applied to every contour of a glyph, including the internal ones a filled glyph hides, so in a display face whose letters are drawn as overlapping shapes — a bowl laid over a stem, a crossbar laid over two diagonals — the seams showed as stray strokes inside the letterform. The ring is painted behind the glyph and only the merged silhouette shows, which is what an outlined letter should look like.
