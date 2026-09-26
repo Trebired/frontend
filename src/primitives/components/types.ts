@@ -23,8 +23,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>&PrimitiveAttrs& {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
   active?: boolean;
+  href?: string;
   icon?: boolean;
+  rel?: string;
   size?: PrimitiveButtonSize;
+  softRedirect?: boolean;
+  target?: string;
   tone?: PrimitiveButtonTone;
   tooltip?: boolean | string;
   transparent?: boolean;
