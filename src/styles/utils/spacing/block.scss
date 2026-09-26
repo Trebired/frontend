@@ -58,3 +58,63 @@
 .mb-lg {
   margin-bottom: var(#{ns.css-var("gap-lg")});
 }
+
+.padding-xs2 {
+  padding: var(#{ns.css-var("gap-xs2")});
+}
+
+.padding-xs {
+  padding: var(#{ns.css-var("gap-xs")});
+}
+
+.padding-sm {
+  padding: var(#{ns.css-var("gap-sm")});
+}
+
+.padding-md {
+  padding: var(#{ns.css-var("gap-md")});
+}
+
+.padding-lg {
+  padding: var(#{ns.css-var("gap-lg")});
+}
+
+.padding-block-sm {
+  padding-block: var(#{ns.css-var("gap-sm")});
+}
+
+.padding-block-md {
+  padding-block: var(#{ns.css-var("gap-md")});
+}
+
+.padding-block-lg {
+  padding-block: var(#{ns.css-var("gap-lg")});
+}
+
+.padding-top-md {
+  padding-top: var(#{ns.css-var("gap-md")});
+}
+
+.padding-top-lg {
+  padding-top: var(#{ns.css-var("gap-lg")});
+}
+
+.padding-bottom-md {
+  padding-bottom: var(#{ns.css-var("gap-md")});
+}
+
+.padding-bottom-lg {
+  padding-bottom: var(#{ns.css-var("gap-lg")});
+}
+
+.width-full {
+  width: 100%;
+}
+
+.radius-md {
+  border-radius: var(#{ns.css-var("radius")}, 0);
+}
+
+.radius-sm {
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+}
