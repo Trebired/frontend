@@ -37,6 +37,15 @@ $frontend-hor-alignments: (
   justify-content: space-between;
 }
 
+.wrap {
+  flex-wrap: wrap;
+}
+
+.ver-top {
+  display: flex;
+  align-items: flex-start;
+}
+
 .ver-center {
   display: flex;
   align-items: center;
