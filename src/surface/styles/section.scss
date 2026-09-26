@@ -1,0 +1,48 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("section")} {
+  padding-block: var(#{ns.css-var("surf-section-root-py")}, var(#{ns.css-var("gap-lg")}, 40px));
+  color: var(#{ns.css-var("surf-section-root-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-section-root-bg")}, var(#{ns.css-var("page")}, #fff));
+}
+
+#{ns.data("section-tone", "muted")} {
+  border-block-start: var(
+    #{ns.css-var("surf-section-tone-muted-border")},
+    var(--border-width, 1px) solid var(#{ns.css-var("border")}, #000)
+  );
+  background: var(
+    #{ns.css-var("surf-section-tone-muted-bg")},
+    color-mix(in srgb, var(#{ns.css-var("surface-muted")}, #eee) 45%, var(#{ns.css-var("page")}, #fff))
+  );
+}
+
+#{ns.data("section-tone", "inverse")} {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-section-tone-inverse-text-muted")},
+    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 62%, transparent)
+  );
+  border-block-start: var(
+    #{ns.css-var("surf-section-tone-inverse-border")},
+    var(--border-width, 1px) solid var(#{ns.css-var("border")}, #000)
+  );
+  color: var(#{ns.css-var("surf-section-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-section-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+}
+
+#{ns.data("section-flush", "true")} {
+  padding-block: 0;
+}
+
+@media (min-width: 768px) {
+  #{ns.class("section")} {
+    padding-block: var(
+      #{ns.css-var("surf-section-root-py-lg")},
+      var(#{ns.css-var("surf-section-root-py")}, var(#{ns.css-var("gap-lg")}, 40px))
+    );
+  }
+
+  #{ns.data("section-flush", "true")} {
+    padding-block: 0;
+  }
+}

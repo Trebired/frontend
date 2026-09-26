@@ -7,7 +7,7 @@ import type {
 import { classNames } from "#ndsvdqv80epr";
 import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
-import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { HeadingScope } from "#7ly3b59upz0n";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -22,6 +22,23 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 type CardProps = HTMLAttributes<HTMLDivElement> & {
   interactive?: boolean;
   tone?: SurfaceTone;
+};
+
+type HairlinePanelProps = HTMLAttributes<HTMLElement> & {
+  as?: "div" | "dl" | "ul";
+  min?: string;
+};
+
+type HairlineCellProps = HTMLAttributes<HTMLElement> & {
+  align?: "center" | "start";
+  as?: "article" | "div" | "li" | "section";
+  interactive?: boolean;
+  invert?: boolean;
+};
+
+type SectionProps = HTMLAttributes<HTMLElement> & {
+  flush?: boolean;
+  tone?: "inverse" | "muted";
 };
 
 type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
@@ -95,6 +112,49 @@ function CardFooter(props: HTMLAttributes<HTMLDivElement>) {
   return <div {...rest} className={classNames(frontendElementClass("card", "footer"), className)}>{children}</div>;
 }
 
+function HairlinePanel(props: HairlinePanelProps) {
+  const { as: Tag = "div", children, className, min, style, ...rest } = props;
+  const minStyle = min ? { [`--${FRONTEND_PREFIX}-surf-hairline-root-min`]: min } : undefined;
+  return (
+    <Tag
+    {...rest}
+    className={classNames(frontendClassName("hairline"), className)}
+    style={minStyle ? { ...minStyle, ...style } : style}
+    >
+    {children}
+    </Tag>
+  );
+}
+
+function HairlineCell(props: HairlineCellProps) {
+  const { align, as: Tag = "div", children, className, interactive, invert, ...rest } = props;
+  return (
+    <Tag
+    {...rest}
+    className={classNames(frontendElementClass("hairline", "cell"), className)}
+    {...frontendDataAttrs({ "hairline-align": align === "center" ? "center" : undefined })}
+    {...frontendDataAttrs({ "hairline-interactive": interactive ? "true" : undefined })}
+    {...frontendDataAttrs({ "hairline-invert": invert ? "true" : undefined })}
+    >
+    {children}
+    </Tag>
+  );
+}
+
+function Section(props: SectionProps) {
+  const { children, className, flush, tone, ...rest } = props;
+  return (
+    <section
+    {...rest}
+    className={classNames(frontendClassName("section"), className)}
+    {...frontendDataAttrs({ "section-flush": flush ? "true" : undefined })}
+    {...frontendDataAttrs({ "section-tone": tone })}
+    >
+    {children}
+    </section>
+  );
+}
+
 function CanvasPanel(props: CanvasPanelProps) {
   const { actions, children, className, fullscreenId, subtitle, title, ...rest } = props;
   const body = (
@@ -123,5 +183,5 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
   );
 }
 
-export { Button, CanvasPanel, Card, CardBody, CardFooter, CardHeader };
-export type { ButtonProps, CanvasPanelProps, CardProps };
+export { Button, CanvasPanel, Card, CardBody, CardFooter, CardHeader, HairlineCell, HairlinePanel, Section };
+export type { ButtonProps, CanvasPanelProps, CardProps, HairlineCellProps, HairlinePanelProps, SectionProps };

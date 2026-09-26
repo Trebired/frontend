@@ -53,3 +53,11 @@
 [disabled] {
   cursor: not-allowed;
 }
+
+.label-caps {
+  color: var(#{ns.css-var("text-muted")}, #000);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}

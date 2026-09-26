@@ -1,4 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "./hairline";
+@use "./section";
+@use "./layout";
 #{ns.class("button")} {
   #{ns.css-var("surf-btn-current-icon")}: var(
     #{ns.css-var("surf-btn-slot-icon")},

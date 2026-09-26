@@ -1,0 +1,50 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("hairline")} {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(#{ns.css-var("surf-hairline-root-min")}, 16rem), 1fr)
+  );
+  gap: var(#{ns.css-var("surf-hairline-root-gap")}, 1px);
+  overflow: hidden;
+  border: var(
+    #{ns.css-var("surf-hairline-root-border")},
+    var(--border-width, 1px) solid color-mix(in srgb, currentColor 18%, transparent)
+  );
+  border-radius: var(
+    #{ns.css-var("surf-hairline-root-radius")},
+    var(--radius-lg, var(#{ns.css-var("radius")}, 0))
+  );
+  background: var(
+    #{ns.css-var("surf-hairline-root-bg")},
+    color-mix(in srgb, currentColor 18%, transparent)
+  );
+  list-style: none;
+}
+
+#{ns.element-class("hairline", "cell")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-hairline-cell-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  align-content: start;
+  min-width: 0;
+  padding: var(#{ns.css-var("surf-hairline-cell-padding")}, var(#{ns.css-var("gap-md")}, 24px));
+  color: var(#{ns.css-var("surf-hairline-cell-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-hairline-cell-bg")}, var(#{ns.css-var("page")}, #fff));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#{ns.data("hairline-align", "center")} {
+  justify-items: center;
+  text-align: center;
+}
+
+#{ns.data("hairline-invert", "true")} {
+  color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
+}
+
+#{ns.data("hairline-interactive", "true")}:hover {
+  color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
+}

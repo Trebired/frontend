@@ -643,6 +643,9 @@
       "#c1t1f0t76p85": [
         "../../../src/code/monaco.ts"
       ],
+      "#c4rbvlev3bnc": [
+        "../../../src/surface/styles/section.scss"
+      ],
       "#c55llzkpl4ob": [
         "../../../src/code/components/index.tsx"
       ],
@@ -966,6 +969,9 @@
       ],
       "#hj83b6jb7bzc": [
         "../../../src/config/favicon-ico.ts"
+      ],
+      "#hkh60z1ehvxb": [
+        "../../../src/surface/styles/hairline.scss"
       ],
       "#hmj29rrpgtsh": [
         "../../../src/progress/index.ts"
@@ -1377,6 +1383,9 @@
       ],
       "#r9c41b4ub5o7": [
         "../../../src/config/tones.ts"
+      ],
+      "#rctntu2uqs8e": [
+        "../../../src/surface/styles/layout.scss"
       ],
       "#rf9js8ovmz75": [
         "../../../src/server/live-socket/shared.ts"

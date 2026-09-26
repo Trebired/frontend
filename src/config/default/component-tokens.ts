@@ -317,6 +317,13 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     }),
     surfaces: Object.freeze({
         button: Object.freeze({}),
+        container: Object.freeze({ root: { max: "72rem" } }),
+        frame: Object.freeze({ badge: { offset: "1rem" }, root: { ratio: "16 / 10" } }),
+        glow: Object.freeze({ root: { blur: "70px", fade: "72%", opacity: "0.85", push: "-0.86", side: "-0.8", size: "clamp(18rem, 92vw, 98rem)" } }),
+        hairline: Object.freeze({ cell: {}, root: { min: "16rem" } }),
+        logo: Object.freeze({ root: { height: "2rem", max: "100%" } }),
+        prose: Object.freeze({ root: { gap: "12px", lineHeight: "1.8", max: "47rem" } }),
+        section: Object.freeze({ root: {}, tone: { inverse: {}, muted: {} } }),
         card: Object.freeze({
             body: {
               divider: {},
