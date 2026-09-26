@@ -24,6 +24,10 @@
 }
 
 #{ns.element-class("hairline", "cell")} {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-hairline-cell-text-muted")},
+    color-mix(in srgb, currentColor 62%, transparent)
+  );
   display: grid;
   gap: var(#{ns.css-var("surf-hairline-cell-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
   align-content: start;
@@ -40,6 +44,10 @@
 }
 
 #{ns.data("hairline-invert", "true")} {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-hairline-cell-text-muted-inverse")},
+    color-mix(in srgb, currentColor 62%, transparent)
+  );
   color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
   background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
 }
