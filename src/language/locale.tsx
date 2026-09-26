@@ -130,6 +130,7 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
       "aria-expanded": "false",
       "aria-label": translate(current, "label"),
       [frontendDataAttr("popover-trigger")]: "",
+      [frontendDataAttr("popover-indicator")]: locale ? undefined : "false",
       title: translate(current, "label"),
       children: localeTriggerFace(props, current),
   });

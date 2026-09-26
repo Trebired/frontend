@@ -277,24 +277,23 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 #{ns.data("site-header-surface", "transparent")},
 
 #{ns.data("site-header-surface", "blurred")} {
-  border-block-end-color: token("surface-border-color", transparent);
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-}
-
-#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "bar")},
-
-#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "menu")} {
+  position: token("root-position", sticky);
   border-block-end-color: transparent;
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
 }
 
-#{ns.data("site-header-surface", "blurred")} #{ns.element-class("site-header", "bar")},
+#{ns.data("site-header-surface", "transparent")}::before,
+
+#{ns.data("site-header-surface", "blurred")}::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+}
+
+#{ns.data("site-header-surface", "blurred")}::before,
 
 #{ns.data("site-header-surface", "blurred")} #{ns.element-class("site-header", "menu")} {
   border-block-end: token(
@@ -307,5 +306,13 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   );
   backdrop-filter: token("surface-backdrop-filter", blur(16px) saturate(180%));
   -webkit-backdrop-filter: token("surface-backdrop-filter", blur(16px) saturate(180%));
+  box-shadow: none;
+}
+
+#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "menu")} {
+  border-block-end-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow: none;
 }

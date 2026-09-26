@@ -87,3 +87,22 @@
   color: var(#{ns.css-var("overlay-popover-item-state-hover-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("overlay-popover-item-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, #f4f4f4));
 }
+
+#{ns.data("popover-trigger")}::after {
+  width: var(#{ns.css-var("overlay-popover-trigger-indicator-size")}, 0.4rem);
+  height: var(#{ns.css-var("overlay-popover-trigger-indicator-size")}, 0.4rem);
+  flex: 0 0 auto;
+  border-right: var(#{ns.css-var("border-width")}, 1px) solid currentColor;
+  border-bottom: var(#{ns.css-var("border-width")}, 1px) solid currentColor;
+  content: "";
+  transform: translateY(-0.1rem) rotate(45deg);
+  transition: transform var(#{ns.css-var("transition-fast")}, 160ms) ease;
+}
+
+#{ns.data("popover-trigger")}[aria-expanded="true"]::after {
+  transform: translateY(0.08rem) rotate(-135deg);
+}
+
+#{ns.data("popover-trigger")}#{ns.data("popover-indicator", "false")}::after {
+  display: none;
+}

@@ -17,6 +17,7 @@ type PopoverPanelProps = HTMLAttributes<HTMLDivElement> & {
 type PopoverOpenButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   controls: string;
   hover?: boolean;
+  indicator?: boolean;
 };
 
 function PopoverPanel(props: PopoverPanelProps) {
@@ -43,13 +44,14 @@ function PopoverPanel(props: PopoverPanelProps) {
 }
 
 function PopoverOpenButton(props: PopoverOpenButtonProps) {
-  const { children, className, controls, hover, type = "button", ...rest } = props;
+  const { children, className, controls, hover, indicator, type = "button", ...rest } = props;
   return (
     <button
     {...rest}
     className={classNames(frontendClassName("button"), className)}
     {...frontendDataAttrs({ "popover-hover": dataBool(hover) })}
     {...frontendDataAttrs({ "popover-trigger": "" })}
+    {...frontendDataAttrs({ "popover-indicator": indicator === false ? "false" : undefined })}
     aria-controls={controls}
     aria-expanded="false"
     type={type}

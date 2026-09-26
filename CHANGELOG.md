@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.31.0
+
+- Every popover trigger now draws its own disclosure arrow. It was left to each call site, so two triggers in the same header could disagree about whether they looked openable, and a site that forgot one had a control with no affordance at all. The chevron is a `::after` on `data-tbf-popover-trigger`, so it applies to any trigger however it was built, rotates on `aria-expanded`, and is sized by `--tbf-overlay-popover-trigger-indicator-size`.
+- Triggers that are a bare icon opt out with `data-tbf-popover-indicator="false"`, exposed as `indicator={false}` on `PopoverOpenButton`. `LocaleSwitcher` sets it for its `"icon"` trigger and leaves the arrow on for `"locale"`.
+- The header surface is full-bleed again. 13.29.0 moved it off the root onto the bar to escape the backdrop-root problem, but the bar is the width-constrained container, so the blurred band stopped spanning the viewport. The surface is now a `::before` on the root: it covers the full width, and because it is a sibling of the menu rather than its ancestor, the menu's own `backdrop-filter` still works.
+
 ## 13.30.0
 
 - The site header's menu toggle pulls itself toward the container edge with a negative margin for optical alignment. That is now the `--tbf-shell-header-toggle-offset` token instead of a hard-coded value, so a site whose own rules forbid margins can set it to `0` from config rather than writing an override it is not allowed to write.
