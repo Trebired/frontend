@@ -58,7 +58,7 @@
     color: var(#{ns.css-var("typography-outline-fill")}, transparent);
     -webkit-text-stroke:
     var(#{ns.css-var("typography-outline-width")}, 2px)
-    var(#{ns.css-var("typography-outline-color")}, currentColor);
+    var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
     paint-order: stroke fill;
   }
 }
