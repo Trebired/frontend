@@ -48,3 +48,17 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+.text-outline {
+  color: var(#{ns.css-var("typography-outline-fallback")}, color-mix(in srgb, currentColor 40%, transparent));
+}
+
+@supports (-webkit-text-stroke: 1px currentcolor) and (paint-order: stroke) {
+  .text-outline {
+    color: var(#{ns.css-var("typography-outline-fill")}, transparent);
+    -webkit-text-stroke:
+    var(#{ns.css-var("typography-outline-width")}, 2px)
+    var(#{ns.css-var("typography-outline-color")}, currentColor);
+    paint-order: stroke fill;
+  }
+}

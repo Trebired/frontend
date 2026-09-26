@@ -313,6 +313,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     typography: Object.freeze({
         container: Object.freeze({}),
         heading: Object.freeze({ variants: Object.freeze({}) }),
+        outline: Object.freeze({ width: "2px" }),
     }),
     surfaces: Object.freeze({
         button: Object.freeze({}),
