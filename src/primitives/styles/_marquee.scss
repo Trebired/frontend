@@ -1,0 +1,56 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("marquee")} {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(#{ns.css-var("ui-marquee-root-py")}, 1.1rem);
+  border-block: var(#{ns.css-var("ui-marquee-root-border")}, 0) solid transparent;
+  color: var(#{ns.css-var("ui-marquee-root-color")}, inherit);
+  background: var(#{ns.css-var("ui-marquee-root-bg")}, transparent);
+}
+
+#{ns.element-class("marquee", "track")} {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: #{ns.token("primitive-marquee-scroll")} var(#{ns.css-var("ui-marquee-track-duration")}, 38s) linear infinite;
+}
+
+#{ns.element-class("marquee", "item")} {
+  display: inline-flex;
+  align-items: center;
+  gap: var(#{ns.css-var("ui-marquee-item-gap")}, 1.5rem);
+  padding-inline: var(#{ns.css-var("ui-marquee-item-px")}, 0.875rem);
+}
+
+#{ns.element-class("marquee", "content")} {
+  white-space: nowrap;
+}
+
+#{ns.element-class("marquee", "separator")} {
+  flex: 0 0 auto;
+  font-size: var(#{ns.css-var("ui-marquee-separator-font-size")}, 1em);
+  line-height: 1;
+  opacity: var(#{ns.css-var("ui-marquee-separator-opacity")}, 0.45);
+}
+
+#{ns.class("marquee")}:hover #{ns.element-class("marquee", "track")},
+
+#{ns.data("marquee-paused", "true")} #{ns.element-class("marquee", "track")} {
+  animation-play-state: paused;
+}
+
+@keyframes #{ns.token("primitive-marquee-scroll")} {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{ns.element-class("marquee", "track")} {
+    animation: none;
+  }
+}

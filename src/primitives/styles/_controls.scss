@@ -29,11 +29,13 @@
   font-weight: var(#{ns.css-var("ui-btn-root-font-weight")}, 600);
   line-height: 1.15;
   vertical-align: middle;
-  transition:
-  color var(--transition-1) ease,
-  background var(--transition-1) ease,
-  border-color var(--transition-1) ease,
-  opacity var(--transition-1) ease;
+  transition: var(
+    #{ns.css-var("ui-btn-root-transition")},
+    color var(--transition-1) ease,
+    background var(--transition-1) ease,
+    border-color var(--transition-1) ease,
+    opacity var(--transition-1) ease
+  );
 
   &:hover,
   &[aria-pressed="true"],

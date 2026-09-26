@@ -99,6 +99,7 @@ type FrontendPrimitiveComponentsConfig = {
   dropdown?: FrontendComponentTokens;
   input?: FrontendComponentTokens;
   loader?: FrontendComponentTokens;
+  marquee?: FrontendComponentTokens;
   pill?: FrontendComponentTokens;
   progress?: FrontendComponentTokens;
   tabs?: FrontendComponentTokens;

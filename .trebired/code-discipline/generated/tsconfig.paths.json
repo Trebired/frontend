@@ -1306,6 +1306,9 @@
       "#p8xyf2ac55t2": [
         "../../../src/search/client/cache.ts"
       ],
+      "#pazzio0dn1au": [
+        "../../../src/primitives/components/marquee.tsx"
+      ],
       "#pg5rm7whmwpd": [
         "../../../src/server/seo/robots.ts"
       ],
@@ -1743,6 +1746,9 @@
       ],
       "#y2lnly185oli": [
         "../../../src/logs/view.tsx"
+      ],
+      "#y9b4htfi3ng8": [
+        "../../../src/primitives/styles/_marquee.scss"
       ],
       "#yasd5gi3ad9a": [
         "../../../src/actions/request.ts"
