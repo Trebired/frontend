@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.44.0
+
+- Added `siteFooterRootHtml` and `SITE_FOOTER_ROOT_SELECTOR`, the footer's equivalent of the header's SSR root. `SiteFooter` renders the `<footer>` element itself, so a site that server-renders it and then hydrates into that same element nests one `<footer>` inside another and React discards the tree; the root wrapper is `display: contents` and gives the client a container to hydrate into.
+
 ## 13.43.0
 
 - Added `SiteFooter`, the counterpart to `SiteHeader`. It takes a `brand`, a `tagline`, `columns` of headed link lists and a `note` row, lays them out as a brand block beside an auto-fitting column grid, and carries `tone="muted" | "inverse"` — the inverse tone rescoping `text-muted` the way `Section` does. The package shipped a header but left every site to rebuild the footer, which is the same shape on all of them: a mark, a line of copy, two to four link columns and a copyright row.

@@ -1,5 +1,9 @@
 @use "@trebired/bundler/namespace" as ns;
 
+#{ns.data("site-footer-root")} {
+  display: contents;
+}
+
 #{ns.class("site-footer")} {
   display: grid;
   gap: var(#{ns.css-var("shell-footer-root-gap")}, var(#{ns.css-var("gap-md")}, 24px));
