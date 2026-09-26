@@ -40,7 +40,7 @@
 #{ns.element-class("disclosure", "indicator")} {
   display: inline-flex;
   flex: 0 0 auto;
-  margin-inline-start: auto;
+  margin-inline-start: var(#{ns.css-var("ui-disclosure-indicator-offset")}, auto);
   font-size: 1.35em;
   color: var(#{ns.css-var("text-muted")}, currentColor);
   transition: transform var(#{ns.css-var("transition-fast")}, 120ms) ease;
