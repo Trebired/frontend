@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.34.0
+
+- Added `Marquee`, a primitive for a continuously scrolling strip. It takes `items`, repeats them (`repeat`, default 2) so the track can loop seamlessly, draws a `separator` between them (default `\u2726`, settable or `null`), pauses on hover, and honours `prefers-reduced-motion`. Every site that wanted one was building the duplicate-the-items trick and the `translateX(-50%)` keyframe by hand.
+- It is tokenised as `components.primitives.marquee`: `root.py`, `root.bg`, `root.color`, `root.border`, `item.gap`, `item.px`, `separator.fontSize`, `separator.opacity` and `track.duration`.
+- `Button`'s transition is now the `--tbf-ui-btn-root-transition` token instead of a hard-coded list. A button that also carries another component's class, such as a `TextLink` rendered as a button, could have its transition cancelled by that component with no way to restore it from config.
+
 ## 13.33.0
 
 - `Icon` no longer causes a hydration mismatch. It inlines the glyph from the static icon cache, but that cache is populated by `@trebired/frontend/static-icons`, which the bundler only resolves for browser builds. A server render therefore produced an empty `<i>` and the client produced one containing the SVG, and React reported the subtree as unpatchable.
