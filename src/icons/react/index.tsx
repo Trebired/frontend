@@ -91,6 +91,7 @@ function Icon(props: IconProps) {
       void renderIconElement(element, normalizedSpec, { color, endpoint, mode });
     },
     style: resolveStyle({ ...props, color }, colorMode, colorValue),
+    suppressHydrationWarning: true,
     title,
   };
   if (svgMarkup) {
