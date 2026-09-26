@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.32.0
+
+- The disclosure indicator's push to the end of its trigger is now the `--tbf-ui-disclosure-indicator-offset` token rather than a hard-coded `margin-inline-start: auto`, matching what 13.30.0 did for the header toggle. A site whose own rules forbid margins can set it to `0` and lay the trigger out itself.
+
 ## 13.31.0
 
 - Every popover trigger now draws its own disclosure arrow. It was left to each call site, so two triggers in the same header could disagree about whether they looked openable, and a site that forgot one had a control with no affordance at all. The chevron is a `::after` on `data-tbf-popover-trigger`, so it applies to any trigger however it was built, rotates on `aria-expanded`, and is sized by `--tbf-overlay-popover-trigger-indicator-size`.
