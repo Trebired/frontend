@@ -61,12 +61,14 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
         }),
         popover: Object.freeze({
+            group: {},
             item: {
               root: {
                 height: "35px",
                 padding: "5px 10px",
                 radius: "0",
               },
+              stacked: {},
               states: {
                 hover: {},
                 selected: {},
@@ -77,6 +79,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               border: "1px solid currentColor",
               color: "currentColor",
               gap: "2px",
+              minW: "220px",
               padding: "8px",
               radius: "0",
             },
@@ -305,8 +308,8 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     shell: Object.freeze({
         breadcrumb: Object.freeze({ fontSize: "14px" }),
         bottomBar: Object.freeze({}),
-        header: Object.freeze({ brand: { tag: { offsetY: "0" } } }),
-        language: Object.freeze({ option: { states: { current: {} } } }),
+        header: Object.freeze({ brand: { button: {}, tag: { offsetY: "0" } } }),
+        language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
         sidebar: Object.freeze({}),
         theme: Object.freeze({ option: { states: { current: {} } } }),
     }),

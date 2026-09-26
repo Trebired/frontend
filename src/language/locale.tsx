@@ -1,5 +1,6 @@
 import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
+import { classNames } from "#ndsvdqv80epr";
 import { normalizedLang, text, translate } from "./shared.js";
 import { languageName } from "./names.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
@@ -121,7 +122,7 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
   const locale = props.trigger === "locale";
   return button({
       type: "button",
-      className: props.className,
+      className: classNames(locale ? frontendClassName("locale-trigger") : undefined, props.className),
       icon: !locale,
       tooltip: !locale,
       id: triggerId,
