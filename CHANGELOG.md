@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.35.0
+
+- `Button` renders an anchor when given an `href`, with `softRedirect`, `target` and `rel` (which defaults to `noopener noreferrer` for `_blank`). A link that looks like a button previously had to be a `TextLink` carrying the button classes, which put two components on one element: `TextLink` is a navigation primitive but it also applies link styling, and that styling won the cascade and cancelled the button's own transition. There was no way to get one without the other.
+- Nothing about the button's appearance depends on which element it renders. The same classes and tokens apply to both, so a button that navigates and a button that submits look identical.
+- Soft redirect never required `TextLink`: the runtime binds `data-tbf-soft-redirect` on any element. `Button` now sets that attribute itself, so SPA navigation and button styling stop being a package deal.
+
 ## 13.34.0
 
 - Added `Marquee`, a primitive for a continuously scrolling strip. It takes `items`, repeats them (`repeat`, default 2) so the track can loop seamlessly, draws a `separator` between them (default `\u2726`, settable or `null`), pauses on hover, and honours `prefers-reduced-motion`. Every site that wanted one was building the duplicate-the-items trick and the `translateX(-50%)` keyframe by hand.

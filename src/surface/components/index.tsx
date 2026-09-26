@@ -1,4 +1,5 @@
 import type {
+  AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   HTMLAttributes,
   ReactNode,
@@ -10,7 +11,11 @@ import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElement
 import { HeadingScope } from "#7ly3b59upz0n";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  href?: string;
+  rel?: string;
   size?: SurfaceSize;
+  softRedirect?: boolean;
+  target?: string;
   tone?: SurfaceTone;
 };
 
@@ -26,18 +31,36 @@ type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
   title?: ReactNode;
 };
 
+function ButtonLink(props: ButtonProps & { href: string; buttonClassName: string }) {
+  const { buttonClassName, children, className: _className, href, rel, size: _size, softRedirect,
+    target, tone: _tone, type: _type, ...rest } = props;
+  const anchorProps = rest as unknown as AnchorHTMLAttributes<HTMLAnchorElement>;
+  return (
+    <a
+    {...anchorProps}
+    className={buttonClassName}
+    href={href}
+    rel={target === "_blank" ? rel || "noopener noreferrer" : rel}
+    target={target}
+    {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
+    >
+    {children}
+    </a>
+  );
+}
+
 function Button(props: ButtonProps) {
-  const { children, className, size, tone, type = "button", ...rest } = props;
+  const { children, className, href, rel: _rel, size, softRedirect: _softRedirect,
+    target: _target, tone, type = "button", ...rest } = props;
+  const buttonClassName = classNames(surfaceClass(frontendClassName("button"), { size, tone }), className);
+  if (href) return <ButtonLink {...props} buttonClassName={buttonClassName} href={href} />;
   const ariaHasPopup =
   rest["aria-haspopup"] ??
   ((rest as Record<string, unknown>)[frontendDataAttr("modal-open")] === undefined
     ? undefined
     : "dialog");
   return (
-    <button {...rest} aria-haspopup={ariaHasPopup} className={classNames(
-        surfaceClass(frontendClassName("button"), { size, tone }),
-        className
-    )} type={type}>
+    <button {...rest} aria-haspopup={ariaHasPopup} className={buttonClassName} type={type}>
     {children}
     </button>
   );
