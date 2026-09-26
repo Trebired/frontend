@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.40.0
+
+- Added `HairlinePanel` and `HairlineCell`: a bordered, rounded panel whose cells are divided by hairlines drawn as 1px grid gaps over the panel's own background, rather than by borders that double up between neighbours. The cells auto-fit to `hairline.root.min`, and a cell takes `align="center"`, `invert` for a permanently reversed cell, and `interactive` for one that reverses on hover. Every site that wanted a row of divided facts, points or plans was rebuilding this, usually with doubled dividers at the seams.
+- Added `Section`, a page section with `tone="muted" | "inverse"` and a `flush` variant. The inverse tone also rescopes `text-muted` to the inverted surface, so muted text inside it stays legible instead of resolving against the page palette.
+- Added the `container`, `glow`, `frame`, `logo` and `prose` surfaces. `container` is the centred max-width wrapper every page needs; `glow` is the two-blob radial backdrop used behind heroes; `frame` is an aspect-ratio surface with a badge slot; `logo` sizes an inline SVG mark; `prose` sets the measure and rhythm of a body-copy column.
+- Added the `ver-baseline`, `sticky`, `min-screen`, `float` and `label-caps` utilities. `alignment` had `ver-center` and `ver-bottom` but no baseline row, which is what a title beside a year or a value beside a unit needs.
+
 ## 13.39.0
 
 - Added the padding utilities `padding-xs2` through `padding-lg`, their `padding-block-*`, `padding-top-*` and `padding-bottom-*` forms, plus `width-full`, `radius-md` and `radius-sm`. The package had margin utilities (`mt-*`, `ml-*`) and gap utilities but no padding ones, so every consuming site wrote a class per padded box — and the package's own graph shell, code block, editor surface and file explorer already set `padding-sm`, `padding-xs`, `width-full` and `radius-md` on elements, class names that were defined nowhere and therefore did nothing.

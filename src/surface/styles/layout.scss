@@ -1,0 +1,134 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("container")} {
+  width: min(100%, var(#{ns.css-var("surf-container-root-max")}, 72rem));
+  margin-inline: auto;
+  padding-inline: var(#{ns.css-var("container-px")}, 24px);
+}
+
+#{ns.class("glow")} {
+  #{ns.css-var("surf-glow-a")}: var(#{ns.css-var("text")}, #000);
+  #{ns.css-var("surf-glow-b")}: var(#{ns.css-var("text")}, #000);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#{ns.class("glow")}::before,
+#{ns.class("glow")}::after {
+  position: absolute;
+  width: var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem));
+  height: var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem));
+  border-radius: 999px;
+  content: "";
+  filter: blur(var(#{ns.css-var("surf-glow-root-blur")}, 70px));
+  opacity: var(#{ns.css-var("surf-glow-root-opacity")}, 0.85);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#{ns.class("glow")}::before {
+  top: calc(
+    var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem)) *
+    var(#{ns.css-var("surf-glow-root-push")}, -0.86)
+  );
+  right: calc(
+    var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem)) *
+    var(#{ns.css-var("surf-glow-root-side")}, -0.8)
+  );
+  background: radial-gradient(
+    circle,
+    var(#{ns.css-var("surf-glow-b")}) 0%,
+    transparent var(#{ns.css-var("surf-glow-root-fade")}, 72%)
+  );
+}
+
+#{ns.class("glow")}::after {
+  bottom: calc(
+    var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem)) *
+    var(#{ns.css-var("surf-glow-root-push")}, -0.86)
+  );
+  left: calc(
+    var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem)) *
+    var(#{ns.css-var("surf-glow-root-side")}, -0.8)
+  );
+  background: radial-gradient(
+    circle,
+    var(#{ns.css-var("surf-glow-a")}) 0%,
+    transparent var(#{ns.css-var("surf-glow-root-fade")}, 72%)
+  );
+}
+
+#{ns.class("glow")} > * {
+  position: relative;
+  z-index: 1;
+}
+
+#{ns.class("frame")} {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: var(#{ns.css-var("surf-frame-root-ratio")}, 16 / 10);
+  border: var(
+    #{ns.css-var("surf-frame-root-border")},
+    var(--border-width, 1px) solid var(#{ns.css-var("border")}, #000)
+  );
+  border-radius: var(
+    #{ns.css-var("surf-frame-root-radius")},
+    var(--radius-lg, var(#{ns.css-var("radius")}, 0))
+  );
+  background: var(#{ns.css-var("surf-frame-root-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
+}
+
+#{ns.element-class("frame", "badge")} {
+  position: absolute;
+  inset-block-start: var(#{ns.css-var("surf-frame-badge-offset")}, 1rem);
+  inset-inline-start: var(#{ns.css-var("surf-frame-badge-offset")}, 1rem);
+  z-index: 1;
+}
+
+#{ns.class("logo")} {
+  display: inline-flex;
+  flex: 0 1 auto;
+  height: var(#{ns.css-var("surf-logo-root-height")}, 2rem);
+  max-width: var(#{ns.css-var("surf-logo-root-max")}, 100%);
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+#{ns.class("logo")} svg {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}
+
+#{ns.class("prose")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-prose-root-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  align-content: start;
+  max-width: var(#{ns.css-var("surf-prose-root-max")}, 47rem);
+}
+
+#{ns.class("prose")} p,
+#{ns.class("prose")} li {
+  color: var(#{ns.css-var("text-muted")}, #000);
+  line-height: var(#{ns.css-var("surf-prose-root-line-height")}, 1.8);
+}
+
+#{ns.class("prose")} ul,
+#{ns.class("prose")} ol {
+  padding-inline-start: 1.25rem;
+}
+
+#{ns.class("prose")} pre {
+  overflow-x: auto;
+  padding: var(#{ns.css-var("gap-sm")}, 12px);
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  color: var(#{ns.css-var("page")}, #fff);
+  background: var(#{ns.css-var("text")}, #000);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}

@@ -97,3 +97,37 @@ $frontend-hor-alignments: (
     }
   }
 }
+
+.ver-baseline {
+  display: flex;
+  align-items: baseline;
+}
+
+.sticky {
+  position: sticky;
+  inset-block-start: var(#{ns.css-var("sticky-offset")}, 0);
+}
+
+.min-screen {
+  min-height: 100dvh;
+}
+
+.float {
+  animation: #{ns.token("float-drift")} 9s ease-in-out infinite;
+}
+
+@keyframes #{ns.token("float-drift")} {
+  0%,
+  100% {
+    transform: translateY(-1.2%);
+  }
+  50% {
+    transform: translateY(1.2%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float {
+    animation: none;
+  }
+}
