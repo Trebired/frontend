@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.38.0
+
+- `text-outline` draws its outline with a ring of `text-shadow` offsets instead of `-webkit-text-stroke`. A stroke is applied to every contour of a glyph, including the internal ones a filled glyph hides, so in a display face whose letters are drawn as overlapping shapes — a bowl laid over a stem, a crossbar laid over two diagonals — the seams showed as stray strokes inside the letterform. The ring is painted behind the glyph and only the merged silhouette shows, which is what an outlined letter should look like.
+- Because the ring is painted behind the text, the glyph interior is a colour rather than a hole. It defaults to the `page` token, which matches the background in the usual case and follows any surface that redefines that token, and `outline.fill` overrides it. `outline.fallback` is gone: `text-shadow` needs no capability guard, so there is nothing to fall back from.
+
 ## 13.37.1
 
 - Fixed `text-outline` rendering nothing when `components.typography.outline.color` is left unset. The stroke colour defaulted to `currentColor`, but the same rule sets `color` to the transparent interior fill, and `currentcolor` resolves against the element's own computed `color` — so the stroke was transparent too and the text disappeared. The default is now the `text` semantic token.

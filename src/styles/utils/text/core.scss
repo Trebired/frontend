@@ -1,3 +1,5 @@
+@use "sass:list";
+@use "sass:math";
 @use "@trebired/bundler/namespace" as ns;
 .width-max {
   width: 100% !important;
@@ -50,15 +52,17 @@
 }
 
 .text-outline {
-  color: var(#{ns.css-var("typography-outline-fallback")}, color-mix(in srgb, currentColor 40%, transparent));
-}
-
-@supports (-webkit-text-stroke: 1px currentcolor) and (paint-order: stroke) {
-  .text-outline {
-    color: var(#{ns.css-var("typography-outline-fill")}, transparent);
-    -webkit-text-stroke:
-    var(#{ns.css-var("typography-outline-width")}, 2px)
-    var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
-    paint-order: stroke fill;
+  $width: var(#{ns.css-var("typography-outline-width")}, 2px);
+  $color: var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
+  $ring: ();
+  @for $step from 0 through 11 {
+    $angle: math.div(360deg * $step, 12);
+    $ring: list.append(
+      $ring,
+      calc(#{math.cos($angle)} * #{$width}) calc(#{math.sin($angle)} * #{$width}) 0 $color,
+      comma
+    );
   }
+  color: var(#{ns.css-var("typography-outline-fill")}, var(#{ns.css-var("page")}, #fff));
+  text-shadow: $ring;
 }
