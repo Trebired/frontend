@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.33.0
+
+- `Icon` no longer causes a hydration mismatch. It inlines the glyph from the static icon cache, but that cache is populated by `@trebired/frontend/static-icons`, which the bundler only resolves for browser builds. A server render therefore produced an empty `<i>` and the client produced one containing the SVG, and React reported the subtree as unpatchable.
+- The element is marked `suppressHydrationWarning`, which is what this case is for: the difference is expected and the existing `ref` already fills the glyph through `renderIconElement` immediately after mount, so the rendered result is correct either way.
+- This does not change what the server emits. A page that wants the glyph in its server HTML still has to register the cache on the server; the fix is that not doing so is no longer a hydration error.
+
 ## 13.32.0
 
 - The disclosure indicator's push to the end of its trigger is now the `--tbf-ui-disclosure-indicator-offset` token rather than a hard-coded `margin-inline-start: auto`, matching what 13.30.0 did for the header toggle. A site whose own rules forbid margins can set it to `0` and lay the trigger out itself.
