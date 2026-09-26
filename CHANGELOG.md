@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.37.1
+
+- Fixed `text-outline` rendering nothing when `components.typography.outline.color` is left unset. The stroke colour defaulted to `currentColor`, but the same rule sets `color` to the transparent interior fill, and `currentcolor` resolves against the element's own computed `color` — so the stroke was transparent too and the text disappeared. The default is now the `text` semantic token.
+
 ## 13.37.0
 
 - Added the `text-outline` utility: text drawn as an outline, with the glyph interiors letting the background through. Sites were hand-rolling this with `-webkit-text-stroke` plus a `paint-order` guard and their own fallback, which is easy to get wrong \u2014 without `paint-order: stroke fill` the stroke is painted centred on the glyph edge and eats half the letterform.
