@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.36.0
+
+- The locale switcher's code chip follows the colour it sits in. It was `color: var(--text-color-muted)` with a `--border-surface-1` border, both fixed to the page's own palette, so a switcher placed on an inverted surface such as a dark site header rendered the code in mid grey against a dark background and the chip was close to unreadable. Both are now mixed from `currentColor`, which keeps the muted look relative to the trigger and works on any background.
+
 ## 13.35.0
 
 - `Button` renders an anchor when given an `href`, with `softRedirect`, `target` and `rel` (which defaults to `noopener noreferrer` for `_blank`). A link that looks like a button previously had to be a `TextLink` carrying the button classes, which put two components on one element: `TextLink` is a navigation primitive but it also applies link styling, and that styling won the cascade and cancelled the button's own transition. There was no way to get one without the other.
