@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.41.0
+
+- The locale switcher's `trigger="locale"` face is now a real component with its own tokens (`shell.language.trigger`: gap, height, padding, border colour, radius, font size and weight). It was an unstyled button that every site had to re-dress with its own class to get a compact chip, and the code badge inside it needed a second override to undo the standalone chip styling.
+- Added the `popover-group` class and a `stacked` popover item. A popover that groups its entries under collapsible headings, or whose entries carry two lines rather than one, needed hand-written CSS in the consuming app; both are now tokenised through `overlays.popover.group` and `overlays.popover.item.stacked`. The popover panel's `min-width` is a token as well.
+- Added `site-header-brand-button` with `shell.header.brand.button` tokens, for a brand slot that opens a menu instead of linking home.
+
 ## 13.40.0
 
 - Added `HairlinePanel` and `HairlineCell`: a bordered, rounded panel whose cells are divided by hairlines drawn as 1px grid gaps over the panel's own background, rather than by borders that double up between neighbours. The cells auto-fit to `hairline.root.min`, and a cell takes `align="center"`, `invert` for a permanently reversed cell, and `interactive` for one that reverses on hover. Every site that wanted a row of divided facts, points or plans was rebuilding this, usually with doubled dividers at the seams.

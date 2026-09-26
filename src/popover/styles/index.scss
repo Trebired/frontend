@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: var(#{ns.css-var("overlay-popover-panel-gap")}, 2px);
-  min-width: 220px;
+  min-width: var(#{ns.css-var("overlay-popover-panel-min-w")}, 220px);
   max-width: min(320px, calc(100vw - 24px));
   padding: var(#{ns.css-var("overlay-popover-panel-padding")}, 8px);
   border: var(#{ns.css-var("overlay-popover-panel-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
@@ -105,4 +105,44 @@
 
 #{ns.data("popover-trigger")}#{ns.data("popover-indicator", "false")}::after {
   display: none;
+}
+
+#{ns.class("popover")} :where(a, button).popover-item#{ns.data("popover-item-stacked", "true")},
+
+#{ns.data("popover")} :where(a, button).popover-item#{ns.data("popover-item-stacked", "true")} {
+  flex-direction: column;
+  height: auto;
+  align-items: flex-start;
+  gap: var(#{ns.css-var("overlay-popover-item-stacked-gap")}, 2px);
+  padding-block: var(#{ns.css-var("overlay-popover-item-stacked-py")}, 6px);
+  text-align: start;
+}
+
+#{ns.class("popover-group")} {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(#{ns.css-var("overlay-popover-group-gap")}, 8px);
+  border: 0;
+  border-block-start: var(
+    #{ns.css-var("overlay-popover-group-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 12%, transparent)
+  );
+  border-radius: var(#{ns.css-var("overlay-popover-group-radius")}, var(#{ns.css-var("radius-sm")}, 0));
+  padding: var(#{ns.css-var("overlay-popover-group-padding")}, 11px 12px 9px);
+  color: var(#{ns.css-var("overlay-popover-group-color")}, color-mix(in srgb, currentColor 72%, transparent));
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(#{ns.css-var("overlay-popover-group-font-size")}, 0.85rem);
+  font-weight: var(#{ns.css-var("overlay-popover-group-font-weight")}, 800);
+  text-align: start;
+  transition: color 0.2s ease;
+}
+
+#{ns.class("popover-group")}:hover,
+#{ns.class("popover-group")}:focus-visible,
+#{ns.class("popover-group")}[aria-expanded="true"] {
+  color: var(#{ns.css-var("overlay-popover-group-hover-color")}, currentColor);
 }

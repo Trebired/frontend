@@ -316,3 +316,32 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   -webkit-backdrop-filter: none;
   box-shadow: none;
 }
+
+#{ns.class("site-header-brand-button")} {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(#{ns.css-var("shell-header-brand-button-gap")}, 8px);
+  min-width: 0;
+  border: 0;
+  border-radius: var(#{ns.css-var("shell-header-brand-button-radius")}, var(#{ns.css-var("radius-sm")}, 0));
+  padding: var(#{ns.css-var("shell-header-brand-button-padding")}, 4px 6px);
+  color: var(
+    #{ns.css-var("shell-header-brand-button-color")},
+    color-mix(in srgb, currentColor 74%, transparent)
+  );
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.22s ease;
+}
+
+#{ns.class("site-header-brand-button")}:hover,
+#{ns.class("site-header-brand-button")}:focus-visible,
+#{ns.class("site-header-brand-button")}[aria-expanded="true"] {
+  color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, currentColor);
+}
+
+#{ns.class("site-header-brand-button")}:focus-visible {
+  outline: var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 35%, transparent);
+  outline-offset: 0.2rem;
+}
