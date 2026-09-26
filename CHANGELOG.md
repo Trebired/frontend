@@ -1,9 +1,5 @@
 # Changelog
 
-## 13.39.0
-
-- Added the `wrap` and `ver-top` layout utilities. `inline-row` is a single non-wrapping line aligned on its centre, and the only wrapping it offered was `mobile-wrap`, below 900px. A row of buttons, tags or addresses that has to wrap at any width, or one whose items must sit on their top edge because they are different heights, had no utility to express it, so every consuming site wrote its own `display: flex; flex-wrap: wrap` wrapper class instead — the exact duplication these utilities exist to remove.
-
 ## 13.38.0
 
 - `text-outline` draws its outline with a ring of `text-shadow` offsets instead of `-webkit-text-stroke`. A stroke is applied to every contour of a glyph, including the internal ones a filled glyph hides, so in a display face whose letters are drawn as overlapping shapes — a bowl laid over a stem, a crossbar laid over two diagonals — the seams showed as stray strokes inside the letterform. The ring is painted behind the glyph and only the merged silhouette shows, which is what an outlined letter should look like.
