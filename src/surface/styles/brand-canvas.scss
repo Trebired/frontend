@@ -78,14 +78,16 @@
 }
 
 #{ns.data("brand-canvas-measure", "block")} {
-  inset-block: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
-  inset-inline-start: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
+  top: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  bottom: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  left: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
   writing-mode: vertical-rl;
 }
 
 #{ns.data("brand-canvas-measure", "inline")} {
-  inset-inline: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
-  inset-block-end: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
+  right: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  bottom: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
+  left: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
 }
 
 #{ns.element-class("brand-canvas", "caption")} {

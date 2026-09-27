@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.5.1
+
+- The brand canvas places its vertical measurement against the stage's left edge. It was positioned with logical inset properties, which resolve against the element's own writing mode — and the label sets `writing-mode: vertical-rl`, so `inset-inline-start` meant the top.
+
 ## 14.5.0
 
 - An embed frame has an intrinsic aspect ratio, `media.embedFrame.ratio`, defaulting to 16 / 9. It sized itself only from whatever height the page gave it, so an embed in a plain grid cell rendered a full-width strip of nothing, and `MapEmbed` had no way to say otherwise — it now forwards `aspectRatio` like `EmbedFrame` does.
