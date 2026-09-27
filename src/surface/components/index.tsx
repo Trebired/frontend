@@ -28,6 +28,10 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   tone?: SurfaceTone;
 };
 
+type CardSectionProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: SurfaceSize;
+};
+
 type FrameProps = HTMLAttributes<HTMLDivElement> & {
   ratio?: string;
 };
@@ -209,19 +213,43 @@ function Tag(props: TagProps) {
   );
 }
 
-function CardHeader(props: HTMLAttributes<HTMLDivElement>) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendElementClass("card", "header"), className)}>{children}</div>;
+function CardHeader(props: CardSectionProps) {
+  const { children, className, padding, ...rest } = props;
+  return (
+    <div
+    {...rest}
+    className={classNames(frontendElementClass("card", "header"), className)}
+    {...frontendDataAttrs({ "card-padding": padding })}
+    >
+    {children}
+    </div>
+  );
 }
 
-function CardBody(props: HTMLAttributes<HTMLDivElement>) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendElementClass("card", "body"), className)}>{children}</div>;
+function CardBody(props: CardSectionProps) {
+  const { children, className, padding, ...rest } = props;
+  return (
+    <div
+    {...rest}
+    className={classNames(frontendElementClass("card", "body"), className)}
+    {...frontendDataAttrs({ "card-padding": padding })}
+    >
+    {children}
+    </div>
+  );
 }
 
-function CardFooter(props: HTMLAttributes<HTMLDivElement>) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendElementClass("card", "footer"), className)}>{children}</div>;
+function CardFooter(props: CardSectionProps) {
+  const { children, className, padding, ...rest } = props;
+  return (
+    <div
+    {...rest}
+    className={classNames(frontendElementClass("card", "footer"), className)}
+    {...frontendDataAttrs({ "card-padding": padding })}
+    >
+    {children}
+    </div>
+  );
 }
 
 function HairlinePanel(props: HairlinePanelProps) {
@@ -382,6 +410,7 @@ export type {
   ButtonProps,
   CanvasPanelProps,
   CardProps,
+  CardSectionProps,
   FrameCoverProps,
   FrameLayerProps,
   FrameProps,

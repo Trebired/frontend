@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.6.0
+
+- A card's header, body and footer take a `padding` of `sm`, `md` or `lg`, sized by `surfaces.card.sizes`. A card's padding was one value for the whole site, so a small note inside a panel carried the same inset as the panel around it, and the spacing utilities could not say otherwise — they are declared before the card's own rule and lose to it.
+
 ## 14.5.1
 
 - The brand canvas places its vertical measurement against the stage's left edge. It was positioned with logical inset properties, which resolve against the element's own writing mode — and the label sets `writing-mode: vertical-rl`, so `inset-inline-start` meant the top.

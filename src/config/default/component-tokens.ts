@@ -390,6 +390,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               padding: "14px 14px 12px 14px",
               radius: "0",
             },
+            sizes: { lg: {}, md: {}, sm: {} },
             row: {
               background: "transparent",
               padding: "9px 12px",

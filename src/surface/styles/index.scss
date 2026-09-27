@@ -238,6 +238,18 @@
   padding: var(#{ns.css-var("surf-card-section-padding")}, var(#{ns.css-var("surf-card-root-padding")}, 12px));
 }
 
+#{ns.data("card-padding", "sm")} {
+  padding: var(#{ns.css-var("surf-card-sizes-sm-padding")}, var(#{ns.css-var("gap-sm")}, 12px));
+}
+
+#{ns.data("card-padding", "md")} {
+  padding: var(#{ns.css-var("surf-card-sizes-md-padding")}, var(#{ns.css-var("gap-md")}, 24px));
+}
+
+#{ns.data("card-padding", "lg")} {
+  padding: var(#{ns.css-var("surf-card-sizes-lg-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+}
+
 #{ns.element-class("card", "header")},
 
 #{ns.element-class("card", "footer")} {
