@@ -1,0 +1,47 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("error-page")} {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(#{ns.css-var("shell-error-root-min-h")}, 60vh);
+  padding-block: var(#{ns.css-var("shell-error-root-py")}, clamp(3rem, 8vw, 7rem));
+  padding-inline: var(#{ns.css-var("shell-error-root-px")}, clamp(1rem, 3vw, 2rem));
+  color: var(#{ns.css-var("shell-error-root-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("shell-error-root-bg")}, var(#{ns.css-var("page")}, #fff));
+}
+
+#{ns.element-class("error-page", "body")} {
+  display: grid;
+  gap: var(#{ns.css-var("shell-error-body-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  width: min(var(#{ns.css-var("shell-error-body-max")}, 40rem), 100%);
+  justify-items: var(#{ns.css-var("shell-error-body-align")}, start);
+  text-align: var(#{ns.css-var("shell-error-body-text-align")}, start);
+}
+
+#{ns.element-class("error-page", "status")} {
+  color: var(#{ns.css-var("shell-error-status-color")}, var(#{ns.css-var("text-muted")}, #666));
+  font-family: var(#{ns.css-var("shell-error-status-font-family")}, inherit);
+  font-size: var(#{ns.css-var("shell-error-status-font-size")}, 0.85rem);
+  font-weight: var(#{ns.css-var("shell-error-status-font-weight")}, 600);
+  letter-spacing: var(#{ns.css-var("shell-error-status-letter-spacing")}, 0.16em);
+}
+
+#{ns.element-class("error-page", "title")} {
+  font-size: var(#{ns.css-var("shell-error-title-font-size")}, clamp(2rem, 5vw, 3.25rem));
+  line-height: var(#{ns.css-var("shell-error-title-line-h")}, 1.05);
+}
+
+#{ns.element-class("error-page", "lead")} {
+  max-width: var(#{ns.css-var("shell-error-lead-max")}, 36rem);
+  color: var(#{ns.css-var("shell-error-lead-color")}, var(#{ns.css-var("text-muted")}, #666));
+  font-size: var(#{ns.css-var("shell-error-lead-font-size")}, 1.05rem);
+  line-height: var(#{ns.css-var("shell-error-lead-line-h")}, 1.6);
+}
+
+#{ns.element-class("error-page", "actions")} {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(#{ns.css-var("shell-error-actions-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  margin-block-start: var(#{ns.css-var("shell-error-actions-offset")}, var(#{ns.css-var("gap-xs")}, 8px));
+}

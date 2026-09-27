@@ -342,3 +342,11 @@ export {
 } from "./wizard/index.js";
 export type { SearchPanelBinding } from "./search/index.js";
 export type { SharedStepCardInput } from "./steps/index.js";
+export {
+  ERROR_STATUSES,
+  errorMessageKey,
+  errorRoutePath,
+  errorShellFileName,
+  isErrorStatus,
+} from "./error/paths.js";
+export type { ErrorStatus } from "./error/paths.js";

@@ -278,3 +278,5 @@ export type {
   LightboxProps,
   MapEmbedProps,
 } from "#wi9q25odclpm";
+export { ErrorPage } from "./../error/index.js";
+export type { ErrorPageProps } from "./../error/index.js";

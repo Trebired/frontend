@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.13.0
+
+- Added `ErrorPage`, so a site stops writing its own not-found and error pages. It takes a `status` and carries built-in Czech and English copy for 403, 404, 410, 500 and 503, with a fallback for anything else; `title`, `lead` and `actions` override it where a site wants its own words. Styling comes from `shell.error`, and `ERROR_STATUSES`, `errorRoutePath` and `errorShellFileName` give a build the paths and filenames to emit a shell per status.
+- The theme-switching guard pauses animations instead of clearing them. Clearing drops a running animation back to its base transform, so anything mid-motion jumped when the guard went up at boot and jumped back a few hundred milliseconds later when it lifted.
+- The header's brand button keeps its own ground on hover, compounded with the button class so a site's button hover fill no longer paints behind the mark.
+
 ## 14.12.0
 
 - The grid utility takes `stack-mobile`, which holds a single column on a small screen whatever else the grid is told. Every other modifier reads as "how many across", with no way to say that one particular row reads better stacked; the rule is declared last so it settles the column count rather than competing with `cols-3` or an `auto-*` minimum.

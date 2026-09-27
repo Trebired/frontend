@@ -66,7 +66,10 @@ body {
 
 #{ns.data("theme-switching", "instant")} *::after {
   transition: none !important;
-  animation: none !important;
+  /* Paused, not cleared: clearing drops a running animation back to its base
+     transform, so anything mid-motion jumps and jumps back when the guard
+     lifts a few hundred milliseconds later. */
+  animation-play-state: paused !important;
 }
 
 ::view-transition-old(root),
@@ -85,7 +88,7 @@ body {
   transition-property: background-color, border-color, color, fill, stroke, outline-color !important;
   transition-duration: var(#{ns.css-var("transition-normal")}, 240ms) !important;
   transition-timing-function: ease !important;
-  animation: none !important;
+  animation-play-state: paused !important;
 }
 
 body {
