@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.8.1
+
+- A hovered action row rescopes `text-muted` to its hover colour. The row re-coloured itself, its value and its arrow, but anything muted inside it — a `label-caps` caption above the value, say — sets its own colour and so kept the resting grey while the ground turned, leaving dark text on a filled row.
+
 ## 14.8.0
 
 - The grid utility takes `stretch`, which lets its items fill the row. `.grid` pins `align-items: start` with nothing to opt out of it, so a row of cards whose labels wrap to different line counts came out ragged, each card only as tall as its own text.

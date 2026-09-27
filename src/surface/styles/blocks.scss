@@ -121,6 +121,10 @@
 
 @media (hover: hover) and (pointer: fine) {
   #{ns.class("action-row")}#{ns.data("interactive", "true")}:hover {
+    #{ns.css-var("text-muted")}: var(
+      #{ns.css-var("surf-action-row-state-hover-text-muted")},
+      color-mix(in srgb, currentColor 72%, transparent)
+    );
     color: var(#{ns.css-var("surf-action-row-state-hover-color")}, inherit);
     background: var(#{ns.css-var("surf-action-row-state-hover-bg")}, transparent);
   }
