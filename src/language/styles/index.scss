@@ -20,7 +20,7 @@
 #{ns.class("button")}#{ns.class("locale-trigger")} {
   border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(
-    #{ns.css-var("shell-language-trigger-border-color")},
+    #{ns.css-var("shell-language-trigger-border")},
     color-mix(in srgb, currentColor 24%, transparent)
   );
 }

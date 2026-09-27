@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.6.5
+
+- The locale trigger's border colour now reads `shell-language-trigger-border`, not `-border-color`. Every `border-color`-named config key is rewritten to a `-border` CSS variable by the shared token-naming pipeline, the same as `borderColor` on a button tone; the trigger's own rule was the one place still spelling out `-border-color`, so a site's `shell.language.trigger.borderColor` was silently never read and the trigger always drew the built-in fallback instead.
+
 ## 14.6.4
 
 - The locale trigger's border now needs the compound selector `.tbf-button.tbf-locale-trigger` to win. `.tbf-locale-trigger` and `.tbf-button` are both plain single-class selectors of equal specificity, so a longhand `border-width` on the trigger still lost to a `border` shorthand on the button whenever the button's rule happened to come later in the bundle — which it does, since language styles are emitted before surface styles. The 14.6.2 fix set the property but never actually reached the page.
