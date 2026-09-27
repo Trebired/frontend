@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.13.1
+
+- The error page's stylesheet ships with the layout system. It was added as its own file that nothing loaded, since package styles are pulled in per system rather than globbed, so `ErrorPage` rendered unstyled.
+
 ## 14.13.0
 
 - Added `ErrorPage`, so a site stops writing its own not-found and error pages. It takes a `status` and carries built-in Czech and English copy for 403, 404, 410, 500 and 503, with a fallback for anything else; `title`, `lead` and `actions` override it where a site wants its own words. Styling comes from `shell.error`, and `ERROR_STATUSES`, `errorRoutePath` and `errorShellFileName` give a build the paths and filenames to emit a shell per status.

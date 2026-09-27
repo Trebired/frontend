@@ -3,6 +3,7 @@
 @use "./breadcrumb";
 @use "./site-header";
 @use "./site-footer";
+@use "./error";
 
 :root {
   #{ns.css-var("layout-top-offset")}: 0px;

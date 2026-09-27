@@ -166,9 +166,6 @@
       "#3f29p8cywlft": [
         "../../../src/editor/styles/index.scss"
       ],
-      "#3fhc88ubrgme": [
-        "../../../src/error/styles/index.scss"
-      ],
       "#3h3hxbxtzi9y": [
         "../../../src/layout/components/breadcrumb.tsx"
       ],
@@ -948,6 +945,9 @@
       ],
       "#h00x28j87qxu": [
         "../../../src/server/live-socket/types.ts"
+      ],
+      "#h09giqhlv5b2": [
+        "../../../src/layout/styles/error.scss"
       ],
       "#h0j4k1vh6it9": [
         "../../../src/server/render/mode-toolkit.ts"
