@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(var(#{ns.css-var("surf-hairline-root-min")}, 16rem), 1fr)
+    minmax(min(var(#{ns.css-var("surf-hairline-root-min")}, 16rem), 100%), 1fr)
   );
   gap: var(#{ns.css-var("surf-hairline-root-gap")}, 1px);
   overflow: hidden;

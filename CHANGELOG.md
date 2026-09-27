@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.11.0
+
+- A hairline panel's columns never grow wider than the panel. `surfaces.hairline.root.min` was used as a hard minimum, so a panel asking for a 30rem column on a 358px phone laid out a 480px track: the cell overflowed, and because the page clips horizontal overflow the text inside was cut off rather than wrapped. The minimum is now capped at the panel's own width.
+- The `auto-sm`, `auto-md` and `auto-lg` grids cap their minimum the same way, and `auto-sm` asks for 10rem rather than 180px so two of them still fit side by side on a phone.
+- `cols-3` and `cols-4` drop to two columns on a small screen rather than one. A row of photographs stacked one per screen is worse than a pair.
+
 ## 14.10.0
 
 - Under `prefix-all` the boot script rewrites a bare path to the prefixed one before paint, so a visitor never sits on a URL that names no language. The unprefixed paths stay served for links written before the prefixes existed; they are normalised in place rather than redirected, so no request is spent on the hop.
