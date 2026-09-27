@@ -4,7 +4,10 @@
   min-width: 170px;
 }
 
-#{ns.class("locale-trigger")} {
+/* Compounded with the button class throughout: the trigger is a button, and a
+   site's own button sizing is declared after these rules, so a plain
+   .tbf-locale-trigger loses every property it shares with it. */
+#{ns.class("button")}#{ns.class("locale-trigger")} {
   gap: var(#{ns.css-var("shell-language-trigger-gap")}, var(#{ns.css-var("gap-xs")}, 8px));
   height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   min-height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);

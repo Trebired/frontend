@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.14.0
+
+- `.text-outline` is drawn with a real text stroke painted under the fill rather than a ring of twelve shadows. The ring approximated a circle, so it thinned and notched wherever a letter turned a corner; `paint-order: stroke fill` keeps the stroke on the outside edge, which is what the shadows were working around.
+- The locale trigger sets every one of its own measurements through `.tbf-button.tbf-locale-trigger`. Only its border was compounded before, so a site whose buttons are taller or more padded than the trigger's own tokens got that size instead — the trigger's `height` and `padding` were being read and then overruled.
+- A hovered hairline cell rescopes `text-muted` to its hover colour, so a caption inside it turns with the ground instead of staying the resting grey and disappearing into it.
+
 ## 14.13.1
 
 - The error page's stylesheet ships with the layout system. It was added as its own file that nothing loaded, since package styles are pulled in per system rather than globbed, so `ErrorPage` rendered unstyled.

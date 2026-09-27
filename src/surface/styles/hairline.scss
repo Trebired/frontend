@@ -53,6 +53,10 @@
 }
 
 #{ns.data("hairline-interactive", "true")}:hover {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-hairline-cell-text-muted-inverse")},
+    color-mix(in srgb, currentColor 62%, transparent)
+  );
   color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
   background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
 }

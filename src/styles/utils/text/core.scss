@@ -1,5 +1,3 @@
-@use "sass:list";
-@use "sass:math";
 @use "@trebired/bundler/namespace" as ns;
 .width-max {
   width: 100% !important;
@@ -52,19 +50,13 @@
 }
 
 .text-outline {
-  $width: var(#{ns.css-var("typography-outline-width")}, 2px);
-  $color: var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
-  $ring: ();
-  @for $step from 0 through 11 {
-    $angle: math.div(360deg * $step, 12);
-    $ring: list.append(
-      $ring,
-      calc(#{math.cos($angle)} * #{$width}) calc(#{math.sin($angle)} * #{$width}) 0 $color,
-      comma
-    );
-  }
   color: var(#{ns.css-var("typography-outline-fill")}, var(#{ns.css-var("page")}, #fff));
-  text-shadow: $ring;
+  -webkit-text-stroke:
+  var(#{ns.css-var("typography-outline-width")}, 2px)
+  var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
+  /* The stroke follows every contour of a glyph, the inner ones included, so
+     painting it under the fill keeps the outline on the outside edge. */
+  paint-order: stroke fill;
 }
 
 .list-plain {
