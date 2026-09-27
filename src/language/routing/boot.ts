@@ -35,6 +35,18 @@ function pathLocaleSource(): string[] {
   ];
 }
 
+/* Under prefix-all every language owns a prefix, so a bare path is rewritten
+   to the prefixed one before paint rather than left sitting without a
+   language in the address bar. */
+function normalizePrefixSource(): string[] {
+  return [
+    "try{var pp=location.pathname.replace(/\\/+$/,'')||'/';",
+    "if(L.indexOf(pp.split('/')[1]||'')<0){",
+    "history.replaceState(history.state,'',",
+    "'/'+n+(pp==='/'?'':pp)+location.search+location.hash)}}catch(e){}",
+  ];
+}
+
 function queryLocaleSource(): string[] {
   return [
     "if(!n){try{var w=/[?&]lang=([^&#]*)/.exec(location.search);if(w)n=m(decodeURIComponent(w[1]))}catch(e){}}",
@@ -88,6 +100,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),
     "n=n||r;h.lang=n;",
+    ...(boot.strategy === "prefix-all" ? normalizePrefixSource() : []),
     ...pendingSource(boot.hideUntilReady !== false),
     "})();",
   ].join("");

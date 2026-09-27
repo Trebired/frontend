@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.10.0
+
+- Under `prefix-all` the boot script rewrites a bare path to the prefixed one before paint, so a visitor never sits on a URL that names no language. The unprefixed paths stay served for links written before the prefixes existed; they are normalised in place rather than redirected, so no request is spent on the hop.
+
 ## 14.9.0
 
 - Locale routing takes a `prefix-all` strategy, which gives every language a prefix rather than leaving the default one on the bare path. `createLocaleShellRoutes` emits `/cs/...` and `/en/...`, and keeps the unprefixed path alongside the default locale's so links written before the switch still resolve.
