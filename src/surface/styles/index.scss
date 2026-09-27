@@ -186,6 +186,12 @@
 #{ns.data("card")} {
   min-width: 0;
   box-sizing: border-box;
+  transition: var(
+    #{ns.css-var("surf-card-root-transition")},
+    background-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+    border-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+    color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
+  );
   border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));

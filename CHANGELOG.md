@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.7.0
+
+- A card eases its hover state. `.tbf-card` carried no `transition` at all, so the border colour an interactive card changes on hover snapped, while the cover image and corner control inside it eased — configurable as `surfaces.card.root.transition`.
+- A site footer link takes its hover duration from `transition-fast` rather than a hardcoded `0.3s`, so a site that tunes that token gets footer, header and button hovers on one timing instead of two.
+
 ## 14.6.5
 
 - The locale trigger's border colour now reads `shell-language-trigger-border`, not `-border-color`. Every `border-color`-named config key is rewritten to a `-border` CSS variable by the shared token-naming pipeline, the same as `borderColor` on a button tone; the trigger's own rule was the one place still spelling out `-border-color`, so a site's `shell.language.trigger.borderColor` was silently never read and the trigger always drew the built-in fallback instead.

@@ -88,7 +88,8 @@
   width: fit-content;
   color: inherit;
   text-decoration-line: var(#{ns.css-var("shell-footer-link-decoration-line")}, none);
-  transition: color 0.3s ease, text-decoration-color 0.3s ease;
+  transition: color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+  text-decoration-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease);
 }
 
 #{ns.element-class("site-footer", "link")}:hover,
