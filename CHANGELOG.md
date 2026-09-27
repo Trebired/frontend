@@ -1,5 +1,12 @@
 # Changelog
 
+## 14.2.0
+
+- `Card` takes `tone="muted" | "inverse" | "accent"`, so a panel can sit on its own ground without a stylesheet, and the inverse and accent tones rescope `text-muted` to their surface. It also takes `as` and `href`, because a card that is a link was otherwise a hand-written anchor.
+- Added `Frame`, which takes its aspect `ratio` as a prop, and `Tag`, the small uppercase chip, with `inverse` and `accent` tones.
+- `FrameAction` is now the corner control itself — a square sized and coloured from `surfaces.frame.action` that takes its hover colours from the interactive `Card` around it.
+- `IconTile` gained a `surface` tone, and `.list-plain` strips a list's markers and indent.
+
 ## 14.1.0
 
 - Added `PageBand`, the full-bleed page section both sites had rebuilt: it paints a background across the viewport, holds its own vertical inset as plain padding and constrains each child to `surfaces.band.root.max`. It carries `tone="muted" | "inverse"`, and the inverse tone rescopes `text-muted`. This is not the old `Section`: it sets no rhythm between siblings, only the inset a band needs to keep its own contents off its edges.

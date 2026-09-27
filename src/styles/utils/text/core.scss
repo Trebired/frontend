@@ -66,3 +66,8 @@
   color: var(#{ns.css-var("typography-outline-fill")}, var(#{ns.css-var("page")}, #fff));
   text-shadow: $ring;
 }
+
+.list-plain {
+  padding-inline-start: 0;
+  list-style: none;
+}

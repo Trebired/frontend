@@ -121,6 +121,25 @@
   inset-block-end: var(#{ns.css-var("surf-frame-action-offset")}, 1rem);
   inset-inline-end: var(#{ns.css-var("surf-frame-action-offset")}, 1rem);
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(#{ns.css-var("surf-frame-action-size")}, 3rem);
+  height: var(#{ns.css-var("surf-frame-action-size")}, 3rem);
+  border-radius: var(#{ns.css-var("surf-frame-action-radius")}, var(#{ns.css-var("radius")}, 0));
+  color: var(#{ns.css-var("surf-frame-action-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-frame-action-bg")}, var(#{ns.css-var("page")}, #fff));
+  transition: background-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  color var(#{ns.css-var("transition-fast")}, 180ms) ease;
+}
+
+#{ns.element-class("frame", "action")} .icon-glyph {
+  font-size: var(#{ns.css-var("surf-frame-action-glyph")}, 1.5rem);
+}
+
+#{ns.class("card")}#{ns.data("interactive", "true")}:hover #{ns.element-class("frame", "action")} {
+  color: var(#{ns.css-var("surf-frame-action-state-hover-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-frame-action-state-hover-bg")}, var(#{ns.css-var("focus")}, #000));
 }
 
 #{ns.class("card")}#{ns.data("interactive", "true")}:hover #{ns.element-class("frame", "cover")} {

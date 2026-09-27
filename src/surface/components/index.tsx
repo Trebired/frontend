@@ -20,8 +20,19 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   tone?: SurfaceTone;
 };
 
-type CardProps = HTMLAttributes<HTMLDivElement> & {
+type CardProps = HTMLAttributes<HTMLElement> & {
+  as?: "a" | "article" | "div" | "li" | "section";
+  href?: string;
   interactive?: boolean;
+  softRedirect?: boolean;
+  tone?: SurfaceTone;
+};
+
+type FrameProps = HTMLAttributes<HTMLDivElement> & {
+  ratio?: string;
+};
+
+type TagProps = HTMLAttributes<HTMLSpanElement> & {
   tone?: SurfaceTone;
 };
 
@@ -106,16 +117,43 @@ function Button(props: ButtonProps) {
 }
 
 function Card(props: CardProps) {
-  const { children, className, interactive, tone, ...rest } = props;
+  const { as, children, className, href, interactive, softRedirect, tone, ...rest } = props;
+  const Tag = as || (href ? "a" : "div");
+  const isInteractive = interactive ?? Boolean(href);
+  return (
+    <Tag
+    {...rest}
+    className={classNames(surfaceClass(frontendClassName("card"), { tone }), className)}
+    href={Tag === "a" ? href : undefined}
+    {...frontendDataAttrs({ "card": "" })}
+    {...frontendDataAttrs({ "interactive": isInteractive ? "true" : undefined })}
+    {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
+    >
+    <HeadingScope>{children}</HeadingScope>
+    </Tag>
+  );
+}
+
+function Frame(props: FrameProps) {
+  const { children, className, ratio, style, ...rest } = props;
+  const ratioStyle = ratio ? { [`--${FRONTEND_PREFIX}-surf-frame-root-ratio`]: ratio } : undefined;
   return (
     <div
     {...rest}
-    className={classNames(surfaceClass(frontendClassName("card"), { tone }), className)}
-    {...frontendDataAttrs({ "card": "" })}
-    {...frontendDataAttrs({ "interactive": interactive ? "true" : undefined })}
+    className={classNames(frontendClassName("frame"), className)}
+    style={ratioStyle ? { ...ratioStyle, ...style } : style}
     >
-    <HeadingScope>{children}</HeadingScope>
+    {children}
     </div>
+  );
+}
+
+function Tag(props: TagProps) {
+  const { children, className, tone, ...rest } = props;
+  return (
+    <span {...rest} className={classNames(surfaceClass(frontendClassName("tag"), { tone }), className)}>
+    {children}
+    </span>
   );
 }
 
@@ -275,12 +313,14 @@ export {
   CardHeader,
   FrameAction,
   FrameCaption,
+  Frame,
   FrameCover,
   FrameScrim,
   HairlineCell,
   HairlinePanel,
   IconTile,
   PageBand,
+  Tag,
 };
 export type {
   AccentRuleProps,
@@ -290,8 +330,10 @@ export type {
   CardProps,
   FrameCoverProps,
   FrameLayerProps,
+  FrameProps,
   HairlineCellProps,
   HairlinePanelProps,
   IconTileProps,
   PageBandProps,
+  TagProps,
 };

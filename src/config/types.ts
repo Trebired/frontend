@@ -120,6 +120,7 @@ type FrontendSurfaceComponentsConfig = {
   prose?: FrontendComponentTokens;
   rule?: FrontendComponentTokens;
   scrollbar?: FrontendComponentTokens;
+  tag?: FrontendComponentTokens;
   tile?: FrontendComponentTokens;
 };
 

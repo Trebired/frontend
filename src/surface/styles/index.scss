@@ -201,6 +201,29 @@
   border-color: var(#{ns.css-var("surf-card-state-hover-border")}, var(#{ns.css-var("focus")}, #000));
 }
 
+#{ns.class("card")}--muted {
+  color: var(#{ns.css-var("surf-card-tone-muted-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-card-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
+}
+
+#{ns.class("card")}--inverse {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-card-tone-inverse-text-muted")},
+    color-mix(in srgb, currentColor 62%, transparent)
+  );
+  color: var(#{ns.css-var("surf-card-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-card-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+}
+
+#{ns.class("card")}--accent {
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("surf-card-tone-accent-text-muted")},
+    color-mix(in srgb, currentColor 70%, transparent)
+  );
+  color: var(#{ns.css-var("surf-card-tone-accent-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-card-tone-accent-bg")}, var(#{ns.css-var("focus")}, #000));
+}
+
 #{ns.element-class("card", "header")},
 
 #{ns.element-class("card", "body")},

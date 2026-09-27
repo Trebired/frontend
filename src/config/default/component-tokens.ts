@@ -337,7 +337,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
         button: Object.freeze({}),
         frame: Object.freeze({
-            action: { offset: "1rem" },
+            action: { glyph: "1.5rem", offset: "1rem", size: "3rem", states: { hover: {} } },
             badge: { offset: "1rem" },
             caption: {},
             cover: { duration: "700ms", position: "50% 50%", states: { hover: { scale: "1.05" } } },
@@ -349,6 +349,17 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         logo: Object.freeze({ root: { height: "2rem", max: "100%" } }),
         prose: Object.freeze({ root: { gap: "12px", lineHeight: "1.8", max: "47rem" } }),
         rule: Object.freeze({ root: { gap: "0.75rem", width: "4px" } }),
+        tag: Object.freeze({
+            root: {
+              fontSize: "0.75rem",
+              fontWeight: "700",
+              gap: "4px",
+              letterSpacing: "0.02em",
+              padding: "0.5rem 0.75rem",
+              textTransform: "none",
+            },
+            tones: { accent: {}, inverse: {} },
+        }),
         scrollbar: Object.freeze({ root: { gutter: "stable" } }),
         tile: Object.freeze({
             root: { glyph: "1.5rem", size: "3rem" },
@@ -382,6 +393,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               fontWeight: "700",
               margin: "0 0 10px 0",
             },
+            tones: { accent: {}, inverse: {}, muted: {}, surface: {} },
         }),
     }),
   } satisfies NormalizedFrontendComponentsConfig);

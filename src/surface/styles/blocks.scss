@@ -132,3 +132,36 @@
     color: var(#{ns.css-var("surf-action-row-state-hover-color")}, inherit);
   }
 }
+
+#{ns.class("tile")}--surface {
+  color: var(#{ns.css-var("surf-tile-tone-surface-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-tile-tone-surface-bg")}, var(#{ns.css-var("surface")}, #fff));
+}
+
+#{ns.class("tag")} {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(#{ns.css-var("surf-tag-root-gap")}, var(#{ns.css-var("gap-xs2")}, 4px));
+  padding: var(#{ns.css-var("surf-tag-root-padding")}, 0.5rem 0.75rem);
+  border-radius: var(#{ns.css-var("surf-tag-root-radius")}, var(#{ns.css-var("radius")}, 0));
+  color: var(#{ns.css-var("surf-tag-root-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-tag-root-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
+  font-size: var(#{ns.css-var("surf-tag-root-font-size")}, 0.75rem);
+  font-weight: var(#{ns.css-var("surf-tag-root-font-weight")}, 700);
+  letter-spacing: var(#{ns.css-var("surf-tag-root-letter-spacing")}, 0.02em);
+  line-height: 1;
+  text-transform: var(#{ns.css-var("surf-tag-root-text-transform")}, none);
+  white-space: nowrap;
+}
+
+#{ns.class("tag")}--inverse {
+  color: var(#{ns.css-var("surf-tag-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-tag-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+}
+
+#{ns.class("tag")}--accent {
+  color: var(#{ns.css-var("surf-tag-tone-accent-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-tag-tone-accent-bg")}, var(#{ns.css-var("focus")}, #000));
+}
