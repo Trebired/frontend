@@ -111,6 +111,7 @@ type FrontendPrimitiveComponentsConfig = {
 type FrontendSurfaceComponentsConfig = {
   actionRow?: FrontendComponentTokens;
   band?: FrontendComponentTokens;
+  brandCanvas?: FrontendComponentTokens;
   button?: FrontendComponentTokens;
   card?: FrontendComponentTokens;
   frame?: FrontendComponentTokens;

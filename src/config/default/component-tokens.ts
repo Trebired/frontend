@@ -328,6 +328,17 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             states: { hover: {} },
             value: { fontSize: "1.25rem", fontWeight: "700" },
         }),
+        brandCanvas: Object.freeze({
+            art: {},
+            caption: { gap: "12px" },
+            clear: {},
+            guide: {},
+            measure: { fontSize: "0.68rem", offset: "0.75rem" },
+            root: { gap: "12px" },
+            spec: { fontSize: "0.72rem" },
+            stage: { minHeight: "14rem", padding: "40px" },
+            tones: { accent: {}, inverse: {}, muted: {} },
+        }),
         band: Object.freeze({
             root: {
               max: "80rem",

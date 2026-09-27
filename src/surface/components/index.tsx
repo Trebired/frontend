@@ -32,6 +32,15 @@ type FrameProps = HTMLAttributes<HTMLDivElement> & {
   ratio?: string;
 };
 
+type BrandCanvasProps = HTMLAttributes<HTMLElement> & {
+  caption?: ReactNode;
+  clearSpace?: string;
+  guides?: boolean;
+  height?: string;
+  spec?: ReactNode;
+  tone?: SurfaceTone;
+};
+
 type TagProps = HTMLAttributes<HTMLSpanElement> & {
   tone?: SurfaceTone;
 };
@@ -145,6 +154,49 @@ function Frame(props: FrameProps) {
     >
     {children}
     </div>
+  );
+}
+
+function BrandCanvas(props: BrandCanvasProps) {
+  const { caption, children, className, clearSpace, guides = true, height, spec, style, tone, ...rest } = props;
+  const stageStyle: Record<string, string> = {};
+  if (clearSpace) stageStyle[`--${FRONTEND_PREFIX}-surf-brand-canvas-clear-space`] = clearSpace;
+  if (height) stageStyle[`--${FRONTEND_PREFIX}-surf-brand-canvas-stage-min-h`] = height;
+  return (
+    <figure
+    {...rest}
+    className={classNames(surfaceClass(frontendClassName("brand-canvas"), { tone }), className)}
+    style={Object.keys(stageStyle).length > 0 ? { ...stageStyle, ...style } : style}
+    {...frontendDataAttrs({ "brand-canvas-guides": guides ? "true" : undefined })}
+    >
+    <div className={frontendElementClass("brand-canvas", "stage")}>
+    <div className={frontendElementClass("brand-canvas", "clear")}>
+    <div className={frontendElementClass("brand-canvas", "art")}>{children}</div>
+    </div>
+    {clearSpace && guides ? (
+        <>
+        <span
+        className={frontendElementClass("brand-canvas", "measure")}
+        {...frontendDataAttrs({ "brand-canvas-measure": "block" })}
+        >
+        {clearSpace}
+        </span>
+        <span
+        className={frontendElementClass("brand-canvas", "measure")}
+        {...frontendDataAttrs({ "brand-canvas-measure": "inline" })}
+        >
+        {clearSpace}
+        </span>
+        </>
+    ) : null}
+    </div>
+    {caption || spec ? (
+        <figcaption className={frontendElementClass("brand-canvas", "caption")}>
+        {caption ? <span>{caption}</span> : null}
+        {spec ? <span className={frontendElementClass("brand-canvas", "spec")}>{spec}</span> : null}
+        </figcaption>
+    ) : null}
+    </figure>
   );
 }
 
@@ -305,6 +357,7 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
 export {
   AccentRule,
   ActionRow,
+  BrandCanvas,
   Button,
   CanvasPanel,
   Card,
@@ -325,6 +378,7 @@ export {
 export type {
   AccentRuleProps,
   ActionRowProps,
+  BrandCanvasProps,
   ButtonProps,
   CanvasPanelProps,
   CardProps,

@@ -1,0 +1,105 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("brand-canvas")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-brand-canvas-root-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  min-width: 0;
+}
+
+#{ns.element-class("brand-canvas", "stage")} {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: var(#{ns.css-var("surf-brand-canvas-stage-min-h")}, 14rem);
+  padding: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  border: var(
+    #{ns.css-var("surf-brand-canvas-stage-border")},
+    var(--border-width, 1px) solid color-mix(in srgb, currentColor 14%, transparent)
+  );
+  border-radius: var(#{ns.css-var("surf-brand-canvas-stage-radius")}, var(#{ns.css-var("radius")}, 0));
+  color: var(#{ns.css-var("surf-brand-canvas-stage-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-brand-canvas-stage-bg")}, var(#{ns.css-var("page")}, #fff));
+}
+
+#{ns.class("brand-canvas")}--muted #{ns.element-class("brand-canvas", "stage")} {
+  color: var(#{ns.css-var("surf-brand-canvas-tone-muted-color")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-brand-canvas-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
+}
+
+#{ns.class("brand-canvas")}--inverse #{ns.element-class("brand-canvas", "stage")} {
+  color: var(#{ns.css-var("surf-brand-canvas-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-brand-canvas-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+}
+
+#{ns.class("brand-canvas")}--accent #{ns.element-class("brand-canvas", "stage")} {
+  color: var(#{ns.css-var("surf-brand-canvas-tone-accent-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-brand-canvas-tone-accent-bg")}, var(#{ns.css-var("focus")}, #000));
+}
+
+#{ns.element-class("brand-canvas", "clear")} {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(#{ns.css-var("surf-brand-canvas-clear-space")}, 2rem);
+}
+
+#{ns.data("brand-canvas-guides", "true")} #{ns.element-class("brand-canvas", "clear")} {
+  outline: var(
+    #{ns.css-var("surf-brand-canvas-guide-border")},
+    1px dashed color-mix(in srgb, currentColor 38%, transparent)
+  );
+  outline-offset: 0;
+}
+
+#{ns.data("brand-canvas-guides", "true")} #{ns.element-class("brand-canvas", "art")} {
+  outline: var(
+    #{ns.css-var("surf-brand-canvas-art-border")},
+    1px solid color-mix(in srgb, currentColor 24%, transparent)
+  );
+}
+
+#{ns.element-class("brand-canvas", "art")} {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+#{ns.element-class("brand-canvas", "measure")} {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(#{ns.css-var("surf-brand-canvas-measure-color")}, color-mix(in srgb, currentColor 62%, transparent));
+  font-family: var(#{ns.css-var("font-mono")}, monospace);
+  font-size: var(#{ns.css-var("surf-brand-canvas-measure-font-size")}, 0.68rem);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#{ns.data("brand-canvas-measure", "block")} {
+  inset-block: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  inset-inline-start: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
+  writing-mode: vertical-rl;
+}
+
+#{ns.data("brand-canvas-measure", "inline")} {
+  inset-inline: var(#{ns.css-var("surf-brand-canvas-stage-padding")}, var(#{ns.css-var("gap-lg")}, 40px));
+  inset-block-end: var(#{ns.css-var("surf-brand-canvas-measure-offset")}, 0.75rem);
+}
+
+#{ns.element-class("brand-canvas", "caption")} {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(#{ns.css-var("surf-brand-canvas-caption-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(#{ns.css-var("text-muted")}, #666);
+  font-size: var(#{ns.css-var("surf-brand-canvas-caption-font-size")}, 0.8rem);
+}
+
+#{ns.element-class("brand-canvas", "spec")} {
+  color: var(#{ns.css-var("surf-brand-canvas-spec-color")}, var(#{ns.css-var("text-muted")}, #666));
+  font-family: var(#{ns.css-var("font-mono")}, monospace);
+  font-size: var(#{ns.css-var("surf-brand-canvas-spec-font-size")}, 0.72rem);
+}

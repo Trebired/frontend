@@ -3,6 +3,7 @@
 #{ns.class("embed-frame")} {
   position: relative;
   width: 100%;
+  aspect-ratio: var(#{ns.css-var("media-embed-frame-ratio")}, 16 / 9);
   overflow: hidden;
   background: var(--background-surface-1, transparent);
 }

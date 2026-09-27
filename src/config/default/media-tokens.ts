@@ -8,6 +8,7 @@ const DEFAULT_MEDIA_COMPONENTS_CONFIG = Object.freeze({
           size: "2.5rem",
         },
     }),
+    embedFrame: Object.freeze({ ratio: "16 / 9" }),
     lightbox: Object.freeze({
         backdrop: {
           background: "oklch(14.5% 0 0 / 88%)",

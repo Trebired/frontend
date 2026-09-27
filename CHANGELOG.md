@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.5.0
+
+- An embed frame has an intrinsic aspect ratio, `media.embedFrame.ratio`, defaulting to 16 / 9. It sized itself only from whatever height the page gave it, so an embed in a plain grid cell rendered a full-width strip of nothing, and `MapEmbed` had no way to say otherwise — it now forwards `aspectRatio` like `EmbedFrame` does.
+- Added `BrandCanvas`, the stage a brand page shows a mark on: a `tone`d ground, a clear-space inset drawn as a guide and labelled on both axes, and a caption row for the rule and its measurement. It takes `clearSpace`, `height`, `guides`, `caption` and `spec`.
+
 ## 14.4.0
 
 - `ExpandableImage` takes a `ratio`. It is already its own media box — `position: relative`, its own background, an overlaid icon — so wrapping it in a `Frame` to give it a shape put the frame's cover layer inside the button instead of the frame, collapsing the button to nothing and leaving an empty box.

@@ -1,5 +1,6 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "./blocks";
+@use "./brand-canvas";
 @use "./hairline";
 @use "./layout";
 #{ns.class("button")} {

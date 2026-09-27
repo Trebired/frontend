@@ -1,6 +1,7 @@
 import { EmbedFrame, type EmbedFrameLabels } from "./embed-frame.js";
 
 type MapEmbedProps = {
+  aspectRatio?: string;
   className?: string;
   labels?: EmbedFrameLabels;
   lang?: string;
@@ -9,10 +10,11 @@ type MapEmbedProps = {
   title: string;
 };
 
-function MapEmbed({ className, labels, lang, src, timeoutMs, title }: MapEmbedProps) {
+function MapEmbed({ aspectRatio, className, labels, lang, src, timeoutMs, title }: MapEmbedProps) {
   return (
     <EmbedFrame
     allowFullScreen
+    aspectRatio={aspectRatio}
     className={className}
     labels={labels}
     lang={lang}

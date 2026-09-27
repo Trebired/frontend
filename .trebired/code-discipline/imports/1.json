@@ -102,6 +102,7 @@
   "#5lynij7jmg2c": "./src/icons/server/options.ts",
   "#5ssjolog3tb8": "./src/settings/save-policy/bindings.ts",
   "#5t2umsp1pjap": "./src/graph/advanced/runtime/index.ts",
+  "#5v3xrl7bldnj": "./src/surface/styles/brand-canvas.scss",
   "#5vbaqj4pirp3": "./src/namespace/index.ts",
   "#5x2658viyxv1": "./src/media/carousel.tsx",
   "#5zd51tnvt4yt": "./src/inputs/select_cards.ts",
