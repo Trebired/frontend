@@ -372,7 +372,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             tones: { accent: {}, inverse: {} },
         }),
-        scrollbar: Object.freeze({ root: { gutter: "stable" } }),
+        scrollbar: Object.freeze({ root: { gutter: "stable", width: "auto" } }),
         tile: Object.freeze({
             root: { glyph: "1.5rem", size: "3rem" },
             sizes: { lg: { glyph: "1.75rem", size: "4rem" }, sm: { glyph: "1rem", size: "2.5rem" } },

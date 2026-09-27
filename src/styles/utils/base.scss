@@ -10,18 +10,9 @@ body {
 html {
   scrollbar-gutter: var(#{ns.css-var("surf-scrollbar-root-gutter")}, stable);
   overflow-x: clip;
+  scrollbar-width: var(#{ns.css-var("surf-scrollbar-root-width")}, auto);
   scrollbar-color: var(#{ns.css-var("surf-scrollbar-root-thumb")}, auto)
   var(#{ns.css-var("surf-scrollbar-root-track")}, transparent);
-}
-
-::-webkit-scrollbar {
-  width: var(#{ns.css-var("surf-scrollbar-root-width")}, auto);
-  background: var(#{ns.css-var("surf-scrollbar-root-track")}, transparent);
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: var(#{ns.css-var("surf-scrollbar-root-radius")}, var(#{ns.css-var("radius")}, 0));
-  background: var(#{ns.css-var("surf-scrollbar-root-thumb")}, transparent);
 }
 
 [data-scrollbar-gap="y"],

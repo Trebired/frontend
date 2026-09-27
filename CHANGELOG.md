@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.6.1
+
+- The page scrollbar is styled with `scrollbar-width` and `scrollbar-color` rather than the WebKit pseudo-elements. Defining `::-webkit-scrollbar` opts a page into drawing its own scrollbar, and the thumb fell back to `transparent`, so every site that did not set `surfaces.scrollbar.root.thumb` lost its scrollbar wherever the browser draws a classic one. `surfaces.scrollbar.root.width` now takes `auto`, `thin` or `none`, and `radius` is gone — the standard properties do not offer one.
+
 ## 14.6.0
 
 - A card's header, body and footer take a `padding` of `sm`, `md` or `lg`, sized by `surfaces.card.sizes`. A card's padding was one value for the whole site, so a small note inside a panel carried the same inset as the panel around it, and the spacing utilities could not say otherwise — they are declared before the card's own rule and lose to it.
