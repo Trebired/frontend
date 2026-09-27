@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.8.0
+
+- The grid utility takes `stretch`, which lets its items fill the row. `.grid` pins `align-items: start` with nothing to opt out of it, so a row of cards whose labels wrap to different line counts came out ragged, each card only as tall as its own text.
+
 ## 14.7.0
 
 - A card eases its hover state. `.tbf-card` carried no `transition` at all, so the border colour an interactive card changes on hover snapped, while the cover image and corner control inside it eased — configurable as `surfaces.card.root.transition`.
