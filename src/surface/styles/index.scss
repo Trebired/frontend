@@ -202,11 +202,13 @@
 }
 
 #{ns.class("card")}--muted {
+  border-color: var(#{ns.css-var("surf-card-tone-muted-border")}, var(#{ns.css-var("surface-muted")}, #eee));
   color: var(#{ns.css-var("surf-card-tone-muted-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("surf-card-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
 }
 
 #{ns.class("card")}--inverse {
+  border-color: var(#{ns.css-var("surf-card-tone-inverse-border")}, var(#{ns.css-var("text")}, #000));
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("surf-card-tone-inverse-text-muted")},
     color-mix(in srgb, currentColor 62%, transparent)
@@ -216,6 +218,7 @@
 }
 
 #{ns.class("card")}--accent {
+  border-color: var(#{ns.css-var("surf-card-tone-accent-border")}, var(#{ns.css-var("focus")}, #000));
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("surf-card-tone-accent-text-muted")},
     color-mix(in srgb, currentColor 70%, transparent)

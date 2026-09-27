@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.3.0
+
+- A toned `Card` colours its border to match its ground. The muted, inverse and accent tones kept the root border colour, so a dark panel on a light page was outlined in the light page's hairline.
+- `label-caps` reads `typography.label.caps`, `SiteFooter` takes a `shell.footer.root.border`, and `.text-center` centres text on its own rather than only as `.column.center`.
+- `ActionRow` pushes its arrow with the body's `flex` instead of an automatic inline margin.
+
 ## 14.2.0
 
 - `Card` takes `tone="muted" | "inverse" | "accent"`, so a panel can sit on its own ground without a stylesheet, and the inverse and accent tones rescope `text-muted` to their surface. It also takes `as` and `href`, because a card that is a link was otherwise a hand-written anchor.

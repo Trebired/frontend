@@ -55,9 +55,9 @@
 }
 
 .label-caps {
-  color: var(#{ns.css-var("text-muted")}, #000);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+  color: var(#{ns.css-var("typography-label-caps-color")}, var(#{ns.css-var("text-muted")}, #000));
+  font-size: var(#{ns.css-var("typography-label-caps-font-size")}, 0.72rem);
+  font-weight: var(#{ns.css-var("typography-label-caps-font-weight")}, 600);
+  letter-spacing: var(#{ns.css-var("typography-label-caps-letter-spacing")}, 0.16em);
   text-transform: uppercase;
 }

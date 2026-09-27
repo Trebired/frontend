@@ -14,6 +14,7 @@
   color: var(#{ns.css-var("shell-footer-root-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("shell-footer-root-bg")}, var(#{ns.css-var("page")}, #fff));
   font-size: var(#{ns.css-var("shell-footer-root-font-size")}, inherit);
+  border-block-start: var(#{ns.css-var("shell-footer-root-border")}, 0);
 }
 
 #{ns.data("site-footer-tone", "inverse")} {

@@ -96,6 +96,7 @@
 
 #{ns.element-class("action-row", "body")} {
   display: grid;
+  flex: 1;
   gap: var(#{ns.css-var("surf-action-row-body-gap")}, var(#{ns.css-var("gap-xs2")}, 4px));
   min-width: 0;
 }
@@ -110,7 +111,6 @@
 
 #{ns.element-class("action-row", "arrow")} {
   flex: 0 0 auto;
-  margin-inline-start: auto;
   color: var(#{ns.css-var("surf-action-row-arrow-color")}, var(#{ns.css-var("text-muted")}, #666));
   transition: color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }

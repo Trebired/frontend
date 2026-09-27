@@ -308,7 +308,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     shell: Object.freeze({
         breadcrumb: Object.freeze({ fontSize: "14px" }),
         bottomBar: Object.freeze({}),
-        footer: Object.freeze({ brand: {}, column: {}, columns: {}, heading: {}, inner: {}, link: {}, links: {}, note: {}, root: {}, tagline: {}, tone: { inverse: {}, muted: {} } }),
+        footer: Object.freeze({ brand: {}, column: {}, columns: {}, heading: {}, inner: {}, link: {}, links: {}, note: {}, root: { border: "0" }, tagline: {}, tone: { inverse: {}, muted: {} } }),
         header: Object.freeze({ brand: { button: {}, tag: { offsetY: "0" } } }),
         language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
         sidebar: Object.freeze({}),
@@ -317,6 +317,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     typography: Object.freeze({
         container: Object.freeze({}),
         heading: Object.freeze({ variants: Object.freeze({}) }),
+        label: Object.freeze({ caps: { fontSize: "0.72rem", fontWeight: "600", letterSpacing: "0.16em" } }),
         outline: Object.freeze({ width: "2px" }),
     }),
     surfaces: Object.freeze({
