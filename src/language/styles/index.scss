@@ -9,9 +9,10 @@
   height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   min-height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   padding: var(#{ns.css-var("shell-language-trigger-padding")}, 0 10px);
+  border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(
     #{ns.css-var("shell-language-trigger-border-color")},
-    color-mix(in srgb, currentColor 14%, transparent)
+    color-mix(in srgb, currentColor 24%, transparent)
   );
   border-radius: var(#{ns.css-var("shell-language-trigger-radius")}, var(#{ns.css-var("radius-sm")}, 0));
   font-size: var(#{ns.css-var("shell-language-trigger-font-size")}, 12.5px);

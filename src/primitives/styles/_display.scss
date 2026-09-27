@@ -72,7 +72,11 @@
   text-decoration-style: var(#{ns.css-var("ui-link-root-decoration-style")}, solid);
   text-decoration-thickness: var(#{ns.css-var("ui-link-root-decoration-thickness")}, 1px);
   text-underline-offset: var(#{ns.css-var("ui-link-root-underline-offset")}, 3px);
-  transition: var(#{ns.css-var("ui-link-root-transition")}, none);
+  transition: var(
+    #{ns.css-var("ui-link-root-transition")},
+    color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
+    text-decoration-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
+  );
 }
 
 #{ns.class("text-link")}:hover,

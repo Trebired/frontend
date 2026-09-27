@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.6.2
+
+- `TextLink` transitions colour and underline colour on hover instead of snapping. Its default `ui.link.root.transition` was `none`, so every text link on every site — a footer address, a phone number, a back link — changed state instantly while the button and header links beside it eased.
+- The locale trigger has its own `border-width`, pinned to 1px, instead of inheriting whatever width the site's base button uses. A site with a bold 2px button border (a deliberate CTA choice) got the same weight on this small chip control, which reads as a stray outline rather than a border. Its default border colour also darkened slightly, from a 14% to a 24% mix, since 14% washed out against most page backgrounds.
+
 ## 14.6.1
 
 - The page scrollbar is styled with `scrollbar-width` and `scrollbar-color` rather than the WebKit pseudo-elements. Defining `::-webkit-scrollbar` opts a page into drawing its own scrollbar, and the thumb fell back to `transparent`, so every site that did not set `surfaces.scrollbar.root.thumb` lost its scrollbar wherever the browser draws a classic one. `surfaces.scrollbar.root.width` now takes `auto`, `thin` or `none`, and `radius` is gone — the standard properties do not offer one.
