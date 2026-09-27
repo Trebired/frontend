@@ -27,6 +27,14 @@ function handoffLocaleSource(): string[] {
   ];
 }
 
+/* A locale prefix in the URL is the page the visitor actually asked for, so it
+   outranks anything remembered from a previous visit. */
+function pathLocaleSource(): string[] {
+  return [
+    "if(!n){try{var s=(location.pathname.split('/')[1]||'');n=m(s)}catch(e){}}",
+  ];
+}
+
 function queryLocaleSource(): string[] {
   return [
     "if(!n){try{var w=/[?&]lang=([^&#]*)/.exec(location.search);if(w)n=m(decodeURIComponent(w[1]))}catch(e){}}",
@@ -65,6 +73,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
   const routing = normalizeLocaleRouting(options);
   const detectBrowser = !boot.strategy || boot.strategy === "none";
   const readQuery = boot.strategy === "query";
+  const readPath = boot.strategy === "prefix" || boot.strategy === "prefix-all";
   return [
     "(function(){",
     `var L=${scriptJson(routing.locales)},D=${scriptJson(routing.defaultLocale)},`,
@@ -74,6 +83,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     "var d=document,h=d.documentElement,r=h.lang||D;h.setAttribute(R,r);",
     ...matchSource(),
     ...handoffLocaleSource(),
+    ...(readPath ? pathLocaleSource() : []),
     ...storedLocaleSource(),
     ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),

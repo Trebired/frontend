@@ -8,9 +8,11 @@ export {
   DEFAULT_LOCALE_COOKIE_NAME,
   DEFAULT_LOCALE_STORAGE_KEY,
   cleanLocale,
+  localePathFor,
   matchLocale,
   normalizeLocaleRouting,
   pickLocale,
+  prefixesEveryLocale,
 } from "./options.js";
 export type { LocaleRouting, LocaleRoutingOptions, LocaleStrategy } from "./options.js";
 export {
@@ -18,6 +20,7 @@ export {
   currentLocale,
   currentRoutePath,
   getLocaleRouting,
+  localeHref,
   onLocaleChanged,
   persistLocale,
   setCurrentLocale,

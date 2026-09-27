@@ -1,4 +1,4 @@
-import { cleanLocale, matchLocale, normalizeLocaleRouting } from "./options.js";
+import { cleanLocale, localePathFor, matchLocale, normalizeLocaleRouting, prefixesEveryLocale } from "./options.js";
 import type { LocaleRouting, LocaleRoutingOptions } from "./options.js";
 import { LOCALE_RENDERED_ATTR, applyLocaleMeta } from "./view.js";
 
@@ -32,9 +32,17 @@ function currentLocale(): string {
 function stripLocalePrefix(pathname: string): string {
   const trimmed = String(pathname || "/").replace(/\/+$/u, "") || "/";
   const [, first = "", ...rest] = trimmed.split("/");
-  const prefixed = configured && first !== routing.defaultLocale && routing.locales.includes(first);
+  /* Under prefix-all the default locale is prefixed too, so it is a prefix to
+     strip rather than the first segment of the route. */
+  const ownPrefix = first === routing.defaultLocale && prefixesEveryLocale(routing.strategy);
+  const prefixed = configured && routing.locales.includes(first) && (first !== routing.defaultLocale || ownPrefix);
   if (!prefixed) return trimmed;
   return `/${rest.join("/")}`.replace(/\/+$/u, "") || "/";
+}
+
+function localeHref(path: string, locale?: unknown): string {
+  const target = resolveLocale(locale) || currentLocale();
+  return localePathFor(stripLocalePrefix(path), target, routing);
 }
 
 function currentRoutePath(): string {
@@ -75,6 +83,7 @@ function onLocaleChanged(listener: LocaleListener): () => void {
 
 export {
   configureLocaleRouting,
+  localeHref,
   currentLocale,
   currentRoutePath,
   getLocaleRouting,

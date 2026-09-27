@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.9.0
+
+- Locale routing takes a `prefix-all` strategy, which gives every language a prefix rather than leaving the default one on the bare path. `createLocaleShellRoutes` emits `/cs/...` and `/en/...`, and keeps the unprefixed path alongside the default locale's so links written before the switch still resolve.
+- The routing config carries its `strategy`, so the runtime knows whether a leading `/cs` is a locale prefix or the first segment of a route. `stripLocalePrefix` strips the default locale's prefix under `prefix-all`, and `localeHref(path, locale)` builds the URL a language belongs at.
+- The boot script reads a locale prefix from the URL ahead of the stored preference under both prefix strategies. A visitor who had chosen one language and then opened a link in another was being moved back to their old one before first paint.
+
 ## 14.8.1
 
 - A hovered action row rescopes `text-muted` to its hover colour. The row re-coloured itself, its value and its arrow, but anything muted inside it — a `label-caps` caption above the value, say — sets its own colour and so kept the resting grey while the ground turned, leaving dark text on a filled row.

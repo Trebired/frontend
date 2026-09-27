@@ -1,4 +1,5 @@
 import { createLocaleDocumentBody } from "./document.js";
+import { localePathFor, prefixesEveryLocale } from "./options.js";
 import type { LocaleRouting, LocaleStrategy } from "./options.js";
 import type { LocaleMeta } from "./view.js";
 
@@ -18,14 +19,33 @@ type LocaleShellRoute<M extends LocaleMeta> = {
   sourcePath: string;
 };
 
-function localeRoutePath(sourcePath: string, locale: string, routing: LocaleRouting): string {
-  if (locale === routing.defaultLocale) return sourcePath;
-  const trimmed = sourcePath.replace(/\/+$/u, "");
-  return trimmed ? `/${locale}${trimmed.startsWith("/") ? trimmed : `/${trimmed}`}` : `/${locale}`;
+function localeRoutePath(
+  sourcePath: string,
+  locale: string,
+  routing: LocaleRouting,
+  strategy?: LocaleStrategy,
+): string {
+  return localePathFor(sourcePath, locale, { ...routing, strategy: strategy || routing.strategy });
 }
 
 function servedLocales(routing: LocaleRouting, strategy?: LocaleStrategy): string[] {
-  return strategy === "prefix" ? routing.locales : [routing.defaultLocale];
+  const prefixed = strategy === "prefix" || prefixesEveryLocale(strategy);
+  return prefixed ? routing.locales : [routing.defaultLocale];
+}
+
+/* Under prefix-all the default locale also lives behind a prefix, so the bare
+   path is emitted alongside it and keeps every link written before the switch
+   resolving to the same page. */
+function servedPaths(
+  sourcePath: string,
+  locale: string,
+  routing: LocaleRouting,
+  strategy?: LocaleStrategy,
+): string[] {
+  const prefixed = localeRoutePath(sourcePath, locale, routing, strategy);
+  if (!prefixesEveryLocale(strategy) || locale !== routing.defaultLocale) return [prefixed];
+  const bare = sourcePath.replace(/\/+$/u, "") || "/";
+  return bare === prefixed ? [prefixed] : [prefixed, bare];
 }
 
 function swapMeta<M extends LocaleMeta>(metas: Record<string, M>): Record<string, LocaleMeta> {
@@ -42,13 +62,15 @@ function createLocaleShellRoutes<M extends LocaleMeta>(options: LocaleShellRoute
       routing.locales.map((locale) => [locale, options.meta(sourcePath, locale)]),
     );
     for (const locale of servedLocales(routing, options.strategy)) {
-      routes.push({
-          body: createLocaleDocumentBody({ bodies, defaultLocale: locale, meta: swapMeta(metas) }),
-          locale,
-          meta: { ...metas[locale], lang: locale },
-          path: localeRoutePath(sourcePath, locale, routing),
-          sourcePath,
-      });
+      for (const path of servedPaths(sourcePath, locale, routing, options.strategy)) {
+        routes.push({
+            body: createLocaleDocumentBody({ bodies, defaultLocale: locale, meta: swapMeta(metas) }),
+            locale,
+            meta: { ...metas[locale], lang: locale },
+            path,
+            sourcePath,
+        });
+      }
     }
   }
   return routes;
