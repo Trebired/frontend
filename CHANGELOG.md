@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.12.0
+
+- The grid utility takes `stack-mobile`, which holds a single column on a small screen whatever else the grid is told. Every other modifier reads as "how many across", with no way to say that one particular row reads better stacked; the rule is declared last so it settles the column count rather than competing with `cols-3` or an `auto-*` minimum.
+
 ## 14.11.0
 
 - A hairline panel's columns never grow wider than the panel. `surfaces.hairline.root.min` was used as a hard minimum, so a panel asking for a 30rem column on a 358px phone laid out a 480px track: the cell overflowed, and because the page clips horizontal overflow the text inside was cut off rather than wrapped. The minimum is now capped at the panel's own width.

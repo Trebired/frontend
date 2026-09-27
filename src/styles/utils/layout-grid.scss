@@ -67,4 +67,11 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+
+  /* Declared last so it wins the column count from any modifier above it. */
+  @media (max-width: 560px) {
+    &.stack-mobile {
+      grid-template-columns: 1fr;
+    }
+  }
 }
