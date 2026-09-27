@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.0.0
+
+- Removed `Section` and the `container` surface. Both spaced their contents the wrong way: `Section` set the rhythm between sections with `padding-block`, and `container` centred itself with `margin-inline: auto` and held its gutter with `padding-inline`. Space between siblings belongs to the gap of the layout that holds them, and a page's width belongs to a grid gutter, both of which the layout utilities already do.
+- `SiteFooter` holds its gutter with grid columns instead of an inline margin and padding, sized by `shell.footer.maxWidth` and `shell.footer.gutter`. Its block padding stays: that is a band's own inset, not spacing between siblings.
+
 ## 13.44.0
 
 - Added `siteFooterRootHtml` and `SITE_FOOTER_ROOT_SELECTOR`, the footer's equivalent of the header's SSR root. `SiteFooter` renders the `<footer>` element itself, so a site that server-renders it and then hydrates into that same element nests one `<footer>` inside another and React discards the tree; the root wrapper is `display: contents` and gives the client a container to hydrate into.

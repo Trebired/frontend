@@ -26,13 +26,18 @@
   background: var(#{ns.css-var("shell-footer-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
 }
 
-#{ns.element-class("site-footer", "inner")},
+#{ns.class("site-footer")} {
+  grid-template-columns:
+  1fr
+  min(
+    var(#{ns.css-var("shell-footer-max-width")}, 72rem),
+    100% - var(#{ns.css-var("shell-footer-gutter")}, var(#{ns.css-var("container-px")}, 24px)) * 2
+  )
+  1fr;
+}
 
-#{ns.element-class("site-footer", "note")} {
-  width: min(100%, var(#{ns.css-var("shell-footer-max-width")}, var(#{ns.css-var("surf-container-root-max")}, 72rem)));
-  margin-inline: auto;
-  padding-inline: var(#{ns.css-var("shell-footer-padding-inline")}, var(#{ns.css-var("container-px")}, 24px));
-  box-sizing: border-box;
+#{ns.class("site-footer")} > * {
+  grid-column: 2;
 }
 
 #{ns.element-class("site-footer", "inner")} {

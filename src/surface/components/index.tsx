@@ -36,11 +36,6 @@ type HairlineCellProps = HTMLAttributes<HTMLElement> & {
   invert?: boolean;
 };
 
-type SectionProps = HTMLAttributes<HTMLElement> & {
-  flush?: boolean;
-  tone?: "inverse" | "muted";
-};
-
 type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
   actions?: ReactNode;
   fullscreenId?: string;
@@ -141,20 +136,6 @@ function HairlineCell(props: HairlineCellProps) {
   );
 }
 
-function Section(props: SectionProps) {
-  const { children, className, flush, tone, ...rest } = props;
-  return (
-    <section
-    {...rest}
-    className={classNames(frontendClassName("section"), className)}
-    {...frontendDataAttrs({ "section-flush": flush ? "true" : undefined })}
-    {...frontendDataAttrs({ "section-tone": tone })}
-    >
-    {children}
-    </section>
-  );
-}
-
 function CanvasPanel(props: CanvasPanelProps) {
   const { actions, children, className, fullscreenId, subtitle, title, ...rest } = props;
   const body = (
@@ -183,5 +164,5 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
   );
 }
 
-export { Button, CanvasPanel, Card, CardBody, CardFooter, CardHeader, HairlineCell, HairlinePanel, Section };
-export type { ButtonProps, CanvasPanelProps, CardProps, HairlineCellProps, HairlinePanelProps, SectionProps };
+export { Button, CanvasPanel, Card, CardBody, CardFooter, CardHeader, HairlineCell, HairlinePanel };
+export type { ButtonProps, CanvasPanelProps, CardProps, HairlineCellProps, HairlinePanelProps };
