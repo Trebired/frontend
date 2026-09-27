@@ -83,6 +83,50 @@
   z-index: 1;
 }
 
+#{ns.element-class("frame", "cover")} {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(#{ns.css-var("surf-frame-cover-position")}, 50% 50%);
+  transition: transform var(#{ns.css-var("surf-frame-cover-duration")}, 700ms) ease;
+}
+
+#{ns.element-class("frame", "scrim")} {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(
+    #{ns.css-var("surf-frame-scrim-bg")},
+    linear-gradient(to top, color-mix(in srgb, var(#{ns.css-var("text")}, #000) 65%, transparent), transparent 60%)
+  );
+  pointer-events: none;
+}
+
+#{ns.element-class("frame", "caption")} {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 2;
+  display: grid;
+  gap: var(#{ns.css-var("surf-frame-caption-gap")}, var(#{ns.css-var("gap-xs2")}, 4px));
+  padding: var(#{ns.css-var("surf-frame-caption-padding")}, var(#{ns.css-var("gap-sm")}, 12px));
+  color: var(#{ns.css-var("surf-frame-caption-color")}, var(#{ns.css-var("page")}, #fff));
+  background: var(#{ns.css-var("surf-frame-caption-bg")}, transparent);
+}
+
+#{ns.element-class("frame", "action")} {
+  position: absolute;
+  inset-block-end: var(#{ns.css-var("surf-frame-action-offset")}, 1rem);
+  inset-inline-end: var(#{ns.css-var("surf-frame-action-offset")}, 1rem);
+  z-index: 2;
+}
+
+#{ns.class("card")}#{ns.data("interactive", "true")}:hover #{ns.element-class("frame", "cover")} {
+  transform: scale(var(#{ns.css-var("surf-frame-cover-state-hover-scale")}, 1.05));
+}
+
 #{ns.class("logo")} {
   display: inline-flex;
   flex: 0 1 auto;

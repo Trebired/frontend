@@ -5,9 +5,12 @@
 }
 
 #{ns.class("site-footer")} {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(#{ns.css-var("shell-footer-root-gap")}, var(#{ns.css-var("gap-md")}, 24px));
   padding-block: var(#{ns.css-var("shell-footer-root-py")}, var(#{ns.css-var("gap-lg")}, 40px));
+  padding-inline: var(#{ns.css-var("shell-footer-root-px")}, var(#{ns.css-var("container-px")}, 24px));
   color: var(#{ns.css-var("shell-footer-root-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("shell-footer-root-bg")}, var(#{ns.css-var("page")}, #fff));
   font-size: var(#{ns.css-var("shell-footer-root-font-size")}, inherit);
@@ -26,18 +29,9 @@
   background: var(#{ns.css-var("shell-footer-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
 }
 
-#{ns.class("site-footer")} {
-  grid-template-columns:
-  1fr
-  min(
-    var(#{ns.css-var("shell-footer-max-width")}, 72rem),
-    100% - var(#{ns.css-var("shell-footer-gutter")}, var(#{ns.css-var("container-px")}, 24px)) * 2
-  )
-  1fr;
-}
-
 #{ns.class("site-footer")} > * {
-  grid-column: 2;
+  width: min(var(#{ns.css-var("shell-footer-max-width")}, 72rem), 100%);
+  min-width: 0;
 }
 
 #{ns.element-class("site-footer", "inner")} {

@@ -2,6 +2,7 @@ import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   HTMLAttributes,
+  ImgHTMLAttributes,
   ReactNode,
 } from "react";
 import { classNames } from "#ndsvdqv80epr";
@@ -35,6 +36,32 @@ type HairlineCellProps = HTMLAttributes<HTMLElement> & {
   interactive?: boolean;
   invert?: boolean;
 };
+
+type PageBandProps = HTMLAttributes<HTMLElement> & {
+  as?: "div" | "footer" | "section";
+  tone?: SurfaceTone;
+};
+
+type IconTileProps = HTMLAttributes<HTMLSpanElement> & {
+  glyph?: "accent";
+  size?: SurfaceSize;
+  tone?: SurfaceTone;
+};
+
+type AccentRuleProps = HTMLAttributes<HTMLDivElement>;
+
+type ActionRowProps = HTMLAttributes<HTMLElement> & {
+  arrow?: ReactNode;
+  as?: "a" | "div" | "li";
+  href?: string;
+  interactive?: boolean;
+  softRedirect?: boolean;
+  value?: ReactNode;
+};
+
+type FrameLayerProps = HTMLAttributes<HTMLDivElement>;
+
+type FrameCoverProps = ImgHTMLAttributes<HTMLImageElement>;
 
 type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
   actions?: ReactNode;
@@ -136,6 +163,79 @@ function HairlineCell(props: HairlineCellProps) {
   );
 }
 
+function PageBand(props: PageBandProps) {
+  const { as: Tag = "section", children, className, tone, ...rest } = props;
+  return (
+    <Tag {...rest} className={classNames(surfaceClass(frontendClassName("band"), { tone }), className)}>
+    <HeadingScope>{children}</HeadingScope>
+    </Tag>
+  );
+}
+
+function IconTile(props: IconTileProps) {
+  const { children, className, glyph, size, tone, ...rest } = props;
+  return (
+    <span
+    {...rest}
+    aria-hidden
+    className={classNames(surfaceClass(frontendClassName("tile"), { size, tone }), className)}
+    {...frontendDataAttrs({ "tile-glyph": glyph })}
+    >
+    {children}
+    </span>
+  );
+}
+
+function AccentRule(props: AccentRuleProps) {
+  const { children, className, ...rest } = props;
+  return <div {...rest} className={classNames(frontendClassName("rule"), className)}>{children}</div>;
+}
+
+function ActionRow(props: ActionRowProps) {
+  const { arrow, as, children, className, href, interactive, softRedirect, value, ...rest } = props;
+  const Tag = as || (href ? "a" : "div");
+  const isInteractive = interactive ?? Boolean(href);
+  return (
+    <Tag
+    {...rest as HTMLAttributes<HTMLElement>}
+    className={classNames(frontendClassName("action-row"), className)}
+    href={Tag === "a" ? href : undefined}
+    {...frontendDataAttrs({ "interactive": isInteractive ? "true" : undefined })}
+    {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
+    >
+    {children}
+    {value === undefined ? null : (
+        <span className={frontendElementClass("action-row", "body")}>
+        <span className={frontendElementClass("action-row", "value")}>{value}</span>
+        </span>
+    )}
+    {arrow === undefined ? null : (
+        <span aria-hidden className={frontendElementClass("action-row", "arrow")}>{arrow}</span>
+    )}
+    </Tag>
+  );
+}
+
+function FrameCover(props: FrameCoverProps) {
+  const { className, ...rest } = props;
+  return <img {...rest} alt={rest.alt || ""} className={classNames(frontendElementClass("frame", "cover"), className)} />;
+}
+
+function FrameScrim(props: FrameLayerProps) {
+  const { className, ...rest } = props;
+  return <div {...rest} aria-hidden className={classNames(frontendElementClass("frame", "scrim"), className)} />;
+}
+
+function FrameCaption(props: FrameLayerProps) {
+  const { children, className, ...rest } = props;
+  return <div {...rest} className={classNames(frontendElementClass("frame", "caption"), className)}>{children}</div>;
+}
+
+function FrameAction(props: FrameLayerProps) {
+  const { children, className, ...rest } = props;
+  return <div {...rest} className={classNames(frontendElementClass("frame", "action"), className)}>{children}</div>;
+}
+
 function CanvasPanel(props: CanvasPanelProps) {
   const { actions, children, className, fullscreenId, subtitle, title, ...rest } = props;
   const body = (
@@ -164,5 +264,34 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
   );
 }
 
-export { Button, CanvasPanel, Card, CardBody, CardFooter, CardHeader, HairlineCell, HairlinePanel };
-export type { ButtonProps, CanvasPanelProps, CardProps, HairlineCellProps, HairlinePanelProps };
+export {
+  AccentRule,
+  ActionRow,
+  Button,
+  CanvasPanel,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  FrameAction,
+  FrameCaption,
+  FrameCover,
+  FrameScrim,
+  HairlineCell,
+  HairlinePanel,
+  IconTile,
+  PageBand,
+};
+export type {
+  AccentRuleProps,
+  ActionRowProps,
+  ButtonProps,
+  CanvasPanelProps,
+  CardProps,
+  FrameCoverProps,
+  FrameLayerProps,
+  HairlineCellProps,
+  HairlinePanelProps,
+  IconTileProps,
+  PageBandProps,
+};

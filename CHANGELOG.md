@@ -1,5 +1,14 @@
 # Changelog
 
+## 14.1.0
+
+- Added `PageBand`, the full-bleed page section both sites had rebuilt: it paints a background across the viewport, holds its own vertical inset as plain padding and constrains each child to `surfaces.band.root.max`. It carries `tone="muted" | "inverse"`, and the inverse tone rescopes `text-muted`. This is not the old `Section`: it sets no rhythm between siblings, only the inset a band needs to keep its own contents off its edges.
+- Added `IconTile`, the square icon chip. It takes `size` (`sm` / `md` / `lg`), `tone` (`muted` / `inverse` / `accent`) and `glyph="accent"` for an accent-coloured glyph on a neutral ground, all sized and coloured from `surfaces.tile`.
+- Added `AccentRule`, the thick leading rule used to mark a statistic or a pull quote, and `ActionRow`, a row that carries a value and a trailing arrow and inverts its ground on hover.
+- `Frame` gained `FrameCover`, `FrameScrim`, `FrameCaption` and `FrameAction` to go with its existing badge, so a media card's cover image, gradient, caption plate and corner control come from the package. A cover inside an interactive `Card` scales on hover, by `surfaces.frame.cover.states.hover.scale`.
+- The page scrollbar reads `surfaces.scrollbar`, so a site can set its width, thumb, track and gutter without a stylesheet of its own.
+- `SiteFooter` holds its gutter with plain padding again, sized by `shell.footer.root.px`, and constrains its children with `width` instead of a grid column. `shell.footer.gutter` is no longer read; use `shell.footer.root.px`.
+
 ## 14.0.0
 
 - Removed `Section` and the `container` surface. Both spaced their contents the wrong way: `Section` set the rhythm between sections with `padding-block`, and `container` centred itself with `margin-inline: auto` and held its gutter with `padding-inline`. Space between siblings belongs to the gap of the layout that holds them, and a page's width belongs to a grid gutter, both of which the layout utilities already do.

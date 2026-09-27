@@ -109,8 +109,18 @@ type FrontendPrimitiveComponentsConfig = {
 };
 
 type FrontendSurfaceComponentsConfig = {
+  actionRow?: FrontendComponentTokens;
+  band?: FrontendComponentTokens;
   button?: FrontendComponentTokens;
   card?: FrontendComponentTokens;
+  frame?: FrontendComponentTokens;
+  glow?: FrontendComponentTokens;
+  hairline?: FrontendComponentTokens;
+  logo?: FrontendComponentTokens;
+  prose?: FrontendComponentTokens;
+  rule?: FrontendComponentTokens;
+  scrollbar?: FrontendComponentTokens;
+  tile?: FrontendComponentTokens;
 };
 
 type FrontendOverlayComponentsConfig = {
