@@ -3,6 +3,7 @@
 #{ns.class("expandable-image")} {
   position: relative;
   display: block;
+  aspect-ratio: var(#{ns.css-var("media-expandable-image-ratio")}, auto);
   cursor: pointer;
   overflow: hidden;
   background: var(--neutral-100);

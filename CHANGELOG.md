@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.4.0
+
+- `ExpandableImage` takes a `ratio`. It is already its own media box — `position: relative`, its own background, an overlaid icon — so wrapping it in a `Frame` to give it a shape put the frame's cover layer inside the button instead of the frame, collapsing the button to nothing and leaving an empty box.
+- The grid utility gained `cols-3` and `cols-4`. Both drop to two columns at 900px and to one at 560px, where three across stops being readable; `cols-2` stays two, since two fit a phone.
+
 ## 14.3.0
 
 - A toned `Card` colours its border to match its ground. The muted, inverse and accent tones kept the root border colour, so a dark panel on a light page was outlined in the light page's hairline.

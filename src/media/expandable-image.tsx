@@ -1,7 +1,8 @@
 import { useId } from "react";
+import type { CSSProperties } from "react";
 
 import { Icon } from "#lbkpzw8nphru";
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName } from "#5vbaqj4pirp3";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { ICON_MEDIA_MAXIMIZE } from "./icons.js";
 import { useGalleryState } from "./gallery-state.js";
@@ -15,6 +16,7 @@ type ExpandableImageProps = {
   images?: readonly string[];
   index?: number;
   lang?: string;
+  ratio?: string;
   src: string;
 };
 
@@ -30,6 +32,9 @@ function ExpandableImage(props: ExpandableImageProps) {
   const state = useGalleryState(gallery.length, start);
 
   const thumbnailAlt = galleryAlt(props.alt, gallery.length, start);
+  const ratioStyle = props.ratio
+  ? { [`--${FRONTEND_PREFIX}-media-expandable-image-ratio`]: props.ratio } as CSSProperties
+  : undefined;
   const label = sourceLanguageMessage("mediaExpand", lang, { alt: thumbnailAlt });
 
   return (
@@ -38,6 +43,7 @@ function ExpandableImage(props: ExpandableImageProps) {
     aria-label={label}
     className={[frontendClassName("expandable-image"), props.className].filter(Boolean).join(" ")}
     onClick={() => state.expand(start)}
+    style={ratioStyle}
     type="button"
     >
     <img

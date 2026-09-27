@@ -1,5 +1,6 @@
 const DEFAULT_MEDIA_COMPONENTS_CONFIG = Object.freeze({
     expandableImage: Object.freeze({
+        ratio: "auto",
         icon: {
           background: "oklch(14.5% 0 0 / 70%)",
           blur: "0px",
