@@ -208,7 +208,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               textDecorationStyle: "solid",
               textDecorationThickness: "1px",
               textUnderlineOffset: "3px",
-              transition: "none",
+              transition: `color var(${frontendCssVar("transition-fast")}, 180ms) var(${frontendCssVar("transition-easing")}, ease), text-decoration-color var(${frontendCssVar("transition-fast")}, 180ms) var(${frontendCssVar("transition-easing")}, ease)`,
             },
             states: {
               hover: {

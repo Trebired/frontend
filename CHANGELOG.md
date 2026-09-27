@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.6.3
+
+- The 14.6.2 fix for `TextLink`'s transition only touched the SCSS fallback. The default component-token value for `primitives.textLink.root.transition` was itself `"none"`, and a config default is emitted as a CSS custom property that always wins over a `var(..., fallback)` — so the fallback fix never took effect for any site, including one that sets no link tokens at all. Fixed at the source: the default token value now carries the same transition.
+
 ## 14.6.2
 
 - `TextLink` transitions colour and underline colour on hover instead of snapping. Its default `ui.link.root.transition` was `none`, so every text link on every site — a footer address, a phone number, a back link — changed state instantly while the button and header links beside it eased.
