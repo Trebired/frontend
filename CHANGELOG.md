@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.6.4
+
+- The locale trigger's border now needs the compound selector `.tbf-button.tbf-locale-trigger` to win. `.tbf-locale-trigger` and `.tbf-button` are both plain single-class selectors of equal specificity, so a longhand `border-width` on the trigger still lost to a `border` shorthand on the button whenever the button's rule happened to come later in the bundle — which it does, since language styles are emitted before surface styles. The 14.6.2 fix set the property but never actually reached the page.
+
 ## 14.6.3
 
 - The 14.6.2 fix for `TextLink`'s transition only touched the SCSS fallback. The default component-token value for `primitives.textLink.root.transition` was itself `"none"`, and a config default is emitted as a CSS custom property that always wins over a `var(..., fallback)` — so the fallback fix never took effect for any site, including one that sets no link tokens at all. Fixed at the source: the default token value now carries the same transition.

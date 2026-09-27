@@ -9,14 +9,20 @@
   height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   min-height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   padding: var(#{ns.css-var("shell-language-trigger-padding")}, 0 10px);
+  border-radius: var(#{ns.css-var("shell-language-trigger-radius")}, var(#{ns.css-var("radius-sm")}, 0));
+  font-size: var(#{ns.css-var("shell-language-trigger-font-size")}, 12.5px);
+  font-weight: var(#{ns.css-var("shell-language-trigger-font-weight")}, 600);
+}
+
+/* Compound with the button class: a plain .tbf-locale-trigger loses the
+   border race to whichever site button style happens to be declared later
+   in the bundle, since both are single-class selectors of equal specificity. */
+#{ns.class("button")}#{ns.class("locale-trigger")} {
   border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(
     #{ns.css-var("shell-language-trigger-border-color")},
     color-mix(in srgb, currentColor 24%, transparent)
   );
-  border-radius: var(#{ns.css-var("shell-language-trigger-radius")}, var(#{ns.css-var("radius-sm")}, 0));
-  font-size: var(#{ns.css-var("shell-language-trigger-font-size")}, 12.5px);
-  font-weight: var(#{ns.css-var("shell-language-trigger-font-weight")}, 600);
 }
 
 #{ns.class("locale-trigger")} #{ns.class("locale-code")} {
