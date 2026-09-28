@@ -1360,6 +1360,9 @@
       "#posefdaqmuvi": [
         "../../../src/inputs/upload/crop.ts"
       ],
+      "#pqks7y4vqasc": [
+        "../../../src/namespace/identity.ts"
+      ],
       "#pwuc6i9ku53k": [
         "../../../src/render/current_url.tsx"
       ],
@@ -1554,6 +1557,9 @@
       ],
       "#tvicwpnoy4rk": [
         "../../../src/spa/cleanup.ts"
+      ],
+      "#ty7ffutvdb5d": [
+        "../../../scripts/build/generated/identity.mjs"
       ],
       "#tytcmts991st": [
         "../../../src/logs/client/ingest.ts"

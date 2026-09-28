@@ -4,9 +4,10 @@ import { frontendConfigPath } from "./package.js";
 import { normalizeFrontendConfig } from "./normalize.js";
 
 type StartupRequirementFailure = {
-  detail?: string;
+  check: string;
   message: string;
-  requirement: string;
+  reason?: string;
+  status_code: string;
 };
 
 type FrontendConfigCheckOptions = {
@@ -30,9 +31,10 @@ function frontendConfigCheck(options: FrontendConfigCheckOptions = {}) {
       source = await loadConfigModule(file);
     } catch (error) {
       return [{
-          detail: error instanceof Error ? error.message : String(error),
+          check: REQUIREMENT,
           message: `frontend config could not be loaded from ${file}`,
-          requirement: REQUIREMENT,
+          reason: error instanceof Error ? error.message : String(error),
+          status_code: "frontend-config-unreadable",
       }] satisfies StartupRequirementFailure[];
     }
 
@@ -40,8 +42,9 @@ function frontendConfigCheck(options: FrontendConfigCheckOptions = {}) {
       normalizeFrontendConfig(source, { configPath: file });
     } catch (error) {
       return [{
+          check: REQUIREMENT,
           message: error instanceof Error ? error.message : String(error),
-          requirement: REQUIREMENT,
+          status_code: "frontend-config-invalid",
       }] satisfies StartupRequirementFailure[];
     }
 

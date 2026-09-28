@@ -115,6 +115,7 @@ export type {
   FrontendDesignInteractionsConfig,
   FrontendFeedbackComponentsConfig,
   FrontendFontConfig,
+  FrontendLanguageConfig,
   FrontendFontDisplay,
   FrontendFontFamilyConfig,
   FrontendFontStyle,

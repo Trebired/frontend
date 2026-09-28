@@ -1,5 +1,11 @@
 # Changelog
 
+## 17.1.0
+
+- The attribution line reads the package name and version from a generated constant rather than from `config/package.js`. That module reads `package.json` off disk through Node-only helpers, so pulling it into the browser bundle broke the build of every site that took 17.0.0.
+- `frontendConfigCheck()` returns failures in the shape `@trebired/startup` expects — `check` and `status_code` rather than `requirement` — so a site can pass it straight to `runStartup({ checks })` without a wrapper.
+- `FrontendLanguageConfig` is exported from the config entry, so a site can type its `language` block.
+
 ## 17.0.0
 
 Breaking: the package no longer ships error page copy, and a site that renders error pages must declare it in `.trebired/frontend/config.ts`.
