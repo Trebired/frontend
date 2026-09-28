@@ -33,20 +33,14 @@ function buttonVariantDeclarations(
 ): string[] {
   const surface = (part: string) => `--${prefix}-surf-btn-variants-${variant}-${state}${part}`;
   const primitive = (part: string) => `--${prefix}-ui-btn-variants-${variant}-${state}${part}`;
-  const fallbackBg = state
-  ? "transparent"
-  : `var(--${prefix}-ui-btn-root-bg, transparent)`;
+  const property = (key: string, line: string) => (declared.has(`${state}${key}`) ? [line] : []);
   return [
-    `  --${prefix}-surf-btn-current-icon: var(${surface("icon")}, var(${primitive("icon")}, currentColor));`,
-    `  border-color: var(${surface("border")}, var(${primitive("border")}, currentColor));`,
-    ...(declared.has(`${state}border-style`)
-      ? [`  border-style: var(${surface("border-style")}, var(${primitive("border-style")}, solid));`]
-      : []),
-    ...(declared.has(`${state}border-width`)
-      ? [`  border-width: var(${surface("border-width")}, var(${primitive("border-width")}, var(--border-width, 1px)));`]
-      : []),
-    `  color: var(${surface("color")}, var(${primitive("color")}, currentColor));`,
-    `  background: var(${surface("bg")}, var(${primitive("bg")}, ${fallbackBg}));`,
+    ...property("icon", `  --${prefix}-surf-btn-current-icon: var(${surface("icon")}, var(${primitive("icon")}, currentColor));`),
+    ...property("border", `  border-color: var(${surface("border")}, var(${primitive("border")}, currentColor));`),
+    ...property("border-style", `  border-style: var(${surface("border-style")}, var(${primitive("border-style")}, solid));`),
+    ...property("border-width", `  border-width: var(${surface("border-width")}, var(${primitive("border-width")}, var(--border-width, 1px)));`),
+    ...property("color", `  color: var(${surface("color")}, var(${primitive("color")}, currentColor));`),
+    ...property("bg", `  background: var(${surface("bg")}, var(${primitive("bg")}, transparent));`),
   ];
 }
 
@@ -55,16 +49,18 @@ function renderButtonVariantRules(config: NormalizedFrontendConfig): string[] {
   const lines: string[] = [];
   for (const [variant, declared] of buttonVariantEntries(config)) {
     const selector = `.${FRONTEND_PREFIX}-button--${variant}`;
-    lines.push(
-      `${selector} {`,
-      ...buttonVariantDeclarations(config.prefix, variant, "", declared),
-      "}",
-      `${selector}:hover,`,
-      `${selector}[aria-pressed="true"],`,
-      `${selector}[${activeAttr}="true"] {`,
-      ...buttonVariantDeclarations(config.prefix, variant, "state-hover-", declared),
-      "}",
-    );
+    const root = buttonVariantDeclarations(config.prefix, variant, "", declared);
+    const hover = buttonVariantDeclarations(config.prefix, variant, "state-hover-", declared);
+    if (root.length) lines.push(`${selector} {`, ...root, "}");
+    if (hover.length) {
+      lines.push(
+        `${selector}:hover,`,
+        `${selector}[aria-pressed="true"],`,
+        `${selector}[${activeAttr}="true"] {`,
+        ...hover,
+        "}",
+      );
+    }
   }
   return lines;
 }

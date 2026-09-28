@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.1
+
+- A surface button variant declares only what it changes. The generated `.tbf-button--{variant}` rules used to write `border-color`, `color` and `background` whether or not the variant named them, so the `currentColor` fallback overruled a root border or colour the site had configured. A variant that names nothing now emits no rule at all.
+
 ## 18.0.0
 
 Breaking: a button says what it is for. `inverse`, `transparent`, `classic` and `default` are gone from the button vocabulary and the four variants `primary`, `secondary`, `ghost` and `danger` replace them, on the primitive button and the surface `Button` alike.
