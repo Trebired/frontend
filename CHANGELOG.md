@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.14.1
+
+- `cols-2` drops to a single column at 560px. `cols-3` and `cols-4` already step down to two columns there, so `cols-2` was the only grid that kept its desktop count on a phone — a pair of cards half the width of every other card on the page.
+
 ## 14.14.0
 
 - `.text-outline` is drawn with a real text stroke painted under the fill rather than a ring of twelve shadows. The ring approximated a circle, so it thinned and notched wherever a letter turned a corner; `paint-order: stroke fill` keeps the stroke on the outside edge, which is what the shadows were working around.
