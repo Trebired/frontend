@@ -1,3 +1,4 @@
+import { EMPTY_LANGUAGE_CONFIG, normalizeLanguageConfig } from "./language.js";
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import { DEFAULT_FRONTEND_COMPONENTS_CONFIG, normalizeComponentsConfig } from "./component-tokens.js";
 import { normalizeFaviconConfig } from "./favicon.js";
@@ -73,6 +74,7 @@ const TOP_LEVEL_FIELDS = [
   "components",
   "design",
   "forVersion",
+  "language",
   "runtime",
   "systems",
 ];
@@ -135,6 +137,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         semantics: Object.freeze({}),
     }),
     forVersion: PACKAGE_VERSION,
+    language: EMPTY_LANGUAGE_CONFIG,
     prefix: FRONTEND_PREFIX,
     runtime: Object.freeze({
         layer: Object.freeze({}),
@@ -331,6 +334,7 @@ function normalizeFrontendConfig(
     components: normalizeComponentsConfig(source.components),
     design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
     forVersion: normalizeForVersion(source, options),
+    language: normalizeLanguageConfig(source.language),
     prefix: DEFAULT_FRONTEND_CONFIG.prefix,
     runtime,
     systems: normalizeSystems(source.systems),

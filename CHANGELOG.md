@@ -1,5 +1,16 @@
 # Changelog
 
+## 17.0.0
+
+Breaking: the package no longer ships error page copy, and a site that renders error pages must declare it in `.trebired/frontend/config.ts`.
+
+- New top-level `language` config section: `locales`, `defaultLocale`, `strategy` and `error`. The `error` block carries a `title` and a `lead` for every status in `ERROR_STATUSES` and one `action` label, per locale. The normalizer refuses a config that leaves any of them out and names every missing locale/status pair, so an incomplete translation fails the build rather than rendering a blank page.
+- The `errorTitle*`, `errorLead*` and `errorAction` keys are gone from the package's own message table. It carried English and Czech, which is copy it has no business owning and no way to extend to a third language.
+- `ErrorPage` reads its copy from the config and renders its own action link, so a site passes nothing but the status. It also renders the locale switcher when the config declares more than one locale — an error page has no header to put one in, so it sits in the page.
+- `configureFrontendLanguage` / `getFrontendLanguage` hold the resolved block. The build seeds it in process before rendering and `createLocaleBootScript` writes the same payload onto the document, so the server and the browser read one value rather than two that can drift between render and hydrate.
+- `frontendConfigCheck()` returns a `@trebired/startup` requirement check. It reads the config source rather than a build artifact, so it still fails on a cold run, and requirements run before bootstrap so the build never starts on an incomplete config.
+- Every site announces the package once per document in the browser console: `This site uses software by Trebired · @trebired/frontend <version> — questions or problems? https://trebired.com`. It goes through the logger adapter's new `logPackageAttribution`, which dedupes per document and falls back to the console, and deliberately not through `resolveFrontendLogger`, whose quiet flag would drop it.
+
 ## 16.2.0
 
 - The status code is the page. `shell.error.status` renders at `clamp(4.5rem, 18vw, 10rem)` in the heading weight and the page's own colour, with the title stepped down beneath it, so an error page reads as the code first and the sentence second.

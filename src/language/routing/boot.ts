@@ -1,5 +1,6 @@
 import { normalizeLocaleRouting } from "./options.js";
 import type { LocaleRoutingOptions, LocaleStrategy } from "./options.js";
+import { LANGUAGE_CONFIG_ATTR } from "./../config.js";
 import { LOCALE_PENDING_ATTR, LOCALE_RENDERED_ATTR } from "./view.js";
 
 const LOCALE_HANDOFF_QUERY = "setlang";
@@ -71,13 +72,17 @@ function pendingSource(hide: boolean): string[] {
   ];
 }
 
+type LocaleBootPayload = unknown;
+
 type LocaleBootOptions = {
   hideUntilReady?: boolean;
+  language?: unknown;
   strategy?: LocaleStrategy;
 };
 
 function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: LocaleBootOptions = {}): string {
   const routing = normalizeLocaleRouting(options);
+  const language = boot.language === undefined ? "" : scriptJson(boot.language);
   const detectBrowser = !boot.strategy || boot.strategy === "none";
   const readQuery = boot.strategy === "query";
   const readPath = boot.strategy === "prefix" || boot.strategy === "prefix-all";
@@ -96,6 +101,7 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     ...(detectBrowser ? navigatorLocaleSource() : []),
     "n=n||r;h.lang=n;",
     ...(boot.strategy === "prefix-all" ? normalizePrefixSource() : []),
+    ...(language ? [`h.setAttribute(${scriptJson(LANGUAGE_CONFIG_ATTR)},JSON.stringify(${language}));`] : []),
     ...pendingSource(boot.hideUntilReady !== false),
     "})();",
   ].join("");

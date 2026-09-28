@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
 
 import { classNames } from "#ndsvdqv80epr";
-import { errorMessageKey } from "./paths.js";
+import { errorActionLabel, errorMessage } from "./messages.js";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
-import { sourceLanguageMessage } from "#2d8f076g07hg";
+import { getFrontendLanguage } from "./../language/config.js";
+import { LocaleSwitcher } from "./../language/locale.js";
+import { TextLink } from "./../primitives/components/link.js";
 
 type ErrorPageProps = {
   actions?: ReactNode;
   className?: string;
+  homeHref?: string;
   lang?: string;
   lead?: ReactNode;
   showStatus?: boolean;
@@ -15,24 +18,43 @@ type ErrorPageProps = {
   title?: ReactNode;
 };
 
+function errorActions(props: ErrorPageProps) {
+  if (props.actions !== undefined) return props.actions;
+  const label = errorActionLabel(props.lang);
+  if (!label) return null;
+  return <TextLink href={props.homeHref || "/"}>{label}</TextLink>;
+}
+
+function errorLocaleSwitcher(props: ErrorPageProps) {
+  const { locales } = getFrontendLanguage();
+  if (locales.length < 2) return null;
+  return (
+    <div className={frontendElementClass("error-page", "locale")}>
+    <LocaleSwitcher lang={props.lang} locales={locales} />
+    </div>
+  );
+}
+
 function ErrorPage(props: ErrorPageProps) {
   const status = props.status ?? 404;
-  const title = props.title ?? sourceLanguageMessage(errorMessageKey("errorTitle", status), props.lang);
-  const lead = props.lead ?? sourceLanguageMessage(errorMessageKey("errorLead", status), props.lang);
+  const title = props.title ?? errorMessage("title", status, props.lang);
+  const lead = props.lead ?? errorMessage("lead", status, props.lang);
+  const actions = errorActions(props);
 
   return (
     <section
     className={classNames(frontendClassName("error-page"), props.className)}
     {...frontendDataAttrs({ "error-status": String(status) })}
     >
+    {errorLocaleSwitcher(props)}
     <div className={frontendElementClass("error-page", "body")}>
     {props.showStatus === false ? null : (
         <p className={frontendElementClass("error-page", "status")}>{status}</p>
     )}
     <h1 className={frontendElementClass("error-page", "title")}>{title}</h1>
     <p className={frontendElementClass("error-page", "lead")}>{lead}</p>
-    {props.actions ? (
-        <div className={frontendElementClass("error-page", "actions")}>{props.actions}</div>
+    {actions ? (
+        <div className={frontendElementClass("error-page", "actions")}>{actions}</div>
       ) : null}
     </div>
     </section>

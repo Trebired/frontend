@@ -1,6 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 
 #{ns.class("error-page")} {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,6 +10,12 @@
   padding-inline: var(#{ns.css-var("shell-error-root-px")}, clamp(1rem, 3vw, 2rem));
   color: var(#{ns.css-var("shell-error-root-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("shell-error-root-bg")}, var(#{ns.css-var("page")}, #fff));
+}
+
+#{ns.element-class("error-page", "locale")} {
+  position: absolute;
+  inset-block-start: var(#{ns.css-var("shell-error-locale-offset")}, clamp(1rem, 3vw, 2rem));
+  inset-inline-end: var(#{ns.css-var("shell-error-locale-offset")}, clamp(1rem, 3vw, 2rem));
 }
 
 #{ns.element-class("error-page", "body")} {

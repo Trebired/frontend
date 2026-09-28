@@ -1,4 +1,9 @@
 import type {
+  FrontendLanguageLocale,
+  FrontendLanguageLocaleMessages,
+} from "./../language/config.js";
+
+import type {
   FrontendAssetsConfig,
   FrontendFontConfig,
   FrontendFontDisplay,
@@ -192,11 +197,21 @@ type FrontendRuntimeConfig = {
   theme?: FrontendThemeConfig;
 };
 
+type FrontendLanguageConfig = {
+  defaultLocale?: string;
+  error?: Record<string, FrontendLanguageLocaleMessages>;
+  locales?: FrontendLanguageLocale[];
+  strategy?: FrontendLocaleStrategy;
+};
+
+type FrontendLocaleStrategy = "none" | "prefix" | "prefix-all" | "query";
+
 type FrontendConfig = {
   assets?: FrontendAssetsConfig;
   components?: FrontendComponentsConfig;
   design?: FrontendDesignConfig;
   forVersion?: string;
+  language?: FrontendLanguageConfig;
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
 };
@@ -289,11 +304,19 @@ type NormalizedFrontendRuntimeConfig = {
   theme: NormalizedFrontendThemeConfig;
 };
 
+type NormalizedFrontendLanguageConfig = {
+  defaultLocale: string;
+  error: Record<string, FrontendLanguageLocaleMessages>;
+  locales: FrontendLanguageLocale[];
+  strategy: FrontendLocaleStrategy;
+};
+
 type NormalizedFrontendConfig = {
   assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
   design: NormalizedFrontendDesignConfig;
   forVersion: string;
+  language: NormalizedFrontendLanguageConfig;
   prefix: string;
   runtime: NormalizedFrontendRuntimeConfig;
   systems: Record<FrontendSystemKey, boolean>;
@@ -313,6 +336,9 @@ type LoadFrontendConfigOptions = {
 };
 
 export type {
+  FrontendLanguageConfig,
+  FrontendLocaleStrategy,
+  NormalizedFrontendLanguageConfig,
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,
   NormalizedFrontendConfig,

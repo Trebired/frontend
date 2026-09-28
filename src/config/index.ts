@@ -80,6 +80,8 @@ export {
   FRONTEND_CONFIG_PATH,
   normalizeFrontendConfig,
 } from "./normalize.js";
+export { frontendConfigCheck } from "./startup.js";
+export type { FrontendConfigCheckOptions } from "./startup.js";
 export { generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
 export { createFrontendTokenHelpers } from "./tokens.js";
