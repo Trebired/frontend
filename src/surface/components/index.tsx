@@ -8,6 +8,7 @@ import type {
 import { classNames } from "#ndsvdqv80epr";
 import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
+import type { PrimitiveButtonVariant } from "#0rl8rpgzssot";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { HeadingScope } from "#7ly3b59upz0n";
 
@@ -17,7 +18,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: SurfaceSize;
   softRedirect?: boolean;
   target?: string;
-  tone?: SurfaceTone;
+  variant?: PrimitiveButtonVariant;
 };
 
 type CardProps = HTMLAttributes<HTMLElement> & {
@@ -96,7 +97,7 @@ type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
 
 function ButtonLink(props: ButtonProps & { href: string; buttonClassName: string }) {
   const { buttonClassName, children, className: _className, href, rel, size: _size, softRedirect,
-    target, tone: _tone, type: _type, ...rest } = props;
+    target, type: _type, variant: _variant, ...rest } = props;
   const anchorProps = rest as unknown as AnchorHTMLAttributes<HTMLAnchorElement>;
   return (
     <a
@@ -114,8 +115,11 @@ function ButtonLink(props: ButtonProps & { href: string; buttonClassName: string
 
 function Button(props: ButtonProps) {
   const { children, className, href, rel: _rel, size, softRedirect: _softRedirect,
-    target: _target, tone, type = "button", ...rest } = props;
-  const buttonClassName = classNames(surfaceClass(frontendClassName("button"), { size, tone }), className);
+    target: _target, type = "button", variant = "secondary", ...rest } = props;
+  const buttonClassName = classNames(
+    surfaceClass(frontendClassName("button"), { size, variant }),
+    className,
+  );
   if (href) return <ButtonLink {...props} buttonClassName={buttonClassName} href={href} />;
   const ariaHasPopup =
   rest["aria-haspopup"] ??

@@ -126,6 +126,12 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               md: { fontSize: "12px", height: "28px", paddingInline: "12px" },
               sm: { fontSize: "11px", height: "24px", paddingInline: "9px" },
             },
+            variants: {
+              danger: { states: { hover: {} } },
+              ghost: { states: { hover: {} } },
+              primary: { states: { hover: {} } },
+              secondary: { states: { hover: {} } },
+            },
             slots: {
               icon: {
                 fontSize: "15px",
@@ -356,7 +362,14 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             tones: { inverse: {}, muted: {} },
         }),
-        button: Object.freeze({}),
+        button: Object.freeze({
+            variants: {
+              danger: { states: { hover: {} } },
+              ghost: { states: { hover: {} } },
+              primary: { states: { hover: {} } },
+              secondary: { states: { hover: {} } },
+            },
+        }),
         frame: Object.freeze({
             action: { glyph: "1.5rem", offset: "1rem", size: "3rem", states: { hover: {} } },
             badge: { offset: "1rem" },

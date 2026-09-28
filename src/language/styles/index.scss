@@ -4,22 +4,50 @@
   min-width: 170px;
 }
 
-#{ns.class("button")}#{ns.class("locale-trigger")} {
+#{ns.class("locale-trigger")} {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: var(#{ns.css-var("shell-language-trigger-gap")}, var(#{ns.css-var("gap-xs")}, 8px));
   height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
   min-height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
+  max-width: 100%;
   padding: var(#{ns.css-var("shell-language-trigger-padding")}, 0 10px);
   border-radius: var(#{ns.css-var("shell-language-trigger-radius")}, var(#{ns.css-var("radius-sm")}, 0));
-  font-size: var(#{ns.css-var("shell-language-trigger-font-size")}, 12.5px);
-  font-weight: var(#{ns.css-var("shell-language-trigger-font-weight")}, 600);
-}
-
-#{ns.class("button")}#{ns.class("locale-trigger")} {
+  border-style: solid;
   border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(
     #{ns.css-var("shell-language-trigger-border")},
     color-mix(in srgb, currentColor 24%, transparent)
   );
+  color: var(#{ns.css-var("shell-language-trigger-color")}, currentColor);
+  background: var(#{ns.css-var("shell-language-trigger-bg")}, transparent);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: var(#{ns.css-var("shell-language-trigger-font-size")}, 12.5px);
+  font-weight: var(#{ns.css-var("shell-language-trigger-font-weight")}, 600);
+  line-height: 1.15;
+  white-space: nowrap;
+  transition:
+  color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  background var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  border-color var(#{ns.css-var("transition-fast")}, 180ms) ease;
+}
+
+#{ns.data("locale-trigger-compact", "true")} {
+  width: var(#{ns.css-var("shell-language-trigger-compact-size")}, var(#{ns.css-var("shell-language-trigger-height")}, 32px));
+  padding: 0;
+}
+
+#{ns.class("locale-trigger")}:hover,
+
+#{ns.class("locale-trigger")}[aria-expanded="true"] {
+  color: var(#{ns.css-var("shell-language-trigger-state-hover-color")}, currentColor);
+  background: var(#{ns.css-var("shell-language-trigger-state-hover-bg")}, color-mix(in srgb, currentColor 8%, transparent));
+  border-color: var(#{ns.css-var("shell-language-trigger-state-hover-border")}, currentColor);
 }
 
 #{ns.class("locale-trigger")} #{ns.class("locale-code")} {

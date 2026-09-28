@@ -3,15 +3,15 @@ import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
 import { flattenThemeTokens } from "./theme.js";
 import type { FrontendThemeTokens, NormalizedFrontendConfig } from "./types.js";
 
-function buttonToneEntries(
+function buttonVariantEntries(
   config: NormalizedFrontendConfig,
 ): Array<[string, Set<string>]> {
   const button = (config.components as Record<string, any>)?.surfaces?.button;
-  const tones = button && typeof button === "object" ? button.tones : null;
-  if (!tones || typeof tones !== "object" || Array.isArray(tones)) return [];
+  const variants = button && typeof button === "object" ? button.variants : null;
+  if (!variants || typeof variants !== "object" || Array.isArray(variants)) return [];
   const entries: Array<[string, Set<string>]> = [];
   const seen = new Set<string>();
-  for (const [key, value] of Object.entries(tones)) {
+  for (const [key, value] of Object.entries(variants)) {
     const name = componentTokenCssName(key);
     if (!name || seen.has(name)) continue;
     seen.add(name);
@@ -25,14 +25,14 @@ function buttonToneEntries(
   return entries;
 }
 
-function buttonToneDeclarations(
+function buttonVariantDeclarations(
   prefix: string,
-  tone: string,
+  variant: string,
   state: "" | "state-hover-",
   declared: Set<string>,
 ): string[] {
-  const surface = (part: string) => `--${prefix}-surf-btn-tone-${tone}-${state}${part}`;
-  const primitive = (part: string) => `--${prefix}-ui-btn-tone-${tone}-${state}${part}`;
+  const surface = (part: string) => `--${prefix}-surf-btn-variants-${variant}-${state}${part}`;
+  const primitive = (part: string) => `--${prefix}-ui-btn-variants-${variant}-${state}${part}`;
   const fallbackBg = state
   ? "transparent"
   : `var(--${prefix}-ui-btn-root-bg, transparent)`;
@@ -50,19 +50,19 @@ function buttonToneDeclarations(
   ];
 }
 
-function renderButtonToneRules(config: NormalizedFrontendConfig): string[] {
+function renderButtonVariantRules(config: NormalizedFrontendConfig): string[] {
   const activeAttr = frontendDataAttr("active");
   const lines: string[] = [];
-  for (const [tone, declared] of buttonToneEntries(config)) {
-    const selector = `.${FRONTEND_PREFIX}-button--${tone}`;
+  for (const [variant, declared] of buttonVariantEntries(config)) {
+    const selector = `.${FRONTEND_PREFIX}-button--${variant}`;
     lines.push(
       `${selector} {`,
-      ...buttonToneDeclarations(config.prefix, tone, "", declared),
+      ...buttonVariantDeclarations(config.prefix, variant, "", declared),
       "}",
       `${selector}:hover,`,
       `${selector}[aria-pressed="true"],`,
       `${selector}[${activeAttr}="true"] {`,
-      ...buttonToneDeclarations(config.prefix, tone, "state-hover-", declared),
+      ...buttonVariantDeclarations(config.prefix, variant, "state-hover-", declared),
       "}",
     );
   }
@@ -128,4 +128,4 @@ function renderCardToneRules(config: NormalizedFrontendConfig): string[] {
   return lines;
 }
 
-export { renderButtonToneRules, renderCardToneRules };
+export { renderButtonVariantRules, renderCardToneRules };

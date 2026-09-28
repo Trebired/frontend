@@ -5,7 +5,7 @@ import { appendClassName, joinClassNames, toText } from "./shared.js";
 type PrimitiveGap = "2xs" | "lg" | "md" | "sm" | "xs" | "xs2";
 type PrimitiveButtonSize = "lg" | "md" | "sm";
 type PrimitiveStatusTone = "green" | "highlight" | "red" | "yellow";
-type PrimitiveButtonTone = PrimitiveStatusTone | "inverse";
+type PrimitiveButtonVariant = "danger" | "ghost" | "primary" | "secondary";
 type PrimitiveTextSize = "lg" | "md" | "sm" | "xs";
 type PrimitiveGridAuto = "lg" | "md" | "sm";
 type PrimitivePadding = "lg" | "md" | "sm" | "xs";
@@ -15,10 +15,9 @@ type PrimitiveButtonClassOptions = {
   className?: unknown;
   icon?: boolean;
   size?: PrimitiveButtonSize;
-  tone?: PrimitiveButtonTone;
+  tone?: PrimitiveStatusTone;
   tooltip?: boolean | string;
-  transparent?: boolean;
-  variant?: PrimitiveButtonTone | "classic" | "default";
+  variant?: PrimitiveButtonVariant;
 };
 
 type PrimitiveInputSize = "lg" | "md" | "sm";
@@ -95,10 +94,8 @@ function primitivePaddingClass(padding?: PrimitivePadding) {
   return padding ? ns(`padding-${padding}`) : "";
 }
 
-function primitiveButtonTone(options: PrimitiveButtonClassOptions) {
-  const tone = options.tone || options.variant;
-  if (tone === "classic" || tone === "default") return "";
-  return tone ? ns(tone) : "";
+function primitiveButtonVariant(options: PrimitiveButtonClassOptions) {
+  return ns(options.variant || "secondary");
 }
 
 function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
@@ -106,10 +103,10 @@ function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
     frontendClassName("btn"),
     options.icon ? frontendClassName("icon") : "",
     options.size ? ns(options.size) : "",
-    primitiveButtonTone(options),
+    primitiveButtonVariant(options),
+    options.tone ? ns(options.tone) : "",
     options.active ? frontendClassName("active") : "",
     options.icon && options.tooltip ? frontendClassName("has-tooltip") : "",
-    options.transparent ? frontendClassName("transparent") : "",
     options.className,
   );
 }
@@ -234,7 +231,8 @@ export {
 export type {
   PrimitiveButtonClassOptions,
   PrimitiveButtonSize,
-  PrimitiveButtonTone,
+  PrimitiveButtonVariant,
+  PrimitiveStatusTone,
   PrimitiveCardClassOptions,
   PrimitiveCardRowClassOptions,
   PrimitiveGap,

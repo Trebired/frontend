@@ -4,8 +4,8 @@ import { classNames } from "#ndsvdqv80epr";
 import { errorActionLabel, errorMessage } from "./messages.js";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { getFrontendLanguage } from "./../language/config.js";
+import { button } from "#6hfutrhvm6x6";
 import { LocaleSwitcher } from "./../language/locale.js";
-import { TextLink } from "./../primitives/components/link.js";
 
 type ErrorPageProps = {
   actions?: ReactNode;
@@ -22,7 +22,7 @@ function errorActions(props: ErrorPageProps) {
   if (props.actions !== undefined) return props.actions;
   const label = errorActionLabel(props.lang);
   if (!label) return null;
-  return <TextLink href={props.homeHref || "/"}>{label}</TextLink>;
+  return button({ children: label, href: props.homeHref || "/", variant: "primary" });
 }
 
 function errorLocaleSwitcher(props: ErrorPageProps) {
@@ -30,7 +30,7 @@ function errorLocaleSwitcher(props: ErrorPageProps) {
   if (locales.length < 2) return null;
   return (
     <div className={frontendElementClass("error-page", "locale")}>
-    <LocaleSwitcher lang={props.lang} locales={locales} />
+    <LocaleSwitcher lang={props.lang} locales={locales} trigger="locale" />
     </div>
   );
 }

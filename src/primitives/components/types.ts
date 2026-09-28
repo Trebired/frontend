@@ -9,7 +9,8 @@ import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import type {
   PrimitiveButtonSize,
-  PrimitiveButtonTone,
+  PrimitiveButtonVariant,
+  PrimitiveStatusTone,
   PrimitiveGap,
   PrimitivePadding,
 } from "./classes.js";
@@ -29,10 +30,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>&PrimitiveAttrs& {
   size?: PrimitiveButtonSize;
   softRedirect?: boolean;
   target?: string;
-  tone?: PrimitiveButtonTone;
+  tone?: PrimitiveStatusTone;
   tooltip?: boolean | string;
-  transparent?: boolean;
-  variant?: PrimitiveButtonTone | "classic" | "default";
+  variant?: PrimitiveButtonVariant;
 };
 
 type CardProps = HTMLAttributes<HTMLDivElement>&PrimitiveAttrs& {

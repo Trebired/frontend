@@ -154,6 +154,30 @@ async function verifyRenderedSystems(importDist) {
   await verifyRenderedSeoDocument(importDist);
   await verifyRenderedGenericPrimitives(importDist);
   await verifyRenderedThemeLive(importDist);
+  await verifyButtonVariantVocabulary(importDist);
+}
+
+async function verifyButtonVariantVocabulary(importDist) {
+  const react = await importDist("react");
+  const html = [
+    renderToStaticMarkup(h(react.Button, { variant: "primary" }, "Go")),
+    renderToStaticMarkup(h(react.Button, { variant: "danger" }, "Drop")),
+    renderToStaticMarkup(h(react.Button, null, "Plain")),
+    renderToStaticMarkup(h(react.LocaleSwitcher, {
+          lang: "en",
+          locales: [{ code: "en", label: "English" }, { code: "cs", label: "Cestina" }],
+          trigger: "locale",
+    })),
+  ].join("");
+  assert.ok(html.includes("tbf-button tbf-button--primary"));
+  assert.ok(html.includes("tbf-button tbf-button--danger"));
+  assert.ok(html.includes("tbf-button tbf-button--secondary"), "a button with no variant is secondary");
+  for (const gone of ["tbf-button--inverse", "tbf-button--transparent", "tbf-inverse", "tbf-transparent"]) {
+    assert.equal(html.includes(gone), false, `${gone} is not part of the button vocabulary`);
+  }
+  assert.ok(html.includes("tbf-locale-trigger"), "the locale switcher is its own control");
+  assert.equal(html.includes("tbf-locale-trigger") && html.includes("tbf-btn "), false, "the locale trigger is not a button");
+  assertNoCustomElementTags(html, "rendered button variants");
 }
 
 async function verifyRenderedActions(importDist) {
@@ -214,9 +238,9 @@ function assertLayeredSystemsMarkup(html) {
   assert.ok(html.includes("data-tbf-layout-root"));
   assert.ok(html.includes("data-tbf-layout-content"));
   assert.equal(html.includes("data-tbf-theme-button"), false);
-  assert.ok(html.includes("tbf-button tbf-btn tbf-icon tbf-has-tooltip tbf-product-shell-theme-control"));
-  assert.ok(html.includes("tbf-button tbf-btn tbf-product-shell-theme-control"));
-  assert.equal(html.includes("tbf-button tbf-btn tbf-has-tooltip tbf-product-shell-theme-control"), false);
+  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-icon tbf-secondary tbf-has-tooltip tbf-product-shell-theme-control"));
+  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-secondary tbf-product-shell-theme-control"));
+  assert.equal(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-secondary tbf-has-tooltip tbf-product-shell-theme-control"), false);
   assert.ok(html.includes("data-tbf-popover-trigger"));
   assert.equal(html.includes("data-tbf-popover-open"), false);
   assert.ok(html.includes("data-tbf-theme-select"));

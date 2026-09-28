@@ -5,7 +5,7 @@ import { normalizedLang, text, translate } from "./shared.js";
 import { languageName } from "./names.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
 import { hasFlag } from "country-flag-icons";
-import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const LANGUAGE_FLAG_COUNTRIES: Record<string, string> = {
   ar: "SA",
@@ -119,22 +119,26 @@ function localeTriggerFace(props: LocaleSwitcherProps, current: string) {
 
 function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitcherProps) {
   const current = normalizedLang(props.lang);
-  const locale = props.trigger === "locale";
-  return button({
-      type: "button",
-      className: classNames(locale ? frontendClassName("locale-trigger") : undefined, props.className),
-      icon: !locale,
-      tooltip: !locale,
-      id: triggerId,
-      "aria-controls": popoverId,
-      "aria-haspopup": "menu",
-      "aria-expanded": "false",
-      "aria-label": translate(current, "label"),
-      [frontendDataAttr("popover-trigger")]: "",
-      [frontendDataAttr("popover-indicator")]: locale ? undefined : "false",
-      title: translate(current, "label"),
-      children: localeTriggerFace(props, current),
-  });
+  const compact = props.trigger !== "locale";
+  return (
+    <button
+    type="button"
+    id={triggerId}
+    className={classNames(frontendClassName("locale-trigger"), props.className)}
+    aria-controls={popoverId}
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label={translate(current, "label")}
+    title={translate(current, "label")}
+    {...frontendDataAttrs({
+          "locale-trigger-compact": compact ? "true" : undefined,
+          "popover-indicator": compact ? "false" : undefined,
+          "popover-trigger": "",
+    })}
+    >
+    {localeTriggerFace(props, current)}
+    </button>
+  );
 }
 
 function localeOptionButton(

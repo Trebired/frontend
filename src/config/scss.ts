@@ -21,7 +21,7 @@ import {
   paletteSuffixedDeclarations,
 } from "./palette.js";
 import { renderScalesCss } from "./scales-css.js";
-import { renderButtonToneRules, renderCardToneRules } from "./tones.js";
+import { renderButtonVariantRules, renderCardToneRules } from "./tones.js";
 import { flattenThemeTokens } from "./theme.js";
 import type {
   NormalizedFrontendConfig,
@@ -255,7 +255,7 @@ function generateFrontendScss(
     ...renderThemeCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
-    ...renderButtonToneRules(config),
+    ...renderButtonVariantRules(config),
     ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),

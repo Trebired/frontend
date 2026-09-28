@@ -51,7 +51,6 @@ function primitiveButton(props: ButtonProps) {
     title,
     tone,
     tooltip,
-    transparent,
     variant,
     ...rest
   } = props;
@@ -64,7 +63,6 @@ function primitiveButton(props: ButtonProps) {
           size,
           tone,
           tooltip,
-          transparent,
           variant,
     })}
     {...frontendDataAttrs({ "active": active ? "true" : undefined })}
@@ -72,6 +70,7 @@ function primitiveButton(props: ButtonProps) {
     {...actionTriggerAttrs(actionTrigger)}
     {...rest}
     {...primitiveTooltipAttrs(primitiveTooltipText(tooltip), title)}
+    variant={variant}
     >
     {children}
     </FrontendButton>

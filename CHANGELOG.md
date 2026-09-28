@@ -1,5 +1,16 @@
 # Changelog
 
+## 18.0.0
+
+Breaking: a button says what it is for. `inverse`, `transparent`, `classic` and `default` are gone from the button vocabulary and the four variants `primary`, `secondary`, `ghost` and `danger` replace them, on the primitive button and the surface `Button` alike.
+
+- `PrimitiveButtonVariant` is `"danger" | "ghost" | "primary" | "secondary"`. A button with no variant is `secondary`, which is what `default` meant, and `tone` stays a separate axis for the four status colours (`green`, `highlight`, `red`, `yellow`) that a button carries when it also reports a state. Pass `variant="primary"` where you passed `tone="inverse"`.
+- The surface `Button` takes `variant` rather than `tone` and emits `.tbf-button--{variant}`. The generated rules read `components.surfaces.button.variants` rather than `.tones`, over `--tbf-surf-btn-variants-*` falling back to `--tbf-ui-btn-variants-*`, so a site styles one named set and both layers agree. Card tones are untouched — a tone still says how loud a surface is.
+- The primitive button forwards its variant to the surface layer, so the two classes on one element no longer disagree about what the button is.
+- The locale switcher's trigger is its own control, not a button wearing a second class. `.tbf-locale-trigger` owns its height, padding, gap, border and colours through `shell.language.trigger*` tokens, with a compact modifier for the icon-only form headers use. A site restyling its buttons can no longer reshape the language picker by accident.
+- `save_icon` takes `display: "icon" | "text"` rather than `variant: "classic" | "icon"`. It chose between an icon and a labelled button, which is not what `variant` means on a button any more.
+- `ErrorPage` renders its action as a primary button and the full locale switcher, with the language name beside the flag rather than an icon and a tooltip. An error page is not a header; there is room.
+
 ## 17.1.0
 
 - The attribution line reads the package name and version from a generated constant rather than from `config/package.js`. That module reads `package.json` off disk through Node-only helpers, so pulling it into the browser bundle broke the build of every site that took 17.0.0.

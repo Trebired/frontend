@@ -3,7 +3,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
 import { actionLabel, type ActionLabelKey } from "./labels.js";
 import { copyTargetId } from "./clipboard.js";
-import { type PrimitiveButtonSize, type PrimitiveButtonTone } from "#0rl8rpgzssot";
+import { type PrimitiveButtonSize, type PrimitiveStatusTone } from "#0rl8rpgzssot";
 import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type StandardActionButtonProps = {
@@ -14,7 +14,7 @@ type StandardActionButtonProps = {
   id?: string;
   lang?: string;
   label?: string;
-  tone?: PrimitiveButtonTone;
+  tone?: PrimitiveStatusTone;
   type?: "button" | "submit";
 };
 
@@ -32,8 +32,8 @@ type CopyButtonProps = {
 
 type SaveIconButtonProps = StandardActionButtonProps & {
   dataAttrs?: Record<string, string>;
+  display?: "icon" | "text";
   tooltip?: string;
-  variant?: "classic" | "icon";
 };
 
 type RemoveConfirmationProps = {
@@ -47,7 +47,7 @@ const ACTION_META: Record<string, {
   className?: string;
   icon: string;
   key: ActionLabelKey;
-  tone?: PrimitiveButtonTone;
+  tone?: PrimitiveStatusTone;
   type: "button" | "submit";
 }> = {
   add: { icon: "remixicon add-line", key: "add", type: "submit" },
@@ -154,7 +154,7 @@ function stop_button(props: StandardActionButtonProps = {}) {
 }
 
 function save_icon(props: SaveIconButtonProps = {}) {
-  const variant = props.variant === "classic" ? "classic" : "icon";
+  const display = props.display === "text" ? "text" : "icon";
   const label = actionLabel("save", props.lang, props.label);
   const saveIcon = <Icon spec="remixicon save-3-line" />;
   return button({
@@ -164,10 +164,10 @@ function save_icon(props: SaveIconButtonProps = {}) {
       ...(props.dataAttrs || {}),
       ...(props.disabled ? { disabled: true } : {}),
       className: props.className,
-      icon: variant === "icon",
-      size: variant === "icon" ? "lg" : undefined,
-      tooltip: variant === "icon" ? String(props.tooltip || label) : false,
-      children: variant === "icon" ? saveIcon : <>{saveIcon} {label}</>,
+      icon: display === "icon",
+      size: display === "icon" ? "lg" : undefined,
+      tooltip: display === "icon" ? String(props.tooltip || label) : false,
+      children: display === "icon" ? saveIcon : <>{saveIcon} {label}</>,
   });
 }
 
