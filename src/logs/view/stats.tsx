@@ -1,4 +1,4 @@
-import { frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 import { copy_button } from "#k632wzgl64a3";
 import tabs, { tab_panel } from "#92vilwel70ga";
 import {
@@ -12,7 +12,7 @@ function statsTabs(model: any) {
   return tabs({
       familyClassName: "width-full",
       headerClassName: primitiveInlineRowClassName({
-          className: "logs-stats-header",
+          className: frontendClassName("logs-stats-header"),
           gap: "sm",
           verticalCenter: true,
       }),

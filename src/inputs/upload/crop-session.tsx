@@ -114,13 +114,13 @@ function CropperView(props: CropperViewProps) {
     ),
     h("div", { className: frontendElementClass("upload-crop", "actions") },
       h("button", {
-          className: "btn",
+          className: frontendClassName("btn"),
           disabled: props.busy,
           onClick: props.onCancel,
           type: "button",
         }, h(Icon, { spec: "remixicon close-line" }), h("span", null, "Cancel")),
       h("button", {
-          className: "btn",
+          className: frontendClassName("btn"),
           disabled: props.busy || !props.ready,
           onClick: props.onConfirm,
           type: "button",

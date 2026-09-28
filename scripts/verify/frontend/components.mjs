@@ -26,10 +26,10 @@ async function verifyFrontendComponents(context) {
 
 async function verifyAvatarsStayRound(rootDir) {
   const card = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_card.scss"), "utf8");
-  assert.ok(card.includes(".card-icon img:not(.avatar) {"), "the card icon radius must not square off avatars");
-  assert.ok(!/\.card-icon img \{/u.test(card), "no card icon rule may reach avatars");
+  assert.ok(card.includes('#{ns.class("card-icon")} img:not(#{ns.class("avatar")}) {'), "the card icon radius must not square off avatars");
+  assert.ok(!/class\("card-icon"\)\} img \{/u.test(card), "no card icon rule may reach avatars");
   const controls = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_controls.scss"), "utf8");
-  assert.match(controls, /\.avatar \{\n {2}border-radius: 50%;/u, "avatars are circles");
+  assert.match(controls, /class\("avatar"\)\} \{\n {2}border-radius: 50%;/u, "avatars are circles");
 }
 
 async function verifyLayoutStyles(rootDir) {
@@ -214,9 +214,9 @@ function assertLayeredSystemsMarkup(html) {
   assert.ok(html.includes("data-tbf-layout-root"));
   assert.ok(html.includes("data-tbf-layout-content"));
   assert.equal(html.includes("data-tbf-theme-button"), false);
-  assert.ok(html.includes("tbf-button btn icon has-tooltip tbf-product-shell-theme-control"));
-  assert.ok(html.includes("tbf-button btn tbf-product-shell-theme-control"));
-  assert.equal(html.includes("tbf-button btn has-tooltip tbf-product-shell-theme-control"), false);
+  assert.ok(html.includes("tbf-button tbf-btn tbf-icon tbf-has-tooltip tbf-product-shell-theme-control"));
+  assert.ok(html.includes("tbf-button tbf-btn tbf-product-shell-theme-control"));
+  assert.equal(html.includes("tbf-button tbf-btn tbf-has-tooltip tbf-product-shell-theme-control"), false);
   assert.ok(html.includes("data-tbf-popover-trigger"));
   assert.equal(html.includes("data-tbf-popover-open"), false);
   assert.ok(html.includes("data-tbf-theme-select"));
@@ -317,15 +317,15 @@ async function verifyLogsViewScrollContract(importDist, rootDir) {
         title: "Logs",
     }),
   );
-  assert.ok(html.includes('id="verify-logs-box" class="log-box scroll-min"'));
+  assert.ok(html.includes('id="verify-logs-box" class="tbf-log-box tbf-scroll-min"'));
   assert.ok(html.includes("log-box-shell"));
   assert.equal(
-    html.includes("canvas-panel-content scroll"),
+    html.includes("tbf-canvas-panel-content tbf-scroll"),
     false,
     "logs view must leave scrolling to .log-box",
   );
   const source = await fs.readFile(path.join(rootDir, "dist", "logs", "styles.scss"), "utf8");
-  assert.ok(source.includes(".log-box-shell"));
+  assert.ok(source.includes('#{ns.class("log-box-shell")}'));
   assert.ok(source.includes("overflow: hidden;"));
 }
 

@@ -34,7 +34,7 @@ function input(props: InputProps) {
     <span className={joinClassNames([frontendClassName("input-search-wrap"), classes.wrapper])}>
     {node}
     {icon({
-          className: "input-search-icon",
+          className: frontendClassName("input-search-icon"),
           spec: "remixicon search-line",
     })}
     </span>

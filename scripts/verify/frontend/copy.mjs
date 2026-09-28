@@ -12,9 +12,9 @@ async function verifyCopyCardTitlesAndWrapping(context) {
   assert.ok(bogus.includes("<h3>Safe</h3>"), "an unknown title level falls back to h3");
   const codeLevel = renderToStaticMarkup(createElement(react.copy_code_card, { id: "lvl", label: "Key", titleAs: "h5", value: "x" }));
   assert.ok(codeLevel.includes("<h5>Key</h5>"), "copy_code_card passes its title level through");
-  assert.match(codeLevel, /<code[^>]*class="pre-wrap text-break"/u, "wrapped code also breaks long tokens such as keys");
+  assert.match(codeLevel, /<code[^>]*class="tbf-pre-wrap tbf-text-break"/u, "wrapped code also breaks long tokens such as keys");
   const codeStyles = await fs.readFile(path.join(context.distDir, "code", "styles", "index.scss"), "utf8");
-  assert.ok(codeStyles.includes('#{ns.data("code-content")}.pre-wrap {\n  min-width: 0;\n}'),
+  assert.ok(codeStyles.includes('#{ns.data("code-content")}#{ns.class("pre-wrap")} {\n  min-width: 0;\n}'),
   "wrapped code may shrink below its longest line");
 }
 
@@ -28,10 +28,10 @@ async function verifyCopyComponents(context) {
   }));
   assert.ok(copy.includes("<h3>Token</h3>"), "copy_card renders its title as a card heading");
   assert.ok(copy.includes('aria-controls="copy_probe"'), "copy_card wires the copy button to its target");
-  assert.ok(copy.includes("btn icon sm") || copy.includes(" sm "), "copy_card uses the fixed small copy button");
+  assert.ok(copy.includes("tbf-btn tbf-icon tbf-sm") || copy.includes(" tbf-sm "), "copy_card uses the fixed small copy button");
   const inline = renderToStaticMarkup(createElement(react.copy_value, { value: "a1b2c3d4" }));
   const again = renderToStaticMarkup(createElement(react.copy_value, { value: "a1b2c3d4" }));
-  assert.ok(/<code class="text-break" id="copy_value_[a-z0-9]+">a1b2c3d4<\/code>/u.test(inline), "copy_value shows the value as code by default");
+  assert.ok(/<code class="tbf-text-break" id="copy_value_[a-z0-9]+">a1b2c3d4<\/code>/u.test(inline), "copy_value shows the value as code by default");
   assert.ok(!inline.includes('"value":'), "copy_value copies what is shown, so live text updates are copied too");
   assert.equal(inline, again, "copy_value renders the same id on server and client");
   const short = renderToStaticMarkup(createElement(react.copy_value, {

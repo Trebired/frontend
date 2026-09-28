@@ -87,7 +87,7 @@ function nestedIndicatorRow(model: tabs_model) {
     }
     >
     {icon({
-          className: "tabs-nested-indicator-icon",
+          className: frontendClassName("tabs-nested-indicator-icon"),
           spec: "remixicon arrow-down-s-line",
           "data-tabs-nested-indicator-icon": "",
     })}

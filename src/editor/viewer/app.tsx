@@ -222,7 +222,7 @@ function ViewerContentBody(props: any) {
 function viewerContentError(props: any, contentMinHeight: number) {
   return card({
       style: { minHeight: contentMinHeight },
-      className: "height-max",
+      className: frontendClassName("height-max"),
       gap: "sm",
       children: (
         <>

@@ -147,7 +147,7 @@ function copy_value(props: CopyValueProps) {
     <span className={primitiveInlineRowClassName({ className: props.className, fit: true, gap: "xs", verticalCenter: true })}>
     {copyValueShown(props, id, value)}
     {copy_button({
-          className: "no-shrink",
+          className: frontendClassName("no-shrink"),
           lang: props.lang,
           size: "sm",
           target: `#${id}`,

@@ -138,12 +138,12 @@ async function verifyOpenLightboxShowsImage(react) {
   flushSync(() => root.render(createElement(react.Lightbox, { ...props, visible: false })));
   const hidden = document.querySelector(".tbf-lightbox-viewer");
   assert.ok(hidden, "the lightbox viewer must render into the document");
-  assert.ok(!hidden.classList.contains("is-visible"), "the viewer must start hidden for the enter transition");
+  assert.ok(!hidden.classList.contains("tbf-is-visible"), "the viewer must start hidden for the enter transition");
 
   flushSync(() => root.render(createElement(react.Lightbox, { ...props, visible: true })));
   const shown = document.querySelector(".tbf-lightbox-viewer");
-  assert.ok(shown.classList.contains("is-visible"), "an open lightbox must mark its viewer visible, or the image stays transparent");
-  assert.ok(document.querySelector(".tbf-lightbox").classList.contains("is-visible"));
+  assert.ok(shown.classList.contains("tbf-is-visible"), "an open lightbox must mark its viewer visible, or the image stays transparent");
+  assert.ok(document.querySelector(".tbf-lightbox").classList.contains("tbf-is-visible"));
   assert.equal(document.querySelector(".tbf-lightbox-img").getAttribute("src"), "/a.jpg");
 
   flushSync(() => root.unmount());

@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import {
   primitiveCardRowClassName,
   primitiveInlineRowClassName,
@@ -43,25 +44,25 @@ function stepTone(level: string) {
   const normalized = onlyString(level).toLowerCase();
   if (normalized === "fail" || normalized === "error") {
     return {
-      className: "red",
+      className: frontendClassName("red"),
       label: "fail",
     };
   }
   if (normalized === "success" || normalized === "ok") {
     return {
-      className: "green",
+      className: frontendClassName("green"),
       label: "success",
     };
   }
   if (normalized === "warn" || normalized === "warning") {
     return {
-      className: "yellow",
+      className: frontendClassName("yellow"),
       label: "warning",
     };
   }
 
   return {
-    className: "blue",
+    className: frontendClassName("blue"),
     label: "event",
   };
 }
@@ -119,7 +120,7 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   const row = doc.createElement("div");
   row.className = primitiveCardRowClassName({
       className: primitiveStackClassName({
-          className: "min-height-fit",
+          className: frontendClassName("min-height-fit"),
           gap: "xs",
       }),
   });
@@ -136,7 +137,7 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   const messageEl = doc.createElement("span");
   messageEl.className = primitiveTextClassName({
       breakWord: true,
-      className: "display-block",
+      className: frontendClassName("display-block"),
       size: "sm",
   });
   messageEl.textContent = message;
@@ -158,7 +159,7 @@ function appendStepRecordedAt(doc: Document, row: HTMLElement, value: unknown) {
   const timeEl = doc.createElement("span");
   timeEl.className = primitiveTextClassName({
       breakWord: true,
-      className: "display-block",
+      className: frontendClassName("display-block"),
       muted: true,
       size: "xs",
   });

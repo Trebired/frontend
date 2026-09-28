@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { buildLogLineViews } from "./line.js";
@@ -123,7 +124,7 @@ function emptyChildren(emptyText) {
       "div",
       {
         key: "empty",
-        className: "log-line",
+        className: frontendClassName("log-line"),
         "data-role": "text",
       },
       emptyText,
@@ -138,7 +139,7 @@ function rawChildren(rawMode, rawLines) {
       "pre",
       {
         key: "raw",
-        className: "log-raw-text",
+        className: frontendClassName("log-raw-text"),
       },
       rawLines || "",
     ),
@@ -182,7 +183,7 @@ function LogViewport(props) {
     React.createElement(
       "div",
       {
-        className: "log-box-content",
+        className: frontendClassName("log-box-content"),
       },
       viewportChildren(props),
     ),

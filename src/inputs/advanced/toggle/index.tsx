@@ -101,7 +101,7 @@ function toggleHandle(
       ? "true"
       : "false",
       "aria-label": localT("actions.toggle"),
-      className: "toggle-handle",
+      className: frontendClassName("toggle-handle"),
       children: (
         <>
         <span className={frontendClassName("toggle-track")} aria-hidden="true">

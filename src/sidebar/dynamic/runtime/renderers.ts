@@ -10,7 +10,7 @@ import type {
   DynamicSidebarRuntimeStateContext,
 } from "./types.js";
 import { textValue } from "#yv4ubgils4dc";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function defaultCountNode(context: DynamicSidebarRuntimeCountContext) {
   const node = context.document.createElement("span");
@@ -31,7 +31,7 @@ function defaultLoaderNode(context: DynamicSidebarRuntimeLoaderContext) {
     if (context.running <= 0) return null;
     const host = context.document.createElement("span");
     host.className = primitiveInlineRowClassName({
-        className: primitiveTextClassName({ className: "no-select", muted: true }),
+        className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
         gap: "xs",
         verticalCenter: true,
     });
@@ -41,7 +41,7 @@ function defaultLoaderNode(context: DynamicSidebarRuntimeLoaderContext) {
   if (context.running <= 0) return null;
   const host = context.document.createElement("span");
   host.className = primitiveInlineRowClassName({
-      className: primitiveTextClassName({ className: "no-select", muted: true }),
+      className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
       gap: "xs",
       verticalCenter: true,
   });

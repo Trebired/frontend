@@ -142,7 +142,7 @@ function key_value_rows(
   const rowClassName = toText(props?.rowClassName);
   const valueClassName = primitiveTextClassName({
       breakWord: true,
-      className: "lh-xs",
+      className: frontendClassName("lh-xs"),
       muted: layout === "inline",
   });
   return rows

@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#4fte8m1x62rd";
 import { toString } from "#4fte8m1x62rd";
 import { stringifyJsonForHtml } from "#4fte8m1x62rd";
@@ -83,7 +84,7 @@ function renderUnitDropdown(model: any) {
       value: model.defaultUnitScale,
       options: model.unitOptions,
       placeholder: localT("fields.unit"),
-      className: "dropdown-fit",
+      className: frontendClassName("dropdown-fit"),
       wrapperClassName: "",
       hideChecks: true,
       rootProps: { "data-graph-unit-dropdown": model.graphId },

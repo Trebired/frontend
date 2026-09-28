@@ -1,3 +1,4 @@
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 import React from "react";
 import { logsT } from "#gu61mitj537f";
 import { primitiveGapClass } from "#hzrmwbvgt2ax";
@@ -25,7 +26,7 @@ function markerButton(view, onToggleMarker) {
     "button",
     {
       type: "button",
-      className: "log-cell log-marker",
+      className: frontendClassNames("log-cell", "log-marker"),
       "data-role": "marker",
       title: logsT("marker"),
       "aria-label": view.marked ? logsT("removeMarker") : logsT("addMarker"),
@@ -51,7 +52,7 @@ function timestampCell(view) {
   return React.createElement(
     "span",
     {
-      className: "log-cell log-time",
+      className: frontendClassNames("log-cell", "log-time"),
       "data-role": "timestamp",
       style: { color: "var(--text-color-muted)" },
     },
@@ -63,7 +64,7 @@ function levelCell(view) {
   return React.createElement(
     "span",
     {
-      className: "log-cell log-level",
+      className: frontendClassNames("log-cell", "log-level"),
       "data-role": "level",
       style: styleObj({
           color: view.levelColor,
@@ -78,7 +79,7 @@ function groupCell(view) {
   return React.createElement(
     "span",
     {
-      className: "log-cell log-group",
+      className: frontendClassNames("log-cell", "log-group"),
       "data-role": "group",
       style: { color: "var(--text-color-muted)" },
     },
@@ -104,7 +105,7 @@ function metadataSpan(view) {
   return React.createElement(
     "span",
     {
-      className: "log-meta",
+      className: frontendClassName("log-meta"),
       "data-role": "metadata",
     },
     " " + view.metadata,
@@ -115,7 +116,7 @@ function messageCell(view) {
   return React.createElement(
     "span",
     {
-      className: "log-cell log-message",
+      className: frontendClassNames("log-cell", "log-message"),
       "data-role": "message",
     },
     view.message,
@@ -129,7 +130,7 @@ function stackBlock(view) {
   return React.createElement(
     "div",
     {
-      className: "log-line-stack",
+      className: frontendClassName("log-line-stack"),
       "data-role": "stack",
     },
     view.stack,

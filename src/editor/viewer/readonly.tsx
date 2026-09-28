@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { Text, card } from "#hzrmwbvgt2ax";
 import { normalizePath, text } from "./shared.js";
 import { ReadonlyMonacoDiffPane, ReadonlyMonacoPane } from "./monaco.js";
@@ -6,7 +7,7 @@ function EmptyEditorMessage(props: any) {
   return card({
       style: { minHeight: props.minHeight },
       center: true,
-      className: "height-max",
+      className: frontendClassName("height-max"),
       gap: "sm",
       verticalCenter: true,
       children: (

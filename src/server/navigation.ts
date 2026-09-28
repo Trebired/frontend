@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { type ServerRequestLike } from "./http.js";
 
 type CurrentNavigation = {
@@ -140,7 +141,7 @@ function decorateActiveLink(html: unknown, currentPath: string, opts: DecorateOp
   const best = matches[0];
   if (!best) return src;
 
-  const linkClass = String(opts.linkClass || "is-active").trim();
+  const linkClass = String(opts.linkClass || frontendClassName("is-active")).trim();
   const liClass = String(opts.liClass || "active").trim();
   const openTag = best.html.slice(0, best.tagEnd + 1);
   const restLink = best.html.slice(best.tagEnd + 1);
@@ -159,7 +160,7 @@ function decorateDataNode(
   html: string,
   dataAttr: string,
   active: boolean,
-  className = "is-active",
+  className = frontendClassName("is-active"),
   aria = false,
 ) {
   if (!active) return html;
@@ -182,7 +183,7 @@ function currentAttrs(current: CurrentNavigation, input: unknown, opts: CurrentM
 }
 
 function currentLinkAttrs(current: CurrentNavigation, input: unknown, opts: CurrentMatchOptions = {}) {
-  return currentIsCurrent(current, input, opts) ? ' class="is-active" aria-current="page"' : "";
+  return currentIsCurrent(current, input, opts) ? ` class="${frontendClassName("is-active")}" aria-current="page"` : "";
 }
 
 function currentLiAttrs(current: CurrentNavigation, input: unknown, opts: CurrentMatchOptions = {}) {
@@ -195,7 +196,7 @@ function currentClassName(
   input: unknown,
   opts: CurrentMatchOptions = {},
 ) {
-  return [String(base || "").trim(), currentIsCurrent(current, input, opts) ? "is-active" : ""]
+  return [String(base || "").trim(), currentIsCurrent(current, input, opts) ? frontendClassName("is-active") : ""]
   .filter(Boolean)
   .join(" ");
 }
@@ -203,15 +204,15 @@ function currentClassName(
 function currentMenuClass(current: CurrentNavigation, base: unknown, opts: { exclude?: unknown[] } = {}) {
   const exclude = Array.isArray(opts.exclude) ? opts.exclude : [];
   const active = current.path !== "/" && !currentIsCurrent(current, exclude);
-  return [String(base || "").trim(), active ? "has-current-page is-active" : ""]
+  return [String(base || "").trim(), active ? `has-current-page ${frontendClassName("is-active")}` : ""]
   .filter(Boolean)
   .join(" ");
 }
 
 function decorateBottomBarHtml(current: CurrentNavigation, html: unknown) {
   let out = String(html || "");
-  out = decorateDataNode(out, "data-bottom-bar-apps", currentIsCurrent(current, "/apps"), "is-active", true);
-  out = decorateDataNode(out, "data-bottom-bar-profile", currentIsCurrent(current, "/me"), "is-active", true);
+  out = decorateDataNode(out, "data-bottom-bar-apps", currentIsCurrent(current, "/apps"), frontendClassName("is-active"), true);
+  out = decorateDataNode(out, "data-bottom-bar-profile", currentIsCurrent(current, "/me"), frontendClassName("is-active"), true);
   return out;
 }
 

@@ -12,7 +12,7 @@ import { safeId, text, translate } from "#kv9urtb9dbq5";
 import { source_language_modal } from "./modal.js";
 import type { SourceLanguageCardProps } from "#2w72xmq6rvza";
 import { Text } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function sourceLanguageCardModel(props: SourceLanguageCardProps) {
   const payload =
@@ -61,7 +61,7 @@ function detailButton(
       "aria-label": translate(lang, "openDetails", { name: model.languageName }),
       [frontendDataAttr("modal-open")]: "",
       title: translate(lang, "detailsButton"),
-      className: "icon sm has-tooltip",
+      className: frontendClassNames("icon", "sm", "has-tooltip"),
       children: <Icon spec="remixicon information-line" />,
   });
 }

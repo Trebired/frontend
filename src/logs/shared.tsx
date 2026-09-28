@@ -17,7 +17,7 @@ import {
   setTextContent,
 } from "#er0dlx1gtbzh";
 import { createTranslatorFactory, defineValue, objectRecord as toObject } from "#ndsvdqv80epr";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 type BindActionOptions = BindActionTriggerOptions;
 
@@ -200,7 +200,7 @@ function logActionTrigger(children: ReactNode, options: BindActionOptions = {}) 
   }
   return createElement(
     "span",
-    { className: "action-trigger-host", style: { display: "contents" }, ...attrs },
+    { className: frontendClassName("action-trigger-host"), style: { display: "contents" }, ...attrs },
     children,
   );
 }

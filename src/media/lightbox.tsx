@@ -82,7 +82,7 @@ function Lightbox(props: LightboxProps) {
   const lang = useResolvedLang(props.lang);
   const panel = useLightboxShell(props.close, props.showNext, props.showPrevious);
   const label = (key: string) => sourceLanguageMessage(key, lang);
-  const state = props.visible ? " is-visible" : "";
+  const state = props.visible ? ` ${frontendClassName("is-visible")}` : "";
 
   const node = (
     <div

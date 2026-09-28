@@ -16,7 +16,7 @@ async function verifyNoStandaloneWrapUtility(sourceDir) {
   const files = await sourceFiles(sourceDir);
   for (const file of files) {
     const source = await fs.readFile(file, "utf8");
-    assert.equal(/(^|[^\w&-])\.wrap\b/u.test(source), false, `${file} defines a standalone wrap utility.`);
+    assert.equal(/(^|[^\w&-])\.tbf-wrap\b/u.test(source), false, `${file} defines a standalone wrap utility.`);
     assert.equal(
       /\bclass(Name)?\s*=\s*["'`][^"'`]*\bwrap\b/u.test(source),
       false,
@@ -124,11 +124,11 @@ async function assertBundledFrontendCss(result) {
   assert.equal(css.includes("@font-face"), true);
   assert.equal(css.includes('font-family: "Inter"'), true);
   assert.equal(css.includes("--tbf-font-family-sans"), true);
-  assert.equal(css.includes(".inline-row"), true);
-  assert.ok(css.indexOf("@font-face") < css.indexOf(".inline-row"));
-  assert.equal(css.includes(".inline-row.wrap"), true);
-  assert.equal(css.includes(".gap-xs2"), true);
-  assert.equal(css.includes(".bg-canvas"), true);
+  assert.equal(css.includes(".tbf-inline-row"), true);
+  assert.ok(css.indexOf("@font-face") < css.indexOf(".tbf-inline-row"));
+  assert.equal(css.includes(".tbf-inline-row.tbf-wrap"), true);
+  assert.equal(css.includes(".tbf-gap-xs2"), true);
+  assert.equal(css.includes(".tbf-bg-canvas"), true);
   assert.equal(css.includes(".tbf-layout"), true);
   assert.match(css, /\.tbf-layout,\s*\[data-tbf-layout-root\]\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*100%;/su);
   assert.match(css, /\[data-tbf-layout-root\]\s*>\s*\[data-tbf-layout-main\]\s*\{[^}]*grid-column:\s*2;/su);
@@ -138,8 +138,8 @@ async function assertBundledFrontendCss(result) {
   assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
   assert.equal(css.includes(".tbf-graph"), true);
   assert.equal(css.includes(".tbf-card"), true);
-  assert.equal(css.includes(".card-row"), true);
-  assert.equal(css.includes(".pill"), true);
+  assert.equal(css.includes(".tbf-card-row"), true);
+  assert.equal(css.includes(".tbf-pill"), true);
   assert.equal(css.includes(".tbf-disclosure"), true);
   assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
   assert.equal(css.includes("assets/assets/"), false);

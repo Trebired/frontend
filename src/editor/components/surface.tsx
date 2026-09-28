@@ -224,7 +224,7 @@ function viewerLoadingCard(state: ReturnType<typeof readSurfaceState>) {
 function editorHeader(state: ReturnType<typeof readSurfaceState>) {
   return card({
       className: primitiveInlineRowClassName({
-          className: "width-full padding-sm",
+          className: frontendClassNames("width-full", "padding-sm"),
           gap: "sm",
           verticalCenter: true,
       }),

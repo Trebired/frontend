@@ -21,7 +21,7 @@ import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAt
 
 function groupDropdown(model: any) {
   return dropdown({
-      className: "width-md",
+      className: frontendClassName("width-md"),
       id: model.ids.groupDropdown,
       inputId: model.ids.groupInput,
       inputProps: { "data-log-filter-input": "group" },
@@ -36,7 +36,7 @@ function groupDropdown(model: any) {
 
 function levelDropdown(model: any) {
   return dropdown({
-      className: "width-md",
+      className: frontendClassName("width-md"),
       id: model.ids.levelDropdown,
       inputId: model.ids.levelInput,
       inputProps: { "data-log-filter-input": "level" },
@@ -61,7 +61,7 @@ function platformToggle(model: any) {
           optionClassName: [
             "logs-platform-toggle",
             primitiveCardClassName({
-                className: "cursor-pointer no-shrink",
+                className: frontendClassNames("cursor-pointer", "no-shrink"),
                 layout: "none",
                 padding: "xs",
             }),
@@ -86,7 +86,7 @@ function searchField(model: any) {
     />
     {icon({
           spec: "remixicon search-line",
-          className: "input-search-icon",
+          className: frontendClassName("input-search-icon"),
     })}
     </span>
     </div>
@@ -157,7 +157,7 @@ function searchToggleButton(model: any) {
     {
       "aria-label": model.t("searchLogsAction"),
       "data-logs-raw-hide": "",
-      className: "logs-toolbar-search-toggle",
+      className: frontendClassName("logs-toolbar-search-toggle"),
       id: model.ids.searchButton,
       title: model.t("searchLogsAction"),
     },

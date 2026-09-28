@@ -44,7 +44,7 @@ function controlsRow(props: search_props) {
     {search_query_input({
           children: input({
               ...(inputId ? { id: inputId } : {}),
-              className: "width-lg",
+              className: frontendClassName("width-lg"),
               type: "search",
               placeholder: toText(props.placeholder),
               autoComplete: "off",

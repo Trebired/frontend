@@ -118,10 +118,10 @@ function verifyNavigationServer(server) {
       url: "/apps/example/settings?tab=general",
   });
   assert.equal(state.isCurrent("/apps/example"), true);
-  assert.equal(state.linkAttrs("/apps/example/settings"), ' class="is-active" aria-current="page"');
+  assert.equal(state.linkAttrs("/apps/example/settings"), ' class="tbf-is-active" aria-current="page"');
   assert.equal(server.normalizeRequestPath({ originalUrl: "/apps/one?tab=x" }), "/apps/one");
   const decorated = state.decorate('<li><a href="/apps/example">App</a></li>');
-  assert.ok(decorated.includes('class="is-active"'));
+  assert.ok(decorated.includes('class="tbf-is-active"'));
   assert.ok(decorated.includes('aria-current="page"'));
   const app = appCapture();
   server.attachNavigationMiddleware(app);

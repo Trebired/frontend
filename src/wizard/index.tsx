@@ -45,7 +45,7 @@ function wizard(props: wizard_props) {
       createElement(
         "wizard-step",
         {
-          className: primitiveCardClassName({ className: "wizard-step", gap: "sm" }),
+          className: primitiveCardClassName({ className: frontendClassName("wizard-step"), gap: "sm" }),
           id: `${props.id}_${step.id}`,
           key: step.id,
           ...(index === 0 ? { "data-wizard-step-state": "active" } : {}),

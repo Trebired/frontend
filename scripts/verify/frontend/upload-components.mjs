@@ -76,7 +76,7 @@ async function verifyRenderedUpload(importDist) {
   ].forEach((slot) => {
       assert.ok(html.includes(`data-tbf-upload-slot="${slot}"`), `missing upload slot ${slot}`);
   });
-  assert.ok(html.includes('class="btn"'));
+  assert.ok(html.includes('class="tbf-btn"'));
   assert.ok(html.includes("remixicon:file-upload-line"));
   assert.ok(html.includes("remixicon:folder-upload-line"));
   assert.ok(html.includes("remixicon:close-line"));

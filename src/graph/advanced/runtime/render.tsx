@@ -11,7 +11,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar } from "#5vbaqj4pirp3";
 
 const GRAPH_CARD_ROOT_CLASS = "graph-card-root";
 const GRAPH_FRAME_CLASS = "graph-card-frame bg-canvas";
@@ -46,14 +46,14 @@ function GraphUnitControls(props) {
   if (props.unitSelectable) {
     return React.createElement("div", {
         ref: props.unitDropdownRef,
-        className: "width-fit",
+        className: frontendClassName("width-fit"),
     });
   }
 
   if (props.unitMeasurement) {
     return React.createElement(
       "span",
-      { className: "pill" },
+      { className: frontendClassName("pill") },
       graphUnitLabel(props.unitMeasurement, props.selectedScale),
     );
   }
@@ -70,7 +70,7 @@ function GraphHeader(props) {
     React.createElement(GraphTitle, props),
     React.createElement(
       "div",
-      { className: "right" },
+      { className: frontendClassName("right") },
       React.createElement(
         "div",
         { className: primitiveInlineRowClassName({ fit: true, gap: "sm", noShrink: true, noStretch: true, verticalCenter: true }) },
@@ -119,7 +119,7 @@ function GraphWarning(props) {
     },
     React.createElement(
       "div",
-      { className: "center column gap-sm" },
+      { className: frontendClassNames("center", "column", "gap-sm") },
       icon({
           spec: props.stateIcon,
           style: {
@@ -130,7 +130,7 @@ function GraphWarning(props) {
       props.stateMessage
       ? React.createElement(
         "span",
-        { className: "text-sm", style: { maxWidth: "min(340px, 80%)" } },
+        { className: frontendClassName("text-sm"), style: { maxWidth: "min(340px, 80%)" } },
         props.stateMessage,
       )
       : null,
@@ -154,7 +154,7 @@ function GraphLoader(props) {
       },
     },
     React.createElement("div", {
-        className: "center",
+        className: frontendClassName("center"),
         dangerouslySetInnerHTML: { __html: props.loaderHtml },
     }),
   );
@@ -261,7 +261,7 @@ function GraphFallbackBody(props) {
       },
       React.createElement(
         "div",
-        { className: "center column gap-sm" },
+        { className: frontendClassNames("center", "column", "gap-sm") },
         icon({
             spec: "remixicon error-warning-line",
             style: { fontSize: "40px", lineHeight: 1 },
