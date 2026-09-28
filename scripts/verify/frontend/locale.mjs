@@ -30,7 +30,8 @@ function runBootScript(source, options = {}) {
   const languages = options.languages || ["de-DE"];
   const scope = {
     document: { addEventListener: (type) => listeners.push(type), cookie: options.cookie || "", documentElement: root },
-    location: { search: options.search || "" },
+    history: { replaceState: () => undefined, state: null },
+    location: { hash: "", pathname: options.pathname || "/", search: options.search || "" },
     navigator: { language: languages[0], languages },
     window: { localStorage: { getItem: (key) => store.get(key) ?? null } },
   };
@@ -84,6 +85,16 @@ function verifyIndexableRoutes(api) {
   assert.equal(crawler.lang, "en", "with indexed urls the browser language must not rewrite a page's language");
   assert.equal(crawler.attrs.has(PENDING), false);
   assert.equal(runBootScript(source, { stored: "cs" }).lang, "cs", "a saved choice must still apply");
+  assert.equal(
+    runBootScript(source, { pathname: "/en/404", stored: "cs" }).lang,
+    "cs",
+    "a saved choice must win over a locale in the path, so switching on a prefixed url survives a reload",
+  );
+  assert.equal(
+    runBootScript(source, { pathname: "/cs/404" }).lang,
+    "cs",
+    "a locale in the path still applies to a visitor who has chosen nothing",
+  );
 
   const query = api.createLocaleBootScript(ROUTING, { strategy: "query" });
   assert.doesNotMatch(query, /location\.(?:replace|assign|reload)|location\.href\s*=/u);

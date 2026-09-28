@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.3
+
+- A saved locale now outranks a locale in the path, the way it already outranked `?lang=`. The boot script read the path first, so on a site whose urls carry a locale for crawlers but whose switcher leaves the url alone, switching on `/en/404` set the choice and the next reload threw it away again — the `/en` in the address won every time. A visitor who has chosen nothing still gets the locale the url names; only the `?setlang=` handoff comes first, being a switch carried across origins rather than a preference.
+
 ## 18.0.2
 
 - The tooltip binder no longer strips a `title` off a control while binding. An SSR-rendered control belongs to React until it hydrates, so rewriting it beforehand is a hydration mismatch — React saw `title="…"` in the server HTML and `title={null}` in the client props. A title the custom tooltip takes over is dropped when the tooltip shows, and a labelled control keeps the title it was rendered with.
