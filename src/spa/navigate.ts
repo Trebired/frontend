@@ -102,8 +102,8 @@ function isOpenOverlay(element: Element) {
 }
 
 function syncIslandRootHydration(current: Element, next: Element) {
-  if (!current.hasAttribute("data-live-island-root")) return;
-  const attr = "data-live-island-hydrated";
+  if (!current.hasAttribute(frontendDataAttr("live-island-root"))) return;
+  const attr = frontendDataAttr("live-island-hydrated");
   const nextValue = next.getAttribute(attr);
   if (nextValue === null) current.removeAttribute(attr);
   else current.setAttribute(attr, nextValue);

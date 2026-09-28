@@ -34,7 +34,7 @@ function verifyReactRenderServer(server) {
   const events = [];
   const renderer = server.createFrontendReactRenderer({
       buildAssetLinks: (entryIds) => ({
-          cssLinks: `<link data-count="${entryIds.length}">`,
+          cssLinks: `<link data-tbf-count="${entryIds.length}">`,
           jsLinks: "<script></script>",
       }),
       createElement: (component, props) => component(props),
@@ -42,7 +42,7 @@ function verifyReactRenderServer(server) {
       renderToStaticMarkup: (node) => String(node),
       renderToString: (node) => String(node),
       resolvePageComponent: (pageId) => (props) =>
-      `<main data-page="${pageId}">${props.lang}</main>`,
+      `<main data-tbf-page="${pageId}">${props.lang}</main>`,
       resolveRootDocument: () => (props) =>
       `<html><head>${props.jsLinks}</head><body>${props.body}</body></html>`,
       resolveTitle: (context) => `${context.pageTitle} | Test`,
@@ -52,7 +52,7 @@ function verifyReactRenderServer(server) {
   renderer.renderPage(res, "platform/home", {});
   assert.ok(String(res.body).startsWith("<!DOCTYPE html>"));
   assert.ok(String(res.body).includes('nonce="nonce-a"'));
-  assert.ok(String(res.body).includes('data-page="platform/home"'));
+  assert.ok(String(res.body).includes('data-tbf-page="platform/home"'));
   assert.equal(res.locals.reactPageProps.lang, "cs");
   assert.deepEqual(
     events.map((event) => event.group),

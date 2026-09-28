@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 function simpleLiveMarkup(marker, body = "") {
-  return `<div data-tbf-live-content data-marker="${marker}">${body || marker}</div>`;
+  return `<div data-tbf-live-content data-tbf-marker="${marker}">${body || marker}</div>`;
 }
 
 function liveDocument(markup, title = "Next") {
@@ -25,7 +25,7 @@ async function verifyLiveNavigationLifecycle(context) {
     () => {
       order.push("cleanup");
       assert.equal(
-        document.querySelector("[data-tbf-live-content]").getAttribute("data-marker"),
+        document.querySelector("[data-tbf-live-content]").getAttribute("data-tbf-marker"),
         "before",
         "cleanups must run before the old content is replaced",
       );
@@ -35,7 +35,7 @@ async function verifyLiveNavigationLifecycle(context) {
       order.push("page-change");
       assert.equal(page.pageId, "/next?tab=1");
       assert.equal(
-        document.querySelector("[data-tbf-live-content]").getAttribute("data-marker"),
+        document.querySelector("[data-tbf-live-content]").getAttribute("data-tbf-marker"),
         "after",
         "page-change must fire after the new content is in the DOM",
       );
@@ -83,7 +83,7 @@ async function verifyLiveNavigationStaleGuard(context) {
   await Promise.resolve().then(() => {
       if (spa.currentPage().navigationId !== staleNavigationId) return;
       staleMutated = true;
-      document.getElementById("stale_target")?.setAttribute("data-mutated", "true");
+      document.getElementById("stale_target")?.setAttribute("data-tbf-mutated", "true");
   });
   await visit;
 
@@ -93,7 +93,7 @@ async function verifyLiveNavigationStaleGuard(context) {
 
 function logsLiveMarkup(marker = "logs") {
   return simpleLiveMarkup(marker, [
-      '<section id="logs-view-partial" data-tbf-logs-partial data-logs-instance-id="logs-view">',
+      '<section id="logs-view-partial" data-tbf-logs-partial data-tbf-logs-instance-id="logs-view">',
       '<div id="logs-view-box"></div>',
       "</section>",
     ].join(""));
@@ -124,7 +124,7 @@ async function verifyLiveScopedSubscriptionDisposal(context) {
   const { softRedirect } = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup("before", [
       '<div data-tbf-live-card data-tbf-live-kind="task" data-tbf-live-id="1">Card</div>',
-      '<live-list data-live-list-room="tasks"></live-list>',
+      '<live-list data-tbf-live-list-room="tasks"></live-list>',
     ].join(""));
   let unsubscribed = 0;
   const subscribe = () => () => {

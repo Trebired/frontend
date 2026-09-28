@@ -1,4 +1,4 @@
-import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr } from "#5vbaqj4pirp3";
 import { copy_button } from "#k632wzgl64a3";
 import tabs, { tab_panel } from "#92vilwel70ga";
 import {
@@ -67,7 +67,7 @@ function logsStatsPanel(model: any) {
   if (!model.showStats) return null;
   return card({
       id: model.ids.statsCard,
-      "data-logs-raw-hide": "",
+      [frontendDataAttr("logs-raw-hide")]: "",
       gap: "sm",
       children: (
         <>

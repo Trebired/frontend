@@ -22,7 +22,7 @@ const DEFAULT_FULL_RELOAD_SELECTOR = frontendDataSelector("full-reload");
 const PORTALED_SELECTOR = [
   `${frontendDataSelector("modal")}[id]`,
   `${frontendDataSelector("popover")}[id]`,
-  "[data-dropdown-options][id]",
+  `${frontendDataSelector("dropdown-options")}[id]`,
 ].join(",");
 
 let resolved: ResolvedSpaOptions = normalizeSpaOptions();

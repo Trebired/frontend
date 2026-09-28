@@ -11,14 +11,14 @@ import { verifyLiveShell } from "./shell.mjs";
 
 function modalMarkup(marker) {
   return [
-    `<div id="live-modal" data-marker="${marker}" data-tbf-modal>`,
+    `<div id="live-modal" data-tbf-marker="${marker}" data-tbf-modal>`,
     '<div data-tbf-modal-content style="height:20px;overflow:auto;">',
     "<tabs-root>",
-    "<div data-tabs-root>",
-    "<div data-tabs-family>",
-    "<div data-tabs-list>",
-    '<button data-tab-button aria-controls="live-tab-a" aria-selected="false">A</button>',
-    '<button data-tab-button aria-controls="live-tab-b" aria-selected="true">B</button>',
+    "<div data-tbf-tabs-root>",
+    "<div data-tbf-tabs-family>",
+    "<div data-tbf-tabs-list>",
+    '<button data-tbf-tab-button aria-controls="live-tab-a" aria-selected="false">A</button>',
+    '<button data-tbf-tab-button aria-controls="live-tab-b" aria-selected="true">B</button>',
     "</div>",
     '<section id="live-tab-a">A</section>',
     '<section id="live-tab-b">B</section>',
@@ -35,15 +35,15 @@ function rootMarkup(marker) {
   return [
     `<button id="live-popover-trigger-${marker}" data-tbf-popover-trigger aria-controls="live-popover">Open</button>`,
     '<div id="live-popover" data-tbf-popover aria-hidden="true">Menu</div>',
-    '<div id="live-dropdown" data-dropdown-root>',
-    '<div id="live-dropdown-options" data-dropdown-options data-dropdown-show="true">Options</div>',
+    '<div id="live-dropdown" data-tbf-dropdown-root>',
+    '<div id="live-dropdown-options" data-tbf-dropdown-options data-tbf-dropdown-show="true">Options</div>',
     "</div>",
     modalMarkup(marker),
   ].join("");
 }
 
 function selectedTab(modal) {
-  return modal.querySelector('[data-tab-button][aria-selected="true"]');
+  return modal.querySelector('[data-tbf-tab-button][aria-selected="true"]');
 }
 
 async function openPackageOverlays(context) {
@@ -96,7 +96,7 @@ async function verifyLiveOverlays(context) {
   await settleDom();
 
   const restoredModal = document.getElementById("live-modal");
-  assert.equal(restoredModal.getAttribute("data-marker"), "after");
+  assert.equal(restoredModal.getAttribute("data-tbf-marker"), "after");
   assert.equal(restoredModal.getAttribute("data-tbf-open"), "true");
   assert.equal(
     restoredModal.querySelector("[data-tbf-modal-content]").scrollTop,
@@ -122,9 +122,9 @@ function uploadLiveMarkup(marker, cropValue = "", remoteValue = "") {
   return [
     "<div data-tbf-live-content>",
     '<wizard-root id="welcome_wizard">',
-    '<wizard-step id="welcome_intro" data-wizard-step-state="active">Intro</wizard-step>',
+    '<wizard-step id="welcome_intro" data-tbf-wizard-step-state="active">Intro</wizard-step>',
     '<wizard-step id="welcome_profile">',
-    `<div id="avatar_upload" class="tbf-upload" data-marker="${marker}" data-tbf-upload>`,
+    `<div id="avatar_upload" class="tbf-upload" data-tbf-marker="${marker}" data-tbf-upload>`,
     '<script data-tbf-upload-config hidden type="application/json">',
     '{"crop":true,"emptyLabel":"No avatar selected","formats":"image/png","remoteSelectedLabel":"Remote avatar"}',
     "</script>",
@@ -148,14 +148,14 @@ function uploadLiveMarkup(marker, cropValue = "", remoteValue = "") {
 
 function chromeLiveMarkup(marker) {
   return [
-    `<header id="primary_header" data-marker="${marker}">`,
+    `<header id="primary_header" data-tbf-marker="${marker}">`,
     '<button id="login_lang_switch_btn" data-tbf-popover-trigger aria-controls="login_lang_switch_btn_menu">Lang</button>',
     '<div id="login_lang_switch_btn_menu" data-tbf-popover aria-hidden="true">',
     '<button data-tbf-locale-option data-tbf-popover-close value="en">English</button>',
     '<button data-tbf-locale-option data-tbf-popover-close value="cs">Czech</button>',
     "</div>",
     "</header>",
-    `<div data-tbf-live-content data-marker="${marker}">Content ${marker}</div>`,
+    `<div data-tbf-live-content data-tbf-marker="${marker}">Content ${marker}</div>`,
   ].join("");
 }
 
@@ -192,7 +192,7 @@ async function verifyLiveChromePortaledOverlayCleanup(context) {
     1,
   );
   assert.equal(
-    document.getElementById("primary_header").getAttribute("data-marker"),
+    document.getElementById("primary_header").getAttribute("data-tbf-marker"),
     "after",
   );
   assert.equal(
@@ -206,9 +206,9 @@ async function verifyLiveFileInputPreservation(context) {
   const { bindUploads, getUploadFiles } = await context.importDist("inputs");
   const cropValue = '{"x":1,"y":2,"width":3,"height":4}';
   document.body.innerHTML = uploadLiveMarkup("before", cropValue);
-  document.getElementById("welcome_intro").removeAttribute("data-wizard-step-state");
+  document.getElementById("welcome_intro").removeAttribute("data-tbf-wizard-step-state");
   const wizardStep = document.getElementById("welcome_profile");
-  wizardStep.setAttribute("data-wizard-step-state", "active");
+  wizardStep.setAttribute("data-tbf-wizard-step-state", "active");
   const file = new File(["avatar"], "avatar.png", { type: "image/png" });
   assignFiles(document.getElementById("avatar_upload_input"), [file]);
   globalThis.fetch = async() => {
@@ -233,7 +233,7 @@ async function verifyLiveFileInputPreservation(context) {
   assert.equal(
     document
     .getElementById("welcome_profile")
-    .getAttribute("data-wizard-step-state"),
+    .getAttribute("data-tbf-wizard-step-state"),
     "active",
   );
   assert.equal(

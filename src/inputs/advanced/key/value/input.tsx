@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import { icon } from "#dqy2d22qyujv";
 import { button } from "#dqy2d22qyujv";
@@ -79,12 +79,12 @@ function key_value_input(props: key_value_input_props) {
     {...rootAttrs}
     key={toString(props.rowKey) || undefined}
     className={rootClassName}
-    data-key-value-input=""
+    {...frontendDataAttrs({ "key-value-input": "" })}
     >
     <div
     className={primitiveGridClassName({ gap: "xs" })}
     style={gridStyle(fields, props.remove !== false)}
-    data-key-value-input-controls=""
+    {...frontendDataAttrs({ "key-value-input-controls": "" })}
     >
     {labels ? renderLabels(fields) : null}
     {fields.length ? renderFields(fields, labels) : props.children}

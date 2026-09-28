@@ -1,3 +1,4 @@
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 import { createLocalTranslator, icon, button } from "./_shared.js";
 import { bindUploads, uploadManager } from "#36iuc8ncbccq";
 import {
@@ -46,7 +47,7 @@ function upload(props: UploadProps) {
     <UploadField
     {...rest}
     {...uploadFieldLabels(props)}
-    data-upload-root=""
+    {...frontendDataAttrs({ "upload-root": "" })}
     lang={lang}
     name={name}
     />
@@ -67,7 +68,7 @@ function upload_button(props: UploadButtonProps) {
       children: (
         <>
         {icon({ spec: "remixicon upload-line" })}{" "}
-        <span data-upload-button-label="">
+        <span {...frontendDataAttrs({ "upload-button-label": "" })}>
         {props.label || localT("files.upload")}
         </span>
         </>

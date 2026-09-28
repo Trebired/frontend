@@ -1,7 +1,8 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { bindElementsOnReady, firstHTMLElementChild } from "#er0dlx1gtbzh";
 
 const SCROLL_OVERFLOW_TAG = "scroll-overflow";
-const SCROLL_OVERFLOW_ATTR = "data-scroll-overflow-x";
+const SCROLL_OVERFLOW_ATTR = frontendDataAttr("scroll-overflow-x");
 const EPSILON = 1;
 const observed = new Set<HTMLElement>();
 let resizeObserver: ResizeObserver | null = null;

@@ -101,9 +101,9 @@ function heatmapCell(
     <rect
     key={dateKey}
     aria-label={label}
-    data-column={column}
-    data-date={dateKey}
-    data-row={row}
+    {...frontendDataAttrs({ "column": column })}
+    {...frontendDataAttrs({ "date": dateKey })}
+    {...frontendDataAttrs({ "row": row })}
     fill={heatmap_fill_color(count, model.maxCount)}
     height={CELL_SIZE}
     onBlur={handlers.hideTooltip}
@@ -139,7 +139,7 @@ function heatmapCell(
 
 function heatmapGrid(model: any, handlers: any, t: ContributionTranslator) {
   return Array.from({ length: model.columnCount }).map((_, column) => (
-      <g key={`column-${column}`} data-column={column}>
+      <g key={`column-${column}`} {...frontendDataAttrs({ "column": column })}>
       {Array.from({ length: ROW_COUNT }).map((__, row) =>
           heatmapCell(model, column, row, handlers, t),
       )}

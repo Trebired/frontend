@@ -1,3 +1,4 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { createElement, Fragment, type ReactNode } from "react";
 import { Stack, Text, card } from "#hzrmwbvgt2ax";
 import search, { search_panel } from "#xkgew618b00p";
@@ -90,9 +91,9 @@ function liveMarker(live: EntityListLive | undefined, anchorId: string) {
   if (!live || !live.room) return null;
   return createElement("live-list", {
       hidden: true,
-      "data-live-list-anchor": anchorId,
-      "data-live-list-event": text(live.event),
-      "data-live-list-room": live.room,
+      [frontendDataAttr("live-list-anchor")]: anchorId,
+      [frontendDataAttr("live-list-event")]: text(live.event),
+      [frontendDataAttr("live-list-room")]: live.room,
   });
 }
 

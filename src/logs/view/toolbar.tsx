@@ -24,12 +24,12 @@ function groupDropdown(model: any) {
       className: frontendClassName("width-md"),
       id: model.ids.groupDropdown,
       inputId: model.ids.groupInput,
-      inputProps: { "data-log-filter-input": "group" },
+      inputProps: { [frontendDataAttr("log-filter-input")]: "group" },
       listId: model.ids.groupList,
       name: model.ids.groupInputName,
       options: [{ value: "all", label: model.t("all") }],
       placeholder: model.t("all"),
-      rootProps: { "data-log-filter-dropdown": "group" },
+      rootProps: { [frontendDataAttr("log-filter-dropdown")]: "group" },
       value: "all",
   });
 }
@@ -39,12 +39,12 @@ function levelDropdown(model: any) {
       className: frontendClassName("width-md"),
       id: model.ids.levelDropdown,
       inputId: model.ids.levelInput,
-      inputProps: { "data-log-filter-input": "level" },
+      inputProps: { [frontendDataAttr("log-filter-input")]: "level" },
       listId: model.ids.levelList,
       name: model.ids.levelInputName,
       options: [{ value: "all", label: model.t("all") }],
       placeholder: model.t("all"),
-      rootProps: { "data-log-filter-dropdown": "level" },
+      rootProps: { [frontendDataAttr("log-filter-dropdown")]: "level" },
       value: "all",
   });
 }
@@ -52,7 +52,7 @@ function levelDropdown(model: any) {
 function platformToggle(model: any) {
   if (!model.showPlatformToggle) return null;
   return (
-    <div data-logs-raw-hide="">
+    <div {...frontendDataAttrs({ "logs-raw-hide": "" })}>
     {checkbox({
           bodyClassName: "logs-platform-toggle-body",
           checked: true,
@@ -75,7 +75,7 @@ function platformToggle(model: any) {
 
 function searchField(model: any) {
   return (
-    <div className={frontendClassName("logs-toolbar-search-field")} data-logs-raw-hide="">
+    <div className={frontendClassName("logs-toolbar-search-field")} {...frontendDataAttrs({ "logs-raw-hide": "" })}>
     <span className={frontendClassNames("logs-search-shell", "width-lg", "grow")}>
     <input
     id={model.ids.searchInput}
@@ -96,10 +96,10 @@ function searchField(model: any) {
 function primaryToolbarRow(model: any) {
   return (
     <div className={frontendClassNames("logs-toolbar-row", "logs-toolbar-row-primary")}>
-    <div className={frontendClassName("logs-toolbar-filter")} data-logs-raw-hide="">
+    <div className={frontendClassName("logs-toolbar-filter")} {...frontendDataAttrs({ "logs-raw-hide": "" })}>
     {groupDropdown(model)}
     </div>
-    <div className={frontendClassName("logs-toolbar-filter")} data-logs-raw-hide="">
+    <div className={frontendClassName("logs-toolbar-filter")} {...frontendDataAttrs({ "logs-raw-hide": "" })}>
     {levelDropdown(model)}
     </div>
     {platformToggle(model)}
@@ -156,7 +156,7 @@ function searchToggleButton(model: any) {
   return toolbarButton(
     {
       "aria-label": model.t("searchLogsAction"),
-      "data-logs-raw-hide": "",
+      [frontendDataAttr("logs-raw-hide")]: "",
       className: frontendClassName("logs-toolbar-search-toggle"),
       id: model.ids.searchButton,
       title: model.t("searchLogsAction"),
@@ -261,7 +261,7 @@ function secondaryToolbarRow(model: any) {
         {
           "aria-label": model.t("showMetadata"),
           "aria-pressed": "false",
-          "data-logs-raw-hide": "",
+          [frontendDataAttr("logs-raw-hide")]: "",
           id: model.ids.metadataButton,
           title: model.t("showMetadata"),
         },

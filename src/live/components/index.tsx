@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames, dataBool, jsonScript } from "#ndsvdqv80epr";
-import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type LiveRegionProps = HTMLAttributes<HTMLElement> & {
   as?: "div" | "main" | "section";
@@ -51,8 +51,8 @@ function LiveRefreshButton(props: LiveRefreshButtonProps) {
 
 function LiveIslandMount(props: LiveIslandMountProps) {
   const rootAttr =
-  String(props.rootAttr || "data-live-island-root").trim() ||
-    "data-live-island-root";
+  String(props.rootAttr || frontendDataAttr("live-island-root")).trim() ||
+    frontendDataAttr("live-island-root");
   const stateId = String(props.stateId || "").trim();
   const state =
   props.state && typeof props.state === "object" ? props.state : {};
@@ -66,8 +66,8 @@ function LiveIslandMount(props: LiveIslandMountProps) {
     <div
     id={String(props.rootId || "").trim() || undefined}
     {...{ [rootAttr]: "" }}
-    data-live-island-root=""
-    data-live-island-hydrated="false"
+    {...frontendDataAttrs({ "live-island-root": "" })}
+    {...frontendDataAttrs({ "live-island-hydrated": "false" })}
     >
     {props.children}
     </div>

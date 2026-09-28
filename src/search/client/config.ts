@@ -1,3 +1,4 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { readElementJson as readHostJsonConfig } from "#er0dlx1gtbzh";
 import type {
   search_filter_config,
@@ -16,7 +17,7 @@ type SearchFilterDef = {
 function readSearchPanelConfig(host: ParentNode): search_panel_config {
   return readHostJsonConfig(
     host,
-    'script[type="application/json"][data-search-panel-config]',
+    `script[type="application/json"]${frontendDataSelector("search-panel-config")}`,
     {},
   );
 }
@@ -24,7 +25,7 @@ function readSearchPanelConfig(host: ParentNode): search_panel_config {
 function readSearchControlsConfig(host: ParentNode): search_panel_config {
   return readHostJsonConfig(
     host,
-    'script[type="application/json"][data-search-controls-config]',
+    `script[type="application/json"]${frontendDataSelector("search-controls-config")}`,
     {},
   );
 }
@@ -32,7 +33,7 @@ function readSearchControlsConfig(host: ParentNode): search_panel_config {
 function readSearchFilterConfig(host: ParentNode): search_filter_config {
   return readHostJsonConfig(
     host,
-    'script[type="application/json"][data-search-filter-config]',
+    `script[type="application/json"]${frontendDataSelector("search-filter-config")}`,
     {},
   );
 }
@@ -40,7 +41,7 @@ function readSearchFilterConfig(host: ParentNode): search_filter_config {
 function readSearchItemConfig(host: ParentNode): search_item_config {
   return readHostJsonConfig(
     host,
-    'script[type="application/json"][data-search-item-config]',
+    `script[type="application/json"]${frontendDataSelector("search-item-config")}`,
     {},
   );
 }

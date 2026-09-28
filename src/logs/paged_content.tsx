@@ -1,3 +1,4 @@
+import { frontendDataAttrs } from "#5vbaqj4pirp3";
 import { stringifyJsonForHtml } from "./shared.js";
 
 type paged_content_props = {
@@ -15,10 +16,10 @@ function paged_content(props: paged_content_props) {
   });
 
   return (
-    <div data-deployment-log-page="" hidden>
+    <div {...frontendDataAttrs({ "deployment-log-page": "" })} hidden>
     <script
     type="application/json"
-    data-deployment-log-page-data=""
+    {...frontendDataAttrs({ "deployment-log-page-data": "" })}
     dangerouslySetInnerHTML={{ __html: payload }}
     />
     </div>

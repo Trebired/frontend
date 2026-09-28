@@ -58,7 +58,7 @@ function defaultStateNode(context: DynamicSidebarRuntimeStateContext) {
       tone: state === "running" ? "green" : "red",
   });
   node.setAttribute("aria-hidden", "true");
-  node.setAttribute("data-state", state);
+  node.setAttribute(frontendDataAttr("state"), state);
   node.setAttribute(frontendDataAttr("sidebar-state-dot"), "");
   return node;
 }

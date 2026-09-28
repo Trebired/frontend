@@ -5,7 +5,7 @@ import {
   initializeOwnedNodes,
   ownedNodes,
 } from "./ownership.js";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const TAB_PANE_ANIMATION_MS = 290;
 const TAB_PANE_ANIMATION_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -40,14 +40,14 @@ function paneForTab(tab) {
 }
 
 function familyContainer(root) {
-  return ownedNodes(root, "[data-tabs-family]")[0] || null;
+  return ownedNodes(root, frontendDataSelector("tabs-family"))[0] || null;
 }
 
 function uiContainer(root) {
   return (
     familyContainer(root) ||
-      ownedNodes(root, "[data-tabs-stack]")[0] ||
-      ownedNodes(root, "[data-tabs-list]")[0] ||
+      ownedNodes(root, frontendDataSelector("tabs-stack"))[0] ||
+      ownedNodes(root, frontendDataSelector("tabs-list"))[0] ||
       null
   );
 }
@@ -56,11 +56,11 @@ function nestedGroups(root) {
   const family = familyContainer(root);
   if (!(family instanceof HTMLElement)) return [];
   return Array.from(
-    family.querySelectorAll("[data-tabs-nested-parent-panel]"),
+    family.querySelectorAll(frontendDataSelector("tabs-nested-parent-panel")),
   ).filter((node) => {
       return (
         node instanceof HTMLElement &&
-          node.closest("[data-tabs-family]") === family
+          node.closest(frontendDataSelector("tabs-family")) === family
       );
   });
 }
@@ -71,7 +71,7 @@ function syncNestedGroups(root, activeTab) {
   nestedGroups(root).forEach((group) => {
       if (!(group instanceof HTMLElement)) return;
       const parentPanelId = toString(
-        group.getAttribute("data-tabs-nested-parent-panel"),
+        group.getAttribute(frontendDataAttr("tabs-nested-parent-panel")),
       );
       group.hidden = !activePanelId || parentPanelId !== activePanelId;
   });
@@ -79,10 +79,10 @@ function syncNestedGroups(root, activeTab) {
 
 function hoistNestedFamily(root) {
   if (!(root instanceof HTMLElement)) return;
-  if (toString(root.getAttribute("data-tabs-hoist-family")) !== "true") return;
+  if (toString(root.getAttribute(frontendDataAttr("tabs-hoist-family"))) !== "true") return;
   const parentContainer = root.parentElement;
   if (!(parentContainer instanceof HTMLElement)) return;
-  const parentRoot = parentContainer.closest("[data-tabs-root]");
+  const parentRoot = parentContainer.closest(frontendDataSelector("tabs-root"));
   if (!(parentRoot instanceof HTMLElement) || parentRoot === root) return;
 
   const family = familyContainer(root);
@@ -95,7 +95,7 @@ function hoistNestedFamily(root) {
   if (family === parentFamily) return;
 
   const parentPanelId = toString(parentContainer.id);
-  const activeParentTab = ownedNodes(parentRoot, "[data-tab-button]").find(
+  const activeParentTab = ownedNodes(parentRoot, frontendDataSelector("tab-button")).find(
     (tab) => {
       return (
         tab instanceof HTMLElement &&
@@ -108,7 +108,7 @@ function hoistNestedFamily(root) {
   Array.from(family.children).forEach((child) => {
       if (!(child instanceof HTMLElement)) return;
       if (parentPanelId)
-      child.setAttribute("data-tabs-nested-parent-panel", parentPanelId);
+      child.setAttribute(frontendDataAttr("tabs-nested-parent-panel"), parentPanelId);
       child.hidden = !parentPanelId || parentPanelId !== activeParentPanelId;
       parentFamily.appendChild(child);
   });
@@ -120,14 +120,14 @@ function syncNestedTabsIndicator(tab) {
   if (!(tab instanceof HTMLElement)) return;
   const pane = paneForTab(tab);
   const hasNestedTabs = Boolean(
-    pane instanceof HTMLElement && pane.querySelector("[data-tabs-root]"),
+    pane instanceof HTMLElement && pane.querySelector(frontendDataSelector("tabs-root")),
   );
   if (hasNestedTabs) {
-    tab.setAttribute("data-tab-has-nested-tabs", "true");
+    tab.setAttribute(frontendDataAttr("tab-has-nested-tabs"), "true");
     return;
   }
-  if (tab.getAttribute("data-tab-has-nested-tabs") === "true") return;
-  tab.removeAttribute("data-tab-has-nested-tabs");
+  if (tab.getAttribute(frontendDataAttr("tab-has-nested-tabs")) === "true") return;
+  tab.removeAttribute(frontendDataAttr("tab-has-nested-tabs"));
 }
 
 function hidePane(pane) {
@@ -205,7 +205,7 @@ function scheduleOverflowSync(root) {
     root,
     requestAnimationFrame(() => {
         overflowFrames.delete(root);
-        ownedNodes(root, "[data-tab-button]").forEach((tab) => {
+        ownedNodes(root, frontendDataSelector("tab-button")).forEach((tab) => {
             if (tab instanceof HTMLElement) syncOverflowTooltip(tab);
         });
     }),
@@ -215,10 +215,10 @@ function scheduleOverflowSync(root) {
 function syncNestedSpacing(root, active) {
   if (!(root instanceof HTMLElement)) return;
   const family = familyContainer(root);
-  const stack = ownedNodes(root, "[data-tabs-stack]")[0];
+  const stack = ownedNodes(root, frontendDataSelector("tabs-stack"))[0];
   if (family instanceof HTMLElement) {
     family.setAttribute(
-      "data-tabs-active-has-nested-tabs",
+      frontendDataAttr("tabs-active-has-nested-tabs"),
       active ? "true" : "false",
     );
     if (active) family.style.removeProperty("gap");
@@ -235,9 +235,9 @@ function activeNestedGroup(root, activePanelId) {
   return nestedGroups(root).find((group) => {
       return (
         group instanceof HTMLElement &&
-          toString(group.getAttribute("data-tabs-nested-parent-panel")) ===
+          toString(group.getAttribute(frontendDataAttr("tabs-nested-parent-panel"))) ===
         activePanelId &&
-          Array.from(group.querySelectorAll("[data-tab-button]")).some((button) => {
+          Array.from(group.querySelectorAll(frontendDataSelector("tab-button"))).some((button) => {
             return button instanceof HTMLElement && button.hidden !== true;
         })
       );
@@ -245,11 +245,11 @@ function activeNestedGroup(root, activePanelId) {
 }
 
 function activeNestedTab(root) {
-  return ownedNodes(root, "[data-tab-button]").find((tab) => {
+  return ownedNodes(root, frontendDataSelector("tab-button")).find((tab) => {
       return (
         tab instanceof HTMLElement &&
           tab.getAttribute("aria-selected") === "true" &&
-          tab.getAttribute("data-tab-has-nested-tabs") === "true"
+          tab.getAttribute(frontendDataAttr("tab-has-nested-tabs")) === "true"
       );
   });
 }
@@ -257,7 +257,7 @@ function activeNestedTab(root) {
 function deactivateNestedIndicator(root, row) {
   syncNestedSpacing(root, false);
   row.hidden = true;
-  row.setAttribute("data-state", "inactive");
+  row.setAttribute(frontendDataAttr("state"), "inactive");
   row.style.removeProperty("--tabs-nested-indicator-left");
 }
 
@@ -268,14 +268,14 @@ function activateNestedIndicator(root, row, list, activeTab) {
   const tabRect = activeTab.getBoundingClientRect();
   const left = Math.max(0, tabRect.left - listRect.left + tabRect.width / 2);
   row.style.setProperty("--tabs-nested-indicator-left", `${left}px`);
-  row.setAttribute("data-state", "active");
+  row.setAttribute(frontendDataAttr("state"), "active");
 }
 
 function syncNestedIndicatorRow(root) {
   if (!(root instanceof HTMLElement)) return;
-  const row = ownedNodes(root, "[data-tabs-nested-indicator-row]")[0];
+  const row = ownedNodes(root, frontendDataSelector("tabs-nested-indicator-row"))[0];
   if (!(row instanceof HTMLElement)) return;
-  const list = ownedNodes(root, "[data-tabs-list]")[0];
+  const list = ownedNodes(root, frontendDataSelector("tabs-list"))[0];
   const activeTab = activeNestedTab(root);
   const activePanelId = panelIdForTab(activeTab);
   const nestedGroup = activeNestedGroup(root, activePanelId);

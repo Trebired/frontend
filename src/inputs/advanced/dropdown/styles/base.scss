@@ -1,7 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
-[data-dropdown-root] {
+#{ns.data("dropdown-root")} {
   --dd-h: var(--height-input);
   --dd-arrow-space: 26px;
   --dd-arrow-right: 8px;
@@ -14,7 +14,7 @@
   &::before {
     @include classic-field-base;
 
-    content: attr(data-dropdown-placeholder);
+    content: attr(#{ns.data-attr("dropdown-placeholder")});
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -38,7 +38,7 @@
     pointer-events: none;
   }
 
-  &[data-dropdown-no-input="true"] {
+  &#{ns.data("dropdown-no-input", "true")} {
     &::before,
     &::after {
       display: none;
@@ -50,7 +50,7 @@
     }
   }
 
-  &[data-dropdown-open="true"]::before,
+  &#{ns.data("dropdown-open", "true")}::before,
   &:focus-within::before {
     outline-color: $classic-field-focus-color;
     border-color: $classic-field-focus-color;
@@ -87,7 +87,7 @@
     visibility 0s linear 0.22s;
   }
 
-  &[data-dropdown-open="true"] #{ns.class("options")} {
+  &#{ns.data("dropdown-open", "true")} #{ns.class("options")} {
     visibility: visible;
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -98,7 +98,7 @@
     visibility 0s;
   }
 
-  &[data-dropdown-has-label="true"]::before {
+  &#{ns.data("dropdown-has-label", "true")}::before {
     content: "";
   }
 
@@ -111,7 +111,7 @@
       inset: 0;
     }
 
-    [data-dropdown-label] {
+    #{ns.data("dropdown-label")} {
       position: relative;
       inset: auto;
       width: max-content;
@@ -119,7 +119,7 @@
     }
   }
 
-  [data-dropdown-label] {
+  #{ns.data("dropdown-label")} {
     position: absolute;
     inset: 0 var(--dd-arrow-space) 0 0;
     display: flex;
@@ -190,7 +190,7 @@
         background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(--background-surface-2, transparent));
       }
 
-      &[data-dropdown-selected="true"] {
+      &#{ns.data("dropdown-selected", "true")} {
         background: var(
           #{ns.css-var("ui-dropdown-option-state-selected-bg")},
           color-mix(
@@ -201,12 +201,12 @@
         );
       }
 
-      &[data-dropdown-placeholder-option] {
+      &#{ns.data("dropdown-placeholder-option")} {
         color: var(--text-color-muted);
         cursor: default;
       }
 
-      &[data-dropdown-unselect="true"] {
+      &#{ns.data("dropdown-unselect", "true")} {
         color: var(--text-color-muted);
       }
 
@@ -262,7 +262,7 @@
     transition: opacity 120ms ease;
   }
 
-  #{ns.class("dropdown-list")} li[data-dropdown-selected="true"] #{ns.class("dropdown-check")} {
+  #{ns.class("dropdown-list")} li#{ns.data("dropdown-selected", "true")} #{ns.class("dropdown-check")} {
     opacity: 1;
   }
 

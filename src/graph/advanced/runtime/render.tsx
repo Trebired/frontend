@@ -11,7 +11,7 @@ import {
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendClassNames, frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 const GRAPH_CARD_ROOT_CLASS = "graph-card-root";
 const GRAPH_FRAME_CLASS = "graph-card-frame bg-canvas";
@@ -165,7 +165,7 @@ function GraphFrame(props) {
     "div",
     {
       ref: props.frameRef,
-      "data-graph-frame": props.graphId || "",
+      [frontendDataAttr("graph-frame")]: props.graphId || "",
       className: graphFrameClassName(),
       style: {
         height: "220px",
@@ -226,10 +226,10 @@ function GraphCardFrame(props) {
           gap: "sm",
       }),
       ref: props.rootRef,
-      "data-graph-root": props.graphId || "",
-      "data-graph-type": props.graphType || "",
-      "data-graph-unit-kind": props.unitMeasurement || "",
-      "data-graph-unit-scale": props.selectedScale,
+      [frontendDataAttr("graph-root")]: props.graphId || "",
+      [frontendDataAttr("graph-type")]: props.graphType || "",
+      [frontendDataAttr("graph-unit-kind")]: props.unitMeasurement || "",
+      [frontendDataAttr("graph-unit-scale")]: props.selectedScale,
     },
     React.createElement(GraphHeader, props),
     React.createElement(GraphFrame, props),

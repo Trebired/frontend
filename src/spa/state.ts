@@ -1,3 +1,5 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+
 type LiveFormSnapshot = {
   checked: boolean;
   files: File[];
@@ -91,7 +93,7 @@ function captureWizardSteps(root: ParentNode) {
   root.querySelectorAll("wizard-root").forEach((wizardRoot) => {
       if (!(wizardRoot instanceof HTMLElement) || !wizardRoot.id) return;
       const activeStep = wizardRoot.querySelector(
-        'wizard-step[data-wizard-step-state="active"]',
+        `wizard-step${frontendDataSelector("wizard-step-state", "active")}`,
       );
       if (activeStep instanceof HTMLElement && activeStep.id) {
         state.set(wizardRoot.id, activeStep.id);
@@ -114,12 +116,12 @@ function restoreWizardStepChildren(
       const isTarget = child.id === targetStepId;
       child.hidden = !isTarget;
       if (isTarget) {
-        child.setAttribute("data-wizard-step-state", "active");
+        child.setAttribute(frontendDataAttr("wizard-step-state"), "active");
         child.removeAttribute("aria-hidden");
         child.removeAttribute("inert");
         return;
       }
-      child.removeAttribute("data-wizard-step-state");
+      child.removeAttribute(frontendDataAttr("wizard-step-state"));
       child.setAttribute("aria-hidden", "true");
       child.setAttribute("inert", "");
   });

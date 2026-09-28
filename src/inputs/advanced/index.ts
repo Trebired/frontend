@@ -60,9 +60,9 @@ import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 const CHECKBOX_HOST_SELECTOR = frontendDataSelector("checkbox-option");
 const DISCLOSURE_SELECTOR = frontendDataSelector("disclosure");
-const DROPDOWN_SELECTOR = "[data-dropdown-root]";
+const DROPDOWN_SELECTOR = frontendDataSelector("dropdown-root");
 const RADIO_HOST_SELECTOR = frontendDataSelector("radio-group");
-const TABS_ROOT_SELECTOR = "[data-tabs-root]";
+const TABS_ROOT_SELECTOR = frontendDataSelector("tabs-root");
 
 function scopeFor(root?: BindRoot | null) {
   if (root && "querySelectorAll"in root) return root;

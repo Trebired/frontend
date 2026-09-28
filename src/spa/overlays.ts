@@ -10,7 +10,7 @@ import {
   modalCloseCount,
   openModal,
 } from "#8rm3pzkj3gge";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { POPOVER_TRIGGER_SELECTOR } from "#knbi1qla9fbx";
 import {
   overlayPortalRoots,
@@ -50,12 +50,12 @@ type RestoreLiveOverlayStateOptions = {
 
 const DEFAULT_MODAL_SELECTOR = `${MODAL_SELECTOR}[id]`;
 const snapshotElements = new WeakMap<LiveOverlayModalSnapshot, HTMLElement>();
-const DROPDOWN_ROOT_SELECTOR = "[data-dropdown-root]";
-const DROPDOWN_SHOW_ATTR = "data-dropdown-show";
-const DROPDOWN_OPEN_ATTR = "data-dropdown-open";
-const DATA_TABS_ROOT_SELECTOR = "[data-tabs-root]";
+const DROPDOWN_ROOT_SELECTOR = frontendDataSelector("dropdown-root");
+const DROPDOWN_SHOW_ATTR = frontendDataAttr("dropdown-show");
+const DROPDOWN_OPEN_ATTR = frontendDataAttr("dropdown-open");
+const DATA_TABS_ROOT_SELECTOR = frontendDataSelector("tabs-root");
 const TAB_ROOT_SELECTOR = "tabs-root";
-const TAB_BUTTON_SELECTOR = "[data-tab-button]";
+const TAB_BUTTON_SELECTOR = frontendDataSelector("tab-button");
 const SELECTED_TAB_SELECTOR = `${TAB_BUTTON_SELECTOR}[aria-selected='true']`;
 const OPEN_ATTR = frontendDataAttr("open");
 const OPENING_ATTR = frontendDataAttr("opening");

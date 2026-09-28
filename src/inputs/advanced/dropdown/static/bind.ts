@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import {
   closest,
   dispatchChange,
@@ -44,16 +45,16 @@ function bindHiddenSync(drop, hidden) {
 }
 
 function toggleDropdown(drop, e) {
-  const ignore = closest(e.target, "[data-dropdown-ignore]");
+  const ignore = closest(e.target, frontendDataSelector("dropdown-ignore"));
   if (ignore) return;
 
-  const inOptions = closest(e.target, "[data-dropdown-options]");
+  const inOptions = closest(e.target, frontendDataSelector("dropdown-options"));
   if (inOptions) return;
 
   e.preventDefault();
   e.stopPropagation();
 
-  const willOpen = drop.getAttribute("data-dropdown-open") !== "true";
+  const willOpen = drop.getAttribute(frontendDataAttr("dropdown-open")) !== "true";
   if (closeDynamicBeforeStaticToggle) closeDynamicBeforeStaticToggle();
   closeAll(drop);
   if (willOpen) openStatic(drop);
@@ -108,7 +109,7 @@ function applySingleDropdownValue(drop, li, value) {
 }
 
 function handleOptionsClick(drop, options, e) {
-  const clear = closest(e.target, "[data-dropdown-clear]");
+  const clear = closest(e.target, frontendDataSelector("dropdown-clear"));
   if (clear && options.contains(clear)) {
     e.preventDefault();
     e.stopPropagation();
@@ -116,7 +117,7 @@ function handleOptionsClick(drop, options, e) {
     return;
   }
 
-  const li = closest(e.target, "[data-dropdown-option]");
+  const li = closest(e.target, frontendDataSelector("dropdown-option"));
   if (!(li instanceof HTMLElement) || !options.contains(li)) return;
 
   e.preventDefault();
@@ -134,7 +135,7 @@ function handleOptionsClick(drop, options, e) {
 function bindSearchOptions(options) {
   if (
     options instanceof HTMLElement &&
-      options.hasAttribute("data-search-panel-root")
+      options.hasAttribute(frontendDataAttr("search-panel-root"))
   ) {
     searchManager.bindRoot(options);
   }

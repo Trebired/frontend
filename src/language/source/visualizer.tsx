@@ -89,16 +89,20 @@ function source_language_scan_progress_card(model: SourceLanguageScanModel) {
     </Text>
     <Text
     id="repository_scan_progress_label"
-    data-progress-label=""
+    {...frontendDataAttrs({ "progress-label": "" })}
     muted
     size="xs"
     >
     {model.scanProgressLabel}
     </Text>
     </Stack>
-    <div id="repository_scan_progress" className={frontendClassNames("progress", "progress-scan", "width-max")} data-progress="">
-    <div data-progress-mount="">
-    <span data-progress-fill="" style={progressFillStyle(model)} />
+    <div
+    id="repository_scan_progress"
+    className={frontendClassNames("progress", "progress-scan", "width-max")}
+    {...frontendDataAttrs({ "progress": "" })}
+    >
+    <div {...frontendDataAttrs({ "progress-mount": "" })}>
+    <span {...frontendDataAttrs({ "progress-fill": "" })} style={progressFillStyle(model)} />
     </div>
     </div>
     </Stack>
@@ -189,8 +193,8 @@ function source_language_visualizer(props: SourceLanguageVisualizerProps) {
   : "";
   return card({
       id: "repository_visualizer_card",
-      "data-repository-scan-visualizer-url": repositoryScanVisualizerUrl,
-      "data-repository-visualizer-card": "",
+      [frontendDataAttr("repository-scan-visualizer-url")]: repositoryScanVisualizerUrl,
+      [frontendDataAttr("repository-visualizer-card")]: "",
       [frontendDataAttr("source-language-root")]: "",
       gap: "sm",
       children: (

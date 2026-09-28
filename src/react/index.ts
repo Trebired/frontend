@@ -74,7 +74,7 @@ function watchIslandRemount(options: LiveIslandMountOptions) {
   document.addEventListener(frontendEventName("rehydrate"), () => {
       const element = document.getElementById(selector.replace(/^#/, ""));
       if (!(element instanceof Element)) return;
-      if (element.getAttribute("data-live-island-hydrated") === "true") return;
+      if (element.getAttribute(frontendDataAttr("live-island-hydrated")) === "true") return;
       void mountLiveIsland(options);
   });
 }
@@ -110,7 +110,7 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
       unmountReactRoot(target);
   });
   target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
-  target.setAttribute("data-live-island-hydrated", "true");
+  target.setAttribute(frontendDataAttr("live-island-hydrated"), "true");
   target.dispatchEvent(
     new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {
         bubbles: true,

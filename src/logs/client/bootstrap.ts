@@ -1,3 +1,4 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { bindLogEvents, loadInitialLogs, loadOlderLogs } from "./detail.js";
 import { resolveLogsDomRoot } from "./dom.js";
 import { syncGroupSelect, syncLevelSelect } from "./dropdowns.js";
@@ -214,7 +215,7 @@ function bootstrapLogsPartials(
 
 function buildPartialOptions(root: HTMLElement, options: any) {
   const instanceId = normalizeInstanceId(
-    root.getAttribute("data-logs-instance-id"),
+    root.getAttribute(frontendDataAttr("logs-instance-id")),
   );
   const config =
   options.configByInstance && options.configByInstance[instanceId]

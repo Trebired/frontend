@@ -42,7 +42,7 @@ function code_block(props: CodeBlockProps) {
         scroll ? frontendClassNames("scroll", "scroll-min") : "",
         props.className,
     )}
-    data-code=""
+    {...frontendDataAttrs({ "code": "" })}
     {...preProps}
     >
     <code

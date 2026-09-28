@@ -1,10 +1,11 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { showWizardStep } from "./step_state.js";
 import { updateWizardNav } from "./nav.js";
 import { stepIsValid } from "./validity.js";
 
 function markWizardReady(root: HTMLElement) {
   window.requestAnimationFrame(() => {
-      root.setAttribute("data-wizard-ready", "true");
+      root.setAttribute(frontendDataAttr("wizard-ready"), "true");
   });
 }
 

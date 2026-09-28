@@ -7,14 +7,14 @@ import {
 import {
   readHostJsonConfig,
 } from "#dqy2d22qyujv";
-import { frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type CheckboxOptionRoot = Element& {
   blur?: () => void;
 };
 
 const CHECKBOX_CONFIG_SELECTOR =
-'script[type="application/json"][data-checkbox-option-config]';
+`script[type="application/json"]${frontendDataSelector("checkbox-option-config")}`;
 const CHECKBOX_OPTION_SELECTOR = frontendDataSelector("checkbox-option");
 const boundCheckboxOptions = new WeakSet<Element>();
 const allCheckboxInputs = new WeakSet<HTMLInputElement>();
@@ -111,12 +111,12 @@ function syncCheckboxOption(scope: unknown) {
   const indeterminate = Boolean(input.indeterminate);
   const disabled = Boolean(input.disabled);
 
-  option.setAttribute("data-checkbox-checked", checked ? "true" : "false");
+  option.setAttribute(frontendDataAttr("checkbox-checked"), checked ? "true" : "false");
   option.setAttribute(
-    "data-checkbox-indeterminate",
+    frontendDataAttr("checkbox-indeterminate"),
     indeterminate ? "true" : "false",
   );
-  option.setAttribute("data-checkbox-disabled", disabled ? "true" : "false");
+  option.setAttribute(frontendDataAttr("checkbox-disabled"), disabled ? "true" : "false");
   option.setAttribute("role", "checkbox");
   option.setAttribute(
     "aria-checked",

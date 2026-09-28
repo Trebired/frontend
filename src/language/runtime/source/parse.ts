@@ -12,7 +12,7 @@ import {
   SOURCE_ROW_SELECTOR,
 } from "./selectors.js";
 import type { SourceLanguageItem } from "./types.js";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 function overviewSegmentKey(panelBucket: string, languageId: string) {
   return `${text(panelBucket, "everything")}:${text(languageId)}`;
@@ -74,7 +74,7 @@ function parseSourceLanguageItems(root: HTMLElement) {
 function getActiveSourceLanguageBucket(root: HTMLElement) {
   const tabsRoot = root.querySelector<HTMLElement>(SOURCE_BUCKET_TABS_ROOT_SELECTOR);
   const activeTab = tabsRoot?.querySelector<HTMLElement>(
-    `[data-tab-button][aria-selected="true"]${SOURCE_BUCKET_TAB_SELECTOR}`,
+    `${frontendDataSelector("tab-button")}[aria-selected="true"]${SOURCE_BUCKET_TAB_SELECTOR}`,
   );
   const fallbackTab = root.querySelector<HTMLElement>(SOURCE_BUCKET_TAB_SELECTOR);
   return text(

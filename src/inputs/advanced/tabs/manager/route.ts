@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import { ownedNodes, panelIdForTab, simplifyRouteToken } from "./dom.js";
 import { registeredTabRoots } from "./registry.js";
@@ -5,7 +6,7 @@ import { routeParamNameForFamily } from "#axubisqt0yil";
 
 function familyKeyForRoot(root) {
   return root instanceof HTMLElement
-  ? toString(root.getAttribute("data-tabs-family-key"))
+  ? toString(root.getAttribute(frontendDataAttr("tabs-family-key")))
   : "";
 }
 
@@ -15,7 +16,7 @@ function routeParamNameForRoot(root) {
 
 function activeTabForRoot(root) {
   return (
-    ownedNodes(root, "[data-tab-button]").find((tab) => {
+    ownedNodes(root, frontendDataSelector("tab-button")).find((tab) => {
         return (
           tab instanceof HTMLElement &&
             tab.getAttribute("aria-selected") === "true"
@@ -27,7 +28,7 @@ function activeTabForRoot(root) {
 function tabToken(tab) {
   if (!(tab instanceof HTMLElement)) return "";
   const route = toString(
-    tab && tab.getAttribute ? tab.getAttribute("data-tab-route") : "",
+    tab && tab.getAttribute ? tab.getAttribute(frontendDataAttr("tab-route")) : "",
   );
   if (route) return route;
   if (tab instanceof HTMLAnchorElement) {

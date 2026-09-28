@@ -122,7 +122,7 @@
   overflow: hidden;
 }
 
-#{ns.class("progress")} [data-progress-mount] {
+#{ns.class("progress")} #{ns.data("progress-mount")} {
   position: relative;
   display: block;
   width: 100%;
@@ -132,7 +132,7 @@
   border-radius: inherit;
 }
 
-#{ns.class("progress")} [data-progress-fill] {
+#{ns.class("progress")} #{ns.data("progress-fill")} {
   display: block;
   width: var(--progress-percent);
   height: 100%;
@@ -142,7 +142,7 @@
   will-change: width, transform;
 }
 
-#{ns.class("progress")}[data-progress-indeterminate="true"] [data-progress-fill] {
+#{ns.class("progress")}#{ns.data("progress-indeterminate", "true")} #{ns.data("progress-fill")} {
   width: 34%;
   opacity: 1;
   background: var(--progress-color);

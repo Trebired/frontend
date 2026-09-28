@@ -73,7 +73,7 @@ $frontend-input-tones: (
     background-color: var(--scroll-thumb-hover);
   }
 
-  &[data-scroll-overflow-x="true"] {
+  &#{ns.data("scroll-overflow-x", "true")} {
     padding-bottom: calc(
       var(--scroll-min-padding-bottom, 0px) + var(--scroll-min-horizontal-gap)
     );

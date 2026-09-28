@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import {
   primitiveCardRowClassName,
   primitiveInlineRowClassName,
@@ -171,7 +171,7 @@ function appendStepRecordedAt(doc: Document, row: HTMLElement, value: unknown) {
 function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   const wrapper = doc.createElement("section");
   wrapper.className = primitiveStackClassName({ gap: "xs" });
-  wrapper.setAttribute("data-steps-group", group.key);
+  wrapper.setAttribute(frontendDataAttr("steps-group"), group.key);
 
   const separator = doc.createElement("hr");
   separator.setAttribute("aria-hidden", "true");
@@ -197,7 +197,7 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
 
   const list = doc.createElement("div");
   list.className = primitiveStackClassName({ gap: "xs" });
-  list.setAttribute("data-steps-group-list", group.key);
+  list.setAttribute(frontendDataAttr("steps-group-list"), group.key);
 
   group.steps.forEach((entry) => {
       const card = createSharedStepCard(doc, entry);

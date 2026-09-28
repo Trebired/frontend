@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { syncCheckboxOption } from "#z2c0jqmjqds4";
 import { readHostJsonConfig } from "#aq4qe9opqpbm";
 
@@ -58,7 +59,7 @@ function readLogsRootConfig(root: HTMLElement | null) {
   return root
   ? (readHostJsonConfig<Record<string, unknown>>(
       root,
-      'script[type="application/json"][data-logs-view-config]',
+      `script[type="application/json"]${frontendDataSelector("logs-view-config")}`,
       {},
     ) as LogsConfig)
   : {};
@@ -120,7 +121,7 @@ function createLogsPage(
   const rootInput = options && options.root ? options.root : null;
   const instanceFromRoot =
   rootInput instanceof HTMLElement
-  ? rootInput.getAttribute("data-logs-instance-id")
+  ? rootInput.getAttribute(frontendDataAttr("logs-instance-id"))
   : "";
   const instanceId = normalizeInstanceId(
     options.instanceId || instanceFromRoot || DEFAULT_LOGS_INSTANCE_ID,

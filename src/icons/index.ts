@@ -49,7 +49,7 @@ type StaticIconCacheRegistration = {
   registered: number;
 };
 
-const ICON_SELECTOR = `${frontendDataSelector("icon")},[data-icon-spec]`;
+const ICON_SELECTOR = `${frontendDataSelector("icon")},${frontendDataSelector("icon-spec")}`;
 const CUSTOM_COLOR_VAR = frontendCssVar("icon-color");
 const BRAND_COLOR_ATTR = frontendDataAttr("icon-brand-color");
 const LEGACY_CUSTOM_COLOR_VAR = "--icon-custom-color";
@@ -241,7 +241,7 @@ function appendIcon(parent: Element | null | undefined, spec: unknown, attrs: Re
 }
 
 function readHostSpec(host: Element): string {
-  return text(host.getAttribute(frontendDataAttr("icon")) || host.getAttribute("data-icon-spec"));
+  return text(host.getAttribute(frontendDataAttr("icon")) || host.getAttribute(frontendDataAttr("icon-spec")));
 }
 
 function harvestedBrandColor(host: Element) {

@@ -1,3 +1,4 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { createElement, type ReactNode } from "react";
 import type {
   search_filter_config,
@@ -26,7 +27,7 @@ type SearchQueryInputProps = {
 };
 
 function search_config_script(props: SearchConfigScriptProps) {
-  const attrName = `data-search-${props.kind}-config`;
+  const attrName = frontendDataAttr(`search-${props.kind}-config`);
   return (
     <script
     hidden

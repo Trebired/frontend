@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { buildLogLineViews } from "./line.js";
@@ -125,7 +125,7 @@ function emptyChildren(emptyText) {
       {
         key: "empty",
         className: frontendClassName("log-line"),
-        "data-role": "text",
+        [frontendDataAttr("role")]: "text",
       },
       emptyText,
     ),

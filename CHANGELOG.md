@@ -1,5 +1,13 @@
 # Changelog
 
+## 15.1.0
+
+Every `data-*` attribute the package emits is namespaced, finishing what 15.0.0 started on the classes. `data-dropdown-open`, `data-tabs-root`, `data-wizard-step-state` and the other 186 are now `data-tbf-*`, in the stylesheets, the `getAttribute`/`setAttribute` calls, the `querySelector` strings and the JSX alike. An unprefixed `data-*` in your markup is yours again.
+
+- `ns.data-attr()` names an attribute where a stylesheet needs the bare name rather than a selector, as `attr()` does.
+- The dropdown's `attrName` parameter takes a `string` instead of a union of two literal attribute names, since the names are now built rather than written.
+- The one exception is the sample markup in the code-language definitions, which is illustrative HTML rather than a contract the package reads back.
+
 ## 15.0.0
 
 Breaking: every class the package emits is namespaced. `column`, `gap-md`, `card`, `btn`, `popover-item` and the ~450 others are now `tbf-column`, `tbf-gap-md`, `tbf-card`, `tbf-btn`, `tbf-popover-item`. An unprefixed class name in your markup is yours again — the package no longer answers to one, and there is no switch to turn this off.

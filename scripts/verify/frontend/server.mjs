@@ -255,13 +255,13 @@ async function verifyFaviconServer(server) {
   const app = appCapture();
   server.attachThemedFaviconRoutes(app, {
       legacyRoutes: ["/favicon.ico"],
-      render: (theme) => `<svg data-theme="${theme}"></svg>`,
+      render: (theme) => `<svg data-tbf-theme="${theme}"></svg>`,
   });
   assert.equal(app.routes.length, 2);
   const res = serverResponseProbe();
   await app.routes[0].handler({ query: { theme: "light" }, cookies: {}, headers: {} }, res);
   assert.equal(res.headers["Content-Type"], "image/svg+xml; charset=utf-8");
-  assert.ok(String(res.body).includes('data-theme="light"'));
+  assert.ok(String(res.body).includes('data-tbf-theme="light"'));
   assert.equal(server.themedFaviconHref("dark"), "/favicon.svg?theme=dark");
 }
 

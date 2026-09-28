@@ -69,9 +69,9 @@
 
 #{ns.class("button")} > i svg,
 
-#{ns.class("button")} > [data-icon],
+#{ns.class("button")} > #{ns.data("icon")},
 
-#{ns.class("button")} > [data-icon] svg {
+#{ns.class("button")} > #{ns.data("icon")} svg {
   color: var(#{ns.css-var("ui-action-current-icon")});
   flex: 0 0 auto;
 }
@@ -87,9 +87,9 @@
 
 #{ns.class("button")}#{ns.class("icon")} > i svg,
 
-#{ns.class("button")}#{ns.class("icon")} > [data-icon],
+#{ns.class("button")}#{ns.class("icon")} > #{ns.data("icon")},
 
-#{ns.class("button")}#{ns.class("icon")} > [data-icon] svg {
+#{ns.class("button")}#{ns.class("icon")} > #{ns.data("icon")} svg {
   color: currentColor;
 }
 

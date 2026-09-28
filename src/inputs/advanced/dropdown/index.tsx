@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { Fragment } from "react";
 import { button, icon, stringifyJsonForHtml, toString } from "#dqy2d22qyujv";
 import input from "#8y47rueq20kg";
@@ -13,7 +13,7 @@ import type { DropdownOptionConfig, DropdownRootConfig } from "./registry.js";
 import "./index.client.js";
 
 function dropdownConfigScript(
-  attrName: "data-dropdown-option-config" | "data-dropdown-root-config",
+  attrName: string,
   config: DropdownOptionConfig | DropdownRootConfig,
 ) {
   return (
@@ -45,7 +45,7 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
     return null;
   }
   return (
-    <div className={frontendClassName("dropdown-top")} data-dropdown-ignore="">
+    <div className={frontendClassName("dropdown-top")} {...frontendDataAttrs({ "dropdown-ignore": "" })}>
     <InlineRow gap="xs">
     {search_query_input({
           children: input({
@@ -62,7 +62,7 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
           icon: true,
           size: "sm",
           tooltip: true,
-          "data-dropdown-clear": "",
+          [frontendDataAttr("dropdown-clear")]: "",
           ...(!model.selectedValues.length
             ? { style: { display: "none" } }
             : {}),
@@ -96,7 +96,7 @@ function optionNode(
     <li
     key={`section_${optSection}`}
     className={frontendClassName("dropdown-section")}
-    data-dropdown-section-heading={optSection}
+    {...frontendDataAttrs({ "dropdown-section-heading": optSection })}
     >
     {optSection}
     </li>
@@ -119,17 +119,17 @@ function optionNode(
       <li
       className={undefined}
       aria-selected={model.selectedSet.has(optValue) ? "true" : "false"}
-      data-dropdown-option=""
-      data-dropdown-selected={
-        model.selectedSet.has(optValue) ? "true" : "false"
-      }
-      {...(model.isSearchable ? { "data-search-item": "" } : {})}
+      {...frontendDataAttrs({ "dropdown-option": "" })}
+      {...frontendDataAttrs({
+            "dropdown-selected": model.selectedSet.has(optValue) ? "true" : "false",
+      })}
+      {...(model.isSearchable ? { [frontendDataAttr("search-item")]: "" } : {})}
       {...(option?.unselect === true
-          ? { "data-dropdown-unselect": "true" }
+          ? { [frontendDataAttr("dropdown-unselect")]: "true" }
           : {})}
       {...optAttrs}
       >
-      {dropdownConfigScript("data-dropdown-option-config", {
+      {dropdownConfigScript(frontendDataAttr("dropdown-option-config"), {
             label: optLabel,
             section: optSection,
             selected: model.selectedSet.has(optValue),
@@ -163,9 +163,9 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     <div
     id={model.optionsId}
     className={frontendClassName("options")}
-    data-dropdown-options=""
-    data-dropdown-portaled="true"
-    {...(model.isSearchable ? { "data-search-panel-root": "" } : {})}
+    {...frontendDataAttrs({ "dropdown-options": "" })}
+    {...frontendDataAttrs({ "dropdown-portaled": "true" })}
+    {...(model.isSearchable ? { [frontendDataAttr("search-panel-root")]: "" } : {})}
     >
     {model.isSearchable
       ? search_config_script({
@@ -177,12 +177,12 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     {searchTop(model)}
     <ul
     className={frontendClassName("dropdown-list")}
-    data-dropdown-list=""
+    {...frontendDataAttrs({ "dropdown-list": "" })}
     id={model.listElementId || undefined}
     >
     <li
     className={undefined}
-    data-dropdown-placeholder-option=""
+    {...frontendDataAttrs({ "dropdown-placeholder-option": "" })}
     hidden={model.optionsList.length > 0}
     >
     {model.emptyOptionText}
@@ -196,7 +196,7 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
               muted: true,
               size: "sm",
         })}
-        data-search-empty-slot=""
+        {...frontendDataAttrs({ "search-empty-slot": "" })}
         hidden
         >
         {model.emptyMessage}
@@ -216,13 +216,13 @@ function dropdownNode(
     className={["dropdown-field-root", model.rootClass || ""]
       .filter(Boolean)
       .join(" ")}
-    data-dropdown-root=""
-    data-dropdown-has-label="true"
+    {...frontendDataAttrs({ "dropdown-root": "" })}
+    {...frontendDataAttrs({ "dropdown-has-label": "true" })}
     {...(model.isDisabled ? { "aria-disabled": "true" } : {})}
     {...mapAttrs(props.rootProps)}
     >
     {dropdownConfigScript(
-        "data-dropdown-root-config",
+        frontendDataAttr("dropdown-root-config"),
         dropdownRootConfigPayload(model),
     )}
     <input
@@ -236,7 +236,7 @@ function dropdownNode(
     }
     {...mapAttrs(props.inputProps)}
     />
-    <div className={frontendClassName("dropdown-label")} data-dropdown-label="">
+    <div className={frontendClassName("dropdown-label")} {...frontendDataAttrs({ "dropdown-label": "" })}>
     {model.initialHtml || model.initialLabel}
     </div>
     {optionsPanel(model)}

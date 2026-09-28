@@ -1,7 +1,7 @@
 import graph from "./graph.js";
 import { createLocalTranslator } from "./_shared.js";
 import type { graph_props } from "./graph/types.js";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function cpu_graph(props: graph_props) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
@@ -54,8 +54,8 @@ function download_graph(props: graph_props) {
       unit_selectable: props.unit_selectable !== false,
       unit_default_scale: props.unit_default_scale || "m",
       precision: props.precision ?? 2,
-      stroke: props.stroke || `var(${frontendCssVar("data-graph-download-stroke")}, var(${frontendCssVar("focus")}, currentColor))`,
-      fill: props.fill || `var(${frontendCssVar("data-graph-download-fill")}, transparent)`,
+      stroke: props.stroke || `var(${frontendCssVar(frontendDataAttr("graph-download-stroke"))}, var(${frontendCssVar("focus")}, currentColor))`,
+      fill: props.fill || `var(${frontendCssVar(frontendDataAttr("graph-download-fill"))}, transparent)`,
       ...props,
   });
 }
@@ -68,8 +68,8 @@ function upload_graph(props: graph_props) {
       unit_selectable: props.unit_selectable !== false,
       unit_default_scale: props.unit_default_scale || "m",
       precision: props.precision ?? 2,
-      stroke: props.stroke || `var(${frontendCssVar("data-graph-upload-stroke")}, var(${frontendCssVar("focus")}, currentColor))`,
-      fill: props.fill || `var(${frontendCssVar("data-graph-upload-fill")}, transparent)`,
+      stroke: props.stroke || `var(${frontendCssVar(frontendDataAttr("graph-upload-stroke"))}, var(${frontendCssVar("focus")}, currentColor))`,
+      fill: props.fill || `var(${frontendCssVar(frontendDataAttr("graph-upload-fill"))}, transparent)`,
       ...props,
   });
 }

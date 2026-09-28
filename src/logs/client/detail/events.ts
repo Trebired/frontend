@@ -1,7 +1,7 @@
 import { subscribe } from "#tso422aj56zf";
 import type { LogsPage, LogsUi } from "#ej8ewfp5cb1i";
 import { safeStr } from "#gu61mitj537f";
-import { frontendEventName } from "#5vbaqj4pirp3";
+import { frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 type EventHandlers = {
   forceViewportToBottom: (page: LogsPage) => void;
@@ -25,7 +25,7 @@ function isLogFilterTarget(page: LogsPage, target: Element) {
     target.matches(
       "#" +
         page.domIds.groupInput +
-        ', [data-log-filter-input="group"]' +
+        `, ${frontendDataSelector("log-filter-input", "group")}` +
         ', input[name="' +
         page.domIds.groupInputName +
         '"]' +
@@ -36,7 +36,7 @@ function isLogFilterTarget(page: LogsPage, target: Element) {
       target.matches(
       "#" +
         page.domIds.levelInput +
-        ', [data-log-filter-input="level"]' +
+        `, ${frontendDataSelector("log-filter-input", "level")}` +
         ', input[name="' +
         page.domIds.levelInputName +
         '"]' +

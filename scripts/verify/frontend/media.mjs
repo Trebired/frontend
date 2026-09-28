@@ -55,7 +55,7 @@ function verifyMapEmbed(react, render) {
 function verifyEmbedFrame(react, render) {
   const html = render(react.EmbedFrame, { src: "https://example.test/thing", title: "Thing" });
   assert.doesNotMatch(html, /src="https:\/\/example\.test/u, "the embed must not carry src in SSR, or it blocks the document load event");
-  assert.match(html, /data-embed-state="loading"/u, "the embed must start in the loading state");
+  assert.match(html, /data-tbf-embed-state="loading"/u, "the embed must start in the loading state");
   assert.match(html, /loader-circle/u, "the embed must show the standard loader while loading");
   assert.match(html, /role="status"/u, "the embed status must be announced");
 

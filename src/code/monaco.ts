@@ -1,5 +1,5 @@
 import { getEffectiveTheme } from "#zzt5zj380sl9";
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 const THEME_DARK = frontendClassName("dark-transparent");
 const THEME_LIGHT = frontendClassName("light-transparent");
@@ -102,12 +102,12 @@ function bindLoaderScript(
   resolve: () => void,
   reject: (error: Error) => void,
 ) {
-  if (script.getAttribute("data-loaded") === "1") {
+  if (script.getAttribute(frontendDataAttr("loaded")) === "1") {
     resolve();
     return;
   }
   script.addEventListener("load", () => {
-      script.setAttribute("data-loaded", "1");
+      script.setAttribute(frontendDataAttr("loaded"), "1");
       resolve();
     }, { once: true });
   script.addEventListener("error", () => {

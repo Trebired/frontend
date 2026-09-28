@@ -246,20 +246,20 @@ function bar(props: bar_props) {
   return (
     <div className={className} hidden={props.hidden === true} {...parse_wrapper_attributes(props.wrapperAttributes)}>
     <div className={primitiveInlineRowClassName({ gap: "xs" })}>
-    <span className={primitiveTextClassName({ size: "sm" })} data-progress-meta="">
+    <span className={primitiveTextClassName({ size: "sm" })} {...frontendDataAttrs({ "progress-meta": "" })}>
     {String(props.meta || "")}
     </span>
-    <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} data-progress-label="">
+    <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} {...frontendDataAttrs({ "progress-label": "" })}>
     {String(props.label || "")}
     </span>
     </div>
     <div
     className={frontendClassName("progress")}
-    data-progress=""
+    {...frontendDataAttrs({ "progress": "" })}
     style={{ ["--progress-percent" as any]: `${percent}%` }}
     >
-    <div data-progress-mount="">
-    <span data-progress-fill="" style={{ width: `${percent}%` }} />
+    <div {...frontendDataAttrs({ "progress-mount": "" })}>
+    <span {...frontendDataAttrs({ "progress-fill": "" })} style={{ width: `${percent}%` }} />
     </div>
     </div>
     </div>

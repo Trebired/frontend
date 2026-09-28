@@ -1,4 +1,4 @@
-import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr } from "#5vbaqj4pirp3";
 import { copy_button } from "#k632wzgl64a3";
 import { code_block } from "#c55llzkpl4ob";
 import { ModalContent, ModalRoot } from "#2eo44c56ebfi";
@@ -126,7 +126,7 @@ function logDetailModal(model: any) {
         model.t("copyMetadata"),
         model.t("copyMetadata"),
         {
-          codeProps: { "data-log-detail-meta": "" },
+          codeProps: { [frontendDataAttr("log-detail-meta")]: "" },
           wrapId: model.ids.detailMetaWrap,
         },
     )}
@@ -136,7 +136,7 @@ function logDetailModal(model: any) {
         model.t("copyRawLog"),
         model.t("copyRawLog"),
         {
-          codeProps: { "data-log-detail-raw": "" },
+          codeProps: { [frontendDataAttr("log-detail-raw")]: "" },
         },
     )}
     </ModalContent>

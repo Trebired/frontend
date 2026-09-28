@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#4fte8m1x62rd";
 import { toString } from "#4fte8m1x62rd";
 import { stringifyJsonForHtml } from "#4fte8m1x62rd";
@@ -87,8 +87,8 @@ function renderUnitDropdown(model: any) {
       className: frontendClassName("dropdown-fit"),
       wrapperClassName: "",
       hideChecks: true,
-      rootProps: { "data-graph-unit-dropdown": model.graphId },
-      inputProps: { "data-graph-unit-input": model.graphId },
+      rootProps: { [frontendDataAttr("graph-unit-dropdown")]: model.graphId },
+      inputProps: { [frontendDataAttr("graph-unit-input")]: model.graphId },
   });
 }
 

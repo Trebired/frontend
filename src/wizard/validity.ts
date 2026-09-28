@@ -1,3 +1,5 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
+
 type WizardFormControl =
 HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -17,7 +19,7 @@ function stepFormControls(step: HTMLElement) {
 }
 
 function stepHasVisibleBadStatus(step: HTMLElement) {
-  return Array.from(step.querySelectorAll('[data-input-status="bad"]')).some(
+  return Array.from(step.querySelectorAll(`${frontendDataSelector("input-status", "bad")}`)).some(
     (el) => el instanceof HTMLElement && !el.hidden,
   );
 }
@@ -36,7 +38,7 @@ function reportStepValidity(step: HTMLElement) {
     return;
   }
   const badInput = Array.from(
-    step.querySelectorAll('[data-input-status="bad"]'),
+    step.querySelectorAll(`${frontendDataSelector("input-status", "bad")}`),
   ).find((el) => el instanceof HTMLElement && !el.hidden);
   const field = badInput
   ? badInput.querySelector("input, select, textarea")

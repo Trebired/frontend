@@ -43,34 +43,34 @@ wizard-final-action {
   pointer-events: none;
 }
 
-#{ns.class("wizard-step")}[data-wizard-step-first="true"] wizard-previous-button,
+#{ns.class("wizard-step")}#{ns.data("wizard-step-first", "true")} wizard-previous-button,
 
-#{ns.class("wizard-step")}[data-wizard-step-last="true"] wizard-next-button,
+#{ns.class("wizard-step")}#{ns.data("wizard-step-last", "true")} wizard-next-button,
 
-#{ns.class("wizard-step")}:not([data-wizard-step-last="true"]) wizard-final-action {
+#{ns.class("wizard-step")}:not(#{ns.data("wizard-step-last", "true")}) wizard-final-action {
   display: none;
 }
 
-#{ns.class("wizard")}[data-wizard-ready="true"] #{ns.class("wizard-step")} {
+#{ns.class("wizard")}#{ns.data("wizard-ready", "true")} #{ns.class("wizard-step")} {
   transition: opacity var(#{ns.css-var("transition-normal")}, 240ms) ease;
 }
 
-#{ns.class("wizard-step")}[data-wizard-step-state="active"] {
+#{ns.class("wizard-step")}#{ns.data("wizard-step-state", "active")} {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
-#{ns.class("wizard-step")}[data-wizard-step-state="enter"],
+#{ns.class("wizard-step")}#{ns.data("wizard-step-state", "enter")},
 
-#{ns.class("wizard-step")}[data-wizard-step-state="exit"] {
+#{ns.class("wizard-step")}#{ns.data("wizard-step-state", "exit")} {
   opacity: 0;
   visibility: visible;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #{ns.class("wizard")}[data-wizard-ready="true"] #{ns.class("wizard-step")} {
+  #{ns.class("wizard")}#{ns.data("wizard-ready", "true")} #{ns.class("wizard-step")} {
     transition: none;
   }
 }

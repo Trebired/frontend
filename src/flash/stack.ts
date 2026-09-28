@@ -72,7 +72,7 @@ function hideFlashElement(stack: HTMLElement, element: HTMLElement) {
 function priorityWeight(item: HTMLElement) {
   const priority = String(
     item.getAttribute(frontendDataAttr("flash-stack-priority")) ||
-      item.getAttribute("data-flash-stack-priority") ||
+      item.getAttribute(frontendDataAttr("flash-stack-priority")) ||
       "normal",
   ).toLowerCase();
   return FLASH_PRIORITY_WEIGHT.get(priority) ?? FLASH_PRIORITY_WEIGHT.get("normal")!;

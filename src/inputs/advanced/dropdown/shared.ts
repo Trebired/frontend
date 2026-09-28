@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { flash } from "#33o6e7mug9pg";
 import { MODAL_CONTENT_SELECTOR } from "#8rm3pzkj3gge";
 import { closestElement } from "#dqy2d22qyujv";
@@ -23,7 +24,7 @@ function getDropdownOptions(drop) {
     }
   }
 
-  const options = drop.querySelector("[data-dropdown-options]");
+  const options = drop.querySelector(frontendDataSelector("dropdown-options"));
   if (options instanceof HTMLElement) {
     drop._dropdownOptions = options;
     return options;
@@ -66,10 +67,10 @@ function resolveNamedDropdownInput(options) {
   const marker = String((options && options.marker) || "").trim();
   const name = String((options && options.name) || "").trim();
   const dropdownAttr = String(
-    (options && options.dropdownAttr) || "data-log-filter-dropdown",
+    (options && options.dropdownAttr) || frontendDataAttr("log-filter-dropdown"),
   ).trim();
   const inputAttr = String(
-    (options && options.inputAttr) || "data-log-filter-input",
+    (options && options.inputAttr) || frontendDataAttr("log-filter-input"),
   ).trim();
 
   const byId = queryDropdownById(root, inputId);
@@ -104,7 +105,7 @@ function resolveNamedDropdownInput(options) {
 function getList(drop) {
   const options = getDropdownOptions(drop);
   if (!options) return null;
-  const list = options.querySelector("[data-dropdown-list]");
+  const list = options.querySelector(frontendDataSelector("dropdown-list"));
   return list instanceof HTMLElement ? list : null;
 }
 
@@ -112,10 +113,10 @@ function updateEmptyState(drop) {
   const list = getList(drop);
   if (!list) return;
 
-  const placeholder = list.querySelector("[data-dropdown-placeholder-option]");
+  const placeholder = list.querySelector(frontendDataSelector("dropdown-placeholder-option"));
   if (!(placeholder instanceof HTMLElement)) return;
 
-  const items = Array.from(list.querySelectorAll("[data-dropdown-option]"));
+  const items = Array.from(list.querySelectorAll(frontendDataSelector("dropdown-option")));
   const hasVisibleValues = items.some((item) =>
     !(item instanceof HTMLElement) ? false : !item.hidden,
   );
@@ -129,7 +130,7 @@ function dispatchChange(drop) {
 }
 
 function selectedDropdownValues(options: HTMLElement, multiple: boolean) {
-  return Array.from(options.querySelectorAll("[data-dropdown-option]"))
+  return Array.from(options.querySelectorAll(frontendDataSelector("dropdown-option")))
   .filter((item) =>
     item instanceof HTMLElement ? dropdownOptionSelected(item) : false,
   )
@@ -157,10 +158,10 @@ function syncDropdownHiddenInput(drop: HTMLElement | null) {
 function syncDropdownHiddenInputs(root: ParentNode | null | undefined) {
   if (!root || typeof root.querySelectorAll !== "function") return 0;
   let count = 0;
-  if (root instanceof HTMLElement && root.matches("[data-dropdown-root]")) {
+  if (root instanceof HTMLElement && root.matches(frontendDataSelector("dropdown-root"))) {
     count += syncDropdownHiddenInput(root) ? 1 : 0;
   }
-  root.querySelectorAll("[data-dropdown-root]").forEach((node) => {
+  root.querySelectorAll(frontendDataSelector("dropdown-root")).forEach((node) => {
       count += syncDropdownHiddenInput(node as HTMLElement) ? 1 : 0;
   });
   return count;

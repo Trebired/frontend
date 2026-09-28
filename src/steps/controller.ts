@@ -1,7 +1,7 @@
 import { resolveDocumentTarget } from "#er0dlx1gtbzh";
 import { createDisclosure } from "#z2c0jqmjqds4";
 import { renderSharedSteps } from "./dom.js";
-import { frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const lastSteps = new WeakMap();
 const actionControls = new Set<HTMLElement>();
@@ -15,12 +15,12 @@ function resolveEl(target) {
 function resolvePanel(target) {
   const el = resolveEl(target);
   if (!el) return null;
-  if (el.matches && el.matches("[data-steps-panel]")) return el;
-  return el.querySelector ? el.querySelector("[data-steps-panel]") : null;
+  if (el.matches && el.matches(frontendDataSelector("steps-panel"))) return el;
+  return el.querySelector ? el.querySelector(frontendDataSelector("steps-panel")) : null;
 }
 
 function paint(panel) {
-  const list = panel.querySelector("[data-steps-list]");
+  const list = panel.querySelector(frontendDataSelector("steps-list"));
   if (list) renderSharedSteps(document, list, lastSteps.get(panel) || []);
 }
 
@@ -42,7 +42,7 @@ function push(target, entry) {
 
 function setCopyMessage(target, message) {
   const panel = resolvePanel(target);
-  const el = panel && panel.querySelector("[data-steps-copy]");
+  const el = panel && panel.querySelector(frontendDataSelector("steps-copy"));
   if (el && message) el.textContent = String(message);
 }
 
@@ -56,15 +56,15 @@ function open(target) {
 
 function setStepsProgress(target, percentInput) {
   const panel = resolvePanel(target);
-  const bar = panel && panel.querySelector("[data-progress]");
+  const bar = panel && panel.querySelector(frontendDataSelector("progress"));
   if (!bar) return;
 
-  const fill = bar.querySelector("[data-progress-fill]");
-  const labelEl = panel.querySelector("[data-progress-label]");
+  const fill = bar.querySelector(frontendDataSelector("progress-fill"));
+  const labelEl = panel.querySelector(frontendDataSelector("progress-label"));
   const percent = Number(percentInput);
 
   if (!Number.isFinite(percent)) {
-    bar.setAttribute("data-progress-indeterminate", "true");
+    bar.setAttribute(frontendDataAttr("progress-indeterminate"), "true");
     bar.style.removeProperty("--progress-percent");
     if (fill) fill.style.width = "";
     if (labelEl) labelEl.textContent = "";
@@ -73,7 +73,7 @@ function setStepsProgress(target, percentInput) {
 
   const clamped = Math.max(0, Math.min(100, percent));
   const label = Math.round(clamped) + "%";
-  bar.removeAttribute("data-progress-indeterminate");
+  bar.removeAttribute(frontendDataAttr("progress-indeterminate"));
   bar.style.setProperty("--progress-percent", clamped + "%");
   if (fill) fill.style.width = clamped + "%";
   if (labelEl) labelEl.textContent = label;
@@ -84,7 +84,7 @@ function begin(target) {
   if (!panel) return;
 
   lastSteps.set(panel, []);
-  const list = panel.querySelector("[data-steps-list]");
+  const list = panel.querySelector(frontendDataSelector("steps-list"));
   if (list) list.innerHTML = "";
   setStepsProgress(panel, 0);
   open(panel);

@@ -37,7 +37,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     &#{ns.class("active")},
     &[aria-selected="true"],
     &#{ns.data("active", "true")},
-    &[data-active="true"] {
+    &#{ns.data("active", "true")} {
       background: var(#{ns.css-var("ui-tabs-state-active-bg")}, var(--background-surface-1));
       border-color: var(#{ns.css-var("ui-tabs-state-active-border")}, var(--border-surface-1));
       color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
@@ -81,10 +81,13 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   min-width: 0;
 }
 
-[data-tabs-panels]
-> [data-tab-panel]
-> [data-tabs-root][data-tabs-hoist-family="true"]
-> [data-tabs-family] {
+#{ns.data("tabs-panels")}
+
+> #{ns.data("tab-panel")}
+
+> #{ns.data("tabs-root")}#{ns.data("tabs-hoist-family", "true")}
+
+> #{ns.data("tabs-family")} {
   display: none;
 }
 
@@ -93,11 +96,11 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
   height: 16px;
 
-  &[data-state="inactive"] {
+  &#{ns.data("state", "inactive")} {
     opacity: 0;
   }
 
-  &[data-state="active"] {
+  &#{ns.data("state", "active")} {
     opacity: 1;
   }
 }
@@ -113,21 +116,21 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
-#{ns.class("tabs-nested-indicator-row")}[data-state="inactive"] #{ns.class("tabs-nested-indicator-icon")} {
+#{ns.class("tabs-nested-indicator-row")}#{ns.data("state", "inactive")} #{ns.class("tabs-nested-indicator-icon")} {
   opacity: 0;
   transform: translate(-50%, calc(-50% - 4px));
 }
 
-#{ns.class("tabs-nested-indicator-row")}[data-state="active"] #{ns.class("tabs-nested-indicator-icon")} {
+#{ns.class("tabs-nested-indicator-row")}#{ns.data("state", "active")} #{ns.class("tabs-nested-indicator-icon")} {
   opacity: 1;
   transform: translate(-50%, -50%);
 }
 
-[data-tabs-ready="true"] #{ns.class("tabs-nested-indicator-row")} {
+#{ns.data("tabs-ready", "true")} #{ns.class("tabs-nested-indicator-row")} {
   transition: opacity $tabs-pane-animation-ms $tabs-pane-animation-easing;
 }
 
-[data-tabs-ready="true"] #{ns.class("tabs-nested-indicator-icon")} {
+#{ns.data("tabs-ready", "true")} #{ns.class("tabs-nested-indicator-icon")} {
   transition:
   left $tabs-pane-animation-ms $tabs-pane-animation-easing,
   opacity $tabs-pane-animation-ms $tabs-pane-animation-easing,

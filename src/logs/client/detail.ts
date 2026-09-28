@@ -4,7 +4,7 @@ import { setTextContent } from "#aq4qe9opqpbm";
 import { formatTimestamp, safeStr } from "./utils.js";
 import type { LogsPage } from "./types.js";
 import { refreshLogDom } from "./view_state.js";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 export { bindLogEvents } from "./detail/events.js";
 export { loadInitialLogs, loadOlderLogs } from "./detail/load.js";
@@ -21,12 +21,12 @@ function prettyJson(value: unknown) {
 
 function refreshDetailCodeBlocks(modal: HTMLElement) {
   for (const target of [
-      modal.querySelector("[data-log-detail-meta]"),
-      modal.querySelector("[data-log-detail-raw]"),
+      modal.querySelector(frontendDataSelector("log-detail-meta")),
+      modal.querySelector(frontendDataSelector("log-detail-raw")),
   ]) {
     const host = target ? target.closest("code-block") : null;
     if (host) {
-      host.removeAttribute("data-code-rendered");
+      host.removeAttribute(frontendDataAttr("code-rendered"));
       host.removeAttribute(frontendDataAttr("code-rendered"));
     }
   }

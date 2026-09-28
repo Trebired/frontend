@@ -196,10 +196,10 @@ function hasElementConfirmRequest(source: Element | null | undefined) {
       dialogAttr(node, frontendDataAttr("confirm-title")) ||
       dialogAttr(node, frontendDataAttr("confirm-description")) ||
       dialogAttr(node, frontendDataAttr("confirm-text")) ||
-      dialogAttr(node, "data-confirmation-variant") ||
-      dialogAttr(node, "data-confirmation-title") ||
-      dialogAttr(node, "data-confirmation-description") ||
-      dialogAttr(node, "data-confirmation-text"),
+      dialogAttr(node, frontendDataAttr("confirmation-variant")) ||
+      dialogAttr(node, frontendDataAttr("confirmation-title")) ||
+      dialogAttr(node, frontendDataAttr("confirmation-description")) ||
+      dialogAttr(node, frontendDataAttr("confirmation-text")),
   );
 }
 
@@ -208,24 +208,24 @@ function readElementConfirmRequest(source: Element | null | undefined) {
   if (!node) {
     return { description: "", options: {}, title: "" };
   }
-  const variant = dialogAttr(node, frontendDataAttr("confirm-variant")) || dialogAttr(node, "data-confirmation-variant");
+  const variant = dialogAttr(node, frontendDataAttr("confirm-variant")) || dialogAttr(node, frontendDataAttr("confirmation-variant"));
   if (variant) return variantElementConfirmRequest(node, variant);
   return {
-    description: dialogAttr(node, frontendDataAttr("confirm-description")) || dialogAttr(node, "data-confirmation-description"),
+    description: dialogAttr(node, frontendDataAttr("confirm-description")) || dialogAttr(node, frontendDataAttr("confirmation-description")),
     options: standardElementConfirmOptions(node),
-    title: dialogAttr(node, frontendDataAttr("confirm-title")) || dialogAttr(node, "data-confirmation-title"),
+    title: dialogAttr(node, frontendDataAttr("confirm-title")) || dialogAttr(node, frontendDataAttr("confirmation-title")),
   };
 }
 
 function variantElementConfirmRequest(node: Element, variant: string) {
-  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, frontendDataAttr("confirmation-mode"));
   return {
     description: "",
     options: {
-      confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, "data-confirmation-text") || undefined,
+      confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, frontendDataAttr("confirmation-text")) || undefined,
       mode: mode ? normalizeConfirmMode(mode) : undefined,
-      subject: dialogAttr(node, frontendDataAttr("confirm-subject")) || dialogAttr(node, "data-confirmation-subject") || undefined,
-      target: dialogAttr(node, frontendDataAttr("confirm-target")) || dialogAttr(node, "data-confirmation-target") || undefined,
+      subject: dialogAttr(node, frontendDataAttr("confirm-subject")) || dialogAttr(node, frontendDataAttr("confirmation-subject")) || undefined,
+      target: dialogAttr(node, frontendDataAttr("confirm-target")) || dialogAttr(node, frontendDataAttr("confirmation-target")) || undefined,
       variant,
     },
     title: "",
@@ -233,19 +233,22 @@ function variantElementConfirmRequest(node: Element, variant: string) {
 }
 
 function standardElementConfirmOptions(node: Element): ConfirmOptions {
-  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, "data-confirmation-mode");
+  const mode = dialogAttr(node, frontendDataAttr("confirm-mode")) || dialogAttr(node, frontendDataAttr("confirmation-mode"));
   return {
-    cancelText: dialogAttr(node, frontendDataAttr("confirm-cancel-text")) || dialogAttr(node, "data-confirmation-cancel-text") || undefined,
+    cancelText: dialogAttr(
+      node,
+      frontendDataAttr("confirm-cancel-text")
+    ) || dialogAttr(node, frontendDataAttr("confirmation-cancel-text")) || undefined,
     confirmButtonText: dialogAttr(node, frontendDataAttr("confirm-confirm-text")) ||
-      dialogAttr(node, "data-confirmation-confirm-text") ||
+      dialogAttr(node, frontendDataAttr("confirmation-confirm-text")) ||
       undefined,
-    confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, "data-confirmation-text") || undefined,
+    confirmationText: dialogAttr(node, frontendDataAttr("confirm-text")) || dialogAttr(node, frontendDataAttr("confirmation-text")) || undefined,
     mode: mode ? normalizeConfirmMode(mode) : undefined,
     placeholder: dialogAttr(node, frontendDataAttr("confirm-placeholder")) ||
-      dialogAttr(node, "data-confirmation-placeholder") ||
+      dialogAttr(node, frontendDataAttr("confirmation-placeholder")) ||
       undefined,
     progressTone: dialogAttr(node, frontendDataAttr("confirm-progress-tone")) ||
-      dialogAttr(node, "data-confirmation-progress-tone") ||
+      dialogAttr(node, frontendDataAttr("confirmation-progress-tone")) ||
       undefined,
     type: normalizeFlashType(dialogAttr(node, frontendDataAttr("confirm-type")) || "warn"),
   };

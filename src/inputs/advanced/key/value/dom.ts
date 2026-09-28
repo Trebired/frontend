@@ -15,7 +15,7 @@ import type {
   key_value_input_dom_field,
   key_value_input_dom_props,
 } from "./shared.js";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function appendDomField(
   controls: HTMLElement,
@@ -83,7 +83,7 @@ function createKeyValueInputElement(
   const root = doc.createElement("div");
   const fields = domFields(props);
   root.className = rootClassName(props);
-  root.setAttribute("data-key-value-input", "");
+  root.setAttribute(frontendDataAttr("key-value-input"), "");
   applyAttrs(root, props.rootAttrs);
   const controls = createControls(doc, fields, props.remove !== false);
   const labels = fields.some((field) => field && field.label !== undefined && field.label !== null && field.label !== false);
@@ -120,7 +120,7 @@ function createControls(
   controls.className = primitiveGridClassName({ gap: "xs" });
   controls.style.setProperty(frontendCssVar("grid-template-columns"), gridColumns(fields, removable));
   controls.style.alignItems = "center";
-  controls.setAttribute("data-key-value-input-controls", "");
+  controls.setAttribute(frontendDataAttr("key-value-input-controls"), "");
   return controls;
 }
 

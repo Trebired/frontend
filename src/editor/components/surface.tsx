@@ -18,7 +18,7 @@ import {
   FullscreenTarget,
 } from "#vbkfq413o3u7";
 import type { EditorBodyProps, EditorLabels, EditorSurfaceProps } from "./types.js";
-import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { Title } from "#7ly3b59upz0n";
 
 const EDITOR_FULLSCREEN_GROUP = "editor_surface";
@@ -108,10 +108,10 @@ function viewerState(props: EditorSurfaceProps, text: Required<EditorLabels>) {
   return {
     loadingText: String(props.viewerLoadingText || text.preparingFileBrowser).trim(),
     loadingTitle: String(props.viewerLoadingTitle || text.viewerLoadingTitle).trim(),
-    rootDataAttr: String(props.viewerRootDataAttr || "data-editor-viewer-root").trim(),
+    rootDataAttr: String(props.viewerRootDataAttr || frontendDataAttr("editor-viewer-root")).trim(),
     rootId: String(props.viewerRootId || "").trim(),
     state: objectValue(props.viewerState),
-    stateDataAttr: String(props.viewerStateDataAttr || "data-editor-viewer-state").trim(),
+    stateDataAttr: String(props.viewerStateDataAttr || frontendDataAttr("editor-viewer-state")).trim(),
     stateId: String(props.viewerStateId || "").trim(),
   };
 }
@@ -120,7 +120,7 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
   return (
     <div className={frontendClassNames("border", "radius-md", "overflow-hidden")}>
     <script
-    data-editor-launch=""
+    {...frontendDataAttrs({ "editor-launch": "" })}
     dangerouslySetInnerHTML={jsonHtml(state.ideLaunch)}
     type="application/json"
     />
@@ -128,7 +128,7 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
     <iframe
     aria-label={state.labels.editor}
     className={frontendClassNames("display-block", "overflow-hidden", "width-max", "height-xl4", "bg-transparent", "border-0")}
-    data-editor-frame=""
+    {...frontendDataAttrs({ "editor-frame": "" })}
     hidden
     name="editor_frame"
     src="about:blank"
@@ -139,7 +139,7 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
 
 function editorLoader(state: ReturnType<typeof readSurfaceState>) {
   return (
-    <InlineRow className={frontendClassName("height-xl4")} data-editor-loader="">
+    <InlineRow className={frontendClassName("height-xl4")} {...frontendDataAttrs({ "editor-loader": "" })}>
     <div className={frontendClassName("center")}>
     <div className={frontendClassNames("width-fit", "no-stretch")}>{editorLoaderContent(state)}</div>
     </div>
@@ -150,14 +150,14 @@ function editorLoader(state: ReturnType<typeof readSurfaceState>) {
 function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
   return (
     <Stack center gap="sm" horizontalCenter>
-    <strong data-editor-status="">{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
-    <Text breakWord data-editor-detail="" muted size="sm">{state.loading.detail}</Text>
+    <strong {...frontendDataAttrs({ "editor-status": "" })}>{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
+    <Text breakWord {...frontendDataAttrs({ "editor-detail": "" })} muted size="sm">{state.loading.detail}</Text>
     <div className={frontendClassNames("width-md", "max-width-full", "text-left")}>
     {progress_bar({
           label: state.loading.label,
           meta: state.loading.meta,
           percent: state.loading.percent,
-          wrapperAttributes: "data-editor-progress-bar",
+          wrapperAttributes: frontendDataAttr("editor-progress-bar"),
     })}
     </div>
     {unavailableMessage(state)}
@@ -169,7 +169,7 @@ function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
 function unavailableMessage(state: ReturnType<typeof readSurfaceState>) {
   if (state.ideAvailable || !state.ideUnavailableMessage) return null;
   return (
-    <Text breakWord data-editor-unavailable="" muted size="sm">
+    <Text breakWord {...frontendDataAttrs({ "editor-unavailable": "" })} muted size="sm">
     {state.ideUnavailableMessage}
     </Text>
   );
@@ -274,7 +274,7 @@ function editorExternalLink(state: ReturnType<typeof readSurfaceState>) {
   return (
     <a
     className={primitiveButtonClassName({ size: "sm" })}
-    data-editor-external-link=""
+    {...frontendDataAttrs({ "editor-external-link": "" })}
     hidden
     href={state.fullIdeUrl || undefined}
     >

@@ -77,7 +77,7 @@ function statusFieldConfig(props: status_input_props) {
 
 function statusConfigScript(config: Record<string, unknown>) {
   return (
-    <script data-status-field-config="" hidden type="application/json">
+    <script {...frontendDataAttrs({ "status-field-config": "" })} hidden type="application/json">
     {JSON.stringify(config)}
     </script>
   );
@@ -113,7 +113,7 @@ function status_input(props: status_input_props) {
         className={[frontendClassName("input-status-wrap"), wrapClassName]
           .filter(Boolean)
           .join(" ")}
-        data-status-field=""
+        {...frontendDataAttrs({ "status-field": "" })}
         {...wrapAttrs}
         >
         {statusConfigScript(statusFieldConfig(props))}

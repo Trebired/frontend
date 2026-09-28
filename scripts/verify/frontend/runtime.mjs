@@ -126,8 +126,8 @@ async function verifyWizardSsr(context, wizardModule) {
         ],
     }),
   );
-  assert.match(html, /data-wizard-step-first="true"/u);
-  assert.match(html, /data-wizard-step-last="true"/u);
+  assert.match(html, /data-tbf-wizard-step-first="true"/u);
+  assert.match(html, /data-tbf-wizard-step-last="true"/u);
   assert.match(html, /id="ssr_b"[^>]*hidden/u);
   assert.doesNotMatch(html, /wizard-final-action hidden/u);
   assert.doesNotMatch(html, /wizard-(previous|next)-button style=/u);
@@ -136,8 +136,8 @@ async function verifyWizardSsr(context, wizardModule) {
     path.join(context.rootDir, "dist", "primitives", "styles", "_wizard.scss"),
     "utf8",
   );
-  assert.ok(styles.includes('#{ns.class("wizard-step")}[data-wizard-step-first="true"] wizard-previous-button'));
-  assert.ok(styles.includes('#{ns.class("wizard-step")}[data-wizard-step-last="true"] wizard-next-button'));
+  assert.ok(styles.includes('#{ns.class("wizard-step")}#{ns.data("wizard-step-first", "true")} wizard-previous-button'));
+  assert.ok(styles.includes('#{ns.class("wizard-step")}#{ns.data("wizard-step-last", "true")} wizard-next-button'));
   assert.ok(styles.includes('form:has(> #{ns.class("wizard")})'));
   assert.ok(styles.includes("grid-template-rows: minmax(0, 1fr)"));
   assert.ok(styles.includes("overflow-y: auto"));
@@ -147,7 +147,7 @@ async function verifyWizardSsr(context, wizardModule) {
 async function verifyWizardSizing(bindWizardRoot) {
   document.body.innerHTML = [
     '<wizard-root id="setup" class="tbf-wizard">',
-    '<wizard-step id="setup_a" data-wizard-step-state="active">A<wizard-next-button><button ' +
+    '<wizard-step id="setup_a" data-tbf-wizard-step-state="active">A<wizard-next-button><button ' +
       'type="button">Next</button></wizard-next-button></wizard-step>',
     '<wizard-step id="setup_b" aria-hidden="true" hidden inert>B<wizard-previous-button><button type="button" ' +
       "hidden>Back</button></wizard-previous-button></wizard-step>",
@@ -174,7 +174,7 @@ async function verifyWizardSizing(bindWizardRoot) {
   await new Promise((resolve) => setTimeout(resolve, 0));
   assert.equal(root.style.getPropertyValue("--wizard-step-min-height"), "");
   assert.equal(root.style.getPropertyValue("--wizard-step-width"), "");
-  assert.equal(root.getAttribute("data-wizard-ready"), "true");
+  assert.equal(root.getAttribute("data-tbf-wizard-ready"), "true");
 }
 
 async function verifyWizard(context) {
@@ -233,7 +233,7 @@ async function verifyGraphShellIsUniform(context) {
   assert.ok(unit.includes("tbf-dropdown-fit"), "the unit dropdown sizes itself to the unit it shows");
   const runtime = await fs.readFile(path.join(context.distDir, "graph", "advanced", "runtime", "render.js"), "utf8");
   assert.ok(!runtime.includes("tbf-width-xs2"), "the unit dropdown is not squeezed into a fixed width");
-  assert.ok(runtime.includes('width-fit'), "the unit dropdown mount does not cap its width");
+  assert.ok(runtime.includes("width-fit"), "the unit dropdown mount does not cap its width");
   const dropdownStyles = await fs.readFile(path.join(context.distDir, "inputs", "advanced", "dropdown", "styles", "base.scss"), "utf8");
   assert.match(dropdownStyles, /&#\{ns\.class\("dropdown-fit"\)\} \{[^}]*width: fit-content;/su, "a fitted dropdown is as wide as its label");
 }
@@ -263,7 +263,7 @@ async function verifyGraphMountsOnBind(context) {
   }));
   const mount = document.getElementById("soft_nav_graph_mount");
   assert.ok(mount, "the graph mount is present in server markup");
-  assert.equal(mount.getAttribute("data-graph-root"), null, "nothing is mounted before binding");
+  assert.equal(mount.getAttribute("data-tbf-graph-root"), null, "nothing is mounted before binding");
   const mounted = root.mountGraphCards(document);
   assert.ok(mounted >= 1, "binding mounts graph cards that a soft navigation brought in");
   assert.equal(root.mountGraphCards(document), 0, "already mounted graphs are not mounted twice");

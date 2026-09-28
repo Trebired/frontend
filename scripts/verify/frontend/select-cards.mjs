@@ -8,7 +8,7 @@ function renderCards(React, renderToStaticMarkup, card_select, items, extra = {}
 }
 
 function cards(host) {
-  return Array.from(host.querySelectorAll("[data-select-card]"));
+  return Array.from(host.querySelectorAll("[data-tbf-select-card]"));
 }
 
 function state(card) {
@@ -26,9 +26,9 @@ async function verifyRenderContract(React, renderToStaticMarkup, card_select) {
       { title: "A", value: "a" },
       { title: "B", value: "b" },
     ], { name: "method" });
-  const group = host.querySelector("[data-select-cards]");
+  const group = host.querySelector("[data-tbf-select-cards]");
   assert.ok(group, "a select-card group marks its container");
-  assert.equal(host.querySelector("input[data-select-cards-input]")?.getAttribute("name"), "method", "a named group renders its field");
+  assert.equal(host.querySelector("input[data-tbf-select-cards-input]")?.getAttribute("name"), "method", "a named group renders its field");
   assert.deepEqual(cards(host).map((card) => card.tabIndex), [-1, 0, -1], "with nothing selected the first enabled card is focusable");
   host.remove();
 }
@@ -41,14 +41,14 @@ async function verifyInteraction(React, renderToStaticMarkup, card_select, dist)
       { title: "D", value: "d" },
     ], { name: "method" });
   dist.bindSelectCards(host);
-  const group = host.querySelector("[data-select-cards]");
+  const group = host.querySelector("[data-tbf-select-cards]");
   const [first, second, third, fourth] = cards(host);
   const seen = [];
   group.addEventListener(dist.SELECT_CARD_EVENT, (event) => seen.push(event.detail.value));
   second.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   assert.deepEqual(state(second), { classSelected: true, excluded: false, selected: true, tabIndex: 0 }, "a clicked card becomes selected");
   assert.deepEqual(state(first), { classSelected: false, excluded: true, selected: false, tabIndex: -1 }, "the previous card is excluded");
-  assert.equal(host.querySelector("input[data-select-cards-input]").value, "b", "the field follows the selection");
+  assert.equal(host.querySelector("input[data-tbf-select-cards-input]").value, "b", "the field follows the selection");
   assert.equal(dist.selectedCardValue(group), "b", "the selected value is readable");
   third.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   assert.equal(dist.selectedCardValue(group), "b", "a disabled card cannot be selected");

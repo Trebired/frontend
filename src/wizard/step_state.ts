@@ -1,10 +1,12 @@
+import { frontendDataAttr } from "#5vbaqj4pirp3";
+
 type WizardHiddenState = HTMLElement["hidden"];
 
 function setStepState(step: HTMLElement, state: string, hidden: boolean) {
   const active = state === "active" && hidden === false;
   step.hidden = hidden;
-  if (state) step.setAttribute("data-wizard-step-state", state);
-  else step.removeAttribute("data-wizard-step-state");
+  if (state) step.setAttribute(frontendDataAttr("wizard-step-state"), state);
+  else step.removeAttribute(frontendDataAttr("wizard-step-state"));
   if (active) {
     step.removeAttribute("aria-hidden");
     step.removeAttribute("inert");

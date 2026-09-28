@@ -197,11 +197,11 @@ function selectCardNode(
     aria-disabled={disabled ? "true" : undefined}
     aria-selected={selected ? "true" : "false"}
     className={className}
-    data-card-excluded={props.select && !selected ? "true" : undefined}
-    data-card-row=""
-    data-card-selected={selected ? "true" : undefined}
-    data-select-card=""
-    data-value={toText(props.select?.value) || undefined}
+    {...frontendDataAttrs({ "card-excluded": props.select && !selected ? "true" : undefined })}
+    {...frontendDataAttrs({ "card-row": "" })}
+    {...frontendDataAttrs({ "card-selected": selected ? "true" : undefined })}
+    {...frontendDataAttrs({ "select-card": "" })}
+    {...frontendDataAttrs({ "value": toText(props.select?.value) || undefined })}
     role="button"
     style={{ textAlign: "left", width: "100%" }}
     tabIndex={disabled ? -1 : selected || props.select?.focusable ? 0 : -1}
@@ -213,7 +213,7 @@ function selectCardNode(
 
 function searchableBodyNode(props: BodyProps, node: ReactNode) {
   return props.search ? (
-    <span data-search-item="" style={{ display: "contents" }}>
+    <span {...frontendDataAttrs({ "search-item": "" })} style={{ display: "contents" }}>
     {search_config_script({ config: props.search, kind: "item" })}
     {node}
     </span>
@@ -248,7 +248,7 @@ function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNo
     <div
     {...((props.dataAttrs || {}) as attr_map)}
     className={baseClassName}
-    data-card-row=""
+    {...frontendDataAttrs({ "card-row": "" })}
     >
     {content}
     </div>
@@ -325,9 +325,9 @@ function select(props: SelectCardsProps) {
   const focusIndex = selectFocusIndex(items);
   const chosen = items.find((item) => item.selected === true && item.disabled !== true);
   return (
-    <div className={selectLayoutClassName(props)} data-select-cards="" {...((props.attrs || {}) as attr_map)}>
+    <div className={selectLayoutClassName(props)} {...frontendDataAttrs({ "select-cards": "" })} {...((props.attrs || {}) as attr_map)}>
     {props.name ? (
-        <input data-select-cards-input="" name={props.name} type="hidden" value={toText(chosen && chosen.value)} />
+        <input {...frontendDataAttrs({ "select-cards-input": "" })} name={props.name} type="hidden" value={toText(chosen && chosen.value)} />
       ) : null}
     {items.map((item, index) => selectCardItem(item, index, props.icon === true, focusIndex))}
     </div>

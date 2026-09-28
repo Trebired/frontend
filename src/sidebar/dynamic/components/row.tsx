@@ -51,7 +51,7 @@ function dynamicSidebarLinkAttrs(
   return {
     "aria-current": context.active ? "page" as const : undefined,
     "aria-disabled": dynamicDisabled && context.disabled ? true : undefined,
-    "data-nav-ignore": context.item.navIgnore ? "true" : undefined,
+    [frontendDataAttr("nav-ignore")]: context.item.navIgnore ? "true" : undefined,
     [frontendDataAttr("active")]: dataBool(context.active),
     [frontendDataAttr("disabled")]: dynamicDisabled && context.disabled ? "true" : undefined,
     [frontendDataAttr("sidebar-disabled-path")]: dynamicDisabled

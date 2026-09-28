@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import {
   dropdownOptionValue,
   getDropdownOptions,
@@ -31,7 +32,7 @@ function resolveLogsDropdownRoot(
   const root = page && page.ui ? page.ui.root : null;
   const localRoot =
   inputEl && inputEl.closest
-  ? inputEl.closest<HTMLElement>("[data-dropdown-root]")
+  ? inputEl.closest<HTMLElement>(frontendDataSelector("dropdown-root"))
   : null;
   if (localRoot) return localRoot;
 
@@ -39,7 +40,7 @@ function resolveLogsDropdownRoot(
   if (byId) return byId;
 
   const byMarker = root
-  ? root.querySelector<HTMLElement>(`[data-log-filter-dropdown="${marker}"]`)
+  ? root.querySelector<HTMLElement>(`${frontendDataSelector("log-filter-dropdown", "${marker}")}`)
   : null;
   return byMarker || null;
 }
@@ -73,12 +74,12 @@ function resolveDropdownList(
 
   const options = rootEl ? getDropdownOptions(rootEl) : null;
   const linkedList = options
-  ? (options.querySelector("[data-dropdown-list]") as HTMLElement | null)
+  ? (options.querySelector(frontendDataSelector("dropdown-list")) as HTMLElement | null)
   : null;
   if (linkedList) return linkedList;
 
   return rootEl && rootEl.querySelector
-  ? rootEl.querySelector<HTMLElement>("[data-dropdown-list]")
+  ? rootEl.querySelector<HTMLElement>(frontendDataSelector("dropdown-list"))
   : null;
 }
 
@@ -89,7 +90,7 @@ function optionLabelForValue(value: string) {
 
 function getDropdownLabelHtml(listEl: HTMLElement, value: string) {
   const item = Array.from(
-    listEl.querySelectorAll<HTMLElement>("[data-dropdown-option]"),
+    listEl.querySelectorAll<HTMLElement>(frontendDataSelector("dropdown-option")),
   ).find(function(li) {
       return dropdownOptionValue(li) === value;
   });
@@ -121,7 +122,7 @@ function cleanDropdownValues(values: string[]) {
 
 function existingDropdownValues(listEl: HTMLElement) {
   return Array.from(
-    listEl.querySelectorAll<HTMLLIElement>("[data-dropdown-option]"),
+    listEl.querySelectorAll<HTMLLIElement>(frontendDataSelector("dropdown-option")),
   ).map(function(li) {
       return dropdownOptionValue(li);
   });
@@ -148,7 +149,7 @@ function appendDropdownValue(
 ) {
   const li = document.createElement("li");
   const label = optionLabelForValue(value);
-  li.setAttribute("data-dropdown-option", "");
+  li.setAttribute(frontendDataAttr("dropdown-option"), "");
   setDropdownOptionConfig(li, {
       label,
       selected,
@@ -156,10 +157,10 @@ function appendDropdownValue(
   });
   li.hidden = false;
 
-  if (listEl.closest("[data-search-panel-root]")) {
-    li.setAttribute("data-search-item", "");
+  if (listEl.closest(frontendDataSelector("search-panel-root"))) {
+    li.setAttribute(frontendDataAttr("search-item"), "");
     const script = document.createElement("script");
-    script.setAttribute("data-search-item-config", "");
+    script.setAttribute(frontendDataAttr("search-item-config"), "");
     script.hidden = true;
     script.type = "application/json";
     script.textContent = JSON.stringify({ text: label.toLowerCase() }).replace(
@@ -192,7 +193,7 @@ function refreshDropdownSearch(listEl: HTMLElement) {
     searchManager &&
       typeof searchManager.refreshSearchResults === "function"
   ) {
-    const searchRoot = listEl.closest("[data-search-panel-root]");
+    const searchRoot = listEl.closest(frontendDataSelector("search-panel-root"));
     if (searchRoot) searchManager.refreshSearchResults(searchRoot);
   }
 }

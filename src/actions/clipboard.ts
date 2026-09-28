@@ -13,7 +13,8 @@ type CopyButtonOptions = {
 
 const COPY_SELECTOR = `${frontendDataSelector("copy")},copy-button`;
 const COPY_CONFIG_SELECTOR =
-`script[type="application/json"][data-copy-button-config],script[type="application/json"]${frontendDataSelector("copy-config")}`;
+`script[type="application/json"]${frontendDataSelector("copy-button-config")},`
++`script[type="application/json"]${frontendDataSelector("copy-config")}`;
 const copyBindings = new WeakSet<HTMLElement>();
 
 function normalizeClipboardText(value: unknown) {

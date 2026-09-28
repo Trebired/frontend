@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import {
   bindTabTooltip,
@@ -102,7 +103,7 @@ function applyInitialState(context) {
 function handleTabClick(context, event) {
   const target = event.target instanceof Element ? event.target : null;
   const tab =
-  target && target.closest ? target.closest("[data-tab-button]") : null;
+  target && target.closest ? target.closest(frontendDataSelector("tab-button")) : null;
   if (!(tab instanceof HTMLElement)) return;
   if (!context.tabs.includes(tab)) return;
   event.preventDefault();
@@ -122,7 +123,7 @@ function handleRouteChange(context) {
 function prepareTabsContext(root, options: any = {}) {
   if (!(root instanceof HTMLElement)) return null;
   if (
-    root.closest("[data-live-island-root][data-live-island-hydrated='false']")
+    root.closest(`${frontendDataSelector("live-island-root")}${frontendDataSelector("live-island-hydrated", "false")}`)
   )
   return null;
   const existing = tabBindings.get(root);
@@ -136,11 +137,11 @@ function prepareTabsContext(root, options: any = {}) {
     }
   }
 
-  root.removeAttribute("data-tabs-ready");
+  root.removeAttribute(frontendDataAttr("tabs-ready"));
   initializeOwnedNodes(root);
   hoistNestedFamily(root);
   const family = uiContainer(root);
-  const tabs = ownedNodes(root, "[data-tab-button]").filter(
+  const tabs = ownedNodes(root, frontendDataSelector("tab-button")).filter(
     (tab) => tab instanceof HTMLElement,
   );
   if (!tabs.length) return null;
@@ -165,7 +166,7 @@ function prepareTabs(context) {
 }
 
 function prepareTabList(context) {
-  const list = ownedNodes(context.root, "[data-tabs-list]")[0];
+  const list = ownedNodes(context.root, frontendDataSelector("tabs-list"))[0];
   if (list instanceof HTMLElement) list.setAttribute("role", "tablist");
 }
 
@@ -197,7 +198,7 @@ function finalizeInitialState(context) {
   syncNestedGroups(context.root, activeTab(context));
   scheduleOverflowSync(context.root);
   syncNestedIndicatorRow(context.root);
-  context.root.setAttribute("data-tabs-ready", "true");
+  context.root.setAttribute(frontendDataAttr("tabs-ready"), "true");
 }
 
 function createTabsController(context, cleanup) {
@@ -289,7 +290,7 @@ function bindAdvancedTabs(root: HTMLElement | null, options: any = {}) {
 }
 
 function tabsRootFromHost(host: Element | null) {
-  return host instanceof HTMLElement && host.matches("[data-tabs-root]")
+  return host instanceof HTMLElement && host.matches(frontendDataSelector("tabs-root"))
   ? host
   : null;
 }
@@ -302,9 +303,9 @@ function bindOwnedTabs(owner: Element | null, options: any = {}) {
   ensureTabSwitchListener();
   if (!(owner instanceof Element)) return [];
   const hosts =
-  owner.matches("[data-tabs-root]")
+  owner.matches(frontendDataSelector("tabs-root"))
   ? [owner]
-  : Array.from(owner.querySelectorAll("[data-tabs-root]"));
+  : Array.from(owner.querySelectorAll(frontendDataSelector("tabs-root")));
   return hosts.map((host) => bindTabsHost(host, options)).filter(Boolean);
 }
 

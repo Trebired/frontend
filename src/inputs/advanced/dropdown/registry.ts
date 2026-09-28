@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import { readHostJsonConfig } from "#dqy2d22qyujv";
 
@@ -83,7 +84,7 @@ function readDropdownRootConfigScript(host: HTMLElement) {
   return normalizeDropdownRootConfig(
     readHostJsonConfig<DropdownRootConfig>(
       host,
-      'script[type="application/json"][data-dropdown-root-config]',
+      `script[type="application/json"]${frontendDataSelector("dropdown-root-config")}`,
       {},
     ),
   );
@@ -93,7 +94,7 @@ function readDropdownOptionConfigScript(host: ParentNode) {
   return normalizeOptionConfig(
     readHostJsonConfig<DropdownOptionConfig>(
       host,
-      'script[type="application/json"][data-dropdown-option-config]',
+      `script[type="application/json"]${frontendDataSelector("dropdown-option-config")}`,
       {},
     ),
   );
@@ -121,20 +122,20 @@ function setDropdownOptionConfig(
   const previous = optionConfigs.get(option);
   if (previous && optionConfigsEqual(previous, normalized)) return true;
   optionConfigs.set(option, normalized);
-  option.setAttribute("data-dropdown-option", "");
+  option.setAttribute(frontendDataAttr("dropdown-option"), "");
   option.setAttribute(
-    "data-dropdown-selected",
+    frontendDataAttr("dropdown-selected"),
     normalized.selected ? "true" : "false",
   );
   if (normalized.section) {
-    option.setAttribute("data-dropdown-section", normalized.section);
+    option.setAttribute(frontendDataAttr("dropdown-section"), normalized.section);
   } else {
-    option.removeAttribute("data-dropdown-section");
+    option.removeAttribute(frontendDataAttr("dropdown-section"));
   }
   if (normalized.unselect) {
-    option.setAttribute("data-dropdown-unselect", "true");
+    option.setAttribute(frontendDataAttr("dropdown-unselect"), "true");
   } else {
-    option.removeAttribute("data-dropdown-unselect");
+    option.removeAttribute(frontendDataAttr("dropdown-unselect"));
   }
   option.setAttribute("aria-selected", normalized.selected ? "true" : "false");
   return true;
@@ -155,7 +156,7 @@ function registerDropdownOption(option: HTMLElement | null) {
 
 function registerDropdownOptions(root: ParentNode | null) {
   if (!root || typeof root.querySelectorAll !== "function") return;
-  root.querySelectorAll("[data-dropdown-option]").forEach((node) => {
+  root.querySelectorAll(frontendDataSelector("dropdown-option")).forEach((node) => {
       if (node instanceof HTMLElement) registerDropdownOption(node);
   });
 }

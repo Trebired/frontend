@@ -1,3 +1,4 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { closeDynamic, getActiveDynamicWrap, openDynamic } from "./dynamic.js";
 import {
   bindStaticDropdown,
@@ -17,7 +18,7 @@ function initDropdownManager() {
 
   function refreshOpenStaticPositions(event) {
     const target = event && event.target;
-    if (target && closest(target, "[data-dropdown-options]")) return;
+    if (target && closest(target, frontendDataSelector("dropdown-options"))) return;
 
     openedStaticDropdowns().forEach(function(drop) {
         positionStaticOptions(drop);
@@ -29,14 +30,14 @@ function initDropdownManager() {
     function(e) {
       const activeDynamicWrap = getActiveDynamicWrap();
       if (activeDynamicWrap) {
-        const inside = closest(e.target, "[data-dropdown-root]");
+        const inside = closest(e.target, frontendDataSelector("dropdown-root"));
         if (!inside || inside !== activeDynamicWrap) {
           closeDynamic();
         }
       }
 
-      const insideStatic = closest(e.target, "[data-dropdown-root]");
-      const insideStaticOptions = closest(e.target, "[data-dropdown-options]");
+      const insideStatic = closest(e.target, frontendDataSelector("dropdown-root"));
+      const insideStaticOptions = closest(e.target, frontendDataSelector("dropdown-options"));
       if (!insideStatic && !insideStaticOptions) closeAll(null);
     },
     true,

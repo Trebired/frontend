@@ -121,7 +121,7 @@ export function resolveLogsDomRoot(
   if (byId instanceof HTMLElement) return byId;
 
   const byMarker = document.querySelector(
-    `${frontendDataSelector("logs-partial")}[data-logs-instance-id="${id}"]`,
+    `${frontendDataSelector("logs-partial")}${frontendDataSelector("logs-instance-id", "${id}")}`,
   );
   return byMarker instanceof HTMLElement ? byMarker : null;
 }

@@ -1,3 +1,4 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { debugLogs } from "./debug.js";
 import { getFilteredLoadedLogs, getRenderedLogs } from "./filters.js";
 import { entryMatchesConfig, makeLogKey } from "./identity.js";
@@ -61,7 +62,7 @@ function syncRawModeUi(page: LogsPage) {
 function syncRawDropdowns(drops: any[], rawMode: boolean) {
   for (const drop of drops) {
     const rootEl =
-    drop && drop.closest ? drop.closest("[data-dropdown-root]") : null;
+    drop && drop.closest ? drop.closest(frontendDataSelector("dropdown-root")) : null;
     if (!(rootEl instanceof HTMLElement)) continue;
     rootEl.setAttribute("aria-disabled", rawMode ? "true" : "false");
     rootEl.style.pointerEvents = rawMode ? "none" : "";

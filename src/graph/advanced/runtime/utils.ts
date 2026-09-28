@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { dropdownOptionValue } from "#z2c0jqmjqds4";
 import { connectedElementsFromSet } from "#er0dlx1gtbzh";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
@@ -16,7 +17,7 @@ import {
 
 function graphLoggingEnabled() {
   if (typeof document === "undefined") return false;
-  const value = String(document.documentElement.getAttribute("data-dev-mode") || "")
+  const value = String(document.documentElement.getAttribute(frontendDataAttr("dev-mode")) || "")
   .trim()
   .toLowerCase();
   return value === "1" || value === "true" || value === "yes" || value === "on";
@@ -70,7 +71,7 @@ function graphNodeAttr(node, name) {
 
 function graphOptionValues(options) {
   if (!options || typeof options.querySelectorAll !== "function") return [];
-  return Array.from(options.querySelectorAll("[data-dropdown-option]"))
+  return Array.from(options.querySelectorAll(frontendDataSelector("dropdown-option")))
   .map((item) =>
     item instanceof HTMLElement ? dropdownOptionValue(item) : "",
   )
@@ -197,10 +198,10 @@ function updateGraphUnitRows(graphId, unit, scale, precision) {
 
   connectedElementsFromSet(graphUnitRowsByGraphId.get(id)).forEach(
     (element) => {
-      const rowUnit = element.getAttribute("data-graph-unit-kind") || unit;
-      const rawValue = element.getAttribute("data-graph-unit-value");
+      const rowUnit = element.getAttribute(frontendDataAttr("graph-unit-kind")) || unit;
+      const rawValue = element.getAttribute(frontendDataAttr("graph-unit-value"));
       const rowPrecision = Number(
-        element.getAttribute("data-graph-unit-precision"),
+        element.getAttribute(frontendDataAttr("graph-unit-precision")),
       );
       const nextPrecision = Number.isInteger(rowPrecision)
       ? rowPrecision
@@ -211,7 +212,7 @@ function updateGraphUnitRows(graphId, unit, scale, precision) {
         scale,
         nextPrecision,
       );
-      element.setAttribute("data-graph-unit-scale", scale);
+      element.setAttribute(frontendDataAttr("graph-unit-scale"), scale);
       updatedCount += 1;
     },
   );
@@ -222,7 +223,7 @@ function updateGraphUnitRows(graphId, unit, scale, precision) {
 function graphUnitScaleForSource(graphId, fallback: GraphUnitScale = "m") {
   const target = registeredGraphRoot(graphId);
   return normalizeGraphUnitScale(
-    target ? target.getAttribute("data-graph-unit-scale") : fallback,
+    target ? target.getAttribute(frontendDataAttr("graph-unit-scale")) : fallback,
     fallback,
   );
 }
@@ -242,14 +243,14 @@ function setGraphUnitText(targets, value, options: any = {}) {
       graphTargetElements(selector).forEach((element) => {
           const graphId =
           explicitGraphId ||
-            String(element.getAttribute("data-graph-unit-source") || "");
+            String(element.getAttribute(frontendDataAttr("graph-unit-source")) || "");
           if (!graphId) return;
           const rowUnit =
-          element.getAttribute("data-graph-unit-kind") || fallbackUnit;
-          element.setAttribute("data-graph-unit-source", graphId);
-          element.setAttribute("data-graph-unit-kind", rowUnit);
-          element.setAttribute("data-graph-unit-value", String(nextValue));
-          element.setAttribute("data-graph-unit-precision", String(precision));
+          element.getAttribute(frontendDataAttr("graph-unit-kind")) || fallbackUnit;
+          element.setAttribute(frontendDataAttr("graph-unit-source"), graphId);
+          element.setAttribute(frontendDataAttr("graph-unit-kind"), rowUnit);
+          element.setAttribute(frontendDataAttr("graph-unit-value"), String(nextValue));
+          element.setAttribute(frontendDataAttr("graph-unit-precision"), String(precision));
           registerGraphUnitRow(element, graphId);
           element.textContent = formatGraphUnitValue(
             nextValue,

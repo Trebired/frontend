@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { asElement } from "#er0dlx1gtbzh";
 
 type ProgressSetOptions = {
@@ -54,22 +55,22 @@ function bytesLabel(loaded: unknown, total: unknown) {
 function findProgressRoot(root: unknown) {
   const el = asElement(root);
   if (!el) return null;
-  if (el.matches("[data-progress]")) return el as HTMLElement;
-  if (el.matches("[data-progress-mount]")) {
-    return el.closest<HTMLElement>("[data-progress]") || el as HTMLElement;
+  if (el.matches(frontendDataSelector("progress"))) return el as HTMLElement;
+  if (el.matches(frontendDataSelector("progress-mount"))) {
+    return el.closest<HTMLElement>(frontendDataSelector("progress")) || el as HTMLElement;
   }
-  return el.querySelector<HTMLElement>("[data-progress]");
+  return el.querySelector<HTMLElement>(frontendDataSelector("progress"));
 }
 
 function findMount(root: unknown) {
   const el = asElement(root);
   if (!el) return null;
-  if (el.matches("[data-progress-mount]")) return el as HTMLElement;
+  if (el.matches(frontendDataSelector("progress-mount"))) return el as HTMLElement;
   const progressRoot = findProgressRoot(el) || el;
-  let mount = progressRoot.querySelector<HTMLElement>("[data-progress-mount]");
+  let mount = progressRoot.querySelector<HTMLElement>(frontendDataSelector("progress-mount"));
   if (!mount) {
     mount = document.createElement("div");
-    mount.setAttribute("data-progress-mount", "");
+    mount.setAttribute(frontendDataAttr("progress-mount"), "");
     progressRoot.appendChild(mount);
   }
   return mount;
@@ -88,10 +89,10 @@ function findSlot(root: unknown, selector: string) {
 }
 
 function ensureFill(mountEl: HTMLElement) {
-  let fill = mountEl.querySelector<HTMLElement>("[data-progress-fill]");
+  let fill = mountEl.querySelector<HTMLElement>(frontendDataSelector("progress-fill"));
   if (!fill) {
     fill = document.createElement("span");
-    fill.setAttribute("data-progress-fill", "");
+    fill.setAttribute(frontendDataAttr("progress-fill"), "");
     mountEl.replaceChildren(fill);
   }
   return fill;
@@ -129,7 +130,7 @@ function setText(root: unknown, selector: string, value: unknown) {
 function set(root: unknown, percent: unknown, options: ProgressSetOptions = {}) {
   const state = stateFor(root);
   if (!state) return 0;
-  state.root.removeAttribute("data-progress-indeterminate");
+  state.root.removeAttribute(frontendDataAttr("progress-indeterminate"));
   const nextPercent = clampPercent(percent);
   const nextWidth = `${nextPercent}%`;
   state.root.style.setProperty("--progress-percent", nextWidth);
@@ -137,10 +138,10 @@ function set(root: unknown, percent: unknown, options: ProgressSetOptions = {}) 
   state.mount.setAttribute("aria-valuenow", String(Math.round(nextPercent)));
   setText(
     root,
-    "[data-progress-label]",
+    frontendDataSelector("progress-label"),
     typeof options.label === "string" ? options.label : formatPercent(nextPercent),
   );
-  if (typeof options.meta === "string") setText(root, "[data-progress-meta]", options.meta);
+  if (typeof options.meta === "string") setText(root, frontendDataSelector("progress-meta"), options.meta);
   return nextPercent;
 }
 
@@ -158,11 +159,11 @@ function setBytes(root: unknown, loaded: unknown, total: unknown, options: Progr
 function indeterminate(root: unknown, options: ProgressSetOptions = {}) {
   const state = stateFor(root);
   if (!state) return 0;
-  state.root.setAttribute("data-progress-indeterminate", "true");
+  state.root.setAttribute(frontendDataAttr("progress-indeterminate"), "true");
   state.mount.removeAttribute("aria-valuenow");
   state.fill.style.width = "";
-  setText(root, "[data-progress-label]", typeof options.label === "string" ? options.label : "");
-  if (typeof options.meta === "string") setText(root, "[data-progress-meta]", options.meta);
+  setText(root, frontendDataSelector("progress-label"), typeof options.label === "string" ? options.label : "");
+  if (typeof options.meta === "string") setText(root, frontendDataSelector("progress-meta"), options.meta);
   return 0;
 }
 
@@ -171,7 +172,7 @@ function destroy(root: unknown) {
   if (!progressRoot) return false;
   const state = instances.get(progressRoot);
   if (!state) return false;
-  state.root.removeAttribute("data-progress-indeterminate");
+  state.root.removeAttribute(frontendDataAttr("progress-indeterminate"));
   state.root.style.removeProperty("--progress-percent");
   state.mount.removeAttribute("role");
   state.mount.removeAttribute("aria-valuemin");

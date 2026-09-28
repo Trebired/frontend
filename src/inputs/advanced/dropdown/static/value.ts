@@ -1,3 +1,4 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#dqy2d22qyujv";
 import {
   dispatchChange,
@@ -19,7 +20,7 @@ function getValueLis(drop): HTMLElement[] {
   const options = getDropdownOptions(drop);
   return options
   ? (Array.from(
-      options.querySelectorAll("[data-dropdown-option]"),
+      options.querySelectorAll(frontendDataSelector("dropdown-option")),
     ) as HTMLElement[])
   : [];
 }
@@ -66,7 +67,7 @@ function getDefaultPlaceholder(drop) {
 }
 
 function getLabelHost(drop) {
-  return drop ? drop.querySelector("[data-dropdown-label]") : null;
+  return drop ? drop.querySelector(frontendDataSelector("dropdown-label")) : null;
 }
 
 function parseMultiHiddenValue(hidden) {
@@ -99,7 +100,7 @@ function updateMultiClearButtons(drop, values) {
   if (!options) return;
 
   const hasSelection = Array.isArray(values) && values.length > 0;
-  options.querySelectorAll("[data-dropdown-clear]").forEach(function(button) {
+  options.querySelectorAll(frontendDataSelector("dropdown-clear")).forEach(function(button) {
       button.style.display = hasSelection ? "" : "none";
   });
 }

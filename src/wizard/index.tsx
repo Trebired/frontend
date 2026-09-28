@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import { createElement, type ReactNode } from "react";
 import { Icon } from "#lbkpzw8nphru";
 import { joinClassNames } from "#6mupcizo1mwq";
@@ -26,9 +26,9 @@ function wizardStepInactiveProps(active: boolean) {
 
 function wizardStepPositionProps(index: number, lastIndex: number) {
   return {
-    "data-wizard-step-index": String(index),
-    ...(index === 0 ? { "data-wizard-step-first": "true" } : {}),
-    ...(index === lastIndex ? { "data-wizard-step-last": "true" } : {}),
+    [frontendDataAttr("wizard-step-index")]: String(index),
+    ...(index === 0 ? { [frontendDataAttr("wizard-step-first")]: "true" } : {}),
+    ...(index === lastIndex ? { [frontendDataAttr("wizard-step-last")]: "true" } : {}),
   };
 }
 
@@ -48,7 +48,7 @@ function wizard(props: wizard_props) {
           className: primitiveCardClassName({ className: frontendClassName("wizard-step"), gap: "sm" }),
           id: `${props.id}_${step.id}`,
           key: step.id,
-          ...(index === 0 ? { "data-wizard-step-state": "active" } : {}),
+          ...(index === 0 ? { [frontendDataAttr("wizard-step-state")]: "active" } : {}),
           ...wizardStepPositionProps(index, lastIndex),
           ...wizardStepInactiveProps(index === 0),
         },

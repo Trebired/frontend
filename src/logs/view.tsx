@@ -10,7 +10,7 @@ import {
   primitivePaddingClass,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function jsonScriptConfig(config: Record<string, unknown>) {
   return {
@@ -26,11 +26,11 @@ function view(props: view_props) {
       id: model.ids.root,
       className: model.resolvedRootClassName,
       [frontendDataAttr("logs-partial")]: "",
-      "data-logs-instance-id": model.logsInstanceId,
+      [frontendDataAttr("logs-instance-id")]: model.logsInstanceId,
     },
     <>
     <script
-    data-logs-view-config=""
+    {...frontendDataAttrs({ "logs-view-config": "" })}
     hidden
     type="application/json"
     dangerouslySetInnerHTML={jsonScriptConfig({

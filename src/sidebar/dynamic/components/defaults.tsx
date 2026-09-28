@@ -75,7 +75,7 @@ function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {
           size: "sm",
           tone: state === "running" ? "green" : "red",
     })}
-    data-state={state}
+    {...frontendDataAttrs({ "state": state })}
     {...frontendDataAttrs({ "sidebar-state-dot": "" })}
     />
   );

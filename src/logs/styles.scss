@@ -87,12 +87,12 @@
   align-items: stretch;
 }
 
-#{ns.class("logs-stats-header")} [data-tabs-stack] {
+#{ns.class("logs-stats-header")} #{ns.data("tabs-stack")} {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-#{ns.class("logs-stats-header")} [data-tabs-list] {
+#{ns.class("logs-stats-header")} #{ns.data("tabs-list")} {
   width: 100%;
 }
 

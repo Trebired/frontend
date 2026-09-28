@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { disconnectLiveSubscriptionHost } from "#70l5p0ml3pgq";
 import { softReload } from "#o9lroe7t0ma6";
@@ -9,7 +10,7 @@ type LiveListsOptions = {
   subscribe?: LiveSubscribe;
 };
 
-const LIVE_LIST_SELECTOR = "live-list[data-live-list-room]";
+const LIVE_LIST_SELECTOR = `live-list${frontendDataSelector("live-list-room")}`;
 const boundLiveLists = new WeakSet<HTMLElement>();
 const liveListCleanups = new WeakMap<HTMLElement, ()=>void>();
 
@@ -17,9 +18,9 @@ function bindLiveListHost(host: HTMLElement, options: LiveListsOptions = {}) {
   if (boundLiveLists.has(host)) return false;
   const subscribe = options.subscribe;
   if (typeof subscribe !== "function") return false;
-  const room = host.getAttribute("data-live-list-room") || "";
+  const room = host.getAttribute(frontendDataAttr("live-list-room")) || "";
   if (!room) return false;
-  const expectedEvent = host.getAttribute("data-live-list-event") || "";
+  const expectedEvent = host.getAttribute(frontendDataAttr("live-list-event")) || "";
   boundLiveLists.add(host);
   const cleanup = subscribe(room, (payload) => {
       if (!host.isConnected) {

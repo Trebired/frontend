@@ -1,4 +1,4 @@
-import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr } from "#5vbaqj4pirp3";
 import React from "react";
 import { logsT } from "#gu61mitj537f";
 import { primitiveGapClass } from "#hzrmwbvgt2ax";
@@ -27,7 +27,7 @@ function markerButton(view, onToggleMarker) {
     {
       type: "button",
       className: frontendClassNames("log-cell", "log-marker"),
-      "data-role": "marker",
+      [frontendDataAttr("role")]: "marker",
       title: logsT("marker"),
       "aria-label": view.marked ? logsT("removeMarker") : logsT("addMarker"),
       onClick: toggleMarker,
@@ -53,7 +53,7 @@ function timestampCell(view) {
     "span",
     {
       className: frontendClassNames("log-cell", "log-time"),
-      "data-role": "timestamp",
+      [frontendDataAttr("role")]: "timestamp",
       style: { color: "var(--text-color-muted)" },
     },
     view.timestamp,
@@ -65,7 +65,7 @@ function levelCell(view) {
     "span",
     {
       className: frontendClassNames("log-cell", "log-level"),
-      "data-role": "level",
+      [frontendDataAttr("role")]: "level",
       style: styleObj({
           color: view.levelColor,
           fontWeight: view.levelBold ? "700" : "",
@@ -80,7 +80,7 @@ function groupCell(view) {
     "span",
     {
       className: frontendClassNames("log-cell", "log-group"),
-      "data-role": "group",
+      [frontendDataAttr("role")]: "group",
       style: { color: "var(--text-color-muted)" },
     },
     view.groupLabel,
@@ -93,7 +93,7 @@ function requestSpan(view) {
     "span",
     {
       className: "log-req",
-      "data-role": "request",
+      [frontendDataAttr("role")]: "request",
       style: styleObj({ color: view.reqColor }),
     },
     " req_id=" + view.reqId,
@@ -106,7 +106,7 @@ function metadataSpan(view) {
     "span",
     {
       className: frontendClassName("log-meta"),
-      "data-role": "metadata",
+      [frontendDataAttr("role")]: "metadata",
     },
     " " + view.metadata,
   );
@@ -117,7 +117,7 @@ function messageCell(view) {
     "span",
     {
       className: frontendClassNames("log-cell", "log-message"),
-      "data-role": "message",
+      [frontendDataAttr("role")]: "message",
     },
     view.message,
     requestSpan(view),
@@ -131,7 +131,7 @@ function stackBlock(view) {
     "div",
     {
       className: frontendClassName("log-line-stack"),
-      "data-role": "stack",
+      [frontendDataAttr("role")]: "stack",
     },
     view.stack,
   );
@@ -161,7 +161,7 @@ function LogRowView({ view, onOpen, onToggleMarker }) {
     "div",
     {
       className: ["log-line", primitiveGapClass("xs")].join(" "),
-      "data-log-key": view.logKey,
+      [frontendDataAttr("log-key")]: view.logKey,
       role: "button",
       tabIndex: 0,
       title: logsT("clickOpenDetails"),

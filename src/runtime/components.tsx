@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import dropdown from "#79y0zfcyhzga";
 import { Icon } from "#lbkpzw8nphru";
@@ -65,9 +66,9 @@ function runtime_action_progress(props: RuntimeActionProgressProps = {}) {
   return shared_steps_panel({
       type: "disclosure",
       lang: props.lang,
-      progressBarAttr: "data-runtime-action-progress-bar",
+      progressBarAttr: frontendDataAttr("runtime-action-progress-bar"),
       dataAttrs: {
-        "data-runtime-action-progress-panel": "",
+        [frontendDataAttr("runtime-action-progress-panel")]: "",
       },
       emptyCopy:
       String(props.emptyCopy || "").trim() || "No steps yet.",
@@ -79,7 +80,7 @@ function runtime_activity_bootstrap(props: RuntimeActivityBootstrapProps) {
   return (
     <script
     type="application/json"
-    data-runtime-activity-bootstrap=""
+    {...frontendDataAttrs({ "runtime-activity-bootstrap": "" })}
     dangerouslySetInnerHTML={{
         __html: jsonScript(
           props && props.activity && typeof props.activity === "object"

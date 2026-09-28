@@ -28,7 +28,7 @@ function closeDynamic(immediate = false) {
   if (immediate || !wrap || !wrap.parentNode) {
     removeDynamicRequest(req);
   } else {
-    wrap.removeAttribute("data-dropdown-open");
+    wrap.removeAttribute(frontendDataAttr("dropdown-open"));
     window.setTimeout(function() {
         removeDynamicRequest(req);
       }, CLOSE_ANIMATION_MS);
@@ -56,9 +56,9 @@ function positionWrap(wrap, anchor) {
 function createDynamicWrap(opts) {
   const wrap = document.createElement("div");
   wrap.className = "dropdown-field-root dropdown-dynamic";
-  wrap.setAttribute("data-dropdown-root", "");
+  wrap.setAttribute(frontendDataAttr("dropdown-root"), "");
   if (opts.noInput) {
-    wrap.setAttribute("data-dropdown-no-input", "true");
+    wrap.setAttribute(frontendDataAttr("dropdown-no-input"), "true");
   }
   wrap.style.width = "auto";
   return wrap;
@@ -67,12 +67,12 @@ function createDynamicWrap(opts) {
 function createDynamicList(opts) {
   const options = document.createElement("div");
   options.className = "options";
-  options.setAttribute("data-dropdown-options", "");
-  options.setAttribute("data-dropdown-portaled", "true");
+  options.setAttribute(frontendDataAttr("dropdown-options"), "");
+  options.setAttribute(frontendDataAttr("dropdown-portaled"), "true");
 
   const list = document.createElement("ul");
   list.className = "dropdown-list";
-  list.setAttribute("data-dropdown-list", "");
+  list.setAttribute(frontendDataAttr("dropdown-list"), "");
 
   for (let i = 0; i < opts.items.length; i += 1) {
     list.appendChild(createDynamicItem(opts, opts.items[i]));
@@ -84,7 +84,7 @@ function createDynamicList(opts) {
 
 function createDynamicItem(opts, item) {
   const li = document.createElement("li");
-  li.setAttribute("data-dropdown-option", "");
+  li.setAttribute(frontendDataAttr("dropdown-option"), "");
   setDropdownOptionConfig(li, {
       label: item.label != null ? String(item.label) : "",
       value: item.value != null ? String(item.value) : "",
@@ -132,7 +132,7 @@ function openDynamic(opts) {
   };
 
   requestAnimationFrame(function() {
-      wrap.setAttribute("data-dropdown-open", "true");
+      wrap.setAttribute(frontendDataAttr("dropdown-open"), "true");
   });
 }
 

@@ -101,7 +101,7 @@ function checkbox(props: checkbox_props) {
         : {})}
     >
     {props.all === true ? (
-        <script data-checkbox-option-config="" hidden type="application/json">
+        <script {...frontendDataAttrs({ "checkbox-option-config": "" })} hidden type="application/json">
         {JSON.stringify({ all: true })}
         </script>
       ) : null}

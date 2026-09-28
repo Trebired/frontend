@@ -1,9 +1,9 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
-const SELECT_CARDS_SELECTOR = "[data-select-cards]";
-const SELECT_CARD_SELECTOR = "[data-select-card]";
-const SELECT_CARDS_INPUT_SELECTOR = "input[data-select-cards-input]";
+const SELECT_CARDS_SELECTOR = frontendDataSelector("select-cards");
+const SELECT_CARD_SELECTOR = frontendDataSelector("select-card");
+const SELECT_CARDS_INPUT_SELECTOR = `input${frontendDataSelector("select-cards-input")}`;
 const SELECT_CARD_EVENT = frontendEventName("select-card");
 const INTERACTIVE_SELECTOR = "a[href], button, input, select, textarea, [contenteditable='true']";
 
@@ -16,17 +16,17 @@ function cardDisabled(card: HTMLElement) {
 }
 
 function cardValue(card: HTMLElement | null) {
-  return card ? String(card.getAttribute("data-value") || "").trim() : "";
+  return card ? String(card.getAttribute(frontendDataAttr("value")) || "").trim() : "";
 }
 
 function applyCardState(card: HTMLElement, selected: boolean) {
   card.classList.toggle("selected", selected);
   card.classList.toggle("excluded", !selected);
   card.setAttribute("aria-selected", selected ? "true" : "false");
-  if (selected) card.setAttribute("data-card-selected", "true");
-  else card.removeAttribute("data-card-selected");
-  if (selected) card.removeAttribute("data-card-excluded");
-  else card.setAttribute("data-card-excluded", "true");
+  if (selected) card.setAttribute(frontendDataAttr("card-selected"), "true");
+  else card.removeAttribute(frontendDataAttr("card-selected"));
+  if (selected) card.removeAttribute(frontendDataAttr("card-excluded"));
+  else card.setAttribute(frontendDataAttr("card-excluded"), "true");
   card.tabIndex = !cardDisabled(card) && selected ? 0 : -1;
 }
 

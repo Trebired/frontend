@@ -45,7 +45,7 @@ function readSource(host: Element, target: Element) {
 function resolveLanguage(host: Element) {
   const requested = normalizeCodeText(
     host.getAttribute(DATA_CODE_LANG_ATTR) ||
-      host.getAttribute("data-code-lang") ||
+      host.getAttribute(frontendDataAttr("code-lang")) ||
       "",
   ).trim().toLowerCase();
   return requested || "plaintext";

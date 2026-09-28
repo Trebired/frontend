@@ -112,7 +112,7 @@
 
 #{ns.data("source-language-included", "false")},
 
-[data-card-excluded="true"] {
+#{ns.data("card-excluded", "true")} {
   opacity: 0.55;
 }
 

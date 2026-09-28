@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { CLOSE_ANIMATION_MS, getDropdownOptions } from "#c0ew0jlb0c87";
 
@@ -28,8 +29,8 @@ function cancelPendingStaticClose(drop) {
 function finishStaticClose(drop, options, token) {
   if (!drop || Number(drop._dropdownCloseToken) !== token) return;
   if (options) {
-    options.removeAttribute("data-dropdown-show");
-    options.removeAttribute("data-dropdown-closing");
+    options.removeAttribute(frontendDataAttr("dropdown-show"));
+    options.removeAttribute(frontendDataAttr("dropdown-closing"));
   }
   resetDropdownSearch(drop);
 }
@@ -44,10 +45,10 @@ function dropdownViewport() {
 
 function measureStaticOptions(options) {
   const wasMeasuring =
-  options.getAttribute("data-dropdown-measuring") === "true";
-  options.setAttribute("data-dropdown-measuring", "true");
+  options.getAttribute(frontendDataAttr("dropdown-measuring")) === "true";
+  options.setAttribute(frontendDataAttr("dropdown-measuring"), "true");
   const rect = options.getBoundingClientRect();
-  if (!wasMeasuring) options.removeAttribute("data-dropdown-measuring");
+  if (!wasMeasuring) options.removeAttribute(frontendDataAttr("dropdown-measuring"));
   return rect;
 }
 
@@ -60,7 +61,7 @@ function positionStaticOptions(drop) {
   if (
     !drop ||
       !options ||
-      options.getAttribute("data-dropdown-portaled") !== "true"
+      options.getAttribute(frontendDataAttr("dropdown-portaled")) !== "true"
   )
   return;
 
@@ -93,15 +94,15 @@ function positionStaticOptions(drop) {
 
   options.style.left = `${Math.round(nextLeft)}px`;
   options.style.top = `${Math.round(nextTop)}px`;
-  options.setAttribute("data-dropdown-position", position);
+  options.setAttribute(frontendDataAttr("dropdown-position"), position);
 }
 
 function connectedLiveIslandRoot(drop, options) {
   const fromDrop =
-  drop && drop.closest ? drop.closest("[data-live-island-root]") : null;
+  drop && drop.closest ? drop.closest(frontendDataSelector("live-island-root")) : null;
   const fromOptions =
   options && options.closest
-  ? options.closest("[data-live-island-root]")
+  ? options.closest(frontendDataSelector("live-island-root"))
   : null;
   const root = fromDrop || fromOptions;
   return root instanceof HTMLElement && root.isConnected ? root : null;
@@ -111,7 +112,7 @@ function portalStaticOptions(drop) {
   const options = getDropdownOptions(drop);
   if (!drop || !options) return;
 
-  options.setAttribute("data-dropdown-portaled", "true");
+  options.setAttribute(frontendDataAttr("dropdown-portaled"), "true");
 
   if (connectedLiveIslandRoot(drop, options)) {
     positionStaticOptions(drop);
@@ -128,15 +129,15 @@ function closeStatic(drop) {
   const options = getDropdownOptions(drop);
   const token = (Number(drop._dropdownCloseToken) || 0) + 1;
   drop._dropdownCloseToken = token;
-  drop.removeAttribute("data-dropdown-open");
+  drop.removeAttribute(frontendDataAttr("dropdown-open"));
   if (drop instanceof Element) openStaticDropdowns.delete(drop);
   if (!options) {
     resetDropdownSearch(drop);
     return;
   }
 
-  options.setAttribute("data-dropdown-closing", "true");
-  options.removeAttribute("data-dropdown-show");
+  options.setAttribute(frontendDataAttr("dropdown-closing"), "true");
+  options.removeAttribute(frontendDataAttr("dropdown-show"));
   const onDone = function(event) {
     if (event && event.target !== options) return;
     options.removeEventListener("transitionend", onDone);
@@ -160,14 +161,14 @@ function openStatic(drop) {
   if (!drop || !options) return;
 
   cancelPendingStaticClose(drop);
-  drop.setAttribute("data-dropdown-open", "true");
+  drop.setAttribute(frontendDataAttr("dropdown-open"), "true");
   if (drop instanceof Element) openStaticDropdowns.add(drop);
   portalStaticOptions(drop);
-  options.removeAttribute("data-dropdown-closing");
+  options.removeAttribute(frontendDataAttr("dropdown-closing"));
   requestAnimationFrame(function() {
       positionStaticOptions(drop);
       promoteZIndex(options, { fallback: DROPDOWN_BASE_Z_INDEX });
-      options.setAttribute("data-dropdown-show", "true");
+      options.setAttribute(frontendDataAttr("dropdown-show"), "true");
 
       const searchInput = options.querySelector("search-query-input input");
       if (searchInput && typeof searchInput.focus === "function") {

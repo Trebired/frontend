@@ -65,8 +65,8 @@ function renderSourceLanguageItem(
   item.row.setAttribute("aria-pressed", isIncluded ? "true" : "false");
   item.row.setAttribute(frontendDataAttr("source-language-included"), isIncluded ? "true" : "false");
   item.row.setAttribute("title", rowTitle(isIncluded, options.lang));
-  if (isIncluded) item.row.removeAttribute("data-card-excluded");
-  else item.row.setAttribute("data-card-excluded", "true");
+  if (isIncluded) item.row.removeAttribute(frontendDataAttr("card-excluded"));
+  else item.row.setAttribute(frontendDataAttr("card-excluded"), "true");
   animateNumber(item.percentEl, nextPercent, (value) => Number(value || 0).toFixed(1), 1, options.prefersReducedMotion);
   if (item.progressEl) {
     applySourceLanguageColor(item);

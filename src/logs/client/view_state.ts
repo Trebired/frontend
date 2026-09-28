@@ -28,7 +28,7 @@ function readJsonElement(element: Element | null, fallback: Record<string, unkno
 export function readLogsBootData(fallback: Record<string, unknown> = {}) {
   if (typeof document === "undefined") return fallback;
   const element =
-  document.querySelector("[data-logs-boot]") ||
+  document.querySelector(frontendDataSelector("logs-boot")) ||
     document.getElementById("__DEPLOYMENT_VIEW_DATA__");
   return readJsonElement(element, fallback);
 }

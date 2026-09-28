@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { searchText, toText } from "#yrscdg72qcm6";
 import { isInUnhydratedIsland } from "./dom.js";
 import { searchPanelHostFromNode } from "./hosts.js";
@@ -75,16 +76,16 @@ function readFilterRecords(panel: SearchPanelBinding) {
 }
 
 function getEmptyNodes(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-empty, [data-search-empty-slot]", "");
+  return collectHosts(panel, `search-empty, ${frontendDataSelector("search-empty-slot")}`, "");
 }
 
 function getSearchItems(panel: SearchPanelBinding) {
-  return collectHosts(panel, "search-item, [data-search-item]", "");
+  return collectHosts(panel, `search-item, ${frontendDataSelector("search-item")}`, "");
 }
 
 function getSectionHeadings(panel: SearchPanelBinding) {
   return Array.from(
-    panel.root.querySelectorAll<HTMLElement>("[data-dropdown-section-heading]"),
+    panel.root.querySelectorAll<HTMLElement>(frontendDataSelector("dropdown-section-heading")),
   );
 }
 
@@ -95,7 +96,7 @@ function readSearchItemRecord(item: HTMLElement): SearchItemRecord {
     exclude: config.exclude === true,
     filters: config.filters,
     section: tagName(item) === "li"
-    ? toText(item.getAttribute("data-dropdown-section"))
+    ? toText(item.getAttribute(frontendDataAttr("dropdown-section")))
     : "",
     text: searchText(config.text || item.textContent),
   };
@@ -164,7 +165,7 @@ function filterDetails(filters: SearchFilterRecord[]) {
 function syncDropdownSections(panel: SearchPanelBinding, visibleSections: Set<string>) {
   panelCache(panel).sectionHeadings.forEach((sectionNode) => {
       const section = toText(
-        sectionNode.getAttribute("data-dropdown-section-heading"),
+        sectionNode.getAttribute(frontendDataAttr("dropdown-section-heading")),
       );
       if (!section) return;
       sectionNode.hidden = !visibleSections.has(section);

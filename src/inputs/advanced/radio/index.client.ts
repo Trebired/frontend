@@ -4,7 +4,7 @@ import {
   noop as defineRadioGroupElement,
   resolveDocumentTarget,
 } from "#dqy2d22qyujv";
-import { frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const RADIO_GROUP_SELECTOR = frontendDataSelector("radio-group");
 const boundRadioGroups = new WeakSet<Element>();
@@ -65,8 +65,8 @@ function syncGroup(scope) {
       const checked = Boolean(input.checked);
       const disabled = Boolean(input.disabled);
 
-      option.setAttribute("data-radio-checked", checked ? "true" : "false");
-      option.setAttribute("data-radio-disabled", disabled ? "true" : "false");
+      option.setAttribute(frontendDataAttr("radio-checked"), checked ? "true" : "false");
+      option.setAttribute(frontendDataAttr("radio-disabled"), disabled ? "true" : "false");
       option.setAttribute("role", "radio");
       option.setAttribute("aria-checked", checked ? "true" : "false");
       option.setAttribute("aria-disabled", disabled ? "true" : "false");

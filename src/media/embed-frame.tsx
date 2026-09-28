@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { fullscreenSupported, toggleFullscreen } from "#e1wjbzbsyghi";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { useResolvedLang } from "./lang.js";
@@ -228,7 +228,7 @@ export function EmbedFrame(props: EmbedFrameProps) {
     <div
     ref={rootRef}
     className={[frontendClassName("embed-frame"), className].filter(Boolean).join(" ")}
-    data-embed-state={state}
+    {...frontendDataAttrs({ "embed-state": state })}
     style={aspectRatio ? { aspectRatio } : undefined}
     >
     <EmbedSurface props={props} refs={{ frameRef, objectRef }} />

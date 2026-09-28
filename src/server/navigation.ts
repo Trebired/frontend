@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import { type ServerRequestLike } from "./http.js";
 
 type CurrentNavigation = {
@@ -120,7 +120,7 @@ function activeLinkMatches(src: string, currentPath: string, exact: boolean) {
   while ((match = linkRe.exec(src))) {
     const tag = match[0].slice(0, match[0].indexOf(">") + 1);
     const href = normalizeNavigationHref(match[3]);
-    if (!href || hasAttr(tag, "data-nav-ignore")) continue;
+    if (!href || hasAttr(tag, frontendDataAttr("nav-ignore"))) continue;
     if (!matchesCurrentPath(currentPath, href, { exact })) continue;
     matches.push({
         end: match.index + match[0].length,
@@ -211,8 +211,8 @@ function currentMenuClass(current: CurrentNavigation, base: unknown, opts: { exc
 
 function decorateBottomBarHtml(current: CurrentNavigation, html: unknown) {
   let out = String(html || "");
-  out = decorateDataNode(out, "data-bottom-bar-apps", currentIsCurrent(current, "/apps"), frontendClassName("is-active"), true);
-  out = decorateDataNode(out, "data-bottom-bar-profile", currentIsCurrent(current, "/me"), frontendClassName("is-active"), true);
+  out = decorateDataNode(out, frontendDataAttr("bottom-bar-apps"), currentIsCurrent(current, "/apps"), frontendClassName("is-active"), true);
+  out = decorateDataNode(out, frontendDataAttr("bottom-bar-profile"), currentIsCurrent(current, "/me"), frontendClassName("is-active"), true);
   return out;
 }
 

@@ -1,3 +1,4 @@
+import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { escapeHtml } from "#ndsvdqv80epr";
 
 const INTERACTIVE_TARGET_SELECTOR = [
@@ -192,7 +193,7 @@ function firstNonScriptHTMLElementChild(host: Element) {
 function isInUnhydratedIsland(node: unknown) {
   const element = node instanceof Element ? node : null;
   return Boolean(
-    element?.closest("[data-live-island-root][data-live-island-hydrated='false']"),
+    element?.closest(`${frontendDataSelector("live-island-root")}${frontendDataSelector("live-island-hydrated", "false")}`),
   );
 }
 

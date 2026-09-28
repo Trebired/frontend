@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#dqy2d22qyujv";
 import { requestJson } from "#dqy2d22qyujv";
 import { setTooltipText } from "#yf1o70q7eshd";
@@ -29,9 +30,9 @@ type StatusIcons = {
 };
 
 const DEFAULT_DEBOUNCE_MS = 400;
-const STATUS_FIELD_SELECTOR = "[data-status-field]";
+const STATUS_FIELD_SELECTOR = frontendDataSelector("status-field");
 const STATUS_FIELD_CONFIG_SELECTOR =
-'script[type="application/json"][data-status-field-config]';
+`script[type="application/json"]${frontendDataSelector("status-field-config")}`;
 const boundStatusFields = new WeakSet<HTMLElement>();
 const boundBackendStatusInputs = new WeakSet<HTMLInputElement>();
 const boundMatchStatusInputs = new WeakSet<HTMLInputElement>();
@@ -78,9 +79,9 @@ function setInputStatusIcon(
   if (!wrap) return;
   const icons = wrapIcons.get(wrap) || { bad: null, ok: null };
   if (status === "ok" || status === "bad") {
-    wrap.setAttribute("data-input-status", status);
+    wrap.setAttribute(frontendDataAttr("input-status"), status);
   } else {
-    wrap.removeAttribute("data-input-status");
+    wrap.removeAttribute(frontendDataAttr("input-status"));
   }
   if (icons.ok) icons.ok.hidden = status !== "ok";
   if (icons.bad) icons.bad.hidden = status !== "bad";

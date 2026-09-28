@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 import type { ReactNode } from "react";
 import { default as disclosure } from "#7xsqb2bbtamg";
 import { bar as loader_bar } from "#6hfutrhvm6x6";
@@ -56,13 +56,13 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
               className: props.className,
               gap: "sm",
         })}
-        data-steps-panel=""
-        data-steps-type={model.isDisclosure ? "disclosure" : "steps"}
-        data-steps-default-copy={model.emptyCopy}
-        data-steps-default-title={model.title}
+        {...frontendDataAttrs({ "steps-panel": "" })}
+        {...frontendDataAttrs({ "steps-type": model.isDisclosure ? "disclosure" : "steps" })}
+        {...frontendDataAttrs({ "steps-default-copy": model.emptyCopy })}
+        {...frontendDataAttrs({ "steps-default-title": model.title })}
         {...model.attrs}
         >
-        <p className={primitiveTextClassName({ muted: true })} data-steps-copy="">
+        <p className={primitiveTextClassName({ muted: true })} {...frontendDataAttrs({ "steps-copy": "" })}>
         {model.emptyCopy}
         </p>
         {model.beforeList}
@@ -76,12 +76,12 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
               ),
               gap: "xs",
         })}
-        data-steps-list=""
+        {...frontendDataAttrs({ "steps-list": "" })}
         />
         </section>
       ),
       hidden: props.hidden === true,
-      label: <Title data-steps-title="">{model.title}</Title>,
+      label: <Title {...frontendDataAttrs({ "steps-title": "" })}>{model.title}</Title>,
       panelClassName: primitiveStackClassName({ gap: "sm" }),
       panelId: `${model.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "steps"}_panel`,
       rootClassName: primitiveStackClassName({ gap: "sm" }),

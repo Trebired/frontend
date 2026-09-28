@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { type CSSProperties, type ReactNode } from "react";
 import { icon, joinClassNames, toString, useRenderCurrentUrl } from "#dqy2d22qyujv";
 import {
@@ -32,11 +32,11 @@ function renderTabButton(item: tabs_item, activeId: string) {
     className={buttonClassName}
     aria-controls={item.id}
     aria-selected={isActive ? "true" : "false"}
-    data-tab-button=""
+    {...frontendDataAttrs({ "tab-button": "" })}
     {...(toString(item.route)
-        ? { "data-tab-route": toString(item.route) }
+        ? { [frontendDataAttr("tab-route")]: toString(item.route) }
         : {})}
-    {...(item.hasNestedTabs ? { "data-tab-has-nested-tabs": "true" } : {})}
+    {...(item.hasNestedTabs ? { [frontendDataAttr("tab-has-nested-tabs")]: "true" } : {})}
     hidden={item.hidden === true}
     {...(toString(item.value) ? { value: toString(item.value) } : {})}
     >
@@ -50,7 +50,7 @@ function renderAdvancedTabList(props: tabs_props, model: tabs_model) {
     <div
     {...((props.listAttributes || {}) as any)}
     className={model.listClassName}
-    data-tabs-list=""
+    {...frontendDataAttrs({ "tabs-list": "" })}
     >
     {model.items.map((item) => renderTabButton(item, model.activeId))}
     </div>
@@ -75,8 +75,8 @@ function nestedIndicatorRow(model: tabs_model) {
   return (
     <div
     className={frontendClassName("tabs-nested-indicator-row")}
-    data-tabs-nested-indicator-row=""
-    data-state={model.activeHasNestedTabs ? "active" : "inactive"}
+    {...frontendDataAttrs({ "tabs-nested-indicator-row": "" })}
+    {...frontendDataAttrs({ "state": model.activeHasNestedTabs ? "active" : "inactive" })}
     hidden={!model.activeHasNestedTabs}
     style={
       model.activeHasNestedTabs
@@ -89,7 +89,7 @@ function nestedIndicatorRow(model: tabs_model) {
     {icon({
           className: frontendClassName("tabs-nested-indicator-icon"),
           spec: "remixicon arrow-down-s-line",
-          "data-tabs-nested-indicator-icon": "",
+          [frontendDataAttr("tabs-nested-indicator-icon")]: "",
     })}
     </div>
   );
@@ -129,11 +129,11 @@ function renderTabsRow(
           }),
           toString(props.headerClassName),
     ])}
-    data-tabs-row=""
-    data-tabs-row-index={String(row.row)}
+    {...frontendDataAttrs({ "tabs-row": "" })}
+    {...frontendDataAttrs({ "tabs-row-index": String(row.row) })}
     >
     {props.headerLeading}
-    <div className={frontendClassName("tabs-row-main")} data-tabs-row-main="">
+    <div className={frontendClassName("tabs-row-main")} {...frontendDataAttrs({ "tabs-row-main": "" })}>
     {row.content}
     </div>
     </div>
@@ -146,7 +146,7 @@ function renderTabsList(props: tabs_props, model: tabs_model) {
   return (
     <div
     className={primitiveStackClassName({ className: frontendClassName("tabs-stack"), gap: "sm" })}
-    data-tabs-stack=""
+    {...frontendDataAttrs({ "tabs-stack": "" })}
     {...(model.collapseNestedSpacing ? { style: { gap: "0px" } } : {})}
     >
     {rows.map((row) => renderTabsRow(props, row, leadingRow))}
@@ -175,13 +175,13 @@ function renderFamily(props: tabs_props, model: tabs_model) {
     <div
     {...((props.familyAttributes || {}) as any)}
     className={model.familyClassName}
-    data-tabs-family=""
-    {...(model.hasNestedTabs ? { "data-tabs-has-nested-tabs": "true" } : {})}
+    {...frontendDataAttrs({ "tabs-family": "" })}
+    {...(model.hasNestedTabs ? { [frontendDataAttr("tabs-has-nested-tabs")]: "true" } : {})}
     {...(model.activeHasNestedTabs
-        ? { "data-tabs-active-has-nested-tabs": "true" }
+        ? { [frontendDataAttr("tabs-active-has-nested-tabs")]: "true" }
         : {})}
     {...(!model.activeHasNestedTabs
-        ? { "data-tabs-active-has-nested-tabs": "false" }
+        ? { [frontendDataAttr("tabs-active-has-nested-tabs")]: "false" }
         : {})}
     {...(model.familyStyle ? { style: model.familyStyle } : {})}
     >
@@ -199,10 +199,10 @@ function TabsRoot(props: tabs_props) {
     {...((props.rootAttributes || {}) as any)}
     {...(model.rootId ? { id: model.rootId } : {})}
     className={toString(props.rootClassName) || undefined}
-    data-tabs-root=""
-    {...(familyKey ? { "data-tabs-family-key": familyKey } : {})}
+    {...frontendDataAttrs({ "tabs-root": "" })}
+    {...(familyKey ? { [frontendDataAttr("tabs-family-key")]: familyKey } : {})}
     {...(props.hoistFamilyToParent
-        ? { "data-tabs-hoist-family": "true" }
+        ? { [frontendDataAttr("tabs-hoist-family")]: "true" }
         : {})}
     >
     {renderFamily(props, model)}

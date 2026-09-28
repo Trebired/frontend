@@ -1,3 +1,4 @@
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import {
   cssEscapeIdent,
   describeGraphNode,
@@ -23,10 +24,10 @@ function findGraphUnitInput(root, graphId) {
   if (!root || typeof root.querySelector !== "function") return null;
   const id = String(graphId || "");
   const inputs = Array.from(
-    root.querySelectorAll("[data-graph-unit-input]"),
+    root.querySelectorAll(frontendDataSelector("graph-unit-input")),
   ) as Element[];
   const byAttr = inputs.find(
-    (input) => String(input.getAttribute("data-graph-unit-input") || "") === id,
+    (input) => String(input.getAttribute(frontendDataAttr("graph-unit-input")) || "") === id,
   );
   if (byAttr) return byAttr;
 
@@ -37,11 +38,11 @@ function findGraphUnitDropdown(root, graphId) {
   if (!root || typeof root.querySelector !== "function") return null;
   const id = String(graphId || "");
   const dropdowns = Array.from(
-    root.querySelectorAll("[data-graph-unit-dropdown]"),
+    root.querySelectorAll(frontendDataSelector("graph-unit-dropdown")),
   ) as Element[];
   const byAttr = dropdowns.find(
     (dropdown) =>
-    String(dropdown.getAttribute("data-graph-unit-dropdown") || "") === id,
+    String(dropdown.getAttribute(frontendDataAttr("graph-unit-dropdown")) || "") === id,
   );
   if (byAttr) return byAttr;
 
@@ -56,10 +57,10 @@ function markGraphUnitDropdown(root, graphId) {
   const dropdown = findGraphUnitDropdown(root, graphId);
   const input = findGraphUnitInput(root, graphId);
   if (dropdown && typeof dropdown.setAttribute === "function") {
-    dropdown.setAttribute("data-graph-unit-dropdown", String(graphId || ""));
+    dropdown.setAttribute(frontendDataAttr("graph-unit-dropdown"), String(graphId || ""));
   }
   if (input && typeof input.setAttribute === "function") {
-    input.setAttribute("data-graph-unit-input", String(graphId || ""));
+    input.setAttribute(frontendDataAttr("graph-unit-input"), String(graphId || ""));
   }
   return {
     dropdown,
@@ -74,7 +75,7 @@ function inspectGraphUnitDropdown(root, graphId) {
   const options = getGraphUnitDropdownOptions(dropdown);
   const selected =
   options && typeof options.querySelectorAll === "function"
-  ? Array.from(options.querySelectorAll("[data-dropdown-option]"))
+  ? Array.from(options.querySelectorAll(frontendDataSelector("dropdown-option")))
   .filter((item) =>
     item instanceof HTMLElement ? dropdownOptionSelected(item) : false,
   )
@@ -94,7 +95,7 @@ function inspectGraphUnitDropdown(root, graphId) {
     options_node: describeGraphNode(options),
     options_portaled:
     options instanceof HTMLElement &&
-      options.getAttribute("data-dropdown-portaled") === "true"
+      options.getAttribute(frontendDataAttr("dropdown-portaled")) === "true"
     ? "true"
     : "",
     options_parent: describeGraphNode(options && options.parentNode),
@@ -113,7 +114,7 @@ function readGraphUnitDropdownSelection(root, graphId) {
   const selected =
   options && typeof options.querySelector === "function"
   ? options.querySelector(
-    '[data-dropdown-option][data-dropdown-selected="true"]',
+    `${frontendDataSelector("dropdown-option")}${frontendDataSelector("dropdown-selected", "true")}`,
   )
   : null;
   const selectedValue =
