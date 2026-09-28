@@ -1,5 +1,9 @@
 # Changelog
 
+## 16.2.0
+
+- The status code is the page. `shell.error.status` renders at `clamp(4.5rem, 18vw, 10rem)` in the heading weight and the page's own colour, with the title stepped down beneath it, so an error page reads as the code first and the sentence second.
+
 ## 16.1.0
 
 - An error route drops the site chrome. `siteBodyHtml({ content, footer, header, path })` composes a document body and leaves the header and footer out when the path is one of the error routes, so every site that composes its body through it gets the same bare page rather than each deciding for itself. `isErrorRoutePath` answers the same question on its own, and passing `chrome` overrides the guess — a site whose own routing decides a path is missing can say so.

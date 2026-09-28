@@ -20,16 +20,17 @@
 }
 
 #{ns.element-class("error-page", "status")} {
-  color: var(#{ns.css-var("shell-error-status-color")}, var(#{ns.css-var("text-muted")}, #666));
+  color: var(#{ns.css-var("shell-error-status-color")}, var(#{ns.css-var("text")}, #000));
   font-family: var(#{ns.css-var("shell-error-status-font-family")}, inherit);
-  font-size: var(#{ns.css-var("shell-error-status-font-size")}, 0.85rem);
-  font-weight: var(#{ns.css-var("shell-error-status-font-weight")}, 600);
-  letter-spacing: var(#{ns.css-var("shell-error-status-letter-spacing")}, 0.16em);
+  font-size: var(#{ns.css-var("shell-error-status-font-size")}, clamp(4.5rem, 18vw, 10rem));
+  font-weight: var(#{ns.css-var("shell-error-status-font-weight")}, 900);
+  letter-spacing: var(#{ns.css-var("shell-error-status-letter-spacing")}, -0.02em);
+  line-height: var(#{ns.css-var("shell-error-status-line-h")}, 0.9);
 }
 
 #{ns.element-class("error-page", "title")} {
-  font-size: var(#{ns.css-var("shell-error-title-font-size")}, clamp(2rem, 5vw, 3.25rem));
-  line-height: var(#{ns.css-var("shell-error-title-line-h")}, 1.05);
+  font-size: var(#{ns.css-var("shell-error-title-font-size")}, clamp(1.25rem, 3vw, 1.75rem));
+  line-height: var(#{ns.css-var("shell-error-title-line-h")}, 1.15);
 }
 
 #{ns.element-class("error-page", "lead")} {
