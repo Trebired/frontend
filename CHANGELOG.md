@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.15.0
+
+- A hairline panel's rules are drawn by the cells rather than by a gap showing the panel's ground. The old panel filled itself with the line colour and let a 1px gap reveal it, so every track a short last row left empty came out as a solid block of that colour — a six-item list in a four-column panel printed a grey rectangle two columns wide. Each cell now carries its own 1px ring; neighbours land on the same pixel, so the lines are unchanged, and an empty track shows the page. `surfaces.hairline.root.bg` and `surfaces.hairline.root.gap` no longer take part in drawing them, and `surfaces.hairline.cell.line` sets the colour.
+
 ## 14.14.1
 
 - `cols-2` drops to a single column at 560px. `cols-3` and `cols-4` already step down to two columns there, so `cols-2` was the only grid that kept its desktop count on a phone — a pair of cards half the width of every other card on the page.

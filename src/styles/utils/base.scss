@@ -66,9 +66,6 @@ body {
 
 #{ns.data("theme-switching", "instant")} *::after {
   transition: none !important;
-  /* Paused, not cleared: clearing drops a running animation back to its base
-     transform, so anything mid-motion jumps and jumps back when the guard
-     lifts a few hundred milliseconds later. */
   animation-play-state: paused !important;
 }
 

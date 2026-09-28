@@ -33,9 +33,6 @@ function servedLocales(routing: LocaleRouting, strategy?: LocaleStrategy): strin
   return prefixed ? routing.locales : [routing.defaultLocale];
 }
 
-/* Under prefix-all the default locale also lives behind a prefix, so the bare
-   path is emitted alongside it and keeps every link written before the switch
-   resolving to the same page. */
 function servedPaths(
   sourcePath: string,
   locale: string,

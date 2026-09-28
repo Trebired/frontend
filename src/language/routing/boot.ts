@@ -27,17 +27,12 @@ function handoffLocaleSource(): string[] {
   ];
 }
 
-/* A locale prefix in the URL is the page the visitor actually asked for, so it
-   outranks anything remembered from a previous visit. */
 function pathLocaleSource(): string[] {
   return [
     "if(!n){try{var s=(location.pathname.split('/')[1]||'');n=m(s)}catch(e){}}",
   ];
 }
 
-/* Under prefix-all every language owns a prefix, so a bare path is rewritten
-   to the prefixed one before paint rather than left sitting without a
-   language in the address bar. */
 function normalizePrefixSource(): string[] {
   return [
     "try{var pp=location.pathname.replace(/\\/+$/,'')||'/';",

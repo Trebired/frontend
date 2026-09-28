@@ -32,8 +32,6 @@ function currentLocale(): string {
 function stripLocalePrefix(pathname: string): string {
   const trimmed = String(pathname || "/").replace(/\/+$/u, "") || "/";
   const [, first = "", ...rest] = trimmed.split("/");
-  /* Under prefix-all the default locale is prefixed too, so it is a prefix to
-     strip rather than the first segment of the route. */
   const ownPrefix = first === routing.defaultLocale && prefixesEveryLocale(routing.strategy);
   const prefixed = configured && routing.locales.includes(first) && (first !== routing.defaultLocale || ownPrefix);
   if (!prefixed) return trimmed;

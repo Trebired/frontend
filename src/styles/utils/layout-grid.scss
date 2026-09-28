@@ -61,8 +61,6 @@
     }
   }
 
-  /* cols-2 has no two-column step to fall back to, so it collapses here with
-     the rest rather than keeping two columns narrower than any other grid. */
   @media (max-width: 560px) {
     &.cols-2 {
       grid-template-columns: 1fr;
@@ -74,7 +72,6 @@
     }
   }
 
-  /* Declared last so it wins the column count from any modifier above it. */
   @media (max-width: 560px) {
     &.stack-mobile {
       grid-template-columns: 1fr;

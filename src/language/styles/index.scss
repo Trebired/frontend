@@ -4,9 +4,6 @@
   min-width: 170px;
 }
 
-/* Compounded with the button class throughout: the trigger is a button, and a
-   site's own button sizing is declared after these rules, so a plain
-   .tbf-locale-trigger loses every property it shares with it. */
 #{ns.class("button")}#{ns.class("locale-trigger")} {
   gap: var(#{ns.css-var("shell-language-trigger-gap")}, var(#{ns.css-var("gap-xs")}, 8px));
   height: var(#{ns.css-var("shell-language-trigger-height")}, 32px);
@@ -17,9 +14,6 @@
   font-weight: var(#{ns.css-var("shell-language-trigger-font-weight")}, 600);
 }
 
-/* Compound with the button class: a plain .tbf-locale-trigger loses the
-   border race to whichever site button style happens to be declared later
-   in the bundle, since both are single-class selectors of equal specificity. */
 #{ns.class("button")}#{ns.class("locale-trigger")} {
   border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(

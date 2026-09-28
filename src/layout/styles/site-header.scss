@@ -341,8 +341,6 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, currentColor);
 }
 
-/* Compounded with the button class so the site's own button hover ground does
-   not win on source order; the brand mark carries no fill of its own. */
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:hover,
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:focus-visible,
 #{ns.class("button")}#{ns.class("site-header-brand-button")}[aria-expanded="true"] {

@@ -54,8 +54,6 @@
   -webkit-text-stroke:
   var(#{ns.css-var("typography-outline-width")}, 2px)
   var(#{ns.css-var("typography-outline-color")}, var(#{ns.css-var("text")}, #000));
-  /* The stroke follows every contour of a glyph, the inner ones included, so
-     painting it under the fill keeps the outline on the outside edge. */
   paint-order: stroke fill;
 }
 
