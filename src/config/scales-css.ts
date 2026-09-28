@@ -1,3 +1,5 @@
+import { FRONTEND_PREFIX as NS } from "#5vbaqj4pirp3";
+
 import type {
   NormalizedFrontendScalesConfig,
   NormalizedFrontendZIndexScaleConfig,
@@ -16,11 +18,11 @@ function renderSpacingScale(steps: FrontendScaleSteps): ScaleCss {
   for (const [step] of stepEntries(steps)) {
     body.push(
       `@mixin gap-${step} { gap: var(--space-${step}); }`,
-      `.gap-${step} { @include gap-${step}; }`,
-      `.mt-${step} { margin-top: var(--space-${step}); }`,
-      `.mb-${step} { margin-bottom: var(--space-${step}); }`,
-      `.ml-${step} { margin-left: var(--space-${step}); }`,
-      `.mr-${step} { margin-right: var(--space-${step}); }`,
+      `.${NS}-gap-${step} { @include gap-${step}; }`,
+      `.${NS}-mt-${step} { margin-top: var(--space-${step}); }`,
+      `.${NS}-mb-${step} { margin-bottom: var(--space-${step}); }`,
+      `.${NS}-ml-${step} { margin-left: var(--space-${step}); }`,
+      `.${NS}-mr-${step} { margin-right: var(--space-${step}); }`,
     );
   }
   return { body, vars };
@@ -32,14 +34,14 @@ function renderPaddingScale(steps: FrontendScaleSteps): ScaleCss {
   for (const [step, v] of stepEntries(steps)) {
     body.push(
       `@mixin padding-${step} { padding: ${v}px; }`,
-      `.padding-${step} { @include padding-${step}; --scroll-min-padding-bottom: ${v}px; }`,
+      `.${NS}-padding-${step} { @include padding-${step}; --scroll-min-padding-bottom: ${v}px; }`,
     );
     for (const side of sides) {
       const extra = side === "bottom" ? ` --scroll-min-padding-bottom: ${v}px;` : "";
-      body.push(`.padding-${side}-${step} { padding-${side}: ${v}px;${extra} }`);
+      body.push(`.${NS}-padding-${side}-${step} { padding-${side}: ${v}px;${extra} }`);
     }
   }
-  body.push(".padding-0 { padding: 0; }");
+  body.push(`.${NS}-padding-0 { padding: 0; }`);
   return { body, vars: [] };
 }
 
@@ -54,7 +56,7 @@ function renderRadiusScale(steps: FrontendScaleSteps): ScaleCss {
     vars.push(`  --radius-${step}: ${v}px;`);
     body.push(
       radiusValueMixin(`radius-${step}`, `${v}px`),
-      `.radius-${step} { @include radius-${step}(true); }`,
+      `.${NS}-radius-${step} { @include radius-${step}(true); }`,
     );
   }
   if (Object.prototype.hasOwnProperty.call(steps, "lg")) {
@@ -82,19 +84,19 @@ function renderHeightScale(steps: FrontendScaleSteps): ScaleCss {
   for (const [step, v] of stepEntries(steps)) {
     vars.push(`  --height-${step}: ${v}px;`);
     body.push(
-      `.height-${step} { height: var(--height-${step}) !important; }`,
-      `.min-height-${step} { min-height: var(--height-${step}) !important; }`,
-      `.max-height-${step} { max-height: var(--height-${step}) !important; }`,
+      `.${NS}-height-${step} { height: var(--height-${step}) !important; }`,
+      `.${NS}-min-height-${step} { min-height: var(--height-${step}) !important; }`,
+      `.${NS}-max-height-${step} { max-height: var(--height-${step}) !important; }`,
     );
   }
   if (Object.keys(steps).length) {
     body.push(
-      ".height-max { height: 100% !important; }",
-      ".min-height-max { min-height: 100% !important; }",
-      ".max-height-max { max-height: 100% !important; }",
-      ".height-fit { height: fit-content !important; }",
-      ".min-height-fit { min-height: fit-content !important; }",
-      ".max-height-fit { max-height: fit-content !important; }",
+      `.${NS}-height-max { height: 100% !important; }`,
+      `.${NS}-min-height-max { min-height: 100% !important; }`,
+      `.${NS}-max-height-max { max-height: 100% !important; }`,
+      `.${NS}-height-fit { height: fit-content !important; }`,
+      `.${NS}-min-height-fit { min-height: fit-content !important; }`,
+      `.${NS}-max-height-fit { max-height: fit-content !important; }`,
     );
   }
   return { body, vars };
@@ -102,13 +104,13 @@ function renderHeightScale(steps: FrontendScaleSteps): ScaleCss {
 
 function renderWidthScale(steps: FrontendScaleSteps): ScaleCss {
   const body = stepEntries(steps).map(
-    ([step, v]) => `.width-${step} { width: min(100%, ${v}px) !important; }`,
+    ([step, v]) => `.${NS}-width-${step} { width: min(100%, ${v}px) !important; }`,
   );
   return { body, vars: [] };
 }
 
 function renderTextSizeScale(steps: FrontendScaleSteps): ScaleCss {
-  const body = stepEntries(steps).map(([step, v]) => `.text-${step} { font-size: ${v}px; }`);
+  const body = stepEntries(steps).map(([step, v]) => `.${NS}-text-${step} { font-size: ${v}px; }`);
   return { body, vars: [] };
 }
 
@@ -117,7 +119,7 @@ function renderLineHeightScale(steps: FrontendScaleSteps): ScaleCss {
   for (const [step, v] of stepEntries(steps)) {
     body.push(
       `@mixin lh-${step} { line-height: ${v}; }`,
-      `.lh-${step} { @include lh-${step}; }`,
+      `.${NS}-lh-${step} { @include lh-${step}; }`,
     );
   }
   return { body, vars: [] };
@@ -128,7 +130,7 @@ function renderZIndexScale(config: NormalizedFrontendZIndexScaleConfig): ScaleCs
   const body: string[] = [];
   for (const [step, v] of stepEntries(config.steps)) {
     vars.push(`  --z-index-${step}: ${v};`);
-    body.push(`.z-index-${step} { z-index: var(--z-index-${step}); }`);
+    body.push(`.${NS}-z-index-${step} { z-index: var(--z-index-${step}); }`);
   }
   if (config.layerRoot) vars.push(`  --z-layer-root: var(--z-index-${config.layerRoot});`);
   if (config.progress) vars.push(`  --z-progress: var(--z-index-${config.progress});`);

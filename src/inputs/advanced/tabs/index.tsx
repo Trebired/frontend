@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { type CSSProperties, type ReactNode } from "react";
 import { icon, joinClassNames, toString, useRenderCurrentUrl } from "#dqy2d22qyujv";
 import {
@@ -14,13 +15,13 @@ import { buildTabsModel, routeInitialValue } from "./model.js";
 import "./client.js";
 
 function renderTabContent(item: tabs_item) {
-  return <span className="tab-label">{item.label}</span>;
+  return <span className={frontendClassName("tab-label")}>{item.label}</span>;
 }
 
 function renderTabButton(item: tabs_item, activeId: string) {
   const isActive = toString(item.id) === activeId;
   const buttonClassName = joinClassNames([
-      "tab",
+      frontendClassName("tab"),
       toString(item.buttonClassName),
   ]);
   return (
@@ -73,7 +74,7 @@ function nestedIndicatorRow(model: tabs_model) {
   if (!model.hasNestedTabs) return null;
   return (
     <div
-    className="tabs-nested-indicator-row"
+    className={frontendClassName("tabs-nested-indicator-row")}
     data-tabs-nested-indicator-row=""
     data-state={model.activeHasNestedTabs ? "active" : "inactive"}
     hidden={!model.activeHasNestedTabs}
@@ -122,7 +123,7 @@ function renderTabsRow(
     key={`tabs_row_${row.row}`}
     className={joinClassNames([
           primitiveInlineRowClassName({
-              className: "tabs-row",
+              className: frontendClassName("tabs-row"),
               gap: "sm",
               verticalCenter: true,
           }),
@@ -132,7 +133,7 @@ function renderTabsRow(
     data-tabs-row-index={String(row.row)}
     >
     {props.headerLeading}
-    <div className="tabs-row-main" data-tabs-row-main="">
+    <div className={frontendClassName("tabs-row-main")} data-tabs-row-main="">
     {row.content}
     </div>
     </div>
@@ -144,7 +145,7 @@ function renderTabsList(props: tabs_props, model: tabs_model) {
   const leadingRow = resolvedLeadingRow(model, rows);
   return (
     <div
-    className={primitiveStackClassName({ className: "tabs-stack", gap: "sm" })}
+    className={primitiveStackClassName({ className: frontendClassName("tabs-stack"), gap: "sm" })}
     data-tabs-stack=""
     {...(model.collapseNestedSpacing ? { style: { gap: "0px" } } : {})}
     >

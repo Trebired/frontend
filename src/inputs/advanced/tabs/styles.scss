@@ -2,12 +2,12 @@
 $tabs-pane-animation-ms: 290ms;
 $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
-.tabs {
+#{ns.class("tabs")} {
   display: flex;
   width: 100%;
   gap: var(#{ns.css-var("ui-tabs-list-gap")}, var(#{ns.css-var("gap-xs")}));
 
-  .tab {
+  #{ns.class("tab")} {
     flex: 1 1 0;
     min-width: 0;
     max-width: 100%;
@@ -34,7 +34,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
       color: var(#{ns.css-var("ui-tabs-state-hover-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
     }
 
-    &.active,
+    &#{ns.class("active")},
     &[aria-selected="true"],
     &#{ns.data("active", "true")},
     &[data-active="true"] {
@@ -43,7 +43,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
       color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
     }
 
-    .tab-label {
+    #{ns.class("tab-label")} {
       display: block;
       font-family: inherit;
       white-space: nowrap;
@@ -67,16 +67,16 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
-.tabs-stack {
+#{ns.class("tabs-stack")} {
   width: 100%;
 }
 
-.tabs-row {
+#{ns.class("tabs-row")} {
   width: 100%;
   min-width: 0;
 }
 
-.tabs-row-main {
+#{ns.class("tabs-row-main")} {
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -88,7 +88,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   display: none;
 }
 
-.tabs-nested-indicator-row {
+#{ns.class("tabs-nested-indicator-row")} {
   position: relative;
   width: 100%;
   height: 16px;
@@ -102,7 +102,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
-.tabs-nested-indicator-icon {
+#{ns.class("tabs-nested-indicator-icon")} {
   position: absolute;
   left: var(--tabs-nested-indicator-left, 50%);
   top: 50%;
@@ -113,21 +113,21 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
-.tabs-nested-indicator-row[data-state="inactive"] .tabs-nested-indicator-icon {
+#{ns.class("tabs-nested-indicator-row")}[data-state="inactive"] #{ns.class("tabs-nested-indicator-icon")} {
   opacity: 0;
   transform: translate(-50%, calc(-50% - 4px));
 }
 
-.tabs-nested-indicator-row[data-state="active"] .tabs-nested-indicator-icon {
+#{ns.class("tabs-nested-indicator-row")}[data-state="active"] #{ns.class("tabs-nested-indicator-icon")} {
   opacity: 1;
   transform: translate(-50%, -50%);
 }
 
-[data-tabs-ready="true"] .tabs-nested-indicator-row {
+[data-tabs-ready="true"] #{ns.class("tabs-nested-indicator-row")} {
   transition: opacity $tabs-pane-animation-ms $tabs-pane-animation-easing;
 }
 
-[data-tabs-ready="true"] .tabs-nested-indicator-icon {
+[data-tabs-ready="true"] #{ns.class("tabs-nested-indicator-icon")} {
   transition:
   left $tabs-pane-animation-ms $tabs-pane-animation-easing,
   opacity $tabs-pane-animation-ms $tabs-pane-animation-easing,
@@ -135,11 +135,11 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (max-width: 640px) {
-  .tabs {
+  #{ns.class("tabs")} {
     flex-wrap: wrap;
   }
 
-  .tabs .tab {
+  #{ns.class("tabs")} #{ns.class("tab")} {
     flex: 1 1 calc(50% - 8px);
     height: var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px);
     font-size: var(#{ns.css-var("ui-tabs-resp-mobile-font-size")}, 13px);
@@ -148,7 +148,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (max-width: 380px) {
-  .tabs .tab {
+  #{ns.class("tabs")} #{ns.class("tab")} {
     flex-basis: 100%;
   }
 }

@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { Fragment } from "react";
 import { button, icon, stringifyJsonForHtml, toString } from "#dqy2d22qyujv";
 import input from "#8y47rueq20kg";
@@ -44,7 +45,7 @@ function searchTop(model: ReturnType<typeof dropdownModel>) {
     return null;
   }
   return (
-    <div className="dropdown-top" data-dropdown-ignore="">
+    <div className={frontendClassName("dropdown-top")} data-dropdown-ignore="">
     <InlineRow gap="xs">
     {search_query_input({
           children: input({
@@ -94,7 +95,7 @@ function optionNode(
   hasSections && optSection && optSection !== currentSection ? (
     <li
     key={`section_${optSection}`}
-    className="dropdown-section"
+    className={frontendClassName("dropdown-section")}
     data-dropdown-section-heading={optSection}
     >
     {optSection}
@@ -103,7 +104,7 @@ function optionNode(
   const optionContent = (
     <>
     {model.isMultiple && !model.shouldHideChecks ? (
-        <span className="dropdown-check" aria-hidden="true">
+        <span className={frontendClassName("dropdown-check")} aria-hidden="true">
         {icon({ spec: "remixicon check-line" })}
         </span>
       ) : null}
@@ -161,7 +162,7 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
   return (
     <div
     id={model.optionsId}
-    className="options"
+    className={frontendClassName("options")}
     data-dropdown-options=""
     data-dropdown-portaled="true"
     {...(model.isSearchable ? { "data-search-panel-root": "" } : {})}
@@ -175,7 +176,7 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     {model.topNode}
     {searchTop(model)}
     <ul
-    className="dropdown-list"
+    className={frontendClassName("dropdown-list")}
     data-dropdown-list=""
     id={model.listElementId || undefined}
     >
@@ -191,7 +192,7 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
     {model.isSearchable ? (
         <div
         className={primitiveTextClassName({
-              className: "dropdown-empty",
+              className: frontendClassName("dropdown-empty"),
               muted: true,
               size: "sm",
         })}
@@ -235,7 +236,7 @@ function dropdownNode(
     }
     {...mapAttrs(props.inputProps)}
     />
-    <div className="dropdown-label" data-dropdown-label="">
+    <div className={frontendClassName("dropdown-label")} data-dropdown-label="">
     {model.initialHtml || model.initialLabel}
     </div>
     {optionsPanel(model)}
@@ -249,7 +250,7 @@ function advancedDropdown(props: dropdown_props) {
   if (!model.labelText) return node;
   return (
     <div className={model.wrapperClass}>
-    <span className="label">{model.labelText}</span>
+    <span className={frontendClassName("label")}>{model.labelText}</span>
     {node}
     </div>
   );

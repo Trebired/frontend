@@ -102,51 +102,51 @@
   pointer-events: none;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-h {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-h")} {
   top: calc(100% / 3);
   left: 0;
   width: 100%;
   height: calc(100% / 3);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-h::before,
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-h")}::before,
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-h::after {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-h")}::after {
   left: 0;
   width: 100%;
   height: calc(var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px) * 2);
   background: var(#{ns.css-var("upload-cropper-guide-horizontal")});
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-h::before {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-h")}::before {
   top: 0;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-h::after {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-h")}::after {
   bottom: 0;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-v {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-v")} {
   top: 0;
   left: calc(100% / 3);
   width: calc(100% / 3);
   height: 100%;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-v::before,
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-v")}::before,
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-v::after {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-v")}::after {
   top: 0;
   width: calc(var(#{ns.css-var("ui-upload-cropper-stage-guide-width")}, 1px) * 2);
   height: 100%;
   background: var(#{ns.css-var("upload-cropper-guide-vertical")});
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-v::before {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-v")}::before {
   left: 0;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-dashed.dashed-v::after {
+#{ns.element-class("upload-crop", "stage")} .cropper-dashed#{ns.class("dashed-v")}::after {
   right: 0;
 }
 
@@ -204,37 +204,37 @@
   z-index: 6;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-e,
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-e")},
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-w {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-w")} {
   top: 0;
   width: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * 2);
   height: 100%;
   cursor: ew-resize;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-e {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-e")} {
   right: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * -1);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-w {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-w")} {
   left: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * -1);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-n,
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-n")},
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-s {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-s")} {
   left: 0;
   width: 100%;
   height: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * 2);
   cursor: ns-resize;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-n {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-n")} {
   top: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * -1);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-line.line-s {
+#{ns.element-class("upload-crop", "stage")} .cropper-line#{ns.class("line-s")} {
   bottom: calc(var(#{ns.css-var("ui-upload-cropper-stage-line-width")}, 1px) * -1);
 }
 
@@ -255,29 +255,29 @@
   z-index: 5;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-e, .point-w) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-e")}, #{ns.class("point-w")}) {
   top: 50%;
   #{ns.css-var("upload-cropper-point-y")}: -50%;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-n, .point-s) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-n")}, #{ns.class("point-s")}) {
   left: 50%;
   #{ns.css-var("upload-cropper-point-x")}: -50%;
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-e, .point-ne, .point-se) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-e")}, #{ns.class("point-ne")}, #{ns.class("point-se")}) {
   right: var(#{ns.css-var("ui-upload-cropper-stage-point-inset")}, 0);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-w, .point-nw, .point-sw) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-w")}, #{ns.class("point-nw")}, #{ns.class("point-sw")}) {
   left: var(#{ns.css-var("ui-upload-cropper-stage-point-inset")}, 0);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-n, .point-ne, .point-nw) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-n")}, #{ns.class("point-ne")}, #{ns.class("point-nw")}) {
   top: var(#{ns.css-var("ui-upload-cropper-stage-point-inset")}, 0);
 }
 
-#{ns.element-class("upload-crop", "stage")} .cropper-point:is(.point-s, .point-se, .point-sw) {
+#{ns.element-class("upload-crop", "stage")} .cropper-point:is(#{ns.class("point-s")}, #{ns.class("point-se")}, #{ns.class("point-sw")}) {
   bottom: var(#{ns.css-var("ui-upload-cropper-stage-point-inset")}, 0);
 }
 

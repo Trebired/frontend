@@ -1,16 +1,16 @@
 @use "@trebired/bundler/namespace" as ns;
-.input-status-wrap {
+#{ns.class("input-status-wrap")} {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-status-wrap .input {
+#{ns.class("input-status-wrap")} #{ns.class("input")} {
   flex: 1;
   padding-right: 32px;
 }
 
-.input-status-icon {
+#{ns.class("input-status-icon")} {
   position: absolute;
   right: 9px;
   display: flex;
@@ -18,15 +18,15 @@
   pointer-events: none;
 }
 
-.input-status-icon.has-tooltip {
+#{ns.class("input-status-icon")}#{ns.class("has-tooltip")} {
   cursor: help;
   pointer-events: auto;
 }
 
-.input-status-icon.ok {
+#{ns.class("input-status-icon")}#{ns.class("ok")} {
   color: var(#{ns.css-var("status-success-color")}, var(#{ns.css-var("focus")}, currentColor));
 }
 
-.input-status-icon.bad {
+#{ns.class("input-status-icon")}#{ns.class("bad")} {
   color: var(#{ns.css-var("status-error-color")}, var(#{ns.css-var("focus")}, currentColor));
 }

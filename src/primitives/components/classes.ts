@@ -1,3 +1,5 @@
+import { frontendClassName, frontendClassName as ns, frontendClassNames } from "#5vbaqj4pirp3";
+
 import { appendClassName, joinClassNames, toText } from "./shared.js";
 
 type PrimitiveGap = "2xs" | "lg" | "md" | "sm" | "xs" | "xs2";
@@ -86,83 +88,83 @@ type PrimitiveTextClassOptions = {
 };
 
 function primitiveGapClass(gap?: PrimitiveGap) {
-  return gap ? `gap-${gap}` : "";
+  return gap ? ns(`gap-${gap}`) : "";
 }
 
 function primitivePaddingClass(padding?: PrimitivePadding) {
-  return padding ? `padding-${padding}` : "";
+  return padding ? ns(`padding-${padding}`) : "";
 }
 
 function primitiveButtonTone(options: PrimitiveButtonClassOptions) {
   const tone = options.tone || options.variant;
   if (tone === "classic" || tone === "default") return "";
-  return tone || "";
+  return tone ? ns(tone) : "";
 }
 
 function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
   return appendClassName(
-    "btn",
-    options.icon ? "icon" : "",
-    options.size,
+    frontendClassName("btn"),
+    options.icon ? frontendClassName("icon") : "",
+    options.size ? ns(options.size) : "",
     primitiveButtonTone(options),
-    options.active ? "active" : "",
-    options.icon && options.tooltip ? "has-tooltip" : "",
-    options.transparent ? "transparent" : "",
+    options.active ? frontendClassName("active") : "",
+    options.icon && options.tooltip ? frontendClassName("has-tooltip") : "",
+    options.transparent ? frontendClassName("transparent") : "",
     options.className,
   );
 }
 
 function primitiveInputClassName(options: PrimitiveInputClassOptions = {}) {
   return appendClassName(
-    "input classic",
-    options.size,
-    options.tone,
+    frontendClassNames("input", "classic"),
+    options.size ? ns(options.size) : "",
+    options.tone ? ns(options.tone) : "",
     options.className,
   );
 }
 
 function primitiveTextareaClassName(options: PrimitiveTextareaClassOptions = {}) {
   return appendClassName(
-    "textarea classic",
-    options.tone,
+    frontendClassNames("textarea", "classic"),
+    options.tone ? ns(options.tone) : "",
     options.className,
   );
 }
 
 function primitiveStackClassName(options: PrimitiveStackClassOptions = {}) {
   return joinClassNames(
-    "column",
+    frontendClassName("column"),
     primitiveGapClass(options.gap),
-    options.center ? "center" : "",
-    options.horizontalCenter ? "hor-center" : "",
-    options.verticalCenter ? "ver-center" : "",
-    options.grow ? "grow" : "",
-    options.noShrink ? "no-shrink" : "",
+    options.center ? frontendClassName("center") : "",
+    options.horizontalCenter ? frontendClassName("hor-center") : "",
+    options.verticalCenter ? frontendClassName("ver-center") : "",
+    options.grow ? frontendClassName("grow") : "",
+    options.noShrink ? frontendClassName("no-shrink") : "",
     options.className,
   );
 }
 
 function primitiveInlineRowClassName(options: PrimitiveInlineRowClassOptions = {}) {
   return joinClassNames(
-    "inline-row",
+    frontendClassName("inline-row"),
     primitiveGapClass(options.gap),
-    options.apart ? "apart" : "",
-    options.between ? "between" : "",
-    options.fit ? "fit-content" : "",
-    options.noShrink ? "no-shrink" : "",
-    options.noStretch ? "no-stretch" : "",
-    options.top ? "top" : "",
-    options.verticalCenter ? "ver-center" : "",
-    options.wrap ? "wrap" : "",
+    options.apart ? frontendClassName("apart") : "",
+    options.between ? frontendClassName("between") : "",
+    options.fit ? frontendClassName("fit-content") : "",
+    options.noShrink ? frontendClassName("no-shrink") : "",
+    options.noStretch ? frontendClassName("no-stretch") : "",
+    options.top ? frontendClassName("top") : "",
+    options.verticalCenter ? frontendClassName("ver-center") : "",
+    options.wrap ? frontendClassName("wrap") : "",
     options.className,
   );
 }
 
 function primitiveGridClassName(options: PrimitiveGridClassOptions = {}) {
   return joinClassNames(
-    "grid",
-    options.auto ? `auto-${options.auto}` : "",
-    options.columns ? `cols-${options.columns}` : "",
+    frontendClassName("grid"),
+    options.auto ? ns(`auto-${options.auto}`) : "",
+    options.columns ? ns(`cols-${options.columns}`) : "",
     primitiveGapClass(options.gap),
     options.className,
   );
@@ -173,31 +175,31 @@ function primitiveCardClassName(options: PrimitiveCardClassOptions = {}) {
   const usesStackLayout = options.layout === "column" ||
     Boolean(options.gap || options.center || options.horizontalCenter || options.verticalCenter || options.grow || options.noShrink);
   return joinClassNames(
-    "card",
+    frontendClassName("card"),
     options.layout === "none" || !usesStackLayout ? "" : primitiveStackClassName(stackOptions),
     primitivePaddingClass(options.padding),
-    options.scroll ? "scroll scroll-min" : "",
+    options.scroll ? frontendClassNames("scroll", "scroll-min") : "",
     className,
   );
 }
 
 function primitiveCardRowClassName(options: PrimitiveCardRowClassOptions = {}) {
   return joinClassNames(
-    "card-row",
-    options.selected ? "selected" : "",
-    options.excluded ? "excluded" : "",
+    frontendClassName("card-row"),
+    options.selected ? frontendClassName("selected") : "",
+    options.excluded ? frontendClassName("excluded") : "",
     options.className,
   );
 }
 
 function primitiveTextClassName(options: PrimitiveTextClassOptions = {}) {
   return joinClassNames(
-    options.muted ? "text-muted" : "",
-    options.size ? `text-${options.size}` : "",
-    options.breakWord ? "text-break" : "",
-    options.truncate ? "truncate-1" : "",
-    options.widthFit ? "width-fit" : "",
-    options.right ? "right" : "",
+    options.muted ? frontendClassName("text-muted") : "",
+    options.size ? ns(`text-${options.size}`) : "",
+    options.breakWord ? frontendClassName("text-break") : "",
+    options.truncate ? frontendClassName("truncate-1") : "",
+    options.widthFit ? frontendClassName("width-fit") : "",
+    options.right ? frontendClassName("right") : "",
     options.className,
   );
 }
@@ -208,9 +210,9 @@ function primitiveStatusDotClassName(options: {
     tone?: string;
   } = {}) {
   return joinClassNames(
-    "dot",
-    `dot-${toText(options.size, "md").toLowerCase()}`,
-    toText(options.tone, "gray").toLowerCase(),
+    frontendClassName("dot"),
+    ns(`dot-${toText(options.size, "md").toLowerCase()}`),
+    ns(toText(options.tone, "gray").toLowerCase()),
     options.className,
   );
 }

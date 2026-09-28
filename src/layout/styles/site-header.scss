@@ -336,13 +336,17 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 }
 
 #{ns.class("site-header-brand-button")}:hover,
+
 #{ns.class("site-header-brand-button")}:focus-visible,
+
 #{ns.class("site-header-brand-button")}[aria-expanded="true"] {
   color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, currentColor);
 }
 
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:hover,
+
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:focus-visible,
+
 #{ns.class("button")}#{ns.class("site-header-brand-button")}[aria-expanded="true"] {
   border-color: transparent;
   background: var(#{ns.css-var("shell-header-brand-button-hover-bg")}, transparent);

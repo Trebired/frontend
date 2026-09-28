@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 import { fullscreenSupported, toggleFullscreen } from "#e1wjbzbsyghi";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { useResolvedLang } from "./lang.js";
@@ -99,7 +99,7 @@ function EmbedStatus({ headline, reason }: { headline: string; reason?: string }
     <div className={frontendClassName("embed-frame-status")} role="status">
     {reason
       ? <RemixIcon name="error-warning-line" className={frontendClassName("embed-frame-mark")} />
-      : <div className="loader-circle lg" aria-hidden="true" />}
+      : <div className={frontendClassNames("loader-circle", "lg")} aria-hidden="true" />}
     <p className={frontendClassName("embed-frame-headline")}>{headline}</p>
     {reason ? <p className={frontendClassName("embed-frame-reason")}>{reason}</p> : null}
     </div>

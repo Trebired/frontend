@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import type { ReactNode } from "react";
 import type {
   CardItemProps,
@@ -83,7 +84,7 @@ function card_item(props: CardItemProps) {
 
 function titleDescriptionCard(props: { description: ReactNode; title: ReactNode }) {
   return card({
-      children: <TitleDescription className="title-desc" description={props.description} title={props.title} />,
+      children: <TitleDescription className={frontendClassName("title-desc")} description={props.description} title={props.title} />,
       gap: "sm",
   });
 }

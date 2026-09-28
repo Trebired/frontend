@@ -1,3 +1,5 @@
+import { joinClassNames } from "#dqy2d22qyujv";
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
 import type { ReactNode } from "react";
@@ -55,14 +57,18 @@ function toggleSideButton(props: {
     <button
     key={value}
     type="button"
-    className={`toggle-side${isActive ? " active" : ""}${isAvailable ? "" : " is-unavailable"}`}
+    className={joinClassNames(
+        frontendClassName("toggle-side"),
+        isActive ? frontendClassName("active") : "",
+        isAvailable ? "" : frontendClassName("is-unavailable"),
+    )}
     data-toggle-option=""
     data-value={value}
     aria-pressed={isActive ? "true" : "false"}
     >
-    <span className="toggle-side-label">{option && option.label}</span>
+    <span className={frontendClassName("toggle-side-label")}>{option && option.label}</span>
     {note ? (
-        <span className={primitiveTextClassName({ className: "toggle-side-note", muted: true })}>{note}</span>
+        <span className={primitiveTextClassName({ className: frontendClassName("toggle-side-note"), muted: true })}>{note}</span>
       ) : null}
     </button>
   );
@@ -98,8 +104,8 @@ function toggleHandle(
       className: "toggle-handle",
       children: (
         <>
-        <span className="toggle-track" aria-hidden="true">
-        <span className="toggle-thumb" />
+        <span className={frontendClassName("toggle-track")} aria-hidden="true">
+        <span className={frontendClassName("toggle-thumb")} />
         </span>
         </>
       ),
@@ -124,7 +130,7 @@ function toggle(props: toggle_props) {
     data-toggle-value={currentValue}
     >
     {toggleHiddenInput(inputName, inputId, currentValue)}
-    <div className="toggle" data-toggle-ui="">
+    <div className={frontendClassName("toggle")} data-toggle-ui="">
     {toggleSideButton({
           currentValue,
           index: 0,

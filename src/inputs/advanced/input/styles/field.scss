@@ -29,7 +29,7 @@ $frontend-input-tones: (
 
 @mixin classic-field-sizes {
   @each $name, $size in $frontend-input-sizes {
-    &.#{$name} {
+    &#{ns.class($name)} {
       height: var(#{ns.css-var("ui-input-sizes-")}#{$name}-height, #{list.nth($size, 1)});
       padding: var(#{ns.css-var("ui-input-sizes-")}#{$name}-padding, #{list.nth($size, 2)});
       font-size: var(#{ns.css-var("ui-input-sizes-")}#{$name}-font-size, #{list.nth($size, 3)});
@@ -39,7 +39,7 @@ $frontend-input-tones: (
 
 @mixin classic-field-tones {
   @each $name, $color in $frontend-input-tones {
-    &.#{$name} {
+    &#{ns.class($name)} {
       border-color: $color;
 
       &:focus {

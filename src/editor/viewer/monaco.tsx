@@ -13,7 +13,7 @@ import {
   upsertReadonlyModel,
 } from "./shared.js";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
-import { frontendEventName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendEventName } from "#5vbaqj4pirp3";
 
 const editorViewerThemeHandlers = new WeakMap<HTMLElement, () => void>();
 
@@ -250,7 +250,7 @@ function MonacoHost(props: any) {
   return (
     <div
     ref={props.hostRef}
-    className="width-max"
+    className={frontendClassName("width-max")}
     style={{
         height: "100%",
         minHeight: Number.isFinite(props.minHeight) ? Number(props.minHeight) : 520,

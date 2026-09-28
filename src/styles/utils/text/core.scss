@@ -1,55 +1,56 @@
 @use "@trebired/bundler/namespace" as ns;
-.width-max {
+#{ns.class("width-max")} {
   width: 100% !important;
   max-width: 100% !important;
 }
 
-.width-fit {
+#{ns.class("width-fit")} {
   width: fit-content !important;
   max-width: 100% !important;
 }
 
-.text-muted {
+#{ns.class("text-muted")} {
   color: var(#{ns.css-var("text-muted")}, #000);
 }
 
-.text-xs {
+#{ns.class("text-xs")} {
   font-size: 12px;
 }
 
-.text-sm,
-.text-small {
+#{ns.class("text-sm")},
+
+#{ns.class("text-small")} {
   font-size: 14px;
 }
 
-.text-md {
+#{ns.class("text-md")} {
   font-size: 16px;
 }
 
-.text-lg {
+#{ns.class("text-lg")} {
   font-size: 20px;
 }
 
-.text-break {
+#{ns.class("text-break")} {
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-.truncate-1 {
+#{ns.class("truncate-1")} {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.no-select {
+#{ns.class("no-select")} {
   -webkit-user-select: none;
   user-select: none;
 }
 
-.text-outline {
+#{ns.class("text-outline")} {
   color: var(#{ns.css-var("typography-outline-fill")}, var(#{ns.css-var("page")}, #fff));
   -webkit-text-stroke:
   var(#{ns.css-var("typography-outline-width")}, 2px)
@@ -57,11 +58,11 @@
   paint-order: stroke fill;
 }
 
-.list-plain {
+#{ns.class("list-plain")} {
   padding-inline-start: 0;
   list-style: none;
 }
 
-.text-center {
+#{ns.class("text-center")} {
   text-align: center;
 }

@@ -1,3 +1,4 @@
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 import { Grid, Stack, card } from "#hzrmwbvgt2ax";
 import { createLocalTranslator } from "./shared.js";
 
@@ -20,9 +21,9 @@ function stats_breakdown(props: stats_breakdown_props) {
           gap: "xs",
           children: (
             <>
-            <span className="label">{labels.levels || localT("levels")}</span>
+            <span className={frontendClassName("label")}>{labels.levels || localT("levels")}</span>
             <Stack
-            className="max-height-lg scroll scroll-min"
+            className={frontendClassNames("max-height-lg", "scroll", "scroll-min")}
             gap="xs"
             id={String(props.levelStatsId || "")}
             />
@@ -33,9 +34,9 @@ function stats_breakdown(props: stats_breakdown_props) {
           gap: "xs",
           children: (
             <>
-            <span className="label">{labels.groups || localT("groups")}</span>
+            <span className={frontendClassName("label")}>{labels.groups || localT("groups")}</span>
             <Stack
-            className="max-height-lg scroll scroll-min"
+            className={frontendClassNames("max-height-lg", "scroll", "scroll-min")}
             gap="xs"
             id={String(props.groupStatsId || "")}
             />

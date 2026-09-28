@@ -24,7 +24,7 @@
   visibility 0s linear var(#{ns.css-var("transition-fast")});
 }
 
-#{ns.class("popover")}.show,
+#{ns.class("popover")}#{ns.class("show")},
 
 #{ns.data("popover")}#{ns.data("open", "true")} {
   visibility: visible;
@@ -37,11 +37,11 @@
   visibility 0s;
 }
 
-#{ns.class("popover")} :where(a, button).popover-item,
+#{ns.class("popover")} :where(a, button)#{ns.class("popover-item")},
 
 #{ns.class("popover")} > :where(a, button),
 
-#{ns.data("popover")} :where(a, button).popover-item,
+#{ns.data("popover")} :where(a, button)#{ns.class("popover-item")},
 
 #{ns.data("popover")} > :where(a, button) {
   display: flex;
@@ -69,17 +69,17 @@
   transform var(#{ns.css-var("transition-fast")}) ease;
 }
 
-#{ns.class("popover")} :where(a, button).popover-item:hover,
+#{ns.class("popover")} :where(a, button)#{ns.class("popover-item")}:hover,
 
-#{ns.class("popover")} :where(a, button).popover-item:focus,
+#{ns.class("popover")} :where(a, button)#{ns.class("popover-item")}:focus,
 
 #{ns.class("popover")} > :where(a, button):hover,
 
 #{ns.class("popover")} > :where(a, button):focus,
 
-#{ns.data("popover")} :where(a, button).popover-item:hover,
+#{ns.data("popover")} :where(a, button)#{ns.class("popover-item")}:hover,
 
-#{ns.data("popover")} :where(a, button).popover-item:focus,
+#{ns.data("popover")} :where(a, button)#{ns.class("popover-item")}:focus,
 
 #{ns.data("popover")} > :where(a, button):hover,
 
@@ -107,9 +107,9 @@
   display: none;
 }
 
-#{ns.class("popover")} :where(a, button).popover-item#{ns.data("popover-item-stacked", "true")},
+#{ns.class("popover")} :where(a, button)#{ns.class("popover-item")}#{ns.data("popover-item-stacked", "true")},
 
-#{ns.data("popover")} :where(a, button).popover-item#{ns.data("popover-item-stacked", "true")} {
+#{ns.data("popover")} :where(a, button)#{ns.class("popover-item")}#{ns.data("popover-item-stacked", "true")} {
   flex-direction: column;
   height: auto;
   align-items: flex-start;
@@ -142,7 +142,9 @@
 }
 
 #{ns.class("popover-group")}:hover,
+
 #{ns.class("popover-group")}:focus-visible,
+
 #{ns.class("popover-group")}[aria-expanded="true"] {
   color: var(#{ns.css-var("overlay-popover-group-hover-color")}, currentColor);
 }

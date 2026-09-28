@@ -13,7 +13,7 @@ import type {
   DynamicSidebarStateContext,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
   const spec =
@@ -45,7 +45,7 @@ function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {
     }
     return context.running > 0 ? (
       <span className={primitiveInlineRowClassName({
-            className: primitiveTextClassName({ className: "no-select", muted: true }),
+            className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
             gap: "xs",
             verticalCenter: true,
       })}>
@@ -56,7 +56,7 @@ function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {
   if (context.running <= 0) return null;
   return (
     <span className={primitiveInlineRowClassName({
-          className: primitiveTextClassName({ className: "no-select", muted: true }),
+          className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
           gap: "xs",
           verticalCenter: true,
     })}>

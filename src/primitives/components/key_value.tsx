@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { key_value_props, key_value_row } from "./types.js";
 import { joinClassNames, toText } from "./shared.js";
 import { separator } from "./controls.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 import {
   primitiveCardClassName,
   primitiveGridClassName,
@@ -112,7 +112,7 @@ function key_value_row_item(
   return (
     <div
     className={primitiveInlineRowClassName({
-          className: joinClassNames("lh-xs", rowClassName),
+          className: joinClassNames(frontendClassName("lh-xs"), rowClassName),
           fit: layout === "inline",
           gap: "xs2",
     })}
@@ -120,10 +120,10 @@ function key_value_row_item(
     key={`${String(row.label || "row")}_${index}`}
     >
     {layout === "inline" && index > 0 ? (
-        <span className={primitiveTextClassName({ className: "lh-xs", muted: true })}>•</span>
+        <span className={primitiveTextClassName({ className: frontendClassName("lh-xs"), muted: true })}>•</span>
       ) : null}
     <span
-    className={primitiveTextClassName({ className: "lh-xs", muted: true })}
+    className={primitiveTextClassName({ className: frontendClassName("lh-xs"), muted: true })}
     {...frontendDataAttrs({ "key-value-label": "" })}
     {...(row.label_attributes ? { "data-label-attrs-html": row.label_attributes } : {})}
     >
@@ -190,7 +190,7 @@ function key_value(props: key_value_props) {
       <div className={primitiveGridClassName({ gap: "sm" })}>
       {model.groups.map((group, index) => (
             <div className={model.wrapperClassName} key={`${String(group.title || "group")}_${index}`}>
-            {group.title ? <div className="label lh-xs">{String(group.title)}</div> : null}
+            {group.title ? <div className={frontendClassNames("label", "lh-xs")}>{String(group.title)}</div> : null}
             {model.separated ? separator({}) : null}
             <div className={model.bodyClassName}>
             {key_value_rows(Array.isArray(group.rows) ? group.rows : [], {

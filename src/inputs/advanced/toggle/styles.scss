@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-.toggle {
+#{ns.class("toggle")} {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.toggle-side {
+#{ns.class("toggle-side")} {
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -27,30 +27,30 @@
     align-items: flex-end;
   }
 
-  &.is-unavailable {
+  &#{ns.class("is-unavailable")} {
     opacity: 0.55;
   }
 }
 
-.toggle-side-label {
+#{ns.class("toggle-side-label")} {
   display: block;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
 }
 
-.toggle-side-note {
+#{ns.class("toggle-side-note")} {
   display: block;
   font-size: 12px;
   line-height: 1.3;
   white-space: normal;
 }
 
-.toggle-side.active .toggle-side-label {
+#{ns.class("toggle-side")}#{ns.class("active")} #{ns.class("toggle-side-label")} {
   color: var(#{ns.css-var("ui-toggle-active-color")}, var(--text-color, currentColor));
 }
 
-.toggle-handle {
+#{ns.class("toggle-handle")} {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
   cursor: pointer;
 }
 
-.toggle-track {
+#{ns.class("toggle-track")} {
   position: relative;
   display: inline-flex;
   width: 56px;
@@ -75,7 +75,7 @@
   border-color 120ms ease;
 }
 
-.toggle-thumb {
+#{ns.class("toggle-thumb")} {
   width: 24px;
   height: 24px;
   border-radius: 999px;
@@ -85,32 +85,32 @@
   transition: transform 140ms ease;
 }
 
-.toggle-handle[aria-checked="true"] .toggle-thumb {
+#{ns.class("toggle-handle")}[aria-checked="true"] #{ns.class("toggle-thumb")} {
   transform: translateX(24px);
 }
 
-.toggle-handle:focus-visible {
+#{ns.class("toggle-handle")}:focus-visible {
   outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
   outline-offset: 3px;
   border-radius: 999px;
 }
 
 @media (max-width: 640px) {
-  .toggle {
+  #{ns.class("toggle")} {
     gap: 10px;
   }
 
-  .toggle-track {
+  #{ns.class("toggle-track")} {
     width: 52px;
     height: 30px;
   }
 
-  .toggle-thumb {
+  #{ns.class("toggle-thumb")} {
     width: 22px;
     height: 22px;
   }
 
-  .toggle-handle[aria-checked="true"] .toggle-thumb {
+  #{ns.class("toggle-handle")}[aria-checked="true"] #{ns.class("toggle-thumb")} {
     transform: translateX(22px);
   }
 }

@@ -17,7 +17,7 @@ import {
   toString,
   type BindActionOptions,
 } from "#aq4qe9opqpbm";
-import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function groupDropdown(model: any) {
   return dropdown({
@@ -75,14 +75,14 @@ function platformToggle(model: any) {
 
 function searchField(model: any) {
   return (
-    <div className="logs-toolbar-search-field" data-logs-raw-hide="">
-    <span className="logs-search-shell width-lg grow">
+    <div className={frontendClassName("logs-toolbar-search-field")} data-logs-raw-hide="">
+    <span className={frontendClassNames("logs-search-shell", "width-lg", "grow")}>
     <input
     id={model.ids.searchInput}
     type="search"
     placeholder={model.t("searchLogs")}
     autoComplete="off"
-    className="input classic grow"
+    className={frontendClassNames("input", "classic", "grow")}
     />
     {icon({
           spec: "remixicon search-line",
@@ -95,11 +95,11 @@ function searchField(model: any) {
 
 function primaryToolbarRow(model: any) {
   return (
-    <div className="logs-toolbar-row logs-toolbar-row-primary">
-    <div className="logs-toolbar-filter" data-logs-raw-hide="">
+    <div className={frontendClassNames("logs-toolbar-row", "logs-toolbar-row-primary")}>
+    <div className={frontendClassName("logs-toolbar-filter")} data-logs-raw-hide="">
     {groupDropdown(model)}
     </div>
-    <div className="logs-toolbar-filter" data-logs-raw-hide="">
+    <div className={frontendClassName("logs-toolbar-filter")} data-logs-raw-hide="">
     {levelDropdown(model)}
     </div>
     {platformToggle(model)}
@@ -188,7 +188,7 @@ function exportPopover(model: any) {
           children: <>{icon({ spec: "remixicon download-2-line" })}</>,
     })}
     <div
-    className="popover popover-portaled"
+    className={frontendClassNames("popover", "popover-portaled")}
     id={model.exportPopoverId}
     aria-hidden="true"
     {...frontendDataAttrs({ "popover": "" })}
@@ -198,7 +198,7 @@ function exportPopover(model: any) {
           <a
           key={toString(item.href)}
           href={toString(item.href)}
-          className="popover-close popover-item"
+          className={frontendClassNames("popover-close", "popover-item")}
           {...frontendDataAttrs({ "popover-close": "" })}
           >
           {toString(item.label)}
@@ -211,7 +211,7 @@ function exportPopover(model: any) {
 
 function fullscreenButtons(model: any) {
   return (
-    <div className="right">
+    <div className={frontendClassName("right")}>
     {toolbarButton(
         {
           "aria-label": model.t("display.fullscreen"),
@@ -245,7 +245,7 @@ function fullscreenButtons(model: any) {
 
 function secondaryToolbarRow(model: any) {
   return (
-    <div className="logs-toolbar-row logs-toolbar-row-secondary">
+    <div className={frontendClassNames("logs-toolbar-row", "logs-toolbar-row-secondary")}>
     {searchToggleButton(model)}
     {toolbarButton(
         {
@@ -291,7 +291,7 @@ function secondaryToolbarRow(model: any) {
 
 function logsToolbar(model: any) {
   return (
-    <div className="logs-toolbar-main">
+    <div className={frontendClassName("logs-toolbar-main")}>
     {primaryToolbarRow(model)}
     {secondaryToolbarRow(model)}
     </div>

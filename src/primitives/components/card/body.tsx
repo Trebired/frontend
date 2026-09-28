@@ -16,7 +16,7 @@ import {
 } from "#0rl8rpgzssot";
 import { InlineRow, Stack } from "#tlkyab3pczjn";
 import { joinClassNames, toText, wrapTriggerHostNode } from "#6mupcizo1mwq";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const CARD_BODY_DIVIDER_CLASS = "card-body-divider";
 
@@ -77,7 +77,7 @@ function card_icon(props: { children?: ReactNode; className?: string }) {
   return (
     <InlineRow
     aria-hidden="true"
-    className={joinClassNames("card-icon", props.className)}
+    className={joinClassNames(frontendClassName("card-icon"), props.className)}
     gap="xs"
     noStretch
     verticalCenter
@@ -127,7 +127,7 @@ function titleRow(
     {titleSpan(props, titleClassName)}
     {showTitleMeta && props.meta ? props.meta : null}
     {showActions && props.actions ? (
-        <div className="right">
+        <div className={frontendClassName("right")}>
         <div className={actionsClassName}>{props.actions}</div>
         </div>
       ) : null}
@@ -170,7 +170,11 @@ function contentBlock(
   return (
     <div
     className={primitiveInlineRowClassName({
-          className: joinClassNames("card-body", titleOnly(props, options.showSegments) ? "title-only" : "", bodyClassName),
+          className: joinClassNames(
+            frontendClassName("card-body"),
+            titleOnly(props, options.showSegments) ? frontendClassName("title-only") : "",
+            bodyClassName,
+          ),
           gap: "xs",
     })}
     >
@@ -294,7 +298,7 @@ function selectCardItem(item: SelectCardItem, index: number, showIcon: boolean, 
   return (
     <span key={key} style={{ display: "contents" }}>
     {card_body({
-          className: joinClassNames("height-max", item.className),
+          className: joinClassNames(frontendClassName("height-max"), item.className),
           dataAttrs: item.attrs,
           extra: selectExtra(item),
           icon: showIcon && item.iconSpec ? <Icon spec={item.iconSpec} /> : null,

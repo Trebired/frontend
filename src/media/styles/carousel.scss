@@ -17,7 +17,7 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   transition: opacity 1000ms ease;
 }
 
-#{ns.class("carousel-slide")}.is-active {
+#{ns.class("carousel-slide")}#{ns.class("is-active")} {
   position: relative;
   opacity: 1;
 }
@@ -71,7 +71,7 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   transition: background 180ms ease, width 180ms ease;
 }
 
-#{ns.class("carousel-dot")}.is-active {
+#{ns.class("carousel-dot")}#{ns.class("is-active")} {
   width: 1.75rem;
   background: oklch(100% 0 0 / 95%);
 }
@@ -126,7 +126,7 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   background: oklch(100% 0 0 / 45%);
 }
 
-#{$bottom} #{ns.class("carousel-dot")}.is-active {
+#{$bottom} #{ns.class("carousel-dot")}#{ns.class("is-active")} {
   width: 1.75rem;
   background: oklch(100% 0 0 / 100%);
 }

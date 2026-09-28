@@ -3,13 +3,13 @@ import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
 import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
-import { frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function renderGraphToolbar(props: graph_props) {
   if (!props.toolbarContent) return null;
 
   return (
-    <Card className={primitiveInlineRowClassName({ className: "canvas-panel-toolbar", gap: "sm", wrap: true })}>
+    <Card className={primitiveInlineRowClassName({ className: frontendClassName("canvas-panel-toolbar"), gap: "sm", wrap: true })}>
     {props.toolbarContent}
     </Card>
   );
@@ -36,7 +36,7 @@ function graphShellStateOverlay(model: any) {
           color: stateOverlayColor(model),
       }}
       >
-      <div className="center column gap-sm">
+      <div className={frontendClassNames("center", "column", "gap-sm")}>
       {icon({
             spec: model.resolvedStateIcon,
             style: {
@@ -62,8 +62,8 @@ function graphShellStateOverlay(model: any) {
         justifyContent: "center",
     }}
     >
-    <div className="center">
-    <div className="loader md" aria-hidden="true"></div>
+    <div className={frontendClassName("center")}>
+    <div className={frontendClassNames("loader", "md")} aria-hidden="true"></div>
     </div>
     </InlineRow>
   );
@@ -81,7 +81,7 @@ function renderGraphMount(model: any, mountClassName: string, titleLevel: number
   return (
     <div id={`${model.graphId}_mount`} className={mountClassName} {...frontendDataAttrs({ "heading-level": titleLevel })}>
     <div
-    className="bg-canvas padding-sm radius-md border"
+    className={frontendClassNames("bg-canvas", "padding-sm", "radius-md", "border")}
     style={{
         height: "220px",
         position: "relative",

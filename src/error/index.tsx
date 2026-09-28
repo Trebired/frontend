@@ -33,7 +33,7 @@ function ErrorPage(props: ErrorPageProps) {
     <p className={frontendElementClass("error-page", "lead")}>{lead}</p>
     {props.actions ? (
         <div className={frontendElementClass("error-page", "actions")}>{props.actions}</div>
-    ) : null}
+      ) : null}
     </div>
     </section>
   );

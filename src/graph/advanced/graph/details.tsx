@@ -1,3 +1,4 @@
+import { frontendClassNames } from "#5vbaqj4pirp3";
 import { HeadingScope, Title } from "#7ly3b59upz0n";
 import { toString } from "#4fte8m1x62rd";
 import type { key_value_group, key_value_row } from "./types.js";
@@ -79,7 +80,7 @@ function renderGroupedDetails(groups: key_value_group[]) {
                 gap="sm"
                 key={`graph_group_row_${String(row.label || "row")}_${rowIndex}`}
                 >
-                <span className="label lh-xs">{String(row.label || "")}</span>
+                <span className={frontendClassNames("label", "lh-xs")}>{String(row.label || "")}</span>
                 {renderDetailValue(row, rowIndex)}
                 </Stack>
           ))}
@@ -104,7 +105,7 @@ function renderRowDetails(rows: key_value_row[]) {
           className={primitiveCardClassName({ gap: "sm" })}
           key={`graph_row_${String(row.label || "row")}_${rowIndex}`}
           >
-          <span className="label lh-xs">{String(row.label || "")}</span>
+          <span className={frontendClassNames("label", "lh-xs")}>{String(row.label || "")}</span>
           {renderDetailValue(row, rowIndex)}
           </div>
     ))}

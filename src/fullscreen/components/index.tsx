@@ -5,7 +5,7 @@ import type {
 } from "react";
 import { classNames, dataBool } from "#ndsvdqv80epr";
 import type { FullscreenTriggerMode } from "#e1wjbzbsyghi";
-import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type FullscreenTargetProps = HTMLAttributes<HTMLDivElement> & {
   fullscreenId: string;
@@ -58,7 +58,7 @@ function FullscreenButton(props: FullscreenButtonProps) {
   return (
     <button
     {...rest}
-    className={classNames(`${frontendClassName("button")} ${frontendClassName("fullscreen-button")}`, className)}
+    className={classNames(frontendClassNames("button", "fullscreen-button"), className)}
     {...frontendDataAttrs({ "fullscreen-trigger": panel ? "" : undefined })}
     {...frontendDataAttrs({ "fullscreen-id": fullscreenId })}
     {...frontendDataAttrs({ "fullscreen-group": panel ? group : undefined })}

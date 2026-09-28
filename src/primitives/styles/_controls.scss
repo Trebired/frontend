@@ -2,7 +2,7 @@
 @use "sass:list";
 @use "./variables" as *;
 
-.btn {
+#{ns.class("btn")} {
   --button-icon-color: var(#{ns.css-var("ui-btn-slot-icon")}, currentColor);
   box-sizing: border-box;
   height: var(#{ns.css-var("ui-btn-root-height")}, 28px);
@@ -48,12 +48,12 @@
 
   &:disabled,
   &[disabled],
-  &.disabled {
+  &#{ns.class("disabled")} {
     opacity: var(#{ns.css-var("ui-btn-state-disabled-opacity")}, 0.55);
     pointer-events: none;
   }
 
-  &:not(.icon) {
+  &:not(#{ns.class("icon")}) {
     > i,
     > svg,
     > i svg,
@@ -64,7 +64,7 @@
     }
 
     @each $name, $size in $frontend-primitive-button-sizes {
-      &.#{$name} {
+      &#{ns.class($name)} {
         height: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-height, #{list.nth($size, 1)});
         min-height: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-height, #{list.nth($size, 1)});
         padding-inline: var(#{ns.css-var("ui-btn-sizes-")}#{$name}-px, #{list.nth($size, 2)});
@@ -74,7 +74,7 @@
     }
   }
 
-  &.highlight {
+  &#{ns.class("highlight")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-tone-highlight-icon")}, currentColor);
     background: var(#{ns.css-var("ui-btn-tone-highlight-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
     color: var(#{ns.css-var("ui-btn-tone-highlight-color")}, currentColor);
@@ -93,7 +93,7 @@
     }
   }
 
-  &.inverse {
+  &#{ns.class("inverse")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-tone-inverse-icon")}, currentColor);
     background: var(#{ns.css-var("ui-btn-tone-inverse-bg")}, var(#{ns.css-var("text")}, currentColor));
     color: var(#{ns.css-var("ui-btn-tone-inverse-color")}, var(#{ns.css-var("page")}, canvas));
@@ -112,7 +112,7 @@
     }
   }
 
-  &.red {
+  &#{ns.class("red")} {
     border-inline-color: var(#{ns.css-var("ui-btn-tone-red-inline-border")}, currentColor);
 
     &:hover,
@@ -128,7 +128,7 @@
     }
   }
 
-  &.yellow {
+  &#{ns.class("yellow")} {
     border-inline-color: var(#{ns.css-var("ui-btn-tone-yellow-inline-border")}, currentColor);
 
     &:hover,
@@ -144,7 +144,7 @@
     }
   }
 
-  &.green {
+  &#{ns.class("green")} {
     border-inline-color: var(#{ns.css-var("ui-btn-tone-green-inline-border")}, currentColor);
 
     &:hover,
@@ -160,7 +160,7 @@
     }
   }
 
-  &.icon {
+  &#{ns.class("icon")} {
     #{ns.css-var("icon-color")}: currentColor;
     display: inline-flex;
     align-items: center;
@@ -203,7 +203,7 @@
     }
 
     @each $name, $size in $frontend-primitive-icon-sizes {
-      &.#{$name} {
+      &#{ns.class($name)} {
         width: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
         height: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
         min-width: var(#{ns.css-var("ui-btn-slot-icon-sizes-")}#{$name}-size, #{list.nth($size, 1)});
@@ -212,23 +212,23 @@
       }
     }
 
-    &.transparent {
+    &#{ns.class("transparent")} {
       background-color: transparent;
     }
   }
 }
 
-.avatar {
+#{ns.class("avatar")} {
   border-radius: 50%;
   object-fit: cover;
   border: var(--border-width) solid var(--border-surface-1);
 
-  &.unknown {
+  &#{ns.class("unknown")} {
     background-color: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
   }
 
   @each $name, $size in $frontend-primitive-avatar-sizes {
-    &.#{$name} {
+    &#{ns.class($name)} {
       width: $size;
       height: $size;
     }

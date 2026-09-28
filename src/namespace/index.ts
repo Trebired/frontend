@@ -28,6 +28,10 @@ function frontendElementClass(block: string, element: string): string {
   return elementClass(block, element);
 }
 
+function frontendClassNames(...names: string[]): string {
+  return names.filter(Boolean).map((name) => className(name)).join(" ");
+}
+
 function frontendModifierClass(block: string, modifier: string): string {
   return modifierClass(block, modifier);
 }
@@ -63,6 +67,7 @@ function frontendToken(name: string): string {
 export {
   FRONTEND_PREFIX,
   frontendClassName,
+  frontendClassNames,
   frontendCssVar,
   frontendCssVarRef,
   frontendDataAttr,

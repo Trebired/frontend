@@ -93,6 +93,7 @@
 }
 
 #{ns.element-class("site-footer", "link")}:hover,
+
 #{ns.element-class("site-footer", "link")}:focus-visible {
   color: var(#{ns.css-var("shell-footer-link-hover-color")}, currentColor);
   text-decoration-line: var(#{ns.css-var("shell-footer-link-hover-decoration-line")}, underline);

@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { text } from "./shared.js";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 
@@ -6,7 +7,7 @@ function ImagePreviewPane(props: any) {
     <div
     className={primitiveStackClassName({
           center: true,
-          className: "bg-canvas",
+          className: frontendClassName("bg-canvas"),
           gap: "sm",
           verticalCenter: true,
     })}

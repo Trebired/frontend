@@ -249,7 +249,7 @@ function emptyViewerContent(props: any, contentMinHeight: number) {
     <div
     className={primitiveStackClassName({
           center: true,
-          className: "height-max",
+          className: frontendClassName("height-max"),
           gap: "sm",
           verticalCenter: true,
     })}

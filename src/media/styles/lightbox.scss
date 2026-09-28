@@ -45,7 +45,7 @@
   transition: opacity 180ms ease;
 }
 
-#{ns.class("expandable-image-icon")} .icon-glyph {
+#{ns.class("expandable-image-icon")} #{ns.class("icon-glyph")} {
   font-size: 1rem;
 }
 
@@ -69,7 +69,7 @@
   transition: opacity 300ms ease-out;
 }
 
-#{ns.class("lightbox")}.is-visible {
+#{ns.class("lightbox")}#{ns.class("is-visible")} {
   opacity: 1;
 }
 
@@ -106,7 +106,7 @@
   top: 1rem;
 }
 
-#{ns.class("lightbox-close")} .icon-glyph {
+#{ns.class("lightbox-close")} #{ns.class("icon-glyph")} {
   font-size: 1.25rem;
 }
 
@@ -116,7 +116,7 @@
   box-shadow: 0 25px 50px -12px oklch(0% 0 0 / 25%);
 }
 
-#{ns.class("lightbox-nav")} .icon-glyph {
+#{ns.class("lightbox-nav")} #{ns.class("icon-glyph")} {
   font-size: 1.5rem;
 }
 
@@ -142,7 +142,7 @@
   transform 300ms ease-out;
 }
 
-#{ns.class("lightbox-viewer")}.is-visible {
+#{ns.class("lightbox-viewer")}#{ns.class("is-visible")} {
   transform: scale(1);
   opacity: 1;
 }

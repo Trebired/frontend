@@ -1,72 +1,72 @@
 @use "@trebired/bundler/namespace" as ns;
-.ml-xs {
+#{ns.class("ml-xs")} {
   margin-left: var(#{ns.css-var("gap-xs")});
 }
 
-.ml-xs2 {
+#{ns.class("ml-xs2")} {
   margin-left: var(#{ns.css-var("gap-xs2")});
 }
 
-.ml-sm {
+#{ns.class("ml-sm")} {
   margin-left: var(#{ns.css-var("gap-sm")});
 }
 
-.ml-md {
+#{ns.class("ml-md")} {
   margin-left: var(#{ns.css-var("gap-md")});
 }
 
-.ml-lg {
+#{ns.class("ml-lg")} {
   margin-left: var(#{ns.css-var("gap-lg")});
 }
 
-.mr-xs {
+#{ns.class("mr-xs")} {
   margin-right: var(#{ns.css-var("gap-xs")});
 }
 
-.mr-xs2 {
+#{ns.class("mr-xs2")} {
   margin-right: var(#{ns.css-var("gap-xs2")});
 }
 
-.mr-sm {
+#{ns.class("mr-sm")} {
   margin-right: var(#{ns.css-var("gap-sm")});
 }
 
-.mr-md {
+#{ns.class("mr-md")} {
   margin-right: var(#{ns.css-var("gap-md")});
 }
 
-.mr-lg {
+#{ns.class("mr-lg")} {
   margin-right: var(#{ns.css-var("gap-lg")});
 }
 
-.border {
+#{ns.class("border")} {
   border: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-0 {
+#{ns.class("border-0")} {
   border: 0;
 }
 
-.border-top {
+#{ns.class("border-top")} {
   border-top: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-bottom {
+#{ns.class("border-bottom")} {
   border-bottom: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-left {
+#{ns.class("border-left")} {
   border-left: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-right {
+#{ns.class("border-right")} {
   border-right: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-block {
+#{ns.class("border-block")} {
   border-block: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }
 
-.border-inline {
+#{ns.class("border-inline")} {
   border-inline: var(#{ns.css-var("border-width")}) solid var(#{ns.css-var("border")});
 }

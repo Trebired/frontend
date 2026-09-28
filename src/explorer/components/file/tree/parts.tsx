@@ -3,7 +3,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendCssVar } from "#5vbaqj4pirp3";
 
 type FileTreeRowModel = {
   fileCount: number;
@@ -36,9 +36,9 @@ function FileTreeIcon(props: Pick<FileTreeRowModel, "highlighted" | "iconSpec">)
     style={{ width: 30, fontSize: 15, opacity: props.highlighted ? 1 : 0.8 }}
     >
     {props.iconSpec ? (
-        <Icon spec={props.iconSpec} className="icon" />
+        <Icon spec={props.iconSpec} className={frontendClassName("icon")} />
       ) : (
-        <span className="icon" aria-hidden="true" />
+        <span className={frontendClassName("icon")} aria-hidden="true" />
     )}
     </span>
   );
@@ -66,7 +66,10 @@ function FileTreeName(props: Pick<FileTreeRowModel, "name">) {
 function FileTreeCount(props: Pick<FileTreeRowModel, "fileCount" | "kind">) {
   if (props.kind !== "dir") return null;
   return (
-    <span className={primitiveTextClassName({ className: "no-shrink", muted: true })} style={{ fontSize: 12, lineHeight: 1.2, opacity: 0.9 }}>
+    <span
+    className={primitiveTextClassName({ className: frontendClassName("no-shrink"), muted: true })}
+    style={{ fontSize: 12, lineHeight: 1.2, opacity: 0.9 }}
+    >
     {props.fileCount}
     </span>
   );

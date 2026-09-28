@@ -217,7 +217,7 @@ function UploadRemoteAction(
   return (
     <button
     aria-label={action.ariaLabel || undefined}
-    className="btn"
+    className={frontendClassName("btn")}
     hidden={false}
     id={action.id || undefined}
     name={action.name || undefined}
@@ -241,7 +241,7 @@ function UploadButton(
   return (
     <button
     {...rest}
-    className={classNames("btn", className)}
+    className={classNames(frontendClassName("btn"), className)}
     {...frontendDataAttrs({ "upload-slot": slot })}
     type={type}
     >

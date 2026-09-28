@@ -18,7 +18,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 
 const FILE_TREE_INDENT = 18;
 const FILE_TREE_ROW_HEIGHT = 34;
@@ -101,7 +101,7 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
     type="button"
     className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
-              className: "width-max text-left",
+              className: frontendClassNames("width-max", "text-left"),
               muted: model.kind !== "dir",
           }),
           gap: "xs",
@@ -170,7 +170,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
   if (!rows.length) {
     return (
       <FileTreeShell {...shellProps}>
-      <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
+      <div className={primitiveTextClassName({ className: frontendClassName("padding-sm"), muted: true })}>{emptyMessage}</div>
       </FileTreeShell>
     );
   }
@@ -179,7 +179,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
     {createElement(
         "scroll-overflow",
         { style: { display: "contents" } },
-        <div className={`scroll scroll-min ${frontendClassName("file-tree-scroll")}`} style={scrollStyleFor(options, rows)}>
+        <div className={frontendClassNames("scroll", "scroll-min", "file-tree-scroll")} style={scrollStyleFor(options, rows)}>
         <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
         {rows.map((row, index) => renderStaticFileTreeRow(row, index, options))}
         </div>

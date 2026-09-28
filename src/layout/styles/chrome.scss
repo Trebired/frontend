@@ -206,13 +206,13 @@
   list-style: none;
 }
 
-#{ns.element-class("shell-support-links", "list")}.inline-row {
+#{ns.element-class("shell-support-links", "list")}#{ns.class("inline-row")} {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
 }
 
-#{ns.element-class("shell-support-links", "list")}.column {
+#{ns.element-class("shell-support-links", "list")}#{ns.class("column")} {
   flex-direction: column;
   align-items: stretch;
 }

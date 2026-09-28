@@ -117,7 +117,7 @@ function iconNode(model: ReturnType<typeof sourceLanguageCardModel>) {
   return (
     <Icon
     spec={model.languageIconSpec}
-    className="icon"
+    className={frontendClassName("icon")}
     {...frontendDataAttrs({ "source-language-icon": "" })}
     />
   );

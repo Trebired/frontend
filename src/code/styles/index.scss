@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-.code {
+#{ns.class("code")} {
   font-family: monospace;
   font-size: 0.95em;
   line-height: 1.45;
@@ -21,7 +21,7 @@
 [data-code] code,
 #{ns.data("code-content")},
 
-.data-code-content {
+#{ns.class("data-code-content")} {
   display: block;
   min-width: max-content;
   padding: 12px 14px;
@@ -33,15 +33,16 @@
   user-select: text;
 }
 
-[data-code] code.pre-wrap,
-#{ns.data("code-content")}.pre-wrap {
+[data-code] code#{ns.class("pre-wrap")},
+
+#{ns.data("code-content")}#{ns.class("pre-wrap")} {
   min-width: 0;
 }
 
 [data-code] code *,
 #{ns.data("code-content")} *,
 
-.data-code-content * {
+#{ns.class("data-code-content")} * {
   font-family: inherit !important;
   line-height: inherit;
 }

@@ -20,7 +20,7 @@ import {
 import { dispatchUploadChange, setUploadFile } from "./state.js";
 import type { UploadRuntimeOptions } from "./types.js";
 import { resolveUploadFlash } from "./runtime.js";
-import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataSelector, frontendElementClass } from "#5vbaqj4pirp3";
 
 type CropperInstance = InstanceType<typeof Cropper>;
 type CropSession = {
@@ -146,7 +146,7 @@ function ensureCropModalHost() {
 function createCropModalHost() {
   modalElement = document.createElement("div");
   modalElement.id = CROP_MODAL_ID;
-  modalElement.className = `${frontendClassName("modal")} ${frontendClassName("upload-cropper-modal")}`;
+  modalElement.className = frontendClassNames("modal", "upload-cropper-modal");
   modalElement.setAttribute(frontendDataAttr("modal"), "");
   modalContentElement = document.createElement("div");
   modalContentElement.id = CROP_MODAL_CONTENT_ID;

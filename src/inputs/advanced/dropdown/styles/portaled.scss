@@ -1,7 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
-.options[data-dropdown-portaled="true"] {
+#{ns.class("options")}[data-dropdown-portaled="true"] {
   position: fixed;
   background: var(#{ns.css-var("ui-dropdown-menu-bg")}, var(--background-surface-1, transparent));
   border: var(--border-width) solid var(--border-surface-1);
@@ -44,21 +44,21 @@
   }
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-top {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-top")} {
   padding: 10px;
   border-bottom: var(--border-width) solid var(--border-surface-1);
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-top .input {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-top")} #{ns.class("input")} {
   width: 100%;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-top .input-search-wrap {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-top")} #{ns.class("input-search-wrap")} {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} {
   @include component-scroll-min;
 
   list-style: none;
@@ -72,19 +72,20 @@
   overflow-y: auto;
 }
 
-.options[data-dropdown-portaled="true"][data-dropdown-position="above"]
-.dropdown-list {
+#{ns.class("options")}[data-dropdown-portaled="true"][data-dropdown-position="above"]
+
+#{ns.class("dropdown-list")} {
   display: flex;
   flex-direction: column-reverse;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li {
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li {
   gap: var(#{ns.css-var("gap-xs")});
   @include classic-field-base;
 
@@ -103,21 +104,16 @@
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
-  content-visibility: auto;
-  contain-intrinsic-height: auto var(--height-input);
 }
 
-.options[data-dropdown-portaled="true"][data-dropdown-measuring="true"] .dropdown-list li,
-.options[data-dropdown-portaled="true"][data-dropdown-show="true"] .dropdown-list li {
-  content-visibility: visible;
-}
-
-.options[data-dropdown-portaled="true"] .dropdown-list li:hover {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li:hover {
   background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(--background-surface-2, transparent));
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
+
 li[data-dropdown-selected="true"] {
   background: var(
     #{ns.css-var("ui-dropdown-option-state-selected-bg")},
@@ -129,20 +125,24 @@ li[data-dropdown-selected="true"] {
   );
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
+
 li[data-dropdown-placeholder-option] {
   color: var(--text-color-muted);
   cursor: default;
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
+
 li[data-dropdown-unselect="true"] {
   color: var(--text-color-muted);
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li.dropdown-section {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li#{ns.class("dropdown-section")} {
   height: auto;
   min-height: 0;
   padding: 9px 10px 5px;
@@ -151,17 +151,19 @@ li[data-dropdown-unselect="true"] {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  content-visibility: visible;
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
-li.dropdown-section:hover {
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
+
+li#{ns.class("dropdown-section")}:hover {
   background: transparent;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li button,
-.options[data-dropdown-portaled="true"] .dropdown-list li a {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li button,
+
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li a {
   all: unset;
   min-width: 0;
   max-width: 100%;
@@ -170,10 +172,11 @@ li.dropdown-section:hover {
   word-break: break-word;
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
 li
-> :not(.dropdown-check) {
+> :not(#{ns.class("dropdown-check")}) {
   line-height: var(--lh-xs, 1.2);
 
   display: inline-flex;
@@ -186,39 +189,45 @@ li
   word-break: break-word;
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
 li
-span:not(.dropdown-check) {
+span:not(#{ns.class("dropdown-check")}) {
   line-height: var(--lh-xs, 1.2);
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-list li > .inline-row {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li > #{ns.class("inline-row")} {
   flex-wrap: wrap;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-check {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-check")} {
   opacity: 0.35;
   transition: opacity 120ms ease;
 }
 
-.options[data-dropdown-portaled="true"]
-.dropdown-list
+#{ns.class("options")}[data-dropdown-portaled="true"]
+
+#{ns.class("dropdown-list")}
 li[data-dropdown-selected="true"]
-.dropdown-check {
+#{ns.class("dropdown-check")} {
   opacity: 1;
 }
 
-.options[data-dropdown-portaled="true"] .dropdown-empty {
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-empty")} {
   padding: 0 10px 10px;
 }
 
 [data-dropdown-label] > i,
-[data-dropdown-label] > span.icon,
-[data-dropdown-root] .dropdown-list li > i,
-[data-dropdown-root] .dropdown-list li > span.icon,
-.options[data-dropdown-portaled="true"] .dropdown-list li > i,
-.options[data-dropdown-portaled="true"] .dropdown-list li > span.icon {
+[data-dropdown-label] > span#{ns.class("icon")},
+
+[data-dropdown-root] #{ns.class("dropdown-list")} li > i,
+
+[data-dropdown-root] #{ns.class("dropdown-list")} li > span#{ns.class("icon")},
+
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li > i,
+
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li > span#{ns.class("icon")} {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -226,8 +235,9 @@ li[data-dropdown-selected="true"]
 }
 
 [data-dropdown-label] svg,
-[data-dropdown-root] .dropdown-list li svg,
-.options[data-dropdown-portaled="true"] .dropdown-list li svg {
+[data-dropdown-root] #{ns.class("dropdown-list")} li svg,
+
+#{ns.class("options")}[data-dropdown-portaled="true"] #{ns.class("dropdown-list")} li svg {
   width: 1em;
   height: 1em;
 }

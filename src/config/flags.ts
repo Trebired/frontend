@@ -1,3 +1,5 @@
+import { FRONTEND_PREFIX as NS } from "#5vbaqj4pirp3";
+
 import { createRequire } from "node:module";
 import path from "node:path";
 import fs from "node:fs";
@@ -65,7 +67,7 @@ function renderFlagRules(config: NormalizedFrontendFlagsConfig): string[] {
   if (!config.countries.length) return [];
   const widthRatio = config.ratio === "1x1" ? "1" : "3/2";
   const lines: string[] = [
-    `[class*=" flag:"], [class^="flag:"] {`,
+    `[class*=" ${NS}-flag:"], [class^="${NS}-flag:"] {`,
     "  display: inline-block;",
     "  background-size: cover;",
     "  --CountryFlagIcon-height: 1em;",
@@ -80,7 +82,7 @@ function renderFlagRules(config: NormalizedFrontendFlagsConfig): string[] {
     } catch {
       continue;
     }
-    lines.push(`.flag\\:${country} { background-image: url("${uri}"); }`);
+    lines.push(`.${NS}-flag\\:${country} { background-image: url("${uri}"); }`);
   }
   return lines;
 }

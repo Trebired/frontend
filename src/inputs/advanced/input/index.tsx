@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { joinClassNames } from "#dqy2d22qyujv";
 import { icon } from "#dqy2d22qyujv";
 import {
@@ -30,7 +31,7 @@ function input(props: InputProps) {
 
   if (!search) return node;
   return (
-    <span className={joinClassNames(["input-search-wrap", classes.wrapper])}>
+    <span className={joinClassNames([frontendClassName("input-search-wrap"), classes.wrapper])}>
     {node}
     {icon({
           className: "input-search-icon",

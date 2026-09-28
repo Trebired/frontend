@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { createElement, Fragment, type ReactNode } from "react";
 import {
   search_config_script,
@@ -74,7 +75,7 @@ function searchControls(props: search_props) {
       attrs,
       config,
       <div className={primitiveCardClassName({ gap: "xs" })}>
-      <InlineRow className="content-filter-bar" gap="xs">
+      <InlineRow className={frontendClassName("content-filter-bar")} gap="xs">
       {controlsRow(props)}
       </InlineRow>
       <Text as="p" muted size="sm">{description}</Text>
@@ -87,7 +88,7 @@ function searchControls(props: search_props) {
     attrs,
     config,
     <div className={primitiveCardClassName({
-          className: primitiveInlineRowClassName({ className: "content-filter-bar", gap: "xs" }),
+          className: primitiveInlineRowClassName({ className: frontendClassName("content-filter-bar"), gap: "xs" }),
           layout: "none",
     })}>
     {controlsRow(props)}

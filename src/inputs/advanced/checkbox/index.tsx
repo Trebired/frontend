@@ -3,7 +3,7 @@ import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type checkbox_props = {
   all?: boolean;
@@ -68,9 +68,9 @@ function checkboxInput(props: checkbox_props, model: any) {
 
 function checkboxControl() {
   return (
-    <span className="checkbox-control" aria-hidden="true">
-    <span className="checkbox-control-icon active" />
-    <span className="checkbox-control-icon partial" />
+    <span className={frontendClassName("checkbox-control")} aria-hidden="true">
+    <span className={frontendClassNames("checkbox-control-icon", "active")} />
+    <span className={frontendClassNames("checkbox-control-icon", "partial")} />
     </span>
   );
 }
@@ -80,7 +80,7 @@ function checkboxDescription(description: ReactNode) {
   return (
     <span className={primitiveTextClassName({
           breakWord: true,
-          className: "checkbox-option-description",
+          className: frontendClassName("checkbox-option-description"),
           muted: true,
           size: "sm",
     })}>
@@ -108,7 +108,7 @@ function checkbox(props: checkbox_props) {
     {checkboxInput(props, model)}
     {checkboxControl()}
     <span className={model.optionBodyClassName}>
-    <span className="checkbox-option-title">{model.title}</span>
+    <span className={frontendClassName("checkbox-option-title")}>{model.title}</span>
     {checkboxDescription(props.description)}
     </span>
     </Tag>

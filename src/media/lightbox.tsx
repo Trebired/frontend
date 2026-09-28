@@ -102,7 +102,7 @@ function Lightbox(props: LightboxProps) {
     {props.hasNext && <LightboxNav direction="next" label={label("mediaNext")} onClick={props.showNext} />}
 
     <div className={`${frontendClassName("lightbox-viewer")}${state}`} onClick={stop}>
-    <h2 className="sr-only" id={props.titleId}>{props.alt}</h2>
+    <h2 className={frontendClassName("sr-only")} id={props.titleId}>{props.alt}</h2>
     <img alt={props.alt} className={frontendClassName("lightbox-img")} src={props.src} />
     <p className={frontendClassName("lightbox-caption")}>{props.alt}</p>
     </div>

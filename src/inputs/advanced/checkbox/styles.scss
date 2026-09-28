@@ -1,7 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
-.choice-row.checkbox-option {
+#{ns.class("choice-row")}#{ns.class("checkbox-option")} {
   @include classic-field-base;
 
   --choice-row-padding-block: 9px;
@@ -21,23 +21,23 @@
     outline-offset: 2px;
   }
 
-  &.disabled {
+  &#{ns.class("disabled")} {
     opacity: 0.55;
   }
 
-  &.is-checked,
-  &:has(> .checkbox-input:checked) {
+  &#{ns.class("is-checked")},
+  &:has(> #{ns.class("checkbox-input")}:checked) {
     border-color: var(--border-surface-1);
     background: var(#{ns.css-var("ui-choice-checked-bg")}, var(--background-surface-1, transparent));
   }
 
-  &:not(:has(.checkbox-option-description)) {
+  &:not(:has(#{ns.class("checkbox-option-description")})) {
     height: var(--height-input);
     padding-block: 0;
   }
 }
 
-.checkbox-control {
+#{ns.class("checkbox-control")} {
   display: inline-flex;
   align-items: center;
   align-self: center;
@@ -58,22 +58,22 @@
   border-color var(--transition-1) ease,
   color var(--transition-1) ease;
 
-  .checkbox-control-icon {
+  #{ns.class("checkbox-control-icon")} {
     display: none;
     position: absolute;
     inset: 0;
     pointer-events: none;
   }
 
-  .checkbox-control-icon.active {
+  #{ns.class("checkbox-control-icon")}#{ns.class("active")} {
     color: var(#{ns.css-var("ui-choice-control-active-icon")}, currentColor);
   }
 
-  .checkbox-control-icon.partial {
+  #{ns.class("checkbox-control-icon")}#{ns.class("partial")} {
     color: var(#{ns.css-var("ui-choice-control-partial-icon")}, currentColor);
   }
 
-  .checkbox-control-icon::before {
+  #{ns.class("checkbox-control-icon")}::before {
     content: "";
     position: absolute;
     left: 50%;
@@ -82,7 +82,7 @@
     display: block;
   }
 
-  .checkbox-control-icon.active::before {
+  #{ns.class("checkbox-control-icon")}#{ns.class("active")}::before {
     width: 5px;
     height: 9px;
     margin-top: -1px;
@@ -91,7 +91,7 @@
     transform: translate(-50%, -58%) rotate(45deg);
   }
 
-  .checkbox-control-icon.partial::before {
+  #{ns.class("checkbox-control-icon")}#{ns.class("partial")}::before {
     width: 8px;
     height: 2px;
     border-radius: 999px;
@@ -99,15 +99,17 @@
   }
 }
 
-.checkbox-option:has(> .checkbox-input:checked) > .checkbox-control,
-.checkbox-option.is-checked > .checkbox-control {
+#{ns.class("checkbox-option")}:has(> #{ns.class("checkbox-input")}:checked) > #{ns.class("checkbox-control")},
+
+#{ns.class("checkbox-option")}#{ns.class("is-checked")} > #{ns.class("checkbox-control")} {
   border-color: var(#{ns.css-var("ui-choice-control-checked-border")}, var(#{ns.css-var("focus")}, currentColor));
   background: var(#{ns.css-var("ui-choice-control-checked-bg")}, var(#{ns.css-var("focus")}, transparent));
   color: var(#{ns.css-var("ui-choice-control-checked-color")}, var(--background-page, currentColor));
 }
 
-.checkbox-option:has(> .checkbox-input:indeterminate) > .checkbox-control,
-.checkbox-option.is-indeterminate > .checkbox-control {
+#{ns.class("checkbox-option")}:has(> #{ns.class("checkbox-input")}:indeterminate) > #{ns.class("checkbox-control")},
+
+#{ns.class("checkbox-option")}#{ns.class("is-indeterminate")} > #{ns.class("checkbox-control")} {
   border-color: var(#{ns.css-var("ui-choice-control-partial-border")}, var(#{ns.css-var("focus")}, currentColor));
   background: color-mix(
     in srgb,
@@ -117,23 +119,31 @@
   color: var(#{ns.css-var("ui-choice-control-partial-color")}, currentColor);
 }
 
-.checkbox-option:has(> .checkbox-input:checked)
-> .checkbox-control
-.checkbox-control-icon.active,
-.checkbox-option.is-checked > .checkbox-control .checkbox-control-icon.active {
+#{ns.class("checkbox-option")}:has(> #{ns.class("checkbox-input")}:checked)
+
+> #{ns.class("checkbox-control")}
+
+#{ns.class("checkbox-control-icon")}#{ns.class("active")},
+
+#{ns.class("checkbox-option")}#{ns.class("is-checked")} > #{ns.class("checkbox-control")} #{ns.class("checkbox-control-icon")}#{ns.class("active")} {
   display: block;
 }
 
-.checkbox-option:has(> .checkbox-input:indeterminate)
-> .checkbox-control
-.checkbox-control-icon.partial,
-.checkbox-option.is-indeterminate
-> .checkbox-control
-.checkbox-control-icon.partial {
+#{ns.class("checkbox-option")}:has(> #{ns.class("checkbox-input")}:indeterminate)
+
+> #{ns.class("checkbox-control")}
+
+#{ns.class("checkbox-control-icon")}#{ns.class("partial")},
+
+#{ns.class("checkbox-option")}#{ns.class("is-indeterminate")}
+
+> #{ns.class("checkbox-control")}
+
+#{ns.class("checkbox-control-icon")}#{ns.class("partial")} {
   display: block;
 }
 
-.checkbox-option-body {
+#{ns.class("checkbox-option-body")} {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -141,13 +151,14 @@
   line-height: 1.4;
 }
 
-.checkbox-option-title,
-.checkbox-option-description {
+#{ns.class("checkbox-option-title")},
+
+#{ns.class("checkbox-option-description")} {
   display: block;
   min-width: 0;
 }
 
-.checkbox-input {
+#{ns.class("checkbox-input")} {
   position: absolute;
   width: 1px;
   height: 1px;

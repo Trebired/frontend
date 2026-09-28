@@ -13,7 +13,7 @@ import type {
   SourceLanguageBucket,
   SourceLanguageTabsContentProps,
 } from "#2w72xmq6rvza";
-import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function sourceLanguageBucketPanelId(bucket: SourceLanguageBucket) {
   return `source_language_bucket_${bucket}_panel`;
@@ -109,7 +109,7 @@ function languageList(model: SourceLanguageTabsContentProps, bucket: SourceLangu
   const cards = bucketedLanguageCards(model, bucket);
   return (
     <div
-    className="max-height-xl scroll scroll-min"
+    className={frontendClassNames("max-height-xl", "scroll", "scroll-min")}
     {...frontendDataAttrs({ "source-language-list": "" })}
     {...frontendDataAttrs({ "source-language-panel-bucket": bucket })}
     >

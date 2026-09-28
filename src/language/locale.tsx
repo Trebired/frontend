@@ -5,7 +5,7 @@ import { normalizedLang, text, translate } from "./shared.js";
 import { languageName } from "./names.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
 import { hasFlag } from "country-flag-icons";
-import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 const LANGUAGE_FLAG_COUNTRIES: Record<string, string> = {
   ar: "SA",
@@ -89,7 +89,7 @@ function localeOptionIcon(option: LocaleOption) {
     return (
       <span
       aria-hidden="true"
-      className={`${frontendClassName("locale-flag")} flag:${flagCountry}`}
+      className={`${frontendClassName("locale-flag")} ${frontendClassName(`flag:${flagCountry}`)}`}
       {...frontendDataAttrs({ "locale-flag": flagCountry })}
       title={text(option.flagLabel)}
       />
@@ -148,7 +148,7 @@ function localeOptionButton(
     <button
     key={code}
     type="button"
-    className={`popover-close popover-item ${frontendClassName("locale-option")}`}
+    className={frontendClassNames("popover-close", "popover-item", "locale-option")}
     {...frontendDataAttrs({ "locale-current": isCurrent ? "true" : "false" })}
     {...frontendDataAttrs({ "locale-endpoint": text(props.endpoint, "/ui/lang/set") })}
     {...frontendDataAttrs({ "locale-option": "" })}
@@ -170,7 +170,7 @@ function localePopover(popoverId: string, props: LocaleSwitcherProps) {
   : DEFAULT_LOCALES;
   return (
     <div
-    className={`popover popover-portaled ${frontendClassName("locale-switch-popover")}`}
+    className={frontendClassNames("popover", "popover-portaled", "locale-switch-popover")}
     id={popoverId}
     aria-hidden="true"
     {...frontendDataAttrs({ "popover": "" })}

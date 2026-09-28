@@ -82,7 +82,7 @@
 
 #{ns.class("button")}[disabled],
 
-#{ns.class("button")}.disabled {
+#{ns.class("button")}#{ns.class("disabled")} {
   opacity: var(#{ns.css-var("surf-btn-state-disabled-opacity")}, var(#{ns.css-var("ui-btn-state-disabled-opacity")}, 0.55));
   cursor: not-allowed;
   pointer-events: none;
@@ -101,20 +101,20 @@
   flex: 0 0 auto;
 }
 
-#{ns.class("button")}.icon {
+#{ns.class("button")}#{ns.class("icon")} {
   #{ns.css-var("icon-color")}: currentColor;
   #{ns.css-var("surf-btn-current-icon")}: currentColor;
 }
 
-#{ns.class("button")}.icon > i,
+#{ns.class("button")}#{ns.class("icon")} > i,
 
-#{ns.class("button")}.icon > svg,
+#{ns.class("button")}#{ns.class("icon")} > svg,
 
-#{ns.class("button")}.icon > i svg,
+#{ns.class("button")}#{ns.class("icon")} > i svg,
 
-#{ns.class("button")}.icon > [data-icon],
+#{ns.class("button")}#{ns.class("icon")} > [data-icon],
 
-#{ns.class("button")}.icon > [data-icon] svg {
+#{ns.class("button")}#{ns.class("icon")} > [data-icon] svg {
   color: currentColor;
 }
 
@@ -195,12 +195,6 @@
   border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));
-  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));
-}
-
-#{ns.class("card")}.card,
-
-.card#{ns.data("card")} {
   background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));
 }
 
@@ -292,7 +286,7 @@
   gap: var(#{ns.css-var("gap-xs")}, 8px);
 }
 
-#{ns.element-class("canvas-panel", "header")}.card {
+#{ns.element-class("canvas-panel", "header")}#{ns.class("card")} {
   min-height: 0;
   padding: 8px 10px;
   overflow: visible;

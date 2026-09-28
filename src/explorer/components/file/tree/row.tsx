@@ -18,7 +18,7 @@ import {
   primitiveInlineRowClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type FileTreeRowProps = {
   highlightedPaths?: Set<string>;
@@ -116,7 +116,7 @@ function FileTreeRow(props: FileTreeRowProps) {
     type="button"
     className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
-              className: "width-max text-left",
+              className: frontendClassNames("width-max", "text-left"),
               muted: !(model.canActivateFile || model.kind === "dir"),
           }),
           gap: "xs",

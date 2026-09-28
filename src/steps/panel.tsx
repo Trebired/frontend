@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import type { ReactNode } from "react";
 import { default as disclosure } from "#7xsqb2bbtamg";
 import { bar as loader_bar } from "#6hfutrhvm6x6";
@@ -68,9 +69,9 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
         <div
         className={primitiveStackClassName({
               className: joinClassNames(
-                "max-height-xl",
-                "scroll",
-                "scroll-min",
+                frontendClassName("max-height-xl"),
+                frontendClassName("scroll"),
+                frontendClassName("scroll-min"),
                 props.listClassName,
               ),
               gap: "xs",

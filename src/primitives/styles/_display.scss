@@ -1,11 +1,11 @@
 @use "@trebired/bundler/namespace" as ns;
-.canvas-panel {
+#{ns.class("canvas-panel")} {
   display: flex;
   min-height: 0;
   flex-direction: column;
 }
 
-.canvas-panel-toolbar {
+#{ns.class("canvas-panel-toolbar")} {
   display: flex;
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -17,7 +17,7 @@
   row-gap: 8px;
 }
 
-.canvas-panel-toolbar-title {
+#{ns.class("canvas-panel-toolbar-title")} {
   display: flex;
   flex: 0 0 auto;
   align-content: center;
@@ -25,7 +25,7 @@
   min-width: 0;
 }
 
-.canvas-panel-toolbar-actions {
+#{ns.class("canvas-panel-toolbar-actions")} {
   display: flex;
   flex: 1 1 auto;
   align-content: center;
@@ -33,14 +33,15 @@
   min-width: 0;
 }
 
-.canvas-panel-toolbar-actions-with-divider {
+#{ns.class("canvas-panel-toolbar-actions-with-divider")} {
   margin-left: 4px;
   padding-left: 12px;
   border-left: var(--border-width, var(#{ns.css-var("border-width")}, 1px)) solid rgba(255, 255, 255, 0.12);
 }
 
-.canvas-panel-toolbar-actions > .right,
-.canvas-panel-toolbar > .right {
+#{ns.class("canvas-panel-toolbar-actions")} > #{ns.class("right")},
+
+#{ns.class("canvas-panel-toolbar")} > #{ns.class("right")} {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -49,19 +50,20 @@
   gap: 8px;
 }
 
-.canvas-panel-toolbar > *,
-.canvas-panel-toolbar-actions > * {
+#{ns.class("canvas-panel-toolbar")} > *,
+
+#{ns.class("canvas-panel-toolbar-actions")} > * {
   max-width: 100%;
 }
 
-.canvas-panel-content {
+#{ns.class("canvas-panel-content")} {
   flex: 1 1 auto;
   min-height: 0;
 }
 
 #{ns.class("text-link")},
 
-.text-link {
+#{ns.class("text-link")} {
   color: var(
     #{ns.css-var("ui-link-root-color")},
     var(--text-color-muted, var(#{ns.css-var("text-muted")}, var(#{ns.css-var("text")}, currentColor)))
@@ -82,8 +84,10 @@
 #{ns.class("text-link")}:hover,
 
 #{ns.class("text-link")}:focus,
-.text-link:hover,
-.text-link:focus {
+
+#{ns.class("text-link")}:hover,
+
+#{ns.class("text-link")}:focus {
   color: var(#{ns.css-var("ui-link-state-hover-color")}, var(--text-color, var(#{ns.css-var("text")}, currentColor)));
   text-decoration-color: var(#{ns.css-var("ui-link-state-hover-decoration-color")}, currentColor);
   text-decoration-style: var(

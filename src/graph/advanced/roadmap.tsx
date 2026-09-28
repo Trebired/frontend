@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import type { ReactNode } from "react";
 import {
   Stack,
@@ -68,7 +69,7 @@ function renderAdvancedRoadmapItem(
   const content =
   actionTrigger && typeof actionTrigger.href === "string"
   ? (
-    <a className="unstyled-link" href={actionTrigger.href}>
+    <a className={frontendClassName("unstyled-link")} href={actionTrigger.href}>
     {body}
     </a>
   )
@@ -76,7 +77,7 @@ function renderAdvancedRoadmapItem(
 
   return (
     <li
-    className="roadmap-item"
+    className={frontendClassName("roadmap-item")}
     key={
       item && item.id != null
       ? String(item.id)
@@ -84,10 +85,10 @@ function renderAdvancedRoadmapItem(
     }
     {...dataAttrs}
     >
-    <span className="roadmap-marker">
+    <span className={frontendClassName("roadmap-marker")}>
     {item && item.icon ? item.icon : null}
     </span>
-    <div className="roadmap-body">{content}</div>
+    <div className={frontendClassName("roadmap-body")}>{content}</div>
     </li>
   );
 }
@@ -108,7 +109,7 @@ function roadmapGroup(group: roadmap_group, groupIndex: number) {
     }
     >
     {group && group.title ? <div>{group.title}</div> : null}
-    <ol className={primitiveStackClassName({ className: "roadmap-items", gap: "sm" })}>
+    <ol className={primitiveStackClassName({ className: frontendClassName("roadmap-items"), gap: "sm" })}>
     {items.map((item, itemIndex) =>
         renderAdvancedRoadmapItem(item, groupIndex, itemIndex),
     )}

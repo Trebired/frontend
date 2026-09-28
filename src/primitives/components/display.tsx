@@ -9,7 +9,7 @@ import {
   primitivePaddingClass,
   primitiveStackClassName,
 } from "./classes.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type TableProps = HTMLAttributes<HTMLTableElement> & {
   children?: ReactNode;
@@ -58,7 +58,7 @@ function summary_stat_card(stat: SummaryStat) {
       gap: "xs",
       children: (
         <>
-        <span className="label">{stat.label}</span>
+        <span className={frontendClassName("label")}>{stat.label}</span>
         <strong {...(stat.valueProps || {})}>
         {String(stat.value == null ? "" : stat.value)}
         </strong>
@@ -114,7 +114,7 @@ function canvas_panel(props: CanvasPanelCompatProps) {
 }
 
 function titleDescriptionNode(title: ReactNode, description: ReactNode) {
-  return <TitleDescription className="title-desc" description={description} title={title} />;
+  return <TitleDescription className={frontendClassName("title-desc")} description={description} title={title} />;
 }
 
 function panelClassName(props: CanvasPanelCompatProps) {
@@ -122,14 +122,14 @@ function panelClassName(props: CanvasPanelCompatProps) {
     appendClassName(
       primitiveStackClassName({
           className: [
-            "canvas-panel",
-            "overflow-hidden",
+            frontendClassName("canvas-panel"),
+            frontendClassName("overflow-hidden"),
             primitivePaddingClass("xs"),
           ],
       }),
-      String(props.panelClassName || "height-max"),
+      String(props.panelClassName || frontendClassName("height-max")),
     ),
-    props.canvasBackground === false ? "" : "bg-canvas",
+    props.canvasBackground === false ? "" : frontendClassName("bg-canvas"),
   );
 }
 
@@ -137,8 +137,8 @@ function contentClassName(props: CanvasPanelCompatProps) {
   return appendClassName(
     props.contentClassName,
     appendClassName(
-      "canvas-panel-content",
-      props.scroll === true ? "scroll scroll-min" : "",
+      frontendClassName("canvas-panel-content"),
+      props.scroll === true ? frontendClassNames("scroll", "scroll-min") : "",
     ),
   );
 }

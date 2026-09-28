@@ -70,11 +70,11 @@
   min-width: 0;
 }
 
-#{ns.element-class("upload", "actions")} > .btn {
+#{ns.element-class("upload", "actions")} > #{ns.class("btn")} {
   min-width: 0;
 }
 
-#{ns.element-class("upload", "actions")} > .btn > span {
+#{ns.element-class("upload", "actions")} > #{ns.class("btn")} > span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

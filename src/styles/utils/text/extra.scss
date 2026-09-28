@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-.text-break-word {
+#{ns.class("text-break-word")} {
   min-width: 0;
   max-width: 100%;
   white-space: normal;
@@ -8,53 +8,55 @@
   hyphens: auto;
 }
 
-.font-italic {
+#{ns.class("font-italic")} {
   font-style: italic;
 }
 
-.font-mono {
+#{ns.class("font-mono")} {
   font-family:
   ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
   "Courier New", monospace;
   word-break: break-all;
 }
 
-.font-bold {
+#{ns.class("font-bold")} {
   font-weight: bold;
 }
 
-.label {
+#{ns.class("label")} {
   color: var(#{ns.css-var("text-muted")}, #000);
   font-size: 14px;
 }
 
-.bg-canvas {
+#{ns.class("bg-canvas")} {
   background: var(#{ns.css-var("canvas-bg")}, var(--dot-grid)) !important;
 }
 
-.pre-wrap {
+#{ns.class("pre-wrap")} {
   white-space: pre-wrap !important;
 }
 
-.bg-transparent {
+#{ns.class("bg-transparent")} {
   background-color: transparent;
 }
 
-.cursor-pointer {
+#{ns.class("cursor-pointer")} {
   cursor: pointer;
 }
 
-.cursor-auto {
+#{ns.class("cursor-auto")} {
   cursor: auto;
 }
 
-.cursor-disabled,
-.disabled,
+#{ns.class("cursor-disabled")},
+
+#{ns.class("disabled")},
+
 [disabled] {
   cursor: not-allowed;
 }
 
-.label-caps {
+#{ns.class("label-caps")} {
   color: var(#{ns.css-var("typography-label-caps-color")}, var(#{ns.css-var("text-muted")}, #000));
   font-size: var(#{ns.css-var("typography-label-caps-font-size")}, 0.72rem);
   font-weight: var(#{ns.css-var("typography-label-caps-font-weight")}, 600);

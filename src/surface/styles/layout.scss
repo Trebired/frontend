@@ -9,6 +9,7 @@
 }
 
 #{ns.class("glow")}::before,
+
 #{ns.class("glow")}::after {
   position: absolute;
   width: var(#{ns.css-var("surf-glow-root-size")}, clamp(18rem, 92vw, 98rem));
@@ -133,7 +134,7 @@
   color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
 
-#{ns.element-class("frame", "action")} .icon-glyph {
+#{ns.element-class("frame", "action")} #{ns.class("icon-glyph")} {
   font-size: var(#{ns.css-var("surf-frame-action-glyph")}, 1.5rem);
 }
 
@@ -170,12 +171,14 @@
 }
 
 #{ns.class("prose")} p,
+
 #{ns.class("prose")} li {
   color: var(#{ns.css-var("text-muted")}, #000);
   line-height: var(#{ns.css-var("surf-prose-root-line-height")}, 1.8);
 }
 
 #{ns.class("prose")} ul,
+
 #{ns.class("prose")} ol {
   padding-inline-start: 1.25rem;
 }

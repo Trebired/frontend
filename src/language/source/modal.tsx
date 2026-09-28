@@ -17,7 +17,7 @@ import {
 } from "#k0q2s2kidqtq";
 import { text, translate } from "#kv9urtb9dbq5";
 import type { SourceLanguageModalProps } from "#2w72xmq6rvza";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { Title } from "#7ly3b59upz0n";
 
 function extensionText(extensions: any[], lang?: string, locale?: string) {
@@ -88,7 +88,7 @@ function sourceLanguageModalSummaryCard(
       children: (
         <>
         <TitleDescription
-        className="title-desc"
+        className={frontendClassName("title-desc")}
         description={translate(props.lang, "summaryDescription")}
         descriptionSize="sm"
         level={4}
@@ -107,11 +107,11 @@ function filesHeader(
   props: SourceLanguageModalProps,
 ) {
   return (
-    <Stack className="title-desc" gap="sm">
+    <Stack className={frontendClassName("title-desc")} gap="sm">
     <InlineRow gap="sm">
     <Title>{translate(props.lang, "files")}</Title>
     {model.matchingPathsText ? (
-        <div className="right">
+        <div className={frontendClassName("right")}>
         {copy_button({
               size: "sm",
               target: `#${model.matchingPathsId}`,
@@ -158,9 +158,9 @@ function source_language_modal(props: SourceLanguageModalProps) {
   if (!model.id) return null;
   return (
     <ModalRoot id={model.id}>
-    <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
+    <ModalContent className={primitiveStackClassName({ className: frontendClassNames("width-xl3", "height-xl4", "scroll"), gap: "sm" })}>
     <TitleDescription
-    className="title-desc"
+    className={frontendClassName("title-desc")}
     description={translate(props.lang, "detailsDescription")}
     title={translate(props.lang, "details", { name: model.languageName })}
     />

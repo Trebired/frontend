@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-.log-box-shell {
+#{ns.class("log-box-shell")} {
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -12,7 +12,7 @@
   padding: 0;
 }
 
-.logs-toolbar-main {
+#{ns.class("logs-toolbar-main")} {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -20,7 +20,7 @@
   min-width: 0;
 }
 
-.logs-toolbar-row {
+#{ns.class("logs-toolbar-row")} {
   display: flex;
   align-items: center;
   align-content: center;
@@ -31,12 +31,12 @@
   width: 100%;
 }
 
-.logs-toolbar-filter {
+#{ns.class("logs-toolbar-filter")} {
   flex: 0 0 8rem;
   min-width: 8rem;
 }
 
-.logs-toolbar-row > .right {
+#{ns.class("logs-toolbar-row")} > #{ns.class("right")} {
   display: flex;
   align-items: center;
   align-content: center;
@@ -47,59 +47,60 @@
   min-width: 0;
 }
 
-.logs-toolbar-search-field {
+#{ns.class("logs-toolbar-search-field")} {
   display: none;
   flex: 1 1 20rem;
   min-width: 16rem;
 }
 
-.logs-toolbar-search-field .logs-search-shell,
-.logs-toolbar-search-field input {
+#{ns.class("logs-toolbar-search-field")} #{ns.class("logs-search-shell")},
+
+#{ns.class("logs-toolbar-search-field")} input {
   width: 100%;
 }
 
-#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} .logs-toolbar-search-field {
+#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} #{ns.class("logs-toolbar-search-field")} {
   display: flex;
 }
 
-#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} .logs-toolbar-search-toggle {
+#{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} #{ns.class("logs-toolbar-search-toggle")} {
   display: none;
 }
 
-.canvas-panel-toolbar .logs-toolbar-search-field {
+#{ns.class("canvas-panel-toolbar")} #{ns.class("logs-toolbar-search-field")} {
   min-width: min(16rem, 100%);
 }
 
-.logs-platform-toggle {
+#{ns.class("logs-platform-toggle")} {
   width: fit-content;
   max-width: 100%;
 }
 
-.logs-platform-toggle-body {
+#{ns.class("logs-platform-toggle-body")} {
   flex: 0 0 auto;
   gap: 0;
 }
 
-.logs-stats-header {
+#{ns.class("logs-stats-header")} {
   width: 100%;
   min-width: 0;
   align-items: stretch;
 }
 
-.logs-stats-header [data-tabs-stack] {
+#{ns.class("logs-stats-header")} [data-tabs-stack] {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-.logs-stats-header [data-tabs-list] {
+#{ns.class("logs-stats-header")} [data-tabs-list] {
   width: 100%;
 }
 
-.logs-stats-copy {
+#{ns.class("logs-stats-copy")} {
   order: 2;
 }
 
-.log-box {
+#{ns.class("log-box")} {
   margin: 0;
   padding: 8px 10px;
   font-family:
@@ -124,7 +125,7 @@
   }
 }
 
-.log-raw-text {
+#{ns.class("log-raw-text")} {
   margin: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -132,7 +133,7 @@
   color: var(--text-color);
 }
 
-.log-detail-message {
+#{ns.class("log-detail-message")} {
   margin: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -141,12 +142,12 @@
 }
 
 #logs-view-react-root,
-.log-box-content {
+#{ns.class("log-box-content")} {
   min-height: 0;
   padding-bottom: 0;
 }
 
-.log-line {
+#{ns.class("log-line")} {
   display: block;
   width: 100%;
   padding: 2px 4px;
@@ -166,15 +167,17 @@
   }
 }
 
-.log-cell {
+#{ns.class("log-cell")} {
   min-width: 0;
   vertical-align: top;
   line-height: var(--lh-xs, 1.2);
 }
 
-.log-time,
-.log-level,
-.log-group {
+#{ns.class("log-time")},
+
+#{ns.class("log-level")},
+
+#{ns.class("log-group")} {
   display: block;
   float: left;
   margin-right: 4px;
@@ -184,7 +187,7 @@
   line-height: var(--lh-xs, 1.2);
 }
 
-.log-marker {
+#{ns.class("log-marker")} {
   display: block;
   float: left;
   width: 2ch;
@@ -194,20 +197,20 @@
   line-height: var(--lh-xs, 1.2);
 }
 
-.log-time {
+#{ns.class("log-time")} {
   width: 19ch;
 }
 
-.log-level {
+#{ns.class("log-level")} {
   width: 5ch;
   text-transform: uppercase;
 }
 
-.log-group {
+#{ns.class("log-group")} {
   width: 14ch;
 }
 
-.log-message {
+#{ns.class("log-message")} {
   display: block;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -215,7 +218,7 @@
   line-height: var(--lh-xs, 1.2);
 }
 
-.log-line-stack {
+#{ns.class("log-line-stack")} {
   display: block;
   clear: both;
   white-space: pre-wrap;
@@ -224,7 +227,7 @@
   line-height: var(--lh-xs, 1.2);
 }
 
-.log-meta {
+#{ns.class("log-meta")} {
   display: inline;
   margin-left: 4px;
   color: var(--text-color-muted);
@@ -235,13 +238,13 @@
   line-height: var(--lh-xs, 1.2);
 }
 
-.logs-search-shell {
+#{ns.class("logs-search-shell")} {
   position: relative;
   display: inline-flex;
   width: 100%;
   max-width: 100%;
 
-  > .input.classic[type="search"] {
+  > #{ns.class("input")}#{ns.class("classic")}[type="search"] {
     width: 100%;
     min-width: 0;
   }

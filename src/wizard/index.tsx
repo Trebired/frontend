@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { createElement, type ReactNode } from "react";
 import { Icon } from "#lbkpzw8nphru";
 import { joinClassNames } from "#6mupcizo1mwq";
@@ -37,7 +38,7 @@ function wizard(props: wizard_props) {
   return createElement(
     "wizard-root",
     {
-      className: joinClassNames("wizard", props.className),
+      className: joinClassNames(frontendClassName("wizard"), props.className),
       id: props.id,
     },
     props.steps.map((step, index) =>
@@ -53,7 +54,7 @@ function wizard(props: wizard_props) {
         },
         step.content,
         step.actions ? (
-          <div className="ver-bottom-child">{step.actions}</div>
+          <div className={frontendClassName("ver-bottom-child")}>{step.actions}</div>
         ) : null,
       ),
     ),

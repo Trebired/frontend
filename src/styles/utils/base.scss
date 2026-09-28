@@ -225,7 +225,18 @@ a {
   text-decoration: none;
 }
 
-:where(a, button, [role="button"], [role="tab"], .btn, .text-link, .popover-item):active:not(:disabled):not([aria-disabled="true"]) {
+:where(
+  a,
+  button,
+  [role="button"],
+  [role="tab"],
+  #{ns.class("btn")},
+
+  #{ns.class("text-link")},
+
+  #{ns.class("popover-item")}
+
+):active:not(:disabled):not([aria-disabled="true"]) {
   filter: var(#{ns.css-var("interaction-active-filter")}, none);
 }
 
@@ -247,7 +258,7 @@ i {
   font-weight: 100 !important;
 }
 
-.icon-glyph {
+#{ns.class("icon-glyph")} {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -256,7 +267,7 @@ i {
   vertical-align: middle;
 }
 
-.icon-glyph > svg {
+#{ns.class("icon-glyph")} > svg {
   display: block;
   width: 1em;
   height: 1em;
@@ -272,35 +283,36 @@ ul {
   list-style-type: none;
 }
 
-.is-hidden,
+#{ns.class("is-hidden")},
+
 [hidden] {
   display: none !important;
 }
 
-.hide-mobile {
+#{ns.class("hide-mobile")} {
   @media (max-width: 768px) {
     display: none !important;
   }
 }
 
-.display-block {
+#{ns.class("display-block")} {
   display: block;
 }
 
-.overflow-hidden {
+#{ns.class("overflow-hidden")} {
   overflow: hidden;
 }
 
-.overflow-x-auto {
+#{ns.class("overflow-x-auto")} {
   overflow-x: auto !important;
 }
 
-.scroll {
+#{ns.class("scroll")} {
   overflow: auto;
   min-height: 0;
 }
 
-.scroll-min {
+#{ns.class("scroll-min")} {
   #{ns.css-var("scroll-min-size")}: 6px;
   #{ns.css-var("scroll-min-track")}: var(--scroll-track, #fff);
   #{ns.css-var("scroll-min-thumb")}: var(--scroll-thumb, #000);
@@ -333,31 +345,31 @@ ul {
   }
 }
 
-.inline-row {
+#{ns.class("inline-row")} {
   display: flex;
   align-items: center;
   width: 100%;
   min-width: 0;
   gap: var(#{ns.css-var("gap-sm")});
 
-  &.fit-content {
+  &#{ns.class("fit-content")} {
     width: fit-content;
     max-width: 100%;
   }
 
-  &.wrap {
+  &#{ns.class("wrap")} {
     flex-wrap: wrap;
   }
 
-  &.top {
+  &#{ns.class("top")} {
     align-items: flex-start;
   }
 
-  &.bottom {
+  &#{ns.class("bottom")} {
     align-items: flex-end;
   }
 
-  &.apart {
+  &#{ns.class("apart")} {
     justify-content: space-between;
 
     > * {
@@ -365,12 +377,12 @@ ul {
     }
   }
 
-  &.between {
+  &#{ns.class("between")} {
     justify-content: space-between;
   }
 
-  &.scroll-x {
-    @extend .scroll-min;
+  &#{ns.class("scroll-x")} {
+    @extend #{ns.class("scroll-min")};
 
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -380,21 +392,21 @@ ul {
       flex: 0 0 auto;
     }
 
-    > :where(.input, input, textarea, select, [data-dropdown]) {
+    > :where(#{ns.class("input")}, input, textarea, select, [data-dropdown]) {
       width: var(--inline-row-scroll-field-width, 18rem);
       min-width: var(--inline-row-scroll-field-width, 18rem);
     }
   }
 
-  > .right {
+  > #{ns.class("right")} {
     margin-left: auto;
   }
 
-  > .left {
+  > #{ns.class("left")} {
     margin-right: auto;
   }
 
-  > .center {
+  > #{ns.class("center")} {
     margin-right: auto;
     margin-left: auto;
   }

@@ -1,3 +1,4 @@
+import { frontendClassNames } from "#5vbaqj4pirp3";
 import { copy_button } from "#k632wzgl64a3";
 import tabs, { tab_panel } from "#92vilwel70ga";
 import {
@@ -16,7 +17,7 @@ function statsTabs(model: any) {
           verticalCenter: true,
       }),
       headerLeading: (
-        <div className="right no-shrink logs-stats-copy">
+        <div className={frontendClassNames("right", "no-shrink", "logs-stats-copy")}>
         {copy_button({
               size: "md",
               target: `#${model.ids.statsCopy}`,

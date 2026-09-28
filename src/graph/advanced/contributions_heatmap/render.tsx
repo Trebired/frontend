@@ -21,13 +21,13 @@ import type {
   contributions_graph_props,
   heatmap_tooltip_state,
 } from "./types.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function weekLabels(t: ContributionTranslator) {
   return (
     <>
     <text
-    className="w-heatmap-week"
+    className={frontendClassName("w-heatmap-week")}
     style={{
         fill: "currentColor",
         fontSize: "inherit",
@@ -39,7 +39,7 @@ function weekLabels(t: ContributionTranslator) {
     {t("weekdayMondayShort")}
     </text>
     <text
-    className="w-heatmap-week"
+    className={frontendClassName("w-heatmap-week")}
     style={{
         fill: "currentColor",
         fontSize: "inherit",
@@ -51,7 +51,7 @@ function weekLabels(t: ContributionTranslator) {
     {t("weekdayWednesdayShort")}
     </text>
     <text
-    className="w-heatmap-week"
+    className={frontendClassName("w-heatmap-week")}
     style={{
         fill: "currentColor",
         fontSize: "inherit",
@@ -72,7 +72,7 @@ function monthLabelNodes(
   return labels.map((label) => (
       <text
       key={label.key}
-      className="w-heatmap-month"
+      className={frontendClassName("w-heatmap-month")}
       style={{ fill: "currentColor", fontSize: "inherit", textAnchor: "start" }}
       x={label.x}
       y={15}
@@ -152,7 +152,7 @@ function tooltipNode(tooltip: heatmap_tooltip_state | null) {
   return (
     <div
     aria-hidden="true"
-    className="tooltip"
+    className={frontendClassName("tooltip")}
     {...frontendDataAttrs({ "open": "true" })}
     {...frontendDataAttrs({ "tooltip-placement": "top" })}
     style={{
@@ -181,10 +181,10 @@ function heatmapCard(
         overflowY: "hidden",
         ["--scroll-min-horizontal-gap" as string]: "0px",
     }}
-    className="scroll-min padding-xs"
+    className={frontendClassNames("scroll-min", "padding-xs")}
     >
     <svg
-    className="w-heatmap"
+    className={frontendClassName("w-heatmap")}
     height={model.heatMapHeight}
     style={{
         color: "var(--text-color-muted)",

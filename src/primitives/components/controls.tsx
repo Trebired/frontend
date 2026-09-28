@@ -25,7 +25,7 @@ import {
   primitiveTextClassName,
 } from "./classes.js";
 import { actionButtonAttrs, actionTriggerAttrs, joinClassNames, toText, wrapTriggerHostNode } from "./shared.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendDataAttrs, frontendClassName } from "#5vbaqj4pirp3";
 
 function primitiveTooltipText(tooltip: ButtonProps["tooltip"]) {
   return typeof tooltip === "string" ? tooltip.trim() : "";
@@ -129,7 +129,7 @@ function flag(props: FlagProps) {
   return (
     <span
     aria-label={label}
-    className={joinClassNames(`flag:${country}`, props.className)}
+    className={joinClassNames(frontendClassName(`flag:${country}`), props.className)}
     role="img"
     style={props.style}
     />
@@ -137,12 +137,12 @@ function flag(props: FlagProps) {
 }
 
 function avatar(props: AvatarProps) {
-  const sizeClass = props.size ? ` ${props.size}` : "";
+  const sizeClass = props.size ? ` ${frontendClassName(String(props.size))}` : "";
   if (props.src) {
     return (
       <img
       alt={props.alt}
-      className={joinClassNames(`avatar${sizeClass}`, props.className)}
+      className={joinClassNames(`${frontendClassName("avatar")}${sizeClass}`, props.className)}
       height={props.height}
       referrerPolicy="no-referrer"
       src={props.src}
@@ -154,7 +154,7 @@ function avatar(props: AvatarProps) {
   return (
     <div
     aria-hidden="true"
-    className={joinClassNames(`avatar${sizeClass} unknown`, props.className)}
+    className={joinClassNames(`${frontendClassName("avatar")}${sizeClass} ${frontendClassName("unknown")}`, props.className)}
     style={props.style}
     />
   );
@@ -163,7 +163,7 @@ function avatar(props: AvatarProps) {
 function pill(props: PillProps) {
   const { children, className, ...rest } = props;
   return (
-    <span className={joinClassNames("pill", className)} {...rest}>
+    <span className={joinClassNames(frontendClassName("pill"), className)} {...rest}>
     {children}
     </span>
   );
@@ -181,8 +181,8 @@ function separator(props: SeparatorProps = {}) {
     <div
     aria-orientation={orientation}
     className={joinClassNames(
-        "ui-separator",
-        orientation === "vertical" ? "ui-separator-vertical" : "ui-separator-horizontal",
+        frontendClassName("ui-separator"),
+        orientation === "vertical" ? frontendClassName("ui-separator-vertical") : frontendClassName("ui-separator-horizontal"),
         classNameText,
     )}
     role="separator"
@@ -254,7 +254,7 @@ function bar(props: bar_props) {
     </span>
     </div>
     <div
-    className="progress"
+    className={frontendClassName("progress")}
     data-progress=""
     style={{ ["--progress-percent" as any]: `${percent}%` }}
     >
@@ -270,7 +270,7 @@ function circle(props: circle_props) {
   return (
     <div
     aria-hidden="true"
-    className={`loader-circle ${String(props.size || "md")}`}
+    className={`${frontendClassName("loader-circle")} ${frontendClassName(String(props.size || "md"))}`}
     />
   );
 }

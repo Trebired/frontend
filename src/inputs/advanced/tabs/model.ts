@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import type { ReactNode } from "react";
 import { routeParamNameForFamily } from "./manager/route.js";
@@ -160,7 +161,7 @@ function buildTabsModel(props: tabs_props, currentUrl: string): tabs_model {
     hasNestedTabs,
     initialValue,
     items,
-    listClassName: joinClassNames(["tabs", toString(props.listClassName)]),
+    listClassName: joinClassNames([frontendClassName("tabs"), toString(props.listClassName)]),
     requestedHeaderLeadingRow: resolveHeaderLeadingRow(props),
     rootId: toString(props.id),
   };

@@ -5,7 +5,7 @@ import {
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
 import "./index.client.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type radio_option = {
   bodyClassName?: string;
@@ -97,7 +97,7 @@ function radioDescription(option: radio_option) {
   return (
     <span className={primitiveTextClassName({
           breakWord: true,
-          className: "radio-option-description",
+          className: frontendClassName("radio-option-description"),
           muted: true,
           size: "sm",
     })}>
@@ -119,11 +119,11 @@ function radioOption(props: radio_option_render_props) {
         : {})}
     >
     {radioInput(option, props, model)}
-    <span className="radio-control" aria-hidden="true">
-    <span className="radio-control-icon active" />
+    <span className={frontendClassName("radio-control")} aria-hidden="true">
+    <span className={frontendClassNames("radio-control-icon", "active")} />
     </span>
     <span className={model.optionBodyClassName}>
-    <span className="radio-option-title">{model.title}</span>
+    <span className={frontendClassName("radio-option-title")}>{model.title}</span>
     {radioDescription(option)}
     </span>
     </Tag>

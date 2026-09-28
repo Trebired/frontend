@@ -1,3 +1,4 @@
+import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 import { copy_button } from "#k632wzgl64a3";
 import { code_block } from "#c55llzkpl4ob";
 import { ModalContent, ModalRoot } from "#2eo44c56ebfi";
@@ -21,9 +22,9 @@ function copyAction(target: string, title: string, tooltip: string) {
 
 function summaryRow(label: string, id: string) {
   return (
-    <InlineRow className="lh-xs" gap="xs">
-    <Text as="strong" className="lh-xs" muted>{label}:</Text>
-    <Text breakWord className="lh-xs" id={id}></Text>
+    <InlineRow className={frontendClassName("lh-xs")} gap="xs">
+    <Text as="strong" className={frontendClassName("lh-xs")} muted>{label}:</Text>
+    <Text breakWord className={frontendClassName("lh-xs")} id={id}></Text>
     </InlineRow>
   );
 }
@@ -45,10 +46,10 @@ function detailSummary(model: any) {
 
 function detailTitle(model: any) {
   return (
-    <Stack className="title-desc" gap="sm">
+    <Stack className={frontendClassName("title-desc")} gap="sm">
     <InlineRow gap="sm">
     <Title>{model.t("logEntry")}</Title>
-    <div className="right">
+    <div className={frontendClassName("right")}>
     {copyAction(
         `#${model.ids.detailRaw}`,
         model.t("copyLogEntry"),
@@ -72,10 +73,10 @@ function textDetailSection(
       children: (
         <>
         <InlineRow gap="sm">
-        <span className="label">{label}</span>
-        <div className="right">{copyAction(`#${id}`, title, tooltip)}</div>
+        <span className={frontendClassName("label")}>{label}</span>
+        <div className={frontendClassName("right")}>{copyAction(`#${id}`, title, tooltip)}</div>
         </InlineRow>
-        <p id={id} className="log-detail-message"></p>
+        <p id={id} className={frontendClassName("log-detail-message")}></p>
         </>
       ),
   });
@@ -94,8 +95,8 @@ function codeDetailSection(
       children: (
         <>
         <InlineRow gap="sm">
-        <span className="label">{label}</span>
-        <div className="right">{copyAction(`#${id}`, title, tooltip)}</div>
+        <span className={frontendClassName("label")}>{label}</span>
+        <div className={frontendClassName("right")}>{copyAction(`#${id}`, title, tooltip)}</div>
         </InlineRow>
         {code_block({
               codeProps: attrs.codeProps,
@@ -110,7 +111,7 @@ function codeDetailSection(
 function logDetailModal(model: any) {
   return (
     <ModalRoot id={model.ids.detailModal}>
-    <ModalContent className={primitiveStackClassName({ className: "width-xl3 height-xl4 scroll", gap: "sm" })}>
+    <ModalContent className={primitiveStackClassName({ className: frontendClassNames("width-xl3", "height-xl4", "scroll"), gap: "sm" })}>
     {detailTitle(model)}
     {detailSummary(model)}
     {textDetailSection(

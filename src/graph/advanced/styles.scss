@@ -1,4 +1,5 @@
-.roadmap-items {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("roadmap-items")} {
   --roadmap-bullet-size: 32px;
   --roadmap-gap: 16px;
   --roadmap-line-width: 2px;
@@ -9,11 +10,11 @@
   list-style: none;
 }
 
-.roadmap-body {
+#{ns.class("roadmap-body")} {
   min-width: 0;
 }
 
-.roadmap-item {
+#{ns.class("roadmap-item")} {
   position: relative;
   min-width: 0;
   padding-inline-start: calc(
@@ -21,11 +22,11 @@
   );
 }
 
-.roadmap-item:not(:first-of-type) {
+#{ns.class("roadmap-item")}:not(:first-of-type) {
   margin-top: var(--roadmap-gap);
 }
 
-.roadmap-item:not(:last-of-type)::before {
+#{ns.class("roadmap-item")}:not(:last-of-type)::before {
   content: "";
   position: absolute;
   top: calc(var(--roadmap-bullet-size) + 6px);
@@ -35,7 +36,7 @@
   background: var(--border-surface-1);
 }
 
-.roadmap-marker {
+#{ns.class("roadmap-marker")} {
   position: absolute;
   top: 0;
   left: 0;
@@ -52,6 +53,6 @@
   flex: 0 0 auto;
 }
 
-.roadmap-marker > * {
+#{ns.class("roadmap-marker")} > * {
   flex: 0 0 auto;
 }

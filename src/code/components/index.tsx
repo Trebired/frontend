@@ -1,7 +1,7 @@
 import { createElement, type ReactNode } from "react";
 import { appendClassName, joinClassNames } from "#6mupcizo1mwq";
 import { objectRecord as objectProps } from "#ndsvdqv80epr";
-import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type CodeBlockProps = {
   children?: ReactNode;
@@ -38,8 +38,8 @@ function code_block(props: CodeBlockProps) {
     },
     <pre
     className={joinClassNames(
-        "code-block card padding-xs bg-canvas",
-        scroll ? "scroll scroll-min" : "",
+        frontendClassNames("code-block", "card", "padding-xs", "bg-canvas"),
+        scroll ? frontendClassNames("scroll", "scroll-min") : "",
         props.className,
     )}
     data-code=""
@@ -47,7 +47,7 @@ function code_block(props: CodeBlockProps) {
     >
     <code
     {...(props.id ? { id: String(props.id) } : {})}
-    className={joinClassNames(wrap ? "pre-wrap text-break" : "", props.codeClassName)}
+    className={joinClassNames(wrap ? frontendClassNames("pre-wrap", "text-break") : "", props.codeClassName)}
     {...frontendDataAttrs({ "code-content": "" })}
     {...codeProps}
     >
@@ -65,7 +65,7 @@ function code_text(props: CodeTextProps) {
   const { children, className, tag = "pre", ...rest } = props;
   return createElement(
     tag,
-    { className: appendClassName("code", className), ...rest },
+    { className: appendClassName(frontendClassName("code"), className), ...rest },
     children,
   );
 }

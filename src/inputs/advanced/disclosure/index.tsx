@@ -30,15 +30,15 @@ function disclosureModel(props: disclosure_props) {
   const rootClassName = classNames([
       frontendClassName("disclosure"),
       props.card === false ? "" : primitiveCardClassName({ layout: "none" }),
-      "cursor-pointer",
-      "disclosure",
+      frontendClassName("cursor-pointer"),
+      frontendClassName("disclosure"),
       toString(props.rootClassName),
   ]);
   return {
     isOpen: props.open === true,
     panelClassName: classNames([
         frontendElementClass("disclosure", "panel"),
-        "cursor-auto",
+        frontendClassName("cursor-auto"),
         "disclosure-panel",
         toString(props.panelClassName),
     ]),

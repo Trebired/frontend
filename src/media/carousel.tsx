@@ -1,5 +1,5 @@
 import { Icon } from "#lbkpzw8nphru";
-import { frontendClassName, frontendModifierClass } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendModifierClass } from "#5vbaqj4pirp3";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
 import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT } from "./icons.js";
 import { useCarouselState } from "./carousel-state.js";
@@ -45,7 +45,7 @@ function CarouselControls({ label, state }: CarouselPartProps) {
     <>
     <button
     aria-label={label("mediaSlidePrevious")}
-    className={`${frontendClassName("carousel-nav")} ${frontendClassName("carousel-nav-prev")}`}
+    className={frontendClassNames("carousel-nav", "carousel-nav-prev")}
     onClick={state.showPrevious}
     type="button"
     >
@@ -53,7 +53,7 @@ function CarouselControls({ label, state }: CarouselPartProps) {
     </button>
     <button
     aria-label={label("mediaSlideNext")}
-    className={`${frontendClassName("carousel-nav")} ${frontendClassName("carousel-nav-next")}`}
+    className={frontendClassNames("carousel-nav", "carousel-nav-next")}
     onClick={state.showNext}
     type="button"
     >
@@ -70,7 +70,7 @@ function CarouselDots({ label, slides, state }: CarouselPartProps) {
           <button
           aria-current={index === state.activeIndex ? "true" : undefined}
           aria-label={label("mediaSlide", { index: index + 1 })}
-          className={activeClass("carousel-dot", index === state.activeIndex)}
+          className={activeClass(frontendClassName("carousel-dot"), index === state.activeIndex)}
           key={slide.src}
           onClick={() => state.showAt(index)}
           type="button"
@@ -101,7 +101,7 @@ function Carousel(props: CarouselProps) {
           <img
           alt={slide.alt ?? ""}
           aria-hidden={index === state.activeIndex ? undefined : "true"}
-          className={activeClass("carousel-slide", index === state.activeIndex)}
+          className={activeClass(frontendClassName("carousel-slide"), index === state.activeIndex)}
           key={slide.src}
           src={slide.src}
           />

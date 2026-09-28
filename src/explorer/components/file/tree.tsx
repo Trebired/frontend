@@ -14,7 +14,7 @@ import { StaticFileTreeView } from "#xjjhb3oy2yyh";
 import { FileTreeRow } from "./tree/row.js";
 import { FileTreeShell } from "./tree/shell.js";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const FILE_TREE_ROW_HEIGHT = 34;
 
@@ -152,7 +152,7 @@ function renderInteractiveFileTree(options: any) {
           { style: { display: "contents" } },
           <div
           ref={options.scrollRef}
-          className={`scroll scroll-min ${frontendClassName("file-tree-scroll")}`}
+          className={frontendClassNames("scroll", "scroll-min", "file-tree-scroll")}
           style={treeScrollStyle(options.treeHeight, rows)}
           >
           <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
@@ -161,7 +161,7 @@ function renderInteractiveFileTree(options: any) {
           </div>,
         )
       ) : (
-        <div className={primitiveTextClassName({ className: "padding-sm", muted: true })}>{emptyMessage}</div>
+        <div className={primitiveTextClassName({ className: frontendClassName("padding-sm"), muted: true })}>{emptyMessage}</div>
     )}
     </FileTreeShell>
   );

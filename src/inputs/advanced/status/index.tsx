@@ -2,7 +2,7 @@ import { icon } from "#dqy2d22qyujv";
 import sharedInput from "#8y47rueq20kg";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type BackendStatusCheckConfig = {
   contextFields?: Record<string, string>;
@@ -56,10 +56,10 @@ function backendStatusConfig(check: BackendStatusCheckConfig, name: string) {
 function statusIcons() {
   return (
     <>
-    <span className="input-status-icon ok" {...frontendDataAttrs({ "status-icon": "" })} hidden>
+    <span className={frontendClassNames("input-status-icon", "ok")} {...frontendDataAttrs({ "status-icon": "" })} hidden>
     {icon({ spec: "remixicon checkbox-circle-line" })}
     </span>
-    <span className="input-status-icon bad" {...frontendDataAttrs({ "status-icon": "" })} hidden>
+    <span className={frontendClassNames("input-status-icon", "bad")} {...frontendDataAttrs({ "status-icon": "" })} hidden>
     {icon({ spec: "remixicon close-circle-line" })}
     </span>
     </>
@@ -107,10 +107,10 @@ function status_input(props: status_input_props) {
 
   return (
     <label className={primitiveStackClassName({ gap: "xs" })}>
-    <span className="label">{props.label}</span>
+    <span className={frontendClassName("label")}>{props.label}</span>
     {shouldWrap ? (
         <div
-        className={["input-status-wrap", wrapClassName]
+        className={[frontendClassName("input-status-wrap"), wrapClassName]
           .filter(Boolean)
           .join(" ")}
         data-status-field=""

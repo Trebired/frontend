@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-.card {
+#{ns.class("card")} {
   min-height: var(#{ns.css-var("surf-card-root-min-h")}, var(--height-xs4, 35px));
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
@@ -8,13 +8,13 @@
   overflow: hidden;
 }
 
-.card-title {
+#{ns.class("card-title")} {
   margin: var(#{ns.css-var("surf-card-title-margin")}, 0 0 10px 0);
   font-size: var(#{ns.css-var("surf-card-title-font-size")}, 15px);
   font-weight: var(#{ns.css-var("surf-card-title-font-weight")}, 700);
 }
 
-.card-row {
+#{ns.class("card-row")} {
   min-height: 0;
   border-radius: var(#{ns.css-var("surf-card-row-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   border: var(#{ns.css-var("surf-card-row-border")}, var(--border-width) solid var(--border-surface-1));
@@ -26,11 +26,11 @@
   padding: var(#{ns.css-var("surf-card-row-padding")}, 9px 12px);
   transition: all var(--transition-2) ease;
 
-  &.excluded {
+  &#{ns.class("excluded")} {
     border-color: var(#{ns.css-var("surf-card-row-state-excluded-border")}, var(--border-surface-1));
   }
 
-  &.selected {
+  &#{ns.class("selected")} {
     background: var(#{ns.css-var("surf-card-row-state-selected-bg")}, var(--background-surface-1));
   }
 
@@ -48,12 +48,12 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .card-row:hover {
+  #{ns.class("card-row")}:hover {
     background: var(#{ns.css-var("surf-card-row-state-hover-bg")}, var(--background-surface-1, transparent));
   }
 }
 
-.card-body {
+#{ns.class("card-body")} {
   align-items: stretch;
   min-width: 0;
 
@@ -65,31 +65,31 @@
     flex: 0 0 auto;
   }
 
-  > .column {
+  > #{ns.class("column")} {
     min-width: 0;
   }
 
-  > .column > .inline-row:first-child {
+  > #{ns.class("column")} > #{ns.class("inline-row")}:first-child {
     align-items: flex-start;
     flex-wrap: wrap;
     min-width: 0;
   }
 
-  > .column > .inline-row:first-child > :last-child:not(:first-child) {
+  > #{ns.class("column")} > #{ns.class("inline-row")}:first-child > :last-child:not(:first-child) {
     flex: 0 0 auto;
   }
 
-  &.title-only {
+  &#{ns.class("title-only")} {
     align-items: center;
   }
 }
 
-.card-icon img:not(.avatar) {
+#{ns.class("card-icon")} img:not(#{ns.class("avatar")}) {
   border-radius: var(#{ns.css-var("surf-card-icon-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
   object-fit: cover;
 }
 
-.card-body-divider {
+#{ns.class("card-body-divider")} {
   display: block;
   align-self: stretch;
   flex: 0 0 auto;
@@ -100,7 +100,7 @@
   opacity: 0.9;
 }
 
-.card-description {
+#{ns.class("card-description")} {
   align-items: center;
   flex-wrap: wrap;
   min-width: 0;
@@ -109,15 +109,15 @@
     max-width: 100%;
   }
 
-  > span:not(.pill),
-  > a:not(.pill) {
+  > span:not(#{ns.class("pill")}),
+  > a:not(#{ns.class("pill")}) {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
 }
 
 @media (max-width: 640px) {
-  .card-description {
+  #{ns.class("card-description")} {
     align-items: flex-start;
   }
 }

@@ -192,14 +192,14 @@ function BrandCanvas(props: BrandCanvasProps) {
         {clearSpace}
         </span>
         </>
-    ) : null}
+      ) : null}
     </div>
     {caption || spec ? (
         <figcaption className={frontendElementClass("brand-canvas", "caption")}>
         {caption ? <span>{caption}</span> : null}
         {spec ? <span className={frontendElementClass("brand-canvas", "spec")}>{spec}</span> : null}
         </figcaption>
-    ) : null}
+      ) : null}
     </figure>
   );
 }
@@ -368,7 +368,7 @@ function CanvasPanel(props: CanvasPanelProps) {
 function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreenId" | "subtitle" | "title">) {
   if (!props.title && !props.subtitle && !props.actions && !props.fullscreenId) return null;
   return (
-    <div className={classNames(frontendElementClass("canvas-panel", "header"), "card")}>
+    <div className={classNames(frontendElementClass("canvas-panel", "header"), frontendClassName("card"))}>
     <div className={frontendElementClass("canvas-panel", "titles")}>
     {props.title ? <span className={frontendElementClass("canvas-panel", "title")}>{props.title}</span> : null}
     {props.subtitle ? <span className={frontendElementClass("canvas-panel", "subtitle")}>{props.subtitle}</span> : null}

@@ -7,7 +7,7 @@ import {
 } from "#0rl8rpgzssot";
 import { key_value } from "#kkjo6xogukzx";
 import type { key_value_row } from "#xb7hv37sq5h5";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { copy_button } from "./standard-buttons.js";
 import { HeadingScope, Title, type HeadingLevel } from "#7ly3b59upz0n";
 
@@ -79,7 +79,7 @@ function copyCardHeader(props: CopyCardProps, target: string) {
   return (
     <div className={primitiveInlineRowClassName({ between: true, gap: "sm", verticalCenter: true })}>
     {copyCardTitle(props)}
-    <div className="right">
+    <div className={frontendClassName("right")}>
     <div className={primitiveInlineRowClassName({ fit: true, gap: "xs", verticalCenter: true })}>
     {props.actions}
     {canCopy
@@ -134,9 +134,9 @@ function copy_card(props: CopyCardProps) {
 
 function copyValueShown(props: CopyValueProps, id: string, value: string) {
   if (props.children) {
-    return <span className="text-break" id={id}>{props.children}</span>;
+    return <span className={frontendClassName("text-break")} id={id}>{props.children}</span>;
   }
-  return <code className="text-break" id={id}>{value}</code>;
+  return <code className={frontendClassName("text-break")} id={id}>{value}</code>;
 }
 
 function copy_value(props: CopyValueProps) {

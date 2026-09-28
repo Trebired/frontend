@@ -20,7 +20,7 @@ import {
 } from "./model.js";
 import { source_language_tabs_content } from "./tabs.js";
 import type { SourceLanguageVisualizerProps } from "#2w72xmq6rvza";
-import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { Title } from "#7ly3b59upz0n";
 
 function headerCard(model: SourceLanguageScanModel) {
@@ -38,7 +38,7 @@ function headerCard(model: SourceLanguageScanModel) {
               children: <>{translate(model.lang, "resetFilter")}</>,
         })}
         <Text
-        className="no-shrink"
+        className={frontendClassName("no-shrink")}
         muted
         size="sm"
         {...frontendDataAttrs({ "source-language-detected-count": "" })}
@@ -78,7 +78,7 @@ function source_language_scan_progress_card(model: SourceLanguageScanModel) {
     <Stack
     id="repository_scan_pending_content"
     center={!model.hasReadySnapshot}
-    className={model.hasReadySnapshot ? "" : "min-height-md"}
+    className={model.hasReadySnapshot ? "" : frontendClassName("min-height-md")}
     gap="sm"
     hidden={!model.scanPending && !model.scanFailed}
     verticalCenter={!model.hasReadySnapshot}
@@ -96,7 +96,7 @@ function source_language_scan_progress_card(model: SourceLanguageScanModel) {
     {model.scanProgressLabel}
     </Text>
     </Stack>
-    <div id="repository_scan_progress" className="progress progress-scan width-max" data-progress="">
+    <div id="repository_scan_progress" className={frontendClassNames("progress", "progress-scan", "width-max")} data-progress="">
     <div data-progress-mount="">
     <span data-progress-fill="" style={progressFillStyle(model)} />
     </div>
@@ -109,25 +109,25 @@ function sourceLanguageVisualizerRows(model: SourceLanguageScanModel) {
   const scan = model.scan;
   return (
     <>
-    <InlineRow className="lh-xs" gap="xs">
-    <Text as="strong" className="lh-xs" muted>{translate(model.lang, "totalSizeLabel")}</Text>
+    <InlineRow className={frontendClassName("lh-xs")} gap="xs">
+    <Text as="strong" className={frontendClassName("lh-xs")} muted>{translate(model.lang, "totalSizeLabel")}</Text>
     <Text
     breakWord
-    className="lh-xs"
+    className={frontendClassName("lh-xs")}
     {...frontendDataAttrs({ "source-language-summary-total-bytes": String(safeNumber(scan.total_bytes)) })}
     >
     {formatCompactBytes(scan.total_bytes, model.locale)}
     </Text>
     </InlineRow>
-    <InlineRow className="lh-xs" gap="xs">
-    <Text as="strong" className="lh-xs" muted>{translate(model.lang, "files")}:</Text>
-    <Text breakWord className="lh-xs">{formatCount(scan.file_count, model.locale)}</Text>
+    <InlineRow className={frontendClassName("lh-xs")} gap="xs">
+    <Text as="strong" className={frontendClassName("lh-xs")} muted>{translate(model.lang, "files")}:</Text>
+    <Text breakWord className={frontendClassName("lh-xs")}>{formatCount(scan.file_count, model.locale)}</Text>
     </InlineRow>
-    <InlineRow className="lh-xs" gap="xs">
-    <Text as="strong" className="lh-xs" muted>{translate(model.lang, "codeLines")}</Text>
+    <InlineRow className={frontendClassName("lh-xs")} gap="xs">
+    <Text as="strong" className={frontendClassName("lh-xs")} muted>{translate(model.lang, "codeLines")}</Text>
     <Text
     breakWord
-    className="lh-xs"
+    className={frontendClassName("lh-xs")}
     {...frontendDataAttrs({
           "source-language-summary-total-lines": String(safeNumber(scan.total_lines && scan.total_lines.code)),
     })}
@@ -142,9 +142,9 @@ function sourceLanguageVisualizerRows(model: SourceLanguageScanModel) {
 function scannedAtRow(model: SourceLanguageScanModel) {
   if (!model.scannedAt) return null;
   return (
-    <InlineRow className="lh-xs" gap="xs">
-    <Text as="strong" className="lh-xs" muted>{translate(model.lang, "scanned")}</Text>
-    <Text breakWord className="lh-xs">
+    <InlineRow className={frontendClassName("lh-xs")} gap="xs">
+    <Text as="strong" className={frontendClassName("lh-xs")} muted>{translate(model.lang, "scanned")}</Text>
+    <Text breakWord className={frontendClassName("lh-xs")}>
     {formatDateTime(model.scannedAt, model.locale)}
     </Text>
     </InlineRow>

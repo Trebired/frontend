@@ -1,39 +1,45 @@
 @use "@trebired/bundler/namespace" as ns;
-.sticky-widget {
+#{ns.class("sticky-widget")} {
   background-color: var(--background-surface-2, var(#{ns.css-var("surface-muted")}, transparent));
 }
 
-.monaco-diff-editor .editor.original,
-.monaco-diff-editor .editor.modified,
-.monaco-diff-editor .editor.original .monaco-editor,
-.monaco-diff-editor .editor.modified .monaco-editor {
+.monaco-diff-editor #{ns.class("editor")}#{ns.class("original")},
+
+.monaco-diff-editor #{ns.class("editor")}#{ns.class("modified")},
+
+.monaco-diff-editor #{ns.class("editor")}#{ns.class("original")} .monaco-editor,
+
+.monaco-diff-editor #{ns.class("editor")}#{ns.class("modified")} .monaco-editor {
   box-shadow: none !important;
 }
 
-.monaco-diff-editor .monaco-scrollable-element > .shadow.left,
-.monaco-diff-editor .monaco-scrollable-element > .shadow.top-left-corner,
-.monaco-diff-editor .monaco-scrollable-element > .shadow.top.left {
+.monaco-diff-editor .monaco-scrollable-element > #{ns.class("shadow")}#{ns.class("left")},
+
+.monaco-diff-editor .monaco-scrollable-element > #{ns.class("shadow")}#{ns.class("top-left-corner")},
+
+.monaco-diff-editor .monaco-scrollable-element > #{ns.class("shadow")}#{ns.class("top")}#{ns.class("left")} {
   display: none !important;
   box-shadow: none !important;
 }
 
-.monaco-diff-editor .monaco-sash.vertical {
+.monaco-diff-editor .monaco-sash#{ns.class("vertical")} {
   background: transparent !important;
   box-shadow: none !important;
   inline-size: 0 !important;
 }
 
-.monaco-diff-editor .diffOverview {
+.monaco-diff-editor #{ns.class("diffOverview")} {
   display: none !important;
 }
 
-.monaco-diff-editor .diagonal-fill {
+.monaco-diff-editor #{ns.class("diagonal-fill")} {
   background-image: none !important;
   background-color: transparent !important;
 }
 
-.monaco-diff-editor .char-delete.diff-range-empty,
-.monaco-diff-editor .char-insert.diff-range-empty {
+.monaco-diff-editor #{ns.class("char-delete")}#{ns.class("diff-range-empty")},
+
+.monaco-diff-editor #{ns.class("char-insert")}#{ns.class("diff-range-empty")} {
   border-left: 0 !important;
   margin-left: 0 !important;
 }

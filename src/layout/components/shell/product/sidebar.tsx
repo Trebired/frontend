@@ -22,7 +22,7 @@ import type {
   ProductShellSidebarProps,
   ProductShellThemeToggleProps,
 } from "./types.js";
-import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type ProductShellThemeSelectProps =
 Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
@@ -170,7 +170,7 @@ function productShellThemeSelect(props: ProductShellThemeSelectProps) {
   return (
     <ThemeSelect
     aria-hidden="true"
-    className={`popover popover-portaled ${frontendClassName("theme-switch-popover")}`}
+    className={frontendClassNames("popover", "popover-portaled", "theme-switch-popover")}
     dark={props.dark}
     {...frontendDataAttrs({ "popover": "" })}
     id={props.popoverId}

@@ -1,5 +1,19 @@
 # Changelog
 
+## 15.0.0
+
+Breaking: every class the package emits is namespaced. `column`, `gap-md`, `card`, `btn`, `popover-item` and the ~450 others are now `tbf-column`, `tbf-gap-md`, `tbf-card`, `tbf-btn`, `tbf-popover-item`. An unprefixed class name in your markup is yours again — the package no longer answers to one, and there is no switch to turn this off.
+
+- The scale utilities the config generates (`gap-*`, `padding-*`, `width-*`, `height-*`, `text-*`, `lh-*`, `radius-*`, `z-index-*`, the margin helpers) are namespaced at the point they are written, so they follow the prefix rather than repeating it.
+- The flag helper emits `tbf-flag:CC` instead of `flag:CC`.
+- `frontendClassNames(...names)` joins several namespaced names in one call, for the places that used to write a space-separated literal.
+- Dropped the `.card.card` bridge that existed to reconcile the old unprefixed `.card` with `.tbf-card`. With one name left it was a self-compound, and its specificity beat the `--muted` and `--inverse` tones it was never meant to outrank.
+- CropperJS's and Monaco's own class names stay as they are: the package targets them, it does not emit them.
+
+Not yet namespaced: the package's `data-*` attributes. 189 of them (`data-dropdown-*`, `data-tabs-*`, `data-wizard-*` and the rest) are read back by the dropdown, tabs, wizard, steps, logs, graph and editor runtimes, and renaming them means moving the selector, the `getAttribute` and the `dataset` access together. That is a second pass.
+
+- A dropdown option no longer skips its own rendering. The options carried `content-visibility: auto` with `contain-intrinsic-height: auto var(--height-input)`, so any option whose label wrapped was measured at the placeholder height until it was first painted: a 40-item list reported 1717px of content and settled at 1589px once everything had rendered, and the rows moved under the pointer as it travelled down them.
+
 ## 14.15.0
 
 - A hairline panel's rules are drawn by the cells rather than by a gap showing the panel's ground. The old panel filled itself with the line colour and let a 1px gap reveal it, so every track a short last row left empty came out as a solid block of that colour — a six-item list in a four-column panel printed a grey rectangle two columns wide. Each cell now carries its own 1px ring; neighbours land on the same pixel, so the lines are unchanged, and an empty track shows the page. `surfaces.hairline.root.bg` and `surfaces.hairline.root.gap` no longer take part in drawing them, and `surfaces.hairline.cell.line` sets the colour.

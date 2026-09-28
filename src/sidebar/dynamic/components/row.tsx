@@ -176,7 +176,7 @@ function DynamicSidebarDivider(props: { index: number; item: DynamicSidebarItem 
   return (
     <li
     aria-hidden="true"
-    className="sidebar-separator"
+    className={frontendClassName("sidebar-separator")}
     {...frontendDataAttrs({ "sidebar-separator": "" })}
     key={props.item.key || `sidebar_divider_${props.index}`}
     role="separator"

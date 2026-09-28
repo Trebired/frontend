@@ -43,7 +43,7 @@
   color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
 
-#{ns.class("tile")} .icon-glyph {
+#{ns.class("tile")} #{ns.class("icon-glyph")} {
   font-size: var(#{ns.css-var("surf-tile-root-glyph")}, 1.5rem);
 }
 
@@ -115,7 +115,7 @@
   transition: color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
 
-#{ns.element-class("action-row", "arrow")} .icon-glyph {
+#{ns.element-class("action-row", "arrow")} #{ns.class("icon-glyph")} {
   font-size: var(#{ns.css-var("surf-action-row-arrow-glyph")}, 1.25rem);
 }
 

@@ -18,7 +18,7 @@ import {
   FullscreenTarget,
 } from "#vbkfq413o3u7";
 import type { EditorBodyProps, EditorLabels, EditorSurfaceProps } from "./types.js";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { Title } from "#7ly3b59upz0n";
 
 const EDITOR_FULLSCREEN_GROUP = "editor_surface";
@@ -118,7 +118,7 @@ function viewerState(props: EditorSurfaceProps, text: Required<EditorLabels>) {
 
 function editSurface(state: ReturnType<typeof readSurfaceState>) {
   return (
-    <div className="border radius-md overflow-hidden">
+    <div className={frontendClassNames("border", "radius-md", "overflow-hidden")}>
     <script
     data-editor-launch=""
     dangerouslySetInnerHTML={jsonHtml(state.ideLaunch)}
@@ -127,7 +127,7 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
     {editorLoader(state)}
     <iframe
     aria-label={state.labels.editor}
-    className="display-block overflow-hidden width-max height-xl4 bg-transparent border-0"
+    className={frontendClassNames("display-block", "overflow-hidden", "width-max", "height-xl4", "bg-transparent", "border-0")}
     data-editor-frame=""
     hidden
     name="editor_frame"
@@ -139,9 +139,9 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
 
 function editorLoader(state: ReturnType<typeof readSurfaceState>) {
   return (
-    <InlineRow className="height-xl4" data-editor-loader="">
-    <div className="center">
-    <div className="width-fit no-stretch">{editorLoaderContent(state)}</div>
+    <InlineRow className={frontendClassName("height-xl4")} data-editor-loader="">
+    <div className={frontendClassName("center")}>
+    <div className={frontendClassNames("width-fit", "no-stretch")}>{editorLoaderContent(state)}</div>
     </div>
     </InlineRow>
   );
@@ -152,7 +152,7 @@ function editorLoaderContent(state: ReturnType<typeof readSurfaceState>) {
     <Stack center gap="sm" horizontalCenter>
     <strong data-editor-status="">{state.initialStatusText || state.labels.waitingForEditorAvailability}</strong>
     <Text breakWord data-editor-detail="" muted size="sm">{state.loading.detail}</Text>
-    <div className="width-md max-width-full text-left">
+    <div className={frontendClassNames("width-md", "max-width-full", "text-left")}>
     {progress_bar({
           label: state.loading.label,
           meta: state.loading.meta,
@@ -232,7 +232,7 @@ function editorHeader(state: ReturnType<typeof readSurfaceState>) {
       children: (
         <>
         <Title>{state.title}</Title>
-        <div className="right">
+        <div className={frontendClassName("right")}>
         <InlineRow gap="xs">
         {state.actions}
         {state.ideMode === "edit" ? editorExternalLink(state) : null}

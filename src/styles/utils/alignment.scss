@@ -6,19 +6,19 @@ $frontend-hor-alignments: (
 );
 
 @each $name, $value in $frontend-hor-alignments {
-  .hor-#{$name} {
+  #{ns.class("hor-")}#{$name} {
     justify-content: $value;
 
-    &.column,
-    &.left-column,
-    &.right-column,
-    &.middle-column {
+    &#{ns.class("column")},
+    &#{ns.class("left-column")},
+    &#{ns.class("right-column")},
+    &#{ns.class("middle-column")} {
       align-items: $value;
       justify-content: flex-start;
     }
   }
 
-  .hor-#{$name}-child {
+  #{ns.class("hor-")}#{$name}-child {
     @if $name == left {
       align-self: flex-start;
       margin-right: auto;
@@ -33,86 +33,86 @@ $frontend-hor-alignments: (
   }
 }
 
-.hor-apart {
+#{ns.class("hor-apart")} {
   justify-content: space-between;
 }
 
-.ver-center {
+#{ns.class("ver-center")} {
   display: flex;
   align-items: center;
 }
 
-.ver-bottom {
+#{ns.class("ver-bottom")} {
   display: flex;
   align-items: flex-end;
 }
 
-.ver-center-child {
+#{ns.class("ver-center-child")} {
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.ver-bottom-child {
+#{ns.class("ver-bottom-child")} {
   margin-top: auto;
 }
 
-.ver-xs {
+#{ns.class("ver-xs")} {
   margin-top: var(#{ns.css-var("gap-xs2")});
 }
 
-.ver-sm {
+#{ns.class("ver-sm")} {
   margin-top: var(#{ns.css-var("gap-xs")});
 }
 
-.ver-md {
+#{ns.class("ver-md")} {
   margin-top: var(#{ns.css-var("gap-sm")});
 }
 
-.ver-lg {
+#{ns.class("ver-lg")} {
   margin-top: var(#{ns.css-var("gap-md")});
 }
 
-.no-stretch {
+#{ns.class("no-stretch")} {
   flex: 0 0 auto;
   width: auto;
   max-width: fit-content;
 }
 
-.no-shrink {
+#{ns.class("no-shrink")} {
   flex-shrink: 0;
 }
 
-.grow {
+#{ns.class("grow")} {
   flex-grow: 1;
   min-width: 0;
 }
 
 @media (max-width: 900px) {
-  .inline-row.mobile-wrap {
+  #{ns.class("inline-row")}#{ns.class("mobile-wrap")} {
     flex-wrap: wrap;
 
-    > .column {
+    > #{ns.class("column")} {
       flex-basis: 100%;
       width: 100%;
     }
   }
 }
 
-.ver-baseline {
+#{ns.class("ver-baseline")} {
   display: flex;
   align-items: baseline;
 }
 
-.sticky {
+#{ns.class("sticky")} {
   position: sticky;
   inset-block-start: var(#{ns.css-var("sticky-offset")}, 0);
 }
 
-.min-screen {
+#{ns.class("min-screen")} {
   min-height: 100dvh;
 }
 
-.float {
+#{ns.class("float")} {
   animation: #{ns.token("float-drift")} 9s ease-in-out infinite;
 }
 
@@ -127,7 +127,7 @@ $frontend-hor-alignments: (
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .float {
+  #{ns.class("float")} {
     animation: none;
   }
 }

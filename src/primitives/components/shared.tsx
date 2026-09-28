@@ -2,7 +2,7 @@ import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import { appendClassName, joinClassNames, jsonScript, toText } from "#ndsvdqv80epr";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function jsonAttr(value: unknown) {
   if (value === undefined || typeof value === "function") return undefined;
@@ -67,7 +67,7 @@ function wrapTriggerHostNode(children: ReactNode, options?: BindActionTriggerOpt
     <span
     {...actionTriggerAttrs(options)}
     {...triggerSemanticsAttrs(options, "span")}
-    className="action-trigger-host"
+    className={frontendClassName("action-trigger-host")}
     style={{ display: "contents" }}
     >
     {children}

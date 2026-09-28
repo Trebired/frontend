@@ -1,4 +1,5 @@
-.sr-only {
+@use "@trebired/bundler/namespace" as ns;
+#{ns.class("sr-only")} {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -11,8 +12,9 @@
   white-space: nowrap;
 }
 
-.sr-only-focusable:focus,
-.sr-only-focusable:focus-within {
+#{ns.class("sr-only-focusable")}:focus,
+
+#{ns.class("sr-only-focusable")}:focus-within {
   position: static;
   width: auto;
   height: auto;

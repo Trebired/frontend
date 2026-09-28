@@ -1,7 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
-.choice-row.radio-option {
+#{ns.class("choice-row")}#{ns.class("radio-option")} {
   @include classic-field-base;
 
   --choice-row-padding-block: 9px;
@@ -21,23 +21,23 @@
     outline-offset: 2px;
   }
 
-  &.disabled {
+  &#{ns.class("disabled")} {
     opacity: 0.55;
   }
 
-  &.is-checked,
-  &:has(> .radio-input:checked) {
+  &#{ns.class("is-checked")},
+  &:has(> #{ns.class("radio-input")}:checked) {
     border-color: var(--border-surface-1);
     background: var(#{ns.css-var("ui-choice-checked-bg")}, var(--background-surface-1, transparent));
   }
 
-  &:not(:has(.radio-option-description)) {
+  &:not(:has(#{ns.class("radio-option-description")})) {
     height: var(--height-input);
     padding-block: 0;
   }
 }
 
-.radio-control {
+#{ns.class("radio-control")} {
   display: inline-flex;
   align-items: center;
   align-self: center;
@@ -58,18 +58,18 @@
   border-color var(--transition-1) ease,
   color var(--transition-1) ease;
 
-  .radio-control-icon {
+  #{ns.class("radio-control-icon")} {
     display: none;
     position: absolute;
     inset: 0;
     pointer-events: none;
   }
 
-  .radio-control-icon.active {
+  #{ns.class("radio-control-icon")}#{ns.class("active")} {
     color: var(#{ns.css-var("ui-choice-control-active-icon")}, currentColor);
   }
 
-  .radio-control-icon::before {
+  #{ns.class("radio-control-icon")}::before {
     content: "";
     position: absolute;
     left: 50%;
@@ -83,21 +83,25 @@
   }
 }
 
-.radio-option:has(> .radio-input:checked) > .radio-control,
-.radio-option.is-checked > .radio-control {
+#{ns.class("radio-option")}:has(> #{ns.class("radio-input")}:checked) > #{ns.class("radio-control")},
+
+#{ns.class("radio-option")}#{ns.class("is-checked")} > #{ns.class("radio-control")} {
   border-color: var(#{ns.css-var("ui-choice-control-checked-border")}, var(#{ns.css-var("focus")}, currentColor));
   background: var(#{ns.css-var("ui-choice-control-checked-bg")}, var(#{ns.css-var("focus")}, transparent));
   color: var(#{ns.css-var("ui-choice-control-checked-color")}, var(--background-page, currentColor));
 }
 
-.radio-option:has(> .radio-input:checked)
-> .radio-control
-.radio-control-icon.active,
-.radio-option.is-checked > .radio-control .radio-control-icon.active {
+#{ns.class("radio-option")}:has(> #{ns.class("radio-input")}:checked)
+
+> #{ns.class("radio-control")}
+
+#{ns.class("radio-control-icon")}#{ns.class("active")},
+
+#{ns.class("radio-option")}#{ns.class("is-checked")} > #{ns.class("radio-control")} #{ns.class("radio-control-icon")}#{ns.class("active")} {
   display: block;
 }
 
-.radio-option-body {
+#{ns.class("radio-option-body")} {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -105,13 +109,14 @@
   line-height: 1.4;
 }
 
-.radio-option-title,
-.radio-option-description {
+#{ns.class("radio-option-title")},
+
+#{ns.class("radio-option-description")} {
   display: block;
   min-width: 0;
 }
 
-.radio-input {
+#{ns.class("radio-input")} {
   position: absolute;
   width: 1px;
   height: 1px;

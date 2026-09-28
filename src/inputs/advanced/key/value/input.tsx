@@ -1,3 +1,4 @@
+import { frontendClassName } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import { icon } from "#dqy2d22qyujv";
 import { button } from "#dqy2d22qyujv";
@@ -29,7 +30,7 @@ function renderLabels(fields: key_value_input_field[]) {
       <span
       {...attrs(field.labelAttrs)}
       key={`label_${index}`}
-      className="label"
+      className={frontendClassName("label")}
       style={attrStyle(field.labelAttrs, keyValueGridCellStyle(index + 1, 1))}
       >
       {field.label}

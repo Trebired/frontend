@@ -1,7 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 #{ns.class("icon")},
 
-.icon-glyph {
+#{ns.class("icon-glyph")} {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -15,65 +15,66 @@
 
 #{ns.class("icon")} > svg,
 
-.icon-glyph > svg {
+#{ns.class("icon-glyph")} > svg {
   display: block;
   width: 100%;
   height: 100%;
   color: var(#{ns.css-var("icon-color")}, var(--icon-custom-color, currentColor)) !important;
 }
 
-.icon {
+#{ns.class("icon")} {
   display: inline-block;
   object-fit: cover;
 }
 
-.icon.xs {
+#{ns.class("icon")}#{ns.class("xs")} {
   width: 12px;
   height: 12px;
 }
 
-.icon.sm {
+#{ns.class("icon")}#{ns.class("sm")} {
   width: 14px;
   height: 14px;
 }
 
-.icon.md {
+#{ns.class("icon")}#{ns.class("md")} {
   width: 16px;
   height: 16px;
 }
 
-.icon.lg {
+#{ns.class("icon")}#{ns.class("lg")} {
   width: 20px;
   height: 20px;
 }
 
-.icon.xl {
+#{ns.class("icon")}#{ns.class("xl")} {
   width: 24px;
   height: 24px;
 }
 
-.icon.xl2 {
+#{ns.class("icon")}#{ns.class("xl2")} {
   width: 32px;
   height: 32px;
 }
 
-.icon.xl3 {
+#{ns.class("icon")}#{ns.class("xl3")} {
   width: 40px;
   height: 40px;
 }
 
-.icon.xl4 {
+#{ns.class("icon")}#{ns.class("xl4")} {
   width: 56px;
   height: 56px;
 }
 
-.icon.xl5,
-.icon.xl7 {
+#{ns.class("icon")}#{ns.class("xl5")},
+
+#{ns.class("icon")}#{ns.class("xl7")} {
   width: 72px;
   height: 72px;
 }
 
-.icon.xl6 {
+#{ns.class("icon")}#{ns.class("xl6")} {
   width: 56px;
   height: 56px;
 }
