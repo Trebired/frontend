@@ -88,7 +88,7 @@ function readProductShellState(shellInput: unknown): ProductShellState {
   const type = shellHeaderType(ui);
   return {
     chrome: readShellChromeState({
-        hasMobileBottomBar: type === "platform" || type === "app",
+        hasMobileBottomBar: type === "product" || type === "app",
         hasSidebarLinks: sidebarIsVisible(leftSidebar),
         type,
     }),

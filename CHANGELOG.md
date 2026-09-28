@@ -1,5 +1,11 @@
 # Changelog
 
+## 16.0.0
+
+Breaking: the shell header's `platform` type is called `product`. It named a kind of chrome — the one with primary links and user actions — not a particular product, and the rest of the package already calls that surface the product shell (`ProductShellDocument`, `product-shell-sidebar-*`). Pass `type: "product"` where you passed `type: "platform"`; anything unrecognised still falls back to it.
+
+The logs viewer keeps `platform` as a log source. That value arrives on the records themselves, from whatever wrote them, so renaming it here would only stop the filter matching real data.
+
 ## 15.1.0
 
 Every `data-*` attribute the package emits is namespaced, finishing what 15.0.0 started on the classes. `data-dropdown-open`, `data-tabs-root`, `data-wizard-step-state` and the other 186 are now `data-tbf-*`, in the stylesheets, the `getAttribute`/`setAttribute` calls, the `querySelector` strings and the JSX alike. An unprefixed `data-*` in your markup is yours again.

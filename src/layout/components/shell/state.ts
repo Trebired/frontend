@@ -1,6 +1,6 @@
-type ShellHeaderType = "app" | "login" | "platform";
+type ShellHeaderType = "app" | "login" | "product";
 
-type ShellHeaderPartialType = "login" | "platform";
+type ShellHeaderPartialType = "login" | "product";
 
 type ShellChromeStateInput = {
   hasMobileBottomBar?: boolean;
@@ -24,21 +24,21 @@ type ShellChromeState = {
 
 function normalizeShellHeaderType(value: unknown): ShellHeaderType {
   const type = String(value || "").toLowerCase();
-  return type === "app" || type === "login" || type === "platform"
+  return type === "app" || type === "login" || type === "product"
   ? type
-  : "platform";
+  : "product";
 }
 
 function shellHeaderPartialType(type: ShellHeaderType): ShellHeaderPartialType {
-  return type === "login" ? "login" : "platform";
+  return type === "login" ? "login" : "product";
 }
 
 function readShellChromeState(input: ShellChromeStateInput = {}): ShellChromeState {
   const type = normalizeShellHeaderType(input.type);
   const partialType = shellHeaderPartialType(type);
   const hasMobileBottomBar = input.hasMobileBottomBar === true;
-  const showHeaderLinks = input.hasPrimaryLinks ?? (partialType === "platform" || partialType === "login");
-  const showHeaderUserActions = input.hasUserActions ?? (partialType === "platform" && type !== "login");
+  const showHeaderLinks = input.hasPrimaryLinks ?? (partialType === "product" || partialType === "login");
+  const showHeaderUserActions = input.hasUserActions ?? (partialType === "product" && type !== "login");
   const showSidebarLinks = input.hasSidebarLinks === true;
   const showMobileNavToggle = input.showMobileNavToggle ?? (
     !hasMobileBottomBar && (showSidebarLinks || showHeaderLinks)
