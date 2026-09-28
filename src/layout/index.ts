@@ -8,6 +8,7 @@ import {
   type HeaderRuntimeOptions,
 } from "./header.js";
 import { FRONTEND_PREFIX, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { isErrorRoutePath } from "./../error/paths.js";
 
 const LAYOUT_ROOT_SELECTOR = frontendDataSelector("layout-root");
 const LAYOUT_MAIN_SELECTOR = frontendDataSelector("layout-main");
@@ -103,6 +104,22 @@ function siteFooterRootHtml(footerHtml: string) {
   return `<div ${SITE_FOOTER_ROOT_ATTRIBUTE}="">${footerHtml}</div>`;
 }
 
+type SiteBodyInput = {
+  chrome?: boolean;
+  content: string;
+  footer?: string;
+  header?: string;
+  path?: string;
+};
+
+function siteBodyHtml(input: SiteBodyInput): string {
+  const chrome = input.chrome ?? !isErrorRoutePath(String(input.path || ""));
+  if (!chrome) return input.content;
+  const header = input.header ? siteHeaderRootHtml(input.header) : "";
+  const footer = input.footer ? siteFooterRootHtml(input.footer) : "";
+  return `${header}${input.content}${footer}`;
+}
+
 function ensureLayoutPortalRoot() {
   if (typeof document === "undefined") return null;
   const existing = document.getElementById(LAYOUT_PORTAL_ROOT_ID);
@@ -156,6 +173,7 @@ export {
   ensureLayoutPortalRoot,
   readLayoutBodyState,
   siteFooterRootHtml,
+  siteBodyHtml,
   siteHeaderRootHtml,
   syncLayoutBodyState,
 };

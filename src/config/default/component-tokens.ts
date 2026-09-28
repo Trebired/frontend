@@ -312,10 +312,10 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         header: Object.freeze({ brand: { button: {}, tag: { offsetY: "0" } } }),
         language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
         error: Object.freeze({
-            actions: { gap: "12px" },
-            body: { align: "start", gap: "12px", max: "40rem", textAlign: "start" },
+            actions: { align: "center", gap: "12px" },
+            body: { align: "center", gap: "12px", max: "40rem", textAlign: "center" },
             lead: { fontSize: "1.05rem", max: "36rem" },
-            root: { minHeight: "60vh", px: "clamp(1rem, 3vw, 2rem)", py: "clamp(3rem, 8vw, 7rem)" },
+            root: { minHeight: "100dvh", px: "clamp(1rem, 3vw, 2rem)", py: "clamp(3rem, 8vw, 7rem)" },
             status: { fontSize: "0.85rem", fontWeight: "600", letterSpacing: "0.16em" },
             title: {},
         }),

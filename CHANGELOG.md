@@ -1,5 +1,11 @@
 # Changelog
 
+## 16.1.0
+
+- An error route drops the site chrome. `siteBodyHtml({ content, footer, header, path })` composes a document body and leaves the header and footer out when the path is one of the error routes, so every site that composes its body through it gets the same bare page rather than each deciding for itself. `isErrorRoutePath` answers the same question on its own, and passing `chrome` overrides the guess — a site whose own routing decides a path is missing can say so.
+- `ErrorPage` centres on both axes and fills the viewport: `shell.error.root.minHeight` defaults to `100dvh` and the body, its lead and its actions are centred. With the chrome gone there is nothing else on the page to align to.
+- Leaving an error page loads the real document. The default `fullReloadSelector` now covers `.tbf-error-page`, because a soft navigation away from one would swap the content into a document that has nowhere to put the header and footer back — they were never rendered.
+
 ## 16.0.0
 
 Breaking: the shell header's `platform` type is called `product`. It named a kind of chrome — the one with primary links and user actions — not a particular product, and the rest of the package already calls that surface the product shell (`ProductShellDocument`, `product-shell-sidebar-*`). Pass `type: "product"` where you passed `type: "platform"`; anything unrecognised still falls back to it.

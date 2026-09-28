@@ -347,6 +347,7 @@ export {
   errorMessageKey,
   errorRoutePath,
   errorShellFileName,
+  isErrorRoutePath,
   isErrorStatus,
 } from "./error/paths.js";
 export type { ErrorStatus } from "./error/paths.js";

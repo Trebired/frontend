@@ -1,4 +1,4 @@
-import { frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataSelector } from "#5vbaqj4pirp3";
 import type { BindRoot } from "#er0dlx1gtbzh";
 
 type SpaOptions = {
@@ -18,7 +18,10 @@ type ResolvedSpaOptions = {
 };
 
 const DEFAULT_CONTENT_SELECTOR = `${frontendDataSelector("live-content")},#live_content`;
-const DEFAULT_FULL_RELOAD_SELECTOR = frontendDataSelector("full-reload");
+const DEFAULT_FULL_RELOAD_SELECTOR = [
+  frontendDataSelector("full-reload"),
+  `.${frontendClassName("error-page")}`,
+].join(",");
 const PORTALED_SELECTOR = [
   `${frontendDataSelector("modal")}[id]`,
   `${frontendDataSelector("popover")}[id]`,

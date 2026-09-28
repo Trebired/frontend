@@ -18,5 +18,17 @@ function errorShellFileName(status: number): string {
   return `${status}.html`;
 }
 
-export { ERROR_STATUSES, errorMessageKey, errorRoutePath, errorShellFileName, isErrorStatus };
+function isErrorRoutePath(path: string): boolean {
+  const route = String(path || "").split("?")[0].replace(/\/+$/u, "") || "/";
+  return ERROR_STATUSES.some((status) => errorRoutePath(status) === route);
+}
+
+export {
+  ERROR_STATUSES,
+  errorMessageKey,
+  errorRoutePath,
+  errorShellFileName,
+  isErrorRoutePath,
+  isErrorStatus,
+};
 export type { ErrorStatus };
