@@ -45,13 +45,6 @@ function allowsTooltip(trigger: HTMLElement) {
   return !controlHasText(trigger);
 }
 
-function suppressControlTooltip(trigger: HTMLElement) {
-  if (!isTooltipControl(trigger) || !controlHasText(trigger)) return;
-  if (hasDeclaredTooltip(trigger)) return;
-  trigger.removeAttribute("title");
-  trigger.classList.remove("has-tooltip");
-}
-
 function computeTooltipText(trigger: HTMLElement | null) {
   if (!trigger) return "";
   if (tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
@@ -67,7 +60,6 @@ function computeTooltipText(trigger: HTMLElement | null) {
 
 function applyTooltipSemantics(trigger: HTMLElement | null, text: string) {
   if (!trigger) return;
-  if (trigger.hasAttribute("title")) trigger.removeAttribute("title");
   if (text && !trigger.getAttribute("aria-description")) {
     trigger.setAttribute("aria-description", text);
   }
@@ -124,6 +116,7 @@ function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
 function showTooltip(trigger: HTMLElement) {
   const text = readTooltipText(trigger);
   if (!text) return false;
+  if (trigger.hasAttribute("title")) trigger.removeAttribute("title");
   const layer = ensureTooltipLayer();
   layer.textContent = text;
   if (tooltipState.openTrigger === trigger && tooltipState.shown) return true;
@@ -148,10 +141,7 @@ function hideTooltip() {
 
 function bindTooltip(trigger: HTMLElement | null) {
   if (!(trigger instanceof HTMLElement) || tooltipCleanups.has(trigger)) return false;
-  if (!allowsTooltip(trigger)) {
-    suppressControlTooltip(trigger);
-    return false;
-  }
+  if (!allowsTooltip(trigger)) return false;
   computeTooltipText(trigger);
   const hoverBoundTooltip = () => {
     if (pointerPressActive) return;

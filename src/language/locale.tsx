@@ -120,6 +120,7 @@ function localeTriggerFace(props: LocaleSwitcherProps, current: string) {
 function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitcherProps) {
   const current = normalizedLang(props.lang);
   const compact = props.trigger !== "locale";
+  const label = translate(current, "label");
   return (
     <button
     type="button"
@@ -128,12 +129,13 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
     aria-controls={popoverId}
     aria-haspopup="menu"
     aria-expanded="false"
-    aria-label={translate(current, "label")}
-    title={translate(current, "label")}
+    aria-label={label}
+    aria-description={compact ? label : undefined}
     {...frontendDataAttrs({
           "locale-trigger-compact": compact ? "true" : undefined,
           "popover-indicator": compact ? "false" : undefined,
           "popover-trigger": "",
+          "tooltip": compact ? label : undefined,
     })}
     >
     {localeTriggerFace(props, current)}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.0.2
+
+- The tooltip binder no longer strips a `title` off a control while binding. An SSR-rendered control belongs to React until it hydrates, so rewriting it beforehand is a hydration mismatch — React saw `title="…"` in the server HTML and `title={null}` in the client props. A title the custom tooltip takes over is dropped when the tooltip shows, and a labelled control keeps the title it was rendered with.
+- The locale trigger declares its tooltip as `data-tbf-tooltip` and `aria-description` rather than `title`, and only in the compact form. The full form shows the language, so a tooltip repeating it is noise.
+
 ## 18.0.1
 
 - A surface button variant declares only what it changes. The generated `.tbf-button--{variant}` rules used to write `border-color`, `color` and `background` whether or not the variant named them, so the `currentColor` fallback overruled a root border or colour the site had configured. A variant that names nothing now emits no rule at all.

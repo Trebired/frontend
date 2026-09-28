@@ -187,8 +187,17 @@ async function verifyTooltip() {
   bindTooltips(document);
   document.getElementById("text-tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
   assert.equal(document.getElementById("tbf_tooltip"), null);
-  assert.equal(document.getElementById("text-tip").hasAttribute("title"), false);
+  assert.equal(
+    document.getElementById("text-tip").getAttribute("title"),
+    "Text hover",
+    "a labelled control keeps the title it was rendered with",
+  );
   document.getElementById("tip").dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+  assert.equal(
+    document.getElementById("tip").hasAttribute("title"),
+    false,
+    "a title the custom tooltip took over is dropped when it shows, not while binding",
+  );
   const layer = document.getElementById("tbf_tooltip");
   assert.equal(layer.textContent, "Hover text");
   assert.equal(layer.getAttribute("role"), "tooltip");
