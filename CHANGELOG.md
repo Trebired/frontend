@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.5.0
+
+- The page edge hairline reads the background it is actually over, rather than one colour for the whole page. It runs the full height of the viewport and crosses whatever sections the page has, so a fixed colour was faint over one band and a bright stripe over the next. `backdrop-filter: invert(1) grayscale(1) opacity(0.25)` inverts what is behind it per pixel: measured against a light section and a dark one on the same page, contrast comes out 60 and 49 rather than 43 and 171. A site with no `backdrop-filter` keeps the mixed colour as a fallback.
+
 ## 18.4.0
 
 - The hairline down the right edge of the page is back, and is now the package's own rather than the site's. It is mixed from the page and text colours, so it keeps the same slight contrast on any background instead of inheriting whatever weight a site gave its border colour, which is what made it read as a stray line on one site and stay invisible on another. It is always drawn and there is no token to weaken or remove it.
