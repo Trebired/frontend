@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.2.1
+
+- Republished. 18.2.0 was accepted by the registry but did not appear in the packument; this carries the same code.
+
 ## 18.2.0
 
 - The scrollbar and the other native controls follow the device, not the site's theme, and they do it from the first paint. `color-scheme` is declared once on `html` in the base stylesheet as `light dark`, so the browser resolves it from the visitor's preference while the stylesheet is still render blocking. It is detached from the site theme in the same way the favicon is.
