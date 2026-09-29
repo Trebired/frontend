@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.2.1
+
+- The marked section is the one nearest the reading line from above, rather than the last matching entry in the menu. A menu does not have to list sections in the order the page lays them out, and machynka's does not: walking the menu handed the mark to whichever section happened to come last, so standing in one section marked another.
+
 ## 19.2.0
 
 - The header follows sections, not only pages. A link to a fragment on the current page, `/cs#ubytovani`, is marked while the reader is in that section, and the link to the page itself yields to it: both describe where the reader is and only the narrower one is worth marking. Scrolling on moves the mark to the next section, and above the first one no fragment owns it, so the page link takes it back. Exactly one link is ever marked.

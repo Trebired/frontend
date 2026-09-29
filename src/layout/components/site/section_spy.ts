@@ -15,10 +15,15 @@ function resolveActive() {
   if (typeof document === "undefined") return "";
   const line = Math.max(80, window.innerHeight * 0.3);
   let current = "";
+  let nearest = -Infinity;
   for (const id of observed) {
     const element = document.getElementById(id);
     if (!element) continue;
-    if (element.getBoundingClientRect().top <= line) current = id;
+    const { top } = element.getBoundingClientRect();
+    if (top <= line && top > nearest) {
+      nearest = top;
+      current = id;
+    }
   }
   return current;
 }
