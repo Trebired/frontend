@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.1.0
+
+- A `Frame` that opens a `Card` bleeds to the card's edges. Media at the top of a card belongs against the edge, but the card's padding was insetting it, leaving a band of card background framing the image on all three sides. It now pulls out by the card's own padding and rounds only its top corners to match. A frame anywhere else in the card is untouched.
+
 ## 19.0.0
 
 Breaking: `SiteHeader` no longer takes `menuIcon` or `closeIcon`.
