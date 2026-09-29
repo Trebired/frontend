@@ -118,7 +118,6 @@ function modeDeclarations(
 ): string[] {
   const paletteMode = findPaletteMode(config.design.palette, mode.key);
   return [
-    `  color-scheme: ${mode.scheme};`,
     ...tokenDeclarations(config.prefix, mode.tokens),
     ...(paletteMode ? paletteModeScaleDeclarations(paletteMode) : []),
   ];

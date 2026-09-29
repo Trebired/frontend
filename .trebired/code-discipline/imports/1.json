@@ -169,6 +169,7 @@
   "#9f65kwzv6ci4": "./src/inputs/advanced/disclosure/index.client.ts",
   "#9ftohnoo90r6": "./src/logs/client/replacement.ts",
   "#9gwy37r8u1nt": "./src/theme/modes.ts",
+  "#9jwnasw3u2o5": "./scripts/verify/frontend/scrollbar.mjs",
   "#9l2c2snvln7y": "./src/primitives/components/link.tsx",
   "#9nk0macwdvtl": "./scripts/verify/frontend/shell.mjs",
   "#9r9eh5d3jidb": "./src/styles/utils/text/extra.scss",

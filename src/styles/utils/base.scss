@@ -8,6 +8,7 @@ body {
 }
 
 html {
+  color-scheme: var(#{ns.css-var("surf-scrollbar-root-scheme")}, light dark);
   scrollbar-gutter: var(#{ns.css-var("surf-scrollbar-root-gutter")}, stable);
   overflow-x: clip;
   scrollbar-width: var(#{ns.css-var("surf-scrollbar-root-width")}, auto);

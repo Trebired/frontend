@@ -47,14 +47,6 @@ function deviceScheme(): ThemeModeScheme {
   return systemPrefersLight() ? "light" : "dark";
 }
 
-function applyDeviceScheme(): ThemeModeScheme {
-  const scheme = deviceScheme();
-  if (typeof document !== "undefined") {
-    document.documentElement.style.colorScheme = scheme;
-  }
-  return scheme;
-}
-
 function onDeviceSchemeChange(handler: () => void): () => void {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
     return () => {};
@@ -164,7 +156,6 @@ function commitTheme(
 ): void {
   pendingTheme = "";
   document.documentElement.setAttribute(THEME_ATTR, next);
-  applyDeviceScheme();
   document.body?.setAttribute(THEME_ATTR, next);
   if (previous !== next) dispatchThemeChange(normalized, next);
   runThemeSync(document);
@@ -233,7 +224,6 @@ function nextTheme(options: ThemeRuntimeOptions = {}): ThemeValue {
 }
 
 export {
-  applyDeviceScheme,
   applyTheme,
   currentDomTheme,
   getEffectiveTheme,

@@ -511,6 +511,9 @@
       "#9gwy37r8u1nt": [
         "../../../src/theme/modes.ts"
       ],
+      "#9jwnasw3u2o5": [
+        "../../../scripts/verify/frontend/scrollbar.mjs"
+      ],
       "#9l2c2snvln7y": [
         "../../../src/primitives/components/link.tsx"
       ],

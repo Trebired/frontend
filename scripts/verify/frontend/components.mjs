@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { assertNoCustomElementTags } from "./html-assertions.mjs";
 import { verifyBottomBar } from "./bottom-bar.mjs";
 import { verifyProgressBars } from "./progress-bars.mjs";
+import { verifyScrollbarFollowsTheDevice } from "./scrollbar.mjs";
 import { verifyRenderedUpload, verifyUploadStyles } from "./upload-components.mjs";
 
 async function verifyFrontendComponents(context) {
@@ -24,6 +25,7 @@ async function verifyFrontendComponents(context) {
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
   await verifyProgressBars(context.rootDir, context.importDist);
+  await verifyScrollbarFollowsTheDevice(context.rootDir, context.importDist);
 }
 
 async function verifyAvatarsStayRound(rootDir) {

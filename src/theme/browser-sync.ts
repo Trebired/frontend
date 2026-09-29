@@ -1,5 +1,4 @@
 import {
-  applyDeviceScheme,
   getEffectiveTheme,
   onDeviceSchemeChange,
   registerThemeSync,
@@ -94,7 +93,6 @@ function configureThemeBrowserSync(
     browserSyncRegistered = true;
     registerThemeSync(syncThemeBrowserState);
     onDeviceSchemeChange(() => {
-        applyDeviceScheme();
         syncThemeBrowserState();
     });
   }

@@ -1,5 +1,12 @@
 # Changelog
 
+## 18.2.0
+
+- The scrollbar and the other native controls follow the device, not the site's theme, and they do it from the first paint. `color-scheme` is declared once on `html` in the base stylesheet as `light dark`, so the browser resolves it from the visitor's preference while the stylesheet is still render blocking. It is detached from the site theme in the same way the favicon is.
+- `color-scheme` is no longer emitted per theme mode. Tying it to the modes made a light-only site claim `color-scheme: light` under a dark preference, and then the runtime overrode it anyway.
+- The runtime and the theme boot script no longer write an inline `colorScheme` on the document. That write landed a frame after first paint, so a scrollbar rendered light and then flipped, and being inline it beat every stylesheet rule. `applyDeviceScheme` is gone with it.
+- `shell.scrollbar.root.scheme` overrides the value where a site really wants to pin it.
+
 ## 18.1.0
 
 - The attribution line moved to `@trebired/bundler` 5.14.0 and is gone from here. It only ever reached apps on frontend 18; bundler builds the browser code of every app with a browser surface, so the line now arrives on a bundler bump rather than a frontend major. Nothing to do beyond taking both releases, and an app on new bundler with old frontend prints it twice until this one lands.
