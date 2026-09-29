@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "18.0.4",
+  "version": "18.1.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "private": false,
@@ -55,7 +55,7 @@
   ],
   "scripts": {
     "build": "bun run prepare:generated && rm -rf dist && tsc -p tsconfig.build.json && bun ./scripts/prepare-dist.mjs",
-    "prepare:generated": "bun ./scripts/build/generated/identity.mjs && bun ./scripts/build/generated/namespace.mjs && bun node_modules/@trebired/code-discipline/dist/cli.js fix imports",
+    "prepare:generated": "bun ./scripts/build/generated/namespace.mjs && bun node_modules/@trebired/code-discipline/dist/cli.js fix imports",
     "prepublishOnly": "bun run typecheck && bun run build && bun run verify:pack && bun run verify:frontend && bun run verify:favicon",
     "typecheck": "bun run prepare:generated && tsc --noEmit",
     "verify:frontend": "bun ./scripts/verify/frontend.mjs",

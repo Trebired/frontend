@@ -583,9 +583,6 @@
       "#aqxk8k1dief3": [
         "../../../src/editor/viewer/readonly.tsx"
       ],
-      "#aw53j7fh4jxu": [
-        "../../../src/logging/attribution.ts"
-      ],
       "#awiesfak8uw2": [
         "../../../src/inputs/advanced/input/affix.ts"
       ],
@@ -1363,9 +1360,6 @@
       "#posefdaqmuvi": [
         "../../../src/inputs/upload/crop.ts"
       ],
-      "#pqks7y4vqasc": [
-        "../../../src/namespace/identity.ts"
-      ],
       "#pwuc6i9ku53k": [
         "../../../src/render/current_url.tsx"
       ],
@@ -1560,9 +1554,6 @@
       ],
       "#tvicwpnoy4rk": [
         "../../../src/spa/cleanup.ts"
-      ],
-      "#ty7ffutvdb5d": [
-        "../../../scripts/build/generated/identity.mjs"
       ],
       "#tytcmts991st": [
         "../../../src/logs/client/ingest.ts"

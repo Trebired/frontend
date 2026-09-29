@@ -94,5 +94,4 @@ export {
   toFrontendLogGroup,
 };
 export type { FrontendLogger, FrontendLoggingOptions };
-export { logFrontendAttribution } from "./attribution.js";
 export *from "./browser.js";

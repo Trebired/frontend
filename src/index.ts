@@ -38,7 +38,6 @@ import { collectAddedBindRoots } from "./dom/binding.js";
 import { flash } from "./flash/index.js";
 import { progress } from "./progress/index.js";
 import {
-  logFrontendAttribution,
   resolveFrontendLogger,
   type FrontendLoggingOptions,
 } from "./logging/index.js";
@@ -182,7 +181,6 @@ function bindFrontendRuntime(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
-  logFrontendAttribution();
   setSpaRebind((nextRoot) => bindFrontendRuntimeOnce(nextRoot, options));
   bindFrontendRuntimeOnce(scope, options);
   logger.info("runtime", "bound", {

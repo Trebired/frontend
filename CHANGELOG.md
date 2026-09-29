@@ -1,5 +1,11 @@
 # Changelog
 
+## 18.1.0
+
+- The attribution line moved to `@trebired/bundler` 5.14.0 and is gone from here. It only ever reached apps on frontend 18; bundler builds the browser code of every app with a browser surface, so the line now arrives on a bundler bump rather than a frontend major. Nothing to do beyond taking both releases, and an app on new bundler with old frontend prints it twice until this one lands.
+- `src/namespace/identity.ts` and the build step that generated it are gone with it. They existed only to keep the attribution's package name and version out of the Node-only `config/package.js`, and nothing else read them.
+- `logPackageAttribution` in `@trebired/logger-adapter` now has no caller in this package. It stays published as a generic capability.
+
 ## 18.0.4
 
 - The page load bar is `tbf-page-progress`, not `tbf-progress`. It shared the class with the inline progress primitive, whose rule lands later and lays out as a `position: relative` 6px block with a 6px margin. The fixed bar pinned to the top of the viewport was therefore dropped into the end of the document instead: it was never visible on any page, and on a page sized to the viewport its 12px pushed the document past the fold and gave an error page a scrollbar.
