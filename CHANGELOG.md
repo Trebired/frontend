@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.7.0
+
+- The page edge hairline is strong enough to see. Measured against a render with the line switched off, 18.5.0 moved its column by 62 and 18.6.0 by 87, neither of which reads as a line at one pixel. It is 50% now: 125 over a light page, 128 over a dark one.
+- The colours are the package's own and there is nothing for a site to set. A translucent black line with a translucent white one beside it composites against whatever is behind, so the pair carries on light, dark and mid backgrounds alike, and no site declares or overrides any part of it.
+
 ## 18.6.0
 
 - The page edge hairline no longer depends on `backdrop-filter`. It is a translucent dark line with a translucent light one beside it, so one of the pair carries on any background: measured contrast is 88 over near white, 45 over mid grey and 79 over near black. 18.5.0 used `backdrop-filter: invert(1)`, which vanishes entirely over a mid tone, since inverting a mid grey gives back the same grey, and disappears completely in any browser where the filter does not paint, because the `@supports` rule had cleared the background underneath it.
