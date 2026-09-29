@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.9.0
+
+- The header marks its own active link. `SiteHeader` resolves which link matches the page from the rendered url, so a site passes a plain list and writes no matching logic: it sets `aria-current="page"` and adds `tbf-site-header__link--active`. Passing `active` on a link still wins, a child route marks its section, and a locale prefix in the path does not stop the match. Links to a fragment are left alone, since they all share the page's path and matching would light every one of them at once.
+- The active link has its own tokens rather than borrowing the hover ones: `shell.header.link.active` takes `color`, `bg`, `fontWeight`, `textDecoration`, `textDecorationColor` and `textUnderlineOffset`, each falling back to the hover value, so nothing moves for a site that configures none of them. A site styles the active link through the config and nowhere else.
+
 ## 18.8.0
 
 - The scrollbar gutter is reserved on every page, including ones short enough not to scroll. `scrollbar-gutter: stable` had been declared on `html` since long before this, but it never took effect: it applies to scroll containers, and `html` was not one. Measured on an error page the reserved width was 0 while a scrolling page reserved 15, so the page edge shifted between routes and the hairline sat in a different place on each. `overflow-y: scroll` makes the root a scroll container, so the gutter is now 15 on both.

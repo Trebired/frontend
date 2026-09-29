@@ -315,7 +315,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         breadcrumb: Object.freeze({ fontSize: "14px" }),
         bottomBar: Object.freeze({}),
         footer: Object.freeze({ brand: {}, column: {}, columns: {}, heading: {}, inner: {}, link: {}, links: {}, note: {}, root: { border: "0" }, tagline: {}, tone: { inverse: {}, muted: {} } }),
-        header: Object.freeze({ brand: { button: {}, tag: { offsetY: "0" } } }),
+        header: Object.freeze({ brand: { button: {}, tag: { offsetY: "0" } }, link: { active: {} } }),
         language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
         error: Object.freeze({
             actions: { align: "center", gap: "12px" },

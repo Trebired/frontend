@@ -3,6 +3,8 @@ import { useId } from "react";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { useSiteHeaderMenu } from "./header_state.js";
+import { stripLocalePrefix } from "./../../../language/routing/runtime.js";
+import { useRenderCurrentUrl } from "./../../../render/current_url.js";
 
 type SiteHeaderLink = {
   active?: boolean;
@@ -36,9 +38,24 @@ type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 
 const block = "site-header";
 
-function linkAttrs(link: SiteHeaderLink, softRedirect: boolean | undefined) {
+function headerPath(value: unknown): string {
+  const raw = String(value || "");
+  const withoutOrigin = raw.includes("://") ? raw.replace(/^[a-z]+:\/\/[^/]*/iu, "") : raw;
+  const path = withoutOrigin.split("#")[0].split("?")[0] || "/";
+  return stripLocalePrefix(path).replace(/\/+$/u, "") || "/";
+}
+
+function linkIsActive(link: SiteHeaderLink, currentPath: string): boolean {
+  if (link.active !== undefined) return link.active;
+  if (String(link.href || "").includes("#")) return false;
+  const target = headerPath(link.href);
+  if (target === "/") return currentPath === "/";
+  return currentPath === target || currentPath.startsWith(`${target}/`);
+}
+
+function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean | undefined) {
   return {
-    "aria-current": link.active ? "page" as const : undefined,
+    "aria-current": active ? "page" as const : undefined,
     ...frontendDataAttrs({ "soft-redirect": link.softRedirect ?? softRedirect ? "" : undefined }),
   };
 }
@@ -50,12 +67,16 @@ function SiteHeaderLinks(props: {
     softRedirect?: boolean;
     tabIndex?: number;
 }) {
+  const currentPath = headerPath(useRenderCurrentUrl());
   return (
     <>
     {props.links.map((link) => (
           <a
-          {...linkAttrs(link, props.softRedirect)}
-          className={frontendElementClass(block, props.element)}
+          {...linkAttrs(linkIsActive(link, currentPath), link, props.softRedirect)}
+          className={classNames(
+              frontendElementClass(block, props.element),
+              linkIsActive(link, currentPath) ? `${frontendElementClass(block, props.element)}--active` : "",
+          )}
           href={link.href}
           key={link.key || link.href}
           onClick={props.onNavigate}

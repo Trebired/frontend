@@ -772,6 +772,9 @@
       "#e25f66wwb16i": [
         "../../../src/config/static-icons.ts"
       ],
+      "#e4jaqxcezf0z": [
+        "../../../scripts/verify/frontend/header-active.mjs"
+      ],
       "#e55z7pkijewq": [
         "../../../src/icons/index.ts"
       ],

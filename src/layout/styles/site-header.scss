@@ -112,13 +112,20 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 
 #{ns.element-class("site-header", "link")}:hover,
 
-#{ns.element-class("site-header", "link")}[aria-current="page"],
-
-#{ns.element-class("site-header", "menu-link")}:hover,
-
-#{ns.element-class("site-header", "menu-link")}[aria-current="page"] {
+#{ns.element-class("site-header", "menu-link")}:hover {
   color: token("link-hover-color", var(#{ns.css-var("text")}, #000));
   background: token("link-hover-bg", transparent);
+}
+
+#{ns.element-class("site-header", "link")}[aria-current="page"],
+
+#{ns.element-class("site-header", "menu-link")}[aria-current="page"] {
+  color: token("link-active-color", token("link-hover-color", var(#{ns.css-var("text")}, #000)));
+  background: token("link-active-bg", token("link-hover-bg", transparent));
+  font-weight: token("link-active-font-weight", token("link-font-weight", 500));
+  text-decoration: token("link-active-text-decoration", none);
+  text-decoration-color: token("link-active-text-decoration-color", currentColor);
+  text-underline-offset: token("link-active-text-underline-offset", 0.25rem);
 }
 
 #{ns.element-class("site-header", "toggle")} {

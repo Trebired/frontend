@@ -256,6 +256,7 @@
   "#e1sxybsnyea2": "./src/react/root-cache.ts",
   "#e1wjbzbsyghi": "./src/fullscreen/index.ts",
   "#e25f66wwb16i": "./src/config/static-icons.ts",
+  "#e4jaqxcezf0z": "./scripts/verify/frontend/header-active.mjs",
   "#e55z7pkijewq": "./src/icons/index.ts",
   "#e5asmvaq7yj0": "./src/editor/viewer/index.tsx",
   "#e5l7ref1tkwc": "./src/flash/styles/index.scss",
