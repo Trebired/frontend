@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.3.0
+
+- Dropped the hairline the base stylesheet drew down the right edge of every page. `body::after` painted a fixed, full height 1px line in the border colour on every site, positioned against `--viewport-scrollbar-gap-inline-end`, which nothing ever set to anything but `0px`. It was a scrollbar gutter border for a shell that no longer asks for one, and no config could turn it off. `--viewport-scrollbar-gap-inline-end`, `--viewport-scrollbar-gap-block-end` and `--z-scrollbar-gutter-border` go with it, all three unreferenced.
+
 ## 18.2.1
 
 - Republished. 18.2.0 was accepted by the registry but did not appear in the packument; this carries the same code.

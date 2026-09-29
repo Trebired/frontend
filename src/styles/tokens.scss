@@ -4,8 +4,6 @@
   --outline-width: 2px;
   --icon-gap: 5px;
   --header-height: 80px;
-  --viewport-scrollbar-gap-inline-end: 0px;
-  --viewport-scrollbar-gap-block-end: 0px;
   --transition-1: 120ms;
   --transition-2: 180ms;
   --transition-3: 240ms;
@@ -31,7 +29,6 @@
   --z-bottom-bar: var(--z-index-xs, 900);
   --z-header-secondary: 910;
   --z-header-primary: 920;
-  --z-scrollbar-gutter-border: 925;
   --z-mobile-nav: 930;
   --z-fullscreen: var(--z-index-sm, 1000);
   --z-modal: var(--z-index-md, 1010);
