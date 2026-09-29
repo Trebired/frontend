@@ -6,17 +6,17 @@
     auto-fit,
     minmax(min(var(#{ns.css-var("surf-hairline-root-min")}, 16rem), 100%), 1fr)
   );
-  gap: var(#{ns.css-var("surf-hairline-root-gap")}, 0);
+  gap: var(#{ns.css-var("surf-hairline-root-gap")}, var(--border-width, 1px));
   overflow: hidden;
-  border: var(
-    #{ns.css-var("surf-hairline-root-border")},
-    var(--border-width, 1px) solid color-mix(in srgb, currentColor 18%, transparent)
-  );
+  border: var(#{ns.css-var("surf-hairline-root-border")}, 0);
   border-radius: var(
     #{ns.css-var("surf-hairline-root-radius")},
     var(--radius-lg, var(#{ns.css-var("radius")}, 0))
   );
-  background: var(#{ns.css-var("surf-hairline-root-bg")}, transparent);
+  background: var(
+    #{ns.css-var("surf-hairline-root-bg")},
+    color-mix(in srgb, currentColor 10%, transparent)
+  );
   list-style: none;
 }
 
@@ -32,10 +32,6 @@
   padding: var(#{ns.css-var("surf-hairline-cell-padding")}, var(#{ns.css-var("gap-md")}, 24px));
   color: var(#{ns.css-var("surf-hairline-cell-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("surf-hairline-cell-bg")}, var(#{ns.css-var("page")}, #fff));
-  box-shadow: 0 0 0 var(--border-width, 1px) var(
-    #{ns.css-var("surf-hairline-cell-line")},
-    color-mix(in srgb, currentColor 18%, transparent)
-  );
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
