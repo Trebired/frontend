@@ -901,6 +901,9 @@
       "#fxezcrj6rle9": [
         "../../../src/config/typography.ts"
       ],
+      "#fxs37mbghbl4": [
+        "../../../src/layout/components/site/section_spy.ts"
+      ],
       "#fzfi2jetusop": [
         "../../../src/logs/i18n/cs.ts"
       ],

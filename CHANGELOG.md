@@ -1,5 +1,11 @@
 # Changelog
 
+## 19.2.0
+
+- The header follows sections, not only pages. A link to a fragment on the current page, `/cs#ubytovani`, is marked while the reader is in that section, and the link to the page itself yields to it: both describe where the reader is and only the narrower one is worth marking. Scrolling on moves the mark to the next section, and above the first one no fragment owns it, so the page link takes it back. Exactly one link is ever marked.
+- The section is read from the document, never written to it. The url only changes when someone clicks, so scrolling does not fill the history with fragments or fight the back button.
+- The server marks the page link, since it has no scroll position, and the browser takes over on hydration through `useSyncExternalStore`, which is the one path React resolves without an unpatched attribute mismatch.
+
 ## 19.1.0
 
 - A `Frame` that opens a `Card` bleeds to the card's edges. Media at the top of a card belongs against the edge, but the card's padding was insetting it, leaving a band of card background framing the image on all three sides. It now pulls out by the card's own padding and rounds only its top corners to match. A frame anywhere else in the card is untouched.

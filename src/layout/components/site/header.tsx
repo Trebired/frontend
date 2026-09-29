@@ -1,8 +1,9 @@
 import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
-import { useId } from "react";
+import { useEffect, useId, useSyncExternalStore } from "react";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { useSiteHeaderMenu } from "./header_state.js";
+import { activeSection, observeSections, serverActiveSection, subscribeActiveSection } from "./section_spy.js";
 import { stripLocalePrefix } from "./../../../language/routing/runtime.js";
 import { useRenderCurrentUrl } from "./../../../render/current_url.js";
 
@@ -53,11 +54,27 @@ function pathMatches(currentPath: string, target: string): boolean {
   return currentPath === target || currentPath.startsWith(`${target}/`);
 }
 
-function linkIsActive(link: SiteHeaderLink, currentPaths: string[]): boolean {
-  if (link.active !== undefined) return link.active;
-  if (String(link.href || "").includes("#")) return false;
+function linkFragment(link: SiteHeaderLink): string {
+  const [, fragment = ""] = String(link.href || "").split("#");
+  return fragment;
+}
+
+function linkOnCurrentPage(link: SiteHeaderLink, currentPaths: string[]): boolean {
   const targets = headerPathForms(link.href);
   return currentPaths.some((current) => targets.some((target) => pathMatches(current, target)));
+}
+
+function linkIsActive(
+  link: SiteHeaderLink,
+  currentPaths: string[],
+  section: string,
+  hasSection: boolean,
+): boolean {
+  if (link.active !== undefined) return link.active;
+  const fragment = linkFragment(link);
+  if (fragment) return Boolean(section) && fragment === section && linkOnCurrentPage(link, currentPaths);
+  if (hasSection && section) return false;
+  return linkOnCurrentPage(link, currentPaths);
 }
 
 function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean | undefined) {
@@ -75,14 +92,23 @@ function SiteHeaderLinks(props: {
     tabIndex?: number;
 }) {
   const currentPaths = headerPathForms(useRenderCurrentUrl());
+  const fragments = props.links
+  .filter((link) => linkFragment(link) && linkOnCurrentPage(link, currentPaths))
+  .map((link) => linkFragment(link));
+  const fragmentKey = fragments.join("|");
+  useEffect(() => {
+      observeSections(fragmentKey ? fragmentKey.split("|") : []);
+    }, [fragmentKey]);
+  const section = useSyncExternalStore(subscribeActiveSection, activeSection, serverActiveSection);
+  const hasSection = fragments.length > 0;
   return (
     <>
     {props.links.map((link) => (
           <a
-          {...linkAttrs(linkIsActive(link, currentPaths), link, props.softRedirect)}
+          {...linkAttrs(linkIsActive(link, currentPaths, section, hasSection), link, props.softRedirect)}
           className={classNames(
               frontendElementClass(block, props.element),
-              linkIsActive(link, currentPaths) ? `${frontendElementClass(block, props.element)}--active` : "",
+              linkIsActive(link, currentPaths, section, hasSection) ? `${frontendElementClass(block, props.element)}--active` : "",
           )}
           href={link.href}
           key={link.key || link.href}

@@ -299,6 +299,7 @@
   "#fuumbbxo1f9l": "./src/media/lightbox.tsx",
   "#fwdmm996jtkw": "./src/logs/i18n/en.ts",
   "#fxezcrj6rle9": "./src/config/typography.ts",
+  "#fxs37mbghbl4": "./src/layout/components/site/section_spy.ts",
   "#fzfi2jetusop": "./src/logs/i18n/cs.ts",
   "#g0evlkujhynl": "./scripts/verify/frontend/copy.mjs",
   "#g2ob19azzp0m": "./scripts/verify/frontend/logging.mjs",

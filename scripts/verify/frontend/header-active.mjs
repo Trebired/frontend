@@ -35,11 +35,21 @@ async function verifyHeaderActiveLinks(importDist) {
   const prefixed = render(react, "https://example.com/cs/services", links);
   assert.ok(prefixed.includes("tbf-site-header__link--active"), "a locale prefix in the path does not stop the match");
 
-  const fragments = render(react, "https://example.com/", [
+  const sectioned = render(react, "https://example.com/", [
+      { href: "/", label: "Home" },
       { href: "/#about", label: "About" },
       { href: "/#contact", label: "Contact" },
   ]);
-  assert.equal(fragments.includes("aria-current"), false, "fragment links share a path, so none of them is resolved from the address");
+  assert.equal(
+    (sectioned.match(/aria-current="page"/gu) || []).length,
+    2,
+    "on the server no section is in view, so the page's own link keeps the highlight",
+  );
+  assert.match(
+    sectioned,
+    /<a[^>]*aria-current="page"[^>]*href="\/"|href="\/"[^>]*aria-current="page"/u,
+    "and it is the page link, not a fragment",
+  );
 
   const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
