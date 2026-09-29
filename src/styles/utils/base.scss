@@ -11,6 +11,7 @@ html {
   color-scheme: var(#{ns.css-var("surf-scrollbar-root-scheme")}, light dark);
   scrollbar-gutter: var(#{ns.css-var("surf-scrollbar-root-gutter")}, stable);
   overflow-x: clip;
+  overflow-y: scroll;
   scrollbar-width: var(#{ns.css-var("surf-scrollbar-root-width")}, auto);
   scrollbar-color: var(#{ns.css-var("surf-scrollbar-root-thumb")}, auto)
   var(#{ns.css-var("surf-scrollbar-root-track")}, transparent);

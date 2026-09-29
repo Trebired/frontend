@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.8.0
+
+- The scrollbar gutter is reserved on every page, including ones short enough not to scroll. `scrollbar-gutter: stable` had been declared on `html` since long before this, but it never took effect: it applies to scroll containers, and `html` was not one. Measured on an error page the reserved width was 0 while a scrolling page reserved 15, so the page edge shifted between routes and the hairline sat in a different place on each. `overflow-y: scroll` makes the root a scroll container, so the gutter is now 15 on both.
+- The hairline therefore sits at the inner edge of that gutter on every page, at a consistent distance from the window edge rather than against the scrollbar on one route and the window on another.
+
 ## 18.7.0
 
 - The page edge hairline is strong enough to see. Measured against a render with the line switched off, 18.5.0 moved its column by 62 and 18.6.0 by 87, neither of which reads as a line at one pixel. It is 50% now: 125 over a light page, 128 over a dark one.
