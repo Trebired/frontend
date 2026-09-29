@@ -27,11 +27,9 @@ type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   actions?: ReactNode;
   brand: ReactNode;
   brandHref?: false | string;
-  closeIcon?: ReactNode;
   labels?: SiteHeaderLabels;
   links?: SiteHeaderLink[];
   menuActions?: ReactNode;
-  menuIcon?: ReactNode;
   softRedirect?: boolean;
   surface?: SiteHeaderSurface;
 };
@@ -41,16 +39,25 @@ const block = "site-header";
 function headerPath(value: unknown): string {
   const raw = String(value || "");
   const withoutOrigin = raw.includes("://") ? raw.replace(/^[a-z]+:\/\/[^/]*/iu, "") : raw;
-  const path = withoutOrigin.split("#")[0].split("?")[0] || "/";
-  return stripLocalePrefix(path).replace(/\/+$/u, "") || "/";
+  return (withoutOrigin.split("#")[0].split("?")[0] || "/").replace(/\/+$/u, "") || "/";
 }
 
-function linkIsActive(link: SiteHeaderLink, currentPath: string): boolean {
-  if (link.active !== undefined) return link.active;
-  if (String(link.href || "").includes("#")) return false;
-  const target = headerPath(link.href);
+function headerPathForms(value: unknown): string[] {
+  const path = headerPath(value);
+  const stripped = stripLocalePrefix(path).replace(/\/+$/u, "") || "/";
+  return stripped === path ? [path] : [path, stripped];
+}
+
+function pathMatches(currentPath: string, target: string): boolean {
   if (target === "/") return currentPath === "/";
   return currentPath === target || currentPath.startsWith(`${target}/`);
+}
+
+function linkIsActive(link: SiteHeaderLink, currentPaths: string[]): boolean {
+  if (link.active !== undefined) return link.active;
+  if (String(link.href || "").includes("#")) return false;
+  const targets = headerPathForms(link.href);
+  return currentPaths.some((current) => targets.some((target) => pathMatches(current, target)));
 }
 
 function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean | undefined) {
@@ -67,15 +74,15 @@ function SiteHeaderLinks(props: {
     softRedirect?: boolean;
     tabIndex?: number;
 }) {
-  const currentPath = headerPath(useRenderCurrentUrl());
+  const currentPaths = headerPathForms(useRenderCurrentUrl());
   return (
     <>
     {props.links.map((link) => (
           <a
-          {...linkAttrs(linkIsActive(link, currentPath), link, props.softRedirect)}
+          {...linkAttrs(linkIsActive(link, currentPaths), link, props.softRedirect)}
           className={classNames(
               frontendElementClass(block, props.element),
-              linkIsActive(link, currentPath) ? `${frontendElementClass(block, props.element)}--active` : "",
+              linkIsActive(link, currentPaths) ? `${frontendElementClass(block, props.element)}--active` : "",
           )}
           href={link.href}
           key={link.key || link.href}
@@ -126,8 +133,7 @@ function SiteHeaderBurger() {
 }
 
 function SiteHeaderToggle(props: SiteHeaderProps & { menuId: string; state: ReturnType<typeof useSiteHeaderMenu> }) {
-  const { closeIcon, labels, menuIcon, menuId, state } = props;
-  const custom = state.open ? closeIcon : menuIcon;
+  const { labels, menuId, state } = props;
   return (
     <button
     aria-controls={menuId}
@@ -138,7 +144,7 @@ function SiteHeaderToggle(props: SiteHeaderProps & { menuId: string; state: Retu
     ref={state.toggleRef}
     type="button"
     >
-    {custom ?? <SiteHeaderBurger />}
+    <SiteHeaderBurger />
     </button>
   );
 }
@@ -172,7 +178,7 @@ function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: Return
 
 function SiteHeader(props: SiteHeaderProps) {
   const {
-    actions, brand, brandHref = "/", className, closeIcon, labels, links = [], menuActions, menuIcon, softRedirect,
+    actions, brand, brandHref = "/", className, labels, links = [], menuActions, softRedirect,
     surface = "solid", ...rest
   } = props;
   const state = useSiteHeaderMenu();

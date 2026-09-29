@@ -43,6 +43,13 @@ async function verifyHeaderActiveLinks(importDist) {
 
   const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
+
+  assert.ok(onServices.includes("tbf-site-header__burger"), "the burger is the toggle, always");
+  assert.equal(
+    (onServices.match(/tbf-site-header__burger/gu) || []).length >= 1,
+    true,
+    "and it animates open and closed from the package's own stylesheet, with nothing for a site to swap in",
+  );
 }
 
 export { verifyHeaderActiveLinks };

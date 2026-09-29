@@ -1,5 +1,12 @@
 # Changelog
 
+## 19.0.0
+
+Breaking: `SiteHeader` no longer takes `menuIcon` or `closeIcon`.
+
+- The burger is the toggle, and it is the package's. Swapping it for an icon also threw away the open and close animation, which is why one site animated and another did not, and there is no reason to want that. Remove both props; nothing replaces them.
+- The active link matches across a locale prefix. The url and the href do not have to agree about it: a site may render `/cs/znacka` while the address carries no prefix, and on the server the locale routing registry may not be configured at all, which leaves the prefix in place. Both forms are compared, so the link matches either way.
+
 ## 18.9.0
 
 - The header marks its own active link. `SiteHeader` resolves which link matches the page from the rendered url, so a site passes a plain list and writes no matching logic: it sets `aria-current="page"` and adds `tbf-site-header__link--active`. Passing `active` on a link still wins, a child route marks its section, and a locale prefix in the path does not stop the match. Links to a fragment are left alone, since they all share the page's path and matching would light every one of them at once.
