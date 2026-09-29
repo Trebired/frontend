@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.5.0
+
+- An action row's value no longer breaks mid-word by default. It is usually an address or a number, and `overflow-wrap: anywhere` cut `info@machynka.eu` across two lines on a phone. It breaks only where it truly cannot fit now, and its size is capped against the screen before that: a site's chosen size holds on a wide screen and gives way on a narrow one, so the same address fits on one line at phone width.
+
 ## 19.4.0
 
 - A hairline grid draws lines only between its cells. Each cell carried a full ring and the grid an outer border, so the outside edges were drawn twice and the grid was boxed in. The lines are the grid's gap showing through now, which cannot reach an outer edge, and they default to 10% of the current colour rather than 18%.

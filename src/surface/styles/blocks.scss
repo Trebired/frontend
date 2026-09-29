@@ -102,9 +102,12 @@
 }
 
 #{ns.element-class("action-row", "value")} {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   color: var(#{ns.css-var("surf-action-row-value-color")}, inherit);
-  font-size: var(#{ns.css-var("surf-action-row-value-font-size")}, 1.25rem);
+  font-size: min(
+    var(#{ns.css-var("surf-action-row-value-font-size")}, 1.25rem),
+    max(0.85rem, 4.2vw)
+  );
   font-weight: var(#{ns.css-var("surf-action-row-value-font-weight")}, 700);
   transition: color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
