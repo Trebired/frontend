@@ -1,5 +1,11 @@
 # Changelog
 
+## 19.4.0
+
+- A hairline grid draws lines only between its cells. Each cell carried a full ring and the grid an outer border, so the outside edges were drawn twice and the grid was boxed in. The lines are the grid's gap showing through now, which cannot reach an outer edge, and they default to 10% of the current colour rather than 18%.
+- A link in the menu reads from the header link's own tokens. It had its own colour, weight and size, so a site styling its navigation got two different looks and the active mark did not match between the header and the menu. `menu-link-*` still overrides where a site wants them to differ.
+- `tbf-cols-hold` keeps a fixed column grid from collapsing on a narrow screen. A grid of small tiles, a symbol and a word, narrows well and has no reason to stack; without it `tbf-cols-2` becomes one column below 560px and a compact block turns into a list.
+
 ## 19.2.1
 
 - The marked section is the one nearest the reading line from above, rather than the last matching entry in the menu. A menu does not have to list sections in the order the page lays them out, and machynka's does not: walking the menu handed the mark to whichever section happened to come last, so standing in one section marked another.
