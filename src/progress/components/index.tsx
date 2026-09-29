@@ -19,13 +19,13 @@ function ProgressRoot(props: ProgressRootProps) {
   return (
     <div
     {...rest}
-    className={classNames(frontendClassName("progress"), className)}
+    className={classNames(frontendClassName("page-progress"), className)}
     {...frontendDataAttrs({ "progress-active": dataBool(active) })}
     id={id}
     aria-hidden="true"
     >
     <span
-    className={frontendElementClass("progress", "bar")}
+    className={frontendElementClass("page-progress", "bar")}
     style={{ transform: `scaleX(${normalizedProgress(value)})` }}
     />
     </div>

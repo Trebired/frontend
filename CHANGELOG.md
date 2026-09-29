@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.0.4
+
+- The page load bar is `tbf-page-progress`, not `tbf-progress`. It shared the class with the inline progress primitive, whose rule lands later and lays out as a `position: relative` 6px block with a 6px margin. The fixed bar pinned to the top of the viewport was therefore dropped into the end of the document instead: it was never visible on any page, and on a page sized to the viewport its 12px pushed the document past the fold and gave an error page a scrollbar.
+- The bar's transition names a fallback, so it still animates where `--tbf-transition-fast` is not defined — without one the whole declaration was dropped.
+
 ## 18.0.3
 
 - A saved locale now outranks a locale in the path, the way it already outranked `?lang=`. The boot script read the path first, so on a site whose urls carry a locale for crawlers but whose switcher leaves the url alone, switching on `/en/404` set the choice and the next reload threw it away again — the `/en` in the address won every time. A visitor who has chosen nothing still gets the locale the url names; only the `?setlang=` handoff comes first, being a switch carried across origins rather than a preference.

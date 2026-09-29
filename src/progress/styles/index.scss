@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-#{ns.class("progress")} {
+#{ns.class("page-progress")} {
   position: fixed;
   inset: 0 0 auto 0;
   height: var(#{ns.css-var("runtime-progress-height")}, 3px);
@@ -11,20 +11,20 @@
   z-index: var(#{ns.css-var("z-progress")}, 99999);
 }
 
-#{ns.class("progress")}#{ns.data("progress-inverse", "true")} {
+#{ns.class("page-progress")}#{ns.data("progress-inverse", "true")} {
   #{ns.css-var("runtime-progress-bar-color")}: var(
     #{ns.css-var("runtime-progress-color-inverse")},
     var(#{ns.css-var("page")}, #fff)
   );
 }
 
-#{ns.element-class("progress", "bar")} {
+#{ns.element-class("page-progress", "bar")} {
   display: block;
   height: 100%;
   background: var(#{ns.css-var("runtime-progress-bar-color")});
   transform: scaleX(0);
   transform-origin: left center;
   transition:
-  transform var(#{ns.css-var("transition-fast")}) ease,
-  background-color var(#{ns.css-var("transition-fast")}) ease;
+  transform var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  background-color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }

@@ -42,9 +42,9 @@ function ensureProgressElement() {
   if (existing instanceof HTMLElement) return existing;
   const root = document.createElement("div");
   root.id = PROGRESS_ID;
-  root.className = frontendClassName("progress");
+  root.className = frontendClassName("page-progress");
   root.setAttribute("aria-hidden", "true");
-  root.innerHTML = `<span class="${frontendElementClass("progress", "bar")}"></span>`;
+  root.innerHTML = `<span class="${frontendElementClass("page-progress", "bar")}"></span>`;
   document.body.appendChild(root);
   return root;
 }
@@ -62,7 +62,7 @@ function setProgressInverse(inverse: boolean) {
 }
 
 function progressBar() {
-  return ensureProgressElement()?.querySelector<HTMLElement>(`.${frontendElementClass("progress", "bar")}`) || null;
+  return ensureProgressElement()?.querySelector<HTMLElement>(`.${frontendElementClass("page-progress", "bar")}`) || null;
 }
 
 function setProgress(value: number) {

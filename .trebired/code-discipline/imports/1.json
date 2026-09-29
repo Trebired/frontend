@@ -270,6 +270,7 @@
   "#eqg7t2uwjo0b": "./src/graph/advanced/i18n/cs.ts",
   "#er0dlx1gtbzh": "./src/dom/index.ts",
   "#er2uum0j3y11": "./src/react/seo.tsx",
+  "#erdpsy3wbzsw": "./scripts/verify/frontend/progress-bars.mjs",
   "#erxa9ulhy0gv": "./src/theme/apply.ts",
   "#et8y6tkz6mld": "./src/inputs/advanced/toggle/styles.scss",
   "#etloxyxm9hhu": "./src/layout/components/shell/product/state.ts",
