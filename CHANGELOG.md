@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.4.0
+
+- The hairline down the right edge of the page is back, and is now the package's own rather than the site's. It is mixed from the page and text colours, so it keeps the same slight contrast on any background instead of inheriting whatever weight a site gave its border colour, which is what made it read as a stray line on one site and stay invisible on another. It is always drawn and there is no token to weaken or remove it.
+
 ## 18.3.0
 
 - Dropped the hairline the base stylesheet drew down the right edge of every page. `body::after` painted a fixed, full height 1px line in the border colour on every site, positioned against `--viewport-scrollbar-gap-inline-end`, which nothing ever set to anything but `0px`. It was a scrollbar gutter border for a shell that no longer asks for one, and no config could turn it off. `--viewport-scrollbar-gap-inline-end`, `--viewport-scrollbar-gap-block-end` and `--z-scrollbar-gutter-border` go with it, all three unreferenced.

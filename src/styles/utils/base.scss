@@ -98,6 +98,17 @@ body {
   line-height: var(#{ns.css-var("body-line-height")}, var(--lh-sm, 1.4));
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 925;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 1px;
+  background: color-mix(in oklab, var(#{ns.css-var("text")}, #000) 10%, var(#{ns.css-var("page")}, #fff));
+  pointer-events: none;
+}
+
 body#{ns.data("mobile-sidebar-open", "true")},
 
 body#{ns.data("sidebar-open", "true")} {
