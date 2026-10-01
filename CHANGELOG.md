@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.4.0
+
+- Chrome that passes from dark content onto light goes back to the site's own colours. Only the dark state was written, so once a header had been marked dark everything under it stayed light-on-light when the page scrolled on, including the parts the measurement had already corrected. Each piece now carries both states, which is what makes the header readable along its whole width when the content behind it changes partway across.
+- The page's own value for every colour the dark state replaces is kept at the root as `--tbf-contrast-base-*`, so restoring is exact rather than a guess, and a colour a site never set stays unset.
+
 ## 20.3.0
 
 - A primary button in chrome that floats over dark content inverts with it. Its surface takes the light colour the surrounding text has, and its label the page's own ink, so the call to action stays a solid block that reads either way. Sites were doing this themselves, and getting it wrong once the text colour moved under them.

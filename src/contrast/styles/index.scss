@@ -1,6 +1,26 @@
 @use "@trebired/bundler/namespace" as ns;
 
+$tokens:
+"text",
+"text-muted",
+"border",
+"shell-header-link-color",
+"shell-header-link-hover-color",
+"shell-header-link-active-color",
+"shell-header-toggle-color",
+"shell-language-trigger-color",
+"shell-language-trigger-border",
+"shell-footer-link-color",
+"ui-btn-variants-primary-bg",
+"ui-btn-variants-primary-color",
+"ui-btn-variants-primary-state-hover-bg",
+"ui-btn-variants-primary-state-hover-color";
+
 :root {
+  @each $token in $tokens {
+    #{ns.css-var("contrast-base-" + $token)}: var(#{ns.css-var($token)});
+  }
+
   #{ns.css-var("contrast-ink")}: var(#{ns.css-var("text")}, #000);
 }
 
@@ -17,8 +37,6 @@
     #{ns.css-var("contrast-dark-border")},
     color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 42%, transparent)
   );
-  color: var(#{ns.css-var("text")}, #fff);
-
   #{ns.css-var("shell-header-link-color")}: var(#{ns.css-var("text-muted")});
   #{ns.css-var("shell-header-link-hover-color")}: var(#{ns.css-var("text")});
   #{ns.css-var("shell-header-link-active-color")}: var(#{ns.css-var("text")});
@@ -34,4 +52,13 @@
     var(#{ns.css-var("contrast-ink")})
   );
   #{ns.css-var("ui-btn-variants-primary-state-hover-color")}: var(#{ns.css-var("contrast-ink")});
+  color: var(#{ns.css-var("text")}, #fff);
+}
+
+#{ns.data("on-dark", "false")} {
+  @each $token in $tokens {
+    #{ns.css-var($token)}: var(#{ns.css-var("contrast-base-" + $token)});
+  }
+
+  color: var(#{ns.css-var("text")}, #000);
 }
