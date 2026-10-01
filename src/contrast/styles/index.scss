@@ -14,4 +14,12 @@
     color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 42%, transparent)
   );
   color: var(#{ns.css-var("text")}, #fff);
+
+  #{ns.css-var("shell-header-link-color")}: var(#{ns.css-var("text-muted")});
+  #{ns.css-var("shell-header-link-hover-color")}: var(#{ns.css-var("text")});
+  #{ns.css-var("shell-header-link-active-color")}: var(#{ns.css-var("text")});
+  #{ns.css-var("shell-header-toggle-color")}: var(#{ns.css-var("text")});
+  #{ns.css-var("shell-language-trigger-color")}: var(#{ns.css-var("text")});
+  #{ns.css-var("shell-language-trigger-border")}: var(#{ns.css-var("border")});
+  #{ns.css-var("shell-footer-link-color")}: var(#{ns.css-var("text-muted")});
 }

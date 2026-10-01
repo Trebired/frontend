@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.2.0
+
+- A header tells the browser what is behind it instead of being measured for it. `onDark` renders `data-tbf-on-dark` on the server, so the header is the right colour in the first frame. Without it the state still arrives from the measurement, one frame after hydration, which is what made a logo paint in one colour and then correct itself.
+- Chrome over dark content now actually changes colour. The state handed down `--tbf-text`, `--tbf-text-muted` and `--tbf-border`, but the header's links, toggle, language trigger and footer links read tokens of their own, which a site pins to a colour chosen for its usual background. Those tokens are now set on the surface itself, where they outrank a site's `:root`, so the colours follow the backdrop rather than the configuration.
+
 ## 20.1.0
 
 - Chrome that floats over page content works out what is behind it and takes the opposite colours. The header bar's links, brand and actions, popovers, dropdown menus and the site footer all read their own backdrop and carry `data-tbf-on-dark`, which hands `--tbf-text`, `--tbf-text-muted` and `--tbf-border` to everything inside, so a link or a label reads without knowing where it ended up. `contrast-dark-text`, `contrast-dark-text-muted` and `contrast-dark-border` set what dark means for a site.
