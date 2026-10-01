@@ -35,6 +35,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   code: "code/styles/index.scss",
   editor: "editor/styles/index.scss",
   explorer: "explorer/styles/index.scss",
+  contrast: "contrast/styles/index.scss",
   flash: "flash/styles/index.scss",
   graph: "graph/styles/index.scss",
   icons: "icons/styles/index.scss",

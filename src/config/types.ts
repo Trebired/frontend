@@ -20,6 +20,7 @@ import type {
 type FrontendSystemKey =
 |"actions"
 |"code"
+|"contrast"
 |"editor"
 |"explorer"
 |"flash"

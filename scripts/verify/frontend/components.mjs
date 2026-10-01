@@ -6,6 +6,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { assertNoCustomElementTags } from "./html-assertions.mjs";
 import { verifyBottomBar } from "./bottom-bar.mjs";
 import { verifyHeaderActiveLinks } from "./header-active.mjs";
+import { verifyContrast } from "./contrast.mjs";
+import { verifyLogsViewScrollContract } from "./logs-scroll.mjs";
 import { verifyProgressBars } from "./progress-bars.mjs";
 import { verifyScrollbarFollowsTheDevice } from "./scrollbar.mjs";
 import { verifyRenderedUpload, verifyUploadStyles } from "./upload-components.mjs";
@@ -26,6 +28,7 @@ async function verifyFrontendComponents(context) {
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
   await verifyProgressBars(context.rootDir, context.importDist);
+  await verifyContrast(context.rootDir, context.importDist);
   await verifyHeaderActiveLinks(context.importDist, context.rootDir);
   await verifyScrollbarFollowsTheDevice(context.rootDir, context.importDist);
 }
@@ -337,26 +340,6 @@ async function verifyRenderedThemeLive(importDist) {
   assert.ok(html.includes("data-tbf-theme-button"));
   assert.ok(html.includes("data-tbf-live-region"));
   assertNoCustomElementTags(html, "rendered theme/live components");
-}
-
-async function verifyLogsViewScrollContract(importDist, rootDir) {
-  const react = await importDist("react");
-  const html = renderToStaticMarkup(
-    h(react.logs_view, {
-        instanceId: "verify-logs",
-        title: "Logs",
-    }),
-  );
-  assert.ok(html.includes('id="verify-logs-box" class="tbf-log-box tbf-scroll-min"'));
-  assert.ok(html.includes("log-box-shell"));
-  assert.equal(
-    html.includes("tbf-canvas-panel-content tbf-scroll"),
-    false,
-    "logs view must leave scrolling to .log-box",
-  );
-  const source = await fs.readFile(path.join(rootDir, "dist", "logs", "styles.scss"), "utf8");
-  assert.ok(source.includes('#{ns.class("log-box-shell")}'));
-  assert.ok(source.includes("overflow: hidden;"));
 }
 
 async function verifyRootImportIsolation(rootDir) {

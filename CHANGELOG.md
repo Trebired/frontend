@@ -1,5 +1,12 @@
 # Changelog
 
+## 20.1.0
+
+- Chrome that floats over page content works out what is behind it and takes the opposite colours. The header bar's links, brand and actions, popovers, dropdown menus and the site footer all read their own backdrop and carry `data-tbf-on-dark`, which hands `--tbf-text`, `--tbf-text-muted` and `--tbf-border` to everything inside, so a link or a label reads without knowing where it ended up. `contrast-dark-text`, `contrast-dark-text-muted` and `contrast-dark-border` set what dark means for a site.
+- A surface that belongs to another takes its state rather than measuring its own. The menu covers different content than the bar it is part of, so it mirrors the bar instead of sampling what it happens to sit over.
+- `data-tbf-contrast` opts any element in and `data-tbf-contrast-mirror="<selector>"` points one at another, so a site adds its own surfaces without writing the measurement.
+- This was a site's own script until now. Every site that floats chrome over content needed it and only one had it, badly: it sampled each menu link separately, so a menu read differently from the header it belongs to.
+
 ## 20.0.0
 
 Breaking: `tbf-site-header__menu-link` no longer exists.

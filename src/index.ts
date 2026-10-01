@@ -36,6 +36,7 @@ import { bindWizard } from "./wizard/index.js";
 import { bindRoot as resolveRootScope, type BindRoot, type Cleanup } from "./dom/index.js";
 import { collectAddedBindRoots } from "./dom/binding.js";
 import { flash } from "./flash/index.js";
+import { bindContrast } from "./contrast/index.js";
 import { progress } from "./progress/index.js";
 import {
   resolveFrontendLogger,
@@ -131,6 +132,7 @@ function bindFrontendWidgets(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
+  runBindStep(logger, "contrast", () => bindContrast(scope));
   runBindStep(logger, "progress", () => bindProgress(options.progress || {}));
   runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
   runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
@@ -241,6 +243,7 @@ export *from "./fullscreen/index.js";
 export *from "./graph/index.js";
 export *from "./http/index.js";
 export *from "./icons/index.js";
+export *from "./contrast/index.js";
 export *from "./product/identity.js";
 export {
   createNavigationState,

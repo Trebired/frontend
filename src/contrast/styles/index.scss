@@ -1,0 +1,17 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.data("on-dark", "true")} {
+  #{ns.css-var("text")}: var(
+    #{ns.css-var("contrast-dark-text")},
+    var(#{ns.css-var("page")}, #fff)
+  );
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("contrast-dark-text-muted")},
+    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 70%, transparent)
+  );
+  #{ns.css-var("border")}: var(
+    #{ns.css-var("contrast-dark-border")},
+    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 42%, transparent)
+  );
+  color: var(#{ns.css-var("text")}, #fff);
+}

@@ -46,6 +46,7 @@ const SUPPORTED_ICON_PACKS: FrontendIconPack[] = ["remixicon", "simple-icons"];
 
 const SYSTEM_ORDER: FrontendSystemKey[] = [
   "theme",
+  "contrast",
   "layout",
   "language",
   "logs",
