@@ -1,5 +1,9 @@
 # Changelog
 
+## 20.12.0
+
+- The brand button takes the colour of the surface it is on rather than the colour it inherits. It was built from the text colour flowing down from the header, so a brand that had been worked out to sit on light content still printed itself in the header's dark-content colour: on a light page the little arrow beside the logo came out almost white and read as having disappeared. It now follows its own state, like the links and the toggle beside it.
+
 ## 20.11.0
 
 - Chrome is the right colour in the first painted frame after a reload, with no correction afterwards. The server knows which page it is rendering but not where the reader has scrolled to, so on a reload part-way down a page the header was painted from the page's own state and then corrected once the browser had measured what was actually behind it, a tenth of a second later. No script can win that race, because the browser paints before the document has finished parsing. `createContrastBootScript()` remembers the state when the page goes away and puts it back as CSS in the head, which applies to elements as they are parsed. A site adds it beside the scroll boot script.

@@ -320,7 +320,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   padding: var(#{ns.css-var("shell-header-brand-button-padding")}, 4px 6px);
   color: var(
     #{ns.css-var("shell-header-brand-button-color")},
-    color-mix(in srgb, currentColor 74%, transparent)
+    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 74%, transparent)
   );
   background: transparent;
   cursor: pointer;
@@ -332,7 +332,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 #{ns.class("site-header-brand-button")}:focus-visible,
 
 #{ns.class("site-header-brand-button")}[aria-expanded="true"] {
-  color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, currentColor);
+  color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, var(#{ns.css-var("text")}, currentColor));
 }
 
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:hover,

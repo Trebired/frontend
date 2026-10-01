@@ -38,19 +38,29 @@ async function verifyContrast(rootDir, importDist) {
     /ns\.data\("on-dark", "false"\)/u,
     "the light state is written too, or chrome keeps dark colours after it leaves dark content",
   );
-  for (const pinned of ["shell-header-link-color", "shell-header-link-active-color", "shell-language-trigger-color"]) {
-    assert.ok(
-      styles.includes(`ns.css-var("${pinned}")`),
-      `${pinned} is set on the surface, or a site that pinned it for one background keeps that colour over the other`,
-    );
-    assert.ok(
-      styles.includes(`"${pinned}"`),
-      `${pinned} is in the list captured at the root, or there is nothing exact to restore it to`,
-    );
-  }
+  verifyPinnedTokens(styles);
 
   await verifyBackdropReading(rootDir, api, styles);
   await verifySiteHeaderDeclaresItsState(importDist);
+}
+
+function verifyPinnedTokens(styles) {
+  const pinned = [
+    "shell-header-link-color",
+    "shell-header-link-active-color",
+    "shell-language-trigger-color",
+    "shell-header-brand-button-color",
+  ];
+  for (const token of pinned) {
+    assert.ok(
+      styles.includes(`ns.css-var("${token}")`),
+      `${token} is set on the surface, or a site that pinned it for one background keeps that colour over the other`,
+    );
+    assert.ok(
+      styles.includes(`"${token}"`),
+      `${token} is in the list captured at the root, or there is nothing exact to restore it to`,
+    );
+  }
 }
 
 async function verifyBackdropReading(rootDir, api, styles) {
