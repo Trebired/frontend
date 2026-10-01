@@ -1,5 +1,9 @@
 # Changelog
 
+## 20.10.0
+
+- Chrome no longer fades from the old page's colours to the new one's. Moving between a page with a light header and one with a dark header, the background changed at once while the logo and the links spent a fifth of a second travelling to their new colour, so the logo sat dark on dark and then corrected itself. The document is marked while the page is swapped and while the state changes, and chrome does not animate its colours across that moment. The hover fade is untouched.
+
 ## 20.9.0
 
 - Only what lies behind a part is its backdrop. Everything at that position was being considered, including whatever was painted in front, and while a page is coming up the browser can answer with the document root ahead of the element itself. The page root is light on most sites, so chrome over a dark hero turned dark for a third of a second and then corrected itself, which is the flash on the logo.

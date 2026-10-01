@@ -93,3 +93,13 @@ $inherited:
   );
   color: var(#{ns.css-var("text")}, #000);
 }
+
+html#{ns.data("contrast-settling")} #{ns.data("site-header")},
+
+html#{ns.data("contrast-settling")} #{ns.data("site-header")} *,
+
+html#{ns.data("contrast-settling")} #{ns.data("on-dark")},
+
+html#{ns.data("contrast-settling")} #{ns.data("on-dark")} * {
+  transition: none;
+}

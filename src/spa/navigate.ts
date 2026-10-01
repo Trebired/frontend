@@ -16,6 +16,7 @@ import {
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
 import { syncShell } from "./shell.js";
+import { settleContrast } from "./../contrast/index.js";
 import {
   beginNavigation,
   emitPageChange,
@@ -147,6 +148,7 @@ function replaceContent(
   const currentRoot = contentRoot(document);
   const nextRoot = contentRoot(doc);
   if (!currentRoot || !nextRoot) return false;
+  settleContrast();
   const formState = preserveState ? captureFormState(currentRoot) : null;
   const wizardState = preserveState ? captureWizardSteps(currentRoot) : null;
   closeAllOverlays();

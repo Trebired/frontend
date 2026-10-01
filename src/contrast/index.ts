@@ -8,6 +8,7 @@ const MIRROR_ATTR = frontendDataAttr("contrast-mirror");
 const MIRROR_SELECTOR = frontendDataSelector("contrast-mirror");
 const ON_DARK_ATTR = frontendDataAttr("on-dark");
 const SURFACE_ATTR = frontendDataAttr("contrast-surface");
+const SETTLING_ATTR = frontendDataAttr("contrast-settling");
 const SURFACE_SELECTOR = frontendDataSelector("contrast-surface");
 const DARK_BELOW = 0.5;
 
@@ -119,9 +120,26 @@ function resolveItem(item: Element, surface: boolean): boolean | null {
   return value === null ? null : value < DARK_BELOW;
 }
 
+function settleContrast() {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (root.hasAttribute(SETTLING_ATTR)) return;
+  root.setAttribute(SETTLING_ATTR, "");
+  const clear = () => root.removeAttribute(SETTLING_ATTR);
+  if (typeof window === "undefined" || typeof window.requestAnimationFrame !== "function") {
+    clear();
+    return;
+  }
+  window.requestAnimationFrame(() => window.requestAnimationFrame(clear));
+}
+
 function markItem(item: Element, surface: boolean) {
   const dark = resolveItem(item, surface);
-  if (dark !== null) item.setAttribute(ON_DARK_ATTR, dark ? "true" : "false");
+  if (dark === null) return;
+  const value = dark ? "true" : "false";
+  if (item.getAttribute(ON_DARK_ATTR) === value) return;
+  settleContrast();
+  item.setAttribute(ON_DARK_ATTR, value);
 }
 
 function mirrorPairs(root: ParentNode): Array<[Element, string]> {
@@ -146,7 +164,10 @@ function applyMirrors(root: ParentNode) {
   for (const [item, selector] of mirrorPairs(root)) {
     const source = selector ? shownSource(selector) : null;
     if (!source) continue;
-    item.setAttribute(ON_DARK_ATTR, source.getAttribute(ON_DARK_ATTR) === "true" ? "true" : "false");
+    const value = source.getAttribute(ON_DARK_ATTR) === "true" ? "true" : "false";
+    if (item.getAttribute(ON_DARK_ATTR) === value) continue;
+    settleContrast();
+    item.setAttribute(ON_DARK_ATTR, value);
   }
 }
 
@@ -175,7 +196,7 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
   };
   update();
   const observer = new MutationObserver((records) => {
-      if (records.every((record) => record.attributeName === ON_DARK_ATTR)) return;
+      if (records.every((record) => record.attributeName === ON_DARK_ATTR || record.attributeName === SETTLING_ATTR)) return;
       schedule();
   });
   observer.observe(document.documentElement, {
@@ -193,5 +214,5 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
   };
 }
 
-export { applyContrast, bindContrast, CONTRAST_ATTR, MIRROR_ATTR, ON_DARK_ATTR, SURFACE_ATTR };
+export { applyContrast, bindContrast, CONTRAST_ATTR, MIRROR_ATTR, ON_DARK_ATTR, settleContrast, SETTLING_ATTR, SURFACE_ATTR };
 export type { ContrastBinding };

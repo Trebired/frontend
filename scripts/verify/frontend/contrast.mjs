@@ -49,11 +49,11 @@ async function verifyContrast(rootDir, importDist) {
     );
   }
 
-  await verifyBackdropReading(rootDir);
+  await verifyBackdropReading(rootDir, api, styles);
   await verifySiteHeaderDeclaresItsState(importDist);
 }
 
-async function verifyBackdropReading(rootDir) {
+async function verifyBackdropReading(rootDir, api, styles) {
   const source = await fs.readFile(path.join(rootDir, "dist", "contrast", "index.js"), "utf8");
   assert.ok(source.includes("DEFAULT_SURFACES"), "a solid panel is judged by its own background, not by what is behind it");
   assert.equal(
@@ -78,6 +78,16 @@ async function verifyBackdropReading(rootDir) {
     source.includes("indexOf(item)"),
     "a point where the element is not hit is not a reading, or a page mid-load reports the document root as the backdrop",
   );
+
+  assert.equal(api.SETTLING_ATTR, "data-tbf-contrast-settling", "the swap marks the document so nothing tweens across it");
+  assert.equal(typeof api.settleContrast, "function", "a page change can ask for the same suppression");
+  assert.match(
+    styles,
+    /contrast-settling[\s\S]*transition: none/u,
+    "chrome does not animate its colours across a page change, or a logo fades from the old colour to the new one",
+  );
+  const navigate = await fs.readFile(path.join(rootDir, "dist", "spa", "navigate.js"), "utf8");
+  assert.ok(navigate.includes("settleContrast"), "the soft navigation marks the swap, which is when the colours change");
 
   const footer = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-footer.scss"), "utf8");
   assert.ok(
