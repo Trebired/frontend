@@ -20,6 +20,11 @@ async function verifySiteHeaderMarkup(context) {
     "every link appears twice, in the bar and in the menu, and both are the same link",
   );
   assert.equal(/tbf-site-header__menu-link[\s"]/u.test(html), false, "the menu builds no link of its own");
+  const contrast = await fs.readFile(path.join(context.distDir, "contrast", "selectors.js"), "utf8");
+  assert.ok(
+    contrast.includes("DEFAULT_MIRRORS = []"),
+    "every link is read where it is, so a menu over mixed content is not one colour throughout",
+  );
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
   assert.ok(html.includes("data-tbf-soft-redirect"), "softRedirect marks the header links");
   const plain = renderToStaticMarkup(h(react.SiteHeader, { actions: "Lang", brand: "Site" }));

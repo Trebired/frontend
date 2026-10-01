@@ -115,8 +115,14 @@
   &#{ns.class("secondary")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-variants-secondary-icon")}, currentColor);
     background: var(#{ns.css-var("ui-btn-variants-secondary-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
-    color: var(#{ns.css-var("ui-btn-variants-secondary-color")}, var(#{ns.css-var("ui-btn-root-color")}, currentColor));
-    border-color: var(#{ns.css-var("ui-btn-variants-secondary-border")}, currentColor);
+    color: var(
+      #{ns.css-var("ui-btn-variants-secondary-color")},
+      var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor))
+    );
+    border-color: var(
+      #{ns.css-var("ui-btn-variants-secondary-border")},
+      var(#{ns.css-var("adaptive-border")}, currentColor)
+    );
 
     &:hover,
     &[aria-pressed="true"],
@@ -134,7 +140,7 @@
   &#{ns.class("ghost")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-variants-ghost-icon")}, currentColor);
     background: var(#{ns.css-var("ui-btn-variants-ghost-bg")}, transparent);
-    color: var(#{ns.css-var("ui-btn-variants-ghost-color")}, currentColor);
+    color: var(#{ns.css-var("ui-btn-variants-ghost-color")}, var(#{ns.css-var("adaptive")}, currentColor));
     border-color: var(#{ns.css-var("ui-btn-variants-ghost-border")}, transparent);
 
     &:hover,

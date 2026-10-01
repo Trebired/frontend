@@ -40,6 +40,8 @@ async function verifyContrast(rootDir, importDist) {
   );
   verifyPinnedTokens(styles);
 
+  assert.match(styles, /contrast-duration/u, "a change of state eases rather than snapping");
+  await verifyAdaptiveColour(rootDir);
   await verifyBackdropReading(rootDir, api, styles);
   await verifySiteHeaderDeclaresItsState(importDist);
 }
@@ -61,6 +63,20 @@ function verifyPinnedTokens(styles) {
       `${token} is in the list captured at the root, or there is nothing exact to restore it to`,
     );
   }
+}
+
+async function verifyAdaptiveColour(rootDir) {
+  const adaptive = await fs.readFile(path.join(rootDir, "dist", "contrast", "styles", "adaptive.scss"), "utf8");
+  assert.match(adaptive, /^\*,/mu, "the adaptive colour is declared on every element, or it freezes at the root");
+  for (const token of ["adaptive", "adaptive-muted", "adaptive-border"]) {
+    assert.ok(adaptive.includes(`ns.css-var("${token}")`), `${token} is part of the adaptive colour a component can read`);
+  }
+  const controls = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_controls.scss"), "utf8");
+  assert.match(
+    controls,
+    /secondary-color"\)[\s\S]{0,200}css-var\("adaptive"\)/u,
+    "an outlined button reads against the surface it sits on rather than inheriting a colour chosen elsewhere",
+  );
 }
 
 async function verifyBackdropReading(rootDir, api, styles) {

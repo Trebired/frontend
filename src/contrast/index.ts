@@ -111,7 +111,6 @@ function markItem(item: Element, surface: boolean) {
   if (dark === null) return;
   const value = dark ? "true" : "false";
   if (item.getAttribute(ON_DARK_ATTR) === value) return;
-  settleContrast();
   item.setAttribute(ON_DARK_ATTR, value);
 }
 
@@ -139,7 +138,6 @@ function applyMirrors(root: ParentNode) {
     if (!source) continue;
     const value = source.getAttribute(ON_DARK_ATTR) === "true" ? "true" : "false";
     if (item.getAttribute(ON_DARK_ATTR) === value) continue;
-    settleContrast();
     item.setAttribute(ON_DARK_ATTR, value);
   }
 }

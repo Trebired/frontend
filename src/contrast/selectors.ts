@@ -27,6 +27,9 @@ const DEFAULT_ITEMS = [
   `${headerPart("actions")} ${cls("locale-trigger")}`,
   `${headerPart("actions")} ${cls("btn")}`,
   headerPart("toggle"),
+  `${headerPart("menu")} ${headerPart("link")}`,
+  `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
+  `${headerPart("menu-footer")} ${cls("btn")}`,
 ].join(",");
 
 const BAR_SAMPLE = `${headerPart("bar")} ${cls("site-header-brand-button")},${headerPart("toggle")}`;
@@ -37,14 +40,7 @@ const DEFAULT_SURFACES = [
   cls("site-footer"),
 ].join(",");
 
-const DEFAULT_MIRRORS: Array<[string, string]> = [
-  [`${headerPart("menu")} ${headerPart("link")}`, `${headerPart("bar")} ${headerPart("link")},${headerPart("toggle")}`],
-  [
-    `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
-    `${headerPart("actions")} ${cls("locale-trigger")},${headerPart("toggle")}`,
-  ],
-  [`${headerPart("menu-footer")} ${cls("btn")}`, `${headerPart("actions")} ${cls("btn")},${headerPart("toggle")}`],
-];
+const DEFAULT_MIRRORS: Array<[string, string]> = [];
 
 export {
   BAR_SAMPLE,

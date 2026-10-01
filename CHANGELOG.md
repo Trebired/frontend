@@ -1,5 +1,11 @@
 # Changelog
 
+## 21.1.0
+
+- A colour that reads against whatever is behind it, for anything to use: `--tbf-adaptive`, with `--tbf-adaptive-muted` and `--tbf-adaptive-border` beside it. It is declared on every element, so it resolves against the surface that element is actually on, whether that surface was themed by the page or worked out by the measurement. An outlined or ghost button now falls back to it, which is what was wrong with a bordered button on a dark hero: its outline came out light and its label stayed the dark colour chosen for the rest of the page, so the words all but disappeared.
+- Each part of the header is read where it is, rather than the menu taking one colour throughout. A menu that covers both dark and light content now colours its links by what each of them covers, which is what the bar has always done.
+- A change of colour eases instead of snapping, over `--tbf-contrast-duration` (260ms). A page change is still instant, because there the background changes with it and anything slower is a fade from the old page's colours.
+
 ## 21.0.1
 
 - The brand button really has no padding now. It is a button, and the padding every button gets is written later in the stylesheet, so at equal weight it won and the logo still started 19px further in than the edge of the bar. The brand's own box now outranks it, as its colour already does.

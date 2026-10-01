@@ -1,0 +1,17 @@
+@use "@trebired/bundler/namespace" as ns;
+
+*,
+
+::before,
+
+::after {
+  #{ns.css-var("adaptive")}: var(#{ns.css-var("text")}, currentColor);
+  #{ns.css-var("adaptive-muted")}: var(
+    #{ns.css-var("text-muted")},
+    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 70%, transparent)
+  );
+  #{ns.css-var("adaptive-border")}: var(
+    #{ns.css-var("border")},
+    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 42%, transparent)
+  );
+}

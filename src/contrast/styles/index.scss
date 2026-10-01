@@ -1,5 +1,6 @@
 @use "sass:list";
 @use "@trebired/bundler/namespace" as ns;
+@use "./adaptive";
 
 $plain:
 "text",
@@ -120,6 +121,13 @@ html#{ns.data("contrast-seed", "true")} #{ns.data("site-header")} {
 
 html#{ns.data("contrast-seed", "false")} #{ns.data("site-header")} {
   @include on-light;
+}
+
+#{ns.data("on-dark")} {
+  transition:
+  color var(#{ns.css-var("contrast-duration")}, 260ms) ease,
+  border-color var(#{ns.css-var("contrast-duration")}, 260ms) ease,
+  background-color var(#{ns.css-var("contrast-duration")}, 260ms) ease;
 }
 
 html#{ns.data("contrast-settling")} #{ns.data("site-header")},
