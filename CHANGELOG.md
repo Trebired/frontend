@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.11.0
+
+- Chrome is the right colour in the first painted frame after a reload, with no correction afterwards. The server knows which page it is rendering but not where the reader has scrolled to, so on a reload part-way down a page the header was painted from the page's own state and then corrected once the browser had measured what was actually behind it, a tenth of a second later. No script can win that race, because the browser paints before the document has finished parsing. `createContrastBootScript()` remembers the state when the page goes away and puts it back as CSS in the head, which applies to elements as they are parsed. A site adds it beside the scroll boot script.
+- The runtime drops the remembered state in the same frame as its first real reading, so nothing is held after it is known.
+
 ## 20.10.0
 
 - Chrome no longer fades from the old page's colours to the new one's. Moving between a page with a light header and one with a dark header, the background changed at once while the logo and the links spent a fifth of a second travelling to their new colour, so the logo sat dark on dark and then corrected itself. The document is marked while the page is swapped and while the state changes, and chrome does not animate its colours across that moment. The hover fade is untouched.

@@ -89,6 +89,17 @@ async function verifyBackdropReading(rootDir, api, styles) {
   const navigate = await fs.readFile(path.join(rootDir, "dist", "spa", "navigate.js"), "utf8");
   assert.ok(navigate.includes("settleContrast"), "the soft navigation marks the swap, which is when the colours change");
 
+  assert.equal(typeof api.createContrastBootScript, "function", "a site can seed the state before anything is parsed");
+  const boot = api.createContrastBootScript();
+  assert.match(boot, /pagehide/u, "the state is remembered when the page goes away");
+  assert.match(boot, /back_forward|reload/u, "and put back on a reload, which is when the browser restores the scroll position");
+  assert.ok(!boot.includes("elementsFromPoint"), "the seed is applied from the head, where there is nothing to measure yet");
+  assert.match(
+    styles,
+    /contrast-seed/u,
+    "the seed is CSS, or it cannot reach the first painted frame: the browser paints before the document finishes parsing",
+  );
+
   const footer = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-footer.scss"), "utf8");
   assert.ok(
     footer.includes('css-var("contrast-ink")'),

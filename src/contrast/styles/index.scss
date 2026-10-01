@@ -27,7 +27,7 @@ $inherited:
   #{ns.css-var("contrast-ink")}: var(#{ns.css-var("text")}, #000);
 }
 
-#{ns.data("on-dark", "true")} {
+@mixin on-dark {
   #{ns.css-var("text")}: var(
     #{ns.css-var("contrast-dark-text")},
     var(#{ns.css-var("page")}, #fff)
@@ -58,7 +58,7 @@ $inherited:
   color: var(#{ns.css-var("text")}, #fff);
 }
 
-#{ns.data("on-dark", "false")} {
+@mixin on-light {
   @each $token in $plain {
     #{ns.css-var($token)}: var(#{ns.css-var("contrast-base-" + $token)});
   }
@@ -92,6 +92,22 @@ $inherited:
     var(#{ns.css-var("text-muted")})
   );
   color: var(#{ns.css-var("text")}, #000);
+}
+
+#{ns.data("on-dark", "true")} {
+  @include on-dark;
+}
+
+#{ns.data("on-dark", "false")} {
+  @include on-light;
+}
+
+html#{ns.data("contrast-seed", "true")} #{ns.data("site-header")} {
+  @include on-dark;
+}
+
+html#{ns.data("contrast-seed", "false")} #{ns.data("site-header")} {
+  @include on-light;
 }
 
 html#{ns.data("contrast-settling")} #{ns.data("site-header")},

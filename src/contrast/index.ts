@@ -1,48 +1,21 @@
-import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass } from "#5vbaqj4pirp3";
+import {
+  CONTRAST_ATTR,
+  CONTRAST_SELECTOR,
+  DARK_BELOW,
+  DEFAULT_ITEMS,
+  DEFAULT_MIRRORS,
+  DEFAULT_SURFACES,
+  MIRROR_ATTR,
+  MIRROR_SELECTOR,
+  ON_DARK_ATTR,
+  OPAQUE_ABOVE,
+  SEED_ATTR,
+  SETTLING_ATTR,
+  SURFACE_ATTR,
+  SURFACE_SELECTOR,
+} from "./selectors.js";
 
 type ContrastBinding = () => void;
-
-const CONTRAST_ATTR = frontendDataAttr("contrast");
-const CONTRAST_SELECTOR = frontendDataSelector("contrast");
-const MIRROR_ATTR = frontendDataAttr("contrast-mirror");
-const MIRROR_SELECTOR = frontendDataSelector("contrast-mirror");
-const ON_DARK_ATTR = frontendDataAttr("on-dark");
-const SURFACE_ATTR = frontendDataAttr("contrast-surface");
-const SETTLING_ATTR = frontendDataAttr("contrast-settling");
-const SURFACE_SELECTOR = frontendDataSelector("contrast-surface");
-const DARK_BELOW = 0.5;
-
-function headerPart(part: string): string {
-  return `.${frontendElementClass("site-header", part)}`;
-}
-
-function cls(name: string): string {
-  return `.${frontendClassName(name)}`;
-}
-
-const DEFAULT_ITEMS = [
-  `${headerPart("bar")} ${headerPart("link")}`,
-  `${headerPart("bar")} ${cls("site-header-brand-button")}`,
-  `${headerPart("actions")} ${cls("locale-trigger")}`,
-  `${headerPart("actions")} ${cls("btn")}`,
-  headerPart("toggle"),
-].join(",");
-
-const DEFAULT_SURFACES = [
-  cls("popover"),
-  `.${frontendElementClass("dropdown", "menu")}`,
-  cls("site-footer"),
-].join(",");
-
-const DEFAULT_MIRRORS: Array<[string, string]> = [
-  [`${headerPart("menu")} ${headerPart("link")}`, `${headerPart("bar")} ${headerPart("link")},${headerPart("toggle")}`],
-  [
-    `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
-    `${headerPart("actions")} ${cls("locale-trigger")},${headerPart("toggle")}`,
-  ],
-  [`${headerPart("menu-footer")} ${cls("btn")}`, `${headerPart("actions")} ${cls("btn")},${headerPart("toggle")}`],
-];
-const OPAQUE_ABOVE = 0.5;
 
 function lightness(value: string): number | null {
   let hit = value.match(/^oklch\(\s*([\d.]+)(%?)/iu);
@@ -179,6 +152,7 @@ function applyContrast(root: ParentNode) {
     if (isShown(item)) markItem(item, true);
   }
   applyMirrors(root);
+  if (typeof document !== "undefined") document.documentElement.removeAttribute(SEED_ATTR);
 }
 
 function bindContrast(root: ParentNode = document): ContrastBinding {
@@ -196,7 +170,8 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
   };
   update();
   const observer = new MutationObserver((records) => {
-      if (records.every((record) => record.attributeName === ON_DARK_ATTR || record.attributeName === SETTLING_ATTR)) return;
+      const own: string[] = [ON_DARK_ATTR, SETTLING_ATTR, SEED_ATTR];
+      if (records.every((record) => own.includes(record.attributeName || ""))) return;
       schedule();
   });
   observer.observe(document.documentElement, {

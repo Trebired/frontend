@@ -160,6 +160,9 @@
       "#330k9t1x10vd": [
         "../../../src/config/tokens.ts"
       ],
+      "#338k52wvvrxo": [
+        "../../../src/contrast/boot.ts"
+      ],
       "#33o6e7mug9pg": [
         "../../../src/flash/index.ts"
       ],
@@ -1422,6 +1425,9 @@
       ],
       "#qxjurtbzfrr6": [
         "../../../scripts/verify/frontend/layering.mjs"
+      ],
+      "#qy1z40674gfi": [
+        "../../../src/contrast/selectors.ts"
       ],
       "#r58exi37vhhz": [
         "../../../src/config/scales.ts"
