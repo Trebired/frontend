@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -9,7 +11,7 @@ function render(react, currentUrl, links) {
   );
 }
 
-async function verifyHeaderActiveLinks(importDist) {
+async function verifyHeaderActiveLinks(importDist, rootDir) {
   const react = await importDist("react");
   const links = [
     { href: "/", label: "Home" },
@@ -53,6 +55,20 @@ async function verifyHeaderActiveLinks(importDist) {
 
   const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
+
+  const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-header.scss"), "utf8");
+  for (const gone of ['token("menu-link-color"', 'token("menu-link-font-weight"']) {
+    assert.equal(
+      styles.includes(gone),
+      false,
+      `${gone} must not exist: a navigation link has one colour and weight, set once.`
+      +" Given its own, a site can pin the menu to the active colour and nothing ever looks current.",
+    );
+  }
+  assert.ok(
+    /"menu-link"\)\} \{[^}]*color: token\("link-color"/su.test(styles),
+    "the menu link reads the header link's colour, not its own",
+  );
 
   assert.ok(onServices.includes("tbf-site-header__burger"), "the burger is the toggle, always");
   assert.equal(

@@ -1,5 +1,12 @@
 # Changelog
 
+## 19.6.0
+
+Breaking for configuration: `shell.header.menu.link.color` and `shell.header.menu.link.fontWeight` are gone.
+
+- A navigation link has one colour and one weight, set once under `shell.header.link`, and both the header and the menu read them. Giving the menu its own let a site pin it to the same value as the active colour, which is exactly what two sites had done: every link in the menu rendered identically and the current page was impossible to pick out, while the header beside it marked the same link correctly. The active state, hover and letter spacing already came from the shared tokens, so only the base colour and weight were ever out of step.
+- `menu-link-padding` and `menu-link-radius` stay, since a stacked menu genuinely needs its own spacing.
+
 ## 19.5.0
 
 - An action row's value no longer breaks mid-word by default. It is usually an address or a number, and `overflow-wrap: anywhere` cut `info@machynka.eu` across two lines on a phone. It breaks only where it truly cannot fit now, and its size is capped against the screen before that: a site's chosen size holds on a wide screen and gives way on a narrow one, so the same address fits on one line at phone width.

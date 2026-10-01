@@ -254,11 +254,11 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   display: block;
   padding: token("menu-link-padding", 0.5rem 0);
   border-radius: token("menu-link-radius", 0);
-  color: token("menu-link-color", token("link-color", var(#{ns.css-var("text-muted")}, #555)));
+  color: token("link-color", var(#{ns.css-var("text-muted")}, #555));
   font-size: 1rem;
-  font-weight: token("menu-link-font-weight", token("link-font-weight", 500));
-  letter-spacing: token("menu-link-letter-spacing", token("link-letter-spacing", normal));
-  text-transform: token("menu-link-text-transform", token("link-text-transform", none));
+  font-weight: token("link-font-weight", 500);
+  letter-spacing: token("link-letter-spacing", normal);
+  text-transform: token("link-text-transform", none);
 }
 
 #{ns.element-class("site-header", "menu-footer")} {
