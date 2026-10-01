@@ -318,20 +318,31 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   border: 0;
   border-radius: var(#{ns.css-var("shell-header-brand-button-radius")}, var(#{ns.css-var("radius-sm")}, 0));
   padding: var(#{ns.css-var("shell-header-brand-button-padding")}, 4px 6px);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.22s ease;
+}
+
+#{ns.class("site-header-brand-button")},
+
+#{ns.class("button")}#{ns.class("site-header-brand-button")} {
   color: var(
     #{ns.css-var("shell-header-brand-button-color")},
     color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 74%, transparent)
   );
-  background: transparent;
-  cursor: pointer;
-  transition: color 0.22s ease;
 }
 
 #{ns.class("site-header-brand-button")}:hover,
 
 #{ns.class("site-header-brand-button")}:focus-visible,
 
-#{ns.class("site-header-brand-button")}[aria-expanded="true"] {
+#{ns.class("site-header-brand-button")}[aria-expanded="true"],
+
+#{ns.class("button")}#{ns.class("site-header-brand-button")}:hover,
+
+#{ns.class("button")}#{ns.class("site-header-brand-button")}:focus-visible,
+
+#{ns.class("button")}#{ns.class("site-header-brand-button")}[aria-expanded="true"] {
   color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, var(#{ns.css-var("text")}, currentColor));
 }
 

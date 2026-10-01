@@ -1,5 +1,9 @@
 # Changelog
 
+## 20.13.0
+
+- The brand button keeps its own colour instead of the one every button gets. Both rules carried the same weight and the general one is written later, so it won, and the brand took the colour flowing down from the header: on a light page the little arrow beside the logo came out almost white and read as having disappeared. Its colour now outranks the general rule, as its background already did.
+
 ## 20.12.0
 
 - The brand button takes the colour of the surface it is on rather than the colour it inherits. It was built from the text colour flowing down from the header, so a brand that had been worked out to sit on light content still printed itself in the header's dark-content colour: on a light page the little arrow beside the logo came out almost white and read as having disappeared. It now follows its own state, like the links and the toggle beside it.

@@ -34,6 +34,11 @@ async function verifySiteHeaderMarkup(context) {
   assert.match(styles, /"toggle"\)\} \{[^}]*width: 3rem;[^}]*font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
   assert.match(styles, /"bar"\)\} \{[^}]*min-height: 5rem;/su, "every site header is the same height");
+  assert.match(
+    styles,
+    /class\("button"\)\}#\{ns\.class\("site-header-brand-button"\)\} \{\n  color:/u,
+    "the brand button's colour outranks the plain button rule, which is emitted after it and would otherwise win",
+  );
   for (const fixed of ['token("height"', 'token("link-font-size"', 'token("menu-link-font-size"', 'token("brand-logo-height"']) {
     assert.ok(!styles.includes(fixed), `${fixed} must stay fixed rather than become a per-site option`);
   }
