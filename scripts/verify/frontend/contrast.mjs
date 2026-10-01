@@ -71,7 +71,11 @@ async function verifyBackdropReading(rootDir) {
     "a panel is judged by the background it has without the state, or setting the state changes the reading and it flickers",
   );
   assert.ok(
-    source.includes("hits.includes(item)"),
+    source.includes("hits.slice(behind + 1)"),
+    "only what lies behind the element is its backdrop, or something painted in front of it decides its colour",
+  );
+  assert.ok(
+    source.includes("indexOf(item)"),
     "a point where the element is not hit is not a reading, or a page mid-load reports the document root as the backdrop",
   );
 

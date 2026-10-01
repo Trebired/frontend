@@ -78,8 +78,9 @@ function backdropLightness(item: Element, ownRoot: Element | null): number | nul
   const centreX = box.left + box.width / 2;
   const centreY = box.top + box.height / 2;
   const hits = document.elementsFromPoint(centreX, centreY);
-  if (!hits.includes(item)) return null;
-  for (const node of hits) {
+  const behind = hits.indexOf(item);
+  if (behind < 0) return null;
+  for (const node of hits.slice(behind + 1)) {
     if (node === item || item.contains(node)) continue;
     if (ownRoot && ownRoot.contains(node)) continue;
     const background = getComputedStyle(node).backgroundColor;

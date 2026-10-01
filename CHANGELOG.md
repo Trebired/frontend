@@ -1,5 +1,9 @@
 # Changelog
 
+## 20.9.0
+
+- Only what lies behind a part is its backdrop. Everything at that position was being considered, including whatever was painted in front, and while a page is coming up the browser can answer with the document root ahead of the element itself. The page root is light on most sites, so chrome over a dark hero turned dark for a third of a second and then corrected itself, which is the flash on the logo.
+
 ## 20.8.0
 
 - A footer that paints itself dark no longer flickers between black and white. Its background was the same colour the state hands to its contents, so taking the state changed what the next reading saw, and it alternated every frame. A panel is now judged by the background it has without the state, and an inverted footer paints itself with the page's ink, which nothing rewrites.
