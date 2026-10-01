@@ -1,5 +1,9 @@
 @use "@trebired/bundler/namespace" as ns;
 
+:root {
+  #{ns.css-var("contrast-ink")}: var(#{ns.css-var("text")}, #000);
+}
+
 #{ns.data("on-dark", "true")} {
   #{ns.css-var("text")}: var(
     #{ns.css-var("contrast-dark-text")},
@@ -22,4 +26,12 @@
   #{ns.css-var("shell-language-trigger-color")}: var(#{ns.css-var("text")});
   #{ns.css-var("shell-language-trigger-border")}: var(#{ns.css-var("border")});
   #{ns.css-var("shell-footer-link-color")}: var(#{ns.css-var("text-muted")});
+  #{ns.css-var("ui-btn-variants-primary-bg")}: var(#{ns.css-var("text")});
+  #{ns.css-var("ui-btn-variants-primary-color")}: var(#{ns.css-var("contrast-ink")});
+  #{ns.css-var("ui-btn-variants-primary-state-hover-bg")}: color-mix(
+    in srgb,
+    var(#{ns.css-var("text")}) 88%,
+    var(#{ns.css-var("contrast-ink")})
+  );
+  #{ns.css-var("ui-btn-variants-primary-state-hover-color")}: var(#{ns.css-var("contrast-ink")});
 }

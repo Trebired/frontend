@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.3.0
+
+- A primary button in chrome that floats over dark content inverts with it. Its surface takes the light colour the surrounding text has, and its label the page's own ink, so the call to action stays a solid block that reads either way. Sites were doing this themselves, and getting it wrong once the text colour moved under them.
+- `--tbf-contrast-ink` holds the page's own text colour, resolved at the root and so untouched by any surface that recolours itself. Anything that needs the colour a light block should print in can read it.
+
 ## 20.2.0
 
 - A header tells the browser what is behind it instead of being measured for it. `onDark` renders `data-tbf-on-dark` on the server, so the header is the right colour in the first frame. Without it the state still arrives from the measurement, one frame after hydration, which is what made a logo paint in one colour and then correct itself.
