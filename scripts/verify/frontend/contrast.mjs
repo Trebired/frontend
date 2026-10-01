@@ -67,6 +67,10 @@ function verifyPinnedTokens(styles) {
 
 function verifyReadingTiming(source) {
   assert.ok(
+    source.includes("SAMPLE_STOPS") && source.includes("dark > light"),
+    "a part is read across its whole area and takes the opposite of whatever covers most of it, not of one point in the middle",
+  );
+  assert.ok(
     source.includes("transitionend"),
     "a pass runs once a transition settles, or a menu that opens by animating its height is measured while it has no height",
   );

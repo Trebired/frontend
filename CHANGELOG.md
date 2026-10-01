@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.2.0
+
+- A part is read across its whole area and takes the opposite of whatever covers most of it. One point in the middle decided before, so a wordmark lying mostly over a pale backdrop could be coloured for the one dark thing that happened to sit behind its centre, and came out light on light. Nine points across the box are read and the majority wins.
+
 ## 21.1.1
 
 - A part that arrives by animating into place is read once it has settled. A menu opens by growing its height, so at the moment the pass ran its links had no height and were left alone, and nothing afterwards asked again: the links in an open menu kept whatever colour they inherited instead of each being read where it landed.

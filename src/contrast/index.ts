@@ -41,17 +41,15 @@ function isOpaque(value: string): boolean {
   return alphaOf(value) > OPAQUE_ABOVE;
 }
 
+const SAMPLE_STOPS = [0.12, 0.5, 0.88];
+
 function isShown(item: Element): boolean {
   const box = item.getBoundingClientRect();
   return Boolean(box.width && box.height);
 }
 
-function backdropLightness(item: Element, ownRoot: Element | null): number | null {
-  const box = item.getBoundingClientRect();
-  if (!box.width || !box.height) return null;
-  const centreX = box.left + box.width / 2;
-  const centreY = box.top + box.height / 2;
-  const hits = document.elementsFromPoint(centreX, centreY);
+function pointLightness(item: Element, ownRoot: Element | null, x: number, y: number): number | null {
+  const hits = document.elementsFromPoint(x, y);
   const behind = hits.indexOf(item);
   if (behind < 0) return null;
   for (const node of hits.slice(behind + 1)) {
@@ -61,6 +59,31 @@ function backdropLightness(item: Element, ownRoot: Element | null): number | nul
     if (isOpaque(background)) return lightness(background);
   }
   return lightness(getComputedStyle(document.body).backgroundColor);
+}
+
+function samplePoints(box: DOMRect): Array<[number, number]> {
+  const points: Array<[number, number]> = [];
+  for (const across of SAMPLE_STOPS) {
+    for (const down of SAMPLE_STOPS) {
+      points.push([box.left + box.width * across, box.top + box.height * down]);
+    }
+  }
+  return points;
+}
+
+function backdropLightness(item: Element, ownRoot: Element | null): number | null {
+  const box = item.getBoundingClientRect();
+  if (!box.width || !box.height) return null;
+  let dark = 0;
+  let light = 0;
+  for (const [x, y] of samplePoints(box)) {
+    const value = pointLightness(item, ownRoot, x, y);
+    if (value === null) continue;
+    if (value < DARK_BELOW) dark += 1;
+    else light += 1;
+  }
+  if (!dark && !light) return null;
+  return dark > light ? 0 : 1;
 }
 
 const BASE_BACKGROUND = new WeakMap<Element, string>();
