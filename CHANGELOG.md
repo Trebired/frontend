@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.5.0
+
+- A panel that paints its own background is read by that background rather than by whatever happens to be behind it. A solid dark footer was being judged against the page beneath it, came out light, and printed dark text on itself. Popovers and dropdown menus are read the same way, and a site marks its own panels with `data-tbf-contrast-surface`.
+- A dark background written as `rgb(0, 0, 0)` is no longer mistaken for a transparent one. The third number was being read as the opacity, so any backdrop with a low blue channel was skipped and the chrome above it stayed in the page's own colours.
+
 ## 20.4.0
 
 - Chrome that passes from dark content onto light goes back to the site's own colours. Only the dark state was written, so once a header had been marked dark everything under it stayed light-on-light when the page scrolled on, including the parts the measurement had already corrected. Each piece now carries both states, which is what makes the header readable along its whole width when the content behind it changes partway across.

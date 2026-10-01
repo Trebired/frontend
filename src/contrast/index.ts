@@ -7,6 +7,8 @@ const CONTRAST_SELECTOR = frontendDataSelector("contrast");
 const MIRROR_ATTR = frontendDataAttr("contrast-mirror");
 const MIRROR_SELECTOR = frontendDataSelector("contrast-mirror");
 const ON_DARK_ATTR = frontendDataAttr("on-dark");
+const SURFACE_ATTR = frontendDataAttr("contrast-surface");
+const SURFACE_SELECTOR = frontendDataSelector("contrast-surface");
 const DARK_BELOW = 0.5;
 
 function headerPart(part: string): string {
@@ -23,6 +25,9 @@ const DEFAULT_ITEMS = [
   `${headerPart("actions")} ${cls("locale-trigger")}`,
   `${headerPart("actions")} ${cls("btn")}`,
   headerPart("toggle"),
+].join(",");
+
+const DEFAULT_SURFACES = [
   cls("popover"),
   `.${frontendElementClass("dropdown", "menu")}`,
   cls("site-footer"),
@@ -45,10 +50,18 @@ function lightness(value: string): number | null {
   return null;
 }
 
+function alphaOf(value: string): number {
+  const slashed = value.match(/\/\s*([\d.]+)(%?)\s*\)$/u);
+  if (slashed) return slashed[2] ? parseFloat(slashed[1]!) / 100 : parseFloat(slashed[1]!);
+  const call = value.match(/^[a-z]+\(([^)]*)\)$/iu);
+  if (!call) return 1;
+  const fields = call[1]!.split(",");
+  return fields.length > 3 ? parseFloat(fields[3]!) : 1;
+}
+
 function isOpaque(value: string): boolean {
   if (!value || value === "transparent") return false;
-  const alpha = value.match(/[/,]\s*([\d.]+)\s*\)$/u);
-  return alpha ? parseFloat(alpha[1]!) > OPAQUE_ABOVE : true;
+  return alphaOf(value) > OPAQUE_ABOVE;
 }
 
 function backdropLightness(item: Element, ownRoot: Element | null): number | null {
@@ -65,14 +78,20 @@ function backdropLightness(item: Element, ownRoot: Element | null): number | nul
   return lightness(getComputedStyle(document.body).backgroundColor);
 }
 
+function ownLightness(item: Element): number | null {
+  const background = getComputedStyle(item).backgroundColor;
+  return isOpaque(background) ? lightness(background) : null;
+}
+
 function contrastRoot(item: Element): Element | null {
   const named = item.getAttribute(CONTRAST_ATTR);
   if (!named) return item;
   return item.closest(named) || item;
 }
 
-function resolveItem(item: Element): boolean {
-  const value = backdropLightness(item, contrastRoot(item));
+function resolveItem(item: Element, surface: boolean): boolean {
+  const own = surface ? ownLightness(item) : null;
+  const value = own === null ? backdropLightness(item, contrastRoot(item)) : own;
   return value === null ? false : value < DARK_BELOW;
 }
 
@@ -97,7 +116,10 @@ function applyMirrors(root: ParentNode) {
 
 function applyContrast(root: ParentNode) {
   for (const item of root.querySelectorAll(`${DEFAULT_ITEMS},${CONTRAST_SELECTOR}`)) {
-    item.setAttribute(ON_DARK_ATTR, resolveItem(item) ? "true" : "false");
+    item.setAttribute(ON_DARK_ATTR, resolveItem(item, item.matches(SURFACE_SELECTOR)) ? "true" : "false");
+  }
+  for (const item of root.querySelectorAll(`${DEFAULT_SURFACES},${SURFACE_SELECTOR}`)) {
+    item.setAttribute(ON_DARK_ATTR, resolveItem(item, true) ? "true" : "false");
   }
   applyMirrors(root);
 }
@@ -132,5 +154,5 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
   };
 }
 
-export { applyContrast, bindContrast, CONTRAST_ATTR, MIRROR_ATTR, ON_DARK_ATTR };
+export { applyContrast, bindContrast, CONTRAST_ATTR, MIRROR_ATTR, ON_DARK_ATTR, SURFACE_ATTR };
 export type { ContrastBinding };

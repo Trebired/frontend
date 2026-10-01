@@ -27,6 +27,50 @@ async function verifyContrast(rootDir, importDist) {
     true,
     "binding returns the teardown",
   );
+
+  assert.equal(api.SURFACE_ATTR, "data-tbf-contrast-surface", "a panel that paints its own background says so");
+  assert.ok(
+    styles.includes('ns.css-var("contrast-base-" + $token)'),
+    "the page's own value for each colour is kept at the root, so restoring it is exact",
+  );
+  assert.match(
+    styles,
+    /ns\.data\("on-dark", "false"\)/u,
+    "the light state is written too, or chrome keeps dark colours after it leaves dark content",
+  );
+  for (const pinned of ["shell-header-link-color", "shell-header-link-active-color", "shell-language-trigger-color"]) {
+    assert.ok(
+      styles.includes(`ns.css-var("${pinned}")`),
+      `${pinned} is set on the surface, or a site that pinned it for one background keeps that colour over the other`,
+    );
+    assert.ok(
+      styles.includes(`"${pinned}"`),
+      `${pinned} is in the list captured at the root, or there is nothing exact to restore it to`,
+    );
+  }
+
+  await verifyBackdropReading(rootDir);
+  await verifySiteHeaderDeclaresItsState(importDist);
+}
+
+async function verifyBackdropReading(rootDir) {
+  const source = await fs.readFile(path.join(rootDir, "dist", "contrast", "index.js"), "utf8");
+  assert.ok(source.includes("DEFAULT_SURFACES"), "a solid panel is judged by its own background, not by what is behind it");
+  assert.equal(
+    /\[\/,\]/u.test(source),
+    false,
+    "a comma is not an alpha separator, or rgb(0, 0, 0) reads as transparent and a dark backdrop is skipped",
+  );
+}
+
+async function verifySiteHeaderDeclaresItsState(importDist) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const react = await importDist("react");
+  const html = renderToStaticMarkup(createElement(react.SiteHeader, { brand: "Site", links: [], onDark: true }));
+  assert.match(html, /data-tbf-on-dark="true"/u, "the server can declare the state, or the first frame waits for a measurement");
+  const unset = renderToStaticMarkup(createElement(react.SiteHeader, { brand: "Site", links: [] }));
+  assert.equal(unset.includes("data-tbf-on-dark"), false, "and a header that declares nothing is left to the measurement");
 }
 
 export { verifyContrast };
