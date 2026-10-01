@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.3.0
+
+- A popover takes the colours of wherever it opens. Its panel came with a background of `transparent`, a border of `currentColor` and a colour of `currentColor` written into the defaults, which are fixed at the root: a panel could not read its surroundings, and a site that did not override all three got a see-through menu. The defaults are gone, so the panel falls back to the surface colour, the text colour and the border colour as read where the panel actually is.
+
 ## 21.2.0
 
 - A part is read across its whole area and takes the opposite of whatever covers most of it. One point in the middle decided before, so a wordmark lying mostly over a pale backdrop could be coloured for the one dark thing that happened to sit behind its centre, and came out light on light. Nine points across the box are read and the majority wins.

@@ -81,6 +81,15 @@ function verifyReadingTiming(source) {
 }
 
 async function verifyAdaptiveColour(rootDir) {
+  const defaults = await fs.readFile(path.join(rootDir, "dist", "config", "default", "component-tokens.js"), "utf8");
+  const popover = defaults.slice(defaults.indexOf("popover:"), defaults.indexOf("tooltip:"));
+  for (const frozen of ["background:", "color:", "border:"]) {
+    assert.equal(
+      popover.includes(frozen),
+      false,
+      `a popover sets no ${frozen} of its own, or the value is fixed at the root and the panel cannot read its surroundings`,
+    );
+  }
   const adaptive = await fs.readFile(path.join(rootDir, "dist", "contrast", "styles", "adaptive.scss"), "utf8");
   assert.match(adaptive, /^\*,/mu, "the adaptive colour is declared on every element, or it freezes at the root");
   for (const token of ["adaptive", "adaptive-muted", "adaptive-border"]) {

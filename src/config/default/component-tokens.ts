@@ -75,9 +75,6 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               },
             },
             panel: {
-              background: "transparent",
-              border: "1px solid currentColor",
-              color: "currentColor",
               gap: "2px",
               minW: "220px",
               padding: "8px",
