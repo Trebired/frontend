@@ -34,9 +34,12 @@ const DEFAULT_SURFACES = [
 ].join(",");
 
 const DEFAULT_MIRRORS: Array<[string, string]> = [
-  [`${headerPart("menu")} ${headerPart("link")}`, `${headerPart("bar")} ${headerPart("link")}`],
-  [`${headerPart("menu-footer")} ${cls("locale-trigger")}`, `${headerPart("actions")} ${cls("locale-trigger")}`],
-  [`${headerPart("menu-footer")} ${cls("btn")}`, `${headerPart("actions")} ${cls("btn")}`],
+  [`${headerPart("menu")} ${headerPart("link")}`, `${headerPart("bar")} ${headerPart("link")},${headerPart("toggle")}`],
+  [
+    `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
+    `${headerPart("actions")} ${cls("locale-trigger")},${headerPart("toggle")}`,
+  ],
+  [`${headerPart("menu-footer")} ${cls("btn")}`, `${headerPart("actions")} ${cls("btn")},${headerPart("toggle")}`],
 ];
 const OPAQUE_ABOVE = 0.5;
 
@@ -62,6 +65,11 @@ function alphaOf(value: string): number {
 function isOpaque(value: string): boolean {
   if (!value || value === "transparent") return false;
   return alphaOf(value) > OPAQUE_ABOVE;
+}
+
+function isShown(item: Element): boolean {
+  const box = item.getBoundingClientRect();
+  return Boolean(box.width && box.height);
 }
 
 function backdropLightness(item: Element, ownRoot: Element | null): number | null {
@@ -106,20 +114,27 @@ function mirrorPairs(root: ParentNode): Array<[Element, string]> {
   return pairs;
 }
 
+function shownSource(selector: string): Element | null {
+  for (const node of document.querySelectorAll(selector)) {
+    if (isShown(node)) return node;
+  }
+  return null;
+}
+
 function applyMirrors(root: ParentNode) {
   for (const [item, selector] of mirrorPairs(root)) {
-    const source = selector ? document.querySelector(selector) : null;
-    const dark = source?.getAttribute(ON_DARK_ATTR) === "true";
-    item.setAttribute(ON_DARK_ATTR, dark ? "true" : "false");
+    const source = selector ? shownSource(selector) : null;
+    if (!source) continue;
+    item.setAttribute(ON_DARK_ATTR, source.getAttribute(ON_DARK_ATTR) === "true" ? "true" : "false");
   }
 }
 
 function applyContrast(root: ParentNode) {
   for (const item of root.querySelectorAll(`${DEFAULT_ITEMS},${CONTRAST_SELECTOR}`)) {
-    item.setAttribute(ON_DARK_ATTR, resolveItem(item, item.matches(SURFACE_SELECTOR)) ? "true" : "false");
+    if (isShown(item)) item.setAttribute(ON_DARK_ATTR, resolveItem(item, item.matches(SURFACE_SELECTOR)) ? "true" : "false");
   }
   for (const item of root.querySelectorAll(`${DEFAULT_SURFACES},${SURFACE_SELECTOR}`)) {
-    item.setAttribute(ON_DARK_ATTR, resolveItem(item, true) ? "true" : "false");
+    if (isShown(item)) item.setAttribute(ON_DARK_ATTR, resolveItem(item, true) ? "true" : "false");
   }
   applyMirrors(root);
 }

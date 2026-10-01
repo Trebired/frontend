@@ -61,6 +61,11 @@ async function verifyBackdropReading(rootDir) {
     false,
     "a comma is not an alpha separator, or rgb(0, 0, 0) reads as transparent and a dark backdrop is skipped",
   );
+  assert.ok(source.includes("isShown"), "an element with no box is left alone rather than given a state it never measured");
+  assert.ok(
+    source.includes("shownSource"),
+    "a mirror follows the first source that is actually shown, or the menu copies a link the phone has hidden",
+  );
 }
 
 async function verifySiteHeaderDeclaresItsState(importDist) {

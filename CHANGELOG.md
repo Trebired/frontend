@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.7.0
+
+- An element that is not shown is no longer given a state. A header link hidden on a phone has no box and nothing behind it to read, yet it was being recorded as sitting on light content, and the menu copied that: the menu read dark while the logo and the toggle beside it read light, on the same dark hero.
+- A mirror follows the first of its sources that is actually on screen. The links in the menu follow the bar on a wide screen and the toggle on a phone, so the menu matches the header it belongs to at every width.
+
 ## 20.6.0
 
 - A part that goes back to the page's colours no longer takes the surrounding chrome's instead. Components whose colour is simply inherited, the language trigger and the menu toggle among them, had nothing to fall back to when a site had never set a colour for them, so they kept reading the dark header they sit in and stayed light on light. Each one now falls back to the page's own text.
