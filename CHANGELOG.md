@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.6.0
+
+- A part that goes back to the page's colours no longer takes the surrounding chrome's instead. Components whose colour is simply inherited, the language trigger and the menu toggle among them, had nothing to fall back to when a site had never set a colour for them, so they kept reading the dark header they sit in and stayed light on light. Each one now falls back to the page's own text.
+- A colour a site did set is still restored exactly as it set it. The fallback only applies where there was nothing to restore.
+
 ## 20.5.0
 
 - A panel that paints its own background is read by that background rather than by whatever happens to be behind it. A solid dark footer was being judged against the page beneath it, came out light, and printed dark text on itself. Popovers and dropdown menus are read the same way, and a site marks its own panels with `data-tbf-contrast-surface`.

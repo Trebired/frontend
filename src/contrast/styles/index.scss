@@ -1,23 +1,26 @@
+@use "sass:list";
 @use "@trebired/bundler/namespace" as ns;
 
-$tokens:
+$plain:
 "text",
 "text-muted",
 "border",
+"ui-btn-variants-primary-bg",
+"ui-btn-variants-primary-color",
+"ui-btn-variants-primary-state-hover-bg",
+"ui-btn-variants-primary-state-hover-color";
+
+$inherited:
 "shell-header-link-color",
 "shell-header-link-hover-color",
 "shell-header-link-active-color",
 "shell-header-toggle-color",
 "shell-language-trigger-color",
 "shell-language-trigger-border",
-"shell-footer-link-color",
-"ui-btn-variants-primary-bg",
-"ui-btn-variants-primary-color",
-"ui-btn-variants-primary-state-hover-bg",
-"ui-btn-variants-primary-state-hover-color";
+"shell-footer-link-color";
 
 :root {
-  @each $token in $tokens {
+  @each $token in list.join($plain, $inherited) {
     #{ns.css-var("contrast-base-" + $token)}: var(#{ns.css-var($token)});
   }
 
@@ -56,9 +59,37 @@ $tokens:
 }
 
 #{ns.data("on-dark", "false")} {
-  @each $token in $tokens {
+  @each $token in $plain {
     #{ns.css-var($token)}: var(#{ns.css-var("contrast-base-" + $token)});
   }
 
+  #{ns.css-var("shell-header-link-color")}: var(
+    #{ns.css-var("contrast-base-shell-header-link-color")},
+    var(#{ns.css-var("text-muted")})
+  );
+  #{ns.css-var("shell-header-link-hover-color")}: var(
+    #{ns.css-var("contrast-base-shell-header-link-hover-color")},
+    var(#{ns.css-var("text")})
+  );
+  #{ns.css-var("shell-header-link-active-color")}: var(
+    #{ns.css-var("contrast-base-shell-header-link-active-color")},
+    var(#{ns.css-var("text")})
+  );
+  #{ns.css-var("shell-header-toggle-color")}: var(
+    #{ns.css-var("contrast-base-shell-header-toggle-color")},
+    var(#{ns.css-var("text")})
+  );
+  #{ns.css-var("shell-language-trigger-color")}: var(
+    #{ns.css-var("contrast-base-shell-language-trigger-color")},
+    var(#{ns.css-var("text")})
+  );
+  #{ns.css-var("shell-language-trigger-border")}: var(
+    #{ns.css-var("contrast-base-shell-language-trigger-border")},
+    var(#{ns.css-var("border")})
+  );
+  #{ns.css-var("shell-footer-link-color")}: var(
+    #{ns.css-var("contrast-base-shell-footer-link-color")},
+    var(#{ns.css-var("text-muted")})
+  );
   color: var(#{ns.css-var("text")}, #000);
 }
