@@ -314,28 +314,27 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   box-shadow: none;
 }
 
-#{ns.class("site-header-brand-button")} {
+#{ns.class("site-header-brand-button")},
+
+#{ns.class("button")}#{ns.class("site-header-brand-button")} {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   gap: var(#{ns.css-var("shell-header-brand-button-gap")}, 8px);
   min-width: 0;
+  min-height: 0;
+  height: auto;
   border: 0;
   border-radius: var(#{ns.css-var("shell-header-brand-button-radius")}, var(#{ns.css-var("radius-sm")}, 0));
   padding-block: 4px;
   padding-inline: 0;
   background: transparent;
-  cursor: pointer;
-  transition: color 0.22s ease;
-}
-
-#{ns.class("site-header-brand-button")},
-
-#{ns.class("button")}#{ns.class("site-header-brand-button")} {
   color: var(
     #{ns.css-var("shell-header-brand-button-color")},
     color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 74%, transparent)
   );
+  cursor: pointer;
+  transition: color 0.22s ease;
 }
 
 #{ns.class("site-header-brand-button")}:hover,

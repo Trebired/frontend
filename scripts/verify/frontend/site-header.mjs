@@ -36,11 +36,15 @@ async function verifySiteHeaderMarkup(context) {
   assert.match(styles, /"toggle"\)\} \{[^}]*width: 3rem;[^}]*font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
   assert.match(styles, /"bar"\)\} \{[^}]*min-height: 5rem;/su, "every site header is the same height");
-  assert.match(
-    styles,
-    /class\("button"\)\}#\{ns\.class\("site-header-brand-button"\)\} \{\n  color:/u,
-    "the brand button's colour outranks the plain button rule, which is emitted after it and would otherwise win",
-  );
+  const brandRule = styles.split('#{ns.class("button")}#{ns.class("site-header-brand-button")} {')[1] || "";
+  const brandBody = brandRule.split("\n}")[0];
+  for (const own of ["padding-inline: 0;", "padding-block: 4px;", "color: var("]) {
+    assert.ok(
+      brandBody.includes(own),
+      `the brand button sets ${own} where it outranks the plain button rule, which is emitted after it`,
+    );
+  }
+
   for (const fixed of [
       'token("height"',
       'token("link-font-size"',

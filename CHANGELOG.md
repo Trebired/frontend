@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.0.1
+
+- The brand button really has no padding now. It is a button, and the padding every button gets is written later in the stylesheet, so at equal weight it won and the logo still started 19px further in than the edge of the bar. The brand's own box now outranks it, as its colour already does.
+
 ## 21.0.0
 
 Breaking for configuration: `shell.header.px` and `shell.header.brand.button.padding` are gone.
