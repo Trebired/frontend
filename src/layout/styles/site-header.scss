@@ -29,7 +29,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   max-width: token("max-width", 72rem);
   box-sizing: border-box;
   margin-inline: auto;
-  padding-inline: token("px", 1rem);
+  padding-inline: 1.5rem;
 }
 
 #{ns.element-class("site-header", "bar")} {
@@ -255,6 +255,11 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 }
 
 @media (min-width: 768px) {
+  #{ns.element-class("site-header", "bar")},
+  #{ns.element-class("site-header", "menu-content")} {
+    padding-inline: 1rem;
+  }
+
   #{ns.element-class("site-header", "nav")},
   #{ns.element-class("site-header", "actions")} {
     display: flex;
@@ -317,7 +322,8 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   min-width: 0;
   border: 0;
   border-radius: var(#{ns.css-var("shell-header-brand-button-radius")}, var(#{ns.css-var("radius-sm")}, 0));
-  padding: var(#{ns.css-var("shell-header-brand-button-padding")}, 4px 6px);
+  padding-block: 4px;
+  padding-inline: 0;
   background: transparent;
   cursor: pointer;
   transition: color 0.22s ease;

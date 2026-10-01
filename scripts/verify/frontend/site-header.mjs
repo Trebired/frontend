@@ -29,7 +29,9 @@ async function verifySiteHeaderMarkup(context) {
   assert.equal(root.siteHeaderRootHtml("<header></header>"), '<div data-tbf-site-header-root=""><header></header></div>');
   assert.equal(root.SITE_HEADER_ROOT_SELECTOR, "[data-tbf-site-header-root]");
   const styles = await fs.readFile(path.join(context.distDir, "layout", "styles", "site-header.scss"), "utf8");
-  assert.ok(styles.includes('token("root-bg"') && styles.includes('token("px"'), "header tokens use the emitted token names");
+  assert.ok(styles.includes('token("root-bg"'), "header tokens use the emitted token names");
+  assert.match(styles, /padding-inline: 1\.5rem;/u, "the brand sits at one distance from the edge on every site");
+  assert.match(styles, /padding-inline: 1rem;/u, "and a narrower one once there is room for the full bar");
   assert.match(styles, /"menu-content"\)\} \{\n {2}width: 100%;/u, "the menu content spans the header width instead of shrinking");
   assert.match(styles, /"toggle"\)\} \{[^}]*width: 3rem;[^}]*font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
@@ -39,7 +41,14 @@ async function verifySiteHeaderMarkup(context) {
     /class\("button"\)\}#\{ns\.class\("site-header-brand-button"\)\} \{\n  color:/u,
     "the brand button's colour outranks the plain button rule, which is emitted after it and would otherwise win",
   );
-  for (const fixed of ['token("height"', 'token("link-font-size"', 'token("menu-link-font-size"', 'token("brand-logo-height"']) {
+  for (const fixed of [
+      'token("height"',
+      'token("link-font-size"',
+      'token("menu-link-font-size"',
+      'token("brand-logo-height"',
+      'token("px"',
+      "shell-header-brand-button-padding",
+  ]) {
     assert.ok(!styles.includes(fixed), `${fixed} must stay fixed rather than become a per-site option`);
   }
 }

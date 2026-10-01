@@ -1,5 +1,12 @@
 # Changelog
 
+## 21.0.0
+
+Breaking for configuration: `shell.header.px` and `shell.header.brand.button.padding` are gone.
+
+- The brand sits the same distance from the edge of the screen on every site: 1.5rem on a phone, 1rem once there is room for the full bar. The distance was a per-site setting and the brand button added its own padding on top, so the same logo started at 16px on one site and 38px on another. The header's structure is tbf's to decide, like its height and the size of its menu button.
+- A site that set either of those values is no longer honoured; remove them. Nothing else about the brand changes.
+
 ## 20.13.0
 
 - The brand button keeps its own colour instead of the one every button gets. Both rules carried the same weight and the general one is written later, so it won, and the brand took the colour flowing down from the header: on a light page the little arrow beside the logo came out almost white and read as having disappeared. Its colour now outranks the general rule, as its background already did.
