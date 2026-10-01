@@ -46,7 +46,7 @@ function useRenderCurrentUrl() {
   return useSyncExternalStore(
     subscribeUrl,
     () => currentUrlSnapshot(currentUrl),
-    () => currentUrl,
+    () => currentUrl || browserCurrentUrl(),
   );
 }
 

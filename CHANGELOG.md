@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.6.1
+
+- A page whose client tree carries no `RenderCurrentUrlProvider` hydrates against the address rather than against nothing. It was resolving to the site root during hydration, so the header marked the home link while the server had marked the real page, and React reported an attribute mismatch it does not patch up. A provided url still wins, since that is what the server rendered against.
+
 ## 19.6.0
 
 Breaking for configuration: `shell.header.menu.link.color` and `shell.header.menu.link.fontWeight` are gone.
