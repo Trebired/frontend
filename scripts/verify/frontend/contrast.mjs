@@ -65,6 +65,17 @@ function verifyPinnedTokens(styles) {
   }
 }
 
+function verifyReadingTiming(source) {
+  assert.ok(
+    source.includes("transitionend"),
+    "a pass runs once a transition settles, or a menu that opens by animating its height is measured while it has no height",
+  );
+  assert.ok(
+    source.includes("shownSource"),
+    "a mirror follows the first source that is actually shown, or the menu copies a link the phone has hidden",
+  );
+}
+
 async function verifyAdaptiveColour(rootDir) {
   const adaptive = await fs.readFile(path.join(rootDir, "dist", "contrast", "styles", "adaptive.scss"), "utf8");
   assert.match(adaptive, /^\*,/mu, "the adaptive colour is declared on every element, or it freezes at the root");
@@ -88,14 +99,7 @@ async function verifyBackdropReading(rootDir, api, styles) {
     "a comma is not an alpha separator, or rgb(0, 0, 0) reads as transparent and a dark backdrop is skipped",
   );
   assert.ok(source.includes("isShown"), "an element with no box is left alone rather than given a state it never measured");
-  assert.ok(
-    source.includes("transitionend"),
-    "a pass runs once a transition settles, or a menu that opens by animating its height is measured while it has no height",
-  );
-  assert.ok(
-    source.includes("shownSource"),
-    "a mirror follows the first source that is actually shown, or the menu copies a link the phone has hidden",
-  );
+  verifyReadingTiming(source);
   assert.ok(
     source.includes("BASE_BACKGROUND"),
     "a panel is judged by the background it has without the state, or setting the state changes the reading and it flickers",
