@@ -14,8 +14,12 @@ async function verifySiteHeaderMarkup(context) {
   assert.ok(html.includes('data-tbf-site-header-open="false"'), "the site header starts closed");
   assert.ok(html.includes('aria-expanded="false"') && html.includes('aria-label="Open"'), "the menu toggle carries its state and label");
   assert.ok(/class="tbf-site-header__menu"[^>]*inert=""/u.test(html), "a closed menu is inert so its links are not focusable");
-  assert.equal(html.match(/tbf-site-header__menu-link"/gu)?.length, 2, "the mobile menu lists every link");
-  assert.equal(html.match(/tbf-site-header__link"/gu)?.length, 2, "the desktop nav lists every link");
+  assert.equal(
+    html.match(/tbf-site-header__link[\s"]/gu)?.length,
+    4,
+    "every link appears twice, in the bar and in the menu, and both are the same link",
+  );
+  assert.equal(/tbf-site-header__menu-link[\s"]/u.test(html), false, "the menu builds no link of its own");
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
   assert.ok(html.includes("data-tbf-soft-redirect"), "softRedirect marks the header links");
   const plain = renderToStaticMarkup(h(react.SiteHeader, { actions: "Lang", brand: "Site" }));
@@ -51,7 +55,7 @@ async function verifySiteHeaderBehaviour(context) {
   click(".tbf-site-header__toggle");
   assert.equal(header(), "true", "the toggle opens the menu");
   assert.equal(host.querySelector(".tbf-site-header__toggle").getAttribute("aria-expanded"), "true");
-  click(".tbf-site-header__menu-link");
+  click(".tbf-site-header__menu-links .tbf-site-header__link");
   assert.equal(header(), "false", "choosing a link closes the menu");
   click(".tbf-site-header__toggle");
   click(".tbf-site-header__menu-footer a");

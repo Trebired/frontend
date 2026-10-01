@@ -87,7 +87,6 @@ function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean 
 }
 
 function SiteHeaderLinks(props: {
-    element: string;
     links: SiteHeaderLink[];
     onNavigate?: () => void;
     softRedirect?: boolean;
@@ -109,8 +108,8 @@ function SiteHeaderLinks(props: {
           <a
           {...linkAttrs(linkIsActive(link, currentPaths, section, hasSection), link, props.softRedirect)}
           className={classNames(
-              frontendElementClass(block, props.element),
-              linkIsActive(link, currentPaths, section, hasSection) ? `${frontendElementClass(block, props.element)}--active` : "",
+              frontendElementClass(block, "link"),
+              linkIsActive(link, currentPaths, section, hasSection) ? `${frontendElementClass(block, "link")}--active` : "",
           )}
           href={link.href}
           key={link.key || link.href}
@@ -190,7 +189,7 @@ function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: Return
     <div className={frontendElementClass(block, "menu-content")}>
     {links.length ? (
         <nav aria-label={labels?.navigation} className={frontendElementClass(block, "menu-links")}>
-        <SiteHeaderLinks element="menu-link" links={links} onNavigate={state.close} softRedirect={softRedirect} />
+        <SiteHeaderLinks links={links} onNavigate={state.close} softRedirect={softRedirect} />
         </nav>
       ) : null}
     {menuActions ? (
@@ -230,7 +229,7 @@ function SiteHeader(props: SiteHeaderProps) {
     />
     {links.length ? (
         <nav aria-label={labels?.navigation} className={frontendElementClass(block, "nav")}>
-        <SiteHeaderLinks element="link" links={links} softRedirect={softRedirect} />
+        <SiteHeaderLinks links={links} softRedirect={softRedirect} />
         </nav>
       ) : null}
     {actions ? <div className={frontendElementClass(block, "actions")}>{actions}</div> : null}

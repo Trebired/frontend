@@ -1,5 +1,13 @@
 # Changelog
 
+## 20.0.0
+
+Breaking: `tbf-site-header__menu-link` no longer exists.
+
+- The menu renders the header's link. It does not build one of its own, carry its own class, or own a single rule: the same `tbf-site-header__link` appears in the bar and in the menu, with the same colour, size, weight, spacing, padding, radius, hover and active mark, because it is the same link. The menu is part of the header.
+- Only `tbf-site-header__menu-links`, the container, remains, and it does nothing but stack them.
+- Styling `.tbf-site-header__menu-link` from a site stylesheet now matches nothing. Style `.tbf-site-header__link`, or scope to the menu with `.tbf-site-header__menu-links .tbf-site-header__link` where a stacked list genuinely needs different spacing.
+
 ## 19.7.0
 
 Breaking for configuration: `shell.header.menu.link.padding` and `shell.header.menu.link.radius` are gone, finishing what 19.6.0 started.

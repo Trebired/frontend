@@ -11,6 +11,28 @@ function render(react, currentUrl, links) {
   );
 }
 
+async function verifyOneLinkStyle(rootDir, markup) {
+  const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-header.scss"), "utf8");
+  assert.equal(
+    styles.includes('element-class("site-header", "menu-link")'),
+    false,
+    "the menu has no link of its own: it renders the header's link, so there is nothing that can drift apart",
+  );
+  assert.equal(
+    /tbf-site-header__menu-link[\s"]/u.test(markup),
+    false,
+    "and the markup carries only one link class, in the bar and in the menu alike",
+  );
+  for (const gone of ['token("menu-link-color"', 'token("menu-link-font-weight"', 'token("menu-link-padding"', 'token("menu-link-radius"']) {
+    assert.equal(
+      styles.includes(gone),
+      false,
+      `${gone} must not exist: a navigation link has one colour and weight, set once.`
+      +" Given its own, a site can pin the menu to the active colour and nothing ever looks current.",
+    );
+  }
+}
+
 async function verifyHeaderActiveLinks(importDist, rootDir) {
   const react = await importDist("react");
   const links = [
@@ -56,19 +78,7 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
   const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
 
-  const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-header.scss"), "utf8");
-  for (const gone of ['token("menu-link-color"', 'token("menu-link-font-weight"', 'token("menu-link-padding"', 'token("menu-link-radius"']) {
-    assert.equal(
-      styles.includes(gone),
-      false,
-      `${gone} must not exist: a navigation link has one colour and weight, set once.`
-      +" Given its own, a site can pin the menu to the active colour and nothing ever looks current.",
-    );
-  }
-  assert.ok(
-    /"menu-link"\)\} \{[^}]*color: token\("link-color"/su.test(styles),
-    "the menu link reads the header link's colour, not its own",
-  );
+  await verifyOneLinkStyle(rootDir, onServices);
 
   assert.ok(onServices.includes("tbf-site-header__burger"), "the burger is the toggle, always");
   assert.equal(
