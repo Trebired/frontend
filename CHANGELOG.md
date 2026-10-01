@@ -1,5 +1,11 @@
 # Changelog
 
+## 20.8.0
+
+- A footer that paints itself dark no longer flickers between black and white. Its background was the same colour the state hands to its contents, so taking the state changed what the next reading saw, and it alternated every frame. A panel is now judged by the background it has without the state, and an inverted footer paints itself with the page's ink, which nothing rewrites.
+- A part no longer takes the wrong colour for a moment while the page is still coming up. Mid-load there are instants when an element is not hit at its own position and the document root is all that answers; that was read as light content, so chrome over a dark hero went dark and then corrected itself a fraction of a second later. A position where the element itself is not hit is no longer a reading.
+- The observer ignores the state it sets itself, so marking an element cannot schedule another pass.
+
 ## 20.7.0
 
 - An element that is not shown is no longer given a state. A header link hidden on a phone has no box and nothing behind it to read, yet it was being recorded as sitting on light content, and the menu copied that: the menu read dark while the logo and the toggle beside it read light, on the same dark hero.

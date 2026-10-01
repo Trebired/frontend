@@ -66,6 +66,20 @@ async function verifyBackdropReading(rootDir) {
     source.includes("shownSource"),
     "a mirror follows the first source that is actually shown, or the menu copies a link the phone has hidden",
   );
+  assert.ok(
+    source.includes("BASE_BACKGROUND"),
+    "a panel is judged by the background it has without the state, or setting the state changes the reading and it flickers",
+  );
+  assert.ok(
+    source.includes("hits.includes(item)"),
+    "a point where the element is not hit is not a reading, or a page mid-load reports the document root as the backdrop",
+  );
+
+  const footer = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-footer.scss"), "utf8");
+  assert.ok(
+    footer.includes('css-var("contrast-ink")'),
+    "an inverted footer paints itself with the page's ink, not with the token the dark state rewrites",
+  );
 }
 
 async function verifySiteHeaderDeclaresItsState(importDist) {

@@ -77,7 +77,9 @@ function backdropLightness(item: Element, ownRoot: Element | null): number | nul
   if (!box.width || !box.height) return null;
   const centreX = box.left + box.width / 2;
   const centreY = box.top + box.height / 2;
-  for (const node of document.elementsFromPoint(centreX, centreY)) {
+  const hits = document.elementsFromPoint(centreX, centreY);
+  if (!hits.includes(item)) return null;
+  for (const node of hits) {
     if (node === item || item.contains(node)) continue;
     if (ownRoot && ownRoot.contains(node)) continue;
     const background = getComputedStyle(node).backgroundColor;
@@ -86,8 +88,21 @@ function backdropLightness(item: Element, ownRoot: Element | null): number | nul
   return lightness(getComputedStyle(document.body).backgroundColor);
 }
 
+const BASE_BACKGROUND = new WeakMap<Element, string>();
+
+function baseBackground(item: Element): string {
+  const cached = BASE_BACKGROUND.get(item);
+  if (cached !== undefined) return cached;
+  const carried = item.getAttribute(ON_DARK_ATTR);
+  if (carried !== null) item.removeAttribute(ON_DARK_ATTR);
+  const value = getComputedStyle(item).backgroundColor;
+  if (carried !== null) item.setAttribute(ON_DARK_ATTR, carried);
+  BASE_BACKGROUND.set(item, value);
+  return value;
+}
+
 function ownLightness(item: Element): number | null {
-  const background = getComputedStyle(item).backgroundColor;
+  const background = baseBackground(item);
   return isOpaque(background) ? lightness(background) : null;
 }
 
@@ -97,10 +112,15 @@ function contrastRoot(item: Element): Element | null {
   return item.closest(named) || item;
 }
 
-function resolveItem(item: Element, surface: boolean): boolean {
+function resolveItem(item: Element, surface: boolean): boolean | null {
   const own = surface ? ownLightness(item) : null;
   const value = own === null ? backdropLightness(item, contrastRoot(item)) : own;
-  return value === null ? false : value < DARK_BELOW;
+  return value === null ? null : value < DARK_BELOW;
+}
+
+function markItem(item: Element, surface: boolean) {
+  const dark = resolveItem(item, surface);
+  if (dark !== null) item.setAttribute(ON_DARK_ATTR, dark ? "true" : "false");
 }
 
 function mirrorPairs(root: ParentNode): Array<[Element, string]> {
@@ -131,10 +151,10 @@ function applyMirrors(root: ParentNode) {
 
 function applyContrast(root: ParentNode) {
   for (const item of root.querySelectorAll(`${DEFAULT_ITEMS},${CONTRAST_SELECTOR}`)) {
-    if (isShown(item)) item.setAttribute(ON_DARK_ATTR, resolveItem(item, item.matches(SURFACE_SELECTOR)) ? "true" : "false");
+    if (isShown(item)) markItem(item, item.matches(SURFACE_SELECTOR));
   }
   for (const item of root.querySelectorAll(`${DEFAULT_SURFACES},${SURFACE_SELECTOR}`)) {
-    if (isShown(item)) item.setAttribute(ON_DARK_ATTR, resolveItem(item, true) ? "true" : "false");
+    if (isShown(item)) markItem(item, true);
   }
   applyMirrors(root);
 }
@@ -153,7 +173,10 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
     frame = window.requestAnimationFrame(update);
   };
   update();
-  const observer = new MutationObserver(schedule);
+  const observer = new MutationObserver((records) => {
+      if (records.every((record) => record.attributeName === ON_DARK_ATTR)) return;
+      schedule();
+  });
   observer.observe(document.documentElement, {
       attributes: true,
       childList: true,

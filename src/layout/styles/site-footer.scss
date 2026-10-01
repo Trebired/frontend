@@ -23,7 +23,10 @@
     color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 62%, transparent)
   );
   color: var(#{ns.css-var("shell-footer-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("shell-footer-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+  background: var(
+    #{ns.css-var("shell-footer-tone-inverse-bg")},
+    var(#{ns.css-var("contrast-ink")}, var(#{ns.css-var("text")}, #000))
+  );
 }
 
 #{ns.data("site-footer-tone", "muted")} {
