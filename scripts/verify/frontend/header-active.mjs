@@ -57,7 +57,7 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
 
   const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-header.scss"), "utf8");
-  for (const gone of ['token("menu-link-color"', 'token("menu-link-font-weight"']) {
+  for (const gone of ['token("menu-link-color"', 'token("menu-link-font-weight"', 'token("menu-link-padding"', 'token("menu-link-radius"']) {
     assert.equal(
       styles.includes(gone),
       false,

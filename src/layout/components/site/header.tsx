@@ -74,7 +74,9 @@ function linkIsActive(
   const fragment = linkFragment(link);
   if (fragment) return Boolean(section) && fragment === section && linkOnCurrentPage(link, currentPaths);
   if (hasSection && section) return false;
-  return linkOnCurrentPage(link, currentPaths);
+  const targets = headerPathForms(link.href);
+  if (targets.includes("/")) return currentPaths.includes("/");
+  return currentPaths.some((current) => targets.some((target) => pathMatches(current, target)));
 }
 
 function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean | undefined) {

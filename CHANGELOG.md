@@ -1,5 +1,12 @@
 # Changelog
 
+## 19.7.0
+
+Breaking for configuration: `shell.header.menu.link.padding` and `shell.header.menu.link.radius` are gone, finishing what 19.6.0 started.
+
+- A link in the menu is the header link, stacked. It shares every rule: colour, size, weight, letter spacing, transform, padding, radius, hover and the active mark, all from `shell.header.link`. Only `display: block` differs. It had kept its own size and spacing, so the two never quite matched and the mark on the current page read differently in each.
+- A link to the site root no longer marks itself on every page under it. Under a locale prefix the root is `/en`, not `/`, and `/en` is a prefix of `/en/znacka`, so Home stayed lit alongside the real page. Rootness is decided on the locale-stripped form, and a root link is marked only on the root itself.
+
 ## 19.6.1
 
 - A page whose client tree carries no `RenderCurrentUrlProvider` hydrates against the address rather than against nothing. It was resolving to the site root during hydration, so the header marked the home link while the server had marked the real page, and React reported an attribute mismatch it does not patch up. A provided url still wins, since that is what the server rendered against.
