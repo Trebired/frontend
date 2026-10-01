@@ -89,6 +89,10 @@ async function verifyBackdropReading(rootDir, api, styles) {
   );
   assert.ok(source.includes("isShown"), "an element with no box is left alone rather than given a state it never measured");
   assert.ok(
+    source.includes("transitionend"),
+    "a pass runs once a transition settles, or a menu that opens by animating its height is measured while it has no height",
+  );
+  assert.ok(
     source.includes("shownSource"),
     "a mirror follows the first source that is actually shown, or the menu copies a link the phone has hidden",
   );

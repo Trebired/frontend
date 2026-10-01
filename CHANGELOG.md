@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.1.1
+
+- A part that arrives by animating into place is read once it has settled. A menu opens by growing its height, so at the moment the pass ran its links had no height and were left alone, and nothing afterwards asked again: the links in an open menu kept whatever colour they inherited instead of each being read where it landed.
+
 ## 21.1.0
 
 - A colour that reads against whatever is behind it, for anything to use: `--tbf-adaptive`, with `--tbf-adaptive-muted` and `--tbf-adaptive-border` beside it. It is declared on every element, so it resolves against the surface that element is actually on, whether that surface was themed by the page or worked out by the measurement. An outlined or ghost button now falls back to it, which is what was wrong with a bordered button on a dark hero: its outline came out light and its label stayed the dark colour chosen for the rest of the page, so the words all but disappeared.

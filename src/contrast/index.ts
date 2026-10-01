@@ -179,11 +179,15 @@ function bindContrast(root: ParentNode = document): ContrastBinding {
   });
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule, { passive: true });
+  document.addEventListener("transitionend", schedule, true);
+  document.addEventListener("animationend", schedule, true);
   return () => {
     if (frame) window.cancelAnimationFrame(frame);
     observer.disconnect();
     window.removeEventListener("scroll", schedule);
     window.removeEventListener("resize", schedule);
+    document.removeEventListener("transitionend", schedule, true);
+    document.removeEventListener("animationend", schedule, true);
   };
 }
 
