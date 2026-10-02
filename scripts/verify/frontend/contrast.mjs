@@ -95,6 +95,16 @@ async function verifyAdaptiveColour(rootDir) {
   for (const token of ["adaptive", "adaptive-muted", "adaptive-border"]) {
     assert.ok(adaptive.includes(`ns.css-var("${token}")`), `${token} is part of the adaptive colour a component can read`);
   }
+  const popoverStyles = await fs.readFile(path.join(rootDir, "dist", "popover", "styles", "index.scss"), "utf8");
+  for (const token of ["adaptive", "adaptive-muted", "adaptive-border"]) {
+    assert.ok(popoverStyles.includes(`ns.css-var("${token}")`), `a popover reads ${token}, so it suits wherever it opens`);
+  }
+  const dropdown = await fs.readFile(
+    path.join(rootDir, "dist", "inputs", "advanced", "dropdown", "styles", "portaled.scss"),
+    "utf8",
+  );
+  assert.ok(dropdown.includes('css-var("adaptive-muted")'), "a dropdown does the same rather than reaching for a fixed colour");
+
   const controls = await fs.readFile(path.join(rootDir, "dist", "primitives", "styles", "_controls.scss"), "utf8");
   assert.match(
     controls,

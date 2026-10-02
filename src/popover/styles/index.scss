@@ -9,9 +9,12 @@
   min-width: var(#{ns.css-var("overlay-popover-panel-min-w")}, 220px);
   max-width: min(320px, calc(100vw - 24px));
   padding: var(#{ns.css-var("overlay-popover-panel-padding")}, 8px);
-  border: var(#{ns.css-var("overlay-popover-panel-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
+  border: var(
+    #{ns.css-var("overlay-popover-panel-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+  );
   border-radius: var(#{ns.css-var("overlay-popover-panel-radius")}, var(#{ns.css-var("radius")}, 0));
-  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("text")}, #000));
+  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("adaptive")}, currentColor));
   background: var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("surface")}, #fff));
   box-shadow: var(#{ns.css-var("overlay-popover-panel-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
   visibility: hidden;
@@ -54,7 +57,7 @@
   overflow: hidden;
   border: var(#{ns.css-var("overlay-popover-item-root-border")}, 0);
   border-radius: var(#{ns.css-var("overlay-popover-item-root-radius")}, var(#{ns.css-var("radius-sm")}, var(#{ns.css-var("radius")}, 0)));
-  color: var(#{ns.css-var("overlay-popover-item-root-color")}, var(#{ns.css-var("text-muted")}, #666));
+  color: var(#{ns.css-var("overlay-popover-item-root-color")}, var(#{ns.css-var("adaptive-muted")}, currentColor));
   background: var(#{ns.css-var("overlay-popover-item-root-bg")}, transparent);
   cursor: pointer;
   font: inherit;
@@ -84,7 +87,7 @@
 #{ns.data("popover")} > :where(a, button):hover,
 
 #{ns.data("popover")} > :where(a, button):focus {
-  color: var(#{ns.css-var("overlay-popover-item-state-hover-color")}, var(#{ns.css-var("text")}, #000));
+  color: var(#{ns.css-var("overlay-popover-item-state-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
   background: var(#{ns.css-var("overlay-popover-item-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, #f4f4f4));
 }
 

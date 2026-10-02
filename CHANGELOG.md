@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.4.0
+
+- Popovers and dropdown menus take the adaptive colour for their text, their muted text and their rules, so they suit wherever they open rather than wherever they were configured. The dropdown was reaching past the frontend for a site's own `--text-color-muted` and `--border-surface-1`, which are fixed at the root, so a menu opening over a dark surface kept the colours chosen for a light page.
+
 ## 21.3.0
 
 - A popover takes the colours of wherever it opens. Its panel came with a background of `transparent`, a border of `currentColor` and a colour of `currentColor` written into the defaults, which are fixed at the root: a panel could not read its surroundings, and a site that did not override all three got a see-through menu. The defaults are gone, so the panel falls back to the surface colour, the text colour and the border colour as read where the panel actually is.
