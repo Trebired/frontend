@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.6.0
+
+- A `BrandCanvas` takes an `action`, drawn beside its spec in the caption row, so a brand page can offer the mark it is showing for download without writing its own layout for the control.
+- A `Button` that carries an `href` accepts `download`, which it already forwarded to the link it renders but did not admit in its types. A button that points at a file can now say that the file should be saved rather than opened.
+
 ## 21.5.0
 
 - Two shapes a page can be built from, for sections that should not all look alike. `PinnedSplit` holds one column still while the other scrolls past it, which suits a heading that belongs to a long list. `TrackList` and `TrackItem` draw an ordered list along a continuous rule with each step marked on the line, so a process reads as a sequence rather than as another grid of boxes.

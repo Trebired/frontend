@@ -23,6 +23,16 @@ async function verifySectionSurfaces(context) {
   assert.match(track, /tbf-track__mark[^>]*>01</u, "each step marks the line with its own label");
   assert.match(track, /aria-hidden="true"[^>]*tbf-track__mark/u, "the mark is decoration, so it is not read out twice");
 
+  const saving = renderToStaticMarkup(
+    h(react.Button, { download: "logo.svg", href: "/logo.svg", size: "sm" }, "Download"),
+  );
+  assert.match(saving, /download="logo\.svg"/u, "a button that links to a file can offer it for saving");
+
+  const canvas = renderToStaticMarkup(
+    h(react.BrandCanvas, { action: h("button", null, "Download"), caption: "Light", spec: "clear 1rem" }),
+  );
+  assert.match(canvas, /brand-canvas__caption-end/u, "a brand canvas carries an action beside its spec");
+
   const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
   assert.match(styles, /position: sticky/u, "the pinned column actually pins");
   for (const token of ["adaptive", "adaptive-border"]) {

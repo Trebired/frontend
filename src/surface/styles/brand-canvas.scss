@@ -100,6 +100,13 @@
   font-size: var(#{ns.css-var("surf-brand-canvas-caption-font-size")}, 0.8rem);
 }
 
+#{ns.element-class("brand-canvas", "caption-end")} {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(#{ns.css-var("surf-brand-canvas-caption-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
+  align-items: center;
+}
+
 #{ns.element-class("brand-canvas", "spec")} {
   color: var(#{ns.css-var("surf-brand-canvas-spec-color")}, var(#{ns.css-var("text-muted")}, #666));
   font-family: var(#{ns.css-var("font-mono")}, monospace);

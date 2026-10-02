@@ -13,6 +13,7 @@ import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs
 import { HeadingScope } from "#7ly3b59upz0n";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  download?: boolean | string;
   href?: string;
   rel?: string;
   size?: SurfaceSize;
@@ -53,6 +54,7 @@ type TrackItemProps = HTMLAttributes<HTMLLIElement> & {
 };
 
 type BrandCanvasProps = HTMLAttributes<HTMLElement> & {
+  action?: ReactNode;
   caption?: ReactNode;
   clearSpace?: string;
   guides?: boolean;
@@ -181,7 +183,7 @@ function Frame(props: FrameProps) {
 }
 
 function BrandCanvas(props: BrandCanvasProps) {
-  const { caption, children, className, clearSpace, guides = true, height, spec, style, tone, ...rest } = props;
+  const { action, caption, children, className, clearSpace, guides = true, height, spec, style, tone, ...rest } = props;
   const stageStyle: Record<string, string> = {};
   if (clearSpace) stageStyle[`--${FRONTEND_PREFIX}-surf-brand-canvas-clear-space`] = clearSpace;
   if (height) stageStyle[`--${FRONTEND_PREFIX}-surf-brand-canvas-stage-min-h`] = height;
@@ -213,10 +215,15 @@ function BrandCanvas(props: BrandCanvasProps) {
         </>
       ) : null}
     </div>
-    {caption || spec ? (
+    {caption || spec || action ? (
         <figcaption className={frontendElementClass("brand-canvas", "caption")}>
         {caption ? <span>{caption}</span> : null}
-        {spec ? <span className={frontendElementClass("brand-canvas", "spec")}>{spec}</span> : null}
+        {spec || action ? (
+            <span className={frontendElementClass("brand-canvas", "caption-end")}>
+            {spec ? <span className={frontendElementClass("brand-canvas", "spec")}>{spec}</span> : null}
+            {action}
+            </span>
+          ) : null}
         </figcaption>
       ) : null}
     </figure>
