@@ -30,15 +30,13 @@ const DEFAULT_ITEMS = [
   `${headerPart("menu")} ${headerPart("link")}`,
   `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
   `${headerPart("menu-footer")} ${cls("btn")}`,
+  cls("popover"),
+  `.${frontendElementClass("dropdown", "menu")}`,
 ].join(",");
 
 const BAR_SAMPLE = `${headerPart("bar")} ${cls("site-header-brand-button")},${headerPart("toggle")}`;
 
-const DEFAULT_SURFACES = [
-  cls("popover"),
-  `.${frontendElementClass("dropdown", "menu")}`,
-  cls("site-footer"),
-].join(",");
+const DEFAULT_SURFACES = [cls("site-footer")].join(",");
 
 const DEFAULT_MIRRORS: Array<[string, string]> = [];
 

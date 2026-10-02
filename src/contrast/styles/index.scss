@@ -6,6 +6,8 @@ $plain:
 "text",
 "text-muted",
 "border",
+"surface",
+"surface-muted",
 "ui-btn-variants-primary-bg",
 "ui-btn-variants-primary-color",
 "ui-btn-variants-primary-state-hover-bg",
@@ -42,6 +44,14 @@ $inherited:
   #{ns.css-var("border")}: var(
     #{ns.css-var("contrast-dark-border")},
     color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 42%, transparent)
+  );
+  #{ns.css-var("surface")}: var(
+    #{ns.css-var("contrast-dark-surface")},
+    color-mix(in srgb, var(#{ns.css-var("contrast-ink")}) 94%, var(#{ns.css-var("page")}, #fff))
+  );
+  #{ns.css-var("surface-muted")}: var(
+    #{ns.css-var("contrast-dark-surface-muted")},
+    color-mix(in srgb, var(#{ns.css-var("contrast-ink")}) 86%, var(#{ns.css-var("page")}, #fff))
   );
   #{ns.css-var("shell-header-link-color")}: var(#{ns.css-var("text-muted")});
   #{ns.css-var("shell-header-link-hover-color")}: var(#{ns.css-var("text")});

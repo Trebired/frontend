@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.7.0
+
+- A popover or a dropdown menu now takes its colour from whatever it opens over. It was read as a surface, which means it was judged by its own fill: an opaque white panel always answered "light", so it stayed white over a dark hero while the header above it had already turned. It is read as an item instead, by what sits behind it.
+- The dark state carries the surface colours with it. `--tbf-surface` and `--tbf-surface-muted` were left at their root values, so a panel that had turned its text light kept painting a light background underneath it. Both now flip with the state and are restored by the light one, and `--tbf-contrast-dark-surface` and `--tbf-contrast-dark-surface-muted` set what the dark pair should be.
+
 ## 21.6.0
 
 - A `BrandCanvas` takes an `action`, drawn beside its spec in the caption row, so a brand page can offer the mark it is showing for download without writing its own layout for the control.
