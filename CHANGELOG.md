@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.9.0
+
+- A tooltip takes its look from the site's theme. Its panel shipped a background of `transparent`, a border of `currentColor`, a colour of `currentColor`, a font family of `sans-serif` and a radius of `0` written into the defaults, which are fixed at the root: the stylesheet's own fallbacks to the surface, border, text, sans font and small radius could never apply, so a site with a full theme still got a see-through, square, hard-edged box in a generic font. Those five are gone and only the tooltip's own sizing stays.
+- A tooltip without a configured shadow gets a soft one rather than `0 0 0 1px #000`, which drew a hard ring instead of a shadow.
+
 ## 21.8.0
 
 - A hairline panel is outlined by default. Its border was `0` and the colour showing through its gaps was `currentColor` at 10%, which on a surface close to the text colour left almost nothing to see: the rules between cells were faint and the panel had no edge at all, so the rounded corners never read. Both now come from the adaptive border colour, so the panel is a rounded outlined grid wherever it sits, and `--tbf-surf-hairline-root-border` and `--tbf-surf-hairline-root-bg` still override either.

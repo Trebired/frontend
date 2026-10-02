@@ -40,6 +40,15 @@ async function verifySectionSurfaces(context) {
     "a hairline panel is outlined by default",
   );
 
+  const tooltip = await fs.readFile(new URL("../../../src/config/default/component-tokens.ts", import.meta.url), "utf8");
+  const tooltipPanel = tooltip.slice(tooltip.indexOf("tooltip: Object.freeze"), tooltip.indexOf("primitives: Object.freeze"));
+  for (const frozen of ["background:", "border:", "color:", "fontFamily:", "radius:", "shadow:"]) {
+    assert.ok(
+      !tooltipPanel.includes(frozen),
+      `a tooltip takes ${frozen} from the theme, not from a default frozen at the root`,
+    );
+  }
+
   const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
   assert.match(styles, /position: sticky/u, "the pinned column actually pins");
   for (const token of ["adaptive", "adaptive-border"]) {

@@ -8,10 +8,13 @@
   padding: var(#{ns.css-var("overlay-tooltip-panel-padding")}, 7px 9px);
   border: var(#{ns.css-var("overlay-tooltip-panel-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
   border-radius: var(#{ns.css-var("overlay-tooltip-panel-radius")}, var(#{ns.css-var("radius-sm")}, 0));
-  box-shadow: var(#{ns.css-var("overlay-tooltip-panel-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
+  box-shadow: var(
+    #{ns.css-var("overlay-tooltip-panel-shadow")},
+    var(#{ns.css-var("shadow")}, 0 8px 24px rgba(0, 0, 0, 0.12))
+  );
   color: var(#{ns.css-var("overlay-tooltip-panel-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("overlay-tooltip-panel-bg")}, var(#{ns.css-var("surface")}, #fff));
-  font-family: var(#{ns.css-var("overlay-tooltip-panel-font-family")}, var(#{ns.css-var("font-sans")}, sans-serif));
+  font-family: var(#{ns.css-var("overlay-tooltip-panel-font-family")}, var(#{ns.css-var("font-sans")}, inherit));
   font-size: var(#{ns.css-var("overlay-tooltip-panel-font-size")}, 12px);
   line-height: var(#{ns.css-var("overlay-tooltip-panel-line-h")}, 1.3);
   opacity: 0;
