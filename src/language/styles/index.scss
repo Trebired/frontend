@@ -66,9 +66,9 @@
 #{ns.class("locale-switch-popover")} #{ns.class("locale-option")}#{ns.data("locale-current", "true")} {
   background: var(
     #{ns.css-var("shell-language-option-state-current-bg")},
-    var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, var(--background-surface-2, transparent))
+    var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, var(#{ns.css-var("surface-muted")}, transparent))
   );
-  color: var(#{ns.css-var("shell-language-option-state-current-color")}, var(--text-color));
+  color: var(#{ns.css-var("shell-language-option-state-current-color")}, var(#{ns.css-var("adaptive")}, currentColor));
 }
 
 #{ns.class("locale-code")} {
@@ -79,7 +79,7 @@
   min-width: 28px;
   height: 20px;
   padding: 0 5px;
-  border: var(--border-width, 1px) solid color-mix(in srgb, currentColor 22%, transparent);
+  border: var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 22%, transparent);
   border-radius: var(--radius-sm, 3px);
   color: color-mix(in srgb, currentColor 78%, transparent);
   font-size: 11px;
@@ -91,9 +91,9 @@
   --CountryFlagIcon-height: 16px;
 
   flex: 0 0 auto;
-  border: var(--border-width, 1px) solid var(--border-surface-1);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
   border-radius: var(--radius-sm, 3px);
-  background-color: var(--background-surface-2, transparent);
+  background-color: var(#{ns.css-var("surface-muted")}, transparent);
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.02) inset;
 }
 
@@ -103,7 +103,7 @@
   width: 100%;
   height: 4px;
   border-radius: 999px;
-  background: var(--background-surface-2, transparent);
+  background: var(#{ns.css-var("surface-muted")}, transparent);
 }
 
 #{ns.class("source-language-share-bar")} {
@@ -122,7 +122,7 @@
   width: 100%;
   height: 8px;
   border-radius: 999px;
-  background: var(--background-surface-2, transparent);
+  background: var(#{ns.css-var("surface-muted")}, transparent);
 }
 
 #{ns.class("source-language-distribution-segment")} {

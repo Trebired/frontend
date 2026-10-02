@@ -21,11 +21,11 @@
   padding: var(#{ns.css-var("feedback-flash-container-padding")}, 15px);
   border: var(
     #{ns.css-var("feedback-flash-container-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("feedback-flash-container-border")}, var(--border-surface-1, currentColor))
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("feedback-flash-container-border")}, var(#{ns.css-var("adaptive-border")}, currentColor))
   );
   border-radius: var(#{ns.css-var("feedback-flash-container-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
-  color: var(#{ns.css-var("feedback-flash-container-color")}, var(--text-color, currentColor));
-  background: var(#{ns.css-var("feedback-flash-container-bg")}, var(--background-surface-1, transparent));
+  color: var(#{ns.css-var("feedback-flash-container-color")}, var(#{ns.css-var("adaptive")}, currentColor));
+  background: var(#{ns.css-var("feedback-flash-container-bg")}, var(#{ns.css-var("surface")}, transparent));
   box-shadow: var(#{ns.css-var("feedback-flash-container-shadow")}, var(#{ns.css-var("shadow")}, none));
   opacity: 0;
   overflow: hidden;
@@ -100,7 +100,7 @@
 }
 
 #{ns.element-class("flash", "description")} {
-  color: var(#{ns.css-var("feedback-flash-slot-description-color")}, var(--text-color-muted, currentColor));
+  color: var(#{ns.css-var("feedback-flash-slot-description-color")}, var(#{ns.css-var("adaptive-muted")}, currentColor));
   font-size: var(#{ns.css-var("feedback-flash-slot-description-font-size")}, 0.92rem);
   text-shadow: none;
 }

@@ -33,8 +33,8 @@
     right: var(--dd-arrow-right);
     top: calc(var(--dd-h) / 2);
     transform: translateY(-3px);
-    border: calc(var(--border-width) * 6) solid transparent;
-    border-top-color: var(#{ns.css-var("ui-dropdown-arrow-color")}, var(--text-color-muted, currentColor));
+    border: calc(var(#{ns.css-var("border-width")}, 1px) * 6) solid transparent;
+    border-top-color: var(#{ns.css-var("ui-dropdown-arrow-color")}, var(#{ns.css-var("adaptive-muted")}, currentColor));
     pointer-events: none;
   }
 
@@ -70,8 +70,8 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    background: var(#{ns.css-var("ui-dropdown-menu-bg")}, var(--background-surface-1, transparent));
-    border: var(--border-width) solid var(--border-surface-1);
+    background: var(#{ns.css-var("ui-dropdown-menu-bg")}, var(#{ns.css-var("surface")}, transparent));
+    border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
     border-radius: var(--radius-lg);
     margin: 0;
     padding: 0;
@@ -131,14 +131,14 @@
     pointer-events: none;
     overflow: hidden;
     z-index: 1;
-    color: var(--text-color);
+    color: var(#{ns.css-var("adaptive")}, currentColor);
     font-size: 13px;
     line-height: 1.4;
   }
 
   #{ns.class("dropdown-top")} {
     padding: 10px;
-    border-bottom: var(--border-width) solid var(--border-surface-1);
+    border-bottom: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
 
     #{ns.class("input")} {
       width: 100%;
@@ -187,7 +187,7 @@
       user-select: none;
 
       &:hover {
-        background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(--background-surface-2, transparent));
+        background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, transparent));
       }
 
       &#{ns.data("dropdown-selected", "true")} {
@@ -195,26 +195,26 @@
           #{ns.css-var("ui-dropdown-option-state-selected-bg")},
           color-mix(
             in srgb,
-            var(--background-surface-2, transparent) 70%,
+            var(#{ns.css-var("surface-muted")}, transparent) 70%,
             var(--accent, var(#{ns.css-var("focus")}, currentColor)) 30%
           )
         );
       }
 
       &#{ns.data("dropdown-placeholder-option")} {
-        color: var(--text-color-muted);
+        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
         cursor: default;
       }
 
       &#{ns.data("dropdown-unselect", "true")} {
-        color: var(--text-color-muted);
+        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
       }
 
       &#{ns.class("dropdown-section")} {
         height: auto;
         min-height: 0;
         padding: 9px 10px 5px;
-        color: var(--text-color-muted);
+        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
         cursor: default;
         font-size: 11px;
         font-weight: 700;

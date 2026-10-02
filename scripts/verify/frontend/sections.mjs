@@ -57,6 +57,15 @@ async function verifySectionSurfaces(context) {
     );
   }
 
+  const chrome = ["language", "actions", "surface", "flash"];
+  for (const area of chrome) {
+    const sheet = await fs.readFile(new URL(`../../../src/${area}/styles/index.scss`, import.meta.url), "utf8");
+    assert.ok(
+      !/var\(--(text-color|border-surface-[12]|background-surface-[12])\b/u.test(sheet),
+      `${area} reads its colours through the frontend namespace, so they follow the contrast state`,
+    );
+  }
+
   const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
   assert.match(styles, /position: sticky/u, "the pinned column actually pins");
   for (const token of ["adaptive", "adaptive-border"]) {

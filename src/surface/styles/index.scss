@@ -19,13 +19,13 @@
   padding-block: var(#{ns.css-var("surf-btn-root-py")}, var(#{ns.css-var("ui-btn-root-py")}, 0));
   border: var(
     #{ns.css-var("surf-btn-root-border")},
-    var(#{ns.css-var("ui-btn-root-border")}, var(--border-width) solid var(--border-surface-2))
+    var(#{ns.css-var("ui-btn-root-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
   );
   border-radius: var(
     #{ns.css-var("surf-btn-root-radius")},
     var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)))
   );
-  color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(--text-color)));
+  color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor)));
   background: var(#{ns.css-var("surf-btn-root-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
   transition: var(
     #{ns.css-var("surf-btn-root-transition")},
@@ -193,7 +193,7 @@
     border-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
     color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
   );
-  border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
+  border: var(#{ns.css-var("surf-card-root-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));

@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.11.0
+
+- The chrome and the overlays read their colours through the frontend's own namespace. Buttons, popover and dropdown items, the locale switcher and flash messages fell back to `--text-color`, `--border-surface-1`, `--background-surface-2` and their neighbours, which a site sets once at the root. The contrast system rewrites the namespaced tokens on the element, not at the root, so anything reading the bare names stayed at the page's colour whatever it was placed on: the current locale in a popover opened over a dark hero was painted in the light page's ink on a dark panel, and could barely be read.
+- Those fallbacks now go through the adaptive colour, the adaptive border and the surface tokens, so an overlay matches the header above it.
+
 ## 21.10.0
 
 - A button takes its border and its text colour from the theme. Both were written into the defaults as `currentColor`, which are fixed at the root, so a button's outline was always as strong as its label and no site could soften it. They now fall through to the adaptive border and the adaptive colour, which also means a button suits the surface it sits on rather than the one it was configured for.
