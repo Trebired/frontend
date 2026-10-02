@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.5.0
+
+- Two shapes a page can be built from, for sections that should not all look alike. `PinnedSplit` holds one column still while the other scrolls past it, which suits a heading that belongs to a long list. `TrackList` and `TrackItem` draw an ordered list along a continuous rule with each step marked on the line, so a process reads as a sequence rather than as another grid of boxes.
+- Both take their colours from the adaptive colour, so they suit the surface they are placed on.
+
 ## 21.4.0
 
 - Popovers and dropdown menus take the adaptive colour for their text, their muted text and their rules, so they suit wherever they open rather than wherever they were configured. The dropdown was reaching past the frontend for a site's own `--text-color-muted` and `--border-surface-1`, which are fixed at the root, so a menu opening over a dark surface kept the colours chosen for a light page.

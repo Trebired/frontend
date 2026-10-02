@@ -37,6 +37,21 @@ type FrameProps = HTMLAttributes<HTMLDivElement> & {
   ratio?: string;
 };
 
+type PinnedSplitProps = HTMLAttributes<HTMLDivElement> & {
+  aside: ReactNode;
+  asideSide?: "end" | "start";
+  asideWidth?: string;
+  top?: string;
+};
+
+type TrackListProps = HTMLAttributes<HTMLOListElement> & {
+  as?: "ol" | "ul";
+};
+
+type TrackItemProps = HTMLAttributes<HTMLLIElement> & {
+  marker?: ReactNode;
+};
+
 type BrandCanvasProps = HTMLAttributes<HTMLElement> & {
   caption?: ReactNode;
   clearSpace?: string;
@@ -256,6 +271,45 @@ function CardFooter(props: CardSectionProps) {
   );
 }
 
+function PinnedSplit(props: PinnedSplitProps) {
+  const { aside, asideSide = "start", asideWidth, children, className, style, top, ...rest } = props;
+  const vars: Record<string, string> = {};
+  if (asideWidth) vars[`--${FRONTEND_PREFIX}-surf-pinned-aside-width`] = asideWidth;
+  if (top) vars[`--${FRONTEND_PREFIX}-surf-pinned-aside-top`] = top;
+  return (
+    <div
+    {...rest}
+    className={classNames(frontendClassName("pinned-split"), className)}
+    style={Object.keys(vars).length > 0 ? { ...vars, ...style } : style}
+    {...frontendDataAttrs({ "pinned-aside": asideSide })}
+    >
+    <div className={frontendElementClass("pinned-split", "aside")}>{aside}</div>
+    <div className={frontendElementClass("pinned-split", "body")}>{children}</div>
+    </div>
+  );
+}
+
+function TrackList(props: TrackListProps) {
+  const { as: Tag = "ol", children, className, ...rest } = props;
+  return (
+    <Tag {...rest} className={classNames(frontendClassName("track"), className)}>
+    {children}
+    </Tag>
+  );
+}
+
+function TrackItem(props: TrackItemProps) {
+  const { children, className, marker, ...rest } = props;
+  return (
+    <li {...rest} className={classNames(frontendElementClass("track", "item"), className)}>
+    <span aria-hidden="true" className={frontendElementClass("track", "mark")}>
+    {marker}
+    </span>
+    <div className={frontendElementClass("track", "body")}>{children}</div>
+    </li>
+  );
+}
+
 function HairlinePanel(props: HairlinePanelProps) {
   const { as: Tag = "div", children, className, min, style, ...rest } = props;
   const minStyle = min ? { [`--${FRONTEND_PREFIX}-surf-hairline-root-min`]: min } : undefined;
@@ -405,7 +459,10 @@ export {
   HairlinePanel,
   IconTile,
   PageBand,
+  PinnedSplit,
   Tag,
+  TrackItem,
+  TrackList,
 };
 export type {
   AccentRuleProps,
@@ -422,5 +479,8 @@ export type {
   HairlinePanelProps,
   IconTileProps,
   PageBandProps,
+  PinnedSplitProps,
   TagProps,
+  TrackItemProps,
+  TrackListProps,
 };

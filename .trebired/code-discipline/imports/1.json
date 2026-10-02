@@ -552,6 +552,7 @@
   "#vbehzu06jsrg": "./src/logs/client/live_cap.ts",
   "#vbkfq413o3u7": "./src/fullscreen/components/index.tsx",
   "#vcvwikjv71md": "./scripts/verify/frontend/source.mjs",
+  "#vgikiuu502s9": "./src/surface/styles/track.scss",
   "#vnoeqwsaz83t": "./src/inputs/advanced/dropdown/styles/base.scss",
   "#vo5ds2njj5cm": "./src/styles/utils/spacing/block.scss",
   "#vu2zckbtt5gr": "./src/graph/advanced/runtime/boot.tsx",

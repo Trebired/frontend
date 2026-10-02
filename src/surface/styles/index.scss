@@ -3,6 +3,7 @@
 @use "./brand-canvas";
 @use "./hairline";
 @use "./layout";
+@use "./track";
 #{ns.class("button")} {
   #{ns.css-var("surf-btn-current-icon")}: var(
     #{ns.css-var("surf-btn-slot-icon")},

@@ -1,0 +1,86 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("pinned-split")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-pinned-root-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
+  align-items: start;
+}
+
+#{ns.element-class("pinned-split", "aside")} {
+  min-width: 0;
+}
+
+#{ns.element-class("pinned-split", "body")} {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  #{ns.class("pinned-split")} {
+    grid-template-columns: var(#{ns.css-var("surf-pinned-aside-width")}, minmax(0, 20rem)) minmax(0, 1fr);
+  }
+
+  #{ns.element-class("pinned-split", "aside")} {
+    position: sticky;
+    top: var(#{ns.css-var("surf-pinned-aside-top")}, 7rem);
+  }
+
+  #{ns.data("pinned-aside", "end")} {
+    grid-template-columns: minmax(0, 1fr) var(#{ns.css-var("surf-pinned-aside-width")}, minmax(0, 20rem));
+  }
+
+  #{ns.data("pinned-aside", "end")} #{ns.element-class("pinned-split", "aside")} {
+    order: 2;
+  }
+}
+
+#{ns.class("track")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-track-root-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#{ns.element-class("track", "item")} {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem) minmax(0, 1fr);
+  gap: var(#{ns.css-var("surf-track-item-gap")}, var(#{ns.css-var("gap-md")}, 24px));
+  align-items: start;
+}
+
+#{ns.element-class("track", "item")}::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(#{ns.css-var("surf-track-mark-size")}, 2.5rem) / 2);
+  width: var(#{ns.css-var("border-width")}, 1px);
+  background: var(#{ns.css-var("adaptive-border")}, currentColor);
+  content: "";
+  translate: -50% 0;
+}
+
+#{ns.element-class("track", "item")}:last-child::before {
+  inset-block-end: auto;
+  height: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem);
+}
+
+#{ns.element-class("track", "mark")} {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem);
+  height: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem);
+  place-items: center;
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
+  border-radius: 50%;
+  color: var(#{ns.css-var("adaptive")}, currentColor);
+  background: var(#{ns.css-var("page")}, canvas);
+  font-size: var(#{ns.css-var("surf-track-mark-font-size")}, 0.8rem);
+}
+
+#{ns.element-class("track", "body")} {
+  display: grid;
+  gap: var(#{ns.css-var("surf-track-body-gap")}, var(#{ns.css-var("gap-xs")}, 8px));
+  min-width: 0;
+  padding-block-end: var(#{ns.css-var("surf-track-body-pb")}, var(#{ns.css-var("gap-sm")}, 12px));
+}
