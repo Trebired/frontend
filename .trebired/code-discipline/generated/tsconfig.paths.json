@@ -733,6 +733,9 @@
       "#dekjjocqw9a9": [
         "../../../src/surface/styles/blocks.scss"
       ],
+      "#dhm2bwxenzs7": [
+        "../../../scripts/verify/frontend/sections.mjs"
+      ],
       "#dlkmvw22tjsb": [
         "../../../src/layout/styles/index.scss"
       ],

@@ -243,6 +243,7 @@
   "#d9s0ly9v6q0k": "./src/logs/client/debug.ts",
   "#dd4ujr8jaktl": "./src/config/fonts.ts",
   "#dekjjocqw9a9": "./src/surface/styles/blocks.scss",
+  "#dhm2bwxenzs7": "./scripts/verify/frontend/sections.mjs",
   "#dlkmvw22tjsb": "./src/layout/styles/index.scss",
   "#dlkq0izqs981": "./scripts/prepare-dist.mjs",
   "#dnv7lnsdwdii": "./src/inputs/advanced/tabs/client.ts",
