@@ -8,14 +8,17 @@
   );
   gap: var(#{ns.css-var("surf-hairline-root-gap")}, var(--border-width, 1px));
   overflow: hidden;
-  border: var(#{ns.css-var("surf-hairline-root-border")}, 0);
+  border: var(
+    #{ns.css-var("surf-hairline-root-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+  );
   border-radius: var(
     #{ns.css-var("surf-hairline-root-radius")},
     var(--radius-lg, var(#{ns.css-var("radius")}, 0))
   );
   background: var(
     #{ns.css-var("surf-hairline-root-bg")},
-    color-mix(in srgb, currentColor 10%, transparent)
+    var(#{ns.css-var("adaptive-border")}, color-mix(in srgb, currentColor 10%, transparent))
   );
   list-style: none;
 }

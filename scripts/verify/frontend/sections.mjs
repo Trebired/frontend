@@ -33,6 +33,13 @@ async function verifySectionSurfaces(context) {
   );
   assert.match(canvas, /brand-canvas__caption-end/u, "a brand canvas carries an action beside its spec");
 
+  const hairline = await fs.readFile(new URL("../../../src/surface/styles/hairline.scss", import.meta.url), "utf8");
+  assert.match(
+    hairline,
+    /surf-hairline-root-border"\)\},\s*\n\s*var\(#\{ns\.css-var\("border-width"\)\}, 1px\) solid/u,
+    "a hairline panel is outlined by default",
+  );
+
   const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
   assert.match(styles, /position: sticky/u, "the pinned column actually pins");
   for (const token of ["adaptive", "adaptive-border"]) {

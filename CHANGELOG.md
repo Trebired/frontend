@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.8.0
+
+- A hairline panel is outlined by default. Its border was `0` and the colour showing through its gaps was `currentColor` at 10%, which on a surface close to the text colour left almost nothing to see: the rules between cells were faint and the panel had no edge at all, so the rounded corners never read. Both now come from the adaptive border colour, so the panel is a rounded outlined grid wherever it sits, and `--tbf-surf-hairline-root-border` and `--tbf-surf-hairline-root-bg` still override either.
+
 ## 21.7.0
 
 - A popover or a dropdown menu now takes its colour from whatever it opens over. It was read as a surface, which means it was judged by its own fill: an opaque white panel always answered "light", so it stayed white over a dark hero while the header above it had already turned. It is read as an item instead, by what sits behind it.
