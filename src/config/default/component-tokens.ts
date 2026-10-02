@@ -102,8 +102,6 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         button: Object.freeze({
             root: {
               background: "transparent",
-              border: "1px solid currentColor",
-              color: "currentColor",
               fontSize: "12px",
               fontWeight: "600",
               gap: "8px",

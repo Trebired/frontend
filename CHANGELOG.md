@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.10.0
+
+- A button takes its border and its text colour from the theme. Both were written into the defaults as `currentColor`, which are fixed at the root, so a button's outline was always as strong as its label and no site could soften it. They now fall through to the adaptive border and the adaptive colour, which also means a button suits the surface it sits on rather than the one it was configured for.
+- The fallbacks behind those two no longer reach for `--border-width`, `--border-surface-2` and `--text-color`, which are outside the frontend's own namespace and undefined on most sites.
+
 ## 21.9.0
 
 - A tooltip takes its look from the site's theme. Its panel shipped a background of `transparent`, a border of `currentColor`, a colour of `currentColor`, a font family of `sans-serif` and a radius of `0` written into the defaults, which are fixed at the root: the stylesheet's own fallbacks to the surface, border, text, sans font and small radius could never apply, so a site with a full theme still got a see-through, square, hard-edged box in a generic font. Those five are gone and only the tooltip's own sizing stays.

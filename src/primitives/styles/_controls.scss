@@ -16,9 +16,12 @@
   padding: var(#{ns.css-var("ui-btn-root-padding")}, 0 12px);
   padding-block: var(#{ns.css-var("ui-btn-root-py")}, 0);
   border-radius: var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
-  border: var(#{ns.css-var("ui-btn-root-border")}, var(--border-width) solid var(--border-surface-2));
+  border: var(
+    #{ns.css-var("ui-btn-root-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+  );
   background: var(#{ns.css-var("ui-btn-root-bg")}, transparent);
-  color: var(#{ns.css-var("ui-btn-root-color")}, var(--text-color));
+  color: var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;

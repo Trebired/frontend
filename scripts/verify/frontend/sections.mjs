@@ -49,6 +49,14 @@ async function verifySectionSurfaces(context) {
     );
   }
 
+  const buttonRoot = tooltip.slice(tooltip.indexOf("button: Object.freeze"), tooltip.indexOf("sizes: {", tooltip.indexOf("button: Object.freeze")));
+  for (const frozen of ["border:", "color:"]) {
+    assert.ok(
+      !buttonRoot.includes(frozen),
+      `a button takes ${frozen} from the theme, not from a default frozen at the root`,
+    );
+  }
+
   const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
   assert.match(styles, /position: sticky/u, "the pinned column actually pins");
   for (const token of ["adaptive", "adaptive-border"]) {
