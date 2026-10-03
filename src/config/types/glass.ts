@@ -1,6 +1,5 @@
 type FrontendGlassConfig = {
   blur?: string;
-  border?: string;
   color?: string;
   opacity?: string;
   saturate?: string;
@@ -8,7 +7,6 @@ type FrontendGlassConfig = {
 
 type NormalizedFrontendGlassConfig = {
   blur: string;
-  border: string;
   color: string;
   opacity: string;
   saturate: string;

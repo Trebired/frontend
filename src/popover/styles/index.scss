@@ -10,11 +10,8 @@
   max-width: min(320px, calc(100vw - 24px));
   padding: var(#{ns.css-var("overlay-popover-panel-padding")}, 8px);
   border: var(
-    #{ns.css-var("glass-border")},
-    var(
-      #{ns.css-var("overlay-popover-panel-border")},
-      var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
-    )
+    #{ns.css-var("overlay-popover-panel-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
   );
   border-radius: var(#{ns.css-var("overlay-popover-panel-radius")}, var(#{ns.css-var("radius")}, 0));
   color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("adaptive")}, currentColor));

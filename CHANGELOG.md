@@ -1,5 +1,14 @@
 # Changelog
 
+## 23.0.0
+
+**Breaking:** the glass surface no longer has a border. `design.glass.border` is removed and `--tbf-glass-border` is no longer emitted.
+
+A colour does not own an edge. The glass is a fill and a blur, and nothing else; whether a header, a popover or a dropdown draws a rule around itself is that component's own decision, set by that component's own token, as it was before. Putting a border on the surface meant one value reached across four components and overrode each of their own, which is the kind of knot this surface existed to undo.
+
+- `--tbf-glass-bg` and `--tbf-glass-filter` are what a site asks for and all it gets.
+- The header, the popover and the dropdown read their own `root-border`, `panel-border` and menu border again.
+
 ## 22.1.0
 
 - The glass surface carries no border by default. A rule drawn around a pane whose whole point is that you see through it reads as a seam rather than an edge, and the header's bottom rule cut the page in two under a surface that was meant to sit on it. `design.glass.border` still takes a percentage, which draws the old rule mixed from the adaptive border colour, so a site that wants the edge can ask for it.

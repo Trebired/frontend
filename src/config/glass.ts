@@ -1,7 +1,7 @@
 import { assertPlainObject } from "./shared.js";
 import type { FrontendGlassConfig, NormalizedFrontendGlassConfig } from "./types/glass.js";
 
-const GLASS_FIELDS = ["blur", "border", "color", "opacity", "saturate"];
+const GLASS_FIELDS = ["blur", "color", "opacity", "saturate"];
 
 function glassField(source: FrontendGlassConfig, key: keyof FrontendGlassConfig, fallback: string): string {
   const value = source[key];
@@ -20,7 +20,6 @@ function normalizeGlassConfig(value: unknown): NormalizedFrontendGlassConfig | n
   }
   return {
     blur: glassField(source, "blur", "16px"),
-    border: glassField(source, "border", "none"),
     color: glassField(source, "color", "transparent"),
     opacity: glassField(source, "opacity", "12%"),
     saturate: glassField(source, "saturate", "180%"),

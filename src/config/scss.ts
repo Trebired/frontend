@@ -96,12 +96,8 @@ function glassDeclarations(config: NormalizedFrontendConfig): string[] {
   const tint = glass.color === "transparent"
   ? "transparent"
   : `color-mix(in srgb, ${glass.color} ${glass.opacity}, transparent)`;
-  const line = `var(--${config.prefix}-border-width, 1px) solid`;
-  const edge = `color-mix(in srgb, var(--${config.prefix}-adaptive-border, currentColor) ${glass.border}, transparent)`;
-  const rim = glass.border === "none" ? "0" : `${line} ${edge}`;
   return [
     `  --${config.prefix}-glass-bg: ${tint};`,
-    `  --${config.prefix}-glass-border: ${rim};`,
     `  --${config.prefix}-glass-filter: blur(${glass.blur}) saturate(${glass.saturate});`,
   ];
 }

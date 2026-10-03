@@ -73,11 +73,19 @@ async function verifyGlassSurface(importDist, packageVersion) {
     "a tooltip stays solid; its arrow repaints the panel fill and cannot carry a blur",
   );
 
+  const glassSheets = await Promise.all(glassed.map(([file]) => fs.readFile(new URL(`../../../${file}`, import.meta.url), "utf8")));
+  for (const [index, sheet] of glassSheets.entries()) {
+    assert.ok(
+      !sheet.includes("glass-border"),
+      `${glassed[index][0]} keeps its own border; the glass is a fill and a blur, not an edge`,
+    );
+  }
+
   const { generateFrontendScss } = await importDist("config");
   const solid = generateFrontendScss({ forVersion: packageVersion });
   assert.ok(!solid.includes("--tbf-glass-"), "a site that did not ask for glass gets none of its tokens");
   const glass = generateFrontendScss({ design: { glass: {} }, forVersion: packageVersion });
-  for (const token of ["--tbf-glass-bg:", "--tbf-glass-border:", "--tbf-glass-filter:"]) {
+  for (const token of ["--tbf-glass-bg:", "--tbf-glass-filter:"]) {
     assert.ok(glass.includes(token), `${token} is emitted once a site asks for glass`);
   }
 }

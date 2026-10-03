@@ -16,10 +16,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   inset-block-start: 0;
   z-index: token("root-z-index", var(#{ns.css-var("z-header")}, 920));
   color: token("root-color", var(#{ns.css-var("adaptive")}, currentColor));
-  border-block-end: var(
-    #{ns.css-var("glass-border")},
-    token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
-  );
+  border-block-end: token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
   background: var(#{ns.css-var("glass-bg")}, token("root-bg", var(#{ns.css-var("page")}, #fff)));
 }
 
@@ -203,10 +200,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   display: grid;
   grid-template-rows: 0fr;
   color: token("menu-color", var(#{ns.css-var("adaptive")}, currentColor));
-  border-block-end: var(
-    #{ns.css-var("glass-border")},
-    token("menu-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
-  );
+  border-block-end: token("menu-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
   background: var(#{ns.css-var("glass-bg")}, token("menu-bg", var(#{ns.css-var("page")}, #fff)));
   backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
   -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
