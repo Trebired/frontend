@@ -142,7 +142,10 @@
   );
   border-radius: var(#{ns.css-var("overlay-popover-group-radius")}, var(#{ns.css-var("radius-sm")}, 0));
   padding: var(#{ns.css-var("overlay-popover-group-padding")}, 11px 12px 9px);
-  color: var(#{ns.css-var("overlay-popover-group-color")}, color-mix(in srgb, currentColor 72%, transparent));
+  color: var(
+    #{ns.css-var("overlay-popover-group-color")},
+    color-mix(in srgb, var(#{ns.css-var("adaptive")}, currentColor) 72%, transparent)
+  );
   background: transparent;
   cursor: pointer;
   font: inherit;
@@ -157,5 +160,5 @@
 #{ns.class("popover-group")}:focus-visible,
 
 #{ns.class("popover-group")}[aria-expanded="true"] {
-  color: var(#{ns.css-var("overlay-popover-group-hover-color")}, currentColor);
+  color: var(#{ns.css-var("overlay-popover-group-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
 }

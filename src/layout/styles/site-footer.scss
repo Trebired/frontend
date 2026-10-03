@@ -98,7 +98,7 @@
 #{ns.element-class("site-footer", "link")}:hover,
 
 #{ns.element-class("site-footer", "link")}:focus-visible {
-  color: var(#{ns.css-var("shell-footer-link-hover-color")}, currentColor);
+  color: var(#{ns.css-var("shell-footer-link-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
   text-decoration-line: var(#{ns.css-var("shell-footer-link-hover-decoration-line")}, underline);
   text-underline-offset: 0.25rem;
 }

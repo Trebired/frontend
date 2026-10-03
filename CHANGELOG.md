@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.0.2
+
+- A control's hover and open states read the adaptive colour rather than `currentColor`. `currentColor` is the colour the element inherited, which comes from whatever ancestor last set one, so the locale trigger's label and border turned the header's colour the moment its popover opened, even though the trigger itself had already been read against the lighter content it was sitting on. The same fallback is corrected on the footer's link hover and on a popover group's heading.
+
 ## 22.0.1
 
 - Every part of the header reads the adaptive colour on itself rather than inheriting one from the header. The locale trigger, the menu toggle, the brand and the menu panel fell back to `inherit` or to `currentColor`, which meant they took the colour of the header root. A site that declares the root's state once for a whole page then painted them for that state wherever they actually sat, so the trigger's label and border vanished against light content further down the page.
