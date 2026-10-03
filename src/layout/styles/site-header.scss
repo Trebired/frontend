@@ -17,7 +17,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   z-index: token("root-z-index", var(#{ns.css-var("z-header")}, 920));
   color: token("root-color", var(#{ns.css-var("adaptive")}, currentColor));
   border-block-end: token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
-  background: var(#{ns.css-var("glass-bg")}, token("root-bg", var(#{ns.css-var("page")}, #fff)));
+  background: var(#{ns.css-var("glass-bar-bg")}, token("root-bg", var(#{ns.css-var("page")}, #fff)));
 }
 
 #{ns.data("site-header")}::before {

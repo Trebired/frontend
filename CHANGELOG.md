@@ -1,5 +1,9 @@
 # Changelog
 
+## 23.3.0
+
+- The glass has two fills, because a bar and a pane are not the same thing. A header lies over the page and should let it through: it takes `--tbf-glass-bar-bg`, which is clear, so all it adds is the blur. A popover, a dropdown or an open menu stands on the page as its own surface and has to be read against, so it keeps `--tbf-glass-bg` and its tint. Both still come from the one `design.glass` block, and a component picks the one that suits it, the same way it picks its own border.
+
 ## 23.2.0
 
 - The glass is glass again. Its tint drops from 72% to 35%, which was raised too far while chasing text that had become unreadable under a pane with no fill at all. A pane now reads as something you see through rather than as a panel with a colour, and the page behind it is still damped enough for its contents to sit on. `opacity` sets it, as before.

@@ -73,6 +73,12 @@ async function verifyGlassSurface(importDist, packageVersion) {
     "a tooltip stays solid; its arrow repaints the panel fill and cannot carry a blur",
   );
 
+  const header = await fs.readFile(new URL("../../../src/layout/styles/site-header.scss", import.meta.url), "utf8");
+  assert.ok(
+    header.includes('ns.css-var("glass-bar-bg")'),
+    "the header bar takes the clear fill; a bar lies over the page rather than standing on it as a pane does",
+  );
+
   const glassSheets = await Promise.all(glassed.map(([file]) => fs.readFile(new URL(`../../../${file}`, import.meta.url), "utf8")));
   for (const [index, sheet] of glassSheets.entries()) {
     assert.ok(
@@ -85,7 +91,7 @@ async function verifyGlassSurface(importDist, packageVersion) {
   const solid = generateFrontendScss({ forVersion: packageVersion });
   assert.ok(!solid.includes("--tbf-glass-"), "a site that did not ask for glass gets none of its tokens");
   const glass = generateFrontendScss({ design: { glass: {} }, forVersion: packageVersion });
-  for (const token of ["--tbf-glass-bg:", "--tbf-glass-filter:"]) {
+  for (const token of ["--tbf-glass-bar-bg:", "--tbf-glass-bg:", "--tbf-glass-filter:"]) {
     assert.ok(glass.includes(token), `${token} is emitted once a site asks for glass`);
   }
   const block = glass.slice(glass.lastIndexOf("{", glass.indexOf("--tbf-glass-bg:")) - 24, glass.indexOf("--tbf-glass-bg:"));

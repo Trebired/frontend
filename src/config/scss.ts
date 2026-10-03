@@ -98,6 +98,7 @@ function glassDeclarations(config: NormalizedFrontendConfig): string[] {
   : glass.color;
   const tint = `color-mix(in srgb, ${base} ${glass.opacity}, transparent)`;
   return [
+    `  --${config.prefix}-glass-bar-bg: transparent;`,
     `  --${config.prefix}-glass-bg: ${tint};`,
     `  --${config.prefix}-glass-filter: blur(${glass.blur}) saturate(${glass.saturate});`,
   ];
