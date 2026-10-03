@@ -20,7 +20,7 @@ function normalizeGlassConfig(value: unknown): NormalizedFrontendGlassConfig | n
   }
   return {
     blur: glassField(source, "blur", "16px"),
-    border: glassField(source, "border", "14%"),
+    border: glassField(source, "border", "none"),
     color: glassField(source, "color", "transparent"),
     opacity: glassField(source, "opacity", "12%"),
     saturate: glassField(source, "saturate", "180%"),

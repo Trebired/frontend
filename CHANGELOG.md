@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.1.0
+
+- The glass surface carries no border by default. A rule drawn around a pane whose whole point is that you see through it reads as a seam rather than an edge, and the header's bottom rule cut the page in two under a surface that was meant to sit on it. `design.glass.border` still takes a percentage, which draws the old rule mixed from the adaptive border colour, so a site that wants the edge can ask for it.
+
 ## 22.0.3
 
 - The header's blur moves to a full-bleed pseudo-element behind it. An element that carries `backdrop-filter` becomes a backdrop root for everything inside it, so with the filter on the header itself the open mobile menu could not blur the page at all: it sat inside the header and had nothing left to filter. The menu showed the page through it, unblurred and unreadable. The bar's blur now rides a pseudo-element the menu is not a descendant of, and the menu filters the page as it should.
