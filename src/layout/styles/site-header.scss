@@ -15,11 +15,14 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   inset-inline: 0;
   inset-block-start: 0;
   z-index: token("root-z-index", var(#{ns.css-var("z-header")}, 920));
-  color: token("root-color", var(#{ns.css-var("text")}, #000));
-  border-block-end: token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
-  background: token("root-bg", var(#{ns.css-var("page")}, #fff));
-  backdrop-filter: token("root-backdrop-filter", none);
-  -webkit-backdrop-filter: token("root-backdrop-filter", none);
+  color: token("root-color", var(#{ns.css-var("adaptive")}, currentColor));
+  border-block-end: var(
+    #{ns.css-var("glass-border")},
+    token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
+  );
+  background: var(#{ns.css-var("glass-bg")}, token("root-bg", var(#{ns.css-var("page")}, #fff)));
+  backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
+  -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
 }
 
 #{ns.element-class("site-header", "bar")},
@@ -92,7 +95,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 }
 
 #{ns.element-class("site-header", "link")} {
-  color: token("link-color", var(#{ns.css-var("text-muted")}, #555));
+  color: token("link-color", var(#{ns.css-var("adaptive-muted")}, currentColor));
   font-size: 0.875rem;
   font-weight: token("link-font-weight", 500);
   letter-spacing: token("link-letter-spacing", normal);
@@ -109,7 +112,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 }
 
 #{ns.element-class("site-header", "link")}:hover {
-  color: token("link-hover-color", var(#{ns.css-var("text")}, #000));
+  color: token("link-hover-color", var(#{ns.css-var("adaptive")}, currentColor));
   background: token("link-hover-bg", transparent);
 }
 
@@ -192,8 +195,13 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   display: grid;
   grid-template-rows: 0fr;
   color: token("menu-color", inherit);
-  border-block-end: token("menu-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
-  background: token("menu-bg", var(#{ns.css-var("page")}, #fff));
+  border-block-end: var(
+    #{ns.css-var("glass-border")},
+    token("menu-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
+  );
+  background: var(#{ns.css-var("glass-bg")}, token("menu-bg", var(#{ns.css-var("page")}, #fff)));
+  backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
+  -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
   box-shadow: token("menu-shadow", 0 24px 32px -24px rgb(0 0 0 / 18%));
   opacity: 0;
   visibility: hidden;
@@ -251,7 +259,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   justify-content: space-between;
   gap: token("menu-footer-gap", 0.75rem);
   padding-block-start: token("menu-gap", 1rem);
-  border-block-start: token("menu-footer-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000));
+  border-block-start: token("menu-footer-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
 }
 
 @media (min-width: 768px) {
@@ -271,49 +279,6 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   }
 }
 
-#{ns.data("site-header-surface", "transparent")},
-
-#{ns.data("site-header-surface", "blurred")} {
-  position: token("root-position", sticky);
-  border-block-end-color: transparent;
-  background: transparent;
-  box-shadow: none;
-}
-
-#{ns.data("site-header-surface", "transparent")}::before,
-
-#{ns.data("site-header-surface", "blurred")}::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  content: "";
-  pointer-events: none;
-}
-
-#{ns.data("site-header-surface", "blurred")}::before,
-
-#{ns.data("site-header-surface", "blurred")} #{ns.element-class("site-header", "menu")} {
-  border-block-end: token(
-    "surface-border",
-    var(#{ns.css-var("border-width")}, 1px) solid token("surface-border-color", color-mix(in srgb, currentColor 12%, transparent))
-  );
-  background: token(
-    "surface-bg",
-    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 12%, transparent)
-  );
-  backdrop-filter: token("surface-backdrop-filter", blur(16px) saturate(180%));
-  -webkit-backdrop-filter: token("surface-backdrop-filter", blur(16px) saturate(180%));
-  box-shadow: none;
-}
-
-#{ns.data("site-header-surface", "transparent")} #{ns.element-class("site-header", "menu")} {
-  border-block-end-color: transparent;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-}
-
 #{ns.class("site-header-brand-button")},
 
 #{ns.class("button")}#{ns.class("site-header-brand-button")} {
@@ -331,7 +296,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
   background: transparent;
   color: var(
     #{ns.css-var("shell-header-brand-button-color")},
-    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 74%, transparent)
+    color-mix(in srgb, var(#{ns.css-var("adaptive")}, currentColor) 74%, transparent)
   );
   cursor: pointer;
   transition: color 0.22s ease;
@@ -348,7 +313,7 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:focus-visible,
 
 #{ns.class("button")}#{ns.class("site-header-brand-button")}[aria-expanded="true"] {
-  color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, var(#{ns.css-var("text")}, currentColor));
+  color: var(#{ns.css-var("shell-header-brand-button-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
 }
 
 #{ns.class("button")}#{ns.class("site-header-brand-button")}:hover,

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-async function verifyContrast(rootDir, importDist) {
+async function verifyContrast(rootDir, importDist, packageVersion) {
   const api = await importDist("");
   assert.equal(typeof api.bindContrast, "function", "the contrast binding is part of the package");
   assert.equal(api.ON_DARK_ATTR, "data-tbf-on-dark", "the state it sets is namespaced");
@@ -44,23 +44,62 @@ async function verifyContrast(rootDir, importDist) {
   await verifyAdaptiveColour(rootDir);
   await verifyBackdropReading(rootDir, api, styles);
   await verifySiteHeaderDeclaresItsState(importDist);
+  await verifyGlassSurface(importDist, packageVersion);
+}
+
+async function verifyGlassSurface(importDist, packageVersion) {
+  const glassed = [
+    ["src/layout/styles/site-header.scss", 2],
+    ["src/popover/styles/index.scss", 1],
+    ["src/inputs/advanced/dropdown/styles/base.scss", 1],
+    ["src/inputs/advanced/dropdown/styles/portaled.scss", 1],
+  ];
+  for (const [file, count] of glassed) {
+    const sheet = await fs.readFile(new URL(`../../../${file}`, import.meta.url), "utf8");
+    assert.equal(
+      sheet.split('ns.css-var("glass-filter")').length - 1,
+      count * 2,
+      `${file} reads the glass filter, or the chrome and the overlays stop being one material`,
+    );
+    assert.ok(
+      sheet.includes('ns.css-var("glass-bg")'),
+      `${file} reads the glass background in front of its own, or it stays opaque under glass`,
+    );
+  }
+
+  const tooltip = await fs.readFile(new URL("../../../src/tooltip/styles/index.scss", import.meta.url), "utf8");
+  assert.ok(
+    !tooltip.includes("glass-"),
+    "a tooltip stays solid; its arrow repaints the panel fill and cannot carry a blur",
+  );
+
+  const { generateFrontendScss } = await importDist("config");
+  const solid = generateFrontendScss({ forVersion: packageVersion });
+  assert.ok(!solid.includes("--tbf-glass-"), "a site that did not ask for glass gets none of its tokens");
+  const glass = generateFrontendScss({ design: { glass: {} }, forVersion: packageVersion });
+  for (const token of ["--tbf-glass-bg:", "--tbf-glass-border:", "--tbf-glass-filter:"]) {
+    assert.ok(glass.includes(token), `${token} is emitted once a site asks for glass`);
+  }
 }
 
 function verifyPinnedTokens(styles) {
-  const pinned = [
-    "shell-header-link-color",
-    "shell-header-link-active-color",
-    "shell-language-trigger-color",
-    "shell-header-brand-button-color",
+  const swapped = [
+    "text",
+    "text-muted",
+    "border",
+    "surface",
+    "surface-muted",
   ];
-  for (const token of pinned) {
-    assert.ok(
-      styles.includes(`ns.css-var("${token}")`),
-      `${token} is set on the surface, or a site that pinned it for one background keeps that colour over the other`,
-    );
+  for (const token of swapped) {
     assert.ok(
       styles.includes(`"${token}"`),
       `${token} is in the list captured at the root, or there is nothing exact to restore it to`,
+    );
+  }
+  for (const shell of ["shell-header-link-color", "shell-language-trigger-color", "shell-footer-link-color"]) {
+    assert.ok(
+      !styles.includes(`ns.css-var("${shell}")`),
+      `${shell} is not swapped by hand; the chrome reads the adaptive colour, or the two can drift apart`,
     );
   }
 }

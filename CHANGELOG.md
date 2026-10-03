@@ -1,5 +1,17 @@
 # Changelog
 
+## 22.0.0
+
+Two surfaces, both shipped here, neither built by the consuming app.
+
+- **An adaptive colour.** `--tbf-adaptive`, `--tbf-adaptive-muted` and `--tbf-adaptive-border` already flipped against whatever sits behind an element, but they were not the only ink: the dark state also rewrote nine shell-specific tokens by hand, which is how the header came to be coloured by a different path from the popover. Those nine are gone. The header's links, toggle, brand button, menu footer, the locale trigger and the footer now read the adaptive colour directly, and the state swap is down to the five colours and the four primary-button tokens that genuinely need it.
+- **A glass surface.** `design.glass` is a new block, absent by default. Set it and the frontend emits `--tbf-glass-bg`, `--tbf-glass-border` and `--tbf-glass-filter`, which the header bar, the header menu, the popover panel and the dropdown menu read in front of their own background: one switch turns the whole set to glass and there is no way for the header and a popover opened from it to disagree. Leave it out and every surface keeps the look it has today. It takes `color` (`transparent` by default, or any colour, which is then tinted by `opacity`), `blur`, `saturate` and `border`.
+- A tooltip stays solid. Its arrow is two stacked triangles that repaint the panel fill, which only works against an opaque panel.
+
+**Breaking:** `SiteHeader` no longer takes `surface`, and `data-tbf-site-header-surface` and the `--tbf-shell-header-surface-*` tokens are gone. A site that used `surface="blurred"` sets `design.glass` instead and drops its own transparent backgrounds. This also removes a latent bug: `surface.borderColor` flattened to `--tbf-shell-header-surface-border`, a bare colour landing in a shorthand slot, so that border never rendered.
+
+- A dropdown reads `--tbf-radius` and `--tbf-shadow` rather than the unnamespaced `--radius-lg` and `--shadow-overlay-lg`, so it stops being the one overlay with a heavier shadow than the rest.
+
 ## 21.11.0
 
 - The chrome and the overlays read their colours through the frontend's own namespace. Buttons, popover and dropdown items, the locale switcher and flash messages fell back to `--text-color`, `--border-surface-1`, `--background-surface-2` and their neighbours, which a site sets once at the root. The contrast system rewrites the namespaced tokens on the element, not at the root, so anything reading the bare names stayed at the page's colour whatever it was placed on: the current locale in a popover opened over a dark hero was painted in the light page's ink on a dark panel, and could barely be read.

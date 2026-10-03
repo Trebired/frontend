@@ -193,7 +193,10 @@
     border-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
     color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
   );
-  border: var(#{ns.css-var("surf-card-root-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor));
+  border: var(
+    #{ns.css-var("surf-card-root-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+  );
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));

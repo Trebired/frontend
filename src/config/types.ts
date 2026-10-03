@@ -16,6 +16,7 @@ import type {
   NormalizedFrontendFontConfig,
   NormalizedFrontendFontFamilyConfig,
 } from "./types/assets.js";
+import type { FrontendDesignConfig, NormalizedFrontendDesignConfig } from "./types/design.js";
 
 type FrontendSystemKey =
 |"actions"
@@ -182,15 +183,6 @@ type FrontendDesignInteractionsConfig = {
 
 type FrontendScrollBehavior = "auto" | "smooth";
 
-type FrontendDesignConfig = {
-  breakpoints?: Record<string, number>;
-  interactions?: FrontendDesignInteractionsConfig;
-  palette?: FrontendPaletteConfig;
-  scales?: FrontendScalesConfig;
-  scrollBehavior?: FrontendScrollBehavior;
-  semantics?: FrontendThemeTokens;
-};
-
 type FrontendRuntimeConfig = {
   layer?: FrontendComponentTokens;
   layout?: FrontendComponentTokens;
@@ -287,15 +279,6 @@ type NormalizedFrontendActivePressInteractionConfig = {
 
 type NormalizedFrontendDesignInteractionsConfig = {
   activePress: NormalizedFrontendActivePressInteractionConfig;
-};
-
-type NormalizedFrontendDesignConfig = {
-  breakpoints: Record<string, number>;
-  interactions: NormalizedFrontendDesignInteractionsConfig;
-  palette: NormalizedFrontendPaletteConfig;
-  scales: NormalizedFrontendScalesConfig;
-  scrollBehavior: FrontendScrollBehavior;
-  semantics: FrontendThemeTokens;
 };
 
 type NormalizedFrontendRuntimeConfig = {

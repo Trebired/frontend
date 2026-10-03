@@ -29,7 +29,7 @@ async function verifyFrontendComponents(context) {
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
   await verifyProgressBars(context.rootDir, context.importDist);
-  await verifyContrast(context.rootDir, context.importDist);
+  await verifyContrast(context.rootDir, context.importDist, context.packageVersion);
   await verifySectionSurfaces(context);
   await verifyHeaderActiveLinks(context.importDist, context.rootDir);
   await verifyScrollbarFollowsTheDevice(context.rootDir, context.importDist);

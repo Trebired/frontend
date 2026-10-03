@@ -22,8 +22,6 @@ type SiteHeaderLabels = {
   openMenu?: string;
 };
 
-type SiteHeaderSurface = "solid" | "transparent" | "blurred";
-
 type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   actions?: ReactNode;
   brand: ReactNode;
@@ -33,7 +31,6 @@ type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   menuActions?: ReactNode;
   softRedirect?: boolean;
   onDark?: boolean;
-  surface?: SiteHeaderSurface;
 };
 
 const block = "site-header";
@@ -207,7 +204,7 @@ function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: Return
 function SiteHeader(props: SiteHeaderProps) {
   const {
     actions, brand, brandHref = "/", className, labels, links = [], menuActions, onDark,
-    softRedirect, surface = "solid", ...rest
+    softRedirect, ...rest
   } = props;
   const state = useSiteHeaderMenu();
   const menuId = `${useId().replace(/:/gu, "")}_site_menu`;
@@ -218,7 +215,6 @@ function SiteHeader(props: SiteHeaderProps) {
     className={classNames(frontendClassName(block), className)}
     {...frontendDataAttrs({ "site-header": "", "site-header-open": state.open ? "true" : "false" })}
     {...frontendDataAttrs({ "site-header-menu": hasMenu ? "true" : "false" })}
-    {...frontendDataAttrs({ "site-header-surface": surface })}
     {...frontendDataAttrs({ "on-dark": onDark === undefined ? undefined : onDark ? "true" : "false" })}
     ref={state.headerRef}
     >
@@ -243,4 +239,4 @@ function SiteHeader(props: SiteHeaderProps) {
 }
 
 export { SiteHeader };
-export type { SiteHeaderLabels, SiteHeaderLink, SiteHeaderProps, SiteHeaderSurface };
+export type { SiteHeaderLabels, SiteHeaderLink, SiteHeaderProps };

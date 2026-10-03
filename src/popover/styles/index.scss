@@ -10,12 +10,20 @@
   max-width: min(320px, calc(100vw - 24px));
   padding: var(#{ns.css-var("overlay-popover-panel-padding")}, 8px);
   border: var(
-    #{ns.css-var("overlay-popover-panel-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    #{ns.css-var("glass-border")},
+    var(
+      #{ns.css-var("overlay-popover-panel-border")},
+      var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    )
   );
   border-radius: var(#{ns.css-var("overlay-popover-panel-radius")}, var(#{ns.css-var("radius")}, 0));
   color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("adaptive")}, currentColor));
-  background: var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("surface")}, #fff));
+  background: var(
+    #{ns.css-var("glass-bg")},
+    var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("surface")}, #fff))
+  );
+  backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
+  -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
   box-shadow: var(#{ns.css-var("overlay-popover-panel-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
   visibility: hidden;
   opacity: 0;

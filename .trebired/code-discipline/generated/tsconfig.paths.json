@@ -883,6 +883,9 @@
       "#feiq09ihbmg8": [
         "../../../src/settings/save-policy/types.ts"
       ],
+      "#feulcpxohgjo": [
+        "../../../src/config/types/glass.ts"
+      ],
       "#fkbyanc8o2ku": [
         "../../../src/graph/advanced/contributions_heatmap/logging.ts"
       ],
@@ -1071,6 +1074,9 @@
       ],
       "#ips704mnl6x2": [
         "../../../src/language/styles/index.scss"
+      ],
+      "#iqy55joupquu": [
+        "../../../src/config/glass.ts"
       ],
       "#is0crghc6zyx": [
         "../../../src/entity/list.tsx"
@@ -1569,6 +1575,9 @@
       ],
       "#tlkyab3pczjn": [
         "../../../src/primitives/components/layout.tsx"
+      ],
+      "#touvmnyy4wpp": [
+        "../../../src/config/types/design.ts"
       ],
       "#trsq4tcfjnxe": [
         "../../../src/inputs/advanced/toggle/i18n/cs.ts"

@@ -3,6 +3,7 @@ import { assertPlainObject, invalidConfig } from "./shared.js";
 import { DEFAULT_FRONTEND_COMPONENTS_CONFIG, normalizeComponentsConfig } from "./component-tokens.js";
 import { normalizeFaviconConfig } from "./favicon.js";
 import { normalizeFontsConfig } from "./fonts.js";
+import { normalizeGlassConfig } from "./glass.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
@@ -84,6 +85,7 @@ const ASSET_FIELDS = ["favicon", "flags", "fonts", "icons"];
 const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
 const DESIGN_FIELDS = [
   "breakpoints",
+  "glass",
   "interactions",
   "palette",
   "scales",
@@ -121,6 +123,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
     components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
     design: Object.freeze({
         breakpoints: Object.freeze({ ...DEFAULT_FRONTEND_BREAKPOINTS }) as Record<string, number>,
+        glass: null,
         interactions: Object.freeze({
             activePress: Object.freeze({
                 brightness: "0.9",
@@ -286,6 +289,7 @@ function normalizeDesignConfig(
   assertKnownFields(source, DESIGN_FIELDS, "design");
   return {
     breakpoints: normalizeBreakpointsConfig((source as Record<string, unknown>).breakpoints),
+    glass: normalizeGlassConfig(source.glass),
     interactions: normalizeInteractionsConfig(source.interactions),
     palette: normalizePaletteConfig(source.palette, modeKeys),
     scales: normalizeScalesConfig(source.scales),

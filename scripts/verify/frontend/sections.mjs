@@ -40,6 +40,19 @@ async function verifySectionSurfaces(context) {
     "a hairline panel is outlined by default",
   );
 
+  await verifyThemeReachesComponents();
+
+  const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
+  assert.match(styles, /position: sticky/u, "the pinned column actually pins");
+  for (const token of ["adaptive", "adaptive-border"]) {
+    assert.ok(styles.includes(`ns.css-var("${token}")`), `the track reads ${token}, so it suits the surface it is on`);
+  }
+
+}
+
+export { verifySectionSurfaces };
+
+async function verifyThemeReachesComponents() {
   const tooltip = await fs.readFile(new URL("../../../src/config/default/component-tokens.ts", import.meta.url), "utf8");
   const tooltipPanel = tooltip.slice(tooltip.indexOf("tooltip: Object.freeze"), tooltip.indexOf("primitives: Object.freeze"));
   for (const frozen of ["background:", "border:", "color:", "fontFamily:", "radius:", "shadow:"]) {
@@ -66,11 +79,4 @@ async function verifySectionSurfaces(context) {
     );
   }
 
-  const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
-  assert.match(styles, /position: sticky/u, "the pinned column actually pins");
-  for (const token of ["adaptive", "adaptive-border"]) {
-    assert.ok(styles.includes(`ns.css-var("${token}")`), `the track reads ${token}, so it suits the surface it is on`);
-  }
 }
-
-export { verifySectionSurfaces };

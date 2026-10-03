@@ -21,7 +21,8 @@
   padding: var(#{ns.css-var("feedback-flash-container-padding")}, 15px);
   border: var(
     #{ns.css-var("feedback-flash-container-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("feedback-flash-container-border")}, var(#{ns.css-var("adaptive-border")}, currentColor))
+    var(#{ns.css-var("border-width")}, 1px) solid
+    var(#{ns.css-var("feedback-flash-container-border")}, var(#{ns.css-var("adaptive-border")}, currentColor))
   );
   border-radius: var(#{ns.css-var("feedback-flash-container-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("feedback-flash-container-color")}, var(#{ns.css-var("adaptive")}, currentColor));

@@ -86,7 +86,7 @@ async function verifyFrontendMain() {
   await verifyFrontendLogging(context);
   await verifyFrontendSource(context);
   await verifyFrontendServer(context);
-  await verifyFrontendComponents({ importDist, rootDir });
+  await verifyFrontendComponents({ importDist, packageVersion, rootDir });
   await verifyFrontendTheme({ importDist, packageVersion, rootDir });
   await closeDom(window);
   log.info("verify.frontend", "Frontend verification succeeded.");

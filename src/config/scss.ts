@@ -90,6 +90,21 @@ function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] 
   return lines;
 }
 
+function glassDeclarations(config: NormalizedFrontendConfig): string[] {
+  const glass = config.design.glass;
+  if (!glass) return [];
+  const tint = glass.color === "transparent"
+  ? "transparent"
+  : `color-mix(in srgb, ${glass.color} ${glass.opacity}, transparent)`;
+  const line = `var(--${config.prefix}-border-width, 1px) solid`;
+  const edge = `color-mix(in srgb, var(--${config.prefix}-adaptive-border, currentColor) ${glass.border}, transparent)`;
+  return [
+    `  --${config.prefix}-glass-bg: ${tint};`,
+    `  --${config.prefix}-glass-border: ${line} ${edge};`,
+    `  --${config.prefix}-glass-filter: blur(${glass.blur}) saturate(${glass.saturate});`,
+  ];
+}
+
 function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   const { modes, defaultMode } = config.runtime.theme;
   return [
@@ -100,6 +115,7 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
     ...breakpointDeclarations(config.prefix, config.design.breakpoints),
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
+    ...glassDeclarations(config),
     ...tokenDeclarations(config.prefix, config.design.semantics),
     ...tokenDeclarations(config.prefix, config.runtime.theme.tokens),
     ...tokenDeclarations(`${config.prefix}-runtime`, {
