@@ -1,5 +1,9 @@
 # Changelog
 
+## 23.1.1
+
+- The glass is declared on every element rather than at the root. A custom property resolves the `var()` inside it where it is declared, so `--tbf-glass-bg` borrowing `--tbf-surface` from the root took the page's surface once and kept it: a pane standing on dark content still painted the light page's white. It now re-resolves on each element, the same way the adaptive colour does, so a pane over dark content is dark and a pane over light content is light.
+
 ## 23.1.0
 
 - The glass takes the colour of the surface it is standing on. `color: "transparent"` no longer means a pane with no fill at all; it means the pane has no fixed colour of its own and borrows `--tbf-surface`, which the dark state already flips. A pane with no fill is only a blur, and a blur does not stop what is behind it from showing through: a popover opened over a page that runs from dark to light had rows that disappeared wherever the lighter part came through, which read as each link being coloured differently when every one of them was the same colour.

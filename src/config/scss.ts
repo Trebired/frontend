@@ -103,6 +103,12 @@ function glassDeclarations(config: NormalizedFrontendConfig): string[] {
   ];
 }
 
+function renderGlassCss(config: NormalizedFrontendConfig): string[] {
+  const declarations = glassDeclarations(config);
+  if (!declarations.length) return [];
+  return ["", ...renderBlock("*,\n::before,\n::after", declarations)];
+}
+
 function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   const { modes, defaultMode } = config.runtime.theme;
   return [
@@ -113,7 +119,6 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
     ...breakpointDeclarations(config.prefix, config.design.breakpoints),
     ...(modes.length ? [`  --${config.prefix}-theme-modes: ${cssString(modes.map((mode) => mode.key).join(" "))};`] : []),
     ...(defaultMode ? [`  --${config.prefix}-theme-default: ${cssString(defaultMode)};`] : []),
-    ...glassDeclarations(config),
     ...tokenDeclarations(config.prefix, config.design.semantics),
     ...tokenDeclarations(config.prefix, config.runtime.theme.tokens),
     ...tokenDeclarations(`${config.prefix}-runtime`, {
@@ -267,6 +272,7 @@ function generateFrontendScss(
     ...renderSystemImports(config),
     ...renderScrollBehaviorCss(config),
     ...renderThemeCss(config),
+    ...renderGlassCss(config),
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
     ...renderButtonVariantRules(config),

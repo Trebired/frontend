@@ -88,6 +88,12 @@ async function verifyGlassSurface(importDist, packageVersion) {
   for (const token of ["--tbf-glass-bg:", "--tbf-glass-filter:"]) {
     assert.ok(glass.includes(token), `${token} is emitted once a site asks for glass`);
   }
+  const block = glass.slice(glass.lastIndexOf("{", glass.indexOf("--tbf-glass-bg:")) - 24, glass.indexOf("--tbf-glass-bg:"));
+  assert.match(
+    block,
+    /\*,\s*\n::before,\s*\n::after \{/u,
+    "the glass is declared on every element, or the surface it borrows freezes at the root and a dark pane paints light",
+  );
 }
 
 function verifyPinnedTokens(styles) {
