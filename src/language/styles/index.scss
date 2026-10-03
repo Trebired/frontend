@@ -19,9 +19,9 @@
   border-width: var(#{ns.css-var("shell-language-trigger-border-width")}, 1px);
   border-color: var(
     #{ns.css-var("shell-language-trigger-border")},
-    color-mix(in srgb, currentColor 24%, transparent)
+    color-mix(in srgb, var(#{ns.css-var("adaptive")}, currentColor) 24%, transparent)
   );
-  color: var(#{ns.css-var("shell-language-trigger-color")}, currentColor);
+  color: var(#{ns.css-var("shell-language-trigger-color")}, var(#{ns.css-var("adaptive")}, currentColor));
   background: var(#{ns.css-var("shell-language-trigger-bg")}, transparent);
   cursor: pointer;
   appearance: none;

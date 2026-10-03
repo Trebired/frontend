@@ -1,5 +1,10 @@
 # Changelog
 
+## 22.0.1
+
+- Every part of the header reads the adaptive colour on itself rather than inheriting one from the header. The locale trigger, the menu toggle, the brand and the menu panel fell back to `inherit` or to `currentColor`, which meant they took the colour of the header root. A site that declares the root's state once for a whole page then painted them for that state wherever they actually sat, so the trigger's label and border vanished against light content further down the page.
+- The brand and the menu are read against what is behind them, like the links and the buttons beside them already were.
+
 ## 22.0.0
 
 Two surfaces, both shipped here, neither built by the consuming app.

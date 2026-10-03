@@ -30,6 +30,8 @@ const DEFAULT_ITEMS = [
   `${headerPart("menu")} ${headerPart("link")}`,
   `${headerPart("menu-footer")} ${cls("locale-trigger")}`,
   `${headerPart("menu-footer")} ${cls("btn")}`,
+  headerPart("brand"),
+  headerPart("menu"),
   cls("popover"),
   `.${frontendElementClass("dropdown", "menu")}`,
 ].join(",");

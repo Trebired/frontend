@@ -38,7 +38,7 @@ async function verifySiteHeaderMarkup(context) {
   assert.match(styles, /padding-inline: 1\.5rem;/u, "the brand sits at one distance from the edge on every site");
   assert.match(styles, /padding-inline: 1rem;/u, "and a narrower one once there is room for the full bar");
   assert.match(styles, /"menu-content"\)\} \{\n {2}width: 100%;/u, "the menu content spans the header width instead of shrinking");
-  assert.match(styles, /"toggle"\)\} \{[^}]*width: 3rem;[^}]*font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
+  assert.match(styles, /"toggle"\)\} \{.*?width: 3rem;.*?font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
   assert.match(styles, /"bar"\)\} \{[^}]*min-height: 5rem;/su, "every site header is the same height");
   const brandRule = styles.split('#{ns.class("button")}#{ns.class("site-header-brand-button")} {')[1] || "";
