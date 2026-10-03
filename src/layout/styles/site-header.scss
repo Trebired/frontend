@@ -21,8 +21,16 @@ $motion: token("motion-duration", 500ms) token("motion-easing", cubic-bezier(0.2
     token("root-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
   );
   background: var(#{ns.css-var("glass-bg")}, token("root-bg", var(#{ns.css-var("page")}, #fff)));
+}
+
+#{ns.data("site-header")}::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
   backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
   -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
+  content: "";
+  pointer-events: none;
 }
 
 #{ns.element-class("site-header", "bar")},

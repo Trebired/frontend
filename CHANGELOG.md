@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.0.3
+
+- The header's blur moves to a full-bleed pseudo-element behind it. An element that carries `backdrop-filter` becomes a backdrop root for everything inside it, so with the filter on the header itself the open mobile menu could not blur the page at all: it sat inside the header and had nothing left to filter. The menu showed the page through it, unblurred and unreadable. The bar's blur now rides a pseudo-element the menu is not a descendant of, and the menu filters the page as it should.
+
 ## 22.0.2
 
 - A control's hover and open states read the adaptive colour rather than `currentColor`. `currentColor` is the colour the element inherited, which comes from whatever ancestor last set one, so the locale trigger's label and border turned the header's colour the moment its popover opened, even though the trigger itself had already been read against the lighter content it was sitting on. The same fallback is corrected on the footer's link hover and on a popover group's heading.
