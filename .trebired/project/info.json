@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "category": "package",
+  "subcategory": "web",
+  "status": "active",
+  "npm": "@trebired/frontend",
+  "description": {
+    "en": "The browser runtime and design system every Trebired interface is built on.",
+    "cs": "Prohlížečový runtime a design systém, na kterém stojí každé rozhraní Trebired."
+  }
+}
