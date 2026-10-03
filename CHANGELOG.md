@@ -1,5 +1,10 @@
 # Changelog
 
+## 23.1.0
+
+- The glass takes the colour of the surface it is standing on. `color: "transparent"` no longer means a pane with no fill at all; it means the pane has no fixed colour of its own and borrows `--tbf-surface`, which the dark state already flips. A pane with no fill is only a blur, and a blur does not stop what is behind it from showing through: a popover opened over a page that runs from dark to light had rows that disappeared wherever the lighter part came through, which read as each link being coloured differently when every one of them was the same colour.
+- `opacity` now defaults to 72%, enough body for text to sit on, and still sets how much of the colour is used. A fixed colour can still be given as a hex, and is tinted by the same value.
+
 ## 23.0.0
 
 **Breaking:** the glass surface no longer has a border. `design.glass.border` is removed and `--tbf-glass-border` is no longer emitted.

@@ -93,9 +93,10 @@ function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] 
 function glassDeclarations(config: NormalizedFrontendConfig): string[] {
   const glass = config.design.glass;
   if (!glass) return [];
-  const tint = glass.color === "transparent"
-  ? "transparent"
-  : `color-mix(in srgb, ${glass.color} ${glass.opacity}, transparent)`;
+  const base = glass.color === "transparent"
+  ? `var(--${config.prefix}-surface, #fff)`
+  : glass.color;
+  const tint = `color-mix(in srgb, ${base} ${glass.opacity}, transparent)`;
   return [
     `  --${config.prefix}-glass-bg: ${tint};`,
     `  --${config.prefix}-glass-filter: blur(${glass.blur}) saturate(${glass.saturate});`,
