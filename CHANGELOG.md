@@ -1,5 +1,9 @@
 # Changelog
 
+## 23.2.0
+
+- The glass is glass again. Its tint drops from 72% to 35%, which was raised too far while chasing text that had become unreadable under a pane with no fill at all. A pane now reads as something you see through rather than as a panel with a colour, and the page behind it is still damped enough for its contents to sit on. `opacity` sets it, as before.
+
 ## 23.1.1
 
 - The glass is declared on every element rather than at the root. A custom property resolves the `var()` inside it where it is declared, so `--tbf-glass-bg` borrowing `--tbf-surface` from the root took the page's surface once and kept it: a pane standing on dark content still painted the light page's white. It now re-resolves on each element, the same way the adaptive colour does, so a pane over dark content is dark and a pane over light content is light.
