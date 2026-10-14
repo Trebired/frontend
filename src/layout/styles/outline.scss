@@ -4,8 +4,10 @@
   @return var(#{ns.css-var("shell-outline-" + $name)}, $fallback);
 }
 
+$anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset")}, 0px));
+
 #{ns.class("page-outline")} {
-  display: none;
+  display: block;
 }
 
 #{ns.element-class("page-outline", "list")} {
@@ -22,7 +24,7 @@
 
 #{ns.element-class("page-outline", "link")} {
   display: block;
-  max-width: token("max-width", 11rem);
+  max-width: token("max-width", 100%);
   padding-block: token("link-py", 0.15rem);
   padding-inline-start: token("link-px", 0.75rem);
   border-inline-start: token("link-border", 2px solid transparent);
@@ -44,13 +46,31 @@
   color: token("link-active-color", currentColor);
 }
 
-@media (min-width: 1280px) {
-  #{ns.class("page-outline")} {
-    position: fixed;
-    z-index: token("z-index", var(#{ns.css-var("z-header")}, 920));
+#{ns.class("page-outline-layout")} {
+  display: grid;
+  gap: token("layout-gap", var(#{ns.css-var("gap-lg")}, 32px));
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#{ns.element-class("page-outline-layout", "rail")} {
+  display: none;
+}
+
+#{ns.element-class("page-outline-layout", "content")} {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  #{ns.class("page-outline-layout")} {
+    grid-template-columns: token("layout-column", 13rem) minmax(0, 1fr);
+  }
+
+  #{ns.element-class("page-outline-layout", "rail")} {
+    position: sticky;
     display: block;
-    inset-block-start: 50%;
-    inset-inline-end: token("offset", 1.5rem);
-    transform: translateY(-50%);
+    align-self: start;
+    inset-block-start: calc(#{$anchor} + token("offset", 1.5rem));
+    overflow-y: auto;
+    max-block-size: calc(100vh - #{$anchor} - token("offset", 1.5rem) * 2);
   }
 }

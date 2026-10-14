@@ -1,5 +1,9 @@
 # Changelog
 
+## 25.2.0
+
+- The page outline is part of the page rather than a rail floating over it. `PageOutlineLayout` takes the same `items` as `PageOutline` plus the page content and puts the list in a column on the left of the text, where it sticks to the top of the viewport as the reader scrolls, so nothing is covered and the list sits where a reader of a long document looks for it. It appears from 1024px, where there is room beside the content, and below that the layout is a single column. Called with no items it renders the content alone, so a page short enough to need no outline needs no branch at the call site.
+
 ## 25.1.0
 
 - A text document declares how it is presented. `parts: disclosure` in front matter asks for an accordion and `prose`, the default, for articles, so a consumer renders what the document says it is instead of mapping a slug to a layout in its own code. Sections and parts carry an `id` slugged from the heading, with diacritics folded, and the paragraphs before the first section are the document's `lead`.

@@ -153,7 +153,7 @@ parts: disclosure
 
 ### Page Outline
 
-`PageOutline` takes `items` of `{ id, label }` and renders a fixed rail beside the page, listing the sections and marking the one being read. A click scrolls smoothly to the section, instantly under reduced motion, moves focus to it so the keyboard carries on from there, and replaces the fragment in the address bar rather than stacking a history entry per jump. It appears from 1280px, where there is room beside the content, and otherwise renders nothing: the page is still read by scrolling.
+`PageOutline` takes `items` of `{ id, label }`, lists the sections of a page and marks the one being read. `PageOutlineLayout` takes the same `items` and the page content, and lays them out side by side: the list in a column on the left, the content beside it, the column sticking to the top of the viewport while the reader scrolls. A click scrolls smoothly to the section, instantly under reduced motion, moves focus to it so the keyboard carries on from there, and replaces the fragment in the address bar rather than stacking a history entry per jump. The column appears from 1024px, where there is room beside the content; below that the layout is a single column and the list renders nothing, because the page is still read by scrolling. Called with no items the layout renders the content alone.
 
 
 ### Site Footer

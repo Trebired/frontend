@@ -15,7 +15,12 @@ type PageOutlineProps = {
   label?: string;
 };
 
+type PageOutlineLayoutProps = PageOutlineProps & {
+  children: ReactNode;
+};
+
 const block = "page-outline";
+const layoutBlock = "page-outline-layout";
 const ACTIVE_LINE = 0.3;
 
 function activeId(items: PageOutlineItem[]): string {
@@ -103,5 +108,19 @@ function PageOutline(props: PageOutlineProps) {
   );
 }
 
-export { PageOutline };
-export type { PageOutlineItem, PageOutlineProps };
+function PageOutlineLayout(props: PageOutlineLayoutProps) {
+  const { children, className, items, label } = props;
+  if (items.length === 0) return <>{children}</>;
+
+  return (
+    <div className={classNames(frontendClassName(layoutBlock), className)}>
+    <div className={frontendElementClass(layoutBlock, "rail")}>
+    <PageOutline items={items} label={label} />
+    </div>
+    <div className={frontendElementClass(layoutBlock, "content")}>{children}</div>
+    </div>
+  );
+}
+
+export { PageOutline, PageOutlineLayout };
+export type { PageOutlineItem, PageOutlineLayoutProps, PageOutlineProps };
