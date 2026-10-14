@@ -4,7 +4,10 @@ const SECTIONS = [
   "---",
   "title: Questions",
   "updated: 2026-10-14",
+  "parts: disclosure",
   "---",
+  "",
+  "A lead paragraph before any section.",
   "",
   "## Working together",
   "",
@@ -68,6 +71,12 @@ function verifyTextDocument(config) {
   assert.equal(document.sections[0].parts[0].body.length, 2, "a part keeps each paragraph as its own block");
   assert.match(document.sections[0].parts[0].body[0], /<!--tbf:link \/pricing-->/u, "annotations reach the renderer untouched");
   assert.equal(document.sections[1].body.length, 1, "a section without parts keeps its own paragraphs");
+  assert.equal(document.parts, "disclosure", "the document says how its parts are presented");
+  assert.equal(document.lead.length, 1, "paragraphs before the first section are the lead");
+  assert.equal(document.sections[0].id, "working-together", "a section carries the id an outline links to");
+  assert.equal(document.sections[0].parts[0].id, "what-does-it-cost", "and so does a part");
+  assert.equal(config.documentSlug("Proč je všechno veřejné"), "proc-je-vsechno-verejne", "a slug survives diacritics");
+  assert.equal(config.parseTextDocument("---\ntitle: T\nupdated: 2026-01-01\n---\n\n## S\n\nB.").parts, "prose", "prose is the default");
   assert.equal(config.parseTextDocument("## No front matter\n\nBody."), null, "a document without front matter is refused");
   assert.equal(config.parseTextDocument("---\ntitle: Only\n---\n\nNo sections."), null, "and so is one with no sections");
 }

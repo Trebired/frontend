@@ -1,5 +1,11 @@
 # Changelog
 
+## 25.1.0
+
+- A text document declares how it is presented. `parts: disclosure` in front matter asks for an accordion and `prose`, the default, for articles, so a consumer renders what the document says it is instead of mapping a slug to a layout in its own code. Sections and parts carry an `id` slugged from the heading, with diacritics folded, and the paragraphs before the first section are the document's `lead`.
+
+- `PageOutline` is a fixed rail of the sections on a page: it marks the one being read, scrolls to a section smoothly, instantly under reduced motion, and moves focus there so the keyboard continues from the right place. It appears where there is room beside the content, from 1280px, and renders nothing below that.
+
 ## 25.0.0
 
 **Breaking:** the adaptive colour system is removed. `src/contrast` is gone, and with it `bindContrast`, `applyContrast`, `clearContrastMarks`, `beginContrastSettle`, the `contrast` system key, `data-tbf-on-dark`, `data-tbf-contrast`, `data-tbf-contrast-surface`, `data-tbf-contrast-settle` and the `--tbf-adaptive`, `--tbf-adaptive-muted` and `--tbf-adaptive-border` variables. Nothing measures what is painted behind an element any more. Stylesheets that read an adaptive variable read `--tbf-text`, `--tbf-text-muted` and `--tbf-border` instead, which is what those variables aliased.

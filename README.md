@@ -137,6 +137,25 @@ The first token after the marker is the href and is required. `tab` opens a new 
 It is not a markdown renderer and will not become one. Bold, lists and headings stay out, because the moment copy carries markup the component that renders it owns a format, and a format has to be documented, versioned and escaped. A second annotation gets added when something needs one, not in advance.
 
 
+### Text Documents
+
+`parseTextDocument` reads a document from a text repository: front matter, a lead, sections, and the parts inside them. A document says how it is presented rather than leaving a consumer to recognise it by slug:
+
+```md
+---
+title: FAQ
+updated: 2026-10-14
+parts: disclosure
+---
+```
+
+`parts` is `prose`, the default, or `disclosure`, which asks for an accordion. Every section and part carries an `id` slugged from its heading, diacritics folded, which is what an outline links to. Paragraphs before the first `##` are the document's lead.
+
+### Page Outline
+
+`PageOutline` takes `items` of `{ id, label }` and renders a fixed rail beside the page, listing the sections and marking the one being read. A click scrolls smoothly to the section, instantly under reduced motion, moves focus to it so the keyboard carries on from there, and replaces the fragment in the address bar rather than stacking a history entry per jump. It appears from 1280px, where there is room beside the content, and otherwise renders nothing: the page is still read by scrolling.
+
+
 ### Site Footer
 
 `SiteFooter` takes a `brand`, a `tagline`, `social` links, `columns` of links and a `note`. On a site that stands for itself they fill the whole footer: the brand on the left, the columns on the right. A site that belongs to someone else passes `site` as well, carrying that site's own `brand`, `tagline`, `social` and a row of `links`. That becomes a band above the first, with a rule between them: this site on top, and under it the owner's mark, one line saying who builds the site, and the columns that belong to the organization rather than to the product. One footer, one ground, two parts.

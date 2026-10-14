@@ -162,7 +162,12 @@ export type {
   GeneratedFaviconFile,
   GeneratedFaviconLink,
 } from "./favicon.js";
-export { parseTextDocument } from "./text-document.js";
-export type { TextDocument, TextDocumentPart, TextDocumentSection } from "./text-document.js";
+export { documentSlug, parseTextDocument } from "./text-document.js";
+export type {
+  TextDocument,
+  TextDocumentPart,
+  TextDocumentParts,
+  TextDocumentSection,
+} from "./text-document.js";
 export { STATIC_ICONS_SPECIFIER, generateStaticIconsModule } from "./static-icons.js";
 export type { GeneratedStaticIconsModule } from "./static-icons.js";

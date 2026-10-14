@@ -181,6 +181,9 @@
       "#3gcuk6pse66v": [
         "../../../src/a11y/styles/forced.scss"
       ],
+      "#3gtorxzd18w7": [
+        "../../../src/layout/components/outline.tsx"
+      ],
       "#3h3hxbxtzi9y": [
         "../../../src/layout/components/breadcrumb.tsx"
       ],
@@ -489,6 +492,9 @@
       ],
       "#87xh00zb1b93": [
         "../../../src/inputs/advanced/tabs/styles.scss"
+      ],
+      "#8axipzwu32d3": [
+        "../../../src/layout/styles/outline.scss"
       ],
       "#8bfu1ekdes3l": [
         "../../../scripts/verify/frontend/server.mjs"

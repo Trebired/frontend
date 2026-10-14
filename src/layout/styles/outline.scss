@@ -1,0 +1,56 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("shell-outline-" + $name)}, $fallback);
+}
+
+#{ns.class("page-outline")} {
+  display: none;
+}
+
+#{ns.element-class("page-outline", "list")} {
+  display: grid;
+  gap: token("gap", var(#{ns.css-var("gap-xs")}, 8px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-inline-start: token(
+    "border",
+    var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 16%, transparent)
+  );
+}
+
+#{ns.element-class("page-outline", "link")} {
+  display: block;
+  max-width: token("max-width", 11rem);
+  padding-block: token("link-py", 0.15rem);
+  padding-inline-start: token("link-px", 0.75rem);
+  border-inline-start: token("link-border", 2px solid transparent);
+  color: token("link-color", color-mix(in srgb, currentColor 55%, transparent));
+  font-size: token("font-size", 0.8125rem);
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color var(#{ns.css-var("tone-change")}), border-color var(#{ns.css-var("tone-change")});
+}
+
+#{ns.element-class("page-outline", "link")}:hover,
+
+#{ns.element-class("page-outline", "link")}:focus-visible {
+  color: token("link-hover-color", currentColor);
+}
+
+#{ns.element-class("page-outline", "link")}[aria-current="true"] {
+  border-inline-start-color: token("link-active-border-color", currentColor);
+  color: token("link-active-color", currentColor);
+}
+
+@media (min-width: 1280px) {
+  #{ns.class("page-outline")} {
+    position: fixed;
+    z-index: token("z-index", var(#{ns.css-var("z-header")}, 920));
+    display: block;
+    inset-block-start: 50%;
+    inset-inline-end: token("offset", 1.5rem);
+    transform: translateY(-50%);
+  }
+}
