@@ -7,6 +7,9 @@ import {
 import { bindCodeBlocks } from "./code/index.js";
 import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
+import { actionAdapters, localeRuntimeOptions } from "./runtime/options.js";
+import { bindA11yRuntime } from "./a11y/runtime.js";
+import type { A11yRuntimeOptions } from "./a11y/runtime.js";
 import { bindAdvancedInputControllers } from "./inputs/advanced/index.js";
 import { bindInputControllers } from "./inputs/index.js";
 import {
@@ -20,14 +23,13 @@ import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
-import { bindScrollOverflows } from "./primitives/scroll-overflow.js";
 import { setSpaRebind } from "./spa/config.js";
-import { bindSoftRedirectLinks, spaNavigationAdapter, softReload } from "./spa/index.js";
+import { bindSoftRedirectLinks, softReload } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
-import { bindProgress, type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
+import { type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
 import { bindTooltips } from "./tooltip/index.js";
@@ -36,7 +38,7 @@ import { bindWizard } from "./wizard/index.js";
 import { bindRoot as resolveRootScope, type BindRoot, type Cleanup } from "./dom/index.js";
 import { collectAddedBindRoots } from "./dom/binding.js";
 import { flash } from "./flash/index.js";
-import { bindContrast } from "./contrast/index.js";
+import { bindFrontendGlobals } from "./runtime/globals.js";
 import { progress } from "./progress/index.js";
 import {
   resolveFrontendLogger,
@@ -51,6 +53,7 @@ type FrontendRuntimeAdapters = ActionAdapters&FrontendLoggingOptions& {
 };
 
 type FrontendRuntimeOptions = {
+  a11y?: A11yRuntimeOptions;
   adapters?: FrontendRuntimeAdapters;
   frontend_quiet?: boolean;
   icons?: IconRuntimeOptions;
@@ -69,33 +72,8 @@ type FrontendRuntimeBinding = {
   root: BindRoot;
 };
 
-function actionAdapters(options: FrontendRuntimeOptions): ActionAdapters {
-  const adapters = options.adapters || {};
-  return {
-    ...adapters,
-    navigation: adapters.navigation || spaNavigationAdapter(),
-    reload: adapters.reload || { reload: softReload },
-    flash: (adapters.flash || flash) as ActionAdapters["flash"],
-    progress: adapters.progress || progress,
-  };
-}
-
-function localeRuntimeOptions(
-  options: FrontendRuntimeOptions,
-  adapters: ActionAdapters,
-): LocaleRuntimeOptions {
-  const locale = options.locale || {};
-  if (locale.refresh || !adapters.reload?.reload) return locale;
-  return {
-    ...locale,
-    refresh: () => adapters.reload?.reload?.({
-        preserveState: true,
-        reason: "locale",
-    }),
-  };
-}
-
 function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
+  bindA11yRuntime(scope, options.a11y || {});
   void bindThemeRuntime(scope, {
       ...(options.theme || {}),
       persistence: options.adapters?.themePersistence,
@@ -132,8 +110,6 @@ function bindFrontendWidgets(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
-  runBindStep(logger, "contrast", () => bindContrast(scope));
-  runBindStep(logger, "progress", () => bindProgress(options.progress || {}));
   runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
   runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
   runBindStep(logger, "sourceLanguage", () => bindSourceLanguageRuntime(scope, options.sourceLanguage || {}));
@@ -152,7 +128,6 @@ function bindFrontendWidgets(
   runBindStep(logger, "advancedInputs", () => bindAdvancedInputControllers(scope));
   runBindStep(logger, "primitives", () => bindPrimitiveControllers(scope));
   runBindStep(logger, "wizard", () => bindWizard(scope));
-  runBindStep(logger, "scrollOverflows", () => bindScrollOverflows());
   runBindStep(logger, "tooltips", () => bindTooltips(scope));
   runBindStep(logger, "popovers", () => bindPopovers(scope));
   runBindStep(logger, "modals", () => bindModals(scope));
@@ -170,6 +145,12 @@ function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions
   const scope = resolveRootScope(root);
   const adapters = actionAdapters(options);
   bindFrontendShell(scope, options);
+  const logger = resolveFrontendLogger({
+      ...options.adapters,
+      frontend_quiet: options.frontend_quiet,
+      quiet: options.quiet,
+  });
+  bindFrontendGlobals(scope, options, (label, step) => runBindStep(logger, label, step));
   bindFrontendWidgets(scope, options, adapters);
 }
 
@@ -243,8 +224,6 @@ export *from "./fullscreen/index.js";
 export *from "./graph/index.js";
 export *from "./http/index.js";
 export *from "./icons/index.js";
-export *from "./contrast/boot.js";
-export *from "./contrast/index.js";
 export *from "./product/identity.js";
 export {
   createNavigationState,

@@ -60,6 +60,12 @@ function frontendEventName(name: string): string {
   return eventName(name);
 }
 
+function frontendMarkerName(name: string): string {
+  const marker = String(name || "").trim();
+  if (!marker) throw new Error("marker name must be a non-empty string");
+  return `${FRONTEND_PREFIX}:${marker}`;
+}
+
 function frontendToken(name: string): string {
   return token(name);
 }
@@ -75,6 +81,7 @@ export {
   frontendDataSelector,
   frontendElementClass,
   frontendEventName,
+  frontendMarkerName,
   frontendModifierClass,
   frontendToken,
 };

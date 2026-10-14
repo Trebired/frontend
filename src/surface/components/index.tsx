@@ -194,7 +194,10 @@ function BrandCanvas(props: BrandCanvasProps) {
     style={Object.keys(stageStyle).length > 0 ? { ...stageStyle, ...style } : style}
     {...frontendDataAttrs({ "brand-canvas-guides": guides ? "true" : undefined })}
     >
-    <div className={frontendElementClass("brand-canvas", "stage")}>
+    <div
+    className={frontendElementClass("brand-canvas", "stage")}
+    {...frontendDataAttrs({ dark: tone === "inverse" ? "" : undefined })}
+    >
     <div className={frontendElementClass("brand-canvas", "clear")}>
     <div className={frontendElementClass("brand-canvas", "art")}>{children}</div>
     </div>
@@ -340,6 +343,7 @@ function HairlineCell(props: HairlineCellProps) {
     {...frontendDataAttrs({ "hairline-align": align === "center" ? "center" : undefined })}
     {...frontendDataAttrs({ "hairline-interactive": interactive ? "true" : undefined })}
     {...frontendDataAttrs({ "hairline-invert": invert ? "true" : undefined })}
+    {...frontendDataAttrs({ "tone": invert ? "dark" : "light" })}
     >
     {children}
     </Tag>

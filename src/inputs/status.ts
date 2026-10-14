@@ -20,9 +20,12 @@ function findStaticStatusField(root: HTMLElement) {
 
 function setStatus(root: HTMLElement, state: "idle" | "checking" | "error" | "success", message = "") {
   root.setAttribute(frontendDataAttr("status-state"), state);
+  const field = findStaticStatusField(root);
+  if (field) field.setAttribute("aria-invalid", state === "error" ? "true" : "false");
   root.querySelectorAll<HTMLElement>(STATUS_MESSAGE_SELECTOR).forEach((slot) => {
       slot.textContent = message;
       slot.hidden = !message;
+      slot.setAttribute("role", "alert");
   });
 }
 

@@ -79,6 +79,44 @@ function watchIslandRemount(options: LiveIslandMountOptions) {
   });
 }
 
+const rebindScheduled = new WeakSet<Element>();
+
+function scheduleIslandRebind(target: Element) {
+  if (rebindScheduled.has(target)) return;
+  rebindScheduled.add(target);
+  const run = () => {
+    rebindScheduled.delete(target);
+    if (target.isConnected) runSpaRebind(target);
+  };
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(run);
+  else setTimeout(run, 0);
+}
+
+function markIslandHydrated(target: Element, hydratedAttr?: string) {
+  target.setAttribute(hydratedAttr || frontendDataAttr("live-hydrated"), "true");
+  target.setAttribute(frontendDataAttr("live-island-hydrated"), "true");
+}
+
+function islandRuntimeBinder(
+  react: typeof import("react"),
+  binder: { markHydrated: () => void; onFirstCommit: () => void; target: Element },
+) {
+  let bound = false;
+  return function IslandRuntimeBinder(props: { children?: ReactNode }) {
+    react.useEffect(() => {
+        binder.markHydrated();
+        if (bound) {
+          scheduleIslandRebind(binder.target);
+          return;
+        }
+        bound = true;
+        runSpaRebind(binder.target);
+        binder.onFirstCommit();
+    });
+    return props.children ?? null;
+  };
+}
+
 async function mountLiveIsland(options: LiveIslandMountOptions) {
   const target =
   typeof options.root === "string"
@@ -96,21 +134,24 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   const wrapped = react.createElement(RenderCurrentUrlProvider, {
       currentUrl: window.location.href,
     }, userWrapped);
-  function IslandRuntimeBinder(binderProps: { children?: ReactNode }) {
-    react.useEffect(() => {
-        runSpaRebind(target);
-      }, []);
-    return binderProps.children ?? null;
-  }
-  const node = react.createElement(IslandRuntimeBinder, null, wrapped);
+  let committed = () => undefined as void;
+  const commit = new Promise<void>((resolve) => {
+      committed = resolve;
+  });
+  const markHydrated = () => markIslandHydrated(target, options.hydratedAttr);
+  const node = react.createElement(
+    islandRuntimeBinder(react, { markHydrated, onFirstCommit: () => committed(), target }),
+    null,
+    wrapped,
+  );
   const hydrate = target.childNodes.length > 0;
   if (hydrate) harvestInlineIcons(target);
   const root = await mountReactRoot(target, node, { hydrate });
+  await commit;
   registerPageCleanup(target instanceof HTMLElement ? target : null, () => {
       unmountReactRoot(target);
   });
-  target.setAttribute(options.hydratedAttr || frontendDataAttr("live-hydrated"), "true");
-  target.setAttribute(frontendDataAttr("live-island-hydrated"), "true");
+  markHydrated();
   target.dispatchEvent(
     new CustomEvent(options.hydratedEvent || frontendEventName("live-island-hydrated"), {
         bubbles: true,
@@ -131,6 +172,7 @@ export {
 };
 export type { LiveIslandMountOptions, ReactRootOptions };
 
+export *from "./../a11y/components/index.js";
 export *from "./assets.js";
 export *from "./boot.js";
 export *from "./product-shell.js";
@@ -156,6 +198,10 @@ export *from "#8sfk4kby98q6";
 export *from "#vbkfq413o3u7";
 export *from "#26uyycr73i6f";
 export *from "#4woymc9xhupl";
+export { configureMotifs } from "./../surface/motif/registry.js";
+export { Motif } from "./../surface/components/motif.js";
+export type { MotifProps } from "./../surface/components/motif.js";
+export type { MotifDefinition, MotifFrame, MotifPainter } from "./../surface/motif/program.js";
 export *from "#hu7oo5uup2sj";
 export *from "#e5asmvaq7yj0";
 export *from "#dxackjk2l9fx";

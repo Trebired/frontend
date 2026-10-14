@@ -1,4 +1,5 @@
 import { cleanLocale } from "./options.js";
+import { RTL_LANGUAGES } from "./../direction.js";
 import {
   LOCALE_END_MARK,
   LOCALE_META_ATTR,
@@ -55,7 +56,8 @@ function localeSwapScript(): string {
     ...swapNodesSource(),
     ...swapMetaSource(),
     "}else h.lang=h.getAttribute(R)||l}}catch(err){h.lang=h.getAttribute(R)||l}",
-    "h.removeAttribute(P);h.style.visibility='';",
+    `h.dir=${scriptJson(RTL_LANGUAGES)}.indexOf(String(h.lang).split('-')[0])>=0?'rtl':'ltr';`,
+    "h.removeAttribute(P);h.style.opacity='';",
     "})();",
   ].join("");
 }

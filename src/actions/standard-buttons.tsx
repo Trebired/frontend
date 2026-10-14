@@ -3,7 +3,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { button } from "#6hfutrhvm6x6";
 import { actionLabel, type ActionLabelKey } from "./labels.js";
 import { copyTargetId } from "./clipboard.js";
-import { type PrimitiveButtonSize, type PrimitiveStatusTone } from "#0rl8rpgzssot";
+import { type PrimitiveButtonSize, type PrimitiveButtonVariant, type PrimitiveStatusTone } from "#0rl8rpgzssot";
 import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type StandardActionButtonProps = {
@@ -28,6 +28,7 @@ type CopyButtonProps = {
   title?: string;
   tooltip?: string;
   value?: string;
+  variant?: PrimitiveButtonVariant;
 };
 
 type SaveIconButtonProps = StandardActionButtonProps & {
@@ -191,6 +192,7 @@ function copy_button(props: CopyButtonProps) {
         className: props.className,
         icon: !props.children,
         size: props.size || "md",
+        ...(props.variant ? { variant: props.variant } : {}),
         tooltip: true,
         "aria-controls": target,
         "aria-label": String(props.title || actionLabel("copy", props.lang)),

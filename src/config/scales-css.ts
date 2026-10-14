@@ -8,12 +8,19 @@ import type {
 
 type ScaleCss = { body: string[]; vars: string[] };
 
+const REM_BASE = 16;
+
+function remLength(value: number): string {
+  if (!Number.isFinite(value) || value === 0) return "0";
+  return `${Number((value / REM_BASE).toFixed(4))}rem`;
+}
+
 function stepEntries(steps: FrontendScaleSteps): Array<[string, number]> {
   return Object.entries(steps).sort(([a], [b]) => a.localeCompare(b));
 }
 
 function renderSpacingScale(steps: FrontendScaleSteps): ScaleCss {
-  const vars = stepEntries(steps).map(([step, v]) => `  --space-${step}: ${v}px;`);
+  const vars = stepEntries(steps).map(([step, v]) => `  --space-${step}: ${remLength(v)};`);
   const body: string[] = [];
   for (const [step] of stepEntries(steps)) {
     body.push(
@@ -33,12 +40,12 @@ function renderPaddingScale(steps: FrontendScaleSteps): ScaleCss {
   const body: string[] = [];
   for (const [step, v] of stepEntries(steps)) {
     body.push(
-      `@mixin padding-${step} { padding: ${v}px; }`,
-      `.${NS}-padding-${step} { @include padding-${step}; --scroll-min-padding-bottom: ${v}px; }`,
+      `@mixin padding-${step} { padding: ${remLength(v)}; }`,
+      `.${NS}-padding-${step} { @include padding-${step}; --scroll-min-padding-bottom: ${remLength(v)}; }`,
     );
     for (const side of sides) {
-      const extra = side === "bottom" ? ` --scroll-min-padding-bottom: ${v}px;` : "";
-      body.push(`.${NS}-padding-${side}-${step} { padding-${side}: ${v}px;${extra} }`);
+      const extra = side === "bottom" ? ` --scroll-min-padding-bottom: ${remLength(v)};` : "";
+      body.push(`.${NS}-padding-${side}-${step} { padding-${side}: ${remLength(v)};${extra} }`);
     }
   }
   body.push(`.${NS}-padding-0 { padding: 0; }`);
@@ -110,7 +117,7 @@ function renderWidthScale(steps: FrontendScaleSteps): ScaleCss {
 }
 
 function renderTextSizeScale(steps: FrontendScaleSteps): ScaleCss {
-  const body = stepEntries(steps).map(([step, v]) => `.${NS}-text-${step} { font-size: ${v}px; }`);
+  const body = stepEntries(steps).map(([step, v]) => `.${NS}-text-${step} { font-size: ${remLength(v)}; }`);
   return { body, vars: [] };
 }
 

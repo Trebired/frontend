@@ -16,7 +16,6 @@ import {
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
 import { syncShell } from "./shell.js";
-import { settleContrast } from "./../contrast/index.js";
 import {
   beginNavigation,
   emitPageChange,
@@ -138,6 +137,28 @@ function rehydrate(root: BindRoot = document) {
   );
 }
 
+function releaseAfterPaint(release: () => void) {
+  if (typeof window === "undefined" || typeof window.requestAnimationFrame !== "function") {
+    release();
+    return;
+  }
+  window.requestAnimationFrame(() => window.requestAnimationFrame(release));
+}
+
+const PAGE_SWAP_ATTR = frontendDataAttr("page-swap");
+
+function holdPageSwapMotion() {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  root.setAttribute(PAGE_SWAP_ATTR, "");
+  const release = () => root.removeAttribute(PAGE_SWAP_ATTR);
+  if (typeof requestAnimationFrame !== "function") {
+    release();
+    return;
+  }
+  requestAnimationFrame(() => requestAnimationFrame(release));
+}
+
 function replaceContent(
   doc: Document,
   navigation: SpaNavigation,
@@ -148,9 +169,9 @@ function replaceContent(
   const currentRoot = contentRoot(document);
   const nextRoot = contentRoot(doc);
   if (!currentRoot || !nextRoot) return false;
-  settleContrast();
   const formState = preserveState ? captureFormState(currentRoot) : null;
   const wizardState = preserveState ? captureWizardSteps(currentRoot) : null;
+  holdPageSwapMotion();
   closeAllOverlays();
   config.closeOverlays?.();
   runPageCleanups(currentRoot);

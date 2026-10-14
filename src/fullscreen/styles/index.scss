@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "#4fimbihd7052" as motion;
 #{ns.class("fullscreen-overlay")},
 
 #{ns.data("fullscreen-overlay")} {
@@ -55,7 +56,7 @@
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include motion.reduced-motion {
   #{ns.data("fullscreen-target")}#{ns.data("fullscreen-active", "true")} {
     transform: none;
     transition: none;
@@ -104,7 +105,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include motion.reduced-motion {
   #{ns.class("fullscreen-placeholder")},
 
   #{ns.data("fullscreen-placeholder")},

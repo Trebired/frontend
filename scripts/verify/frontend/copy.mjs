@@ -9,7 +9,7 @@ async function verifyCopyCardTitlesAndWrapping(context) {
   const smaller = renderToStaticMarkup(createElement(react.copy_card, { target: "#copy_probe", title: "Nested", titleAs: "h4" }));
   assert.ok(smaller.includes("<h4>Nested</h4>") && !smaller.includes("<h3>"), "copy_card takes a smaller title level");
   const bogus = renderToStaticMarkup(createElement(react.copy_card, { target: "#copy_probe", title: "Safe", titleAs: "div" }));
-  assert.ok(bogus.includes("<h3>Safe</h3>"), "an unknown title level falls back to h3");
+  assert.ok(bogus.includes("<h2>Safe</h2>"), "an unknown title level falls back to the depth the card sits at");
   const codeLevel = renderToStaticMarkup(createElement(react.copy_code_card, { id: "lvl", label: "Key", titleAs: "h5", value: "x" }));
   assert.ok(codeLevel.includes("<h5>Key</h5>"), "copy_code_card passes its title level through");
   assert.match(codeLevel, /<code[^>]*class="tbf-pre-wrap tbf-text-break"/u, "wrapped code also breaks long tokens such as keys");
@@ -26,7 +26,7 @@ async function verifyCopyComponents(context) {
         target: "#copy_probe", title: "Token", tooltip: "Copy token",
         children: createElement("code", { id: "copy_probe" }, "abc"),
   }));
-  assert.ok(copy.includes("<h3>Token</h3>"), "copy_card renders its title as a card heading");
+  assert.ok(copy.includes("<h2>Token</h2>"), "copy_card renders its title as a card heading");
   assert.ok(copy.includes('aria-controls="copy_probe"'), "copy_card wires the copy button to its target");
   assert.ok(copy.includes("tbf-btn tbf-icon tbf-sm") || copy.includes(" tbf-sm "), "copy_card uses the fixed small copy button");
   const inline = renderToStaticMarkup(createElement(react.copy_value, { value: "a1b2c3d4" }));
@@ -40,7 +40,7 @@ async function verifyCopyComponents(context) {
   assert.ok(short.includes('"value":"a1b2c3d4e5f6"'), "copyValue copies a literal that differs from what is shown");
   await verifyCopyCardTitlesAndWrapping(context);
   const code = renderToStaticMarkup(createElement(react.copy_code_card, { id: "code_probe", label: "Remote", value: "git@x" }));
-  assert.ok(code.includes("<h3>Remote</h3>") && code.includes("git@x"), "copy_code_card is built on copy_card");
+  assert.ok(code.includes("<h2>Remote</h2>") && code.includes("git@x"), "copy_code_card is built on copy_card");
   const actions = await context.importDist("actions");
   document.body.innerHTML = renderToStaticMarkup(createElement(react.copy_card, {
         title: "Details",
@@ -71,10 +71,23 @@ async function verifyLocaleEndonyms(context) {
         lang: "en",
         locales: [{ code: "en", label: "English" }, { code: "cs", label: "Czech" }, { code: "pl" }, { code: "de" }],
   }));
-  for (const name of ["English", "Čeština", "Polski", "Deutsch"]) {
-    assert.ok(html.includes(`<span>${name}</span>`), `the switcher names ${name} in its own language`);
+  for (const [code, name] of [["en", "English"], ["cs", "Čeština"], ["pl", "Polski"], ["de", "Deutsch"]]) {
+    assert.ok(
+      html.includes(`<span lang="${code}">${name}</span>`),
+      `the switcher names ${name} in its own language and says which language that is`,
+    );
   }
-  assert.ok(!html.includes("<span>Czech</span>"), "an English label does not override the language's own name");
+  assert.ok(!html.includes(">Czech<"), "an English label does not override the language's own name");
+  assert.equal(
+    (html.match(/aria-checked="true"/gu) || []).length,
+    1,
+    "exactly one option is announced as the current language, whatever codes the site offers",
+  );
+  const rtl = renderToStaticMarkup(createElement(react.LocaleSwitcher, {
+        lang: "en",
+        locales: [{ code: "ar" }],
+  }));
+  assert.ok(rtl.includes('dir="rtl"'), "a right-to-left name is marked as one, so it is not reordered as English");
   const root = await context.importDistRoot();
   assert.equal(root.languageName("cs"), "Čeština", "languageName is exported for apps with their own language menus");
   assert.equal(root.languageName(""), "", "languageName returns an empty string for an empty code");

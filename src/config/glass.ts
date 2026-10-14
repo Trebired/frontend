@@ -1,7 +1,9 @@
 import { assertPlainObject } from "./shared.js";
 import type { FrontendGlassConfig, NormalizedFrontendGlassConfig } from "./types/glass.js";
 
-const GLASS_FIELDS = ["blur", "color", "opacity", "saturate"];
+const GLASS_FIELDS = ["blur", "clear", "color", "opacity", "saturate", "tint"];
+
+const TINTS: Record<string, string> = { dark: "ink", light: "page", none: "transparent" };
 
 function glassField(source: FrontendGlassConfig, key: keyof FrontendGlassConfig, fallback: string): string {
   const value = source[key];
@@ -18,11 +20,16 @@ function normalizeGlassConfig(value: unknown): NormalizedFrontendGlassConfig | n
       throw new Error(`design.glass has an unknown field: ${key}`);
     }
   }
+  const tint = glassField(source, "tint", "");
+  if (tint && !Object.prototype.hasOwnProperty.call(TINTS, tint)) {
+    throw new Error(`design.glass.tint must be one of ${Object.keys(TINTS).join(", ")}`);
+  }
   return {
     blur: glassField(source, "blur", "16px"),
-    color: glassField(source, "color", "transparent"),
-    opacity: glassField(source, "opacity", "35%"),
-    saturate: glassField(source, "saturate", "180%"),
+    clear: glassField(source, "clear", "transparent"),
+    color: glassField(source, "color", TINTS[tint] || "transparent"),
+    opacity: glassField(source, "opacity", "72%"),
+    saturate: glassField(source, "saturate", "110%"),
   };
 }
 

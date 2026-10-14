@@ -1,25 +1,35 @@
+import { Disclosure, DisclosureButton } from "./../../../inputs/components/disclosure.js";
 import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 import { useEffect, useId, useSyncExternalStore } from "react";
+import { PopoverOpenButton, PopoverPanel } from "./../../../popover/components/index.js";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
-import { useSiteHeaderMenu } from "./header_state.js";
+import { A11Y_MAIN_ID } from "./../../../a11y/attributes.js";
+import { useSiteHeaderMenu } from "./header/state.js";
+import { useSiteHeaderFit } from "./header/fit.js";
+import { useSiteHeaderTone } from "./header/tone.js";
 import { activeSection, observeSections, serverActiveSection, subscribeActiveSection } from "./section_spy.js";
-import { stripLocalePrefix } from "./../../../language/routing/runtime.js";
+import {
+  isSiteLinkActive,
+  isSiteLinkGroup,
+  SiteLinkAnchor,
+  siteLinkChildren,
+  siteLinkFragment,
+  siteLinkKey,
+  siteLinkOnCurrentPage,
+  sitePathForms,
+  type SiteLink,
+} from "./link.js";
 import { useRenderCurrentUrl } from "./../../../render/current_url.js";
 
-type SiteHeaderLink = {
-  active?: boolean;
-  href: string;
-  key?: string;
-  label: ReactNode;
-  softRedirect?: boolean;
-};
+type SiteHeaderLink = SiteLink;
 
 type SiteHeaderLabels = {
   closeMenu?: string;
   home?: string;
   navigation?: string;
   openMenu?: string;
+  skipToContent?: string;
 };
 
 type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
@@ -30,93 +40,139 @@ type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   links?: SiteHeaderLink[];
   menuActions?: ReactNode;
   softRedirect?: boolean;
-  onDark?: boolean;
 };
 
 const block = "site-header";
 
-function headerPath(value: unknown): string {
-  const raw = String(value || "");
-  const withoutOrigin = raw.includes("://") ? raw.replace(/^[a-z]+:\/\/[^/]*/iu, "") : raw;
-  return (withoutOrigin.split("#")[0].split("?")[0] || "/").replace(/\/+$/u, "") || "/";
+function SiteHeaderSkipLink({ labels }: { labels?: SiteHeaderLabels }) {
+  return (
+    <a
+    className={frontendClassName("skip-link")}
+    href={`#${A11Y_MAIN_ID}`}
+    >
+    {labels?.skipToContent || "Skip to content"}
+    </a>
+  );
 }
 
-function headerPathForms(value: unknown): string[] {
-  const path = headerPath(value);
-  const stripped = stripLocalePrefix(path).replace(/\/+$/u, "") || "/";
-  return stripped === path ? [path] : [path, stripped];
+type LinkRenderProps = {
+  currentPaths: string[];
+  currentUrl: string;
+  hasSection: boolean;
+  onNavigate?: () => void;
+  section: string;
+  softRedirect?: boolean;
+  tabIndex?: number;
+};
+
+function SiteHeaderAnchor(
+  props: LinkRenderProps & { className?: string; link: SiteHeaderLink; plain?: boolean },
+) {
+  const { className, currentPaths, hasSection, link, section } = props;
+  return (
+    <SiteLinkAnchor
+    active={isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl)}
+    className={className || frontendElementClass(block, "link")}
+    link={link}
+    onNavigate={props.onNavigate}
+    plain={props.plain}
+    softRedirect={props.softRedirect}
+    tabIndex={props.tabIndex}
+    />
+  );
 }
 
-function pathMatches(currentPath: string, target: string): boolean {
-  if (target === "/") return currentPath === "/";
-  return currentPath === target || currentPath.startsWith(`${target}/`);
+function SiteHeaderNavGroup(props: LinkRenderProps & { link: SiteHeaderLink }) {
+  const { currentPaths, hasSection, link, section } = props;
+  const panelId = `${useId().replace(/:/gu, "")}_nav_group`;
+  const active = isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl);
+  return (
+    <>
+    <PopoverOpenButton
+    aria-current={active ? "true" : undefined}
+    className={frontendElementClass(block, "nav-trigger")}
+    controls={panelId}
+    hover
+    tabIndex={props.tabIndex}
+    >
+    <span className={frontendElementClass(block, "link-label")}>{link.label}</span>
+    </PopoverOpenButton>
+    <PopoverPanel id={panelId}>
+    {siteLinkChildren(link).map((child, index) => (
+          <SiteHeaderAnchor
+          {...props}
+          plain
+          className={frontendClassName("popover-item")}
+          key={siteLinkKey(child, index)}
+          link={child}
+          />
+    ))}
+    </PopoverPanel>
+    </>
+  );
 }
 
-function linkFragment(link: SiteHeaderLink): string {
-  const [, fragment = ""] = String(link.href || "").split("#");
-  return fragment;
+function SiteHeaderChevron() {
+  return (
+    <span aria-hidden="true" className={frontendElementClass(block, "menu-group-chevron")} />
+  );
 }
 
-function linkOnCurrentPage(link: SiteHeaderLink, currentPaths: string[]): boolean {
-  const targets = headerPathForms(link.href);
-  return currentPaths.some((current) => targets.some((target) => pathMatches(current, target)));
-}
-
-function linkIsActive(
-  link: SiteHeaderLink,
-  currentPaths: string[],
-  section: string,
-  hasSection: boolean,
-): boolean {
-  if (link.active !== undefined) return link.active;
-  const fragment = linkFragment(link);
-  if (fragment) return Boolean(section) && fragment === section && linkOnCurrentPage(link, currentPaths);
-  if (hasSection && section) return false;
-  const targets = headerPathForms(link.href);
-  if (targets.includes("/")) return currentPaths.includes("/");
-  return currentPaths.some((current) => targets.some((target) => pathMatches(current, target)));
-}
-
-function linkAttrs(active: boolean, link: SiteHeaderLink, softRedirect: boolean | undefined) {
-  return {
-    "aria-current": active ? "page" as const : undefined,
-    ...frontendDataAttrs({ "soft-redirect": link.softRedirect ?? softRedirect ? "" : undefined }),
-  };
+function SiteHeaderMenuGroup(props: LinkRenderProps & { link: SiteHeaderLink }) {
+  return (
+    <Disclosure
+    className={frontendElementClass(block, "menu-group")}
+    panel={
+      <div className={frontendElementClass(block, "menu-group-links")}>
+      {siteLinkChildren(props.link).map((child, index) => (
+            <SiteHeaderAnchor {...props} key={siteLinkKey(child, index)} link={child} />
+      ))}
+      </div>
+    }
+    trigger={
+      <DisclosureButton className={frontendElementClass(block, "menu-group-label")}>
+      <span>{props.link.label}</span>
+      <SiteHeaderChevron />
+      </DisclosureButton>
+    }
+    />
+  );
 }
 
 function SiteHeaderLinks(props: {
+    grouped?: boolean;
     links: SiteHeaderLink[];
     onNavigate?: () => void;
     softRedirect?: boolean;
     tabIndex?: number;
 }) {
-  const currentPaths = headerPathForms(useRenderCurrentUrl());
-  const fragments = props.links
-  .filter((link) => linkFragment(link) && linkOnCurrentPage(link, currentPaths))
-  .map((link) => linkFragment(link));
+  const currentUrl = useRenderCurrentUrl();
+  const currentPaths = sitePathForms(currentUrl);
+  const fragments = props.links.flatMap((link) => (isSiteLinkGroup(link) ? siteLinkChildren(link) : [link]))
+  .filter((link) => siteLinkFragment(link) && siteLinkOnCurrentPage(link, currentPaths))
+  .map((link) => siteLinkFragment(link));
   const fragmentKey = fragments.join("|");
   useEffect(() => {
       observeSections(fragmentKey ? fragmentKey.split("|") : []);
     }, [fragmentKey]);
   const section = useSyncExternalStore(subscribeActiveSection, activeSection, serverActiveSection);
-  const hasSection = fragments.length > 0;
+  const shared = {
+    currentPaths,
+    currentUrl,
+    hasSection: fragments.length > 0,
+    onNavigate: props.onNavigate,
+    section,
+    softRedirect: props.softRedirect,
+    tabIndex: props.tabIndex,
+  };
   return (
     <>
-    {props.links.map((link) => (
-          <a
-          {...linkAttrs(linkIsActive(link, currentPaths, section, hasSection), link, props.softRedirect)}
-          className={classNames(
-              frontendElementClass(block, "link"),
-              linkIsActive(link, currentPaths, section, hasSection) ? `${frontendElementClass(block, "link")}--active` : "",
-          )}
-          href={link.href}
-          key={link.key || link.href}
-          onClick={props.onNavigate}
-          tabIndex={props.tabIndex}
-          >
-          {link.label}
-          </a>
-    ))}
+    {props.links.map((link, index) => {
+          const key = siteLinkKey(link, index);
+          if (!isSiteLinkGroup(link)) return <SiteHeaderAnchor {...shared} key={key} link={link} />;
+          if (props.grouped) return <SiteHeaderMenuGroup {...shared} key={key} link={link} />;
+          return <SiteHeaderNavGroup {...shared} key={key} link={link} />;
+    })}
     </>
   );
 }
@@ -187,13 +243,16 @@ function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: Return
     <div className={frontendElementClass(block, "menu-content")}>
     {links.length ? (
         <nav aria-label={labels?.navigation} className={frontendElementClass(block, "menu-links")}>
-        <SiteHeaderLinks links={links} onNavigate={state.close} softRedirect={softRedirect} />
+        <SiteHeaderLinks grouped links={links} onNavigate={state.close} softRedirect={softRedirect} />
         </nav>
       ) : null}
     {menuActions ? (
+        <>
+        <span aria-hidden="true" className={frontendElementClass(block, "menu-divider")} />
         <div className={frontendElementClass(block, "menu-footer")} onClick={(event) => closeOnLink(event, state.close)}>
         {menuActions}
         </div>
+        </>
       ) : null}
     </div>
     </div>
@@ -203,21 +262,26 @@ function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: Return
 
 function SiteHeader(props: SiteHeaderProps) {
   const {
-    actions, brand, brandHref = "/", className, labels, links = [], menuActions, onDark,
+    actions, brand, brandHref = "/", className, labels, links = [], menuActions,
     softRedirect, ...rest
   } = props;
   const state = useSiteHeaderMenu();
+  const tone = useSiteHeaderTone(state.headerRef);
   const menuId = `${useId().replace(/:/gu, "")}_site_menu`;
   const hasMenu = links.length > 0 || Boolean(menuActions);
+  const compact = useSiteHeaderFit(state.headerRef, hasMenu);
   return (
     <header
     {...rest}
     className={classNames(frontendClassName(block), className)}
     {...frontendDataAttrs({ "site-header": "", "site-header-open": state.open ? "true" : "false" })}
     {...frontendDataAttrs({ "site-header-menu": hasMenu ? "true" : "false" })}
-    {...frontendDataAttrs({ "on-dark": onDark === undefined ? undefined : onDark ? "true" : "false" })}
+    {...frontendDataAttrs({ "site-header-compact": compact ? "true" : undefined })}
+    {...frontendDataAttrs({ "site-header-live": tone ? "" : undefined })}
+    {...frontendDataAttrs({ dark: tone === "dark" ? "" : undefined })}
     ref={state.headerRef}
     >
+    <SiteHeaderSkipLink labels={labels} />
     <div className={frontendElementClass(block, "bar")}>
     <SiteHeaderBrand
     brand={brand}

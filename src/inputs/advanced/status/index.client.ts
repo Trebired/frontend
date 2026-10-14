@@ -4,6 +4,7 @@ import { requestJson } from "#dqy2d22qyujv";
 import { setTooltipText } from "#yf1o70q7eshd";
 import { documentLang } from "#dqy2d22qyujv";
 import { readHostJsonConfig } from "#dqy2d22qyujv";
+import { announce } from "./../../../a11y/announce.js";
 
 type MatchStatusConfig = {
   mismatchReason?: string;
@@ -88,6 +89,23 @@ function setInputStatusIcon(
   setBadReason(icons.bad, status === "bad" ? reason : "");
 }
 
+function fieldErrorSlot(input: HTMLInputElement) {
+  const id = String(input.id || "").trim();
+  if (!id) return null;
+  return document.getElementById(`${id}-error`);
+}
+
+function setFieldError(input: HTMLInputElement, status: string, reason = "") {
+  const text = status === "bad" ? String(reason || "").trim() : "";
+  input.setAttribute("aria-invalid", text ? "true" : "false");
+  const slot = fieldErrorSlot(input);
+  if (!slot) return;
+  if (slot.textContent === text) return;
+  slot.textContent = text;
+  slot.hidden = !text;
+  if (text) announce(text);
+}
+
 function readErrorReasons(config: StatusFieldConfig) {
   const reasons = config.errorReasons;
   return reasons && typeof reasons === "object" ? reasons : {};
@@ -164,6 +182,7 @@ async function checkBackendStatusInput(
     ? backendStatusReason(input, null, "missing", config)
     : "";
     setInputStatusIcon(wrap, status, reason);
+    setFieldError(input, status, reason);
     dispatchBackendStatusChecked(input, {
         empty: true,
         ok: status !== "bad",
@@ -173,11 +192,9 @@ async function checkBackendStatusInput(
   }
 
   if (!endpoint) {
-    setInputStatusIcon(
-      wrap,
-      "bad",
-      backendStatusReason(input, null, "", config),
-    );
+    const reason = backendStatusReason(input, null, "", config);
+    setInputStatusIcon(wrap, "bad", reason);
+    setFieldError(input, "bad", reason);
     dispatchBackendStatusChecked(input, { ok: false, result: null });
     return;
   }
@@ -193,11 +210,9 @@ async function checkBackendStatusInput(
 
   const result = response && response.json && response.json.result;
   const ok = Boolean(result && result.ok === true);
-  setInputStatusIcon(
-    wrap,
-    ok ? "ok" : "bad",
-    ok ? "" : backendStatusReason(input, result, "", config),
-  );
+  const reason = ok ? "" : backendStatusReason(input, result, "", config);
+  setInputStatusIcon(wrap, ok ? "ok" : "bad", reason);
+  setFieldError(input, ok ? "ok" : "bad", reason);
   dispatchBackendStatusChecked(input, { ok, result });
 }
 
@@ -248,20 +263,17 @@ function checkMatchStatusInput(
   const localT = createLocalTranslator(import.meta.url, documentLang());
 
   if (!value) {
-    setInputStatusIcon(
-      wrap,
-      input.required ? "bad" : "none",
-      String(config?.requiredReason || localT("feedback.required")),
-    );
+    const missing = input.required ? "bad" : "none";
+    const required = String(config?.requiredReason || localT("feedback.required"));
+    setInputStatusIcon(wrap, missing, required);
+    setFieldError(input, missing, required);
     return;
   }
 
   const matches = Boolean(target) && target.value === value;
-  setInputStatusIcon(
-    wrap,
-    matches ? "ok" : "bad",
-    matches ? "" : String(config?.mismatchReason || localT("feedback.invalid")),
-  );
+  const mismatch = matches ? "" : String(config?.mismatchReason || localT("feedback.invalid"));
+  setInputStatusIcon(wrap, matches ? "ok" : "bad", mismatch);
+  setFieldError(input, matches ? "ok" : "bad", mismatch);
 }
 
 function bindMatchStatusInput(
@@ -352,6 +364,7 @@ if (typeof document !== "undefined" && document.readyState === "loading") {
 
 export {
   bindBackendStatusInput,
+  setFieldError,
   bindAdvancedStatusFields as bindStatusFields,
   bindStatusFieldHost,
   bootStatusFields,

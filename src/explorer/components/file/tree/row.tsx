@@ -105,15 +105,16 @@ function FileTreeRow(props: FileTreeRowProps) {
   };
   return (
     <div
-    role="treeitem"
-    aria-level={model.rowLevel}
-    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
+    role="none"
     {...frontendDataAttrs({ "file-tree-path": model.relPath || undefined })}
     style={rowStyle}
     className={primitiveInlineRowClassName({ verticalCenter: true })}
     >
     <button
     type="button"
+    role="treeitem"
+    aria-level={model.rowLevel}
+    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
     className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
               className: frontendClassNames("width-max", "text-left"),
@@ -134,7 +135,7 @@ function FileTreeRow(props: FileTreeRowProps) {
         width: "100%",
     }}
     aria-disabled={model.isInteractive ? undefined : true}
-    tabIndex={model.isInteractive ? undefined : -1}
+    tabIndex={-1}
     onClick={() => handleRowClick(props, model)}
     >
     <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />

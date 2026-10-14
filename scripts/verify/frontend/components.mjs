@@ -6,7 +6,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { assertNoCustomElementTags } from "./html-assertions.mjs";
 import { verifyBottomBar } from "./bottom-bar.mjs";
 import { verifyHeaderActiveLinks } from "./header-active.mjs";
-import { verifyContrast } from "./contrast.mjs";
 import { verifyLogsViewScrollContract } from "./logs-scroll.mjs";
 import { verifyProgressBars } from "./progress-bars.mjs";
 import { verifyScrollbarFollowsTheDevice } from "./scrollbar.mjs";
@@ -29,7 +28,6 @@ async function verifyFrontendComponents(context) {
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
   await verifyProgressBars(context.rootDir, context.importDist);
-  await verifyContrast(context.rootDir, context.importDist, context.packageVersion);
   await verifySectionSurfaces(context);
   await verifyHeaderActiveLinks(context.importDist, context.rootDir);
   await verifyScrollbarFollowsTheDevice(context.rootDir, context.importDist);
@@ -187,7 +185,10 @@ async function verifyButtonVariantVocabulary(importDist) {
     assert.equal(html.includes(gone), false, `${gone} is not part of the button vocabulary`);
   }
   assert.ok(html.includes("tbf-locale-trigger"), "the locale switcher is its own control");
-  assert.equal(html.includes("tbf-locale-trigger") && html.includes("tbf-btn "), false, "the locale trigger is not a button");
+  assert.ok(
+    html.includes("tbf-btn") && html.includes("tbf-chrome"),
+    "the locale trigger is the chrome button variant, which is where its border, fill and hover are configured",
+  );
   assertNoCustomElementTags(html, "rendered button variants");
 }
 

@@ -34,7 +34,7 @@
     top: calc(var(--dd-h) / 2);
     transform: translateY(-3px);
     border: calc(var(#{ns.css-var("border-width")}, 1px) * 6) solid transparent;
-    border-top-color: var(#{ns.css-var("ui-dropdown-arrow-color")}, var(#{ns.css-var("adaptive-muted")}, currentColor));
+    border-top-color: var(#{ns.css-var("ui-dropdown-arrow-color")}, var(#{ns.css-var("text-muted")}, currentColor));
     pointer-events: none;
   }
 
@@ -70,13 +70,8 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    background: var(
-      #{ns.css-var("glass-bg")},
-      var(#{ns.css-var("ui-dropdown-menu-bg")}, var(#{ns.css-var("surface")}, transparent))
-    );
-    backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
-    -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
-    border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
+    background: var(#{ns.css-var("ui-dropdown-menu-bg")}, var(#{ns.css-var("surface")}, #fff));
+    border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor);
     border-radius: var(#{ns.css-var("radius")}, 0);
     margin: 0;
     padding: 0;
@@ -136,14 +131,14 @@
     pointer-events: none;
     overflow: hidden;
     z-index: 1;
-    color: var(#{ns.css-var("adaptive")}, currentColor);
+    color: var(#{ns.css-var("text")}, currentColor);
     font-size: 13px;
     line-height: 1.4;
   }
 
   #{ns.class("dropdown-top")} {
     padding: 10px;
-    border-bottom: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
+    border-bottom: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor);
 
     #{ns.class("input")} {
       width: 100%;
@@ -195,6 +190,12 @@
         background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, transparent));
       }
 
+      &#{ns.data("dropdown-active", "true")} {
+        background: var(#{ns.css-var("ui-dropdown-option-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, transparent));
+        outline: var(#{ns.css-var("focus-ring-width")}, 2px) solid var(#{ns.css-var("focus-ring-color")}, currentColor);
+        outline-offset: calc(var(#{ns.css-var("focus-ring-width")}, 2px) * -1);
+      }
+
       &#{ns.data("dropdown-selected", "true")} {
         background: var(
           #{ns.css-var("ui-dropdown-option-state-selected-bg")},
@@ -207,19 +208,19 @@
       }
 
       &#{ns.data("dropdown-placeholder-option")} {
-        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
+        color: var(#{ns.css-var("text-muted")}, currentColor);
         cursor: default;
       }
 
       &#{ns.data("dropdown-unselect", "true")} {
-        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
+        color: var(#{ns.css-var("text-muted")}, currentColor);
       }
 
       &#{ns.class("dropdown-section")} {
         height: auto;
         min-height: 0;
         padding: 9px 10px 5px;
-        color: var(#{ns.css-var("adaptive-muted")}, currentColor);
+        color: var(#{ns.css-var("text-muted")}, currentColor);
         cursor: default;
         font-size: 11px;
         font-weight: 700;

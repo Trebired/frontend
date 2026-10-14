@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "./../../styles/utils/tone" as tone;
 
 #{ns.class("hairline")} {
   display: grid;
@@ -10,7 +11,7 @@
   overflow: hidden;
   border: var(
     #{ns.css-var("surf-hairline-root-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
   );
   border-radius: var(
     #{ns.css-var("surf-hairline-root-radius")},
@@ -18,12 +19,13 @@
   );
   background: var(
     #{ns.css-var("surf-hairline-root-bg")},
-    var(#{ns.css-var("adaptive-border")}, color-mix(in srgb, currentColor 10%, transparent))
+    var(#{ns.css-var("border")}, color-mix(in srgb, currentColor 10%, transparent))
   );
   list-style: none;
 }
 
 #{ns.element-class("hairline", "cell")} {
+  @include tone.on-light;
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("surf-hairline-cell-text-muted")},
     color-mix(in srgb, currentColor 62%, transparent)
@@ -44,19 +46,21 @@
 }
 
 #{ns.data("hairline-invert", "true")} {
+  @include tone.on-dark;
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("surf-hairline-cell-text-muted-inverse")},
     color-mix(in srgb, currentColor 62%, transparent)
   );
   color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("ink")}, #000));
 }
 
 #{ns.data("hairline-interactive", "true")}:hover {
+  @include tone.on-dark;
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("surf-hairline-cell-text-muted-inverse")},
     color-mix(in srgb, currentColor 62%, transparent)
   );
   color: var(#{ns.css-var("surf-hairline-cell-color-inverse")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-hairline-cell-bg-inverse")}, var(#{ns.css-var("ink")}, #000));
 }

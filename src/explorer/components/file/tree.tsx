@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { handleTreeFocus, handleTreeKeyDown } from "./tree/keys.js";
 import { createElement, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -155,7 +156,14 @@ function renderInteractiveFileTree(options: any) {
           className={frontendClassNames("scroll", "scroll-min", "file-tree-scroll")}
           style={treeScrollStyle(options.treeHeight, rows)}
           >
-          <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
+          <div
+          role="tree"
+          aria-multiselectable="true"
+          onFocus={handleTreeFocus}
+          onKeyDown={handleTreeKeyDown}
+          style={{ minWidth: 220, width: "100%" }}
+          tabIndex={0}
+          >
           {rows.map((row: any, index: number) => renderFileTreeRow(row, index, options))}
           </div>
           </div>,

@@ -1,16 +1,20 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "./utils/tone" as tone;
 :root {
+  @include tone.snapshot;
+
   --border-width: 1px;
   --outline-width: 2px;
-  --icon-gap: 5px;
-  --header-height: 80px;
+  --icon-gap: 0.3125rem;
+  --header-height: 5rem;
   --transition-1: 120ms;
+  #{ns.css-var("tone-change")}: var(#{ns.css-var("tone-duration")}, 120ms) ease;
   --transition-2: 180ms;
   --transition-3: 240ms;
   --transition-4: 320ms;
   --theme-switch-duration: var(--transition-2, 180ms);
   --theme-switch-easing: ease;
-  --height-input: var(--height-xs4, 35px);
+  --height-input: 2.1875rem;
   --click-brightness: 0.85;
   --brightness-1: var(--click-brightness);
   --brightness-2: 0.75;
@@ -44,16 +48,20 @@
   #{ns.css-var("text")}: var(--text-color, #000);
   #{ns.css-var("text-muted")}: var(--text-color-muted, var(#{ns.css-var("text")}, #000));
   #{ns.css-var("focus")}: var(--focus-color, #000);
+  #{ns.css-var("focus-ring-color")}: var(--focus-ring-color, var(#{ns.css-var("focus")}, #000));
+  #{ns.css-var("focus-ring-width")}: var(--outline-width, 2px);
+  #{ns.css-var("focus-ring-offset")}: var(--focus-ring-offset, 2px);
+  #{ns.css-var("focus-ring-style")}: var(--focus-ring-style, solid);
   #{ns.css-var("shadow")}: var(--shadow-overlay-lg, 0 0 0 1px #000);
   #{ns.css-var("overlay")}: color-mix(in srgb, var(#{ns.css-var("text")}) 48%, transparent);
   #{ns.css-var("transition-fast")}: var(--transition-2, 180ms);
   #{ns.css-var("transition-normal")}: var(--transition-3, 240ms);
   #{ns.css-var("transition-easing")}: var(--transition-easing, ease);
-  #{ns.css-var("gap-xs2")}: var(--space-xs2, 4px);
-  #{ns.css-var("gap-xs")}: var(--space-xs, 8px);
-  #{ns.css-var("gap-sm")}: var(--space-sm, 12px);
-  #{ns.css-var("gap-md")}: var(--space-md, 24px);
-  #{ns.css-var("gap-lg")}: var(--space-lg, 40px);
+  #{ns.css-var("gap-xs2")}: var(--space-xs2, 0.25rem);
+  #{ns.css-var("gap-xs")}: var(--space-xs, 0.5rem);
+  #{ns.css-var("gap-sm")}: var(--space-sm, 0.75rem);
+  #{ns.css-var("gap-md")}: var(--space-md, 1.5rem);
+  #{ns.css-var("gap-lg")}: var(--space-lg, 2.5rem);
   #{ns.css-var("canvas-bg")}: var(--dot-grid);
   #{ns.css-var("z-layer")}: var(--z-layer-root, 1000);
   #{ns.css-var("z-bottom-bar")}: var(--z-bottom-bar, 900);
@@ -76,4 +84,16 @@ body#{ns.data("theme", "light")} {
   --dot-grid:
   var(--dot-grid-base)
   radial-gradient(var(--dot-grid-dot) 2px, transparent 0) -5px -5px / 30px 30px;
+}
+
+#{ns.data("dark")} {
+  @include tone.on-dark;
+}
+
+#{ns.data("tone", "dark")} {
+  @include tone.on-dark;
+}
+
+#{ns.data("tone", "light")} {
+  @include tone.on-light;
 }

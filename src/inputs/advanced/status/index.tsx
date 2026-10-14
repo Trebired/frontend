@@ -1,8 +1,8 @@
-import { icon } from "#dqy2d22qyujv";
 import sharedInput from "#8y47rueq20kg";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
-import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { describedBy, fieldError, fieldHelp, fieldIds, statusIcons } from "./field.js";
 
 type BackendStatusCheckConfig = {
   contextFields?: Record<string, string>;
@@ -26,6 +26,7 @@ type status_input_props = {
   autoComplete?: string;
   className?: string;
   defaultValue?: string;
+  help?: string;
   id?: string;
   inputAttrs?: Record<string, unknown>;
   label: string;
@@ -53,19 +54,6 @@ function backendStatusConfig(check: BackendStatusCheckConfig, name: string) {
   };
 }
 
-function statusIcons() {
-  return (
-    <>
-    <span className={frontendClassNames("input-status-icon", "ok")} {...frontendDataAttrs({ "status-icon": "" })} hidden>
-    {icon({ spec: "remixicon checkbox-circle-line" })}
-    </span>
-    <span className={frontendClassNames("input-status-icon", "bad")} {...frontendDataAttrs({ "status-icon": "" })} hidden>
-    {icon({ spec: "remixicon close-circle-line" })}
-    </span>
-    </>
-  );
-}
-
 function statusFieldConfig(props: status_input_props) {
   const check = props.statusCheck || null;
   const config = {
@@ -84,30 +72,32 @@ function statusConfigScript(config: Record<string, unknown>) {
 }
 
 function status_input(props: status_input_props) {
-  const required = props.required === false ? {} : { required: true };
+  const required = props.required === false ? {} : { "aria-required": "true", required: true };
   const check = props.statusCheck || null;
   const match = props.matchStatus || null;
   const shouldWrap = Boolean(check || match || props.statusIcons);
   const { className: wrapClassName, ...wrapAttrs } = props.wrapAttrs || {};
-  const inputAttrs = {
-    ...(props.inputAttrs || {}),
-  };
+  const help = String(props.help || "").trim();
+  const ids = fieldIds(props.id || `${props.name}-field`);
 
   const input = sharedInput({
       className: props.className,
       type: props.type || "text",
-      id: props.id || undefined,
+      id: ids.input,
       name: props.name,
       defaultValue: props.defaultValue || "",
       autoComplete: props.autoComplete || undefined,
       placeholder: props.placeholder || undefined,
-      ...inputAttrs,
+      "aria-describedby": describedBy(ids, Boolean(help)),
+      "aria-invalid": "false",
+      ...(props.inputAttrs || {}),
       ...required,
   });
 
   return (
-    <label className={primitiveStackClassName({ gap: "xs" })}>
-    <span className={frontendClassName("label")}>{props.label}</span>
+    <div className={primitiveStackClassName({ gap: "xs" })}>
+    <label className={frontendClassName("label")} htmlFor={ids.input}>{props.label}</label>
+    {fieldHelp(ids, help)}
     {shouldWrap ? (
         <div
         className={[frontendClassName("input-status-wrap"), wrapClassName]
@@ -123,7 +113,8 @@ function status_input(props: status_input_props) {
       ) : (
         input
     )}
-    </label>
+    {fieldError(ids)}
+    </div>
   );
 }
 

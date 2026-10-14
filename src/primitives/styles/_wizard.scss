@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "#4fimbihd7052" as motion;
 #{ns.class("wizard")} {
   display: grid;
   align-items: stretch;
@@ -69,7 +70,7 @@ wizard-final-action {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include motion.reduced-motion {
   #{ns.class("wizard")}#{ns.data("wizard-ready", "true")} #{ns.class("wizard-step")} {
     transition: none;
   }

@@ -1,7 +1,7 @@
-import { createLocalTranslator } from "#dqy2d22qyujv";
+import { joinClassNames, createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
-import { primitiveTextClassName } from "#hzrmwbvgt2ax";
+import { primitiveButtonClassName, primitiveTextClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
 import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
@@ -28,9 +28,19 @@ function checkboxModel(props: checkbox_props) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
   const Tag: any = props.tag === "div" ? "div" : "label";
   const optionClassName = toString(props.optionClassName);
-  const computedOptionClassName = `choice-row checkbox-option radius-lg${optionClassName ? ` ${optionClassName}` : ""}`;
+  const computedOptionClassName = joinClassNames(
+    primitiveButtonClassName({ variant: "chrome" }),
+    frontendClassName("choice-row"),
+    frontendClassName("checkbox-option"),
+    "radius-lg",
+    optionClassName,
+  );
   const optionBodyClassName = `checkbox-option-body flex-1${toString(props.bodyClassName) ? ` ${toString(props.bodyClassName)}` : ""}`;
-  const computedInputClassName = `checkbox-input checkbox${toString(props.inputClassName) ? ` ${toString(props.inputClassName)}` : ""}`;
+  const computedInputClassName = joinClassNames(
+    frontendClassName("checkbox-input"),
+    "checkbox",
+    toString(props.inputClassName),
+  );
   const inputName = toString(props.name);
   const inputGroup = toString(props.group, inputName);
   const inputValue = props.value == null ? "1" : String(props.value);

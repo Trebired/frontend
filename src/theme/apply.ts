@@ -1,4 +1,5 @@
 import type { BindRoot } from "#er0dlx1gtbzh";
+import { motionReduced } from "./../a11y/attributes.js";
 import { frontendCssVar } from "#5vbaqj4pirp3";
 import { THEME_ATTR, THEME_CHANGE_EVENT, THEME_SWITCHING_ATTR } from "./constants.js";
 import { findThemeMode, getThemeModes, themeModeKeyOf } from "./modes.js";
@@ -128,7 +129,7 @@ function themeSwitchDurationMs(): number {
 
 function prefersReducedMotion(): boolean {
   try {
-    return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+    return motionReduced();
   } catch {
     return false;
   }

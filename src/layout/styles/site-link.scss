@@ -1,0 +1,61 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("site-link")} {
+  width: fit-content;
+  color: var(#{ns.css-var("shell-link-color")}, currentColor);
+  text-decoration-line: var(#{ns.css-var("shell-link-decoration-line")}, none);
+  transition:
+  color var(#{ns.css-var("tone-change")}),
+  background-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease);
+}
+
+#{ns.class("site-link--active")} {
+  color: var(#{ns.css-var("shell-link-active-color")}, var(#{ns.css-var("text")}, currentColor));
+}
+
+#{ns.class("site-link")}:hover,
+
+#{ns.class("site-link")}:focus-visible {
+  color: var(#{ns.css-var("shell-link-hover-color")}, var(#{ns.css-var("text")}, currentColor));
+}
+
+#{ns.class("site-link-label")} {
+  display: inline-block;
+  position: relative;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+#{ns.class("site-link")}:hover #{ns.class("site-link-label")},
+
+#{ns.class("site-link")}:focus-visible #{ns.class("site-link-label")},
+
+#{ns.class("site-link--active")} #{ns.class("site-link-label")} {
+  color: currentColor;
+}
+
+#{ns.class("site-link-label")}::after {
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(#{ns.css-var("shell-link-underline-offset")}, -0.35rem);
+  height: var(#{ns.css-var("shell-link-underline-radius")}, 0.3rem);
+  border-block-end-style: solid;
+  border-block-end-width: var(#{ns.css-var("shell-link-underline-height")}, 1px);
+  border-block-end-color: var(#{ns.css-var("shell-link-underline-hover-color")}, currentColor);
+  border-end-end-radius: var(#{ns.css-var("shell-link-underline-radius")}, 0.3rem);
+  border-end-start-radius: var(#{ns.css-var("shell-link-underline-radius")}, 0.3rem);
+  clip-path: inset(0 100% 0 0);
+  content: "";
+  transition: clip-path var(#{ns.css-var("shell-link-underline-duration")}, 0.3s) ease;
+}
+
+#{ns.class("site-link")}:hover #{ns.class("site-link-label")}::after,
+
+#{ns.class("site-link")}:focus-visible #{ns.class("site-link-label")}::after,
+
+#{ns.class("site-link--active")} #{ns.class("site-link-label")}::after {
+  clip-path: inset(0 0 0 0);
+}
+
+#{ns.class("site-link--active")} #{ns.class("site-link-label")}::after {
+  border-block-end-color: var(#{ns.css-var("shell-link-underline-color")}, currentColor);
+}

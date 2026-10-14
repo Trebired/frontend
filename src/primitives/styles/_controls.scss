@@ -18,10 +18,10 @@
   border-radius: var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)));
   border: var(
     #{ns.css-var("ui-btn-root-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
   );
   background: var(#{ns.css-var("ui-btn-root-bg")}, transparent);
-  color: var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor));
+  color: var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("text")}, currentColor));
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -34,7 +34,7 @@
   vertical-align: middle;
   transition: var(
     #{ns.css-var("ui-btn-root-transition")},
-    color var(--transition-1) ease,
+    color var(#{ns.css-var("tone-change")}),
     background var(--transition-1) ease,
     border-color var(--transition-1) ease,
     opacity var(--transition-1) ease
@@ -120,11 +120,11 @@
     background: var(#{ns.css-var("ui-btn-variants-secondary-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
     color: var(
       #{ns.css-var("ui-btn-variants-secondary-color")},
-      var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor))
+      var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("text")}, currentColor))
     );
     border-color: var(
       #{ns.css-var("ui-btn-variants-secondary-border")},
-      var(#{ns.css-var("adaptive-border")}, currentColor)
+      var(#{ns.css-var("border")}, currentColor)
     );
 
     &:hover,
@@ -135,7 +135,10 @@
         #{ns.css-var("ui-btn-variants-secondary-state-hover-bg")},
         var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(#{ns.css-var("ui-btn-variants-secondary-state-hover-border")}, currentColor);
+      border-color: var(
+        #{ns.css-var("ui-btn-variants-secondary-state-hover-border")},
+        var(#{ns.css-var("border")}, currentColor)
+      );
       color: var(#{ns.css-var("ui-btn-variants-secondary-state-hover-color")}, currentColor);
     }
   }
@@ -143,7 +146,7 @@
   &#{ns.class("ghost")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-variants-ghost-icon")}, currentColor);
     background: var(#{ns.css-var("ui-btn-variants-ghost-bg")}, transparent);
-    color: var(#{ns.css-var("ui-btn-variants-ghost-color")}, var(#{ns.css-var("adaptive")}, currentColor));
+    color: var(#{ns.css-var("ui-btn-variants-ghost-color")}, var(#{ns.css-var("text")}, currentColor));
     border-color: var(#{ns.css-var("ui-btn-variants-ghost-border")}, transparent);
 
     &:hover,
@@ -228,6 +231,10 @@
 
   &#{ns.class("icon")} {
     #{ns.css-var("icon-color")}: currentColor;
+    border-radius: var(
+      #{ns.css-var("ui-btn-slot-icon-radius")},
+      var(#{ns.css-var("ui-btn-root-radius")}, var(#{ns.css-var("radius-sm")}, 0.5rem))
+    );
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -278,6 +285,43 @@
       }
     }
 
+  }
+
+  &#{ns.class("chrome")} {
+    #{ns.css-var("target-min")}: var(#{ns.css-var("target-min-dense")}, 1.5rem);
+    --button-icon-color: var(#{ns.css-var("ui-btn-variants-chrome-icon")}, currentColor);
+    height: var(#{ns.css-var("ui-btn-variants-chrome-height")}, var(#{ns.css-var("ui-btn-root-height")}, 2rem));
+    min-height: var(#{ns.css-var("ui-btn-variants-chrome-height")}, var(#{ns.css-var("ui-btn-root-height")}, 2rem));
+    padding: var(#{ns.css-var("ui-btn-variants-chrome-padding")}, var(#{ns.css-var("ui-btn-root-padding")}, 0 0.625rem));
+    font-size: var(#{ns.css-var("ui-btn-variants-chrome-font-size")}, var(#{ns.css-var("ui-btn-root-font-size")}, 0.78125rem));
+    background: var(#{ns.css-var("ui-btn-variants-chrome-bg")}, transparent);
+    color: var(#{ns.css-var("ui-btn-variants-chrome-color")}, currentColor);
+    border-color: var(
+      #{ns.css-var("ui-btn-variants-chrome-border")},
+      color-mix(in srgb, currentColor 24%, transparent)
+    );
+    border-radius: var(
+      #{ns.css-var("ui-btn-variants-chrome-radius")},
+      var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)))
+    );
+
+    &#{ns.class("icon")} {
+      width: var(#{ns.css-var("ui-btn-variants-chrome-height")}, var(#{ns.css-var("ui-btn-root-height")}, 2rem));
+      min-width: var(#{ns.css-var("ui-btn-variants-chrome-height")}, var(#{ns.css-var("ui-btn-root-height")}, 2rem));
+      padding: 0;
+    }
+
+    &:hover,
+    &[aria-pressed="true"],
+    &#{ns.data("active", "true")} {
+      --button-icon-color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-icon")}, currentColor);
+      background: var(
+        #{ns.css-var("ui-btn-variants-chrome-state-hover-bg")},
+        color-mix(in srgb, currentColor 8%, transparent)
+      );
+      border-color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-border")}, currentColor);
+      color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-color")}, currentColor);
+    }
   }
 }
 

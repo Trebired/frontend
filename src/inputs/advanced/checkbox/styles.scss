@@ -1,20 +1,29 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "#m8aga4kgmeuh" as *;
 
-#{ns.class("choice-row")}#{ns.class("checkbox-option")} {
-  @include classic-field-base;
+#{ns.class("btn")}#{ns.class("choice-row")}#{ns.class("checkbox-option")},
 
+#{ns.class("choice-row")}#{ns.class("checkbox-option")} {
   --choice-row-padding-block: 9px;
 
   position: relative;
   display: flex;
+  width: 100%;
+  max-width: none;
   min-width: 0;
+  height: auto;
   min-height: var(--height-input);
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
   padding: var(--choice-row-padding-block) 10px;
   cursor: pointer;
   user-select: none;
+  white-space: normal;
+  text-align: left;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.4;
 
   &:focus-visible {
     outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
@@ -27,7 +36,7 @@
 
   &#{ns.class("is-checked")},
   &:has(> #{ns.class("checkbox-input")}:checked) {
-    border-color: var(--border-surface-1);
+    border-color: var(#{ns.css-var("ui-choice-checked-border")}, currentColor);
     background: var(#{ns.css-var("ui-choice-checked-bg")}, var(--background-surface-1, transparent));
   }
 
@@ -55,8 +64,8 @@
   position: relative;
   transition:
   background var(--transition-1) ease,
-  border-color var(--transition-1) ease,
-  color var(--transition-1) ease;
+  color var(#{ns.css-var("tone-change")}),
+  border-color var(#{ns.css-var("tone-change")});
 
   #{ns.class("checkbox-control-icon")} {
     display: none;

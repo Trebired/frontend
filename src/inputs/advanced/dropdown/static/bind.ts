@@ -10,6 +10,8 @@ import {
 import searchManager from "#f1earyowcgbb";
 import { isInUnhydratedIsland } from "#dqy2d22qyujv";
 import { closeAll, closeStatic, openStatic } from "./position.js";
+import { bindStaticDropdownKeys } from "./keys.js";
+import { dropdownCombobox } from "./aria.js";
 import {
   applyMultiValue,
   applyValue,
@@ -108,6 +110,21 @@ function applySingleDropdownValue(drop, li, value) {
   repaintNearestModal(drop);
 }
 
+function selectOption(drop, li) {
+  const value = dropdownOptionValue(li);
+  if (isMulti(drop)) {
+    toggleMultiDropdownValue(drop, value);
+    return;
+  }
+  applySingleDropdownValue(drop, li, value);
+}
+
+function openDropdown(drop) {
+  if (closeDynamicBeforeStaticToggle) closeDynamicBeforeStaticToggle();
+  closeAll(drop);
+  openStatic(drop);
+}
+
 function handleOptionsClick(drop, options, e) {
   const clear = closest(e.target, frontendDataSelector("dropdown-clear"));
   if (clear && options.contains(clear)) {
@@ -123,13 +140,7 @@ function handleOptionsClick(drop, options, e) {
   e.preventDefault();
   e.stopPropagation();
 
-  const value = dropdownOptionValue(li);
-  if (isMulti(drop)) {
-    toggleMultiDropdownValue(drop, value);
-    return;
-  }
-
-  applySingleDropdownValue(drop, li, value);
+  selectOption(drop, li);
 }
 
 function bindSearchOptions(options) {
@@ -161,6 +172,15 @@ function bindStaticDropdown(drop) {
 
   drop.addEventListener("click", function(e) {
       toggleDropdown(drop, e);
+  });
+
+  bindStaticDropdownKeys(drop, options, {
+      close: closeStatic,
+      open: openDropdown,
+      select: function(target, li) {
+        selectOption(target, li);
+        dropdownCombobox(target)?.focus();
+      },
   });
 
   if (options) {

@@ -1,0 +1,13 @@
+@use "@trebired/bundler/namespace" as ns;
+:focus-visible {
+  outline-color: var(#{ns.css-var("focus-ring-color")}, currentcolor);
+  outline-offset: var(#{ns.css-var("focus-ring-offset")}, 2px);
+  outline-style: var(#{ns.css-var("focus-ring-style")}, solid);
+  outline-width: var(#{ns.css-var("focus-ring-width")}, 2px);
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}

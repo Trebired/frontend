@@ -10,16 +10,18 @@ import { createRoot, type Root } from "react-dom/client";
 import { Icon } from "#lbkpzw8nphru";
 import { closeModal, openModal, prepareModal } from "#8rm3pzkj3gge";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
-import { uploadRootConfig } from "./config.js";
+import { uploadRootConfig } from "./../config.js";
 import {
   buildCropData,
   canvasToPreviewUrl,
   parseAspectRatio,
   prepareCropSource,
-} from "./crop.js";
-import { dispatchUploadChange, setUploadFile } from "./state.js";
-import type { UploadRuntimeOptions } from "./types.js";
-import { resolveUploadFlash } from "./runtime.js";
+} from "./../crop.js";
+import { dispatchUploadChange, setUploadFile } from "./../state.js";
+import type { UploadRuntimeOptions } from "./../types.js";
+import { resolveUploadFlash } from "./../runtime.js";
+import { CropFields, handleCropKey, type CropperHandle } from "./keys.js";
+import { documentLanguage, sourceLanguageMessage } from "#2d8f076g07hg";
 import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataSelector, frontendElementClass } from "#5vbaqj4pirp3";
 
 type CropperInstance = InstanceType<typeof Cropper>;
@@ -93,9 +95,29 @@ function useUploadCropper(props: CropperViewProps, imageRef: RefObject<HTMLImage
     }, [imageRef, props.aspectRatio, props.imageUrl]);
 }
 
+function cropStage(props: CropperViewProps, imageRef: RefObject<HTMLImageElement | null>, lang: string) {
+  return h("div", {
+      "aria-label": sourceLanguageMessage("cropStageLabel", lang),
+      className: frontendElementClass("upload-crop", "stage"),
+      onKeyDown(event: any) {
+        if (handleCropKey(activeCropper as unknown as CropperHandle, event)) event.preventDefault();
+      },
+      role: "group",
+      tabIndex: 0,
+    },
+    h("img", {
+        alt: props.title,
+        className: frontendElementClass("upload-crop", "image"),
+        ref: imageRef,
+        src: props.imageUrl,
+    }),
+  );
+}
+
 function CropperView(props: CropperViewProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   useUploadCropper(props, imageRef);
+  const lang = documentLanguage();
   const useImageLabel = props.busy ? "Saving" : uploadRootConfig(props.root).useImageLabel;
   return h("div", { className: frontendClassName("upload-crop") },
     h("div", { className: frontendElementClass("upload-crop", "header") },
@@ -104,14 +126,10 @@ function CropperView(props: CropperViewProps) {
       ? h("p", { className: frontendElementClass("upload-crop", "description") }, props.description)
       : null,
     ),
-    h("div", { className: frontendElementClass("upload-crop", "stage") },
-      h("img", {
-          alt: props.title,
-          className: frontendElementClass("upload-crop", "image"),
-          ref: imageRef,
-          src: props.imageUrl,
-      }),
-    ),
+    cropStage(props, imageRef, lang),
+    h("p", { className: frontendElementClass("upload-crop", "hint") },
+      sourceLanguageMessage("cropKeyboardHint", lang)),
+    h(CropFields, { cropper: activeCropper as unknown as CropperHandle, lang }),
     h("div", { className: frontendElementClass("upload-crop", "actions") },
       h("button", {
           className: frontendClassName("btn"),

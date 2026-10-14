@@ -75,7 +75,7 @@ function clearLocalePending(doc: Document = document): void {
   const root = doc?.documentElement;
   if (!root || !root.hasAttribute(LOCALE_PENDING_ATTR)) return;
   root.removeAttribute(LOCALE_PENDING_ATTR);
-  root.style.visibility = "";
+  root.style.opacity = "";
 }
 
 export {

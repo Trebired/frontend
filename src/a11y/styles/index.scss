@@ -1,0 +1,45 @@
+@use "@trebired/bundler/namespace" as ns;
+@use "./contrast";
+@use "./panel";
+@use "./targets";
+@use "./forced";
+#{ns.data("reduce-motion", "on")} {
+  --transition-1: 0s;
+  --transition-2: 0s;
+  --transition-3: 0s;
+  --transition-4: 0s;
+  --theme-switch-duration: 0s;
+  #{ns.css-var("transition-fast")}: 0s;
+  #{ns.css-var("transition-normal")}: 0s;
+  #{ns.css-var("tone-duration")}: 0s;
+  #{ns.css-var("overlay-modal-motion-duration")}: 0s;
+  #{ns.css-var("overlay-tooltip-motion-duration")}: 0s;
+  #{ns.css-var("ui-marquee-track-duration")}: 0s;
+}
+
+#{ns.data("reduce-motion", "on")},
+
+#{ns.data("reduce-motion", "on")} *,
+
+#{ns.data("reduce-motion", "on")} *::before,
+
+#{ns.data("reduce-motion", "on")} *::after {
+  animation-delay: 0s !important;
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-delay: 0s !important;
+  transition-duration: 1ms !important;
+}
+
+#{ns.data("text-size", "125")} {
+  font-size: 125%;
+}
+
+#{ns.data("text-size", "150")} {
+  font-size: 150%;
+}
+
+#{ns.data("text-size", "200")} {
+  font-size: 200%;
+}

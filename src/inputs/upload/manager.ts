@@ -331,7 +331,7 @@ async function openCropSessionFromManager(
   trigger: HTMLElement | null = null,
   options: UploadRuntimeOptions = {},
 ) {
-  const mod = await import("./crop-session.js");
+  const mod = await import("./crop/session.js");
   return await mod.openUploadCropSession(root, input, file, trigger, optionsFor(root, options));
 }
 

@@ -4,6 +4,7 @@ import {
   primitiveCardClassName,
   primitiveInlineRowClassName,
   primitiveTextClassName,
+  type PrimitiveButtonVariant,
 } from "#0rl8rpgzssot";
 import { key_value } from "#kkjo6xogukzx";
 import type { key_value_row } from "#xb7hv37sq5h5";
@@ -38,6 +39,7 @@ type CopyValueProps = {
   lang?: string;
   tooltip?: string;
   value: string;
+  variant?: PrimitiveButtonVariant;
 };
 
 type CopyCodeCardProps = {
@@ -153,6 +155,7 @@ function copy_value(props: CopyValueProps) {
           target: `#${id}`,
           title: props.tooltip,
           tooltip: props.tooltip,
+          ...(props.variant ? { variant: props.variant } : {}),
           ...literal,
     })}
     </span>

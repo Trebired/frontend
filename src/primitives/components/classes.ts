@@ -5,7 +5,7 @@ import { appendClassName, joinClassNames, toText } from "./shared.js";
 type PrimitiveGap = "2xs" | "lg" | "md" | "sm" | "xs" | "xs2";
 type PrimitiveButtonSize = "lg" | "md" | "sm";
 type PrimitiveStatusTone = "green" | "highlight" | "red" | "yellow";
-type PrimitiveButtonVariant = "danger" | "ghost" | "primary" | "secondary";
+type PrimitiveButtonVariant = "chrome" | "danger" | "ghost" | "primary" | "secondary";
 type PrimitiveTextSize = "lg" | "md" | "sm" | "xs";
 type PrimitiveGridAuto = "lg" | "md" | "sm";
 type PrimitivePadding = "lg" | "md" | "sm" | "xs";

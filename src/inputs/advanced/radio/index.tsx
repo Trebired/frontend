@@ -1,6 +1,7 @@
-import { toString } from "#dqy2d22qyujv";
+import { joinClassNames, toString } from "#dqy2d22qyujv";
 import { type ReactNode } from "react";
 import {
+  primitiveButtonClassName,
   primitiveStackClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
@@ -55,9 +56,19 @@ function radioOptionModel(props: radio_option_render_props) {
   const optionClass = toString(option && option.optionClassName);
   const optionBodyClass = toString(option && option.bodyClassName);
   const inputClass = toString(option && option.inputClassName);
-  const optionClassName = `choice-row radio-option radius-lg${optionClass ? ` ${optionClass}` : ""}`;
-  const optionBodyClassName = `radio-option-body flex-1${optionBodyClass ? ` ${optionBodyClass}` : ""}`;
-  const computedInputClassName = `radio-input radio${inputClass ? ` ${inputClass}` : ""}`;
+  const optionClassName = joinClassNames(
+    primitiveButtonClassName({ variant: "chrome" }),
+    frontendClassName("choice-row"),
+    frontendClassName("radio-option"),
+    "radius-lg",
+    optionClass,
+  );
+  const optionBodyClassName = joinClassNames(
+    frontendClassName("radio-option-body"),
+    "flex-1",
+    optionBodyClass,
+  );
+  const computedInputClassName = joinClassNames(frontendClassName("radio-input"), "radio", inputClass);
   const title =
   option && "title" in option ? option.title : option && option.content;
   return {

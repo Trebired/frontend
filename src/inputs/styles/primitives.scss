@@ -68,6 +68,10 @@
   padding-block-start: var(#{ns.css-var("gap-sm")}, 12px);
 }
 
+#{ns.element-class("disclosure", "panel")}:not(#{ns.data("disclosure-panel-open", "true")}) #{ns.element-class("disclosure", "panel-content")} {
+  padding-block-start: 0;
+}
+
 #{ns.class("tabs")} {
   display: flex;
   min-width: 0;

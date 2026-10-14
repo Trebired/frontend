@@ -18,10 +18,13 @@ import type {
 } from "./types/assets.js";
 import type { FrontendDesignConfig, NormalizedFrontendDesignConfig } from "./types/design.js";
 
+import type { FrontendA11yConfig, NormalizedFrontendA11yConfig } from "./types/a11y.js";
+import type { FrontendMoneyConfig, NormalizedFrontendMoneyConfig } from "./types/money.js";
+
 type FrontendSystemKey =
+|"a11y"
 |"actions"
 |"code"
-|"contrast"
 |"editor"
 |"explorer"
 |"flash"
@@ -124,6 +127,7 @@ type FrontendSurfaceComponentsConfig = {
   frame?: FrontendComponentTokens;
   glow?: FrontendComponentTokens;
   hairline?: FrontendComponentTokens;
+  motif?: FrontendComponentTokens;
   logo?: FrontendComponentTokens;
   prose?: FrontendComponentTokens;
   rule?: FrontendComponentTokens;
@@ -200,11 +204,13 @@ type FrontendLanguageConfig = {
 type FrontendLocaleStrategy = "none" | "prefix" | "prefix-all" | "query";
 
 type FrontendConfig = {
+  a11y?: FrontendA11yConfig;
   assets?: FrontendAssetsConfig;
   components?: FrontendComponentsConfig;
   design?: FrontendDesignConfig;
   forVersion?: string;
   language?: FrontendLanguageConfig;
+  money?: FrontendMoneyConfig;
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
 };
@@ -296,11 +302,13 @@ type NormalizedFrontendLanguageConfig = {
 };
 
 type NormalizedFrontendConfig = {
+  a11y: NormalizedFrontendA11yConfig;
   assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
   design: NormalizedFrontendDesignConfig;
   forVersion: string;
   language: NormalizedFrontendLanguageConfig;
+  money: NormalizedFrontendMoneyConfig;
   prefix: string;
   runtime: NormalizedFrontendRuntimeConfig;
   systems: Record<FrontendSystemKey, boolean>;
@@ -320,9 +328,13 @@ type LoadFrontendConfigOptions = {
 };
 
 export type {
+  FrontendA11yConfig,
+  NormalizedFrontendA11yConfig,
   FrontendLanguageConfig,
+  FrontendMoneyConfig,
   FrontendLocaleStrategy,
   NormalizedFrontendLanguageConfig,
+  NormalizedFrontendMoneyConfig,
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,
   NormalizedFrontendConfig,

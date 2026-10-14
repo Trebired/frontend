@@ -112,12 +112,17 @@ type SiteBodyInput = {
   path?: string;
 };
 
+function parsedMarkScript(): string {
+  const attribute = frontendDataAttr("parsed");
+  return `<script>document.documentElement.setAttribute(${JSON.stringify(attribute)},"")</script>`;
+}
+
 function siteBodyHtml(input: SiteBodyInput): string {
   const chrome = input.chrome ?? !isErrorRoutePath(String(input.path || ""));
   if (!chrome) return input.content;
   const header = input.header ? siteHeaderRootHtml(input.header) : "";
   const footer = input.footer ? siteFooterRootHtml(input.footer) : "";
-  return `${header}${input.content}${footer}`;
+  return `${header}${input.content}${footer}${parsedMarkScript()}`;
 }
 
 function ensureLayoutPortalRoot() {

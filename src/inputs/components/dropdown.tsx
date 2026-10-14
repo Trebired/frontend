@@ -36,6 +36,7 @@ function DropdownTrigger(props: DropdownTriggerProps) {
     <button
     {...rest}
     aria-expanded={props["aria-expanded"] ?? false}
+    aria-haspopup="listbox"
     className={classNames(frontendElementClass("dropdown", "trigger"), className)}
     {...frontendDataAttrs({ "dropdown-trigger": "" })}
     type={type}
@@ -57,7 +58,12 @@ function DropdownValue(props: HTMLAttributes<HTMLSpanElement>) {
 function DropdownMenu(props: HTMLAttributes<HTMLDivElement>) {
   const { children, className, ...rest } = props;
   return (
-    <div {...rest} className={classNames(frontendElementClass("dropdown", "menu"), className)} {...frontendDataAttrs({ "dropdown-menu": "" })}>
+    <div
+    {...rest}
+    className={classNames(frontendElementClass("dropdown", "menu"), className)}
+    role="listbox"
+    {...frontendDataAttrs({ "dropdown-menu": "" })}
+    >
     {children}
     </div>
   );

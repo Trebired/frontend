@@ -20,10 +20,27 @@ async function verifySiteHeaderMarkup(context) {
     "every link appears twice, in the bar and in the menu, and both are the same link",
   );
   assert.equal(/tbf-site-header__menu-link[\s"]/u.test(html), false, "the menu builds no link of its own");
-  const contrast = await fs.readFile(path.join(context.distDir, "contrast", "selectors.js"), "utf8");
+  const headerOnly = await fs.readFile(new URL("../../../src/layout/styles/site-header.scss", import.meta.url), "utf8");
+  const menuOnly = await fs.readFile(new URL("../../../src/layout/styles/site/menu.scss", import.meta.url), "utf8");
+  const header = `${headerOnly}\n${menuOnly}`;
   assert.ok(
-    contrast.includes("DEFAULT_MIRRORS = []"),
-    "every link is read where it is, so a menu over mixed content is not one colour throughout",
+    !header.includes('ns.css-var("glass-bg")'),
+    "the bar and its menu are opaque rather than glass, so the navigation is readable at every scroll position",
+  );
+  assert.match(
+    header,
+    /body:has\(main > #\{ns\.data\("dark"\)\}:first-child\)/u,
+    "the bar takes its tone from the page markup rather than from a measurement",
+  );
+  assert.match(
+    header,
+    /:not\(#\{ns\.data\("site-header-live"\)\}\)/u,
+    "and that rule steps aside once the header is following the band behind it, instead of fighting it on specificity",
+  );
+  assert.match(
+    header,
+    /#\{ns\.data\("site-header"\)\}#\{ns\.data\("dark"\)\}/u,
+    "a header following the band carries the same marker a dark band does, so one attribute drives ink, border and menu",
   );
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
   assert.ok(html.includes("data-tbf-soft-redirect"), "softRedirect marks the header links");
@@ -33,14 +50,18 @@ async function verifySiteHeaderMarkup(context) {
   const root = await context.importDistRoot();
   assert.equal(root.siteHeaderRootHtml("<header></header>"), '<div data-tbf-site-header-root=""><header></header></div>');
   assert.equal(root.SITE_HEADER_ROOT_SELECTOR, "[data-tbf-site-header-root]");
-  const styles = await fs.readFile(path.join(context.distDir, "layout", "styles", "site-header.scss"), "utf8");
+  const styles = [
+    await fs.readFile(path.join(context.distDir, "layout", "styles", "site-header.scss"), "utf8"),
+    await fs.readFile(path.join(context.distDir, "layout", "styles", "site", "menu.scss"), "utf8"),
+  ].join("\n");
   assert.ok(styles.includes('token("root-bg"'), "header tokens use the emitted token names");
   assert.match(styles, /padding-inline: 1\.5rem;/u, "the brand sits at one distance from the edge on every site");
   assert.match(styles, /padding-inline: 1rem;/u, "and a narrower one once there is room for the full bar");
   assert.match(styles, /"menu-content"\)\} \{\n {2}width: 100%;/u, "the menu content spans the header width instead of shrinking");
   assert.match(styles, /"toggle"\)\} \{.*?width: 3rem;.*?font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
-  assert.match(styles, /"bar"\)\} \{[^}]*min-height: 5rem;/su, "every site header is the same height");
+  assert.match(styles, /:root \{\n {2}#\{ns\.css-var\("shell-header-height"\)\}: 5rem;/su, "every site header is the same height");
+  assert.ok(!styles.includes('token("bar-min-height"'), "the header height is not a per-site option");
   const brandRule = styles.split('#{ns.class("button")}#{ns.class("site-header-brand-button")} {')[1] || "";
   const brandBody = brandRule.split("\n}")[0];
   for (const own of ["padding-inline: 0;", "padding-block: 4px;", "color: var("]) {

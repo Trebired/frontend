@@ -37,7 +37,7 @@ function runBootScript(source, options = {}) {
   };
   const keys = Object.keys(scope);
   Function(...keys, source)(...keys.map((key) => scope[key]));
-  return { attrs, lang: root.lang, listeners, visibility: root.style.visibility };
+  return { attrs, lang: root.lang, listeners, opacity: root.style.opacity };
 }
 
 function verifyBootScript(api) {
@@ -52,7 +52,7 @@ function verifyBootScript(api) {
   const stored = runBootScript(source, { stored: "cs" });
   assert.equal(stored.lang, "cs");
   assert.equal(stored.attrs.has(PENDING), true);
-  assert.equal(stored.visibility, "hidden");
+  assert.equal(stored.opacity, "0", "the pending body stays laid out and rastered, so the reveal is a compositor flip");
   assert.deepEqual(stored.listeners, ["DOMContentLoaded"], "a hidden page must have a reveal backstop");
 
   assert.equal(runBootScript(source, { cookie: "a=1; ui_lang=cs" }).lang, "cs", "the language cookie must be honoured");
@@ -119,7 +119,7 @@ function resetDocument() {
   root.lang = "";
   root.removeAttribute(RENDERED);
   root.removeAttribute(PENDING);
-  root.style.visibility = "";
+  root.style.opacity = "";
   document.head.innerHTML = "";
   document.body.innerHTML = "";
 }

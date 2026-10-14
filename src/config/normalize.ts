@@ -1,30 +1,24 @@
-import { EMPTY_LANGUAGE_CONFIG, normalizeLanguageConfig } from "./language.js";
+import { normalizeA11yConfig } from "./a11y.js";
+import { DEFAULT_FRONTEND_CONFIG, SUPPORTED_ICON_PACKS, SYSTEM_ORDER, THEME_MODE_ATTRIBUTE } from "./default/config.js";
+import { normalizeLanguageConfig } from "./language.js";
+import { normalizeMoneyConfig } from "./money.js";
 import { assertPlainObject, invalidConfig } from "./shared.js";
-import { DEFAULT_FRONTEND_COMPONENTS_CONFIG, normalizeComponentsConfig } from "./component-tokens.js";
+import { normalizeComponentsConfig } from "./component-tokens.js";
 import { normalizeFaviconConfig } from "./favicon.js";
 import { normalizeFontsConfig } from "./fonts.js";
 import { normalizeGlassConfig } from "./glass.js";
 import { normalizeInteractionsConfig } from "./interactions.js";
 import { normalizePaletteConfig } from "./palette.js";
 import { normalizeScalesConfig } from "./scales.js";
-import { DEFAULT_FLAG_COUNTRIES, normalizeFlagsConfig } from "./flags.js";
-import { DEFAULT_FRONTEND_BREAKPOINTS, normalizeBreakpointsConfig } from "./breakpoints.js";
-import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./default/scales.js";
+import { normalizeFlagsConfig } from "./flags.js";
+import { normalizeBreakpointsConfig } from "./breakpoints.js";
 import { normalizeThemeConfig, normalizeThemeTokens } from "./theme.js";
 import {
   frontendConfigPath,
   PACKAGE_VERSION,
 } from "./package.js";
-import {
-  defaultIconAliases,
-  normalizeIconAliasKey,
-  normalizeIconAliasSpec,
-} from "#rqcj8y6keks2";
+import { normalizeIconAliasKey, normalizeIconAliasSpec } from "#rqcj8y6keks2";
 import { resolveForVersion } from "@trebired/utils";
-import {
-  FRONTEND_PREFIX,
-  frontendDataAttr,
-} from "#5vbaqj4pirp3";
 import type {
   NormalizedFrontendConfig,
   FrontendAssetsConfig,
@@ -41,42 +35,14 @@ type NormalizeOptions = {
 
 const FRONTEND_CONFIG_PATH = frontendConfigPath();
 
-const THEME_MODE_ATTRIBUTE = frontendDataAttr("theme");
-
-const SUPPORTED_ICON_PACKS: FrontendIconPack[] = ["remixicon", "simple-icons"];
-
-const SYSTEM_ORDER: FrontendSystemKey[] = [
-  "theme",
-  "contrast",
-  "layout",
-  "language",
-  "logs",
-  "layer",
-  "icons",
-  "media",
-  "progress",
-  "flash",
-  "tooltip",
-  "popover",
-  "modal",
-  "sidebar",
-  "inputs",
-  "actions",
-  "code",
-  "editor",
-  "explorer",
-  "primitives",
-  "fullscreen",
-  "surface",
-  "graph",
-];
-
 const TOP_LEVEL_FIELDS = [
+  "a11y",
   "assets",
   "components",
   "design",
   "forVersion",
   "language",
+  "money",
   "runtime",
   "systems",
 ];
@@ -94,70 +60,6 @@ const DESIGN_FIELDS = [
 ];
 const SCROLL_BEHAVIORS = ["auto", "smooth"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
-
-const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
-    assets: Object.freeze({
-        favicon: Object.freeze({
-            dark: "",
-            default: "",
-            ico: Object.freeze([]) as number[],
-            light: "",
-            sizes: Object.freeze([]) as number[],
-        }) as NormalizedFrontendConfig["assets"]["favicon"],
-        flags: Object.freeze({
-            countries: Object.freeze([...DEFAULT_FLAG_COUNTRIES]) as string[],
-            ratio: "3x2",
-        }) as NormalizedFrontendConfig["assets"]["flags"],
-        fonts: Object.freeze({
-            families: Object.freeze([]) as NormalizedFrontendConfig["assets"]["fonts"]["families"],
-            sans: "",
-        }),
-        icons: Object.freeze({
-            aliases: Object.freeze({ ...defaultIconAliases }),
-            endpoint: "/__icons/svg",
-            mode: "server",
-            packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
-            specs: Object.freeze([]) as unknown as string[],
-        }),
-    }),
-    components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
-    design: Object.freeze({
-        breakpoints: Object.freeze({ ...DEFAULT_FRONTEND_BREAKPOINTS }) as Record<string, number>,
-        glass: null,
-        interactions: Object.freeze({
-            activePress: Object.freeze({
-                brightness: "0.9",
-                enabled: false,
-                filter: "none",
-            }),
-        }),
-        palette: Object.freeze({
-            modes: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["modes"],
-            semantic: Object.freeze([]) as NormalizedFrontendConfig["design"]["palette"]["semantic"],
-            suffixedVariants: true,
-        }),
-        scales: DEFAULT_FRONTEND_SCALES_CONFIG,
-        scrollBehavior: "smooth",
-        semantics: Object.freeze({}),
-    }),
-    forVersion: PACKAGE_VERSION,
-    language: EMPTY_LANGUAGE_CONFIG,
-    prefix: FRONTEND_PREFIX,
-    runtime: Object.freeze({
-        layer: Object.freeze({}),
-        layout: Object.freeze({}),
-        progress: Object.freeze({ height: "3px" }),
-        theme: Object.freeze({
-            cssVariables: true,
-            dark: "",
-            defaultMode: "",
-            light: "",
-            modes: Object.freeze([]) as NormalizedFrontendConfig["runtime"]["theme"]["modes"],
-            tokens: Object.freeze({}),
-        }),
-    }),
-    systems: Object.freeze(Object.fromEntries(SYSTEM_ORDER.map((key) => [key, true]))) as Record<FrontendSystemKey, boolean>,
-});
 
 function assertKnownFields(
   source: Record<string, unknown>,
@@ -335,11 +237,13 @@ function normalizeFrontendConfig(
   assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
   const runtime = normalizeRuntimeConfig(source.runtime);
   return {
+    a11y: normalizeA11yConfig(source.a11y),
     assets: normalizeAssetsConfig(source.assets),
     components: normalizeComponentsConfig(source.components),
     design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
     forVersion: normalizeForVersion(source, options),
     language: normalizeLanguageConfig(source.language),
+    money: normalizeMoneyConfig(source.money),
     prefix: DEFAULT_FRONTEND_CONFIG.prefix,
     runtime,
     systems: normalizeSystems(source.systems),

@@ -72,6 +72,9 @@ async function loadConfig(
   };
 }
 
+export { SITE_SOCIAL_SERVICES, siteSocialIconSpecs, siteSocialService } from "./../layout/social.js";
+export type { SiteSocialService } from "./../layout/social.js";
+
 export {
   DEFAULT_FRONTEND_CONFIG,
   SUPPORTED_ICON_PACKS,
@@ -116,6 +119,7 @@ export type {
   FrontendFeedbackComponentsConfig,
   FrontendFontConfig,
   FrontendLanguageConfig,
+  FrontendMoneyConfig,
   FrontendFontDisplay,
   FrontendFontFamilyConfig,
   FrontendFontStyle,
@@ -151,10 +155,14 @@ export type {
   FrontendPaletteStep,
 } from "./tokens.js";
 export { DEFAULT_FAVICON_ICO, DEFAULT_FAVICON_SIZES, generateFaviconAssets } from "./favicon.js";
+export { ECB_DAILY_URL, fetchMoneyRates } from "./../money/rates.js";
+export type { MoneyRatesOptions, MoneyRatesResult } from "./../money/rates.js";
 export type {
   GeneratedFaviconAssets,
   GeneratedFaviconFile,
   GeneratedFaviconLink,
 } from "./favicon.js";
+export { parseTextDocument } from "./text-document.js";
+export type { TextDocument, TextDocumentPart, TextDocumentSection } from "./text-document.js";
 export { STATIC_ICONS_SPECIFIER, generateStaticIconsModule } from "./static-icons.js";
 export type { GeneratedStaticIconsModule } from "./static-icons.js";

@@ -5,6 +5,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 #{ns.class("tabs")} {
   display: flex;
   width: 100%;
+  flex-direction: row;
   gap: var(#{ns.css-var("ui-tabs-list-gap")}, var(#{ns.css-var("gap-xs")}));
 
   #{ns.class("tab")} {
@@ -14,9 +15,12 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     box-sizing: border-box;
     height: var(#{ns.css-var("ui-tabs-root-height")}, 34px);
     padding: 0 var(#{ns.css-var("ui-tabs-root-px")}, 14px);
-    border: var(#{ns.css-var("ui-tabs-root-border")}, var(--border-width) solid var(--border-surface-1));
-    border-radius: var(#{ns.css-var("ui-tabs-root-radius")}, var(--radius-sm));
-    color: var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color));
+    border: var(
+      #{ns.css-var("ui-tabs-root-border")},
+      var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
+    );
+    border-radius: var(#{ns.css-var("ui-tabs-root-radius")}, var(#{ns.css-var("radius-sm")}, 0.5rem));
+    color: var(#{ns.css-var("ui-tabs-root-color")}, var(#{ns.css-var("text-muted")}, currentColor));
     background: var(#{ns.css-var("ui-tabs-root-bg")}, transparent);
     cursor: pointer;
     transition:
@@ -25,22 +29,22 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     font-family: var(#{ns.css-var("ui-tabs-root-font-family")}, var(#{ns.css-var("font-sans")}, "Inter", sans-serif));
     font-size: var(#{ns.css-var("ui-tabs-root-font-size")}, 14px);
     font-weight: var(#{ns.css-var("ui-tabs-root-font-weight")}, inherit);
-    line-height: calc(var(#{ns.css-var("ui-tabs-root-height")}, 34px) - (var(--border-width) * 2));
+    line-height: calc(var(#{ns.css-var("ui-tabs-root-height")}, 34px) - (var(#{ns.css-var("border-width")}, 1px) * 2));
     text-align: left;
 
     &:hover {
-      background: var(#{ns.css-var("ui-tabs-state-hover-bg")}, var(--background-surface-1));
-      border-color: var(#{ns.css-var("ui-tabs-state-hover-border")}, var(--border-surface-1));
-      color: var(#{ns.css-var("ui-tabs-state-hover-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
+      background: var(#{ns.css-var("ui-tabs-state-hover-bg")}, color-mix(in srgb, currentColor 6%, transparent));
+      border-color: var(#{ns.css-var("ui-tabs-state-hover-border")}, var(#{ns.css-var("border")}, currentColor));
+      color: var(#{ns.css-var("ui-tabs-state-hover-color")}, var(#{ns.css-var("text")}, currentColor));
     }
 
     &#{ns.class("active")},
     &[aria-selected="true"],
     &#{ns.data("active", "true")},
     &#{ns.data("active", "true")} {
-      background: var(#{ns.css-var("ui-tabs-state-active-bg")}, var(--background-surface-1));
-      border-color: var(#{ns.css-var("ui-tabs-state-active-border")}, var(--border-surface-1));
-      color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("ui-tabs-root-color")}, var(--text-color)));
+      background: var(#{ns.css-var("ui-tabs-state-active-bg")}, color-mix(in srgb, currentColor 6%, transparent));
+      border-color: var(#{ns.css-var("ui-tabs-state-active-border")}, var(#{ns.css-var("border")}, currentColor));
+      color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("text")}, currentColor));
     }
 
     #{ns.class("tab-label")} {
@@ -109,7 +113,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
   position: absolute;
   left: var(--tabs-nested-indicator-left, 50%);
   top: 50%;
-  color: var(#{ns.css-var("ui-tabs-nested-indicator-color")}, var(--text-color-muted, currentColor));
+  color: var(#{ns.css-var("ui-tabs-nested-indicator-color")}, var(#{ns.css-var("text-muted")}, currentColor));
   font-size: 20px;
   line-height: 1;
   transform: translate(-50%, -50%);
@@ -146,7 +150,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     flex: 1 1 calc(50% - 8px);
     height: var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px);
     font-size: var(#{ns.css-var("ui-tabs-resp-mobile-font-size")}, 13px);
-    line-height: calc(var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px) - (var(--border-width) * 2));
+    line-height: calc(var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px) - (var(#{ns.css-var("border-width")}, 1px) * 2));
   }
 }
 

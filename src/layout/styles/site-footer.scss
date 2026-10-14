@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "./../../styles/utils/tone" as tone;
 
 #{ns.data("site-footer-root")} {
   display: contents;
@@ -18,14 +19,10 @@
 }
 
 #{ns.data("site-footer-tone", "inverse")} {
-  #{ns.css-var("text-muted")}: var(
-    #{ns.css-var("shell-footer-tone-inverse-text-muted")},
-    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 62%, transparent)
-  );
-  color: var(#{ns.css-var("shell-footer-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
+  @include tone.on-dark;
   background: var(
     #{ns.css-var("shell-footer-tone-inverse-bg")},
-    var(#{ns.css-var("contrast-ink")}, var(#{ns.css-var("text")}, #000))
+    var(#{ns.css-var("ink")}, #000)
   );
 }
 
@@ -42,6 +39,25 @@
   display: grid;
   gap: var(#{ns.css-var("shell-footer-inner-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
   align-items: start;
+}
+
+#{ns.element-class("site-footer", "site")} {
+  display: grid;
+  gap: var(#{ns.css-var("shell-footer-site-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
+  align-items: start;
+  padding-block-end: var(#{ns.css-var("shell-footer-site-py")}, var(#{ns.css-var("gap-lg")}, 40px));
+  border-block-end: var(
+    #{ns.css-var("shell-footer-site-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 15%, transparent)
+  );
+}
+
+#{ns.element-class("site-footer", "site-links")} {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  align-items: center;
+  gap: var(#{ns.css-var("shell-footer-site-links-gap")}, var(#{ns.css-var("gap-md")}, 24px));
 }
 
 #{ns.element-class("site-footer", "brand")} {
@@ -69,38 +85,81 @@
 #{ns.element-class("site-footer", "column")} {
   display: grid;
   align-content: start;
+  gap: var(#{ns.css-var("shell-footer-column-groups-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
+}
+
+#{ns.element-class("site-footer", "group")} {
+  display: grid;
+  align-content: start;
   gap: var(#{ns.css-var("shell-footer-column-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
 }
 
 #{ns.element-class("site-footer", "heading")} {
-  color: var(#{ns.css-var("shell-footer-heading-color")}, var(#{ns.css-var("text-muted")}, #666));
+  color: var(
+    #{ns.css-var("shell-footer-heading-color")},
+    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 85%, transparent)
+  );
   font-family: var(#{ns.css-var("shell-footer-heading-font-family")}, inherit);
   font-size: var(#{ns.css-var("shell-footer-heading-font-size")}, 0.72rem);
   font-weight: var(#{ns.css-var("shell-footer-heading-font-weight")}, 600);
-  letter-spacing: var(#{ns.css-var("shell-footer-heading-letter-spacing")}, 0.16em);
+  letter-spacing: var(#{ns.css-var("shell-footer-heading-letter-spacing")}, normal);
   text-transform: var(#{ns.css-var("shell-footer-heading-text-transform")}, uppercase);
+}
+
+#{ns.element-class("site-footer", "social")} {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(#{ns.css-var("shell-footer-social-gap")}, 6px);
+  margin-block-start: var(#{ns.css-var("shell-footer-social-offset")}, var(#{ns.css-var("gap-sm")}, 12px));
+}
+
+#{ns.element-class("site-footer", "social-link")} {
+  display: inline-flex;
+  width: var(#{ns.css-var("shell-footer-social-size")}, 2rem);
+  height: var(#{ns.css-var("shell-footer-social-size")}, 2rem);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(#{ns.css-var("shell-footer-social-radius")}, var(#{ns.css-var("radius-sm")}, 0));
+  color: var(
+    #{ns.css-var("shell-footer-social-color")},
+    color-mix(in srgb, currentColor 70%, transparent)
+  );
+  font-size: var(#{ns.css-var("shell-footer-social-icon-size")}, 1.1rem);
+  transition:
+  color var(#{ns.css-var("tone-change")}), background-color var(#{ns.css-var("transition-fast")}) ease;
+}
+
+#{ns.element-class("site-footer", "social-link")}:hover,
+
+#{ns.element-class("site-footer", "social-link")}:focus-visible {
+  color: var(#{ns.css-var("shell-footer-social-hover-color")}, inherit);
+  background: var(
+    #{ns.css-var("shell-footer-social-hover-bg")},
+    color-mix(in srgb, currentColor 12%, transparent)
+  );
 }
 
 #{ns.element-class("site-footer", "links")} {
   display: grid;
   gap: var(#{ns.css-var("shell-footer-links-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
-  color: var(#{ns.css-var("text-muted")}, #666);
 }
 
 #{ns.element-class("site-footer", "link")} {
-  width: fit-content;
-  color: inherit;
-  text-decoration-line: var(#{ns.css-var("shell-footer-link-decoration-line")}, none);
-  transition: color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
-  text-decoration-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease);
+  color: var(
+    #{ns.css-var("shell-footer-link-color")},
+    color-mix(in srgb, currentColor 70%, transparent)
+  );
+}
+
+#{ns.element-class("site-footer", "link")}[aria-current="page"] {
+  color: var(#{ns.css-var("shell-footer-link-active-color")}, inherit);
 }
 
 #{ns.element-class("site-footer", "link")}:hover,
 
 #{ns.element-class("site-footer", "link")}:focus-visible {
-  color: var(#{ns.css-var("shell-footer-link-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
-  text-decoration-line: var(#{ns.css-var("shell-footer-link-hover-decoration-line")}, underline);
-  text-underline-offset: 0.25rem;
+  color: var(#{ns.css-var("shell-footer-link-hover-color")}, var(#{ns.css-var("text")}, currentColor));
 }
 
 #{ns.element-class("site-footer", "note")} {
@@ -119,7 +178,9 @@
 }
 
 @media (min-width: 768px) {
-  #{ns.element-class("site-footer", "inner")} {
+  #{ns.element-class("site-footer", "inner")},
+
+  #{ns.element-class("site-footer", "site")} {
     grid-template-columns: var(
       #{ns.css-var("shell-footer-inner-columns")},
       minmax(0, 5fr) minmax(0, 7fr)

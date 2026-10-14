@@ -1,0 +1,44 @@
+@use "@trebired/bundler/namespace" as ns;
+$plain:
+"text",
+"text-muted",
+"border",
+"surface",
+"surface-muted";
+
+@mixin snapshot {
+  @each $token in $plain {
+    #{ns.css-var("base-" + $token)}: var(#{ns.css-var($token)});
+  }
+
+  #{ns.css-var("ink")}: var(#{ns.css-var("text")}, #000);
+}
+
+@mixin on-dark {
+  #{ns.css-var("text")}: var(#{ns.css-var("dark-text")}, var(#{ns.css-var("page")}, #fff));
+  #{ns.css-var("text-muted")}: var(
+    #{ns.css-var("dark-text-muted")},
+    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 70%, transparent)
+  );
+  #{ns.css-var("border")}: var(
+    #{ns.css-var("dark-border")},
+    color-mix(in srgb, var(#{ns.css-var("page")}, #fff) 42%, transparent)
+  );
+  #{ns.css-var("surface")}: var(
+    #{ns.css-var("dark-surface")},
+    color-mix(in srgb, var(#{ns.css-var("ink")}) 94%, var(#{ns.css-var("page")}, #fff))
+  );
+  #{ns.css-var("surface-muted")}: var(
+    #{ns.css-var("dark-surface-muted")},
+    color-mix(in srgb, var(#{ns.css-var("ink")}) 86%, var(#{ns.css-var("page")}, #fff))
+  );
+  color: var(#{ns.css-var("text")}, #fff);
+}
+
+@mixin on-light {
+  @each $token in $plain {
+    #{ns.css-var($token)}: var(#{ns.css-var("base-" + $token)});
+  }
+
+  color: var(#{ns.css-var("text")}, #000);
+}

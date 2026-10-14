@@ -89,3 +89,22 @@
     flex-direction: column;
   }
 }
+
+#{ns.element-class("upload-crop", "hint")} {
+  margin: 0;
+  color: var(#{ns.css-var("text-muted")}, currentColor);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+#{ns.element-class("upload-crop", "fields")} {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: var(--space-xs, 0.5rem);
+}
+
+#{ns.element-class("upload-crop", "field")} {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs, 0.25rem);
+}

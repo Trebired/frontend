@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "#4fimbihd7052" as motion;
 $frontend-hor-alignments: (
   left: flex-start,
   center: center,
@@ -126,7 +127,7 @@ $frontend-hor-alignments: (
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include motion.reduced-motion {
   #{ns.class("float")} {
     animation: none;
   }

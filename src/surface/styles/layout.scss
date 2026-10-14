@@ -8,6 +8,12 @@
   isolation: isolate;
 }
 
+html:not(#{ns.data("parsed")}) #{ns.class("glow")}::before,
+
+html:not(#{ns.data("parsed")}) #{ns.class("glow")}::after {
+  content: none;
+}
+
 #{ns.class("glow")}::before,
 
 #{ns.class("glow")}::after {
@@ -142,8 +148,8 @@
   border-radius: var(#{ns.css-var("surf-frame-action-radius")}, var(#{ns.css-var("radius")}, 0));
   color: var(#{ns.css-var("surf-frame-action-color")}, var(#{ns.css-var("text")}, #000));
   background: var(#{ns.css-var("surf-frame-action-bg")}, var(#{ns.css-var("page")}, #fff));
-  transition: background-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
-  color var(#{ns.css-var("transition-fast")}, 180ms) ease;
+  transition:
+  color var(#{ns.css-var("tone-change")}), background-color var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
 
 #{ns.element-class("frame", "action")} #{ns.class("icon-glyph")} {
@@ -165,10 +171,9 @@
   height: var(#{ns.css-var("surf-logo-root-height")}, 2rem);
   max-width: var(#{ns.css-var("surf-logo-root-max")}, 100%);
   color: inherit;
-  transition: color 0.2s ease;
 }
 
-#{ns.class("logo")} svg {
+#{ns.class("logo")} :where(svg, img) {
   display: block;
   width: auto;
   height: 100%;
@@ -186,7 +191,7 @@
 
 #{ns.class("prose")} li {
   color: var(#{ns.css-var("text-muted")}, #000);
-  line-height: var(#{ns.css-var("surf-prose-root-line-height")}, 1.8);
+  line-height: var(#{ns.css-var("surf-prose-root-line-h")}, 1.8);
 }
 
 #{ns.class("prose")} ul,

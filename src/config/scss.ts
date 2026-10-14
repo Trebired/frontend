@@ -30,12 +30,14 @@ import type {
   FrontendThemeTokens,
 } from "./types.js";
 
+const A11Y_STYLE_FILE = "a11y/styles/index.scss";
+
 const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
+  a11y: A11Y_STYLE_FILE,
   actions: "actions/styles/index.scss",
   code: "code/styles/index.scss",
   editor: "editor/styles/index.scss",
   explorer: "explorer/styles/index.scss",
-  contrast: "contrast/styles/index.scss",
   flash: "flash/styles/index.scss",
   graph: "graph/styles/index.scss",
   icons: "icons/styles/index.scss",
@@ -90,16 +92,26 @@ function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] 
   return lines;
 }
 
+function glassTintColor(color: string, prefix: string): string {
+  if (color === "page") return `var(--${prefix}-page, #fff)`;
+  if (color === "ink") return `var(--${prefix}-ink, var(--${prefix}-text, #000))`;
+  return color;
+}
+
 function glassDeclarations(config: NormalizedFrontendConfig): string[] {
   const glass = config.design.glass;
   if (!glass) return [];
-  const base = glass.color === "transparent"
-  ? `var(--${config.prefix}-surface, #fff)`
-  : glass.color;
-  const tint = `color-mix(in srgb, ${base} ${glass.opacity}, transparent)`;
+  const mix = (value: string) => (value === "transparent"
+    ? "transparent"
+    : `color-mix(in srgb, ${value} ${glass.opacity}, transparent)`);
+  const light = mix(glassTintColor("page", config.prefix));
+  const dark = mix(glassTintColor("ink", config.prefix));
+  const chosen = mix(glassTintColor(glass.color, config.prefix));
   return [
-    `  --${config.prefix}-glass-bar-bg: transparent;`,
-    `  --${config.prefix}-glass-bg: ${tint};`,
+    `  --${config.prefix}-glass-bg: ${glass.clear};`,
+    `  --${config.prefix}-glass-tint-light-bg: ${light};`,
+    `  --${config.prefix}-glass-tint-dark-bg: ${dark};`,
+    `  --${config.prefix}-glass-tint-bg: ${chosen};`,
     `  --${config.prefix}-glass-filter: blur(${glass.blur}) saturate(${glass.saturate});`,
   ];
 }

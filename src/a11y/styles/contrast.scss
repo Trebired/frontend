@@ -1,0 +1,23 @@
+@use "@trebired/bundler/namespace" as ns;
+#{ns.data("high-contrast", "on")} {
+  --border-width: 2px;
+  --outline-width: 3px;
+  #{ns.css-var("high-contrast-ink")}: var(#{ns.css-var("high-contrast-ink-override")}, #000);
+  #{ns.css-var("high-contrast-paper")}: var(#{ns.css-var("high-contrast-paper-override")}, #fff);
+  #{ns.css-var("base-text")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("base-text-muted")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("base-border")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("base-surface")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("base-surface-muted")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("ink")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("text")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("text-muted")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("border")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("surface")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("surface-muted")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("dark-text")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("dark-text-muted")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("dark-border")}: var(#{ns.css-var("high-contrast-paper")});
+  #{ns.css-var("dark-surface")}: var(#{ns.css-var("high-contrast-ink")});
+  #{ns.css-var("dark-surface-muted")}: var(#{ns.css-var("high-contrast-ink")});
+}

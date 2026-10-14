@@ -1,0 +1,11 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("motif")} {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(#{ns.css-var("surf-motif-root-color")}, inherit);
+  opacity: var(#{ns.css-var("surf-motif-root-opacity")}, 1);
+}

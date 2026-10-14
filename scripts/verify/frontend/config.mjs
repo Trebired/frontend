@@ -94,6 +94,15 @@ function configuredSource(context) {
   ].join("\n");
 }
 
+function assertScalesInRem(css) {
+  const spacing = css.split("\n").filter((line) => line.includes("--space-"));
+  const text = css.split("\n").filter((line) => line.includes("-text-md {"));
+  assert.ok(spacing.length > 0 && text.length > 0, "the scales are emitted at all");
+  for (const line of [...spacing, ...text]) {
+    assert.equal(line.includes("px"), false, `a reader's own font size has to move this: ${line.trim()}`);
+  }
+}
+
 function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.configPath, null);
   assert.equal(defaults.config.prefix, "tbf");
@@ -104,11 +113,12 @@ function assertDefaultConfig(defaults, context) {
   assert.equal(defaults.generatedScss.includes(context.packageName), false);
   assert.ok(defaults.generatedScss.includes("--tbf-interaction-active-filter: none;"));
   assert.ok(defaults.generatedScss.includes("--tbf-icon-mode: \"server\";"));
-  assert.ok(defaults.generatedScss.includes("--tbf-overlay-modal-content-width: min(720px, calc(100vw - 48px));"));
-  assert.ok(defaults.generatedScss.includes("--tbf-ui-upload-preview-size: 64px;"));
+  assert.ok(defaults.generatedScss.includes("--tbf-overlay-modal-content-width: min(45rem, calc(100vw - 3rem));"));
+  assert.ok(defaults.generatedScss.includes("--tbf-ui-upload-preview-size: 4rem;"));
   assert.ok(defaults.generatedScss.includes("--tbf-media-lightbox-control-radius: 0;"));
   assert.ok(defaults.generatedScss.includes("--tbf-media-lightbox-control-state-hover-bg: "));
   assert.ok(defaults.generatedScss.includes("--tbf-media-expandable-image-icon-size: 2.5rem;"));
+  assertScalesInRem(defaults.generatedScss);
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
   }

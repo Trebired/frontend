@@ -202,14 +202,18 @@ h6 {
 }
 
 p {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   cursor: default;
 }
 
+:where(a[href], button, [role="button"], #{ns.data("interactive", "true")}) :is(h1, h2, h3, h4, h5, h6, p) {
+  cursor: inherit;
+}
+
 @media (max-width: 769px) {
   p {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
@@ -318,8 +322,11 @@ ul {
 
 #{ns.class("scroll-min")} {
   #{ns.css-var("scroll-min-size")}: 6px;
-  #{ns.css-var("scroll-min-track")}: var(--scroll-track, #fff);
-  #{ns.css-var("scroll-min-thumb")}: var(--scroll-thumb, #000);
+  #{ns.css-var("scroll-min-track")}: var(--scroll-track, transparent);
+  #{ns.css-var("scroll-min-thumb")}: var(
+    --scroll-thumb,
+    color-mix(in srgb, currentColor 26%, transparent)
+  );
   #{ns.css-var("scroll-min-thumb-hover")}: var(--scroll-thumb-hover, var(#{ns.css-var("scroll-min-thumb")}));
   --scroll-min-horizontal-gap: 6px;
   --scroll-min-size: var(#{ns.css-var("scroll-min-size")});

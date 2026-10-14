@@ -90,7 +90,11 @@ $frontend-input-tones: (
   font-size: var(#{ns.css-var("ui-input-root-font-size")}, 14px);
   outline: var(--border-width) solid transparent;
   outline-offset: 2px;
-  transition: all 120ms ease;
+  transition:
+  color var(#{ns.css-var("tone-change")}),
+  background-color 120ms ease,
+  border-color 120ms ease,
+  outline-color 120ms ease;
   line-height: 1.4;
 }
 

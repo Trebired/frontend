@@ -1,7 +1,9 @@
 import { Icon } from "#lbkpzw8nphru";
+import { languageDirection } from "./direction.js";
+import { primitiveButtonClassName } from "./../primitives/components/classes.js";
 import { button } from "#6hfutrhvm6x6";
 import { classNames } from "#ndsvdqv80epr";
-import { normalizedLang, text, translate } from "./shared.js";
+import { localeBase, localeTag, normalizedLang, text, translate } from "./shared.js";
 import { languageName } from "./names.js";
 import type { LocaleOption, LocaleSwitcherProps } from "./types.js";
 import { hasFlag } from "country-flag-icons";
@@ -105,7 +107,7 @@ function localeOptionIcon(option: LocaleOption) {
 function localeTriggerFace(props: LocaleSwitcherProps, current: string) {
   if (props.trigger !== "locale") return <Icon spec="remixicon translate-2" />;
   const locales = Array.isArray(props.locales) && props.locales.length ? props.locales : DEFAULT_LOCALES;
-  const active = locales.find((entry) => normalizedLang(entry.code) === current) || locales[0];
+  const active = locales.find((entry) => localeBase(entry.code) === localeBase(current)) || locales[0];
   if (!active) return <Icon spec="remixicon translate-2" />;
   return (
     <>
@@ -125,7 +127,11 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
     <button
     type="button"
     id={triggerId}
-    className={classNames(frontendClassName("locale-trigger"), props.className)}
+    className={primitiveButtonClassName({
+          className: classNames(frontendClassName("locale-trigger"), props.className),
+          icon: compact,
+          variant: "chrome",
+    })}
     aria-controls={popoverId}
     aria-haspopup="menu"
     aria-expanded="false"
@@ -148,8 +154,8 @@ function localeOptionButton(
   current: string,
   props: LocaleSwitcherProps,
 ) {
-  const code = normalizedLang(entry.code);
-  const isCurrent = code === current;
+  const code = localeTag(entry.code) || normalizedLang(entry.code);
+  const isCurrent = localeBase(code) === localeBase(current);
   return (
     <button
     key={code}
@@ -164,7 +170,9 @@ function localeOptionButton(
     value={code}
     >
     {localeOptionIcon(entry)}
-    <span>{localizedLocaleLabel(entry, current)}</span>
+    <span dir={languageDirection(code) === "rtl" ? "rtl" : undefined} lang={code}>
+    {localizedLocaleLabel(entry, current)}
+    </span>
     </button>
   );
 }

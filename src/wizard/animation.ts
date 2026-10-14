@@ -1,11 +1,12 @@
 import { setStepState, showWizardStep } from "./step_state.js";
+import { motionReduced } from "./../a11y/attributes.js";
 
 const WIZARD_ANIMATION_MS = 240;
 const wizardAnimationTokens = new WeakMap<HTMLElement, number>();
 
 function prefersReducedWizardMotion() {
   try {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return motionReduced();
   } catch {
     return false;
   }

@@ -20,4 +20,12 @@ function normalizedLang(value: unknown) {
   return normalizeLocale(text(value, "en"));
 }
 
-export { normalizedLang, safeId, text, translate };
+function localeTag(value: unknown) {
+  return text(value).trim().toLowerCase().replace(/_/gu, "-");
+}
+
+function localeBase(value: unknown) {
+  return localeTag(value).split("-")[0] || "";
+}
+
+export { localeBase, localeTag, normalizedLang, safeId, text, translate };

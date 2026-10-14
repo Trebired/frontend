@@ -1,0 +1,12 @@
+@use "@trebired/bundler/namespace" as ns;
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    html:not(#{ns.data("reduce-motion", "off")}) {
+      @content;
+    }
+  }
+
+  #{ns.data("reduce-motion", "on")} {
+    @content;
+  }
+}

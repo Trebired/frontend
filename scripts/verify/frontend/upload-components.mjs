@@ -13,7 +13,7 @@ async function verifyUploadStyles(rootDir) {
     "utf8",
   );
   const cropper = `${cropperShell}\n${cropperInternals}`;
-  const cropperRuntime = await fs.readFile(path.join(rootDir, "dist", "inputs", "upload", "crop-session.js"), "utf8");
+  const cropperRuntime = await fs.readFile(path.join(rootDir, "dist", "inputs", "upload", "crop", "session.js"), "utf8");
   assert.ok(upload.includes('ns.css-var("ui-upload-surface-bg")'));
   assert.ok(upload.includes("grid-template-columns: auto minmax(0, 1fr)"));
   assert.ok(upload.includes('var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000)'));

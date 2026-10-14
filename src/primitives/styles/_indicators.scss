@@ -5,13 +5,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 3px 5px;
-  border: var(--border-width) solid transparent;
-  border-radius: var(--radius-lg, var(#{ns.css-var("radius")}, 0));
-  background-color: var(#{ns.css-var("ui-pill-bg")}, var(--background-surface-1, transparent));
-  color: var(--text-color);
-  font-size: 13px;
+  gap: var(#{ns.css-var("ui-pill-root-gap")}, var(#{ns.css-var("gap-xs2")}, 4px));
+  padding: var(#{ns.css-var("ui-pill-root-padding")}, 3px 8px);
+  border: var(
+    #{ns.css-var("ui-pill-root-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
+  );
+  border-radius: var(#{ns.css-var("ui-pill-root-radius")}, var(#{ns.css-var("radius-sm")}, 0.5rem));
+  background-color: var(
+    #{ns.css-var("ui-pill-root-bg")},
+    var(#{ns.css-var("ui-pill-bg")}, transparent)
+  );
+  color: var(#{ns.css-var("ui-pill-root-color")}, var(#{ns.css-var("text")}, currentColor));
+  font-size: var(#{ns.css-var("ui-pill-root-font-size")}, 13px);
   line-height: 1;
   white-space: nowrap;
   flex-wrap: nowrap;

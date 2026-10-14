@@ -1,6 +1,9 @@
 import { normalizeLocaleRouting } from "./options.js";
 import type { LocaleRoutingOptions, LocaleStrategy } from "./options.js";
 import { LANGUAGE_CONFIG_ATTR } from "./../config.js";
+import { MONEY_CONFIG_ATTR } from "./../../money/config.js";
+import { a11yBootSource } from "./../../a11y/boot.js";
+import { RTL_LANGUAGES } from "./../direction.js";
 import { LOCALE_PENDING_ATTR, LOCALE_RENDERED_ATTR } from "./view.js";
 
 const LOCALE_HANDOFF_QUERY = "setlang";
@@ -67,22 +70,25 @@ function navigatorLocaleSource(): string[] {
 function pendingSource(hide: boolean): string[] {
   if (!hide) return ["if(n!==r){h.setAttribute(P,'')}"];
   return [
-    "if(n!==r){h.setAttribute(P,'');h.style.visibility='hidden';",
-    "d.addEventListener('DOMContentLoaded',function(){h.removeAttribute(P);h.style.visibility=''})}",
+    "if(n!==r){h.setAttribute(P,'');h.style.opacity='0';",
+    "d.addEventListener('DOMContentLoaded',function(){h.removeAttribute(P);h.style.opacity=''})}",
   ];
 }
 
 type LocaleBootPayload = unknown;
 
 type LocaleBootOptions = {
+  a11y?: unknown;
   hideUntilReady?: boolean;
   language?: unknown;
+  money?: unknown;
   strategy?: LocaleStrategy;
 };
 
 function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: LocaleBootOptions = {}): string {
   const routing = normalizeLocaleRouting(options);
   const language = boot.language === undefined ? "" : scriptJson(boot.language);
+  const money = boot.money === undefined ? "" : scriptJson(boot.money);
   const detectBrowser = !boot.strategy || boot.strategy === "none";
   const readQuery = boot.strategy === "query";
   const readPath = boot.strategy === "prefix" || boot.strategy === "prefix-all";
@@ -100,8 +106,11 @@ function createLocaleBootScript(options: LocaleRoutingOptions = {}, boot: Locale
     ...(readQuery ? queryLocaleSource() : []),
     ...(detectBrowser ? navigatorLocaleSource() : []),
     "n=n||r;h.lang=n;",
+    `h.dir=${scriptJson(RTL_LANGUAGES)}.indexOf(String(n).split('-')[0])>=0?'rtl':'ltr';`,
     ...(boot.strategy === "prefix-all" ? normalizePrefixSource() : []),
     ...(language ? [`h.setAttribute(${scriptJson(LANGUAGE_CONFIG_ATTR)},JSON.stringify(${language}));`] : []),
+    ...(money ? [`h.setAttribute(${scriptJson(MONEY_CONFIG_ATTR)},JSON.stringify(${money}));`] : []),
+    ...(boot.a11y === undefined ? [] : a11yBootSource(boot.a11y)),
     ...pendingSource(boot.hideUntilReady !== false),
     "})();",
   ].join("");

@@ -6,21 +6,23 @@
   display: flex;
   flex-direction: column;
   gap: var(#{ns.css-var("overlay-popover-panel-gap")}, 2px);
-  min-width: var(#{ns.css-var("overlay-popover-panel-min-w")}, 220px);
-  max-width: min(320px, calc(100vw - 24px));
+  min-width: min(
+    var(#{ns.css-var("overlay-popover-panel-min-w")}, 13.75rem),
+    calc(100vw - var(#{ns.css-var("overlay-popover-panel-gutter")}, 1.5rem))
+  );
+  max-width: min(
+    var(#{ns.css-var("overlay-popover-panel-max-w")}, 20rem),
+    calc(100vw - var(#{ns.css-var("overlay-popover-panel-gutter")}, 1.5rem))
+  );
   padding: var(#{ns.css-var("overlay-popover-panel-padding")}, 8px);
   border: var(
     #{ns.css-var("overlay-popover-panel-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    var(#{ns.css-var("border-width")}, 1px) solid
+    color-mix(in srgb, currentColor 18%, transparent)
   );
   border-radius: var(#{ns.css-var("overlay-popover-panel-radius")}, var(#{ns.css-var("radius")}, 0));
-  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("adaptive")}, currentColor));
-  background: var(
-    #{ns.css-var("glass-bg")},
-    var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("surface")}, #fff))
-  );
-  backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
-  -webkit-backdrop-filter: var(#{ns.css-var("glass-filter")}, none);
+  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("text")}, currentColor));
+  background: var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("surface")}, #fff));
   box-shadow: var(#{ns.css-var("overlay-popover-panel-shadow")}, var(#{ns.css-var("shadow")}, 0 0 0 1px #000));
   visibility: hidden;
   opacity: 0;
@@ -30,6 +32,13 @@
   opacity var(#{ns.css-var("transition-fast")}) ease,
   transform var(#{ns.css-var("transition-fast")}) ease,
   visibility 0s linear var(#{ns.css-var("transition-fast")});
+}
+
+#{ns.data("popover")}:not(#{ns.data("open", "true")}):not(#{ns.class("show")}) {
+  max-block-size: 0;
+  padding-block: 0;
+  border-block-width: 0;
+  overflow: hidden;
 }
 
 #{ns.class("popover")}#{ns.class("show")},
@@ -54,15 +63,15 @@
 #{ns.data("popover")} > :where(a, button) {
   display: flex;
   width: 100%;
-  height: var(#{ns.css-var("overlay-popover-item-root-height")}, 35px);
-  min-height: var(#{ns.css-var("overlay-popover-item-root-height")}, 35px);
+  height: var(#{ns.css-var("overlay-popover-item-root-height")}, 2.1875rem);
+  min-height: var(#{ns.css-var("overlay-popover-item-root-height")}, 2.1875rem);
   align-items: center;
   gap: var(#{ns.css-var("overlay-popover-item-root-gap")}, 10px);
   padding: var(#{ns.css-var("overlay-popover-item-root-padding")}, 5px 10px);
   overflow: hidden;
   border: var(#{ns.css-var("overlay-popover-item-root-border")}, 0);
   border-radius: var(#{ns.css-var("overlay-popover-item-root-radius")}, var(#{ns.css-var("radius-sm")}, var(#{ns.css-var("radius")}, 0)));
-  color: var(#{ns.css-var("overlay-popover-item-root-color")}, var(#{ns.css-var("adaptive-muted")}, currentColor));
+  color: var(#{ns.css-var("overlay-popover-item-root-color")}, var(#{ns.css-var("text-muted")}, currentColor));
   background: var(#{ns.css-var("overlay-popover-item-root-bg")}, transparent);
   cursor: pointer;
   font: inherit;
@@ -72,7 +81,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   transition:
-  color var(#{ns.css-var("transition-fast")}) ease,
+  color var(#{ns.css-var("tone-change")}),
   background var(#{ns.css-var("transition-fast")}) ease,
   transform var(#{ns.css-var("transition-fast")}) ease;
 }
@@ -92,8 +101,22 @@
 #{ns.data("popover")} > :where(a, button):hover,
 
 #{ns.data("popover")} > :where(a, button):focus {
-  color: var(#{ns.css-var("overlay-popover-item-state-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
+  color: var(#{ns.css-var("overlay-popover-item-state-hover-color")}, var(#{ns.css-var("text")}, currentColor));
   background: var(#{ns.css-var("overlay-popover-item-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, #f4f4f4));
+}
+
+#{ns.class("popover")} :where(a, button)#{ns.class("popover-item")}[aria-current="page"],
+
+#{ns.class("popover")} > :where(a, button)[aria-current="page"],
+
+#{ns.data("popover")} :where(a, button)#{ns.class("popover-item")}[aria-current="page"],
+
+#{ns.data("popover")} > :where(a, button)[aria-current="page"] {
+  color: var(
+    #{ns.css-var("overlay-popover-item-state-selected-color")},
+    var(#{ns.css-var("text")}, currentColor)
+  );
+  background: var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, transparent);
 }
 
 #{ns.data("popover-trigger")}::after {
@@ -126,6 +149,16 @@
   text-align: start;
 }
 
+#{ns.class("popover-item")}#{ns.data("popover-item-stacked", "true")} > :first-child {
+  font-size: var(#{ns.css-var("overlay-popover-item-stacked-title-font-size")}, 0.85rem);
+  font-weight: var(#{ns.css-var("overlay-popover-item-stacked-title-font-weight")}, 800);
+}
+
+#{ns.class("popover-item")}#{ns.data("popover-item-stacked", "true")} > :first-child + * {
+  color: var(#{ns.css-var("overlay-popover-item-stacked-meta-color")}, inherit);
+  font-size: var(#{ns.css-var("overlay-popover-item-stacked-meta-font-size")}, 0.72rem);
+}
+
 #{ns.class("popover-group")} {
   display: flex;
   width: 100%;
@@ -141,7 +174,7 @@
   padding: var(#{ns.css-var("overlay-popover-group-padding")}, 11px 12px 9px);
   color: var(
     #{ns.css-var("overlay-popover-group-color")},
-    color-mix(in srgb, var(#{ns.css-var("adaptive")}, currentColor) 72%, transparent)
+    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 72%, transparent)
   );
   background: transparent;
   cursor: pointer;
@@ -149,7 +182,11 @@
   font-size: var(#{ns.css-var("overlay-popover-group-font-size")}, 0.85rem);
   font-weight: var(#{ns.css-var("overlay-popover-group-font-weight")}, 800);
   text-align: start;
-  transition: color 0.2s ease;
+}
+
+#{ns.class("popover-group")} #{ns.element-class("disclosure", "indicator")} {
+  margin-inline-start: var(#{ns.css-var("overlay-popover-group-indicator-offset")}, 0);
+  color: inherit;
 }
 
 #{ns.class("popover-group")}:hover,
@@ -157,5 +194,5 @@
 #{ns.class("popover-group")}:focus-visible,
 
 #{ns.class("popover-group")}[aria-expanded="true"] {
-  color: var(#{ns.css-var("overlay-popover-group-hover-color")}, var(#{ns.css-var("adaptive")}, currentColor));
+  color: var(#{ns.css-var("overlay-popover-group-hover-color")}, var(#{ns.css-var("text")}, currentColor));
 }

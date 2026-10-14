@@ -3,6 +3,7 @@
 @use "./brand-canvas";
 @use "./hairline";
 @use "./layout";
+@use "./motif";
 @use "./track";
 #{ns.class("button")} {
   #{ns.css-var("surf-btn-current-icon")}: var(
@@ -19,13 +20,13 @@
   padding-block: var(#{ns.css-var("surf-btn-root-py")}, var(#{ns.css-var("ui-btn-root-py")}, 0));
   border: var(
     #{ns.css-var("surf-btn-root-border")},
-    var(#{ns.css-var("ui-btn-root-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor))
+    var(#{ns.css-var("ui-btn-root-border")}, var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor))
   );
   border-radius: var(
     #{ns.css-var("surf-btn-root-radius")},
     var(#{ns.css-var("ui-btn-root-radius")}, var(--radius-md, var(#{ns.css-var("radius")}, 0)))
   );
-  color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("adaptive")}, currentColor)));
+  color: var(#{ns.css-var("surf-btn-root-color")}, var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("text")}, currentColor)));
   background: var(#{ns.css-var("surf-btn-root-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
   transition: var(
     #{ns.css-var("surf-btn-root-transition")},
@@ -195,7 +196,7 @@
   );
   border: var(
     #{ns.css-var("surf-card-root-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor)
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
   );
   border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
   color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));

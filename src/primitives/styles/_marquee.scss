@@ -1,4 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
+@use "#4fimbihd7052" as motion;
 
 #{ns.class("marquee")} {
   position: relative;
@@ -49,7 +50,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include motion.reduced-motion {
   #{ns.element-class("marquee", "track")} {
     animation: none;
   }

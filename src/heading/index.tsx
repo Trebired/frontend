@@ -13,13 +13,13 @@ type HeadingScopeProps = {
 };
 
 const PAGE_DEPTH = 0;
-const MIN_LEVEL = 3;
+const MIN_LEVEL = 2;
 const MAX_LEVEL = 6;
 
 const HeadingDepthContext = createContext<number>(PAGE_DEPTH);
 
 function headingLevelForDepth(depth: number): HeadingLevel {
-  const level = Math.min(MAX_LEVEL, Math.max(MIN_LEVEL, 2 + Math.max(0, Math.floor(depth))));
+  const level = Math.min(MAX_LEVEL, Math.max(MIN_LEVEL, 1 + Math.max(0, Math.floor(depth))));
   return level as HeadingLevel;
 }
 

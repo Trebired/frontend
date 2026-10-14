@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { A11Y_CHANGE_EVENT, motionReduced } from "./../a11y/attributes.js";
 
 type CarouselState = {
   activeIndex: number;
@@ -10,17 +11,30 @@ type CarouselState = {
 };
 
 function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
   try {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return motionReduced();
   } catch {
     return false;
   }
 }
 
+function useMotionPreference(): boolean {
+  const [reduced, setReduced] = useState(prefersReducedMotion);
+
+  useEffect(() => {
+      const sync = () => setReduced(prefersReducedMotion());
+      sync();
+      document.addEventListener(A11Y_CHANGE_EVENT, sync);
+      return () => document.removeEventListener(A11Y_CHANGE_EVENT, sync);
+    }, []);
+
+  return reduced;
+}
+
 function useCarouselState(length: number, intervalMs: number): CarouselState {
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const reducedMotion = useMotionPreference();
   const timer = useRef<number|undefined>(undefined);
 
   const showNext = useCallback(() => {
@@ -36,10 +50,10 @@ function useCarouselState(length: number, intervalMs: number): CarouselState {
     }, [length]);
 
   useEffect(() => {
-      if (paused || length < 2 || intervalMs <= 0 || prefersReducedMotion()) return undefined;
+      if (paused || length < 2 || intervalMs <= 0 || reducedMotion) return undefined;
       timer.current = window.setInterval(showNext, intervalMs);
       return () => window.clearInterval(timer.current);
-    }, [activeIndex, intervalMs, length, paused, showNext]);
+    }, [activeIndex, intervalMs, length, paused, reducedMotion, showNext]);
 
   return {
     activeIndex: Math.min(activeIndex, Math.max(length - 1, 0)),
@@ -51,5 +65,5 @@ function useCarouselState(length: number, intervalMs: number): CarouselState {
   };
 }
 
-export { prefersReducedMotion, useCarouselState };
+export { prefersReducedMotion, useCarouselState, useMotionPreference };
 export type { CarouselState };

@@ -34,17 +34,26 @@
       "#0edmzg1kctm7": [
         "../../../src/language/runtime/source/animation.ts"
       ],
+      "#0fs07mm0qoma": [
+        "../../../src/layout/components/site/header/state.ts"
+      ],
       "#0k26zlvzjegd": [
         "../../../src/index.ts"
       ],
       "#0lq9fxjqobez": [
         "../../../src/config/scss.ts"
       ],
+      "#0m28qhit0zks": [
+        "../../../src/a11y/controls.ts"
+      ],
       "#0mdb644lpzkk": [
         "../../../src/media/carousel-state.ts"
       ],
       "#0rl8rpgzssot": [
         "../../../src/primitives/components/classes.ts"
+      ],
+      "#0uoegtcdhrko": [
+        "../../../src/a11y/apply.ts"
       ],
       "#0urb4jpmxonp": [
         "../../../src/graph/advanced/graph/model.tsx"
@@ -85,6 +94,9 @@
       "#1h8vu340iu43": [
         "../../../src/graph/advanced/runtime/render.tsx"
       ],
+      "#1ki319vcf4d8": [
+        "../../../src/a11y/skip.ts"
+      ],
       "#1mftytrw2uez": [
         "../../../src/http/paged.ts"
       ],
@@ -93,9 +105,6 @@
       ],
       "#1noxad072ety": [
         "../../../src/editor/content.ts"
-      ],
-      "#1nyd7ni8cpfq": [
-        "../../../src/layout/components/site/header_state.ts"
       ],
       "#1oddqcc3hg5a": [
         "../../../src/graph/advanced/runtime/card/units.ts"
@@ -127,9 +136,6 @@
       "#2dj54j8irp75": [
         "../../../src/wizard/step_state.ts"
       ],
-      "#2dnwyp7pxtc4": [
-        "../../../src/contrast/index.ts"
-      ],
       "#2eo44c56ebfi": [
         "../../../src/modal/components/index.tsx"
       ],
@@ -157,11 +163,11 @@
       "#2zdl1lzrgn6p": [
         "../../../src/actions/forms.ts"
       ],
+      "#2zwv053mg3ba": [
+        "../../../src/a11y/boot.ts"
+      ],
       "#330k9t1x10vd": [
         "../../../src/config/tokens.ts"
-      ],
-      "#338k52wvvrxo": [
-        "../../../src/contrast/boot.ts"
       ],
       "#33o6e7mug9pg": [
         "../../../src/flash/index.ts"
@@ -171,6 +177,9 @@
       ],
       "#3f29p8cywlft": [
         "../../../src/editor/styles/index.scss"
+      ],
+      "#3gcuk6pse66v": [
+        "../../../src/a11y/styles/forced.scss"
       ],
       "#3h3hxbxtzi9y": [
         "../../../src/layout/components/breadcrumb.tsx"
@@ -192,6 +201,9 @@
       ],
       "#3tbk8rlpy2kq": [
         "../../../src/inputs/advanced/tabs/manager/registry.ts"
+      ],
+      "#3tqt99mfir1s": [
+        "../../../src/language/fragment.tsx"
       ],
       "#3wgxkaivq5fo": [
         "../../../src/inputs/advanced/status/index.client.ts"
@@ -235,6 +247,9 @@
       "#4eoy445xl4kk": [
         "../../../src/sidebar/dynamic/runtime/live.ts"
       ],
+      "#4fimbihd7052": [
+        "../../../src/a11y/styles/_motion.scss"
+      ],
       "#4fte8m1x62rd": [
         "../../../src/graph/advanced/_shared.tsx"
       ],
@@ -265,8 +280,14 @@
       "#4okrafkbueid": [
         "../../../src/layer/components/index.tsx"
       ],
+      "#4s5anzp0b1zg": [
+        "../../../src/surface/styles/motif.scss"
+      ],
       "#4sx52pc9h7zp": [
         "../../../src/layout/components/shell/links.tsx"
+      ],
+      "#4szy5uehbnaq": [
+        "../../../src/a11y/types.ts"
       ],
       "#4ujwujdoi70o": [
         "../../../scripts/verify/frontend/progress.mjs"
@@ -298,6 +319,9 @@
       "#5bxczhb93eko": [
         "../../../src/search/client/hosts.ts"
       ],
+      "#5bzxke9yip0q": [
+        "../../../src/a11y/components/sections.tsx"
+      ],
       "#5c5ghsav1u9u": [
         "../../../src/inputs/advanced/status/styles.scss"
       ],
@@ -312,6 +336,9 @@
       ],
       "#5lynij7jmg2c": [
         "../../../src/icons/server/options.ts"
+      ],
+      "#5m0t5qgtjxkc": [
+        "../../../src/config/text-document.ts"
       ],
       "#5ssjolog3tb8": [
         "../../../src/settings/save-policy/bindings.ts"
@@ -337,6 +364,9 @@
       "#62eb58caifhu": [
         "../../../src/inputs/index.ts"
       ],
+      "#63ubl6autxuk": [
+        "../../../scripts/verify/frontend/a11y.mjs"
+      ],
       "#65z24fxl82ws": [
         "../../../src/files/index.ts"
       ],
@@ -354,6 +384,9 @@
       ],
       "#6k1axorwtxsf": [
         "../../../src/layout/components/site/footer.tsx"
+      ],
+      "#6khlfwer4ydm": [
+        "../../../src/styles/utils/_tone.scss"
       ],
       "#6lnzlptmw1nk": [
         "../../../src/graph/advanced/graph/i18n/en.ts"
@@ -517,6 +550,9 @@
       "#9gwy37r8u1nt": [
         "../../../src/theme/modes.ts"
       ],
+      "#9hi85gt6xyue": [
+        "../../../scripts/verify/frontend/prose.mjs"
+      ],
       "#9jwnasw3u2o5": [
         "../../../scripts/verify/frontend/scrollbar.mjs"
       ],
@@ -525,6 +561,9 @@
       ],
       "#9nk0macwdvtl": [
         "../../../scripts/verify/frontend/shell.mjs"
+      ],
+      "#9nlaux8red01": [
+        "../../../scripts/verify/frontend/money.mjs"
       ],
       "#9r9eh5d3jidb": [
         "../../../src/styles/utils/text/extra.scss"
@@ -540,6 +579,9 @@
       ],
       "#9wjes84tjrfc": [
         "../../../src/graph/index.ts"
+      ],
+      "#9z290390p7lq": [
+        "../../../src/inputs/advanced/status/field.tsx"
       ],
       "#9zjbp83m7l2g": [
         "../../../src/spa/guards.ts"
@@ -607,6 +649,9 @@
       "#b0r8sdomiine": [
         "../../../src/language/runtime/source/selectors.ts"
       ],
+      "#b463zku943z7": [
+        "../../../src/a11y/runtime.ts"
+      ],
       "#b4y4bvkt749j": [
         "../../../src/static-icons.ts"
       ],
@@ -618,6 +663,9 @@
       ],
       "#bapkajyzc9vm": [
         "../../../src/sidebar/dynamic/runtime/index.ts"
+      ],
+      "#bbhwyfbqh2bs": [
+        "../../../src/inputs/advanced/dropdown/static/keys.ts"
       ],
       "#beon2qdcbsoe": [
         "../../../src/layout/components/header.tsx"
@@ -631,6 +679,9 @@
       "#bigvy1k5z3wr": [
         "../../../src/logs/styles.scss"
       ],
+      "#bow857hlwwiu": [
+        "../../../src/a11y/attributes.ts"
+      ],
       "#boxcxvsyrtdl": [
         "../../../src/layout/components/shell/state.ts"
       ],
@@ -639,6 +690,9 @@
       ],
       "#bq7jopbru8qh": [
         "../../../src/inputs/upload/runtime.ts"
+      ],
+      "#briorep0q0cm": [
+        "../../../src/primitives/components/prose.tsx"
       ],
       "#bu1nq95e3k0f": [
         "../../../src/icons/shared.ts"
@@ -664,17 +718,20 @@
       "#c1t1f0t76p85": [
         "../../../src/code/monaco.ts"
       ],
+      "#c4rfy5i878n9": [
+        "../../../src/a11y/config.ts"
+      ],
       "#c55llzkpl4ob": [
         "../../../src/code/components/index.tsx"
       ],
       "#c8jpcraitulu": [
         "../../../src/sidebar/dynamic/runtime/guards.ts"
       ],
+      "#caseseao5fbb": [
+        "../../../src/layout/social.ts"
+      ],
       "#cbhj0wc7jgat": [
         "../../../src/sidebar/dynamic/runtime/selectors.ts"
-      ],
-      "#cbnut0jgjszp": [
-        "../../../src/contrast/styles/index.scss"
       ],
       "#ccvonx3uhbte": [
         "../../../src/layer/index.ts"
@@ -691,11 +748,17 @@
       "#cqkpmolndi3d": [
         "../../../src/icons/server/attachment.ts"
       ],
+      "#cqp91d1i24dm": [
+        "../../../src/a11y/ratio.ts"
+      ],
       "#ctf8e5ohuzbq": [
         "../../../src/styles/utils/a11y.scss"
       ],
       "#cuvq9orbphn9": [
         "../../../src/server/seo/types.ts"
+      ],
+      "#cxusy8s3leul": [
+        "../../../src/config/money.ts"
       ],
       "#cyujuqs87oi7": [
         "../../../scripts/verify/frontend/product.mjs"
@@ -754,9 +817,6 @@
       "#dqy2d22qyujv": [
         "../../../src/inputs/advanced/_shared.tsx"
       ],
-      "#dv00q36zsgcx": [
-        "../../../scripts/verify/frontend/contrast.mjs"
-      ],
       "#dveygzk0qhvt": [
         "../../../src/language/routing/shell.ts"
       ],
@@ -774,6 +834,9 @@
       ],
       "#e0jb65059m6h": [
         "../../../src/spa/page.ts"
+      ],
+      "#e0w493gzco00": [
+        "../../../src/surface/motif/program.ts"
       ],
       "#e14w1m4ernce": [
         "../../../scripts/verify/frontend/select-cards.mjs"
@@ -823,8 +886,14 @@
       "#ehll7fdudt6w": [
         "../../../src/graph/advanced/contributions_heatmap/render.tsx"
       ],
+      "#eih319mf1hvb": [
+        "../../../src/config/a11y.ts"
+      ],
       "#ej8ewfp5cb1i": [
         "../../../src/logs/client/types.ts"
+      ],
+      "#emhv2qcwcat4": [
+        "../../../src/config/types/money.ts"
       ],
       "#eqg7t2uwjo0b": [
         "../../../src/graph/advanced/i18n/cs.ts"
@@ -919,6 +988,9 @@
       "#fwdmm996jtkw": [
         "../../../src/logs/i18n/en.ts"
       ],
+      "#fx26lwsxxkxw": [
+        "../../../src/surface/components/motif.tsx"
+      ],
       "#fxezcrj6rle9": [
         "../../../src/config/typography.ts"
       ],
@@ -934,14 +1006,14 @@
       "#g2ob19azzp0m": [
         "../../../scripts/verify/frontend/logging.mjs"
       ],
+      "#g3ayekrobthj": [
+        "../../../src/surface/motif/boot.ts"
+      ],
       "#g6zyfm1o41em": [
         "../../../src/primitives/components/time_counter.tsx"
       ],
       "#g7shujp997gd": [
         "../../../src/server/seo.ts"
-      ],
-      "#gg8t4iihojm5": [
-        "../../../src/inputs/upload/crop-session.tsx"
       ],
       "#ggsv3udz97t0": [
         "../../../src/inputs/advanced/input/styles/input.scss"
@@ -961,6 +1033,9 @@
       "#gorq8n1u6vrr": [
         "../../../src/inputs/advanced/upload.tsx"
       ],
+      "#gq44byr9jwxj": [
+        "../../../src/language/direction.ts"
+      ],
       "#gssmp8u2lufh": [
         "../../../src/logs/client/detail.ts"
       ],
@@ -969,6 +1044,9 @@
       ],
       "#gu61mitj537f": [
         "../../../src/logs/client/utils.ts"
+      ],
+      "#gwf866o54hmd": [
+        "../../../src/a11y/storage.ts"
       ],
       "#gxzrv94v2wzn": [
         "../../../src/logs/client/react_view.ts"
@@ -1036,6 +1114,9 @@
       "#hrmhyqyjhxa3": [
         "../../../src/server/react/shell.ts"
       ],
+      "#hrtpkkloqsq2": [
+        "../../../src/a11y/styles/panel.scss"
+      ],
       "#hu7oo5uup2sj": [
         "../../../src/explorer/components/index.tsx"
       ],
@@ -1054,6 +1135,9 @@
       "#i3oaed3jc28j": [
         "../../../src/language/runtime/source/parse.ts"
       ],
+      "#i4d0umua982v": [
+        "../../../src/layout/components/site/header/fit.ts"
+      ],
       "#i6fiia6z4x10": [
         "../../../src/live/components/index.tsx"
       ],
@@ -1063,11 +1147,17 @@
       "#i9d177bypfxw": [
         "../../../src/language/routing/boot.ts"
       ],
+      "#i9wurh0pb6bq": [
+        "../../../src/explorer/components/file/tree/keys.ts"
+      ],
       "#ieim4iimrwal": [
         "../../../src/layout/index.ts"
       ],
       "#ifn2xslc7n8z": [
         "../../../src/inputs/styles/index.scss"
+      ],
+      "#ih5pu3v7rxf2": [
+        "../../../src/config/types/a11y.ts"
       ],
       "#ii2zv02qidch": [
         "../../../src/sidebar/components/links.tsx"
@@ -1111,6 +1201,9 @@
       "#jkdn6gkwg2ad": [
         "../../../src/media/state.ts"
       ],
+      "#jloahtbw4bw2": [
+        "../../../src/money/index.ts"
+      ],
       "#jrf3w40thmym": [
         "../../../src/graph/advanced/runtime/units.ts"
       ],
@@ -1120,11 +1213,17 @@
       "#jug9z8qra4yv": [
         "../../../src/server/logging.ts"
       ],
+      "#jy91vlgd44cl": [
+        "../../../src/a11y/index.ts"
+      ],
       "#k0q2s2kidqtq": [
         "../../../src/language/format.ts"
       ],
       "#k23mb8n3ma0d": [
         "../../../src/config/breakpoints.ts"
+      ],
+      "#k2buoer1zyj4": [
+        "../../../src/a11y/styles/targets.scss"
       ],
       "#k2zm1qjt9uty": [
         "../../../src/editor/index.ts"
@@ -1177,6 +1276,9 @@
       "#kglbvvg0e45p": [
         "../../../src/server/react/document.ts"
       ],
+      "#kk6mmnsbr6qk": [
+        "../../../src/a11y/settings.ts"
+      ],
       "#kkjo6xogukzx": [
         "../../../src/primitives/components/key_value.tsx"
       ],
@@ -1186,6 +1288,9 @@
       "#kr652d3st9at": [
         "../../../src/config/shared.ts"
       ],
+      "#ktmvwjrnvefy": [
+        "../../../src/money/rates.ts"
+      ],
       "#kuao06o756nt": [
         "../../../scripts/verify/frontend/site-header.mjs"
       ],
@@ -1194,6 +1299,9 @@
       ],
       "#kwgj7f15gqem": [
         "../../../src/primitives/components/display.tsx"
+      ],
+      "#l0c9jc8zqq5i": [
+        "../../../src/inputs/advanced/dropdown/static/aria.ts"
       ],
       "#l75icbim0gxu": [
         "../../../src/actions/copy-components.tsx"
@@ -1267,6 +1375,9 @@
       "#mfdafbn2tpmz": [
         "../../../src/inputs/advanced/toggle/index.tsx"
       ],
+      "#mg0b8bb1ecib": [
+        "../../../src/inputs/upload/crop/keys.tsx"
+      ],
       "#mhi409n0a05q": [
         "../../../src/logging/index.ts"
       ],
@@ -1275,6 +1386,9 @@
       ],
       "#mvsmtrpbpg12": [
         "../../../src/server/index.ts"
+      ],
+      "#myctmlgac0mo": [
+        "../../../src/styles/utils/focus.scss"
       ],
       "#myfyglzubipj": [
         "../../../scripts/verify/frontend.mjs"
@@ -1336,6 +1450,9 @@
       "#o9lroe7t0ma6": [
         "../../../src/spa/index.ts"
       ],
+      "#ob7o0vdfqu5m": [
+        "../../../src/a11y/components/index.tsx"
+      ],
       "#obwq3g3n1oe3": [
         "../../../src/live/index.ts"
       ],
@@ -1363,9 +1480,6 @@
       "#p2ojc8v664sv": [
         "../../../src/error/paths.ts"
       ],
-      "#p3hsq444bcbt": [
-        "../../../src/contrast/styles/adaptive.scss"
-      ],
       "#p7zqua4ddkcp": [
         "../../../src/graph/advanced/runtime/time_labels.ts"
       ],
@@ -1374,6 +1488,9 @@
       ],
       "#p8xyf2ac55t2": [
         "../../../src/search/client/cache.ts"
+      ],
+      "#p9ngf2wxif9q": [
+        "../../../src/surface/motif/registry.ts"
       ],
       "#pazzio0dn1au": [
         "../../../src/primitives/components/marquee.tsx"
@@ -1399,6 +1516,9 @@
       "#pwuc6i9ku53k": [
         "../../../src/render/current_url.tsx"
       ],
+      "#px6rusdifp49": [
+        "../../../src/money/format.ts"
+      ],
       "#pxcxgfgwo4sm": [
         "../../../src/logs/client/stats.ts"
       ],
@@ -1411,6 +1531,9 @@
       "#q7mvsmbelrz2": [
         "../../../src/server/static.ts"
       ],
+      "#q8inp7n36vby": [
+        "../../../src/runtime/globals.ts"
+      ],
       "#q9zphbzsqq3c": [
         "../../../src/sidebar/dynamic/runtime/renderers.ts"
       ],
@@ -1419,9 +1542,6 @@
       ],
       "#qdbpux4f2e4m": [
         "../../../src/flash/icons.ts"
-      ],
-      "#qdkqi2b2001h": [
-        "../../../src/layout/styles/site-footer.scss"
       ],
       "#qlbm3gyxqm3e": [
         "../../../src/inputs/advanced/dropdown/model.tsx"
@@ -1435,11 +1555,14 @@
       "#qsb4858ln9g5": [
         "../../../src/layout/components/index.tsx"
       ],
+      "#qu4jvuvg79fl": [
+        "../../../src/inputs/upload/crop/session.tsx"
+      ],
+      "#qvpsqenmnba3": [
+        "../../../src/runtime/options.ts"
+      ],
       "#qxjurtbzfrr6": [
         "../../../scripts/verify/frontend/layering.mjs"
-      ],
-      "#qy1z40674gfi": [
-        "../../../src/contrast/selectors.ts"
       ],
       "#r58exi37vhhz": [
         "../../../src/config/scales.ts"
@@ -1452,6 +1575,12 @@
       ],
       "#r9c41b4ub5o7": [
         "../../../src/config/tones.ts"
+      ],
+      "#r9watyto1z1z": [
+        "../../../src/money/config.ts"
+      ],
+      "#rb90fwqwv6e6": [
+        "../../../src/layout/components/site/link.tsx"
       ],
       "#rctntu2uqs8e": [
         "../../../src/surface/styles/layout.scss"
@@ -1510,8 +1639,14 @@
       "#s8ycbv8d4kos": [
         "../../../src/server/assets.ts"
       ],
+      "#saog6hpfri36": [
+        "../../../src/a11y/effects.ts"
+      ],
       "#savw6pzo5sa6": [
         "../../../src/realtime/index.ts"
+      ],
+      "#setj9hb5xm13": [
+        "../../../src/layout/styles/site-footer.scss"
       ],
       "#sf68mrloxp0r": [
         "../../../src/language/source/visualizer.tsx"
@@ -1536,6 +1671,9 @@
       ],
       "#skdjg5ik9dpu": [
         "../../../src/logs/view/model.ts"
+      ],
+      "#spl6rsq1r3yw": [
+        "../../../src/a11y/announce.ts"
       ],
       "#swfduhum0kob": [
         "../../../scripts/verify/frontend/headings.mjs"
@@ -1564,6 +1702,9 @@
       "#talum6c21pwe": [
         "../../../src/logs/view/stats.tsx"
       ],
+      "#tetpgx0qxb4r": [
+        "../../../src/layout/styles/site-header.scss"
+      ],
       "#tf6lk8wu8qd2": [
         "../../../src/config/types.ts"
       ],
@@ -1575,6 +1716,9 @@
       ],
       "#tlkyab3pczjn": [
         "../../../src/primitives/components/layout.tsx"
+      ],
+      "#tn4xlx3rpu5e": [
+        "../../../src/layout/styles/site/menu.scss"
       ],
       "#touvmnyy4wpp": [
         "../../../src/config/types/design.ts"
@@ -1591,9 +1735,6 @@
       "#tuadlwaoq87s": [
         "../../../src/error/messages.ts"
       ],
-      "#tuddf4ijoxzw": [
-        "../../../src/layout/styles/site-header.scss"
-      ],
       "#tvicwpnoy4rk": [
         "../../../src/spa/cleanup.ts"
       ],
@@ -1603,8 +1744,14 @@
       "#u0knshei0xi3": [
         "../../../src/theme/browser-sync.ts"
       ],
+      "#u0xc6lm59gdj": [
+        "../../../src/layout/components/site/header/tone.ts"
+      ],
       "#u525cvfu2zk3": [
         "../../../src/spa/links.ts"
+      ],
+      "#u6dhm63x47vk": [
+        "../../../src/a11y/styles/index.scss"
       ],
       "#u8nmcwbcma9p": [
         "../../../src/graph/advanced/contributions_heatmap/i18n/en.ts"
@@ -1675,6 +1822,9 @@
       "#vgikiuu502s9": [
         "../../../src/surface/styles/track.scss"
       ],
+      "#vn2vr51nstim": [
+        "../../../src/a11y/styles/contrast.scss"
+      ],
       "#vnoeqwsaz83t": [
         "../../../src/inputs/advanced/dropdown/styles/base.scss"
       ],
@@ -1714,6 +1864,9 @@
       "#wavczpl1zxvg": [
         "../../../src/theme/components/index.tsx"
       ],
+      "#wbe6ncjczhs4": [
+        "../../../src/layout/styles/site-link.scss"
+      ],
       "#wc3raybjs1zm": [
         "../../../src/media/expandable-image.tsx"
       ],
@@ -1734,6 +1887,12 @@
       ],
       "#wjd615zt8wgb": [
         "../../../src/progress/styles/index.scss"
+      ],
+      "#wjrbx65hz7cd": [
+        "../../../src/surface/motif/runtime.ts"
+      ],
+      "#wrfl83r4gloy": [
+        "../../../src/styles/utils/swap.scss"
       ],
       "#wrlkuaz0a8kf": [
         "../../../scripts/verify/frontend/timing.mjs"
@@ -1758,6 +1917,9 @@
       ],
       "#wxwncfjvldfr": [
         "../../../src/media/embed-frame.tsx"
+      ],
+      "#wzwwzhupyorp": [
+        "../../../src/config/default/config.ts"
       ],
       "#x1k03ygo8xtf": [
         "../../../src/styles/utils/spacing/inline.scss"

@@ -1,0 +1,69 @@
+@use "@trebired/bundler/namespace" as ns;
+@media (forced-colors: active) {
+  :root {
+    #{ns.css-var("focus-ring-color")}: Highlight;
+  }
+
+  #{ns.class("btn")} {
+    border-color: ButtonBorder;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  #{ns.class("btn")}:disabled,
+
+  #{ns.class("btn")}[aria-disabled="true"] {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  #{ns.class("btn")}:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  #{ns.class("input")},
+
+  #{ns.class("textarea")},
+
+  #{ns.class("dropdown-label")} {
+    border-color: ButtonBorder;
+    background: Field;
+    color: FieldText;
+    forced-color-adjust: none;
+  }
+
+  #{ns.class("input")}[aria-invalid="true"],
+
+  #{ns.class("textarea")}[aria-invalid="true"] {
+    border-color: LinkText;
+    border-width: 2px;
+  }
+
+  #{ns.class("field-error")} {
+    color: LinkText;
+  }
+
+  #{ns.class("field-help")} {
+    color: GrayText;
+  }
+
+  #{ns.class("dropdown-list")} li[aria-selected="true"],
+
+  #{ns.class("dropdown-list")} li#{ns.data("dropdown-active", "true")} {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  #{ns.class("motif")} {
+    display: none;
+  }
+
+  #{ns.class("skip-link")}:focus {
+    background: Canvas;
+    color: CanvasText;
+    outline: 2px solid Highlight;
+  }
+}

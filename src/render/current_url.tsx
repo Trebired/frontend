@@ -5,6 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { toText as toCurrentUrl } from "#ndsvdqv80epr";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 type RenderCurrentUrlProviderProps = {
   children?: ReactNode;
@@ -14,13 +15,18 @@ type RenderCurrentUrlProviderProps = {
 
 const RenderCurrentUrlContext = createContext("");
 
+const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation"];
+
 function subscribeUrl(callback: () => void) {
   if (typeof window === "undefined") return () => {};
+  const names = SPA_EVENTS.map((name) => frontendEventName(name));
   window.addEventListener("popstate", callback);
   window.addEventListener("hashchange", callback);
+  for (const name of names) document.addEventListener(name, callback);
   return () => {
     window.removeEventListener("popstate", callback);
     window.removeEventListener("hashchange", callback);
+    for (const name of names) document.removeEventListener(name, callback);
   };
 }
 

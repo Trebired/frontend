@@ -14,6 +14,8 @@ import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const POPOVER_BASE_Z_INDEX = 1040;
 const POPOVER_TRIGGER_SELECTOR = `${frontendDataSelector("popover-trigger")}[aria-controls]`;
+const POPOVER_AUTOFOCUS_ATTR = frontendDataAttr("popover-autofocus");
+
 const POPOVER_CLOSE_SELECTOR = frontendDataSelector("popover-close");
 
 type PopoverEntry = {
@@ -87,6 +89,9 @@ function showPopover(entry: PopoverEntry) {
   entry.popover.setAttribute(frontendDataAttr("open"), "true");
   setPopoverExpanded(entry, true);
   openEntry = entry;
+  if (entry.popover.getAttribute(POPOVER_AUTOFOCUS_ATTR) === "true") {
+    window.requestAnimationFrame(() => focusFirstItem(entry));
+  }
 }
 
 function hidePopover(popoverOrTrigger?: HTMLElement | null) {
@@ -127,6 +132,56 @@ function bindPopoverClose(entry: PopoverEntry) {
   return () => entry.popover.removeEventListener("click", onClick);
 }
 
+const HOVER_CLOSE_MS = 180;
+const FOCUSABLE = 'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+function focusFirstItem(entry: PopoverEntry) {
+  const first = entry.popover.querySelector<HTMLElement>(FOCUSABLE);
+  if (first) first.focus();
+}
+
+function bindPopoverKeys(entry: PopoverEntry) {
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    if (openEntry === entry) {
+      hidePopover(entry.popover);
+      return;
+    }
+    showPopover(entry);
+    window.requestAnimationFrame(() => focusFirstItem(entry));
+  };
+  entry.trigger.addEventListener("keydown", onKeyDown);
+  return () => entry.trigger.removeEventListener("keydown", onKeyDown);
+}
+
+function bindPopoverHover(entry: PopoverEntry) {
+  if (!entry.hover) return () => undefined;
+  if (typeof window === "undefined" || !window.matchMedia("(hover: hover)").matches) return () => undefined;
+  let timer = 0;
+  const open = () => {
+    window.clearTimeout(timer);
+    if (openEntry !== entry) showPopover(entry);
+  };
+  const close = () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+        if (openEntry === entry) hidePopover(entry.popover);
+      }, HOVER_CLOSE_MS);
+  };
+  entry.trigger.addEventListener("pointerenter", open);
+  entry.trigger.addEventListener("pointerleave", close);
+  entry.popover.addEventListener("pointerenter", open);
+  entry.popover.addEventListener("pointerleave", close);
+  return () => {
+    window.clearTimeout(timer);
+    entry.trigger.removeEventListener("pointerenter", open);
+    entry.trigger.removeEventListener("pointerleave", close);
+    entry.popover.removeEventListener("pointerenter", open);
+    entry.popover.removeEventListener("pointerleave", close);
+  };
+}
+
 function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = document) {
   if (!(trigger instanceof HTMLElement)) return null;
   const id = String(trigger.getAttribute("aria-controls") || "").trim();
@@ -149,8 +204,12 @@ function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = docume
   };
   trigger.addEventListener("click", onClick);
   const closeCleanup = bindPopoverClose(entry);
+  const hoverCleanup = bindPopoverHover(entry);
+  const keyCleanup = bindPopoverKeys(entry);
   cleanups.set(trigger, () => {
       trigger.removeEventListener("click", onClick);
+      keyCleanup();
+      hoverCleanup();
       closeCleanup();
   });
   entries.set(trigger, entry);

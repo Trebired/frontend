@@ -78,6 +78,7 @@ function optionNode(
   model: ReturnType<typeof dropdownModel>,
   option: dropdown_option,
   currentSection: string,
+  index: number,
 ) {
   const optValue = toString(option && option.value);
   const optLabel = toString(option && option.label, optValue);
@@ -96,6 +97,7 @@ function optionNode(
     <li
     key={`section_${optSection}`}
     className={frontendClassName("dropdown-section")}
+    role="presentation"
     {...frontendDataAttrs({ "dropdown-section-heading": optSection })}
     >
     {optSection}
@@ -118,6 +120,8 @@ function optionNode(
       {sectionNode}
       <li
       className={undefined}
+      id={`${model.optionsId}_opt_${index}`}
+      role="option"
       aria-selected={model.selectedSet.has(optValue) ? "true" : "false"}
       {...frontendDataAttrs({ "dropdown-option": "" })}
       {...frontendDataAttrs({
@@ -151,11 +155,34 @@ function optionNode(
 
 function optionNodes(model: ReturnType<typeof dropdownModel>) {
   let currentSection = "";
-  return model.optionsList.map((option) => {
-      const result = optionNode(model, option, currentSection);
+  return model.optionsList.map((option, index) => {
+      const result = optionNode(model, option, currentSection, index);
       currentSection = result.section;
       return result.node;
   });
+}
+
+function optionsList(model: ReturnType<typeof dropdownModel>) {
+  return (
+    <ul
+    className={frontendClassName("dropdown-list")}
+    role="listbox"
+    aria-multiselectable={model.isMultiple ? "true" : undefined}
+    aria-labelledby={model.labelText ? `${model.ddId}_label` : undefined}
+    {...frontendDataAttrs({ "dropdown-list": "" })}
+    id={model.listElementId || undefined}
+    >
+    <li
+    className={undefined}
+    role="presentation"
+    {...frontendDataAttrs({ "dropdown-placeholder-option": "" })}
+    hidden={model.optionsList.length > 0}
+    >
+    {model.emptyOptionText}
+    </li>
+    {optionNodes(model)}
+    </ul>
+  );
 }
 
 function optionsPanel(model: ReturnType<typeof dropdownModel>) {
@@ -175,20 +202,7 @@ function optionsPanel(model: ReturnType<typeof dropdownModel>) {
       : null}
     {model.topNode}
     {searchTop(model)}
-    <ul
-    className={frontendClassName("dropdown-list")}
-    {...frontendDataAttrs({ "dropdown-list": "" })}
-    id={model.listElementId || undefined}
-    >
-    <li
-    className={undefined}
-    {...frontendDataAttrs({ "dropdown-placeholder-option": "" })}
-    hidden={model.optionsList.length > 0}
-    >
-    {model.emptyOptionText}
-    </li>
-    {optionNodes(model)}
-    </ul>
+    {optionsList(model)}
     {model.isSearchable ? (
         <div
         className={primitiveTextClassName({
@@ -236,7 +250,16 @@ function dropdownNode(
     }
     {...mapAttrs(props.inputProps)}
     />
-    <div className={frontendClassName("dropdown-label")} {...frontendDataAttrs({ "dropdown-label": "" })}>
+    <div
+    className={frontendClassName("dropdown-label")}
+    role="combobox"
+    tabIndex={model.isDisabled ? -1 : 0}
+    aria-controls={model.optionsId}
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    aria-labelledby={model.labelText ? `${model.ddId}_label` : undefined}
+    {...frontendDataAttrs({ "dropdown-label": "" })}
+    >
     {model.initialHtml || model.initialLabel}
     </div>
     {optionsPanel(model)}
@@ -250,7 +273,7 @@ function advancedDropdown(props: dropdown_props) {
   if (!model.labelText) return node;
   return (
     <div className={model.wrapperClass}>
-    <span className={frontendClassName("label")}>{model.labelText}</span>
+    <span className={frontendClassName("label")} id={`${model.ddId}_label`}>{model.labelText}</span>
     {node}
     </div>
   );

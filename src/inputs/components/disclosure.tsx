@@ -5,13 +5,14 @@ import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vb
 type DisclosureProps = HTMLAttributes<HTMLDivElement> & {
   defaultOpen?: boolean;
   panel: ReactNode;
+  panelId?: string;
   trigger: ReactNode;
 };
 
 type DisclosureButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Disclosure(props: DisclosureProps) {
-  const { children, className, defaultOpen, panel, trigger, ...rest } = props;
+  const { children, className, defaultOpen, panel, panelId, trigger, ...rest } = props;
   return (
     <div
     {...rest}
@@ -22,10 +23,11 @@ function Disclosure(props: DisclosureProps) {
     {trigger}
     <div
     className={frontendElementClass("disclosure", "panel")}
+    id={panelId}
     {...frontendDataAttrs({ "disclosure-panel": "" })}
-    hidden={!defaultOpen}
+    {...frontendDataAttrs({ "disclosure-panel-open": defaultOpen ? "true" : "false" })}
     >
-    {panel}
+    <div className={frontendElementClass("disclosure", "panel-content")}>{panel}</div>
     </div>
     {children}
     </div>

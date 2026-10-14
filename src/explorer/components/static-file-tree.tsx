@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { handleTreeFocus, handleTreeKeyDown } from "./file/tree/keys.js";
 import { createElement } from "react";
 
 import {
@@ -87,9 +88,7 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
   const rowLevel = Math.max(1, Number(props.row?.level) || 1);
   return (
     <div
-    role="treeitem"
-    aria-level={rowLevel}
-    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
+    role="none"
     className={primitiveInlineRowClassName({ verticalCenter: true })}
     style={{
         borderBottom: "var(--border-width) solid var(--border-surface-1)",
@@ -99,6 +98,9 @@ function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
     >
     <button
     type="button"
+    role="treeitem"
+    aria-level={rowLevel}
+    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
     className={primitiveInlineRowClassName({
           className: primitiveTextClassName({
               className: frontendClassNames("width-max", "text-left"),
@@ -180,7 +182,14 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
         "scroll-overflow",
         { style: { display: "contents" } },
         <div className={frontendClassNames("scroll", "scroll-min", "file-tree-scroll")} style={scrollStyleFor(options, rows)}>
-        <div role="tree" aria-multiselectable="true" style={{ minWidth: 220, width: "100%" }}>
+        <div
+        role="tree"
+        aria-multiselectable="true"
+        onFocus={handleTreeFocus}
+        onKeyDown={handleTreeKeyDown}
+        style={{ minWidth: 220, width: "100%" }}
+        tabIndex={0}
+        >
         {rows.map((row, index) => renderStaticFileTreeRow(row, index, options))}
         </div>
         </div>,

@@ -30,6 +30,7 @@ function StatusMessage(props: HTMLAttributes<HTMLDivElement>) {
     <div
     {...rest}
     className={classNames(frontendElementClass("status-field", "message"), className)}
+    role="alert"
     {...frontendDataAttrs({ "status-message": "" })}
     >
     {children}

@@ -54,7 +54,7 @@
   inset-block: 0;
   inset-inline-start: calc(var(#{ns.css-var("surf-track-mark-size")}, 2.5rem) / 2);
   width: var(#{ns.css-var("border-width")}, 1px);
-  background: var(#{ns.css-var("adaptive-border")}, currentColor);
+  background: var(#{ns.css-var("border")}, currentColor);
   content: "";
   translate: -50% 0;
 }
@@ -71,9 +71,9 @@
   width: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem);
   height: var(#{ns.css-var("surf-track-mark-size")}, 2.5rem);
   place-items: center;
-  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("adaptive-border")}, currentColor);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor);
   border-radius: 50%;
-  color: var(#{ns.css-var("adaptive")}, currentColor);
+  color: var(#{ns.css-var("text")}, currentColor);
   background: var(#{ns.css-var("page")}, canvas);
   font-size: var(#{ns.css-var("surf-track-mark-font-size")}, 0.8rem);
 }
@@ -83,4 +83,9 @@
   gap: var(#{ns.css-var("surf-track-body-gap")}, var(#{ns.css-var("gap-xs")}, 8px));
   min-width: 0;
   padding-block-end: var(#{ns.css-var("surf-track-body-pb")}, var(#{ns.css-var("gap-sm")}, 12px));
+}
+
+#{ns.element-class("track", "body")} > * {
+  min-width: 0;
+  overflow-wrap: break-word;
 }

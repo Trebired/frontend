@@ -1,0 +1,32 @@
+@use "@trebired/bundler/namespace" as ns;
+:root {
+  #{ns.css-var("target-min")}: 2.75rem;
+  #{ns.css-var("target-min-dense")}: 1.5rem;
+}
+
+#{ns.data("dense")} {
+  #{ns.css-var("target-min")}: var(#{ns.css-var("target-min-dense")}, 1.5rem);
+}
+
+#{ns.class("btn")},
+
+#{ns.class("choice-row")},
+
+#{ns.class("dropdown-label")},
+
+#{ns.class("tab")} {
+  min-height: max(
+    var(#{ns.css-var("ui-btn-root-height")}, 1.75rem),
+    var(#{ns.css-var("target-min")}, 2.75rem)
+  );
+}
+
+#{ns.class("btn")}#{ns.class("icon")} {
+  min-width: var(#{ns.css-var("target-min")}, 2.75rem);
+}
+
+#{ns.class("dropdown-list")} li[role="option"] {
+  min-height: var(#{ns.css-var("target-min")}, 2.75rem);
+  display: flex;
+  align-items: center;
+}

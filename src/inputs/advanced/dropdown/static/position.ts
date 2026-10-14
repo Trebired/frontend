@@ -1,4 +1,5 @@
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { clearDropdownActive, setDropdownExpanded } from "./aria.js";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { CLOSE_ANIMATION_MS, getDropdownOptions } from "#c0ew0jlb0c87";
 
@@ -130,6 +131,8 @@ function closeStatic(drop) {
   const token = (Number(drop._dropdownCloseToken) || 0) + 1;
   drop._dropdownCloseToken = token;
   drop.removeAttribute(frontendDataAttr("dropdown-open"));
+  setDropdownExpanded(drop, false);
+  clearDropdownActive(options);
   if (drop instanceof Element) openStaticDropdowns.delete(drop);
   if (!options) {
     resetDropdownSearch(drop);
@@ -162,6 +165,7 @@ function openStatic(drop) {
 
   cancelPendingStaticClose(drop);
   drop.setAttribute(frontendDataAttr("dropdown-open"), "true");
+  setDropdownExpanded(drop, true);
   if (drop instanceof Element) openStaticDropdowns.add(drop);
   portalStaticOptions(drop);
   options.removeAttribute(frontendDataAttr("dropdown-closing"));

@@ -28,7 +28,7 @@
 
 #{ns.class("brand-canvas")}--inverse #{ns.element-class("brand-canvas", "stage")} {
   color: var(#{ns.css-var("surf-brand-canvas-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("surf-brand-canvas-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
+  background: var(#{ns.css-var("surf-brand-canvas-tone-inverse-bg")}, var(#{ns.css-var("ink")}, #000));
 }
 
 #{ns.class("brand-canvas")}--accent #{ns.element-class("brand-canvas", "stage")} {
@@ -72,7 +72,6 @@
   color: var(#{ns.css-var("surf-brand-canvas-measure-color")}, color-mix(in srgb, currentColor 62%, transparent));
   font-family: var(#{ns.css-var("font-mono")}, monospace);
   font-size: var(#{ns.css-var("surf-brand-canvas-measure-font-size")}, 0.68rem);
-  letter-spacing: 0.04em;
   pointer-events: none;
   white-space: nowrap;
 }

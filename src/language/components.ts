@@ -1,4 +1,5 @@
 export *from "./locale.js";
+export *from "./fragment.js";
 export *from "./source/card.js";
 export *from "./source/modal.js";
 export *from "./source/model.js";

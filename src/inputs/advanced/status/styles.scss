@@ -30,3 +30,23 @@
 #{ns.class("input-status-icon")}#{ns.class("bad")} {
   color: var(#{ns.css-var("status-error-color")}, var(#{ns.css-var("focus")}, currentColor));
 }
+
+#{ns.class("field-help")} {
+  color: var(#{ns.css-var("text-muted")}, currentColor);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+#{ns.class("field-error")} {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs, 0.25rem);
+  color: var(#{ns.css-var("status-error-color")}, currentColor);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+#{ns.class("field-error")}[hidden] {
+  display: none;
+}

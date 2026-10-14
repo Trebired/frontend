@@ -1,0 +1,12 @@
+@use "@trebired/bundler/namespace" as ns;
+#{ns.data("page-swap")},
+
+#{ns.data("page-swap")} *,
+
+#{ns.data("page-swap")} *::before,
+
+#{ns.data("page-swap")} *::after {
+  animation-duration: 1ms !important;
+  transition-delay: 0s !important;
+  transition-duration: 1ms !important;
+}

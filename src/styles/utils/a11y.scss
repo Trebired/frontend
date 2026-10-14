@@ -24,3 +24,19 @@
   clip-path: none;
   white-space: normal;
 }
+
+#{ns.class("skip-link")} {
+  position: absolute;
+  z-index: var(#{ns.css-var("z-header")}, 920);
+  top: var(#{ns.css-var("gap-xs")}, 0.5rem);
+  left: -100vw;
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  padding: var(#{ns.css-var("gap-xs")}, 0.5rem) var(#{ns.css-var("gap-sm")}, 0.75rem);
+  color: var(#{ns.css-var("page")}, #fff);
+  background: var(#{ns.css-var("text")}, #000);
+  text-decoration: none;
+}
+
+#{ns.class("skip-link")}:focus {
+  left: var(#{ns.css-var("gap-xs")}, 0.5rem);
+}
