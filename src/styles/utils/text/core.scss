@@ -9,6 +9,22 @@
   max-width: 100% !important;
 }
 
+#{ns.class("width-xs")} {
+  max-inline-size: var(#{ns.css-var("width-xs")}, 26rem);
+}
+
+#{ns.class("width-sm")} {
+  max-inline-size: var(#{ns.css-var("width-sm")}, 34rem);
+}
+
+#{ns.class("width-md")} {
+  max-inline-size: var(#{ns.css-var("width-md")}, 46rem);
+}
+
+#{ns.class("width-lg")} {
+  max-inline-size: var(#{ns.css-var("width-lg")}, 62rem);
+}
+
 #{ns.class("text-muted")} {
   color: var(#{ns.css-var("text-muted")}, #000);
 }
@@ -65,4 +81,12 @@
 
 #{ns.class("text-center")} {
   text-align: center;
+}
+
+#{ns.class("text-right")} {
+  text-align: right;
+}
+
+#{ns.class("tabular")} {
+  font-variant-numeric: tabular-nums;
 }

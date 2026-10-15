@@ -1,5 +1,13 @@
 # Changelog
 
+## 26.2.0
+
+- Four width caps join the utilities: `width-xs`, `width-sm`, `width-md` and `width-lg`, each one `max-inline-size` behind a token (26rem, 34rem, 46rem, 62rem). A reading measure is a width, and an application should say it with a utility instead of a class of its own. This is what `prose` should have been: a cap, with no opinion about type.
+
+- `text-right` and `tabular` join them, the siblings `text-center` was missing. A column of figures needs the alignment and the tabular numerals, and neither was expressible.
+
+- `TextLink` emitted `tbf-text-link` twice, and the stylesheet declared the same selector twice in both its root and its hover rule. Once each now.
+
 ## 26.1.2
 
 - The `prose` utility added in 26.1.0 is withdrawn. A paragraph of running text needs no class of its own: the document body already composes `column` and the `gap-*` utilities, and the reading measure belongs to whatever container the application lays its text out in. `TextDocumentBody` renders a plain `<p>`, so nothing in the package carries an application's typography any more.
