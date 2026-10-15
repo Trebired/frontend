@@ -108,8 +108,6 @@ async function verifyReactEntrypoint(importDist) {
     "Disclosure",
     "Dropdown",
     "GraphPanel",
-    "CanvasPanel",
-    "Card",
     "Tabs",
     "TextLink",
     "Search",
@@ -311,8 +309,6 @@ async function verifyRenderedGenericPrimitives(importDist) {
     renderToStaticMarkup(h(react.Search, null, h(react.SearchInput, null), h(react.SearchItem, { text: "alpha" }, "Alpha"))),
     renderToStaticMarkup(h(react.StatusField, { url: "/validate" }, h(react.StatusMessage, null))),
     renderToStaticMarkup(h(react.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),
-    renderToStaticMarkup(h(react.CanvasPanel, { title: "Canvas" }, "Body")),
-    renderToStaticMarkup(h(react.Card, null, h(react.CardBody, null, "Body"))),
     renderToStaticMarkup(h(react.TextLink, { href: "/docs" }, "Docs")),
     renderToStaticMarkup(h(react.SidebarLinkList, { items: [{ href: "/", label: "Home" }] })),
   ].join("");
@@ -325,8 +321,6 @@ async function verifyRenderedGenericPrimitives(importDist) {
     "data-tbf-search",
     "data-tbf-status-field",
     "data-tbf-graph",
-    "data-tbf-canvas-panel",
-    "data-tbf-card",
     "data-tbf-text-link",
     "data-tbf-sidebar-link",
   ].forEach((marker) => assert.ok(html.includes(marker), `missing ${marker}`));

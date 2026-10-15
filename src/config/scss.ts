@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
 import { breakpointDeclarations } from "./breakpoints.js";
+import { renderContainerClassRules } from "./containers.js";
 import { renderContainerRules, renderHeadingVariantRules } from "./typography.js";
 import { cssComment, cssString, invalidConfig } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
@@ -292,6 +293,7 @@ function generateFrontendScss(
     ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
+    ...renderContainerClassRules(config),
   ];
   assertGeneratedVariablesResolve(config.prefix, lines);
   return `${lines.join("\n")}\n`;

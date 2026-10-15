@@ -28,6 +28,7 @@ export {
 } from "#aakzbesjkjqa";
 export type *from "#aakzbesjkjqa";
 export {
+  HeadingScope,
   Title,
 } from "#7ly3b59upz0n";
 export type *from "#7ly3b59upz0n";

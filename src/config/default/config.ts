@@ -68,6 +68,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         }),
     }),
     components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
+    containers: Object.freeze({}),
     design: Object.freeze({
         breakpoints: Object.freeze({ ...DEFAULT_FRONTEND_BREAKPOINTS }) as Record<string, number>,
         glass: null,

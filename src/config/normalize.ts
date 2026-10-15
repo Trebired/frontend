@@ -17,6 +17,7 @@ import {
   frontendConfigPath,
   PACKAGE_VERSION,
 } from "./package.js";
+import { normalizeContainersConfig } from "./containers.js";
 import { normalizeIconAliasKey, normalizeIconAliasSpec } from "#rqcj8y6keks2";
 import { resolveForVersion } from "@trebired/utils";
 import type {
@@ -39,6 +40,7 @@ const TOP_LEVEL_FIELDS = [
   "a11y",
   "assets",
   "components",
+  "containers",
   "design",
   "forVersion",
   "language",
@@ -236,11 +238,13 @@ function normalizeFrontendConfig(
   const source = assertPlainObject(config, "config");
   assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
   const runtime = normalizeRuntimeConfig(source.runtime);
+  const design = normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key));
   return {
     a11y: normalizeA11yConfig(source.a11y),
     assets: normalizeAssetsConfig(source.assets),
     components: normalizeComponentsConfig(source.components),
-    design: normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key)),
+    containers: normalizeContainersConfig(source.containers, Object.keys(design.breakpoints)),
+    design,
     forVersion: normalizeForVersion(source, options),
     language: normalizeLanguageConfig(source.language),
     money: normalizeMoneyConfig(source.money),

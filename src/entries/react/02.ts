@@ -8,28 +8,8 @@ export {
 } from "#26uyycr73i6f";
 export type *from "#26uyycr73i6f";
 export {
-  AccentRule,
-  ActionRow,
   BrandCanvas,
   Button,
-  CanvasPanel,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Frame,
-  FrameAction,
-  FrameCaption,
-  FrameCover,
-  FrameScrim,
-  HairlineCell,
-  HairlinePanel,
-  IconTile,
-  PageBand,
-  PinnedSplit,
-  Tag,
-  TrackItem,
-  TrackList,
 } from "#4woymc9xhupl";
 export type *from "#4woymc9xhupl";
 export { configureMotifs } from "#p9ngf2wxif9q";

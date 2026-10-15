@@ -335,13 +335,6 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         outline: Object.freeze({ width: "0.125rem" }),
     }),
     surfaces: Object.freeze({
-        actionRow: Object.freeze({
-            arrow: {},
-            body: {},
-            root: { gap: "0.75rem", padding: "0.75rem" },
-            states: { hover: {} },
-            value: { fontSize: "1.25rem", fontWeight: "700" },
-        }),
         brandCanvas: Object.freeze({
             art: {},
             caption: { gap: "0.75rem" },
@@ -353,14 +346,6 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             stage: { minHeight: "14rem", padding: "2.5rem" },
             tones: { accent: {}, inverse: {}, muted: {} },
         }),
-        band: Object.freeze({
-            root: {
-              max: "80rem",
-              px: "clamp(1rem, 3vw, 2rem)",
-              py: "clamp(2.5rem, 5vw, 4rem)",
-            },
-            tones: { inverse: {}, muted: {} },
-        }),
         button: Object.freeze({
             variants: {
               danger: { states: { hover: {} } },
@@ -369,37 +354,12 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               secondary: { states: { hover: {} } },
             },
         }),
-        frame: Object.freeze({
-            action: { glyph: "1.5rem", offset: "1rem", size: "3rem", states: { hover: {} } },
-            badge: { offset: "1rem" },
-            caption: {},
-            cover: { duration: "700ms", position: "50% 50%", states: { hover: { scale: "1.05" } } },
-            root: { ratio: "16 / 10" },
-            scrim: {},
-        }),
         glow: Object.freeze({ root: { blur: "70px", fade: "72%", opacity: "0.85", push: "-0.86", side: "-0.8", size: "clamp(18rem, 92vw, 98rem)" } }),
         hairline: Object.freeze({ cell: {}, root: { min: "16rem" } }),
         motif: Object.freeze({ root: { opacity: "1" } }),
         logo: Object.freeze({ root: { height: "2rem", max: "100%" } }),
         prose: Object.freeze({ root: { gap: "0.75rem", lineHeight: "1.8", max: "47rem" } }),
-        rule: Object.freeze({ root: { gap: "0.75rem", width: "0.25rem" } }),
-        tag: Object.freeze({
-            root: {
-              fontSize: "0.75rem",
-              fontWeight: "700",
-              gap: "0.25rem",
-              padding: "0.5rem 0.75rem",
-              textTransform: "none",
-            },
-            tones: { accent: {}, inverse: {} },
-        }),
         scrollbar: Object.freeze({ root: { gutter: "stable", width: "auto" } }),
-        tile: Object.freeze({
-            root: { glyph: "1.5rem", size: "3rem" },
-            sizes: { lg: { glyph: "1.75rem", size: "4rem" }, sm: { glyph: "1rem", size: "2.5rem" } },
-            slots: { glyph: {} },
-            tones: { accent: {}, inverse: {}, muted: {} },
-        }),
         card: Object.freeze({
             body: {
               divider: {},

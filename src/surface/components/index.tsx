@@ -1,10 +1,4 @@
-import type {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  HTMLAttributes,
-  ImgHTMLAttributes,
-  ReactNode,
-} from "react";
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
 import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
@@ -30,29 +24,6 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   tone?: SurfaceTone;
 };
 
-type CardSectionProps = HTMLAttributes<HTMLDivElement> & {
-  padding?: SurfaceSize;
-};
-
-type FrameProps = HTMLAttributes<HTMLDivElement> & {
-  ratio?: string;
-};
-
-type PinnedSplitProps = HTMLAttributes<HTMLDivElement> & {
-  aside: ReactNode;
-  asideSide?: "end" | "start";
-  asideWidth?: string;
-  top?: string;
-};
-
-type TrackListProps = HTMLAttributes<HTMLOListElement> & {
-  as?: "ol" | "ul";
-};
-
-type TrackItemProps = HTMLAttributes<HTMLLIElement> & {
-  marker?: ReactNode;
-};
-
 type BrandCanvasProps = HTMLAttributes<HTMLElement> & {
   action?: ReactNode;
   caption?: ReactNode;
@@ -60,10 +31,6 @@ type BrandCanvasProps = HTMLAttributes<HTMLElement> & {
   guides?: boolean;
   height?: string;
   spec?: ReactNode;
-  tone?: SurfaceTone;
-};
-
-type TagProps = HTMLAttributes<HTMLSpanElement> & {
   tone?: SurfaceTone;
 };
 
@@ -78,32 +45,6 @@ type HairlineCellProps = HTMLAttributes<HTMLElement> & {
   interactive?: boolean;
   invert?: boolean;
 };
-
-type PageBandProps = HTMLAttributes<HTMLElement> & {
-  as?: "div" | "footer" | "section";
-  tone?: SurfaceTone;
-};
-
-type IconTileProps = HTMLAttributes<HTMLSpanElement> & {
-  glyph?: "accent";
-  size?: SurfaceSize;
-  tone?: SurfaceTone;
-};
-
-type AccentRuleProps = HTMLAttributes<HTMLDivElement>;
-
-type ActionRowProps = HTMLAttributes<HTMLElement> & {
-  arrow?: ReactNode;
-  as?: "a" | "div" | "li";
-  href?: string;
-  interactive?: boolean;
-  softRedirect?: boolean;
-  value?: ReactNode;
-};
-
-type FrameLayerProps = HTMLAttributes<HTMLDivElement>;
-
-type FrameCoverProps = ImgHTMLAttributes<HTMLImageElement>;
 
 type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
   actions?: ReactNode;
@@ -168,20 +109,6 @@ function Card(props: CardProps) {
   );
 }
 
-function Frame(props: FrameProps) {
-  const { children, className, ratio, style, ...rest } = props;
-  const ratioStyle = ratio ? { [`--${FRONTEND_PREFIX}-surf-frame-root-ratio`]: ratio } : undefined;
-  return (
-    <div
-    {...rest}
-    className={classNames(frontendClassName("frame"), className)}
-    style={ratioStyle ? { ...ratioStyle, ...style } : style}
-    >
-    {children}
-    </div>
-  );
-}
-
 function BrandCanvas(props: BrandCanvasProps) {
   const { action, caption, children, className, clearSpace, guides = true, height, spec, style, tone, ...rest } = props;
   const stageStyle: Record<string, string> = {};
@@ -233,93 +160,6 @@ function BrandCanvas(props: BrandCanvasProps) {
   );
 }
 
-function Tag(props: TagProps) {
-  const { children, className, tone, ...rest } = props;
-  return (
-    <span {...rest} className={classNames(surfaceClass(frontendClassName("tag"), { tone }), className)}>
-    {children}
-    </span>
-  );
-}
-
-function CardHeader(props: CardSectionProps) {
-  const { children, className, padding, ...rest } = props;
-  return (
-    <div
-    {...rest}
-    className={classNames(frontendElementClass("card", "header"), className)}
-    {...frontendDataAttrs({ "card-padding": padding })}
-    >
-    {children}
-    </div>
-  );
-}
-
-function CardBody(props: CardSectionProps) {
-  const { children, className, padding, ...rest } = props;
-  return (
-    <div
-    {...rest}
-    className={classNames(frontendElementClass("card", "body"), className)}
-    {...frontendDataAttrs({ "card-padding": padding })}
-    >
-    {children}
-    </div>
-  );
-}
-
-function CardFooter(props: CardSectionProps) {
-  const { children, className, padding, ...rest } = props;
-  return (
-    <div
-    {...rest}
-    className={classNames(frontendElementClass("card", "footer"), className)}
-    {...frontendDataAttrs({ "card-padding": padding })}
-    >
-    {children}
-    </div>
-  );
-}
-
-function PinnedSplit(props: PinnedSplitProps) {
-  const { aside, asideSide = "start", asideWidth, children, className, style, top, ...rest } = props;
-  const vars: Record<string, string> = {};
-  if (asideWidth) vars[`--${FRONTEND_PREFIX}-surf-pinned-aside-width`] = asideWidth;
-  if (top) vars[`--${FRONTEND_PREFIX}-surf-pinned-aside-top`] = top;
-  return (
-    <div
-    {...rest}
-    className={classNames(frontendClassName("pinned-split"), className)}
-    style={Object.keys(vars).length > 0 ? { ...vars, ...style } : style}
-    {...frontendDataAttrs({ "pinned-aside": asideSide })}
-    >
-    <div className={frontendElementClass("pinned-split", "aside")}>{aside}</div>
-    <div className={frontendElementClass("pinned-split", "body")}>{children}</div>
-    </div>
-  );
-}
-
-function TrackList(props: TrackListProps) {
-  const { as: Tag = "ol", children, className, ...rest } = props;
-  return (
-    <Tag {...rest} className={classNames(frontendClassName("track"), className)}>
-    {children}
-    </Tag>
-  );
-}
-
-function TrackItem(props: TrackItemProps) {
-  const { children, className, marker, ...rest } = props;
-  return (
-    <li {...rest} className={classNames(frontendElementClass("track", "item"), className)}>
-    <span aria-hidden="true" className={frontendElementClass("track", "mark")}>
-    {marker}
-    </span>
-    <div className={frontendElementClass("track", "body")}>{children}</div>
-    </li>
-  );
-}
-
 function HairlinePanel(props: HairlinePanelProps) {
   const { as: Tag = "div", children, className, min, style, ...rest } = props;
   const minStyle = min ? { [`--${FRONTEND_PREFIX}-surf-hairline-root-min`]: min } : undefined;
@@ -348,79 +188,6 @@ function HairlineCell(props: HairlineCellProps) {
     {children}
     </Tag>
   );
-}
-
-function PageBand(props: PageBandProps) {
-  const { as: Tag = "section", children, className, tone, ...rest } = props;
-  return (
-    <Tag {...rest} className={classNames(surfaceClass(frontendClassName("band"), { tone }), className)}>
-    <HeadingScope>{children}</HeadingScope>
-    </Tag>
-  );
-}
-
-function IconTile(props: IconTileProps) {
-  const { children, className, glyph, size, tone, ...rest } = props;
-  return (
-    <span
-    {...rest}
-    aria-hidden
-    className={classNames(surfaceClass(frontendClassName("tile"), { size, tone }), className)}
-    {...frontendDataAttrs({ "tile-glyph": glyph })}
-    >
-    {children}
-    </span>
-  );
-}
-
-function AccentRule(props: AccentRuleProps) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendClassName("rule"), className)}>{children}</div>;
-}
-
-function ActionRow(props: ActionRowProps) {
-  const { arrow, as, children, className, href, interactive, softRedirect, value, ...rest } = props;
-  const Tag = as || (href ? "a" : "div");
-  const isInteractive = interactive ?? Boolean(href);
-  return (
-    <Tag
-    {...rest as HTMLAttributes<HTMLElement>}
-    className={classNames(frontendClassName("action-row"), className)}
-    href={Tag === "a" ? href : undefined}
-    {...frontendDataAttrs({ "interactive": isInteractive ? "true" : undefined })}
-    {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
-    >
-    {children}
-    {value === undefined ? null : (
-        <span className={frontendElementClass("action-row", "body")}>
-        <span className={frontendElementClass("action-row", "value")}>{value}</span>
-        </span>
-    )}
-    {arrow === undefined ? null : (
-        <span aria-hidden className={frontendElementClass("action-row", "arrow")}>{arrow}</span>
-    )}
-    </Tag>
-  );
-}
-
-function FrameCover(props: FrameCoverProps) {
-  const { className, ...rest } = props;
-  return <img {...rest} alt={rest.alt || ""} className={classNames(frontendElementClass("frame", "cover"), className)} />;
-}
-
-function FrameScrim(props: FrameLayerProps) {
-  const { className, ...rest } = props;
-  return <div {...rest} aria-hidden className={classNames(frontendElementClass("frame", "scrim"), className)} />;
-}
-
-function FrameCaption(props: FrameLayerProps) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendElementClass("frame", "caption"), className)}>{children}</div>;
-}
-
-function FrameAction(props: FrameLayerProps) {
-  const { children, className, ...rest } = props;
-  return <div {...rest} className={classNames(frontendElementClass("frame", "action"), className)}>{children}</div>;
 }
 
 function CanvasPanel(props: CanvasPanelProps) {
@@ -452,46 +219,18 @@ function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreen
 }
 
 export {
-  AccentRule,
-  ActionRow,
   BrandCanvas,
   Button,
   CanvasPanel,
   Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  FrameAction,
-  FrameCaption,
-  Frame,
-  FrameCover,
-  FrameScrim,
   HairlineCell,
   HairlinePanel,
-  IconTile,
-  PageBand,
-  PinnedSplit,
-  Tag,
-  TrackItem,
-  TrackList,
 };
 export type {
-  AccentRuleProps,
-  ActionRowProps,
   BrandCanvasProps,
   ButtonProps,
   CanvasPanelProps,
   CardProps,
-  CardSectionProps,
-  FrameCoverProps,
-  FrameLayerProps,
-  FrameProps,
   HairlineCellProps,
   HairlinePanelProps,
-  IconTileProps,
-  PageBandProps,
-  PinnedSplitProps,
-  TagProps,
-  TrackItemProps,
-  TrackListProps,
 };

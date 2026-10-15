@@ -1,5 +1,15 @@
 # Changelog
 
+## 27.0.0
+
+**Breaking: the package ships no container components, and an application declares its own.** A box that exists to hold other boxes is not something to import. `containers` config names each one and the package emits the class: `style` for the base, `on` for a state, `at` for a breakpoint, `parts` for `__element` children, `variants` for `--modifier` siblings. `<div class="card">` is then the whole API, with nothing to import and nothing to keep in step.
+
+Removed: `PageBand`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `HairlinePanel`, `HairlineCell`, `ActionRow`, `TrackList`, `TrackItem`, `PinnedSplit`, `IconTile`, `Tag`, `AccentRule`, `Frame`, `FrameCover`, `FrameScrim`, `FrameCaption`, `FrameAction`, `CanvasPanel`, and with them the `tbf-band`, `tbf-tile`, `tbf-tag`, `tbf-rule`, `tbf-action-row`, `tbf-track` and `tbf-frame` classes.
+
+- `HeadingScope` is exported. A container used to open a heading level by existing; now a section says so, and a title inside it steps down one.
+
+- A container name is validated when the config is read: kebab-case, never inside the `tbf-` prefix, every field known, every breakpoint declared, every value a scalar. A typo is refused with the path that is wrong instead of disappearing from the stylesheet.
+
 ## 26.2.0
 
 - Four width caps join the utilities: `width-xs`, `width-sm`, `width-md` and `width-lg`, each one `max-inline-size` behind a token (26rem, 34rem, 46rem, 62rem). A reading measure is a width, and an application should say it with a utility instead of a class of its own. This is what `prose` should have been: a cap, with no opinion about type.

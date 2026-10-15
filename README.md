@@ -271,6 +271,28 @@ Without that, the attributes are written by the runtime after hydration instead,
 
 `--tbf-target-min` is the pointer target floor and defaults to `2.75rem`, which is 44px. That is WCAG 2.5.5 at level AAA. A dense surface opts down to `--tbf-target-min-dense`, `1.5rem`, by carrying `data-tbf-dense`; 24px is what WCAG 2.5.8 at level AA asks for. The opt-down is an explicit attribute on the surface. It is not a silent exception, and a surface that carries it is still accountable for the AA floor.
 
+### Containers
+
+`containers` config declares the boxes an application lays its pages out with, and the package emits a class for each one. A container is the application's own: it names it, it owns the name, and nothing is imported to use it. `<div class="card">` is the whole API.
+
+```ts
+containers: {
+  card: {
+    style: { display: "flex", flexDirection: "column", gap: "var(--tbf-gap-md)", padding: "var(--tbf-gap-md)" },
+    on: { hover: { borderColor: "var(--tbf-focus)" } },
+    at: { md: { padding: "var(--tbf-gap-sm)" } },
+    parts: { header: { style: { display: "flex", justifyContent: "space-between" } } },
+    variants: { muted: { style: { background: "var(--tbf-surface-muted)" } } },
+  },
+}
+```
+
+That emits `.card`, `.card:hover`, `.card__header`, `.card--muted`, and the `md` block inside the matching `@media (max-width: …)` query. `style` is the base, `on` keys a selector suffix (`hover`, `focus-visible`, or anything starting with `:`, `[` or `&`), `at` keys a breakpoint the design declares, `parts` are `__element` children and `variants` are `--modifier` siblings.
+
+A container name is kebab-case and may not start with `tbf-`, which is the package's. An unknown field, an undeclared breakpoint and a non-scalar value are all refused when the config is read, with the path that is wrong.
+
+Use it for every box an application would otherwise wrap in a component of its own: a card, a band, a panel, a cell, a row. The package ships no such components, so there is nothing to import and nothing to keep in step.
+
 ### Button variants
 
 `design.components.primitives.button.variants` configures `chrome`, `danger`, `ghost`, `primary` and `secondary`. `chrome` is the header's own look: a compact quiet outline over whatever it sits on, and what the language switcher, the accessibility trigger and the choice rows in radio and checkbox groups all render as, so the three cannot drift apart. It is shorter than a content button and opts into the dense pointer tier, which is why it stays at 2rem beside a 2.75rem button. A variant may set `bg`, `border`, `color`, `radius`, `height`, `padding`, `fontSize` and a `states.hover` block.
@@ -315,6 +337,8 @@ The root entrypoint exports browser runtime binders, namespace helpers, and stat
 ## Migration Notes
 
 Applications import public APIs only from the package root, `/config`, `/react`, and `/server`. There is no public Sass, style, or internal component subpath API.
+
+**27.0.0 removed every container component.** `PageBand`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `HairlinePanel`, `HairlineCell`, `ActionRow`, `TrackList`, `TrackItem`, `PinnedSplit`, `IconTile`, `Tag`, `AccentRule`, `Frame`, `FrameCover`, `FrameScrim`, `FrameCaption`, `FrameAction` and `CanvasPanel` are gone, and so are the `tbf-band`, `tbf-tile`, `tbf-tag`, `tbf-rule`, `tbf-action-row`, `tbf-track` and `tbf-frame` classes. Declare what the application needs under `containers` and write the class. `HeadingScope` is now exported, because a container no longer opens a heading level: wrap a section in it where a nested title should step down.
 
 ## What It Does Not Do
 

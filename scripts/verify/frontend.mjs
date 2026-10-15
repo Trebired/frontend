@@ -5,6 +5,7 @@ import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendActions } from "./frontend/actions.mjs";
 import { verifyFrontendConfig } from "./frontend/config.mjs";
+import { verifyContainers } from "./frontend/containers.mjs";
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
@@ -53,6 +54,7 @@ async function verifyFrontendMain() {
   };
   const window = installDom();
   await verifyFrontendConfig(context);
+  await verifyContainers(context);
   await verifyNamespace(context);
   await verifyLocaleRouting(context);
   await verifyMedia(context);

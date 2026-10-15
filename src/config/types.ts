@@ -17,6 +17,10 @@ import type {
   NormalizedFrontendFontFamilyConfig,
 } from "./types/assets.js";
 import type { FrontendDesignConfig, NormalizedFrontendDesignConfig } from "./types/design.js";
+import type {
+  FrontendContainersConfig,
+  NormalizedFrontendContainers,
+} from "./types/containers.js";
 
 import type { FrontendA11yConfig, NormalizedFrontendA11yConfig } from "./types/a11y.js";
 import type { FrontendMoneyConfig, NormalizedFrontendMoneyConfig } from "./types/money.js";
@@ -119,21 +123,15 @@ type FrontendPrimitiveComponentsConfig = {
 };
 
 type FrontendSurfaceComponentsConfig = {
-  actionRow?: FrontendComponentTokens;
-  band?: FrontendComponentTokens;
   brandCanvas?: FrontendComponentTokens;
   button?: FrontendComponentTokens;
   card?: FrontendComponentTokens;
-  frame?: FrontendComponentTokens;
   glow?: FrontendComponentTokens;
   hairline?: FrontendComponentTokens;
   motif?: FrontendComponentTokens;
   logo?: FrontendComponentTokens;
   prose?: FrontendComponentTokens;
-  rule?: FrontendComponentTokens;
   scrollbar?: FrontendComponentTokens;
-  tag?: FrontendComponentTokens;
-  tile?: FrontendComponentTokens;
 };
 
 type FrontendOverlayComponentsConfig = {
@@ -207,6 +205,7 @@ type FrontendConfig = {
   a11y?: FrontendA11yConfig;
   assets?: FrontendAssetsConfig;
   components?: FrontendComponentsConfig;
+  containers?: FrontendContainersConfig;
   design?: FrontendDesignConfig;
   forVersion?: string;
   language?: FrontendLanguageConfig;
@@ -305,6 +304,7 @@ type NormalizedFrontendConfig = {
   a11y: NormalizedFrontendA11yConfig;
   assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
+  containers: NormalizedFrontendContainers;
   design: NormalizedFrontendDesignConfig;
   forVersion: string;
   language: NormalizedFrontendLanguageConfig;
@@ -389,3 +389,5 @@ export type {
   FrontendThemeTokens,
   FrontendZIndexScaleConfig,
 };
+
+export type *from "./types/containers.js";

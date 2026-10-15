@@ -8,7 +8,11 @@ async function render(context) {
 
 async function verifyHeadingLevels(context) {
   const { h, html, react } = await render(context);
-  const card = (title, ...children) => h(react.Card, null, h(react.Title, null, title), ...children);
+  const card = (title, ...children) => h(
+    "div",
+    { className: "card" },
+    h(react.HeadingScope, null, h(react.Title, null, title), ...children),
+  );
   assert.equal(
     html(h(react.Title, null, "Page")),
     "<h2>Page</h2>",

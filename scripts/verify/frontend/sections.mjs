@@ -1,37 +1,23 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
-import path from "node:path";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifySectionSurfaces(context) {
   const react = await context.importDist("react");
-  assert.equal(typeof react.PinnedSplit, "function", "a column that stays while the rest scrolls is part of the package");
-  assert.equal(typeof react.TrackList, "function", "so is a list drawn on a continuous rule");
-  assert.equal(typeof react.TrackItem, "function", "with an item that marks the line");
-
-  const split = renderToStaticMarkup(
-    h(react.PinnedSplit, { aside: h("h2", null, "Aside"), asideSide: "end" }, h("p", null, "Body")),
-  );
-  assert.match(split, /tbf-pinned-split__aside/u, "the pinned column is its own element, so it can be made sticky");
-  assert.match(split, /data-tbf-pinned-aside="end"/u, "which side pins is declared, not left to source order");
-
-  const track = renderToStaticMarkup(
-    h(react.TrackList, null, h(react.TrackItem, { marker: "01" }, h("p", null, "Step"))),
-  );
-  assert.match(track, /<ol[^>]*tbf-track/u, "steps are an ordered list, because their order is the point");
-  assert.match(track, /tbf-track__mark[^>]*>01</u, "each step marks the line with its own label");
-  assert.match(track, /aria-hidden="true"[^>]*tbf-track__mark/u, "the mark is decoration, so it is not read out twice");
-
-  const saving = renderToStaticMarkup(
-    h(react.Button, { download: "logo.svg", href: "/logo.svg", size: "sm" }, "Download"),
-  );
-  assert.match(saving, /download="logo\.svg"/u, "a button that links to a file can offer it for saving");
+  for (const name of ["PageBand", "Card", "CardHeader", "ActionRow", "TrackList", "PinnedSplit", "IconTile", "Tag", "Frame"]) {
+    assert.equal(react[name], undefined, `${name} is not a component any more, a container is declared in the application config`);
+  }
 
   const canvas = renderToStaticMarkup(
     h(react.BrandCanvas, { action: h("button", null, "Download"), caption: "Light", spec: "clear 1rem" }),
   );
   assert.match(canvas, /brand-canvas__caption-end/u, "a brand canvas carries an action beside its spec");
+
+  const saving = renderToStaticMarkup(
+    h(react.Button, { download: "logo.svg", href: "/logo.svg", size: "sm" }, "Download"),
+  );
+  assert.match(saving, /download="logo\.svg"/u, "a button that links to a file can offer it for saving");
 
   const hairline = await fs.readFile(new URL("../../../src/surface/styles/hairline.scss", import.meta.url), "utf8");
   assert.match(
@@ -41,13 +27,6 @@ async function verifySectionSurfaces(context) {
   );
 
   await verifyThemeReachesComponents();
-
-  const styles = await fs.readFile(path.join(context.rootDir, "dist", "surface", "styles", "track.scss"), "utf8");
-  assert.match(styles, /position: sticky/u, "the pinned column actually pins");
-  for (const token of ["text", "border"]) {
-    assert.ok(styles.includes(`ns.css-var("${token}")`), `the track reads ${token}, so it follows the palette rather than hardcoding a colour`);
-  }
-
 }
 
 export { verifySectionSurfaces };

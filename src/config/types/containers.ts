@@ -1,0 +1,36 @@
+type FrontendContainerStyle = Record<string, string>;
+
+type FrontendContainerDeclarations = Record<string, string|number>;
+
+type FrontendContainerBlock = {
+  at?: Record<string, FrontendContainerDeclarations>;
+  on?: Record<string, FrontendContainerDeclarations>;
+  style?: FrontendContainerDeclarations;
+};
+
+type FrontendContainer = FrontendContainerBlock& {
+  parts?: Record<string, FrontendContainerBlock>;
+  variants?: Record<string, FrontendContainerBlock>;
+};
+
+type FrontendContainersConfig = Record<string, FrontendContainer>;
+
+type FrontendContainerDefinition = {
+  at: Record<string, FrontendContainerStyle>;
+  on: Record<string, FrontendContainerStyle>;
+  parts: Record<string, FrontendContainerDefinition>;
+  style: FrontendContainerStyle;
+  variants: Record<string, FrontendContainerDefinition>;
+};
+
+type NormalizedFrontendContainers = Record<string, FrontendContainerDefinition>;
+
+export type {
+  FrontendContainer,
+  FrontendContainerBlock,
+  FrontendContainerDeclarations,
+  FrontendContainerDefinition,
+  FrontendContainerStyle,
+  FrontendContainersConfig,
+  NormalizedFrontendContainers,
+};
