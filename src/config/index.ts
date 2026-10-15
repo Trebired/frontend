@@ -163,6 +163,7 @@ export type {
   GeneratedFaviconLink,
 } from "./favicon.js";
 export { documentSlug, parseTextDocument } from "./text-document.js";
+export *from "./sources/index.js";
 export type {
   TextDocument,
   TextDocumentPart,

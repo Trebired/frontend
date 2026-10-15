@@ -27,21 +27,26 @@ async function verifySiteHeaderMarkup(context) {
     !header.includes('ns.css-var("glass-bg")'),
     "the bar and its menu are opaque rather than glass, so the navigation is readable at every scroll position",
   );
-  assert.match(
+  assert.doesNotMatch(
     header,
-    /body:has\(main > #\{ns\.data\("dark"\)\}:first-child\)/u,
-    "the bar takes its tone from the page markup rather than from a measurement",
+    /body:has\(main/u,
+    "the bar has one appearance of its own and does not read the page it sits over",
   );
-  assert.match(
+  assert.doesNotMatch(
     header,
-    /:not\(#\{ns\.data\("site-header-live"\)\}\)/u,
-    "and that rule steps aside once the header is following the band behind it, instead of fighting it on specificity",
+    /#\{ns\.data\("site-header-live"\)\}/u,
+    "so there is no pre-hydration rule for a runtime measurement to take over from",
   );
   assert.match(
     header,
     /#\{ns\.data\("site-header"\)\}#\{ns\.data\("dark"\)\}/u,
-    "a header following the band carries the same marker a dark band does, so one attribute drives ink, border and menu",
+    "a header over a dark band carries the same marker the band does, so one attribute drives ink, border, menu and logo",
   );
+  const toneScript = (await context.importDistRoot()).createSiteHeaderToneScript();
+  assert.match(toneScript, /data-tbf-site-header/u, "the tone script finds the header by its own marker");
+  assert.match(toneScript, /main > \*, \[data-tbf-site-footer\]/u, "and reads the page's own bands and the footer");
+  assert.match(toneScript, /addEventListener\('scroll'/u, "it keeps up with scrolling");
+  assert.match(toneScript, /tbf:page-change/u, "and with a soft navigation");
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
   assert.ok(html.includes("data-tbf-soft-redirect"), "softRedirect marks the header links");
   const plain = renderToStaticMarkup(h(react.SiteHeader, { actions: "Lang", brand: "Site" }));

@@ -1,0 +1,64 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("shell-text-document-" + $name)}, $fallback);
+}
+
+#{ns.class("text-document")} {
+  display: flex;
+  flex-direction: column;
+  gap: token("gap", var(--space-xl3, 4rem));
+}
+
+#{ns.element-class("text-document", "chapter")} {
+  display: flex;
+  flex-direction: column;
+  gap: token("chapter-gap", var(--space-lg, 2.5rem));
+}
+
+#{ns.element-class("text-document", "parts")} {
+  display: flex;
+  flex-direction: column;
+  gap: token("parts-gap", var(--space-xl, 3rem));
+}
+
+#{ns.element-class("text-document", "part")} {
+  display: flex;
+  flex-direction: column;
+  gap: token("part-gap", var(--space-sm, 0.75rem));
+}
+
+#{ns.element-class("text-document", "item")} {
+  #{ns.css-var("surf-hairline-cell-gap")}: 0;
+}
+
+#{ns.element-class("text-document", "question")} {
+  font-size: token("question-font-size", 1.125rem);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#{ns.element-class("text-document", "trigger")} {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: token("trigger-gap", var(#{ns.css-var("gap-sm")}, 0.75rem));
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+}
+
+#{ns.element-class("text-document", "mark")} {
+  flex: 0 0 auto;
+  color: token("mark-color", var(#{ns.css-var("text-muted")}, currentColor));
+  font-size: token("mark-font-size", 1.5rem);
+  transition: transform var(#{ns.css-var("transition-fast")}, 160ms) ease;
+}
+
+#{ns.data("disclosure-open", "true")} #{ns.element-class("text-document", "mark")} {
+  transform: rotate(180deg);
+}

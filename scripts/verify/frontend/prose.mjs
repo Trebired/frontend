@@ -72,6 +72,12 @@ function verifyTextDocument(config) {
   assert.match(document.sections[0].parts[0].body[0], /<!--tbf:link \/pricing-->/u, "annotations reach the renderer untouched");
   assert.equal(document.sections[1].body.length, 1, "a section without parts keeps its own paragraphs");
   assert.equal(document.parts, "disclosure", "the document says how its parts are presented");
+  assert.equal(document.outline, true, "a document carries an outline unless it refuses one");
+  assert.equal(
+    config.parseTextDocument("---\ntitle: T\nupdated: 2026-01-01\noutline: false\n---\n\n## S\n\nB.").outline,
+    false,
+    "and a document can refuse one in its front matter",
+  );
   assert.equal(document.lead.length, 1, "paragraphs before the first section are the lead");
   assert.equal(document.sections[0].id, "working-together", "a section carries the id an outline links to");
   assert.equal(document.sections[0].parts[0].id, "what-does-it-cost", "and so does a part");

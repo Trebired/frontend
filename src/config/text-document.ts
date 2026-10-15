@@ -6,6 +6,7 @@ type TextDocumentSection = { body: string[]; heading: string; id: string; parts?
 
 type TextDocument = {
   lead: string[];
+  outline: boolean;
   parts: TextDocumentParts;
   sections: TextDocumentSection[];
   title: string;
@@ -81,6 +82,7 @@ function parseTextDocument(raw: string): TextDocument | null {
   if (!title || !updated || sections.length === 0) return null;
   return {
     lead: readParagraphs(body.split(/\n## /u)[0] as string),
+    outline: (parsed.fields.outline || "").trim().toLowerCase() !== "false",
     parts: readPartsMode(parsed.fields.parts || ""),
     sections,
     title,

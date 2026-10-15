@@ -248,4 +248,18 @@ export {
   stripProgressFetchOptions,
 };
 export type { PageLoadProgressOptions, ProgressBindOptions, ProgressFetchInit, ProgressHandle };
-export *from "./bars.js";
+export {
+  bytesLabel,
+  clampPercent,
+  destroy,
+  formatBytes,
+  formatPercent,
+  indeterminate,
+  mount,
+  percentFromBytes,
+  progressBars,
+  progressPercentLabel,
+  set,
+  setBytes,
+} from "./bars.js";
+export type *from "./bars.js";

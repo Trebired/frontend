@@ -75,5 +75,26 @@ export type {
   SubmitActionFormOptions,
 } from "./types.js";
 export type { CopyButtonOptions } from "./clipboard.js";
-export *from "./labels.js";
-export *from "./standard-buttons.js";
+export {
+  actionLabel,
+} from "./labels.js";
+export type *from "./labels.js";
+export {
+  add_button,
+  cancel_button,
+  copy_button,
+  create_button,
+  delete_button,
+  drop_button,
+  force_stop_button,
+  insert_button,
+  install_button,
+  removeConfirmationAttrs,
+  remove_button,
+  restart_button,
+  save_icon,
+  show_button,
+  start_button,
+  stop_button,
+} from "./standard-buttons.js";
+export type *from "./standard-buttons.js";

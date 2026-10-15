@@ -303,8 +303,6 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   outline-offset: 0.2rem;
 }
 
-body:has(main > #{ns.data("dark")}:first-child) #{ns.data("site-header")}:not(#{ns.data("site-header-live")}),
-
 #{ns.data("site-header")}#{ns.data("dark")} {
   @include tone.on-dark;
   #{ns.css-var("shell-header-surface")}: token("root-bg-dark", var(#{ns.css-var("ink")}, #000));

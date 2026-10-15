@@ -14,6 +14,7 @@ import { verifyMedia } from "./frontend/media.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyProse } from "./frontend/prose.mjs";
+import { verifyBuildSources } from "./frontend/sources.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
 import { verifySidebar } from "./frontend/sidebar.mjs";
 import { verifyGraphs, verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
@@ -92,6 +93,7 @@ async function verifyPackageSurface({ importDist, importDistRoot, packageVersion
   await verifyFrontendTheme({ importDist, packageVersion, rootDir });
   await verifyMoney(importDist);
   await verifyProse({ importDist });
+  await verifyBuildSources({ importDist });
   await verifyA11y(importDist, importDistRoot);
 }
 

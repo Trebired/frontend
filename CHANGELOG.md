@@ -1,5 +1,35 @@
 # Changelog
 
+## 26.0.0
+
+**Breaking:** the public surface is the API products use, and nothing else. Every entry now lists what it exports instead of re-exporting whole folders: 1559 runtime exports became 692, of which 671 are reached by a Trebired product or by this package's own verification. Types are unchanged, since each list is followed by a type re-export of the same module. If something an application needs is missing, it was not referenced by any product when the lists were drawn, and it goes back by name.
+
+- One boot call. `frontendBoot({ header, locale, scroll })` returns `{ bootScripts, bodyScripts }` for the shell's meta, in place of `createScrollStateBootScript`, `createLocaleBootScript` and `createSiteHeaderToneScript` being called and arranged by hand. The header and the scroll state are on by default and a site passes `locale` when it has one.
+
+- A popover closes the way it opens. The closed state collapsed the panel to zero height in the same frame the class changed, so the fade and slide had nothing left to animate; the panel is fixed and already hidden and inert when closed, so the collapse is gone and the exit transition is visible.
+
+**Breaking:** the site header decides its own tone, and the configuration for it is gone. `components.shell.header.tone.follow` and `tone.probe` no longer exist, nor does the React hook that measured the page on every scroll frame, nor `data-tbf-site-header-live`, nor the rule that darkened the bar because a page's first band was dark.
+
+  What replaces all of it is one script. `createSiteHeaderToneScript()` goes in the shell's `bodyScripts`, runs once the document is parsed and before the first paint, finds the band under the bar, and marks the header `data-tbf-dark` when that band carries the marker. It then keeps up with scrolling, resizing, `pageshow` and a soft navigation. Transitions are held for the first two frames, so the header arrives in its colour instead of fading into it.
+
+  The old split was the bug: a CSS guess from the page's first band, corrected by a measurement after hydration. The two disagreed whenever the band under the bar was not the first one, which is every page opened at a scroll position and every page whose hero is not the full height of the header's line, and the correction was visible. One measurement, before the first paint, cannot disagree with itself.
+
+- A popover closes the way it opens. The closed state collapsed the panel to zero height in the same frame the class changed, so the fade and slide had nothing left to animate; the panel is fixed and already hidden and inert when closed, so the collapse is gone and the exit transition is visible.
+
+**Breaking:** the site header no longer takes its tone from the page. `components.shell.header.tone.follow` and `tone.probe` are gone, with the hook that measured the band behind the bar, the `data-tbf-site-header-live` marker and the rule that darkened the bar on a page whose first band is dark. The header has one appearance, from its own tokens, applied by the stylesheet before anything runs.
+
+  Following the page was wrong twice over. It made the header's colour a property of whatever page it happened to sit on, which is a preset per page by another name, and it could only be decided after hydration, so a page whose first band was dark painted a dark bar and corrected itself a moment later. A header that is simply itself has nothing to correct, and nothing to measure on every scroll frame.
+
+- A document can refuse an outline. `outline: false` in the front matter keeps the rail off a page whose sections are not worth navigating, and `parseTextDocument` carries it as `outline` so the decision stays in the document rather than in the application that renders it.
+
+- `TextDocumentBody` renders a parsed document as a page: the outline rail beside it, one section per chapter, and the parts as prose articles or disclosure cards according to the document's own `parts:` declaration. A consuming application passes the document and nothing else, or a `paragraph` renderer when its paragraphs need its own wrapper. The styles come with it, under `components.shell.textDocument` tokens.
+
+- The package owns the documents it renders, from the repository to the page. `textDocumentsSource({ org, repo, slugs, langs })` is a build data source for `@trebired/bundler`: it resolves the branch commit, reads one markdown file per slug and language, parses each through `parseTextDocument`, keeps the last build's copy of anything a request missed, and refuses the whole run when nothing was read. A consuming application declares the repository and stops writing a fetcher.
+
+- `gravatarProfilesSource({ people })` reads the whole public profile for each address: the display name, the bio, the job title, the location, the personal links and the verified accounts, each as `{ label, service, url }` ready to render, plus the profile page itself. The avatar is downloaded at the size asked for, cached beside the data, and returned as a build asset, so it is served from the site's own origin. A profile that cannot be reached falls back to the row and the avatar the last build wrote, and a person with no picture at all leaves `avatar` empty rather than pointing at one that is not there.
+
+- `moneyRatesSource({ base, currencies })` is the third source. It wraps `fetchMoneyRates` and stamps the time it ran.
+
 ## 25.2.0
 
 - The page outline is part of the page rather than a rail floating over it. `PageOutlineLayout` takes the same `items` as `PageOutline` plus the page content and puts the list in a column on the left of the text, where it sticks to the top of the viewport as the reader scrolls, so nothing is covered and the list sits where a reader of a long document looks for it. It appears from 1024px, where there is room beside the content, and below that the layout is a single column. Called with no items it renders the content alone, so a page short enough to need no outline needs no branch at the call site.

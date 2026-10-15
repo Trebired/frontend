@@ -7,7 +7,6 @@ import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vb
 import { A11Y_MAIN_ID } from "./../../../a11y/attributes.js";
 import { useSiteHeaderMenu } from "./header/state.js";
 import { useSiteHeaderFit } from "./header/fit.js";
-import { useSiteHeaderTone } from "./header/tone.js";
 import { activeSection, observeSections, serverActiveSection, subscribeActiveSection } from "./section_spy.js";
 import {
   isSiteLinkActive,
@@ -266,7 +265,6 @@ function SiteHeader(props: SiteHeaderProps) {
     softRedirect, ...rest
   } = props;
   const state = useSiteHeaderMenu();
-  const tone = useSiteHeaderTone(state.headerRef);
   const menuId = `${useId().replace(/:/gu, "")}_site_menu`;
   const hasMenu = links.length > 0 || Boolean(menuActions);
   const compact = useSiteHeaderFit(state.headerRef, hasMenu);
@@ -277,8 +275,6 @@ function SiteHeader(props: SiteHeaderProps) {
     {...frontendDataAttrs({ "site-header": "", "site-header-open": state.open ? "true" : "false" })}
     {...frontendDataAttrs({ "site-header-menu": hasMenu ? "true" : "false" })}
     {...frontendDataAttrs({ "site-header-compact": compact ? "true" : undefined })}
-    {...frontendDataAttrs({ "site-header-live": tone ? "" : undefined })}
-    {...frontendDataAttrs({ dark: tone === "dark" ? "" : undefined })}
     ref={state.headerRef}
     >
     <SiteHeaderSkipLink labels={labels} />

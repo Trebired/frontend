@@ -4,6 +4,7 @@ import {
   bindActionTriggers,
   bindCopyButtons,
 } from "./actions/index.js";
+
 import { bindCodeBlocks } from "./code/index.js";
 import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
@@ -18,13 +19,14 @@ import {
   type LocaleRuntimeOptions,
   type SourceLanguageRuntimeOptions,
 } from "./language/index.js";
+
 import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
 import { bindFullscreen } from "./fullscreen/index.js";
 import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
 import { setSpaRebind } from "./spa/config.js";
-import { bindSoftRedirectLinks, softReload } from "./spa/index.js";
+import { bindSoftRedirectLinks } from "./spa/index.js";
 import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
@@ -88,7 +90,6 @@ function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
 }
 
 type BindStepLogger = ReturnType<typeof resolveFrontendLogger>;
-
 function runBindStep(logger: BindStepLogger, label: string, step: () => void) {
   try {
     step();
@@ -188,152 +189,16 @@ function bindFrontendRuntime(
 }
 
 export { bindFrontendRuntime };
+
 export type {
   FrontendLoggingOptions,
   FrontendRuntimeAdapters,
   FrontendRuntimeBinding,
   FrontendRuntimeOptions,
 };
-export *from "./actions/index.js";
-export *from "./code/index.js";
-export *from "./dom/index.js";
-export *from "./editor/index.js";
-export *from "./entity/index.js";
-export *from "./explorer/index.js";
-export {
-  createAnimationFrameQueue,
-  dataTokenGroups,
-  dataTokens,
-  formatLocaleDateTime,
-  json,
-  normalize,
-  objectApi,
-  onlyString,
-  parseElementObject,
-  parseJson,
-  separatorSymbol,
-  toString,
-  typography,
-} from "./data/index.js";
-export {
-  fileObjectExtension,
-  isImageFileObject,
-} from "./files/index.js";
-export *from "./flash/index.js";
-export *from "./fullscreen/index.js";
-export *from "./graph/index.js";
-export *from "./http/index.js";
-export *from "./icons/index.js";
-export *from "./product/identity.js";
-export {
-  createNavigationState,
-  defaultNavigationState,
-  matchesCurrentPath,
-  normalizeNavigationHref,
-  normalizeNavigationHref as normalizeHref,
-  normalizeNavigationPath,
-} from "./server/navigation.js";
-export *from "./inputs/index.js";
-export {
-  bindAdvancedCheckboxes,
-  bindAdvancedDisclosures,
-  bindAdvancedDropdowns,
-  bindAdvancedInputControllers,
-  bindAdvancedRadios,
-  bindAdvancedSearch,
-  bindAdvancedTabs,
-  bindOwnedTabs,
-  bindStaticDropdown,
-  checkboxClient,
-  createDisclosure,
-  createTabs,
-  dropdownOptionSelected,
-  dropdownOptionValue,
-  dropdownRootConfig,
-  dropdownManager,
-  getDropdownOptions,
-  getHidden,
-  radioManager,
-  resolveNamedDropdownInput,
-  searchManager,
-  setDropdownLabel,
-  setDropdownOptionConfig,
-  switchDisclosureEntry,
-  syncCheckboxOption,
-  syncDropdownHiddenInput,
-  syncDropdownHiddenInputs,
-  syncFromHidden,
-  updateDropdownRootConfig,
-  updateEmptyState,
-} from "./inputs/advanced/index.js";
-export { tabRouteUrl } from "./inputs/advanced/tabs/url.js";
-export type { TabRouteStep } from "./inputs/advanced/tabs/url.js";
-export *from "./layer/index.js";
-export *from "./language/index.js";
-export *from "./layout/index.js";
-export *from "./live/index.js";
-export *from "./realtime/index.js";
-export {
-  configureSpa,
-  createLiveOverlayState,
-  currentPage,
-  hasUnsavedWork,
-  onPageChange,
-  registerPageCleanup,
-  registerUnsavedWork,
-  rehydrate,
-  removeStalePortaledOverlays,
-  softRedirect,
-  softRefresh,
-  softReload,
-} from "./spa/index.js";
-export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage, UnsavedWorkCheck } from "./spa/index.js";
-export *from "./logging/index.js";
-export *from "./logs/index.js";
-export *from "./markdown/index.js";
-export *from "./media/index.js";
-export *from "./modal/index.js";
-export *from "./namespace/index.js";
-export *from "./popover/index.js";
-export *from "./primitives/index.js";
-export *from "./progress/index.js";
-export *from "./runtime/index.js";
-export *from "./sidebar/index.js";
-export *from "./settings/index.js";
-export *from "./socket/index.js";
-export *from "./surface/index.js";
-export *from "./theme/index.js";
-export *from "./tooltip/index.js";
-export {
-  bind as bindSearchPanelRuntime,
-  bindRoot as bindSearchRoot,
-  bindSearchPanel,
-  boot as bootSearchPanelRuntime,
-  refreshSearchResults,
-} from "./search/index.js";
-export {
-  createSharedStepCard,
-  groupSharedSteps,
-  renderSharedSteps,
-  renderStepsPanel,
-  default as stepsController,
-} from "./steps/index.js";
-export {
-  bindWizard,
-  bindWizardRoot,
-  wizardSteps,
-} from "./wizard/index.js";
-export type { SearchPanelBinding } from "./search/index.js";
-export type { SharedStepCardInput } from "./steps/index.js";
-export {
-  ERROR_STATUSES,
-  errorMessageKey,
-  errorRoutePath,
-  errorShellFileName,
-  isErrorRoutePath,
-  isErrorStatus,
-} from "./error/paths.js";
-export { errorActionLabel, errorMessage } from "./error/messages.js";
-export { LANGUAGE_CONFIG_ATTR, configureFrontendLanguage, getFrontendLanguage } from "./language/config.js";
-export type { FrontendLanguageLocale, FrontendLanguageRuntimeConfig } from "./language/config.js";
-export type { ErrorStatus } from "./error/paths.js";
+
+export *from "./entries/root/01.js";
+
+export *from "./entries/root/02.js";
+
+export *from "./entries/root/03.js";

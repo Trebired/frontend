@@ -327,5 +327,31 @@ export {
   setHidden,
 };
 export type { BindRoot, Cleanup };
-export *from "./binding.js";
-export *from "./element-helpers.js";
+export {
+  bindElementsOnReady,
+  bindFirstChildElements,
+  bindFirstChildFormElements,
+  collectAddedBindRoots,
+  firstHTMLButtonChild,
+  firstHTMLElementChild,
+} from "./binding.js";
+export type *from "./binding.js";
+export {
+  clearChildren,
+  cloneTemplateElement,
+  cloneTemplateElementById,
+  dataSelector,
+  elementById,
+  focusProgrammatically,
+  isProgrammaticFocus,
+  readHostJsonConfig,
+  replaceHtml,
+  scopedElementById,
+  setDocumentIdText,
+  setDocumentText,
+  setDocumentTexts,
+  setSelectorText,
+  setTextContent,
+  syncListEmptyState,
+} from "./element-helpers.js";
+export type *from "./element-helpers.js";

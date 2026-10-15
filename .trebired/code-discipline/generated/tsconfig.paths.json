@@ -10,6 +10,9 @@
       "#03uxh6jyk32u": [
         "../../../src/graph/advanced/roadmap.tsx"
       ],
+      "#04zsw6ejqm57": [
+        "../../../src/react/re-exports.ts"
+      ],
       "#06zpvzf2j5uf": [
         "../../../scripts/verify/pack.mjs"
       ],
@@ -166,6 +169,9 @@
       "#2zwv053mg3ba": [
         "../../../src/a11y/boot.ts"
       ],
+      "#307h2kvi1oi5": [
+        "../../../src/sidebar/re-exports.ts"
+      ],
       "#330k9t1x10vd": [
         "../../../src/config/tokens.ts"
       ],
@@ -198,6 +204,9 @@
       ],
       "#3pk6o1398qlp": [
         "../../../src/logs/paged_content.tsx"
+      ],
+      "#3qq5g94jxm5m": [
+        "../../../src/config/sources/money.ts"
       ],
       "#3rdoaksexb6e": [
         "../../../src/logs/client/page.ts"
@@ -493,6 +502,9 @@
       "#87xh00zb1b93": [
         "../../../src/inputs/advanced/tabs/styles.scss"
       ],
+      "#88nzkez3bfk3": [
+        "../../../src/config/sources/index.ts"
+      ],
       "#8axipzwu32d3": [
         "../../../src/layout/styles/outline.scss"
       ],
@@ -682,6 +694,9 @@
       "#bgt53yqslqk6": [
         "../../../src/graph/advanced/contributions_heatmap/i18n/cs.ts"
       ],
+      "#bigdbb1uhejt": [
+        "../../../src/entries/react/01.ts"
+      ],
       "#bigvy1k5z3wr": [
         "../../../src/logs/styles.scss"
       ],
@@ -738,6 +753,9 @@
       ],
       "#cbhj0wc7jgat": [
         "../../../src/sidebar/dynamic/runtime/selectors.ts"
+      ],
+      "#cbqns176r23e": [
+        "../../../src/config/sources/documents.ts"
       ],
       "#ccvonx3uhbte": [
         "../../../src/layer/index.ts"
@@ -849,6 +867,9 @@
       ],
       "#e17ghseag2t1": [
         "../../../src/theme/boot.ts"
+      ],
+      "#e1ga2b1popmu": [
+        "../../../src/layout/header/tone.ts"
       ],
       "#e1sxybsnyea2": [
         "../../../src/react/root-cache.ts"
@@ -1141,6 +1162,9 @@
       "#i3oaed3jc28j": [
         "../../../src/language/runtime/source/parse.ts"
       ],
+      "#i3p68u9n2acm": [
+        "../../../src/config/sources/types.ts"
+      ],
       "#i4d0umua982v": [
         "../../../src/layout/components/site/header/fit.ts"
       ],
@@ -1369,6 +1393,9 @@
       "#m8aga4kgmeuh": [
         "../../../src/inputs/advanced/input/styles/field.scss"
       ],
+      "#m8pcadz696zh": [
+        "../../../src/config/sources/gravatar.ts"
+      ],
       "#mbgipuoecdab": [
         "../../../src/layout/components/site/header.tsx"
       ],
@@ -1453,6 +1480,9 @@
       "#o75jh3q7rp4w": [
         "../../../src/inputs/components/search.tsx"
       ],
+      "#o80udh3eps88": [
+        "../../../src/entries/root/01.ts"
+      ],
       "#o9lroe7t0ma6": [
         "../../../src/spa/index.ts"
       ],
@@ -1470,6 +1500,9 @@
       ],
       "#oohgsil8r9co": [
         "../../../src/inputs/advanced/radio/index.tsx"
+      ],
+      "#osoedg4en3xx": [
+        "../../../src/entries/root/03.ts"
       ],
       "#ostul1hifkbs": [
         "../../../src/config/startup.ts"
@@ -1569,6 +1602,9 @@
       ],
       "#qxjurtbzfrr6": [
         "../../../scripts/verify/frontend/layering.mjs"
+      ],
+      "#r4ptu0b68uze": [
+        "../../../scripts/verify/frontend/sources.mjs"
       ],
       "#r58exi37vhhz": [
         "../../../src/config/scales.ts"
@@ -1750,9 +1786,6 @@
       "#u0knshei0xi3": [
         "../../../src/theme/browser-sync.ts"
       ],
-      "#u0xc6lm59gdj": [
-        "../../../src/layout/components/site/header/tone.ts"
-      ],
       "#u525cvfu2zk3": [
         "../../../src/spa/links.ts"
       ],
@@ -1810,6 +1843,9 @@
       "#v6osiib2mhbc": [
         "../../../src/server/seo/routes.ts"
       ],
+      "#v7qrv87n3jfm": [
+        "../../../src/entries/root/02.ts"
+      ],
       "#v86va80qdxto": [
         "../../../src/config/index.ts"
       ],
@@ -1866,6 +1902,9 @@
       ],
       "#w1ndw6lrphk4": [
         "../../../src/inputs/styles/cropper-internals.scss"
+      ],
+      "#w73ejej5v8l7": [
+        "../../../src/layout/components/text-document.tsx"
       ],
       "#wavczpl1zxvg": [
         "../../../src/theme/components/index.tsx"
@@ -1984,6 +2023,9 @@
       "#xp296eiocpdg": [
         "../../../src/language/routing/runtime.ts"
       ],
+      "#xpd08e1o68sv": [
+        "../../../src/entries/react/02.ts"
+      ],
       "#xpy3g4zz7ui5": [
         "../../../src/sidebar/dynamic/runtime/types.ts"
       ],
@@ -2038,6 +2080,9 @@
       "#yv4ubgils4dc": [
         "../../../src/sidebar/dynamic/tree.ts"
       ],
+      "#ywso4j7v0tp7": [
+        "../../../src/layout/boot.ts"
+      ],
       "#z2c0jqmjqds4": [
         "../../../src/inputs/advanced/index.ts"
       ],
@@ -2049,6 +2094,9 @@
       ],
       "#z8s8ga6gzetk": [
         "../../../src/layout/components/shell/product/header.tsx"
+      ],
+      "#zddw2pl482y1": [
+        "../../../src/layout/styles/text-document.scss"
       ],
       "#zfr3cxn2g1wf": [
         "../../../src/logs/client/detail/load.ts"

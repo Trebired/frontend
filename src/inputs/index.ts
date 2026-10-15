@@ -122,13 +122,41 @@ export {
   uploadFieldHtml,
   uploadManager,
 };
-export *from "./choice.js";
-export *from "./select_cards.js";
-export *from "./disclosure.js";
-export *from "./dropdown.js";
-export *from "./search.js";
-export *from "./status.js";
-export *from "./tabs.js";
+export {
+  bindChoiceControls,
+} from "./choice.js";
+export type *from "./choice.js";
+export {
+  SELECT_CARD_EVENT,
+  bindSelectCards,
+  selectCard,
+  selectedCardValue,
+} from "./select_cards.js";
+export type *from "./select_cards.js";
+export {
+  bindDisclosure,
+  bindDisclosures,
+  setDisclosureOpen,
+  toggleDisclosure,
+} from "./disclosure.js";
+export type *from "./disclosure.js";
+export {
+  bindDropdowns,
+} from "./dropdown.js";
+export type *from "./dropdown.js";
+export {
+  bindSearchControls,
+} from "./search.js";
+export type *from "./search.js";
+export {
+  bindStatusFields,
+  setStatus,
+} from "./status.js";
+export type *from "./status.js";
+export {
+  bindTabs,
+} from "./tabs.js";
+export type *from "./tabs.js";
 export type {
   UploadEmptyToggle,
   UploadEntry,

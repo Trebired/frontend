@@ -182,8 +182,29 @@ export {
   siteHeaderRootHtml,
   syncLayoutBodyState,
 };
-export *from "./breadcrumb.js";
-export *from "./scroll.js";
-export *from "./header.js";
-export *from "./state.js";
+export {
+  bindBreadcrumbs,
+} from "./breadcrumb.js";
+export type *from "./breadcrumb.js";
+export {
+  bindScrollState,
+  createScrollStateBootScript,
+} from "./scroll.js";
+export type *from "./scroll.js";
+export {
+  createSiteHeaderToneScript,
+} from "./header/tone.js";
+export type *from "./header/tone.js";
+export {
+  frontendBoot,
+} from "./boot.js";
+export type *from "./boot.js";
+export {
+  HEADER_PRIMARY_SELECTOR,
+  HEADER_SECONDARY_SELECTOR,
+  bindHeaders,
+  openMobileNav,
+} from "./header.js";
+export type *from "./header.js";
+export type *from "./state.js";
 export type { LayoutBodyState, LayoutRuntimeOptions, LayoutSide };

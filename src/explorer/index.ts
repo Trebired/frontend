@@ -38,6 +38,32 @@ function clearFileTreeExplorer(container: HTMLElement | null, message = "") {
   root.render(createElement("div", { className: primitiveTextClassName({ muted: true }) }, text(message, "No file tree selected.")));
 }
 
-export *from "./components/index.js";
-export *from "./tree.js";
+export {
+  FileTreeCount,
+  FileTreeIcon,
+  FileTreeName,
+  FileTreeRow,
+  FileTreeShell,
+  FileTreeToggle,
+  FileTreeView,
+  StaticFileTreeView,
+  fileTreeLeftBorderColor,
+} from "./components/index.js";
+export type *from "./components/index.js";
+export {
+  buildInitialOpenState,
+  extensionFromName,
+  findFirstFilePath,
+  findTreeNodeByPath,
+  isImagePath,
+  normalizePath,
+  normalizePathList,
+  normalizeScrollbarSize,
+  normalizeTreeNodes,
+  readFileTreeIconSpec,
+  scrollbarWidthBySize,
+  selectableEntryPath,
+  text,
+} from "./tree.js";
+export type *from "./tree.js";
 export { clearFileTreeExplorer, getFileTreeRoot, renderFileTreeExplorer };

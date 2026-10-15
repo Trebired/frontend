@@ -96,6 +96,21 @@ Heading levels come from where a heading sits, not from the call site. Render ti
 
 Pass `level` to `Title` (or `titleAs` to a copy card) only for a page hero title, which is `h2`. `HeadingScope` sets the depth explicitly, for markup rendered on its own, such as a fragment swapped into a card later.
 
+### Boot
+
+One call builds every script a shell needs before the page runs:
+
+```ts
+import { frontendBoot } from "@trebired/frontend";
+
+meta: {
+  ...frontendBoot({ locale: { routing, strategy, a11y, language, money } }),
+  lang: "en",
+}
+```
+
+It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scroll state and the reader's locale, and the body script that gives the header its tone before the first paint. `scroll` and `header` are on unless passed `false`, and `locale` is given by a site that has one. Nothing else has to be arranged by hand.
+
 ### Site Header
 
 `SiteHeader` is the whole header of a content site: the sticky bar, the brand, the desktop navigation, the actions beside it, and the mobile menu behind the toggle. The menu is a full-width panel under the bar; it lists the same links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. The desktop navigation appears when it fits and not at a width: the header measures the bar against the links it was given and falls back to the menu whenever they would collide with the actions, so a site with four links keeps its bar on a tablet and a site with eight does not have to cram them at 820px. Pass the links as data, not markup:
@@ -112,11 +127,13 @@ Pass `level` to `Title` (or `titleAs` to a copy card) only for a page hero title
 
 A header with no links and no `menuActions` has no toggle and keeps its actions visible on a phone. `menuActions` replaces `actions` inside the menu when the two should differ, `menuIcon` and `closeIcon` replace the built-in burger, and `softRedirect` marks the links for soft navigation.
 
+The header takes the tone of whatever is behind it, and it knows which that is before the first paint. `frontendBoot()` adds the script that does it: it runs with the document parsed, finds the band under the bar among `main`'s own children and the site footer, and marks the header `data-tbf-dark` when that band declares itself dark, which is the same marker a dark band, an inverse footer or a dark card carries. After that it follows scrolling, resizing, `pageshow` and soft navigation. There is nothing to configure and nothing per page: a page that wants a dark bar under it says so on the band, once, the way it already says it for everything else inside it.
+
 The header is the hydration root, so it renders itself as the `<header>` element. Server markup wraps it with `siteHeaderRootHtml(html)`, which the client hydrates through `SITE_HEADER_ROOT_SELECTOR`; the wrapper is `display: contents`, so the header still sticks to the viewport.
 
 Colors, fonts, borders and spacing are tokens under `components.shell.header`: `root` (position, background, border, backdropFilter), `maxWidth`, `brand`, `link`, `menu` and the motion pair `motionDuration` and `motionEasing`. Sizes are not: the bar is 5rem tall, its inline padding 1.5rem and 1rem once there is room for the full bar, a brand logo 3.5rem, navigation links 0.875rem, menu links 1rem, and the toggle a 3rem button with a 2rem icon, the same in every site.
 
-`tone` decides where the bar takes its light or dark variant from, and nothing in the consuming application calls into it. `follow: "hero"`, the default, holds the tone of the page's first band for the whole page through one CSS rule and runs no script at all. `follow: "band"` gives the bar the tone of whatever band is under it as the page scrolls: the header reads `main`'s own children and the site footer, takes the one crossing its `probe` line (`0.5`, its own middle), and marks itself `data-tbf-dark` when that band carries it, so the ink, the border, the mobile menu and a logo that ships a light and a dark face all follow the one attribute. The CSS rule stays the pre-hydration and no-script answer in both modes. `duration` and `easing` set the crossfade, 320ms by default. A soft navigation does not cross-fade: `<html>` carries `data-tbf-page-swap` for the frame the page is replaced in, which holds every transition and animation at 1ms, so chrome arrives in the new page's colours instead of sliding into them while the reader is already looking at a different page.
+`tone` is the crossfade: `duration` and `easing`, 320ms by default, for the moment the bar changes tone as a band scrolls under it. The first paint never uses it, because the tone is decided before it. A soft navigation does not cross-fade either: `<html>` carries `data-tbf-page-swap` for the frame the page is replaced in, which holds every transition and animation at 1ms, so chrome arrives in the new page's colours instead of sliding into them while the reader is already looking at a different page.
 
 ### Prose Text
 
@@ -136,6 +153,30 @@ The first token after the marker is the href and is required. `tab` opens a new 
 
 It is not a markdown renderer and will not become one. Bold, lists and headings stay out, because the moment copy carries markup the component that renders it owns a format, and a format has to be documented, versioned and escaped. A second annotation gets added when something needs one, not in advance.
 
+
+### Text Document Body
+
+`TextDocumentBody` takes a document from `parseTextDocument` and renders the whole page body: `PageOutlineLayout` with one outline entry per section, a `<section>` per chapter with its heading and id, and the parts as prose articles or as disclosure cards when the document declares `parts: disclosure`. Paragraphs render through `ProseText`, so the inline link annotations work without the application touching them; pass `paragraph` to wrap each one in your own element. `minOutlineSections` decides how long a document has to be before it gets a rail, three by default, and a document that writes `outline: false` in its front matter gets none at all.
+
+### Build Data Sources
+
+`textDocumentsSource`, `moneyRatesSource` and `gravatarProfilesSource` are build time data sources for `@trebired/bundler`. An application declares them in `.trebired/bundler/config.ts` under `data.sources` and writes no fetching code of its own:
+
+```ts
+data: {
+  define: "BUILD_SITE_DATA",
+  dir: "dist/data",
+  sources: {
+    documents: textDocumentsSource({ org: "Example", repo: "meta", slugs: ["privacy"], langs: ["en", "cs"] }),
+    rates: moneyRatesSource({ base: "CZK", currencies: ["EUR"] }),
+    team: gravatarProfilesSource({ people: [{ email: "name@example.net", role: "founder" }] }),
+  },
+},
+```
+
+Each source reads what the last build wrote through the `cached` it is handed, so a missing document keeps the words that were there before rather than dropping the page, and returns a `detail` line the bundler logs.
+
+`gravatarProfilesSource` returns one row per person: `name`, `bio`, `jobTitle`, `location`, `profileUrl`, the person's own `links` and their verified `accounts`, each as `{ label, service, url }`, and `role`, which is the label the application gave that person rather than anything Gravatar knows. The avatar comes back as a build asset, which the build writes into the site output directory, so the picture is served from the site's own origin. A profile that cannot be read falls back to the row and the avatar from the last build; a person with no picture leaves `avatar` empty instead of pointing at one that is not there.
 
 ### Text Documents
 

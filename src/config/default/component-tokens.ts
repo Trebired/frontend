@@ -313,7 +313,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         header: Object.freeze({
             brand: { button: {}, tag: { offsetY: "0" } },
             link: { active: {} },
-            tone: { duration: "320ms", easing: "cubic-bezier(0.22, 1, 0.36, 1)", follow: "hero", probe: "0.5" },
+            tone: { duration: "320ms", easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
         }),
         language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
         error: Object.freeze({

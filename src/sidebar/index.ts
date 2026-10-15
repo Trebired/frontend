@@ -358,6 +358,6 @@ export {
   setSidebarOpen,
   toggleSidebarMinimized,
 };
-export *from "./live.js";
-export *from "./dynamic/index.js";
 export type { SidebarPersistenceAdapter, SidebarRuntimeOptions, SidebarSide, SidebarState };
+
+export *from "./re-exports.js";

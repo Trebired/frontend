@@ -34,13 +34,6 @@
   visibility 0s linear var(#{ns.css-var("transition-fast")});
 }
 
-#{ns.data("popover")}:not(#{ns.data("open", "true")}):not(#{ns.class("show")}) {
-  max-block-size: 0;
-  padding-block: 0;
-  border-block-width: 0;
-  overflow: hidden;
-}
-
 #{ns.class("popover")}#{ns.class("show")},
 
 #{ns.data("popover")}#{ns.data("open", "true")} {
