@@ -1,5 +1,11 @@
 # Changelog
 
+## 26.1.1
+
+- The `prose` utility added in 26.1.0 is withdrawn. A paragraph of running text needs no class of its own: the document body already composes `column` and the `gap-*` utilities, and the reading measure belongs to whatever container the application lays its text out in. `TextDocumentBody` renders a plain `<p>`, so nothing in the package carries an application's typography any more.
+
+- The two pre-paint header rules are guarded by `:not([data-tbf-light])` alone. The second guard said nothing: once the body script marks the header `data-tbf-dark`, the explicit dark rule paints exactly what the pre-paint rules would have.
+
 ## 26.1.0
 
 - The header is right in the first painted frame, on every kind of load. Three answers now agree instead of two fighting: a page opened at the top takes the tone of its first band through one CSS rule, a page reopened where it was left takes the tone it had through a head boot script, and the body script measures the band actually under the bar and marks the header `data-tbf-dark` or `data-tbf-light`, at which point both earlier answers step aside. Verified from screencast frames with a cold cache and the processor at a sixth of its speed: a dark page at the top, a reload scrolled into a light band, a reload with a dark band under the bar, and a soft navigation, each one colour from the first frame.

@@ -303,9 +303,9 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   outline-offset: 0.2rem;
 }
 
-html#{ns.data("header-tone", "dark")} #{ns.data("site-header")}:not(#{ns.data("light")}):not(#{ns.data("dark")}),
+html#{ns.data("header-tone", "dark")} #{ns.data("site-header")}:not(#{ns.data("light")}),
 
-html:not(#{ns.data("header-tone")}) body:has(main > #{ns.data("dark")}:first-child) #{ns.data("site-header")}:not(#{ns.data("light")}):not(#{ns.data("dark")}),
+html:not(#{ns.data("header-tone")}) body:has(main > #{ns.data("dark")}:first-child) #{ns.data("site-header")}:not(#{ns.data("light")}),
 
 #{ns.data("site-header")}#{ns.data("dark")} {
   @include tone.on-dark;

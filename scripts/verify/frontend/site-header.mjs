@@ -39,8 +39,8 @@ async function verifySiteHeaderMarkup(context) {
   );
   assert.match(
     header,
-    /:not\(#\{ns\.data\("light"\)\}\):not\(#\{ns\.data\("dark"\)\}\)/u,
-    "and both step aside once the measurement has spoken",
+    /:not\(#\{ns\.data\("light"\)\}\),/u,
+    "and both step aside once the measurement has set a light tone",
   );
   assert.match(
     header,

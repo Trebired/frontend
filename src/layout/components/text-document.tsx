@@ -30,7 +30,7 @@ function paragraphsOf(body: string[], render: TextDocumentBodyProps["paragraph"]
   return body.map((text, index) => (render
       ? render(text, index)
       : (
-        <p className={frontendClassName("prose")} key={index}>
+        <p key={index}>
         <ProseText softRedirect text={text} />
         </p>
   )));
