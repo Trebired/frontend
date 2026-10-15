@@ -1,10 +1,12 @@
 # Changelog
 
-## 26.1.1
+## 26.1.2
 
 - The `prose` utility added in 26.1.0 is withdrawn. A paragraph of running text needs no class of its own: the document body already composes `column` and the `gap-*` utilities, and the reading measure belongs to whatever container the application lays its text out in. `TextDocumentBody` renders a plain `<p>`, so nothing in the package carries an application's typography any more.
 
 - The two pre-paint header rules are guarded by `:not([data-tbf-light])` alone. The second guard said nothing: once the body script marks the header `data-tbf-dark`, the explicit dark rule paints exactly what the pre-paint rules would have.
+
+- There is no 26.1.1: npm accepted it and never finalized it, so the version number is spent and this release carries its changes.
 
 ## 26.1.0
 
