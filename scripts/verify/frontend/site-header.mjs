@@ -27,15 +27,20 @@ async function verifySiteHeaderMarkup(context) {
     !header.includes('ns.css-var("glass-bg")'),
     "the bar and its menu are opaque rather than glass, so the navigation is readable at every scroll position",
   );
-  assert.doesNotMatch(
+  assert.match(
     header,
-    /body:has\(main/u,
-    "the bar has one appearance of its own and does not read the page it sits over",
+    /html:not\(#\{ns\.data\("header-tone"\)\}\) body:has\(main > #\{ns\.data\("dark"\)\}:first-child\)/u,
+    "a page opened at the top gets its tone from the first band, in CSS, before anything runs",
   );
-  assert.doesNotMatch(
+  assert.match(
     header,
-    /#\{ns\.data\("site-header-live"\)\}/u,
-    "so there is no pre-hydration rule for a runtime measurement to take over from",
+    /html#\{ns\.data\("header-tone", "dark"\)\}/u,
+    "a page reopened where it was left gets the tone it had, from the boot script",
+  );
+  assert.match(
+    header,
+    /:not\(#\{ns\.data\("light"\)\}\):not\(#\{ns\.data\("dark"\)\}\)/u,
+    "and both step aside once the measurement has spoken",
   );
   assert.match(
     header,

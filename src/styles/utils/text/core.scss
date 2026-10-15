@@ -9,6 +9,11 @@
   max-width: 100% !important;
 }
 
+#{ns.class("prose")} {
+  max-width: var(#{ns.css-var("prose-measure")}, 62ch);
+  line-height: var(#{ns.css-var("prose-line-height")}, 1.6);
+}
+
 #{ns.class("text-muted")} {
   color: var(#{ns.css-var("text-muted")}, #000);
 }

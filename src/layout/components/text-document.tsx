@@ -29,7 +29,11 @@ function partsOf(section: TextDocumentSection): TextDocumentPart[] {
 function paragraphsOf(body: string[], render: TextDocumentBodyProps["paragraph"]) {
   return body.map((text, index) => (render
       ? render(text, index)
-      : <p key={index}><ProseText text={text} /></p>));
+      : (
+        <p className={frontendClassName("prose")} key={index}>
+        <ProseText softRedirect text={text} />
+        </p>
+  )));
 }
 
 function ProsePart({ part, render, standalone }: {

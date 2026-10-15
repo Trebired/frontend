@@ -1,5 +1,11 @@
 # Changelog
 
+## 26.1.0
+
+- The header is right in the first painted frame, on every kind of load. Three answers now agree instead of two fighting: a page opened at the top takes the tone of its first band through one CSS rule, a page reopened where it was left takes the tone it had through a head boot script, and the body script measures the band actually under the bar and marks the header `data-tbf-dark` or `data-tbf-light`, at which point both earlier answers step aside. Verified from screencast frames with a cold cache and the processor at a sixth of its speed: a dark page at the top, a reload scrolled into a light band, a reload with a dark band under the bar, and a soft navigation, each one colour from the first frame.
+
+- `prose` joins the text utilities: the measure and the line height a paragraph of running text needs, with `--tbf-prose-measure` and `--tbf-prose-line-height` behind them. `TextDocumentBody` renders its paragraphs with it, so an application stops carrying a class of its own for the same thing.
+
 ## 26.0.1
 
 - The text document stylesheet ships again. It was written but never registered in the layout styles, so a document rendered with no spacing at all: headings sat on their paragraphs and chapters ran together.
