@@ -62,6 +62,8 @@
   #{ns.css-var("gap-sm")}: var(--space-sm, 0.75rem);
   #{ns.css-var("gap-md")}: var(--space-md, 1.5rem);
   #{ns.css-var("gap-lg")}: var(--space-lg, 2.5rem);
+  #{ns.css-var("gap-xl")}: var(--space-xl, 3rem);
+  #{ns.css-var("gap-xl2")}: var(--space-xl2, 4rem);
   #{ns.css-var("canvas-bg")}: var(--dot-grid);
   #{ns.css-var("z-layer")}: var(--z-layer-root, 1000);
   #{ns.css-var("z-bottom-bar")}: var(--z-bottom-bar, 900);

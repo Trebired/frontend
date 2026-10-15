@@ -19,6 +19,14 @@
   gap: var(#{ns.css-var("gap-lg")});
 }
 
+#{ns.class("gap-xl")} {
+  gap: var(#{ns.css-var("gap-xl")});
+}
+
+#{ns.class("gap-xl2")} {
+  gap: var(#{ns.css-var("gap-xl2")});
+}
+
 #{ns.class("mt-xs")} {
   margin-top: var(#{ns.css-var("gap-xs")});
 }

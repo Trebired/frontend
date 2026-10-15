@@ -1,5 +1,13 @@
 # Changelog
 
+## 26.0.1
+
+- The text document stylesheet ships again. It was written but never registered in the layout styles, so a document rendered with no spacing at all: headings sat on their paragraphs and chapters ran together.
+
+- The document body is built from the package's own utilities rather than rules of its own: `column` with `gap-xl2` between chapters, `gap-lg` inside one, `gap-xl` between parts and `gap-sm` between paragraphs. Only what a utility cannot say stays in the stylesheet, which is the question row, its mark and the rotation when it opens.
+
+- `gap-xl` and `gap-xl2` join the spacing utilities, with the matching `--tbf-gap-xl` and `--tbf-gap-xl2` tokens, so a consuming application never has to write a gap of its own for the two sizes above `lg`.
+
 ## 26.0.0
 
 **Breaking:** the public surface is the API products use, and nothing else. Every entry now lists what it exports instead of re-exporting whole folders: 1559 runtime exports became 692, of which 671 are reached by a Trebired product or by this package's own verification. Types are unchanged, since each list is followed by a type re-export of the same module. If something an application needs is missing, it was not referenced by any product when the lists were drawn, and it goes back by name.

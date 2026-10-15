@@ -38,7 +38,7 @@ function ProsePart({ part, render, standalone }: {
     standalone: boolean;
 }) {
   return (
-    <article className={frontendElementClass(block, "part")}>
+    <article className={classNames(frontendClassName("column"), frontendClassName("gap-sm"))}>
     {standalone ? null : <h3>{part.heading}</h3>}
     {paragraphsOf(part.body, render)}
     </article>
@@ -75,14 +75,17 @@ function Chapter({ mode, render, section }: {
   const standalone = !section.parts?.length;
 
   return (
-    <section className={frontendElementClass(block, "chapter")} id={section.id}>
+    <section
+    className={classNames(frontendClassName("column"), frontendClassName("gap-lg"))}
+    id={section.id}
+    >
     <h2>{section.heading}</h2>
     {mode === "disclosure" && !standalone ? (
         <HairlinePanel as="ul" className={frontendElementClass(block, "list")} min="100%">
         {parts.map((part) => <DisclosurePart key={part.id} part={part} render={render} />)}
         </HairlinePanel>
       ) : (
-        <div className={frontendElementClass(block, "parts")}>
+        <div className={classNames(frontendClassName("column"), frontendClassName("gap-xl"))}>
         {parts.map((part) => <ProsePart key={part.id} part={part} render={render} standalone={standalone} />)}
         </div>
     )}
@@ -99,7 +102,7 @@ function TextDocumentBody(props: TextDocumentBodyProps) {
 
   return (
     <PageOutlineLayout items={items} label={label}>
-    <div className={classNames(frontendClassName(block), className)}>
+    <div className={classNames(frontendClassName(block), frontendClassName("column"), frontendClassName("gap-xl2"), className)}>
     {document.sections.map((section) => (
           <Chapter key={section.id} mode={document.parts} render={paragraph} section={section} />
     ))}
