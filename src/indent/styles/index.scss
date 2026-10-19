@@ -14,3 +14,9 @@
     var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
   );
 }
+
+$centered: "#{ns.class("text-center")}, #{ns.class("center")}, #{ns.class("error-page__body")}";
+
+:where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *)) {
+  padding-inline-start: token("flow", 0px);
+}

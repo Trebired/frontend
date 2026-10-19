@@ -342,6 +342,10 @@ Static icon mode uses `registerStaticIcons()` in the browser. Missing cached ico
 
 `bindFrontendRuntime` binds graphs, logs, code blocks, editors, fullscreen targets, source-language breakdowns and live cards and lists only when a bound root carries their markup, and imports each system the first time it does. Each system is its own chunk: a page without a graph never downloads Chart.js, and a page without logs never downloads the log viewer or the socket client. Binding these systems is asynchronous; everything else binds synchronously as before.
 
+### Indented Flow
+
+`typography.indent.flow` indents paragraphs and quotes that follow a heading among the same siblings, by the given step; it is zero by default. Set it once in the components config and every heading in the application carries its text one step in, without a class on any component. Structure decides what moves: text that is a sibling after a heading moves, everything else stays on the heading's edge.
+
 ### Island Preparation
 
 `mountLiveIsland({ prepare })` awaits `prepare` before the island renders or hydrates, on the first mount and on every remount after a soft navigation. It receives `url`, the address the island is about to render: during a soft navigation that is the target, which the browser history does not show until the new content is in place, so read the route from `url` rather than from `location`. Load what the island renders there, such as the page module of the current route, and the server markup hydrates against it without a mismatch.

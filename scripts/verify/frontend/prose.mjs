@@ -165,6 +165,10 @@ async function verifyIndent({ importDist, rootDir }) {
   assert.match(indent, /"typography-indent-"/u, "the indent is its own system with its own token group");
   assert.match(indent, /padding-inline-start: token\("size"/u, "its step is a token");
   assert.match(indent, /border-inline-start: token\(\n\s*"border"/u, "and its rule variant draws the border from one too");
+  const flow = ":where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *))";
+  assert.ok(indent.includes(`${flow} {`), "text that follows a heading steps in, except where it is centered");
+  assert.ok(indent.includes('padding-inline-start: token("flow", 0px);'), "by the flow token, which is zero until an application sets it");
+  assert.match(indent, /\$centered: .*text-center.*error-page__body/u, "centered text is never indented, so it stays centered");
 
   const document = await fs.readFile(path.join(rootDir, "dist", "document", "styles", "index.scss"), "utf8");
   assert.equal(

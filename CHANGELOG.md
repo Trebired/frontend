@@ -1,5 +1,9 @@
 # Changelog
 
+## 28.1.0
+
+- The indent reaches past documents. `typography.indent.flow` steps in every paragraph and quote that follows a heading among the same siblings, so a band, a card or a hero indents its text under its title the way a document section does without wearing a class. It is zero by default, which leaves every existing page as it was; set it to the indent step, `token.gap("md")`, to turn it on. Only text moves: a grid, a figure, a button or a wrapper after a heading stays on the heading's edge, a document, whose body already wears `tbf-indent`, is not indented twice, and centered text (`tbf-text-center`, a centered column, the error page) is left alone so it stays centered.
+
 ## 28.0.0
 
 **Breaking: a container class is emitted under `tbfm-`.** `containers: { card: … }` now writes `.tbfm-card`, `.tbfm-card__header` and `.tbfm-card--muted`. Two prefixes mark two kinds of ownership: `tbf-` is the package's own and closed to applications, while `tbfm-` is tbf-managed, named and owned by the application and only compiled by the package. A bare `.card` said neither, and sat in the global namespace where anything could collide with it. Container names in config stay bare, and may not start with either prefix.
