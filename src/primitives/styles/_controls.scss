@@ -319,7 +319,10 @@
         #{ns.css-var("ui-btn-variants-chrome-state-hover-bg")},
         color-mix(in srgb, currentColor 8%, transparent)
       );
-      border-color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-border")}, currentColor);
+      border-color: var(
+        #{ns.css-var("ui-btn-variants-chrome-state-hover-border")},
+        color-mix(in srgb, currentColor 42%, transparent)
+      );
       color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-color")}, currentColor);
     }
   }

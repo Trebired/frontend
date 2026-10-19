@@ -165,3 +165,16 @@ export {
   waitForStableGraphModal,
 } from "./advanced/runtime/index.js";
 export type *from "./advanced/runtime/index.js";
+export {
+  GraphPanel,
+  Roadmap,
+} from "./components/index.js";
+export {
+  contributions_graph,
+  cpu_graph,
+  download_graph,
+  gpu_graph,
+  memory_graph,
+  roadmap,
+  upload_graph,
+} from "./advanced/index.js";

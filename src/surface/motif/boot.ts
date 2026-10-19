@@ -1,4 +1,16 @@
-import { motifCalm, motifListen, motifMeasure, motifPaint, motifStart, motifStroke, motifWarp } from "./program.js";
+import {
+  motifCalm,
+  motifListen,
+  motifMeasure,
+  motifNoise2,
+  motifNoiseCorner,
+  motifNoiseGrad,
+  motifNoiseSeed,
+  motifPaint,
+  motifStart,
+  motifStroke,
+  motifWarp,
+} from "./program.js";
 import { A11Y_REDUCE_MOTION_ATTR } from "./../../a11y/attributes.js";
 import { motifEntry } from "./registry.js";
 
@@ -10,7 +22,19 @@ function declare(value: unknown): string {
 }
 
 function motifProgramSource(): string {
-  return [motifWarp, motifStroke, motifPaint, motifMeasure, motifCalm, motifListen, motifStart].map(declare).join("");
+  return [
+    motifNoiseSeed,
+    motifNoiseGrad,
+    motifNoiseCorner,
+    motifNoise2,
+    motifWarp,
+    motifStroke,
+    motifPaint,
+    motifMeasure,
+    motifCalm,
+    motifListen,
+    motifStart,
+  ].map(declare).join("");
 }
 
 function motifData(value: unknown): string {

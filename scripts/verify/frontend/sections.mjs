@@ -33,7 +33,7 @@ export { verifySectionSurfaces };
 
 async function verifyThemeReachesComponents() {
   const tooltip = await fs.readFile(new URL("../../../src/config/default/component-tokens.ts", import.meta.url), "utf8");
-  const tooltipPanel = tooltip.slice(tooltip.indexOf("tooltip: Object.freeze"), tooltip.indexOf("primitives: Object.freeze"));
+  const tooltipPanel = tooltip.slice(tooltip.indexOf("tooltip: Object.freeze"), tooltip.indexOf("primitives:"));
   for (const frozen of ["background:", "border:", "color:", "fontFamily:", "radius:", "shadow:"]) {
     assert.ok(
       !tooltipPanel.includes(frozen),
@@ -41,7 +41,9 @@ async function verifyThemeReachesComponents() {
     );
   }
 
-  const buttonRoot = tooltip.slice(tooltip.indexOf("button: Object.freeze"), tooltip.indexOf("sizes: {", tooltip.indexOf("button: Object.freeze")));
+  const primitives = await fs.readFile(new URL("../../../src/config/default/primitive-tokens.ts", import.meta.url), "utf8");
+  const buttonStart = primitives.indexOf("button: Object.freeze");
+  const buttonRoot = primitives.slice(buttonStart, primitives.indexOf("sizes: {", buttonStart));
   for (const frozen of ["border:", "color:"]) {
     assert.ok(
       !buttonRoot.includes(frozen),

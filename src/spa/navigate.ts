@@ -19,6 +19,7 @@ import { syncShell } from "./shell.js";
 import {
   beginNavigation,
   emitPageChange,
+  emitPendingPage,
   retargetNavigation,
   type SpaHistoryMode,
   type SpaNavigation,
@@ -269,6 +270,7 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
     return fallbackNavigate(targetUrl, historyMode !== "none");
   } finally {
     navigationInflight = false;
+    emitPendingPage("");
   }
 }
 

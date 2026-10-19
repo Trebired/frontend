@@ -49,10 +49,12 @@ function queryAll<T extends Element=Element>(
 ): T[] {
   const scope = bindRoot(root);
   const items: T[] = [];
-  if (scope instanceof Element && scope.matches(selector)) {
+  if (scope instanceof Element && scope.matches(selector) && !isInUnhydratedIsland(scope)) {
     items.push(scope as T);
   }
-  scope.querySelectorAll<T>(selector).forEach((node) => items.push(node));
+  scope.querySelectorAll<T>(selector).forEach((node) => {
+      if (!isInUnhydratedIsland(node)) items.push(node);
+  });
   return items;
 }
 

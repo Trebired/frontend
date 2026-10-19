@@ -13,7 +13,7 @@ type SectionsProps = {
 };
 
 function sectionTitle(text: string) {
-  return <p className={frontendClassName("a11y-section-title")}>{text}</p>;
+  return <h5>{text}</h5>;
 }
 
 function motionSection(props: SectionsProps, current: FrontendA11ySettings, localT: (key: string) => string) {

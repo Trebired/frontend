@@ -71,7 +71,7 @@ function SiteHeaderAnchor(
   return (
     <SiteLinkAnchor
     active={isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl)}
-    className={className || frontendElementClass(block, "link")}
+    className={className}
     link={link}
     onNavigate={props.onNavigate}
     plain={props.plain}
@@ -94,7 +94,7 @@ function SiteHeaderNavGroup(props: LinkRenderProps & { link: SiteHeaderLink }) {
     hover
     tabIndex={props.tabIndex}
     >
-    <span className={frontendElementClass(block, "link-label")}>{link.label}</span>
+    <span className={frontendClassName("text-link")}>{link.label}</span>
     </PopoverOpenButton>
     <PopoverPanel id={panelId}>
     {siteLinkChildren(link).map((child, index) => (

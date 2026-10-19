@@ -135,86 +135,14 @@ ul {
   margin: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
-  font-weight: var(#{ns.css-var("heading-font-weight")}, 500);
-  cursor: default;
-}
-
-h1 {
-  font-size: var(#{ns.css-var("h1-font-size")}, 2.25rem);
-}
-
-h2 {
-  font-size: var(#{ns.css-var("h2-font-size")}, 1.8rem);
-}
-
-h3 {
-  font-size: var(#{ns.css-var("h3-font-size")}, 1.55rem);
-}
-
-h4 {
-  font-size: var(#{ns.css-var("h4-font-size")}, 1.35rem);
-}
-
-h5 {
-  font-size: var(#{ns.css-var("h5-font-size")}, 1.15rem);
-}
-
-h6 {
-  font-size: var(#{ns.css-var("h6-font-size")}, 0.95rem);
-}
-
-@media (max-width: 640px) {
-  h1 {
-    font-size: var(
-      #{ns.css-var("h1-font-size-mobile")},
-      var(#{ns.css-var("h1-font-size")}, 2rem)
-    );
-  }
-
-  h2 {
-    font-size: var(
-      #{ns.css-var("h2-font-size-mobile")},
-      var(#{ns.css-var("h2-font-size")}, 1.65rem)
-    );
-  }
-
-  h3 {
-    font-size: var(
-      #{ns.css-var("h3-font-size-mobile")},
-      var(#{ns.css-var("h3-font-size")}, 1.45rem)
-    );
-  }
-
-  h4 {
-    font-size: var(
-      #{ns.css-var("h4-font-size-mobile")},
-      var(#{ns.css-var("h4-font-size")}, 1.25rem)
-    );
-  }
-}
-
 p {
-  font-size: 1rem;
+  font-size: var(--text-size-body, 1rem);
   font-weight: 400;
   cursor: default;
 }
 
 :where(a[href], button, [role="button"], #{ns.data("interactive", "true")}) :is(h1, h2, h3, h4, h5, h6, p) {
   cursor: inherit;
-}
-
-@media (max-width: 769px) {
-  p {
-    font-size: 0.9375rem;
-  }
 }
 
 span {
@@ -423,9 +351,17 @@ ul {
   }
 }
 
+:root {
+  #{ns.css-var("anchor-top")}: max(
+    var(#{ns.css-var("layout-top-offset")}, 0px),
+    var(#{ns.css-var("shell-header-height")}, 0px),
+    var(#{ns.css-var("header-height")}, 0px)
+  );
+}
+
 [id] {
   scroll-margin-top: var(
     #{ns.css-var("anchor-offset")},
-    var(#{ns.css-var("layout-top-offset")}, var(#{ns.css-var("header-height")}, 0px))
+    calc(var(#{ns.css-var("anchor-top")}) + var(#{ns.css-var("anchor-gap")}, var(#{ns.css-var("gap-md")}, 24px)))
   );
 }

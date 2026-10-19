@@ -13,7 +13,12 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
-    height: var(#{ns.css-var("ui-tabs-root-height")}, 34px);
+    display: inline-flex;
+    align-items: center;
+    min-height: max(
+      var(#{ns.css-var("ui-tabs-root-height")}, 34px),
+      var(#{ns.css-var("target-min-dense")}, 1.5rem)
+    );
     padding: 0 var(#{ns.css-var("ui-tabs-root-px")}, 14px);
     border: var(
       #{ns.css-var("ui-tabs-root-border")},
@@ -29,7 +34,7 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
     font-family: var(#{ns.css-var("ui-tabs-root-font-family")}, var(#{ns.css-var("font-sans")}, "Inter", sans-serif));
     font-size: var(#{ns.css-var("ui-tabs-root-font-size")}, 14px);
     font-weight: var(#{ns.css-var("ui-tabs-root-font-weight")}, inherit);
-    line-height: calc(var(#{ns.css-var("ui-tabs-root-height")}, 34px) - (var(#{ns.css-var("border-width")}, 1px) * 2));
+    line-height: 1.2;
     text-align: left;
 
     &:hover {
@@ -148,9 +153,9 @@ $tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
   #{ns.class("tabs")} #{ns.class("tab")} {
     flex: 1 1 calc(50% - 8px);
-    height: var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px);
+    min-height: var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px);
     font-size: var(#{ns.css-var("ui-tabs-resp-mobile-font-size")}, 13px);
-    line-height: calc(var(#{ns.css-var("ui-tabs-resp-mobile-height")}, 36px) - (var(#{ns.css-var("border-width")}, 1px) * 2));
+    line-height: 1.2;
   }
 }
 

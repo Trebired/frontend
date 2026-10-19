@@ -107,7 +107,6 @@ async function verifyReactEntrypoint(importDist) {
     "UploadField",
     "Disclosure",
     "Dropdown",
-    "GraphPanel",
     "Tabs",
     "TextLink",
     "Search",
@@ -120,6 +119,8 @@ async function verifyReactEntrypoint(importDist) {
   for (const symbol of symbols) {
     assert.equal(typeof react[symbol], "function", `react entry missing ${symbol}`);
   }
+  assert.equal(react.GraphPanel, undefined, "the react entry leaves graphs to @trebired/frontend/graph");
+  assert.equal(typeof(await importDist("graph")).GraphPanel, "function", "graph entry missing GraphPanel");
 }
 
 async function verifyAdvancedTabsSsr(importDist) {
@@ -291,6 +292,7 @@ async function verifyRenderedSeoDocument(importDist) {
 
 async function verifyRenderedGenericPrimitives(importDist) {
   const react = await importDist("react");
+  const graph = await importDist("graph");
   const html = [
     renderToStaticMarkup(h(react.AppHeader, { brand: "App", nav: "Nav" })),
     renderToStaticMarkup(h(react.Breadcrumb, null, h(react.BreadcrumbItem, { current: true }, "Current"))),
@@ -308,7 +310,7 @@ async function verifyRenderedGenericPrimitives(importDist) {
     )),
     renderToStaticMarkup(h(react.Search, null, h(react.SearchInput, null), h(react.SearchItem, { text: "alpha" }, "Alpha"))),
     renderToStaticMarkup(h(react.StatusField, { url: "/validate" }, h(react.StatusMessage, null))),
-    renderToStaticMarkup(h(react.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),
+    renderToStaticMarkup(h(graph.GraphPanel, { config: { series: [{ key: "a", points: [{ x: 1, y: 2 }] }] } })),
     renderToStaticMarkup(h(react.TextLink, { href: "/docs" }, "Docs")),
     renderToStaticMarkup(h(react.SidebarLinkList, { items: [{ href: "/", label: "Home" }] })),
   ].join("");

@@ -1,6 +1,6 @@
 import { clampNumber, isProgrammaticFocus, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
-import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const TOOLTIP_BASE_Z_INDEX = 1100;
 const TOOLTIP_LAYER_ID = `${FRONTEND_PREFIX}_tooltip`;
@@ -47,8 +47,8 @@ function allowsTooltip(trigger: HTMLElement) {
 
 function computeTooltipText(trigger: HTMLElement | null) {
   if (!trigger) return "";
-  if (tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
   const configured = String(trigger.getAttribute(frontendDataAttr("tooltip")) || "").trim();
+  if (!configured && tooltipTexts.has(trigger)) return String(tooltipTexts.get(trigger) || "").trim();
   const title = String(trigger.getAttribute("title") || "").trim();
   const status = trigger.hasAttribute(frontendDataAttr("status-icon"))
   ? String(trigger.getAttribute("aria-label") || "").trim()
@@ -106,11 +106,11 @@ function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
   const top = fitsTop
   ? anchor.top - gap - tip.height
   : Math.min(anchor.bottom + gap, vh - tip.height - gutter);
-  const left = clampNumber(anchor.left + anchor.width / 2 - tip.width / 2, gutter, vw - tip.width - gutter);
+  const centre = anchor.left + anchor.width / 2;
+  const left = clampNumber(centre - tip.width / 2, gutter, Math.max(gutter, vw - tip.width - gutter));
   layer.style.top = `${Math.max(gutter, top)}px`;
   layer.style.left = `${left}px`;
   layer.setAttribute(frontendDataAttr("placement"), fitsTop ? "top" : "bottom");
-  layer.style.setProperty(frontendCssVar("arrow-x"), `${anchor.left + anchor.width / 2 - left}px`);
 }
 
 function showTooltip(trigger: HTMLElement) {
@@ -190,11 +190,13 @@ function installTooltipListeners() {
   document.addEventListener("visibilitychange", () => {
       if (document.visibilityState !== "visible") hideTooltip();
   });
-  window.addEventListener("resize", () => {
-      if (tooltipState.shown && tooltipState.openTrigger && tooltipState.layer) {
-        placeTooltip(tooltipState.openTrigger, tooltipState.layer);
-      }
-  });
+  const replaceTooltip = () => {
+    if (tooltipState.shown && tooltipState.openTrigger && tooltipState.layer) {
+      placeTooltip(tooltipState.openTrigger, tooltipState.layer);
+    }
+  };
+  window.addEventListener("resize", replaceTooltip);
+  window.addEventListener("scroll", replaceTooltip, { capture: true, passive: true });
 }
 
 function setTooltipText(trigger: HTMLElement | null, text: string) {

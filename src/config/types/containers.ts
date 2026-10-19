@@ -2,10 +2,13 @@ type FrontendContainerStyle = Record<string, string>;
 
 type FrontendContainerDeclarations = Record<string, string|number>;
 
+type FrontendContainerTone = "dark" | "light" | null;
+
 type FrontendContainerBlock = {
   at?: Record<string, FrontendContainerDeclarations>;
   on?: Record<string, FrontendContainerDeclarations>;
   style?: FrontendContainerDeclarations;
+  tone?: Exclude<FrontendContainerTone, null>;
 };
 
 type FrontendContainer = FrontendContainerBlock& {
@@ -20,6 +23,7 @@ type FrontendContainerDefinition = {
   on: Record<string, FrontendContainerStyle>;
   parts: Record<string, FrontendContainerDefinition>;
   style: FrontendContainerStyle;
+  tone: FrontendContainerTone;
   variants: Record<string, FrontendContainerDefinition>;
 };
 
@@ -27,6 +31,7 @@ type NormalizedFrontendContainers = Record<string, FrontendContainerDefinition>;
 
 export type {
   FrontendContainer,
+  FrontendContainerTone,
   FrontendContainerBlock,
   FrontendContainerDeclarations,
   FrontendContainerDefinition,

@@ -5,6 +5,7 @@ import {
   DEFAULT_PADDING_SCALE,
   DEFAULT_RADIUS_SCALE,
   DEFAULT_SPACING_SCALE,
+  DEFAULT_TEXT_BODY,
   DEFAULT_TEXT_SIZE_SCALE,
   DEFAULT_WIDTH_SCALE,
   DEFAULT_Z_INDEX_SCALE,
@@ -67,15 +68,25 @@ function normalizeZIndexScale(value: unknown): NormalizedFrontendZIndexScaleConf
   };
 }
 
+function normalizeTextBody(value: unknown, steps: FrontendScaleSteps): string {
+  const key = value === undefined || value === "" ? DEFAULT_TEXT_BODY : String(value).trim();
+  if (!Object.prototype.hasOwnProperty.call(steps, key)) {
+    throw invalidConfig("scales.textBody must name a step declared in scales.textSize");
+  }
+  return key;
+}
+
 function normalizeScalesConfig(value: unknown): NormalizedFrontendScalesConfig {
   const source = value === undefined ? {} : assertPlainObject(value, "scales");
+  const textSize = normalizeScaleSteps(source.textSize, "scales.textSize", DEFAULT_TEXT_SIZE_SCALE);
   return {
     height: normalizeScaleSteps(source.height, "scales.height", DEFAULT_HEIGHT_SCALE),
     lineHeight: normalizeScaleSteps(source.lineHeight, "scales.lineHeight", DEFAULT_LINE_HEIGHT_SCALE),
     padding: normalizeScaleSteps(source.padding, "scales.padding", DEFAULT_PADDING_SCALE),
     radius: normalizeScaleSteps(source.radius, "scales.radius", DEFAULT_RADIUS_SCALE),
     spacing: normalizeScaleSteps(source.spacing, "scales.spacing", DEFAULT_SPACING_SCALE),
-    textSize: normalizeScaleSteps(source.textSize, "scales.textSize", DEFAULT_TEXT_SIZE_SCALE),
+    textBody: normalizeTextBody(source.textBody, textSize),
+    textSize,
     width: normalizeScaleSteps(source.width, "scales.width", DEFAULT_WIDTH_SCALE),
     zIndex: normalizeZIndexScale(source.zIndex),
   };

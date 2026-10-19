@@ -9,12 +9,13 @@ type SiteLink = {
   key?: string;
   label: ReactNode;
   links?: SiteLink[];
+  node?: ReactNode;
   rel?: string;
   softRedirect?: boolean;
   target?: string;
 };
 
-const linkBlock = "site-link";
+const linkBlock = "text-link";
 
 function sitePath(value: unknown): string {
   const raw = String(value || "").trim();
@@ -96,6 +97,7 @@ type SiteLinkAnchorProps = {
 
 function SiteLinkAnchor(props: SiteLinkAnchorProps) {
   const { active = false, className, link, plain = false } = props;
+  if (link.node !== undefined) return <>{link.node}</>;
   const base = plain ? "" : frontendClassName(linkBlock);
   const variant = className || "";
   return (
@@ -114,7 +116,7 @@ function SiteLinkAnchor(props: SiteLinkAnchorProps) {
     target={link.target}
     {...frontendDataAttrs({ "soft-redirect": link.softRedirect ?? props.softRedirect ? "" : undefined })}
     >
-    {plain ? link.label : <span className={frontendClassName("site-link-label")}>{link.label}</span>}
+    {link.label}
     </a>
   );
 }

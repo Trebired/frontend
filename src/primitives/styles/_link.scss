@@ -1,0 +1,106 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("ui-link-" + $name)}, $fallback);
+}
+
+$radius: token("root-underline-radius", 0.3rem);
+$motion: token("motion-duration", 0.3s) token("motion-easing", ease);
+
+#{ns.class("text-link")} {
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  color: token(
+    "root-color",
+    var(#{ns.css-var("text-muted")}, color-mix(in srgb, currentColor 78%, transparent))
+  );
+  font-weight: token("root-font-weight", inherit);
+  letter-spacing: token("root-letter-spacing", normal);
+  text-transform: token("root-text-transform", none);
+  text-decoration-line: token("root-decoration-line", none);
+  text-decoration-color: token("root-decoration-color", currentColor);
+  text-decoration-style: token("root-decoration-style", solid);
+  text-decoration-thickness: token("root-decoration-thickness", 1px);
+  text-underline-offset: token("root-decoration-underline-offset", 0.1875rem);
+  transition: color $motion, text-decoration-color $motion;
+}
+
+#{ns.class("text-link")}::after {
+  position: absolute;
+  inset-inline: 0;
+  bottom: token("root-underline-offset", -0.35rem);
+  height: $radius;
+  border-block-end-style: solid;
+  border-block-end-width: token("root-underline-height", 1px);
+  border-block-end-color: token("root-underline-color", currentColor);
+  border-end-end-radius: $radius;
+  border-end-start-radius: $radius;
+  clip-path: inset(0 100% 0 0);
+  content: "";
+  transition: clip-path $motion;
+}
+
+#{ns.class("text-link")}:hover,
+
+#{ns.class("text-link")}:focus-visible,
+
+#{ns.class("text-link")}[aria-current="page"],
+
+#{ns.class("text-link")}#{ns.class("text-link--active")} {
+  color: token("state-hover-color", var(#{ns.css-var("text")}, currentColor));
+  text-decoration-line: token("state-hover-decoration-line", token("root-decoration-line", none));
+  text-decoration-color: token("state-hover-decoration-color", currentColor);
+  text-decoration-style: token("state-hover-decoration-style", token("root-decoration-style", solid));
+}
+
+#{ns.class("text-link")}:hover::after,
+
+#{ns.class("text-link")}:focus-visible::after,
+
+#{ns.class("text-link")}[aria-current="page"]::after,
+
+#{ns.class("text-link")}#{ns.class("text-link--active")}::after {
+  clip-path: inset(0 0 0 0);
+}
+
+#{ns.class("text-link")}[aria-current="page"],
+
+#{ns.class("text-link")}#{ns.class("text-link--active")} {
+  color: token("state-active-color", token("state-hover-color", var(#{ns.css-var("text")}, currentColor)));
+}
+
+#{ns.class("text-link")}[aria-current="page"]::after,
+
+#{ns.class("text-link")}#{ns.class("text-link--active")}::after {
+  border-block-end-color: token("state-active-underline-color", token("root-underline-color", currentColor));
+}
+
+:where(a, button, [role="button"]):hover > #{ns.class("text-link")},
+
+:where(a, button, [role="button"]):focus-visible > #{ns.class("text-link")},
+
+:where(a, button, [role="button"])[aria-expanded="true"] > #{ns.class("text-link")},
+
+:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")} {
+  color: token("state-hover-color", var(#{ns.css-var("text")}, currentColor));
+}
+
+:where(a, button, [role="button"]):hover > #{ns.class("text-link")}::after,
+
+:where(a, button, [role="button"]):focus-visible > #{ns.class("text-link")}::after,
+
+:where(a, button, [role="button"])[aria-expanded="true"] > #{ns.class("text-link")}::after,
+
+:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")}::after {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{ns.class("text-link")},
+
+  #{ns.class("text-link")}::after {
+    transition: none;
+  }
+}

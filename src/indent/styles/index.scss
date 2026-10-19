@@ -1,0 +1,16 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("typography-indent-" + $name)}, $fallback);
+}
+
+#{ns.class("indent")} {
+  padding-inline-start: token("size", var(#{ns.css-var("gap-md")}, 24px));
+}
+
+#{ns.class("indent")}#{ns.class("indent--rule")} {
+  border-inline-start: token(
+    "border",
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
+  );
+}

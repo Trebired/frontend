@@ -31,73 +31,14 @@
   visibility 0s linear var(#{ns.css-var("overlay-tooltip-motion-duration")}, 170ms);
 }
 
-#{ns.class("tooltip")}::before,
-
-#{ns.class("tooltip")}::after {
-  #{ns.css-var("overlay-tooltip-arrow-size-current")}: var(#{ns.css-var("overlay-tooltip-arrow-size")}, 8px);
-  #{ns.css-var("overlay-tooltip-arrow-border-width-current")}: var(
-    #{ns.css-var("overlay-tooltip-arrow-border-width")},
-    var(#{ns.css-var("border-width")}, 1px)
-  );
-  #{ns.css-var("overlay-tooltip-arrow-border-current")}: var(#{ns.css-var("overlay-tooltip-arrow-border")}, var(#{ns.css-var("border")}, #000));
-  #{ns.css-var("overlay-tooltip-arrow-bg-current")}: var(
-    #{ns.css-var("overlay-tooltip-arrow-bg")},
-    var(#{ns.css-var("overlay-tooltip-panel-bg")}, var(#{ns.css-var("surface")}, #fff))
-  );
-
-  content: "";
-  position: absolute;
-  left: clamp(
-    var(#{ns.css-var("tooltip-arrow-inset")}, 10px),
-    var(#{ns.css-var("arrow-x")}, 50%),
-    calc(100% - var(#{ns.css-var("tooltip-arrow-inset")}, 10px))
-  );
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-color: transparent;
-  background: transparent;
-  transform: translateX(-50%);
-}
-
 #{ns.class("tooltip")}#{ns.data("placement", "top")} {
   #{ns.css-var("tooltip-hidden-y")}: 4px;
   #{ns.css-var("tooltip-transform-origin")}: center bottom;
 }
 
-#{ns.class("tooltip")}#{ns.data("placement", "top")}::before {
-  bottom: calc(0px - var(#{ns.css-var("overlay-tooltip-arrow-size-current")}));
-  border-width: var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) 0;
-  border-top-color: var(#{ns.css-var("overlay-tooltip-arrow-border-current")});
-}
-
-#{ns.class("tooltip")}#{ns.data("placement", "top")}::after {
-  bottom: calc(var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-size-current")}));
-  border-width:
-  calc(var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}))
-  calc(var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}))
-  0;
-  border-top-color: var(#{ns.css-var("overlay-tooltip-arrow-bg-current")});
-}
-
 #{ns.class("tooltip")}#{ns.data("placement", "bottom")} {
   #{ns.css-var("tooltip-hidden-y")}: -4px;
   #{ns.css-var("tooltip-transform-origin")}: center top;
-}
-
-#{ns.class("tooltip")}#{ns.data("placement", "bottom")}::before {
-  top: calc(0px - var(#{ns.css-var("overlay-tooltip-arrow-size-current")}));
-  border-width: 0 var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) var(#{ns.css-var("overlay-tooltip-arrow-size-current")});
-  border-bottom-color: var(#{ns.css-var("overlay-tooltip-arrow-border-current")});
-}
-
-#{ns.class("tooltip")}#{ns.data("placement", "bottom")}::after {
-  top: calc(var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-size-current")}));
-  border-width:
-  0
-  calc(var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}))
-  calc(var(#{ns.css-var("overlay-tooltip-arrow-size-current")}) - var(#{ns.css-var("overlay-tooltip-arrow-border-width-current")}));
-  border-bottom-color: var(#{ns.css-var("overlay-tooltip-arrow-bg-current")});
 }
 
 #{ns.class("tooltip")}#{ns.data("open", "true")} {

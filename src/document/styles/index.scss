@@ -1,17 +1,11 @@
 @use "@trebired/bundler/namespace" as ns;
 
 @function token($name, $fallback) {
-  @return var(#{ns.css-var("shell-text-document-" + $name)}, $fallback);
+  @return var(#{ns.css-var("shell-document-" + $name)}, $fallback);
 }
 
 #{ns.element-class("text-document", "item")} {
   #{ns.css-var("surf-hairline-cell-gap")}: 0;
-}
-
-#{ns.element-class("text-document", "question")} {
-  font-size: token("question-font-size", 1.125rem);
-  letter-spacing: 0;
-  text-transform: none;
 }
 
 #{ns.element-class("text-document", "trigger")} {
@@ -25,7 +19,9 @@
   color: inherit;
   cursor: pointer;
   font: inherit;
+  letter-spacing: inherit;
   text-align: start;
+  text-transform: inherit;
 }
 
 #{ns.element-class("text-document", "mark")} {

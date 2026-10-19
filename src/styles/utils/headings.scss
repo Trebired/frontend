@@ -1,0 +1,75 @@
+@use "@trebired/bundler/namespace" as ns;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: var(
+    #{ns.css-var("heading-font-family")},
+    var(#{ns.css-var("font-sans")}, "Inter", sans-serif)
+  );
+  font-weight: var(#{ns.css-var("heading-font-weight")}, 500);
+  letter-spacing: var(#{ns.css-var("heading-letter-spacing")}, normal);
+  line-height: var(#{ns.css-var("heading-line-h")}, normal);
+  text-transform: var(#{ns.css-var("heading-text-transform")}, none);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  cursor: default;
+}
+
+h1 {
+  font-size: var(#{ns.css-var("h1-font-size")}, 2.25rem);
+}
+
+h2 {
+  font-size: var(#{ns.css-var("h2-font-size")}, 1.8rem);
+}
+
+h3 {
+  font-size: var(#{ns.css-var("h3-font-size")}, 1.55rem);
+}
+
+h4 {
+  font-size: var(#{ns.css-var("h4-font-size")}, 1.35rem);
+}
+
+h5 {
+  font-size: var(#{ns.css-var("h5-font-size")}, 1.15rem);
+}
+
+h6 {
+  font-size: var(#{ns.css-var("h6-font-size")}, 0.95rem);
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: var(
+      #{ns.css-var("h1-font-size-mobile")},
+      var(#{ns.css-var("h1-font-size")}, 2rem)
+    );
+  }
+
+  h2 {
+    font-size: var(
+      #{ns.css-var("h2-font-size-mobile")},
+      var(#{ns.css-var("h2-font-size")}, 1.65rem)
+    );
+  }
+
+  h3 {
+    font-size: var(
+      #{ns.css-var("h3-font-size-mobile")},
+      var(#{ns.css-var("h3-font-size")}, 1.45rem)
+    );
+  }
+
+  h4 {
+    font-size: var(
+      #{ns.css-var("h4-font-size-mobile")},
+      var(#{ns.css-var("h4-font-size")}, 1.25rem)
+    );
+  }
+}

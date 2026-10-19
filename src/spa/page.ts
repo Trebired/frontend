@@ -14,6 +14,8 @@ type SpaNavigation = SpaPage& {
 };
 
 const PAGE_CHANGE_EVENT = frontendEventName("page-change");
+const PAGE_PENDING_EVENT = frontendEventName("page-pending");
+let pendingUrl = "";
 
 let activePage = initialPage();
 
@@ -51,10 +53,21 @@ function currentPage(): SpaPage {
   return { ...activePage };
 }
 
+function emitPendingPage(url: string) {
+  if (typeof document === "undefined") return;
+  pendingUrl = url;
+  document.dispatchEvent(new CustomEvent(PAGE_PENDING_EVENT, { detail: { url } }));
+}
+
+function pendingPage(): string {
+  return pendingUrl;
+}
+
 function beginNavigation(url: string, historyMode: SpaHistoryMode): SpaNavigation {
   const from = currentPage();
   const next = pageFromUrl(url, from.navigationId + 1);
   activePage = next;
+  emitPendingPage(url);
   return { ...next, from, historyMode };
 }
 
@@ -69,6 +82,7 @@ function isCurrentPage(navigationId: number): boolean {
 }
 
 function emitPageChange(navigation: SpaNavigation) {
+  emitPendingPage("");
   activePage = {
     navigationId: navigation.navigationId,
     pageId: navigation.pageId,
@@ -93,6 +107,9 @@ export {
   PAGE_CHANGE_EVENT,
   beginNavigation,
   currentPage,
+  emitPendingPage,
+  PAGE_PENDING_EVENT,
+  pendingPage,
   emitPageChange,
   isCurrentPage,
   onPageChange,

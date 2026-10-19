@@ -16,6 +16,9 @@ type LiveIslandMountProps = {
   children?: ReactNode;
   rootAttr?: string;
   rootId?: string;
+};
+
+type LiveIslandStateProps = {
   state?: unknown;
   stateId: string;
 };
@@ -49,20 +52,22 @@ function LiveRefreshButton(props: LiveRefreshButtonProps) {
   );
 }
 
+function LiveIslandState(props: LiveIslandStateProps) {
+  const state = props.state && typeof props.state === "object" ? props.state : {};
+  return (
+    <script
+    type="application/json"
+    id={String(props.stateId || "").trim()}
+    dangerouslySetInnerHTML={{ __html: jsonScript(state) }}
+    />
+  );
+}
+
 function LiveIslandMount(props: LiveIslandMountProps) {
   const rootAttr =
   String(props.rootAttr || frontendDataAttr("live-island-root")).trim() ||
     frontendDataAttr("live-island-root");
-  const stateId = String(props.stateId || "").trim();
-  const state =
-  props.state && typeof props.state === "object" ? props.state : {};
   return (
-    <>
-    <script
-    type="application/json"
-    id={stateId}
-    dangerouslySetInnerHTML={{ __html: jsonScript(state) }}
-    />
     <div
     id={String(props.rootId || "").trim() || undefined}
     {...{ [rootAttr]: "" }}
@@ -71,7 +76,6 @@ function LiveIslandMount(props: LiveIslandMountProps) {
     >
     {props.children}
     </div>
-    </>
   );
 }
 
@@ -79,5 +83,5 @@ function live_island_mount(props: LiveIslandMountProps) {
   return <LiveIslandMount {...props} />;
 }
 
-export { LiveIslandMount, LiveRefreshButton, LiveRegion, live_island_mount };
-export type { LiveIslandMountProps, LiveRefreshButtonProps, LiveRegionProps };
+export { LiveIslandMount, LiveIslandState, LiveRefreshButton, LiveRegion, live_island_mount };
+export type { LiveIslandMountProps, LiveIslandStateProps, LiveRefreshButtonProps, LiveRegionProps };

@@ -45,10 +45,14 @@ type FrontendSystemKey =
 |"popover"
 |"primitives"
 |"progress"
+|"reveal"
 |"sidebar"
 |"surface"
 |"theme"
-|"tooltip";
+|"tooltip"
+|"document"
+|"indent"
+|"visibility";
 
 type FrontendThemeTokens = Record<string, unknown>;
 
@@ -98,6 +102,7 @@ type FrontendScalesConfig = {
   padding?: FrontendScaleSteps;
   radius?: FrontendScaleSteps;
   spacing?: FrontendScaleSteps;
+  textBody?: string;
   textSize?: FrontendScaleSteps;
   width?: FrontendScaleSteps;
   zIndex?: FrontendZIndexScaleConfig;
@@ -126,11 +131,9 @@ type FrontendSurfaceComponentsConfig = {
   brandCanvas?: FrontendComponentTokens;
   button?: FrontendComponentTokens;
   card?: FrontendComponentTokens;
-  glow?: FrontendComponentTokens;
   hairline?: FrontendComponentTokens;
   motif?: FrontendComponentTokens;
   logo?: FrontendComponentTokens;
-  prose?: FrontendComponentTokens;
   scrollbar?: FrontendComponentTokens;
 };
 
@@ -260,6 +263,7 @@ type NormalizedFrontendScalesConfig = {
   padding: FrontendScaleSteps;
   radius: FrontendScaleSteps;
   spacing: FrontendScaleSteps;
+  textBody: string;
   textSize: FrontendScaleSteps;
   width: FrontendScaleSteps;
   zIndex: NormalizedFrontendZIndexScaleConfig;

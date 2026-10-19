@@ -28,6 +28,7 @@ import type { UploadRuntimeOptions } from "./upload/types.js";
 import { bindChoiceControls } from "./choice.js";
 import { bindSelectCards } from "./select_cards.js";
 import { bindDisclosures } from "./disclosure.js";
+import { bindVisibilities } from "#psqougnr9tsg";
 import { bindDropdowns } from "./dropdown.js";
 import { bindSearchControls } from "./search.js";
 import { bindStatusFields } from "./status.js";
@@ -89,6 +90,7 @@ function bindInputControllers(
   bindChoiceControls(root);
   bindSelectCards(root);
   bindDisclosures(root);
+  bindVisibilities(root);
   bindDropdowns(root);
   bindSearchControls(root);
   bindStatusFields(root);

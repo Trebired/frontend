@@ -4,6 +4,18 @@ import { frontendElementClass } from "#5vbaqj4pirp3";
 
 const NAV_SELECTOR = `.${frontendElementClass("site-header", "nav")}`;
 const FIT_SLACK = 8;
+const SUBPIXEL = 0.5;
+
+function navOverflow(nav: Element): number {
+  const edge = nav.getBoundingClientRect().right;
+  let furthest = edge;
+  for (const child of nav.children) {
+    const rect = child.getBoundingClientRect();
+    if (rect.width && rect.right > furthest) furthest = rect.right;
+  }
+  const overflow = furthest - edge;
+  return overflow > SUBPIXEL ? Math.ceil(overflow) : 0;
+}
 
 function useSiteHeaderFit(headerRef: RefObject<HTMLElement|null>, hasMenu: boolean): boolean {
   const [compact, setCompact] = useState(false);
@@ -21,8 +33,8 @@ function useSiteHeaderFit(headerRef: RefObject<HTMLElement|null>, hasMenu: boole
         setCompact(false);
         return;
       }
-      const deficit = nav.scrollWidth - nav.clientWidth;
-      if (deficit <= 1) return;
+      const deficit = navOverflow(nav);
+      if (deficit <= 0) return;
       fitsFrom.current = width + deficit + FIT_SLACK;
       compactRef.current = true;
       setCompact(true);

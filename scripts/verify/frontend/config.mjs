@@ -31,6 +31,16 @@ async function verifyFrontendConfig(context) {
     `export default { forVersion: "${context.packageVersion}", assets: { fonts: { families: { bad: { package: "https://bad" } } } } };\n`,
   );
   await assert.rejects(() => config.loadConfig(fixture), /Fontsource package name/u);
+  await verifyTextBody(config, fixture, configPath, context);
+}
+
+async function verifyTextBody(config, fixture, configPath, context) {
+  await fs.writeFile(configPath, `export default { forVersion: "${context.packageVersion}", design: { scales: { textBody: "lg" } } };\n`);
+  const loaded = await config.loadConfig(fixture);
+  assert.equal(loaded.config.design.scales.textBody, "lg");
+  assert.ok(loaded.generatedScss.includes("--text-size-body: var(--text-size-lg);"), "the body step is the one a site names");
+  await fs.writeFile(configPath, `export default { forVersion: "${context.packageVersion}", design: { scales: { textBody: "huge" } } };\n`);
+  await assert.rejects(() => config.loadConfig(fixture), /scales.textBody must name a step/u);
 }
 
 function assertTokenHelpers(config) {
@@ -54,12 +64,21 @@ function assertTokenHelpers(config) {
       },
   });
 
-  assert.equal(helpers.color("gray", 900), "var(--gray-900)");
-  assert.equal(helpers.modeColor("gray", 900, "dark"), "var(--gray-900-dark)");
-  assert.equal(helpers.semantic("background-surface-1"), "var(--background-surface-1)");
-  assert.equal(helpers.variable("radius-md", helpers.variable("radius", "0")), "var(--radius-md, var(--radius, 0))");
-  assert.equal(helpers.border(helpers.semantic("background-surface-1")), "var(--border-width) solid var(--background-surface-1)");
-  assert.equal(helpers.colorMix(helpers.color("blue", 400), "22%"), "color-mix(in srgb, var(--blue-400) 22%, transparent)");
+  assert.equal(String(helpers.color("gray", 900)), "var(--gray-900)");
+  assert.equal(String(helpers.modeColor("gray", 900, "dark")), "var(--gray-900-dark)");
+  assert.equal(String(helpers.semantic("background-surface-1")), "var(--background-surface-1)");
+  assert.equal(
+    String(helpers.variable("radius-md", helpers.variable("radius", "0"))),
+    "var(--radius-md, var(--radius, 0))",
+  );
+  assert.equal(
+    String(helpers.border(helpers.semantic("background-surface-1"))),
+    "var(--border-width) solid var(--background-surface-1)",
+  );
+  assert.equal(
+    String(helpers.colorMix(helpers.color("blue", 400), "22%")),
+    "color-mix(in srgb, var(--blue-400) 22%, transparent)",
+  );
 }
 
 function configuredSource(context) {
@@ -96,7 +115,7 @@ function configuredSource(context) {
 
 function assertScalesInRem(css) {
   const spacing = css.split("\n").filter((line) => line.includes("--space-"));
-  const text = css.split("\n").filter((line) => line.includes("-text-md {"));
+  const text = css.split("\n").filter((line) => line.includes("--text-size-"));
   assert.ok(spacing.length > 0 && text.length > 0, "the scales are emitted at all");
   for (const line of [...spacing, ...text]) {
     assert.equal(line.includes("px"), false, `a reader's own font size has to move this: ${line.trim()}`);
@@ -119,6 +138,8 @@ function assertDefaultConfig(defaults, context) {
   assert.ok(defaults.generatedScss.includes("--tbf-media-lightbox-control-state-hover-bg: "));
   assert.ok(defaults.generatedScss.includes("--tbf-media-expandable-image-icon-size: 2.5rem;"));
   assertScalesInRem(defaults.generatedScss);
+  assert.equal(defaults.config.design.scales.textBody, "md");
+  assert.ok(defaults.generatedScss.includes("--text-size-body: var(--text-size-md);"), "paragraphs read the scale, not a constant");
   for (const system of ["modal", "theme", "layout", "language", "logs", "sidebar", "fullscreen"]) {
     assert.ok(defaults.generatedScss.includes(`${system}/styles/index.scss`));
   }

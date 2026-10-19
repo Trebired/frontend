@@ -1,6 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "./utils/tone" as tone;
 :root {
+  #{ns.css-var("on-dark")}: 0;
   @include tone.snapshot;
 
   --border-width: 1px;

@@ -290,9 +290,6 @@ function syncNestedIndicatorRow(root) {
 }
 
 function bindTabTooltip(tab) {
-  if (!tab.hasAttribute(frontendDataAttr("tooltip"))) {
-    tab.setAttribute(frontendDataAttr("tooltip"), tabLabel(tab));
-  }
   bindTooltip(tab);
 }
 

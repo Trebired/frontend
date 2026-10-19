@@ -21,6 +21,7 @@
     #{ns.css-var("surf-hairline-root-bg")},
     var(#{ns.css-var("border")}, color-mix(in srgb, currentColor 10%, transparent))
   );
+  padding: 0;
   list-style: none;
 }
 

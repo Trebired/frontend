@@ -5,9 +5,9 @@ import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 async function verifyLogsViewScrollContract(importDist, rootDir) {
-  const react = await importDist("react");
+  const logs = await importDist("logs");
   const html = renderToStaticMarkup(
-    h(react.logs_view, {
+    h(logs.logs_view, {
         instanceId: "verify-logs",
         title: "Logs",
     }),

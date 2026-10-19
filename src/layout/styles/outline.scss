@@ -4,13 +4,15 @@
   @return var(#{ns.css-var("shell-outline-" + $name)}, $fallback);
 }
 
-$anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset")}, 0px));
+$marker-motion: token("marker-duration", 320ms) token("marker-easing", cubic-bezier(0.22, 1, 0.36, 1));
+$anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("anchor-top")}, 0px));
 
 #{ns.class("page-outline")} {
   display: block;
 }
 
 #{ns.element-class("page-outline", "list")} {
+  position: relative;
   display: grid;
   gap: token("gap", var(#{ns.css-var("gap-xs")}, 8px));
   margin: 0;
@@ -22,7 +24,30 @@ $anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset
   );
 }
 
-#{ns.element-class("page-outline", "link")} {
+#{ns.element-class("page-outline", "list")}::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: token("marker-width", 2px);
+  height: var(#{ns.css-var("outline-marker-height")}, 0);
+  background: token("link-active-border-color", currentColor);
+  translate: 0 var(#{ns.css-var("outline-marker-top")}, 0);
+}
+
+#{ns.data("outline-ready", "true")}::before {
+  transition:
+  translate $marker-motion,
+  height $marker-motion;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{ns.data("outline-ready", "true")}::before {
+    transition: none;
+  }
+}
+
+#{ns.class("page-outline")} #{ns.element-class("page-outline", "link")} {
   display: block;
   max-width: token("max-width", 100%);
   padding-block: token("link-py", 0.15rem);
@@ -35,14 +60,13 @@ $anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset
   transition: color var(#{ns.css-var("tone-change")}), border-color var(#{ns.css-var("tone-change")});
 }
 
-#{ns.element-class("page-outline", "link")}:hover,
+#{ns.class("page-outline")} #{ns.element-class("page-outline", "link")}:hover,
 
-#{ns.element-class("page-outline", "link")}:focus-visible {
+#{ns.class("page-outline")} #{ns.element-class("page-outline", "link")}:focus-visible {
   color: token("link-hover-color", currentColor);
 }
 
-#{ns.element-class("page-outline", "link")}[aria-current="true"] {
-  border-inline-start-color: token("link-active-border-color", currentColor);
+#{ns.class("page-outline")} #{ns.element-class("page-outline", "link")}[aria-current="true"] {
   color: token("link-active-color", currentColor);
 }
 
@@ -56,13 +80,45 @@ $anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset
   display: none;
 }
 
+#{ns.element-class("page-outline-layout", "rail")}:has(> #{ns.element-class("page-outline-layout", "aside")}) {
+  display: block;
+}
+
+#{ns.element-class("page-outline-layout", "rail")} > #{ns.class("page-outline")} {
+  display: none;
+}
+
+#{ns.element-class("page-outline-layout", "aside")} {
+  display: grid;
+  gap: token("aside-gap", var(#{ns.css-var("gap-md")}, 24px));
+  grid-template-columns: minmax(0, 1fr);
+}
+
 #{ns.element-class("page-outline-layout", "content")} {
   min-width: 0;
+  padding-inline-start: token("layout-content-px", 0);
 }
 
 @media (min-width: 1024px) {
   #{ns.class("page-outline-layout")} {
     grid-template-columns: token("layout-column", 13rem) minmax(0, 1fr);
+  }
+
+  #{ns.element-class("page-outline-layout", "content")} {
+    padding-inline-start: token(
+      "layout-content-px",
+      var(#{ns.css-var("typography-indent-size")}, var(#{ns.css-var("gap-md")}, 24px))
+    );
+  }
+
+  #{ns.element-class("page-outline-layout", "rail")} > #{ns.class("page-outline")} {
+    display: block;
+  }
+
+  #{ns.element-class("page-outline-layout", "rail")}:has(> #{ns.class("page-outline")}):has(> #{ns.element-class("page-outline-layout", "aside")}) {
+    display: grid;
+    align-content: start;
+    gap: token("aside-gap", var(#{ns.css-var("gap-lg")}, 32px));
   }
 
   #{ns.element-class("page-outline-layout", "rail")} {
@@ -72,5 +128,73 @@ $anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("layout-top-offset
     inset-block-start: calc(#{$anchor} + token("offset", 1.5rem));
     overflow-y: auto;
     max-block-size: calc(100vh - #{$anchor} - token("offset", 1.5rem) * 2);
+    scrollbar-width: none;
+  }
+
+}
+
+$gutter: token("frame-gutter", var(#{ns.css-var("container-px")}, 24px));
+$measure: token("frame-measure", 72rem);
+$column: token("layout-column", 13rem);
+$gap: token("layout-gap", var(#{ns.css-var("gap-lg")}, 32px));
+
+#{ns.class("page-outline-layout--frame")} {
+  display: grid;
+  gap: 0;
+  grid-template-columns:
+  [full-start] minmax(#{$gutter}, 1fr)
+  [content-start] minmax(0, #{$measure}) [content-end]
+  minmax(#{$gutter}, 1fr) [full-end];
+}
+
+#{ns.class("page-outline-layout--frame")} > #{ns.element-class("page-outline-layout", "track")} {
+  grid-column: content-start / content-end;
+}
+
+$track: "#{ns.class("page-outline-layout--frame")} > #{ns.element-class("page-outline-layout", "track")}";
+
+#{$track}:has(#{ns.element-class("page-outline-layout", "aside")}) {
+  padding-block: token("frame-aside-py", var(#{ns.css-var("gap-lg")}, 32px));
+}
+
+#{ns.class("page-outline-layout--frame")} > #{ns.element-class("page-outline-layout", "content")},
+
+#{ns.class("page-outline-layout--frame")} #{ns.data("document")} {
+  display: contents;
+  padding-inline-start: 0;
+}
+
+#{ns.class("page-outline-layout--frame")} #{ns.class("document-chapter")} {
+  display: grid;
+  grid-column: full-start / full-end;
+  grid-template-columns: subgrid;
+}
+
+#{ns.class("page-outline-layout--frame")} #{ns.element-class("document-chapter", "inner")} {
+  min-width: 0;
+  grid-column: content-start / content-end;
+}
+
+$railed: "#{ns.class("page-outline-layout--frame")}:has(> #{ns.element-class("page-outline-layout", "track")})";
+
+@media (min-width: 1024px) {
+  #{$railed} {
+    grid-template-columns:
+    [full-start] minmax(#{$gutter}, 1fr)
+    [rail-start] #{$column} [rail-end]
+    #{$gap}
+    [content-start] minmax(0, calc(#{$measure} - #{$column} - #{$gap})) [content-end]
+    minmax(#{$gutter}, 1fr) [full-end];
+  }
+
+  #{$railed} {
+    position: relative;
+  }
+
+  #{$railed} > #{ns.element-class("page-outline-layout", "track")} {
+    position: absolute;
+    inset-block: 0;
+    grid-column: rail-start / rail-end;
+    padding-block: token("frame-offset", 0);
   }
 }

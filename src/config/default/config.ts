@@ -38,6 +38,10 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "fullscreen",
   "surface",
   "graph",
+  "document",
+  "indent",
+  "visibility",
+  "reveal",
   "a11y",
 ];
 

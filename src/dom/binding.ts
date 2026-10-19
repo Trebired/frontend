@@ -4,6 +4,7 @@ import {
   type BindRoot,
   type Cleanup,
 } from "#er0dlx1gtbzh";
+import { frontendEventName } from "#5vbaqj4pirp3";
 
 type ElementBindHandler = (host: HTMLElement) => void;
 type ChildElementBindHandler = (child: HTMLElement | null) => void;
@@ -37,6 +38,8 @@ function firstHTMLFormChild(host: Element | null | undefined) {
 }
 
 const PARENT_BATCH_THRESHOLD = 8;
+
+const ISLAND_HYDRATED_EVENT = frontendEventName("live-island-hydrated");
 
 function observeTarget(root: BindRoot) {
   return root instanceof Document ? root.documentElement : root;
@@ -100,10 +103,15 @@ function bindElements(
       collectAddedBindRoots(records).forEach((node) => bind(node));
   });
   observer?.observe(observeTarget(root), { childList: true, subtree: true });
+  const onIslandHydrated = (event: Event) => {
+    if (event.target instanceof Element) bind(event.target);
+  };
+  document.addEventListener(ISLAND_HYDRATED_EVENT, onIslandHydrated);
   return {
     bind,
     disconnect() {
       observer?.disconnect();
+      document.removeEventListener(ISLAND_HYDRATED_EVENT, onIslandHydrated);
     },
   };
 }

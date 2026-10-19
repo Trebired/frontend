@@ -3,11 +3,12 @@ import assert from "node:assert/strict";
 async function render(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const react = await context.importDist("react");
-  return { h: (await import("react")).createElement, html: renderToStaticMarkup, react };
+  const charts = await context.importDist("graph");
+  return { charts, h: (await import("react")).createElement, html: renderToStaticMarkup, react };
 }
 
 async function verifyHeadingLevels(context) {
-  const { h, html, react } = await render(context);
+  const { charts, h, html, react } = await render(context);
   const card = (title, ...children) => h(
     "div",
     { className: "card" },
@@ -38,7 +39,7 @@ async function verifyHeadingLevels(context) {
     /<h2>Block<\/h2>[\s\S]*<h3>Child<\/h3>/u,
     "a TitleDescription's children sit exactly one level below it",
   );
-  const graph = html(card("Metrics", h(react.cpu_graph, { datasets: [], id: "lvl_graph", title: "CPU" })));
+  const graph = html(card("Metrics", h(charts.cpu_graph, { datasets: [], id: "lvl_graph", title: "CPU" })));
   assert.match(graph, /id="lvl_graph_mount"[^>]*data-tbf-heading-level="3"/u, "a graph nested in a card titles itself h3");
 }
 

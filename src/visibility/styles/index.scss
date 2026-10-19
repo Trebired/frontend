@@ -1,0 +1,33 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("surf-visibility-" + $name)}, $fallback);
+}
+
+$motion: token("duration", 320ms) token("easing", cubic-bezier(0.22, 1, 0.36, 1));
+
+#{ns.class("visibility")} {
+  position: relative;
+}
+
+#{ns.element-class("visibility", "target")},
+
+#{ns.data("visibility-target")} {
+  transition: opacity $motion, visibility 0s linear 0s;
+}
+
+#{ns.data("visibility", "hidden")} #{ns.data("visibility-target")} {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $motion, visibility 0s linear token("duration", 320ms);
+}
+
+#{ns.element-class("visibility", "icon")} {
+  display: inline-flex;
+}
+
+#{ns.data("visibility", "shown")} #{ns.data("visibility-when", "hidden")},
+
+#{ns.data("visibility", "hidden")} #{ns.data("visibility-when", "shown")} {
+  display: none;
+}

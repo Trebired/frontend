@@ -27,17 +27,40 @@ async function verifyContainers(context) {
       },
   });
 
-  assert.match(css, /\.card \{\n {2}display: flex;\n {2}padding: 1rem;\n\}/u, "a container is a class the application named");
-  assert.match(css, /\.card:hover \{\n {2}border-color: red;\n\}/u, "a state is a selector on that class");
-  assert.match(css, /\.card__header \{/u, "a part is a double underscore element");
-  assert.match(css, /\.card--muted \{/u, "a variant is a double dash modifier");
-  assert.match(css, /@media \(max-width: \d+px\) \{\n {2}\.section \{\n {4}padding-block: 2rem;/u, "a breakpoint wraps the class in a query");
-  assert.ok(!css.includes(".card {\n}"), "a container with nothing to say prints nothing");
+  assert.match(css, /\.tbfm-card \{\n {2}display: flex;\n {2}padding: 1rem;\n\}/u, "a container is a class the application named");
+  assert.match(css, /\.tbfm-card:hover \{\n {2}border-color: red;\n\}/u, "a state is a selector on that class");
+  assert.match(css, /\.tbfm-card__header \{/u, "a part is a double underscore element");
+  assert.match(css, /\.tbfm-card--muted \{/u, "a variant is a double dash modifier");
+  assert.match(css, /@media \(max-width: \d+px\) \{\n {2}\.tbfm-section \{\n {4}padding-block: 2rem;/u, "a breakpoint wraps the class in a query");
+  assert.ok(!css.includes(".tbfm-card {\n}"), "a container with nothing to say prints nothing");
 
+  const toned = generate({ cell: { style: { display: "grid" }, tone: "light" } });
+  assert.match(
+    toned,
+    /\.tbfm-cell \{\n {2}@include tone\.on-light;\n {2}display: grid;/u, "a light container takes the page palette from the package's own mixin"
+  );
+  assert.match(toned, /@use "[^"]*styles\/utils\/tone" as tone;/u, "which the generated stylesheet loads once");
+  assert.match(generate({ cell: { tone: "dark" } }), /@include tone\.on-dark;/u, "and a dark one takes the inverted palette the same way");
+
+  assert.throws(
+    () => generate({ card: { style: { color: "var(--tbf-text)" } } }),
+    /writes a package token by hand/u,
+    "a package token is read with the config helpers, never written as a string",
+  );
+  assert.throws(
+    () => generate({ card: { tone: "muted" } }),
+    /must be one of dark, light/u,
+    "a tone is one of the two the package knows",
+  );
   assert.throws(
     () => generate({ "tbf-card": { style: { display: "flex" } } }),
     /may not start with tbf-/u,
     "an application cannot name a container inside the package's prefix",
+  );
+  assert.throws(
+    () => generate({ "tbfm-card": { style: { display: "flex" } } }),
+    /may not start with tbfm-/u,
+    "nor inside the prefix the package writes for containers",
   );
   assert.throws(
     () => generate({ card: { at: { huge: { display: "flex" } } } }),
@@ -51,7 +74,7 @@ async function verifyContainers(context) {
   );
   assert.throws(
     () => generate({ card: { style: { padding: ["1rem"] } } }),
-    /must be a string or a number/u,
+    /must be a string, a number or a config token/u,
     "a declaration carries one value",
   );
 }

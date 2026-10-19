@@ -5,8 +5,6 @@ import {
   bindCopyButtons,
 } from "./actions/index.js";
 
-import { bindCodeBlocks } from "./code/index.js";
-import { bindEditors } from "./editor/index.js";
 import type { ActionAdapters } from "./actions/index.js";
 import { actionAdapters, localeRuntimeOptions } from "./runtime/options.js";
 import { bindA11yRuntime } from "./a11y/runtime.js";
@@ -15,22 +13,20 @@ import { bindAdvancedInputControllers } from "./inputs/advanced/index.js";
 import { bindInputControllers } from "./inputs/index.js";
 import {
   bindLocaleSwitchers,
-  bindSourceLanguageRuntime,
   type LocaleRuntimeOptions,
   type SourceLanguageRuntimeOptions,
 } from "./language/index.js";
 
 import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
-import { bindFullscreen } from "./fullscreen/index.js";
-import { bindGraphs } from "./graph/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
-import { bindLiveCards, bindLiveLists, type LiveSubscribe } from "./live/index.js";
+import type { LiveSubscribe } from "./live/index.js";
+import { bindLazySystems } from "./runtime/lazy.js";
 import { setSpaRebind } from "./spa/config.js";
 import { bindSoftRedirectLinks } from "./spa/index.js";
-import { bindLogsRuntime } from "./logs/index.js";
 import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
+import { bindReveals, type RevealOptions } from "./reveal/index.js";
 import { type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
@@ -57,6 +53,7 @@ type FrontendRuntimeAdapters = ActionAdapters&FrontendLoggingOptions& {
 type FrontendRuntimeOptions = {
   a11y?: A11yRuntimeOptions;
   adapters?: FrontendRuntimeAdapters;
+  reveal?: RevealOptions | false;
   frontend_quiet?: boolean;
   icons?: IconRuntimeOptions;
   layout?: LayoutRuntimeOptions;
@@ -90,6 +87,7 @@ function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
 }
 
 type BindStepLogger = ReturnType<typeof resolveFrontendLogger>;
+
 function runBindStep(logger: BindStepLogger, label: string, step: () => void) {
   try {
     step();
@@ -113,11 +111,12 @@ function bindFrontendWidgets(
   });
   runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
   runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
-  runBindStep(logger, "sourceLanguage", () => bindSourceLanguageRuntime(scope, options.sourceLanguage || {}));
-  runBindStep(logger, "graphs", () => bindGraphs(scope));
-  runBindStep(logger, "logs", () => bindLogsRuntime(scope));
-  runBindStep(logger, "codeBlocks", () => bindCodeBlocks(scope));
-  runBindStep(logger, "editors", () => bindEditors(scope));
+  bindLazySystems(scope, { sourceLanguage: options.sourceLanguage, subscribe: adapters.subscribe }, (label, step) => {
+      step().catch ((error: unknown) => logger.warn("runtime", "bind-step-failed", {
+            error: error instanceof Error ? error.message : String(error),
+            step: label,
+      }));
+  });
   runBindStep(logger, "inputs", () => bindInputControllers(scope, {
         flash: adapters.flash,
         logging: {
@@ -137,9 +136,9 @@ function bindFrontendWidgets(
   runBindStep(logger, "actionForms", () => bindActionForms(scope, { adapters }));
   runBindStep(logger, "actionButtons", () => bindActionButtons(scope, { adapters }));
   runBindStep(logger, "copyButtons", () => bindCopyButtons(scope));
-  runBindStep(logger, "fullscreen", () => bindFullscreen(scope));
-  runBindStep(logger, "liveCards", () => bindLiveCards(scope, { subscribe: adapters.subscribe }));
-  runBindStep(logger, "liveLists", () => bindLiveLists(scope, { subscribe: adapters.subscribe }));
+  if (options.reveal !== false) {
+    runBindStep(logger, "reveals", () => bindReveals(scope, options.reveal || {}));
+  }
 }
 
 function bindFrontendRuntimeOnce(root: BindRoot, options: FrontendRuntimeOptions) {

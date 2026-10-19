@@ -1,4 +1,4 @@
-import { assertPlainObject, invalidConfig, isPlainObject, normalizeBoolean } from "./shared.js";
+import { assertPlainObject, invalidConfig, isCssToken, isPlainObject, normalizeBoolean } from "./shared.js";
 import type {
   NormalizedFrontendThemeConfig,
   NormalizedFrontendThemeMode,
@@ -18,6 +18,10 @@ function normalizeThemeTokens(value: unknown, pathLabel = "theme.tokens"): Front
   for (const [key, item] of Object.entries(source).sort(([a], [b]) => a.localeCompare(b))) {
     if (!THEME_TOKEN_KEY_RE.test(key)) {
       throw invalidConfig(`${pathLabel}.${key} has an invalid token key`);
+    }
+    if (isCssToken(item)) {
+      out[key] = String(item);
+      continue;
     }
     if (isPlainObject(item)) {
       out[key] = normalizeThemeTokens(item, `${pathLabel}.${key}`);

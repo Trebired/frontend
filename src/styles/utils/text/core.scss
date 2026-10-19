@@ -29,22 +29,24 @@
   color: var(#{ns.css-var("text-muted")}, #000);
 }
 
-#{ns.class("text-xs")} {
-  font-size: 12px;
-}
-
-#{ns.class("text-sm")},
-
 #{ns.class("text-small")} {
-  font-size: 14px;
+  font-size: var(--text-size-sm, 0.875rem);
 }
 
-#{ns.class("text-md")} {
-  font-size: 16px;
+#{ns.class("lh-xs")} {
+  line-height: var(#{ns.css-var("line-h-xs")}, 1.1);
 }
 
-#{ns.class("text-lg")} {
-  font-size: 20px;
+#{ns.class("lh-sm")} {
+  line-height: var(#{ns.css-var("line-h-sm")}, 1.3);
+}
+
+#{ns.class("lh-md")} {
+  line-height: var(#{ns.css-var("line-h-md")}, 1.5);
+}
+
+#{ns.class("lh-lg")} {
+  line-height: var(#{ns.css-var("line-h-lg")}, 1.75);
 }
 
 #{ns.class("text-break")} {

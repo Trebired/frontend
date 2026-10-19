@@ -1,8 +1,10 @@
-import { FRONTEND_PREFIX } from "#5vbaqj4pirp3";
+import { FRONTEND_CONTAINER_PREFIX, FRONTEND_PREFIX } from "#5vbaqj4pirp3";
 import { breakpointEntries } from "./breakpoints.js";
-import { invalidConfig } from "./shared.js";
+import { invalidConfig, isCssToken } from "./shared.js";
 import type {
   FrontendContainerDefinition,
+  FrontendContainersConfig,
+  FrontendContainerTone,
   FrontendContainerStyle,
   NormalizedFrontendConfig,
   NormalizedFrontendContainers,
@@ -10,7 +12,10 @@ import type {
 
 const NAME_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
 const PROPERTY_PATTERN = /^-{0,2}[a-zA-Z][a-zA-Z0-9-]*$/u;
-const DEFINITION_FIELDS = ["at", "on", "parts", "style", "variants"];
+const DEFINITION_FIELDS = ["at", "on", "parts", "style", "tone", "variants"];
+const TONES = ["dark", "light"];
+const TONE_NAMESPACE = "tone";
+const RAW_TOKEN_PATTERN = new RegExp(`var\\(\\s*--${FRONTEND_PREFIX}-`, "u");
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -31,8 +36,15 @@ function normalizeStyle(value: unknown, label: string): FrontendContainerStyle {
   const style: FrontendContainerStyle = {};
   for (const [property, declared] of Object.entries(value)) {
     if (declared === undefined || declared === null) continue;
-    if (typeof declared !== "string" && typeof declared !== "number") {
-      throw invalidConfig(`${label}.${property} must be a string or a number`);
+    const token = isCssToken(declared);
+    if (!token && typeof declared !== "string" && typeof declared !== "number") {
+      throw invalidConfig(`${label}.${property} must be a string, a number or a config token`);
+    }
+    if (!token && typeof declared === "string" && RAW_TOKEN_PATTERN.test(declared)) {
+      throw invalidConfig(
+        `${label}.${property} writes a package token by hand :: ${declared}`
+        +` :: read it with the config token helpers, or compose it with token.css`,
+      );
     }
     style[cssProperty(property, `${label}.${property}`)] = String(declared);
   }
@@ -43,8 +55,11 @@ function normalizeName(name: string, label: string): string {
   if (!NAME_PATTERN.test(name)) {
     throw invalidConfig(`${label} must be kebab-case :: ${name}`);
   }
-  if (name.startsWith(`${FRONTEND_PREFIX}-`)) {
-    throw invalidConfig(`${label} may not start with ${FRONTEND_PREFIX}-, that prefix is the package's :: ${name}`);
+  for (const reserved of [FRONTEND_PREFIX, FRONTEND_CONTAINER_PREFIX]) {
+    if (!name.startsWith(`${reserved}-`)) continue;
+    throw invalidConfig(
+      `${label} may not start with ${reserved}-, the package writes that prefix itself :: ${name}`,
+    );
   }
   return name;
 }
@@ -68,6 +83,18 @@ function normalizeStyleMap(
   return out;
 }
 
+function normalizeTone(value: unknown, label: string): FrontendContainerTone {
+  if (value === undefined) return null;
+  if (typeof value !== "string" || !TONES.includes(value)) {
+    throw invalidConfig(`${label} must be one of ${TONES.join(", ")}`);
+  }
+  return value as FrontendContainerTone;
+}
+
+function toneDeclarations(tone: FrontendContainerTone): string[] {
+  return tone ? [`  @include ${TONE_NAMESPACE}.on-${tone};`] : [];
+}
+
 function normalizeDefinition(
   value: unknown,
   label: string,
@@ -89,6 +116,7 @@ function normalizeDefinition(
     on: normalizeStyleMap(value.on, `${label}.on`),
     parts: {},
     style: value.style === undefined ? {} : normalizeStyle(value.style, `${label}.style`),
+    tone: normalizeTone(value.tone, `${label}.tone`),
     variants: {},
   };
 
@@ -103,6 +131,10 @@ function normalizeDefinition(
     definition.variants[name] = normalizeDefinition(declared, `${label}.variants.${variant}`, true, breakpoints);
   }
   return definition;
+}
+
+function defineContainers<const T extends FrontendContainersConfig>(containers: T): T {
+  return containers;
 }
 
 function normalizeContainersConfig(
@@ -139,7 +171,9 @@ function renderDefinition(
   definition: FrontendContainerDefinition,
   breakpoints: Record<string, number>,
 ): string[] {
-  const lines = [...ruleFor(selector, definition.style)];
+  const tone = toneDeclarations(definition.tone);
+  const body = [...tone, ...declarations(definition.style)];
+  const lines = body.length ? [`${selector} {`, ...body, "}"] : [];
   for (const [state, style] of Object.entries(definition.on)) {
     lines.push(...ruleFor(stateSelector(selector, state), style));
   }
@@ -161,15 +195,16 @@ function renderContainerClassRules(config: NormalizedFrontendConfig): string[] {
   const breakpoints = config.design.breakpoints;
   const lines: string[] = [];
   for (const [name, definition] of Object.entries(config.containers)) {
-    lines.push(...renderDefinition(`.${name}`, definition, breakpoints));
+    const selector = `.${FRONTEND_CONTAINER_PREFIX}-${name}`;
+    lines.push(...renderDefinition(selector, definition, breakpoints));
     for (const [part, nested] of Object.entries(definition.parts)) {
-      lines.push(...renderDefinition(`.${name}__${part}`, nested, breakpoints));
+      lines.push(...renderDefinition(`${selector}__${part}`, nested, breakpoints));
     }
     for (const [variant, nested] of Object.entries(definition.variants)) {
-      lines.push(...renderDefinition(`.${name}--${variant}`, nested, breakpoints));
+      lines.push(...renderDefinition(`${selector}--${variant}`, nested, breakpoints));
     }
   }
   return lines;
 }
 
-export { normalizeContainersConfig, renderContainerClassRules };
+export { TONE_NAMESPACE, defineContainers, normalizeContainersConfig, renderContainerClassRules };

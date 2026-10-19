@@ -31,6 +31,8 @@ const DEFAULT_TEXT_SIZE_SCALE: FrontendScaleSteps = {
   lg: 20, md: 16, sm: 14, xl: 24, xl2: 32, xl3: 40, xl4: 56, xl5: 72, xs: 12,
 };
 
+const DEFAULT_TEXT_BODY = "md";
+
 const DEFAULT_WIDTH_SCALE: FrontendScaleSteps = {
   lg: 400, md: 300, sm: 200, xl: 500, xl2: 600, xl3: 700, xl4: 800,
   xl5: 900, xl6: 1000, xs: 150, xs2: 100,
@@ -49,6 +51,7 @@ const DEFAULT_FRONTEND_SCALES_CONFIG = Object.freeze({
     padding: Object.freeze({ ...DEFAULT_PADDING_SCALE }),
     radius: Object.freeze({ ...DEFAULT_RADIUS_SCALE }),
     spacing: Object.freeze({ ...DEFAULT_SPACING_SCALE }),
+    textBody: DEFAULT_TEXT_BODY,
     textSize: Object.freeze({ ...DEFAULT_TEXT_SIZE_SCALE }),
     width: Object.freeze({ ...DEFAULT_WIDTH_SCALE }),
     zIndex: Object.freeze({
@@ -59,6 +62,7 @@ const DEFAULT_FRONTEND_SCALES_CONFIG = Object.freeze({
 
 export {
   DEFAULT_FRONTEND_SCALES_CONFIG,
+  DEFAULT_TEXT_BODY,
   DEFAULT_HEIGHT_SCALE,
   DEFAULT_LINE_HEIGHT_SCALE,
   DEFAULT_PADDING_SCALE,

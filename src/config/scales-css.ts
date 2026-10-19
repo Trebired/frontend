@@ -116,9 +116,11 @@ function renderWidthScale(steps: FrontendScaleSteps): ScaleCss {
   return { body, vars: [] };
 }
 
-function renderTextSizeScale(steps: FrontendScaleSteps): ScaleCss {
-  const body = stepEntries(steps).map(([step, v]) => `.${NS}-text-${step} { font-size: ${remLength(v)}; }`);
-  return { body, vars: [] };
+function renderTextSizeScale(steps: FrontendScaleSteps, textBody: string): ScaleCss {
+  const vars = stepEntries(steps).map(([step, v]) => `  --text-size-${step}: ${remLength(v)};`);
+  vars.push(`  --text-size-body: var(--text-size-${textBody});`);
+  const body = stepEntries(steps).map(([step]) => `.${NS}-text-${step} { font-size: var(--text-size-${step}); }`);
+  return { body, vars };
 }
 
 function renderLineHeightScale(steps: FrontendScaleSteps): ScaleCss {
@@ -152,7 +154,7 @@ function renderScalesCss(config: NormalizedFrontendScalesConfig): ScaleCss {
     renderRadiusScale(config.radius),
     renderHeightScale(config.height),
     renderWidthScale(config.width),
-    renderTextSizeScale(config.textSize),
+    renderTextSizeScale(config.textSize, config.textBody),
     renderLineHeightScale(config.lineHeight),
     renderZIndexScale(config.zIndex),
   ];

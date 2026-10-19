@@ -1,21 +1,13 @@
 @use "@trebired/bundler/namespace" as ns;
 #{ns.class("a11y-panel")} {
   display: flex;
-  width: min(22rem, calc(100vw - 2rem));
+  width: min(26rem, calc(100vw - 2rem));
   flex-direction: column;
   gap: var(#{ns.css-var("gap-md")}, 1.5rem);
-  padding: var(#{ns.css-var("gap-md")}, 1.5rem);
 }
 
 #{ns.class("a11y-section")} {
   display: flex;
   flex-direction: column;
   gap: var(#{ns.css-var("gap-xs")}, 0.5rem);
-}
-
-#{ns.class("a11y-section-title")} {
-  color: currentColor;
-  transition: color var(#{ns.css-var("tone-change")});
-  font-size: 0.875rem;
-  font-weight: 700;
 }

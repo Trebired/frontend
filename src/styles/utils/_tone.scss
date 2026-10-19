@@ -15,6 +15,7 @@ $plain:
 }
 
 @mixin on-dark {
+  #{ns.css-var("on-dark")}: 1;
   #{ns.css-var("text")}: var(#{ns.css-var("dark-text")}, var(#{ns.css-var("page")}, #fff));
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("dark-text-muted")},
@@ -36,6 +37,8 @@ $plain:
 }
 
 @mixin on-light {
+  #{ns.css-var("on-dark")}: 0;
+
   @each $token in $plain {
     #{ns.css-var($token)}: var(#{ns.css-var("base-" + $token)});
   }

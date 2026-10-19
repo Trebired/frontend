@@ -87,9 +87,115 @@ function verifyTextDocument(config) {
   assert.equal(config.parseTextDocument("---\ntitle: Only\n---\n\nNo sections."), null, "and so is one with no sections");
 }
 
-async function verifyProse({ importDist }) {
+function railedMarkup(render, config) {
+  return render(config.parseTextDocument(SECTIONS), { outline: true });
+}
+
+function verifyHeadingLevels(html, proseHtml) {
+  for (const [markup, mode] of [[html, "disclosure"], [proseHtml, "prose"]]) {
+    const levels = [...markup.matchAll(/<h([1-6])/gu)].map((m) => Number(m[1]));
+    assert.deepEqual(
+      [...new Set(levels)].sort(),
+      [2, 3],
+      `a ${mode} document is a section heading and a part heading and nothing else, so its outline never skips a level`,
+    );
+  }
+}
+
+function verifyArticle(markup) {
+  assert.match(
+    markup,
+    /<article[^>]*data-tbf-document/u,
+    "a document is an <article>, the element a browser's own reader mode weighs when it decides what to extract",
+  );
+  assert.equal(
+    (markup.match(/<article/gu) || []).length,
+    1,
+    "exactly one, since a nested article is a second candidate for a reader to pick instead of the whole document",
+  );
+  const article = markup.slice(markup.indexOf("<article"));
+  assert.equal(
+    article.includes("<nav"),
+    false,
+    "and its outline rail sits outside it, because navigation inside an article is what a reader is told to drop",
+  );
+  assert.match(markup, /<aside[^>]*page-outline-layout__rail/u, "that rail is an <aside>");
+  assert.equal((markup.match(/<p>/gu) || []).length > 0, true, "the prose is in real paragraphs, which is what readers score");
+}
+
+function verifyOutlineBoot(markup) {
+  const first = markup.indexOf("tbf-page-outline__link");
+  assert.notEqual(first, -1, "an outline renders its links");
+  assert.match(
+    markup.slice(Math.max(0, first - 120), first + 120),
+    /aria-current="true"/u,
+    "the server marks the first section active, so an outline is never blank before it hydrates",
+  );
+  assert.match(
+    markup,
+    /outline-marker-top/u,
+    "and ships a script that places the marker before the first paint",
+  );
+  assert.match(
+    markup,
+    /getEntriesByType\('navigation'\)/u,
+    "which reads the navigation type, because a reload restores a scroll position the address no longer describes",
+  );
+  assert.match(
+    markup,
+    /sessionStorage\.setItem/u,
+    "and records the section it leaves on, so a reload comes back to it rather than to a stale hash",
+  );
+}
+
+async function verifyIndent({ importDist, rootDir }) {
+  const fs = await import("node:fs/promises");
+  const path = await import("node:path");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement: create } = await import("react");
+  const react = await importDist("react");
+  const config = await importDist("config");
+  const render = (doc, extra) => renderToStaticMarkup(create(react.TextDocumentBody, { document: doc, ...extra }));
+  const html = render(config.parseTextDocument(SECTIONS));
+  const proseHtml = render(config.parseTextDocument(SECTIONS.replace("parts: disclosure\n", "")));
+
+  verifyHeadingLevels(html, proseHtml);
+
+  const indent = await fs.readFile(path.join(rootDir, "dist", "indent", "styles", "index.scss"), "utf8");
+  assert.match(indent, /"typography-indent-"/u, "the indent is its own system with its own token group");
+  assert.match(indent, /padding-inline-start: token\("size"/u, "its step is a token");
+  assert.match(indent, /border-inline-start: token\(\n\s*"border"/u, "and its rule variant draws the border from one too");
+
+  const document = await fs.readFile(path.join(rootDir, "dist", "document", "styles", "index.scss"), "utf8");
+  assert.equal(
+    document.includes("indent"),
+    false,
+    "the document stylesheet owns none of it: a document wears the class like anything else can",
+  );
+
+  assert.equal(
+    /tbf-indent[^"]*"[^>]*>\s*<ul[^>]*text-document__list/u.test(html),
+    false,
+    "a disclosure section's cells are never indented: they already inset their own text",
+  );
+  assert.equal(
+    (html.match(/tbf-indent/gu) || []).length,
+    1,
+    "only the section it renders as prose is indented, and the card list beside it is not",
+  );
+  assert.equal(
+    (proseHtml.match(/tbf-indent/gu) || []).length,
+    3,
+    "a section indents its body once, and a part that carries a heading indents its paragraphs once more",
+  );
+
+  const railed = railedMarkup(render, config);
+  verifyOutlineBoot(railed);
+  verifyArticle(railed);
+} async function verifyProse({ importDist, rootDir }) {
   await verifyProseText({ importDist });
   verifyTextDocument(await importDist("config"));
+  await verifyIndent({ importDist, rootDir });
 }
 
 export { verifyProse };

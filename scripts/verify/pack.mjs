@@ -91,7 +91,22 @@ async function validatePackedImports(packageJson, exportEntries, tarballPath) {
 
 function packageExportEntries(packageJson) {
   const exportKeys = Object.keys(packageJson.exports || {}).sort();
-  assert.deepEqual(exportKeys, [".", "./config", "./live", "./react", "./server", "./static-icons"]);
+  assert.deepEqual(exportKeys, [
+      ".",
+      "./code",
+      "./config",
+      "./editor",
+      "./explorer",
+      "./fullscreen",
+      "./graph",
+      "./live",
+      "./logs",
+      "./react",
+      "./realtime",
+      "./server",
+      "./socket",
+      "./static-icons"
+  ]);
   for (const key of exportKeys) {
     assert.equal(key.includes("*"), false, `${key} is a wildcard export.`);
     assert.equal(key.includes("/styles"), false, `${key} exposes Sass internals.`);

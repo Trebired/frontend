@@ -160,7 +160,7 @@ It is not a markdown renderer and will not become one. Bold, lists and headings 
 
 ### Build Data Sources
 
-`textDocumentsSource`, `moneyRatesSource` and `gravatarProfilesSource` are build time data sources for `@trebired/bundler`. An application declares them in `.trebired/bundler/config.ts` under `data.sources` and writes no fetching code of its own:
+`textDocumentsSource` and `moneyRatesSource` are build time data sources for `@trebired/bundler`. An application declares them in `.trebired/bundler/config.ts` under `data.sources` and writes no fetching code of its own:
 
 ```ts
 data: {
@@ -169,14 +169,11 @@ data: {
   sources: {
     documents: textDocumentsSource({ org: "Example", repo: "meta", slugs: ["privacy"], langs: ["en", "cs"] }),
     rates: moneyRatesSource({ base: "CZK", currencies: ["EUR"] }),
-    team: gravatarProfilesSource({ people: [{ email: "name@example.net", role: "founder" }] }),
   },
 },
 ```
 
 Each source reads what the last build wrote through the `cached` it is handed, so a missing document keeps the words that were there before rather than dropping the page, and returns a `detail` line the bundler logs.
-
-`gravatarProfilesSource` returns one row per person: `name`, `bio`, `jobTitle`, `location`, `profileUrl`, the person's own `links` and their verified `accounts`, each as `{ label, service, url }`, and `role`, which is the label the application gave that person rather than anything Gravatar knows. The avatar comes back as a build asset, which the build writes into the site output directory, so the picture is served from the site's own origin. A profile that cannot be read falls back to the row and the avatar from the last build; a person with no picture leaves `avatar` empty instead of pointing at one that is not there.
 
 ### Text Documents
 
@@ -287,9 +284,27 @@ containers: {
 }
 ```
 
-That emits `.card`, `.card:hover`, `.card__header`, `.card--muted`, and the `md` block inside the matching `@media (max-width: …)` query. `style` is the base, `on` keys a selector suffix (`hover`, `focus-visible`, or anything starting with `:`, `[` or `&`), `at` keys a breakpoint the design declares, `parts` are `__element` children and `variants` are `--modifier` siblings.
+That emits `.tbfm-card`, `.tbfm-card:hover`, `.tbfm-card__header`, `.tbfm-card--muted`, and the `md` block inside the matching `@media (max-width: …)` query. The config names the container `card`; the package writes the prefix.
 
-A container name is kebab-case and may not start with `tbf-`, which is the package's. An unknown field, an undeclared breakpoint and a non-scalar value are all refused when the config is read, with the path that is wrong.
+Two prefixes, because there are two kinds of ownership. `tbf-` is what the package owns outright, and an application may never write into it. `tbfm-` is tbf-managed: the application names the container, owns it and changes it, and the package only turns it into CSS. A container name may not start with either prefix. `style` is the base, `on` keys a selector suffix (`hover`, `focus-visible`, or anything starting with `:`, `[` or `&`), `at` keys a breakpoint the design declares, `parts` are `__element` children and `variants` are `--modifier` siblings.
+
+`tone: "light"` or `tone: "dark"` on a container, a part or a variant gives it the package's own palette for that tone, the same mixin the package uses internally. A light surface inside a dark band says `tone: "light"` and stays readable; nothing is copied.
+
+Every value comes from the config token helpers, and a package token written as a string is refused when the config is read:
+
+```ts
+import { defineContainers } from "@trebired/frontend/config";
+
+const card = {
+  style: { background: token.frontend("page"), border: token.border(semantic.borderSurface1), padding: token.gap("md") },
+  tone: "light",
+};
+export const containers = defineContainers({ card });
+```
+
+`token.css` composes one value out of several, for example `token.css\`min(${token.variable("band-max")}, 100%)\``.
+
+A container name is kebab-case and may not start with `tbf-` or `tbfm-`, both of which the package writes itself. An unknown field, an undeclared breakpoint and a non-scalar value are all refused when the config is read, with the path that is wrong.
 
 Use it for every box an application would otherwise wrap in a component of its own: a card, a band, a panel, a cell, a row. The package ships no such components, so there is nothing to import and nothing to keep in step.
 
@@ -323,6 +338,14 @@ Frontend server helpers own package static assets, icon SVG endpoints, React doc
 
 Static icon mode uses `registerStaticIcons()` in the browser. Missing cached icons do not trigger HTTP when the runtime mode is `"static"`.
 
+### Systems on Demand
+
+`bindFrontendRuntime` binds graphs, logs, code blocks, editors, fullscreen targets, source-language breakdowns and live cards and lists only when a bound root carries their markup, and imports each system the first time it does. Each system is its own chunk: a page without a graph never downloads Chart.js, and a page without logs never downloads the log viewer or the socket client. Binding these systems is asynchronous; everything else binds synchronously as before.
+
+### Island Preparation
+
+`mountLiveIsland({ prepare })` awaits `prepare` before the island renders or hydrates, on the first mount and on every remount after a soft navigation. It receives `url`, the address the island is about to render: during a soft navigation that is the target, which the browser history does not show until the new content is in place, so read the route from `url` rather than from `location`. Load what the island renders there, such as the page module of the current route, and the server markup hydrates against it without a mismatch.
+
 ## Public API
 
 Entrypoints:
@@ -331,12 +354,17 @@ Entrypoints:
 - `@trebired/frontend/config`
 - `@trebired/frontend/react`
 - `@trebired/frontend/server`
+- `@trebired/frontend/code`, `/editor`, `/explorer`, `/fullscreen`, `/graph`, `/live`, `/logs`, `/realtime`, `/socket`
 
 The root entrypoint exports browser runtime binders, namespace helpers, and static icon cache registration. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers plus build-time static icon cache helpers.
 
+Each system subpath exports that system whole, its runtime and its React components together: `@trebired/frontend/graph` carries `GraphPanel`, the chart presets, `buildChartConfig` and `mountGraphCards`. The root and `/react` entrypoints do not re-export them, because a bundler keeps a re-exported system in every page the moment anything else is imported from the same entrypoint.
+
 ## Migration Notes
 
-Applications import public APIs only from the package root, `/config`, `/react`, and `/server`. There is no public Sass, style, or internal component subpath API.
+Applications import public APIs only from the package root, `/config`, `/react`, `/server`, and the system subpaths. There is no public Sass, style, or internal component subpath API.
+
+**28.0.0 moved the heavy systems to their own subpaths.** Graphs, logs, editors, the file explorer, code text, fullscreen, live cards and lists, realtime and the socket client are no longer exported from `@trebired/frontend` or `@trebired/frontend/react`. Import them from `@trebired/frontend/graph`, `/logs`, `/editor`, `/explorer`, `/code`, `/fullscreen`, `/live`, `/realtime` and `/socket`. The names are unchanged; only the import path moves. `LiveIslandMount`, `LiveRegion` and the fullscreen buttons stay on `/react`.
 
 **27.0.0 removed every container component.** `PageBand`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `HairlinePanel`, `HairlineCell`, `ActionRow`, `TrackList`, `TrackItem`, `PinnedSplit`, `IconTile`, `Tag`, `AccentRule`, `Frame`, `FrameCover`, `FrameScrim`, `FrameCaption`, `FrameAction` and `CanvasPanel` are gone, and so are the `tbf-band`, `tbf-tile`, `tbf-tag`, `tbf-rule`, `tbf-action-row`, `tbf-track` and `tbf-frame` classes. Declare what the application needs under `containers` and write the class. `HeadingScope` is now exported, because a container no longer opens a heading level: wrap a section in it where a nested title should step down.
 

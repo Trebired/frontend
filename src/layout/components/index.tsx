@@ -274,7 +274,7 @@ export * from "./breadcrumb.js";
 export * from "./header.js";
 export * from "./mobile.js";
 export * from "./outline.js";
-export * from "./text-document.js";
+
 export * from "./site/footer.js";
 export * from "./site/header.js";
 export * from "./shell/index.js";

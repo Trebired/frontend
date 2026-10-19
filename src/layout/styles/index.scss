@@ -1,12 +1,10 @@
 @use "@trebired/bundler/namespace" as ns;
 @use "./chrome";
 @use "./breadcrumb";
-@use "./site-link";
 @use "./outline";
-@use "./text-document";
-@use "./site-header";
+@use "./site/header";
 @use "./site/menu";
-@use "./site-footer";
+@use "./site/footer";
 @use "./error";
 
 :root {

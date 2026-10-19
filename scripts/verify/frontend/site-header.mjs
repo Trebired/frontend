@@ -15,12 +15,12 @@ async function verifySiteHeaderMarkup(context) {
   assert.ok(html.includes('aria-expanded="false"') && html.includes('aria-label="Open"'), "the menu toggle carries its state and label");
   assert.ok(/class="tbf-site-header__menu"[^>]*inert=""/u.test(html), "a closed menu is inert so its links are not focusable");
   assert.equal(
-    html.match(/tbf-site-header__link[\s"]/gu)?.length,
+    html.match(/tbf-text-link[\s"]/gu)?.length,
     4,
-    "every link appears twice, in the bar and in the menu, and both are the same link",
+    "every link appears twice, in the bar and in the menu, and both are the one text link",
   );
   assert.equal(/tbf-site-header__menu-link[\s"]/u.test(html), false, "the menu builds no link of its own");
-  const headerOnly = await fs.readFile(new URL("../../../src/layout/styles/site-header.scss", import.meta.url), "utf8");
+  const headerOnly = await fs.readFile(new URL("../../../src/layout/styles/site/header.scss", import.meta.url), "utf8");
   const menuOnly = await fs.readFile(new URL("../../../src/layout/styles/site/menu.scss", import.meta.url), "utf8");
   const header = `${headerOnly}\n${menuOnly}`;
   assert.ok(
@@ -50,6 +50,15 @@ async function verifySiteHeaderMarkup(context) {
   const toneScript = (await context.importDistRoot()).createSiteHeaderToneScript();
   assert.match(toneScript, /data-tbf-site-header/u, "the tone script finds the header by its own marker");
   assert.match(toneScript, /main > \*, \[data-tbf-site-footer\]/u, "and reads the page's own bands and the footer");
+  assert.match(
+    toneScript,
+    /document\.documentElement\.setAttribute\(T,b\.hasAttribute\(D\)\?'dark':'light'\)/u,
+    "the tone lands on the document, never on the header React hydrates, so there is no mismatch to patch up",
+  );
+  assert.ok(
+    !/h\.setAttribute/u.test(toneScript),
+    "and the script never writes an attribute onto a rendered element",
+  );
   assert.match(toneScript, /addEventListener\('scroll'/u, "it keeps up with scrolling");
   assert.match(toneScript, /tbf:page-change/u, "and with a soft navigation");
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
@@ -61,12 +70,29 @@ async function verifySiteHeaderMarkup(context) {
   assert.equal(root.siteHeaderRootHtml("<header></header>"), '<div data-tbf-site-header-root=""><header></header></div>');
   assert.equal(root.SITE_HEADER_ROOT_SELECTOR, "[data-tbf-site-header-root]");
   const styles = [
-    await fs.readFile(path.join(context.distDir, "layout", "styles", "site-header.scss"), "utf8"),
+    await fs.readFile(path.join(context.distDir, "layout", "styles", "site", "header.scss"), "utf8"),
     await fs.readFile(path.join(context.distDir, "layout", "styles", "site", "menu.scss"), "utf8"),
   ].join("\n");
   assert.ok(styles.includes('token("root-bg"'), "header tokens use the emitted token names");
-  assert.match(styles, /padding-inline: 1\.5rem;/u, "the brand sits at one distance from the edge on every site");
-  assert.match(styles, /padding-inline: 1rem;/u, "and a narrower one once there is room for the full bar");
+  assert.match(
+    styles,
+    /@include band\(token\("bar-px", var\(#\{ns\.css-var\("container-px"\)\}, 1\.5rem\)\)\);/u,
+    "the brand sits at the page gutter, so the bar lines up with everything under it",
+  );
+  assert.match(
+    styles,
+    /@include band\(token\("bar-px-wide", token\("bar-px"/u,
+    "and an application can set a different one once there is room for the full bar",
+  );
+  assert.equal(
+    styles.match(/max-width: calc\(#\{token\("max-width", 72rem\)\} \+ #\{\$gutter\} \* 2\);/gu)?.length,
+    2,
+    "max-width names the content band, the gutter sits outside it, and the bar and the menu read it the same way",
+  );
+  assert.ok(
+    !/max-width: token\("max-width"/u.test(styles),
+    "so a wide window cannot leave the brand inset by one gutter while everything under it starts at the page edge",
+  );
   assert.match(styles, /"menu-content"\)\} \{\n {2}width: 100%;/u, "the menu content spans the header width instead of shrinking");
   assert.match(styles, /"toggle"\)\} \{.*?width: 3rem;.*?font-size: 2rem;/su, "the menu toggle is one fixed size, not a per-site option");
   assert.ok(!styles.includes('token("toggle-size"') && !styles.includes('token("toggle-icon-size"'), "the toggle size is not configurable");
@@ -109,7 +135,7 @@ async function verifySiteHeaderBehaviour(context) {
   click(".tbf-site-header__toggle");
   assert.equal(header(), "true", "the toggle opens the menu");
   assert.equal(host.querySelector(".tbf-site-header__toggle").getAttribute("aria-expanded"), "true");
-  click(".tbf-site-header__menu-links .tbf-site-header__link");
+  click(".tbf-site-header__menu-links .tbf-text-link");
   assert.equal(header(), "false", "choosing a link closes the menu");
   click(".tbf-site-header__toggle");
   click(".tbf-site-header__menu-footer a");

@@ -275,18 +275,18 @@ async function verifyLiveRemoteUploadPreservation(context) {
 }
 
 async function verifySocketTransportPolicy(context) {
-  const root = await context.importDistRoot();
+  const socket = await context.importDist("socket");
   assert.deepEqual(
-    root.withWebSocketTransportOptions().transports,
+    socket.withWebSocketTransportOptions().transports,
     ["websocket"],
   );
   assert.deepEqual(
-    root.withWebSocketTransportOptions({
+    socket.withWebSocketTransportOptions({
         transports: ["fallback"],
     }).transports,
     ["websocket"],
   );
-  assert.equal("withSocketTransportOptions"in root, false);
+  assert.equal("withSocketTransportOptions"in socket, false);
 }
 
 async function verifyFrontendLive(context) {

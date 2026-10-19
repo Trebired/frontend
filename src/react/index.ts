@@ -3,7 +3,7 @@ import { readJsonScript } from "#er0dlx1gtbzh";
 import { harvestInlineIcons } from "#e55z7pkijewq";
 import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 import { registerPageCleanup, runSpaRebind } from "#o9lroe7t0ma6";
-import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
+import { browserCurrentUrl, RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
 
 type ReactRootOptions = {
   hydrate?: boolean;
@@ -14,6 +14,7 @@ type LiveIslandMountOptions = {
   hydratedEvent?: string;
   initialState?: unknown;
   onMounted?: (root: Element, initialState: unknown) => void;
+  prepare?: (context: { initialState: unknown; root: Element; url: string }) => Promise<void>|void;
   root: Element | string | null;
   stateId?: string;
   wrap?: (node: ReactNode, context: {
@@ -126,6 +127,7 @@ async function mountLiveIsland(options: LiveIslandMountOptions) {
   const state = options.stateId
   ? readJsonScript(options.stateId, {})
   : options.initialState || {};
+  await options.prepare?.({ initialState: state, root: target, url: browserCurrentUrl() });
   const react = resolveEsmInterop<typeof import("react")>(await import("react"), "createElement");
   const child = react.createElement(options.component, { initialState: state });
   const userWrapped = options.wrap

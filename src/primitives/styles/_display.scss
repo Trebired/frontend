@@ -61,35 +61,6 @@
   min-height: 0;
 }
 
-#{ns.class("text-link")} {
-  color: var(
-    #{ns.css-var("ui-link-root-color")},
-    var(--text-color-muted, var(#{ns.css-var("text-muted")}, var(#{ns.css-var("text")}, currentColor)))
-  );
-  font-weight: var(#{ns.css-var("ui-link-root-font-weight")}, inherit);
-  text-decoration-line: var(#{ns.css-var("ui-link-root-decoration-line")}, underline);
-  text-decoration-color: var(#{ns.css-var("ui-link-root-decoration-color")}, currentColor);
-  text-decoration-style: var(#{ns.css-var("ui-link-root-decoration-style")}, solid);
-  text-decoration-thickness: var(#{ns.css-var("ui-link-root-decoration-thickness")}, 1px);
-  text-underline-offset: var(#{ns.css-var("ui-link-root-underline-offset")}, 3px);
-  transition: var(
-    #{ns.css-var("ui-link-root-transition")},
-    color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
-    text-decoration-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
-  );
-}
-
-#{ns.class("text-link")}:hover,
-
-#{ns.class("text-link")}:focus {
-  color: var(#{ns.css-var("ui-link-state-hover-color")}, var(--text-color, var(#{ns.css-var("text")}, currentColor)));
-  text-decoration-color: var(#{ns.css-var("ui-link-state-hover-decoration-color")}, currentColor);
-  text-decoration-style: var(
-    #{ns.css-var("ui-link-state-hover-decoration-style")},
-    var(#{ns.css-var("ui-link-root-decoration-style")}, solid)
-  );
-}
-
 #{ns.data("table")} {
   width: 100%;
   border-collapse: collapse;

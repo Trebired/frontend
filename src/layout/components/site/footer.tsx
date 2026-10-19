@@ -85,7 +85,6 @@ function FooterLink({ link, softRedirect }: { link: SiteFooterLink; softRedirect
   return (
     <SiteLinkAnchor
     active={isSiteLinkActive(link, currentPaths, "", false, useRenderCurrentUrl())}
-    className={frontendElementClass(block, "link")}
     link={link}
     softRedirect={softRedirect}
     />
@@ -95,7 +94,7 @@ function FooterLink({ link, softRedirect }: { link: SiteFooterLink; softRedirect
 function FooterGroup({ group, softRedirect }: { group: SiteFooterGroup; softRedirect?: boolean }) {
   return (
     <div className={frontendElementClass(block, "group")}>
-    <h3 className={frontendElementClass(block, "heading")}>{group.heading}</h3>
+    <h5>{group.heading}</h5>
     {group.links ? (
         <nav className={frontendElementClass(block, "links")}>
         {group.links.map((link, index) => (

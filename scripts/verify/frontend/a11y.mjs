@@ -205,6 +205,28 @@ async function verifyChromeVariant(importDist) {
     (panel.match(/tbf-chrome/gu) || []).length > 1,
     "the choice rows take the same variant as the trigger, so the panel has one configured chrome",
   );
+  assert.ok(
+    panel.includes("data-tbf-modal=\"\"") && panel.includes("role=\"dialog\""),
+    "the accessibility settings open as a modal dialog",
+  );
+  assert.ok(
+    panel.includes("data-tbf-modal-open") && panel.includes("aria-haspopup=\"dialog\""),
+    "and the trigger says so, so a screen reader announces a dialog rather than a menu",
+  );
+  assert.ok(
+    /aria-labelledby="[^"]+"/u.test(panel) && /<h4[^>]*id="[^"]+"/u.test(panel),
+    "the dialog is named by its own heading",
+  );
+  assert.equal(
+    (panel.match(/<h5/gu) || []).length,
+    3,
+    "each group of settings is a heading under that one, not a paragraph dressed as a title",
+  );
+  assert.equal(
+    /data-tbf-popover[=\s]/u.test(panel),
+    false,
+    "nothing of the popover it used to be is left behind",
+  );
 }
 
 async function verifyA11y(importDist, importDistRoot) {

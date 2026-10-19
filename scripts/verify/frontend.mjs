@@ -4,8 +4,8 @@ import path from "node:path";
 import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendActions } from "./frontend/actions.mjs";
-import { verifyFrontendConfig } from "./frontend/config.mjs";
-import { verifyContainers } from "./frontend/containers.mjs";
+import { verifyConfigContract } from "./frontend/contract.mjs";
+
 import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
@@ -53,8 +53,7 @@ async function verifyFrontendMain() {
     sourceDir,
   };
   const window = installDom();
-  await verifyFrontendConfig(context);
-  await verifyContainers(context);
+  await verifyConfigContract(context);
   await verifyNamespace(context);
   await verifyLocaleRouting(context);
   await verifyMedia(context);
@@ -94,7 +93,7 @@ async function verifyPackageSurface({ importDist, importDistRoot, packageVersion
   await verifyFrontendComponents({ importDist, packageVersion, rootDir });
   await verifyFrontendTheme({ importDist, packageVersion, rootDir });
   await verifyMoney(importDist);
-  await verifyProse({ importDist });
+  await verifyProse({ importDist, rootDir });
   await verifyBuildSources({ importDist });
   await verifyA11y(importDist, importDistRoot);
 }
@@ -210,7 +209,8 @@ async function verifyTooltip() {
   assert.equal(layer.getAttribute("role"), "tooltip");
   assert.equal(layer.getAttribute("aria-hidden"), "false");
   assert.equal(layer.getAttribute("data-tbf-placement"), "bottom");
-  assert.ok(layer.style.getPropertyValue("--tbf-arrow-x"));
+  assert.ok(layer.style.left && layer.style.top, "the tooltip is positioned against its trigger");
+  assert.equal(layer.style.getPropertyValue("--tbf-arrow-x"), "", "the tooltip has no arrow to position");
   document.getElementById("tip").dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }));
   assert.equal(layer.getAttribute("aria-hidden"), "true");
   assert.equal(layer.hasAttribute("data-tbf-open"), false);

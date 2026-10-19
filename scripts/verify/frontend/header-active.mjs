@@ -12,7 +12,7 @@ function render(react, currentUrl, links) {
 }
 
 async function verifyOneLinkStyle(rootDir, markup) {
-  const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site-header.scss"), "utf8");
+  const styles = await fs.readFile(path.join(rootDir, "dist", "layout", "styles", "site", "header.scss"), "utf8");
   assert.equal(
     styles.includes('element-class("site-header", "menu-link")'),
     false,
@@ -33,6 +33,32 @@ async function verifyOneLinkStyle(rootDir, markup) {
   }
 }
 
+async function verifyPendingUrl(rootDir) {
+  const fs = await import("node:fs/promises");
+  const path = await import("node:path");
+  const page = await fs.readFile(path.join(rootDir, "src", "spa", "page.ts"), "utf8");
+  assert.match(
+    page,
+    /function beginNavigation[\s\S]*?emitPendingPage\(url\)/u,
+    "a navigation announces where it is going the moment it starts, so the shell can mark the destination before the swap rather than after it",
+  );
+  assert.match(
+    page,
+    /function emitPageChange[\s\S]*?emitPendingPage\(""\)/u,
+    "and clears that the moment the page commits, so a settled shell follows the address again",
+  );
+}
+
+function verifyCustomNode(react) {
+  const custom = render(react, "https://example.com/", [
+      { href: "/", label: "Home" },
+      { key: "own", label: "unused", node: h("button", { className: "own-control", type: "button" }, "Anything") },
+  ]);
+  assert.ok(custom.includes("own-control"), "a link may be any node the application hands the shell");
+  assert.equal(/<a[^>]*own-control/u.test(custom), false, "and the shell wraps it in no anchor of its own");
+  assert.equal(custom.includes(">unused<"), false, "a node replaces the label rather than rendering beside it");
+}
+
 async function verifyHeaderActiveLinks(importDist, rootDir) {
   const react = await importDist("react");
   const links = [
@@ -47,17 +73,17 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
     /href="\/services" aria-current="page"|aria-current="page"[^>]*href="\/services"/u,
     "the link for the current page is marked"
   );
-  assert.ok(onServices.includes("tbf-site-header__link--active"), "and carries the active class a site styles from the config");
+  assert.ok(onServices.includes("tbf-text-link--active"), "and carries the active modifier on the one text link");
   assert.equal((onServices.match(/aria-current="page"/gu) || []).length, 2, "once in the nav and once in the menu, and nowhere else");
 
   const onHome = render(react, "https://example.com/", links);
   assert.equal((onHome.match(/aria-current="page"/gu) || []).length, 2, "the root link matches only the root");
 
   const nested = render(react, "https://example.com/services/hosting", links);
-  assert.ok(nested.includes("tbf-site-header__link--active"), "a child route still marks its section");
+  assert.ok(nested.includes("tbf-text-link--active"), "a child route still marks its section");
 
   const prefixed = render(react, "https://example.com/cs/services", links);
-  assert.ok(prefixed.includes("tbf-site-header__link--active"), "a locale prefix in the path does not stop the match");
+  assert.ok(prefixed.includes("tbf-text-link--active"), "a locale prefix in the path does not stop the match");
 
   const sectioned = render(react, "https://example.com/", [
       { href: "/", label: "Home" },
@@ -77,6 +103,9 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
 
   const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
   assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
+
+  verifyCustomNode(react);
+  await verifyPendingUrl(rootDir);
 
   await verifyOneLinkStyle(rootDir, onServices);
 

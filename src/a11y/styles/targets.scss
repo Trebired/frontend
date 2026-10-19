@@ -12,9 +12,7 @@
 
 #{ns.class("choice-row")},
 
-#{ns.class("dropdown-label")},
-
-#{ns.class("tab")} {
+#{ns.class("dropdown-label")} {
   min-height: max(
     var(#{ns.css-var("ui-btn-root-height")}, 1.75rem),
     var(#{ns.css-var("target-min")}, 2.75rem)

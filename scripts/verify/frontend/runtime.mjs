@@ -191,30 +191,30 @@ async function verifyGraphs(context) {
 }
 
 async function verifyGraphEmptyState(context) {
-  const react = await context.importDist("react");
+  const graph = await context.importDist("graph");
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement } = await import("react");
-  const empty = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "empty_graph" }));
+  const empty = renderToStaticMarkup(createElement(graph.cpu_graph, { datasets: [], id: "empty_graph" }));
   assert.ok(empty.includes('"state":"empty"'), "a graph with no data marks itself empty without the caller asking");
   assert.ok(empty.includes("No data yet."), "an empty graph explains itself");
   assert.ok(empty.includes("line-chart-line"), "an empty graph shows an icon instead of a blank canvas");
-  const filled = renderToStaticMarkup(createElement(react.cpu_graph, {
+  const filled = renderToStaticMarkup(createElement(graph.cpu_graph, {
         datasets: [{ label: "cpu", points: [{ label: "now", value: 12 }] }],
         id: "filled_graph",
   }));
   assert.ok(!filled.includes('"state":"empty"'), "a graph with data is not marked empty");
-  const custom = renderToStaticMarkup(createElement(react.cpu_graph, {
+  const custom = renderToStaticMarkup(createElement(graph.cpu_graph, {
         datasets: [], id: "custom_graph", state: "empty", stateMessage: "No samples recorded yet.",
   }));
   assert.ok(custom.includes("No samples recorded yet."), "an explicit message still wins");
 }
 
 async function verifyGraphShellIsUniform(context) {
-  const react = await context.importDist("react");
+  const graph = await context.importDist("graph");
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement } = await import("react");
-  const plain = renderToStaticMarkup(createElement(react.cpu_graph, { datasets: [], id: "plain_graph" }));
-  const decorated = renderToStaticMarkup(createElement(react.cpu_graph, {
+  const plain = renderToStaticMarkup(createElement(graph.cpu_graph, { datasets: [], id: "plain_graph" }));
+  const decorated = renderToStaticMarkup(createElement(graph.cpu_graph, {
         bodyClassName: "column gap-sm padding-xs flex-1", datasets: [], id: "decorated_graph",
         rootClassName: "height-xl", scroll: true,
   }));
@@ -228,7 +228,7 @@ async function verifyGraphShellIsUniform(context) {
     assert.ok(!/\b(padding|gap)-xs\b/u.test(html), `${label} graph spaces with sm, not xs`);
     assert.ok(!/class="[^"]*graph-shell[^"]*padding-/u.test(html), `${label} graph card relies on the card's own padding`);
   }
-  const unit = renderToStaticMarkup(createElement(react.download_graph, { datasets: [], id: "unit_graph" }));
+  const unit = renderToStaticMarkup(createElement(graph.download_graph, { datasets: [], id: "unit_graph" }));
   assert.ok(!unit.includes("fullscreen"), "a unit graph offers no fullscreen control either");
   assert.ok(unit.includes("tbf-dropdown-fit"), "the unit dropdown sizes itself to the unit it shows");
   const runtime = await fs.readFile(path.join(context.distDir, "graph", "advanced", "runtime", "render.js"), "utf8");
@@ -239,9 +239,9 @@ async function verifyGraphShellIsUniform(context) {
 }
 
 async function verifyGraphTimeLabels(context) {
-  const root = await context.importDistRoot();
+  const graph = await context.importDist("graph");
   const now = Date.now();
-  const config = root.buildChartConfig({
+  const config = graph.buildChartConfig({
       datasets: [{ label: "cpu", points: [300, 150, 0].map((ago, index) => ({
                 label: new Date(now - ago * 1000).toISOString(), value: index,
           })) }],
@@ -253,20 +253,19 @@ async function verifyGraphTimeLabels(context) {
 }
 
 async function verifyGraphMountsOnBind(context) {
-  const react = await context.importDist("react");
-  const root = await context.importDistRoot();
+  const graph = await context.importDist("graph");
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement } = await import("react");
-  document.body.innerHTML = renderToStaticMarkup(createElement(react.cpu_graph, {
+  document.body.innerHTML = renderToStaticMarkup(createElement(graph.cpu_graph, {
         datasets: [{ label: "cpu", points: [{ label: "now", value: 5 }] }],
         id: "soft_nav_graph",
   }));
   const mount = document.getElementById("soft_nav_graph_mount");
   assert.ok(mount, "the graph mount is present in server markup");
   assert.equal(mount.getAttribute("data-tbf-graph-root"), null, "nothing is mounted before binding");
-  const mounted = root.mountGraphCards(document);
+  const mounted = graph.mountGraphCards(document);
   assert.ok(mounted >= 1, "binding mounts graph cards that a soft navigation brought in");
-  assert.equal(root.mountGraphCards(document), 0, "already mounted graphs are not mounted twice");
+  assert.equal(graph.mountGraphCards(document), 0, "already mounted graphs are not mounted twice");
   document.body.innerHTML = "";
 }
 

@@ -32,9 +32,6 @@ export {
   Title,
 } from "#7ly3b59upz0n";
 export type *from "#7ly3b59upz0n";
-export {
-  code_text,
-} from "#c55llzkpl4ob";
 export type *from "#c55llzkpl4ob";
 export {
   createEntityIcon,
@@ -46,12 +43,6 @@ export {
   resolveEntityRegistryName,
 } from "#ft8e49grjdee";
 export type *from "#ft8e49grjdee";
-export {
-  editor_body,
-  editor_content,
-  editor_sidebar,
-  editor_surface,
-} from "#nn6lx6ueg6es";
 export type *from "#nn6lx6ueg6es";
 export {
   ActionButton,
@@ -132,14 +123,11 @@ export {
   ShellSupportLinks,
   SiteFooter,
   SiteHeader,
-  TextDocumentBody,
   ViewportCenter,
 } from "#qsb4858ln9g5";
 export type *from "#qsb4858ln9g5";
-export {
-  GraphPanel,
-  Roadmap,
-} from "#o52bosx1o4df";
+export { TextDocumentBody } from "./../../document/components/index.js";
+export type *from "./../../document/components/index.js";
 export type *from "#o52bosx1o4df";
 export {
   LiveRefreshButton,
@@ -178,3 +166,11 @@ export {
   FullscreenTarget,
 } from "#vbkfq413o3u7";
 export type *from "#vbkfq413o3u7";
+export {
+  VisibilityScope,
+  VisibilityTarget,
+  VisibilityToggle,
+  visibilityScopeAttrs,
+  visibilityTargetAttrs,
+} from "#vin0vyabn25a";
+export type *from "#vin0vyabn25a";

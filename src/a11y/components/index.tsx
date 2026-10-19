@@ -20,11 +20,13 @@ function accessibility_menu(props: AccessibilityMenuProps) {
   const panelId = `${triggerId}_panel`;
   const label = localT("a11yTriggerLabel");
 
+  const titleId = `${panelId}_title`;
+
   return (
     <>
     <button
     aria-controls={panelId}
-    aria-expanded="false"
+    aria-haspopup="dialog"
     aria-label={label}
     className={primitiveButtonClassName({
           className: frontendClassName("a11y-trigger"),
@@ -33,20 +35,25 @@ function accessibility_menu(props: AccessibilityMenuProps) {
     })}
     id={triggerId}
     type="button"
-    {...frontendDataAttrs({ "popover-indicator": "false", "popover-trigger": "", "tooltip": label })}
+    {...frontendDataAttrs({ "modal-open": "", "tooltip": label })}
     >
     <Icon spec="remixicon:wheelchair-line" />
     </button>
     <div
     aria-hidden="true"
-    aria-label={localT("a11yPanelLabel")}
-    className={frontendClassNames("popover", "a11y-panel")}
+    aria-labelledby={titleId}
+    className={frontendClassName("modal")}
     id={panelId}
-    inert
-    role="group"
-    {...frontendDataAttrs({ "a11y-panel": "", "popover": "", "popover-autofocus": "true" })}
+    role="dialog"
+    {...frontendDataAttrs({ "modal": "" })}
     >
+    <div
+    className={frontendClassNames("modal__content", "a11y-panel")}
+    {...frontendDataAttrs({ "a11y-panel": "", "modal-content": "" })}
+    >
+    <h4 id={titleId}>{localT("a11yPanelLabel")}</h4>
     {a11ySections({ lang: props.lang, settings: props.settings, textSizes: props.textSizes })}
+    </div>
     </div>
     </>
   );

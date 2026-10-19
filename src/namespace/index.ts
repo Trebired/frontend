@@ -20,6 +20,8 @@ type FrontendDataAttrs = Record<FrontendDataAttrName, FrontendNamespaceValue|nul
 
 const FRONTEND_PREFIX = NAMESPACE_PREFIX;
 
+const FRONTEND_CONTAINER_PREFIX = `${NAMESPACE_PREFIX}m`;
+
 function frontendClassName(name: string): string {
   return className(name);
 }
@@ -71,6 +73,7 @@ function frontendToken(name: string): string {
 }
 
 export {
+  FRONTEND_CONTAINER_PREFIX,
   FRONTEND_PREFIX,
   frontendClassName,
   frontendClassNames,

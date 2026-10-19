@@ -7,6 +7,7 @@ type MotifFrame = {
   data: any;
   height: number;
   line: (points: number[][], closed?: boolean) => void;
+  noise: (x: number, y: number) => number;
   pointer: { inside: boolean; strength: number; x: number; y: number };
   scale: number[];
   state: any;
@@ -19,6 +20,54 @@ type MotifFrame = {
 type MotifPainter = (frame: MotifFrame) => void;
 
 type MotifDefinition = { data?: unknown; helpers?: unknown[]; paint: MotifPainter; still?: boolean };
+
+function motifNoiseSeed(seed: number) {
+  const source: number[] = [];
+  const perm: number[] = [];
+  for (let index = 0; index < 256; index += 1) source[index] = index;
+  let state = (seed >>> 0) || 1;
+  for (let index = 255; index > 0; index -= 1) {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    const swap = state % (index + 1);
+    const held = source[index];
+    source[index] = source[swap];
+    source[swap] = held;
+  }
+  for (let index = 0; index < 512; index += 1) perm[index] = source[index&255];
+  return perm;
+}
+
+function motifNoiseGrad(hash: number, gx: number, gy: number) {
+  const bits = hash&7;
+  const run = bits < 4 ? gx : gy;
+  const rise = bits < 4 ? gy : gx;
+  return ((bits&1) === 0 ? run : -run) + ((bits&2) === 0 ? 2 * rise : -2 * rise);
+}
+
+function motifNoiseCorner(perm: number[], ii: number, jj: number, off: number[], gx: number, gy: number) {
+  const fade = 0.5 - gx * gx - gy * gy;
+  if (fade < 0) return 0;
+  const hash = perm[ii + off[0] + perm[jj + off[1]]];
+  return fade * fade * fade * fade * motifNoiseGrad(hash, gx, gy);
+}
+
+function motifNoise2(perm: number[], xin: number, yin: number) {
+  const skew = 0.3660254037844386;
+  const unskew = 0.21132486540518713;
+  const lean = (xin + yin) * skew;
+  const cellX = Math.floor(xin + lean);
+  const cellY = Math.floor(yin + lean);
+  const back = (cellX + cellY) * unskew;
+  const dx0 = xin - (cellX - back);
+  const dy0 = yin - (cellY - back);
+  const step = dx0 > dy0 ? [1, 0] : [0, 1];
+  const ii = cellX&255;
+  const jj = cellY&255;
+  const total = motifNoiseCorner(perm, ii, jj, [0, 0], dx0, dy0)
+  +motifNoiseCorner(perm, ii, jj, step, dx0 - step[0] + unskew, dy0 - step[1] + unskew)
+  +motifNoiseCorner(perm, ii, jj, [1, 1], dx0 - 1 + 2 * unskew, dy0 - 1 + 2 * unskew);
+  return 70 * total;
+}
 
 function motifWarp(pointer: any, x: number, y: number, ax: number, ay: number): number[] {
   if (pointer.s <= 0.002) return [x, y];
@@ -70,6 +119,7 @@ function motifPaint(canvas: any, painter: any, pointer: any, time: number) {
         if (closed) context.closePath();
         context.stroke();
       },
+      noise: (nx: number, ny: number) => motifNoise2(canvas.__motifPerm, nx, ny),
       pointer: { inside: pointer.ts > 0, strength: pointer.s, x: pointer.x, y: pointer.y },
       scale,
       state: canvas.__motifState,
@@ -156,6 +206,7 @@ function motifCalm(still: boolean, attr: string) {
 function motifStart(canvas: any, painter: any, data: any, still: boolean, attr: string) {
   const calm = motifCalm(still, attr);
   canvas.__motifData = data;
+  canvas.__motifPerm = canvas.__motifPerm || motifNoiseSeed(1973);
   canvas.__motifState = canvas.__motifState || {};
   canvas.__motifTaps = [];
   const pointer: MotifPointer = { s: 0, ts: 0, tx: 0, ty: 0, x: 0, y: 0 };
@@ -193,5 +244,17 @@ function motifStart(canvas: any, painter: any, data: any, still: boolean, attr: 
   };
 }
 
-export { motifCalm, motifListen, motifMeasure, motifPaint, motifStart, motifStroke, motifWarp };
+export {
+  motifCalm,
+  motifListen,
+  motifMeasure,
+  motifNoise2,
+  motifNoiseCorner,
+  motifNoiseGrad,
+  motifNoiseSeed,
+  motifPaint,
+  motifStart,
+  motifStroke,
+  motifWarp,
+};
 export type { MotifDefinition, MotifFrame, MotifPainter, MotifPointer };

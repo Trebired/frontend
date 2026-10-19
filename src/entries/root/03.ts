@@ -94,14 +94,6 @@ export {
   resolveSavePolicy,
 } from "#4hlk3mrarcqi";
 export type *from "#4hlk3mrarcqi";
-export {
-  Manager,
-  Socket,
-  connect,
-  io,
-  socket,
-  withWebSocketTransportOptions,
-} from "#7bf07c0wd67q";
 export type *from "#7bf07c0wd67q";
 export {
   surfaceClass,
@@ -153,3 +145,8 @@ export { errorActionLabel, errorMessage } from "#tuadlwaoq87s";
 export { LANGUAGE_CONFIG_ATTR, configureFrontendLanguage, getFrontendLanguage } from "#45x2snql5syw";
 export type { FrontendLanguageLocale, FrontendLanguageRuntimeConfig } from "#45x2snql5syw";
 export type { ErrorStatus } from "#p2ojc8v664sv";
+export {
+  bindReveals,
+  REVEAL_SELECTOR,
+} from "./../../reveal/index.js";
+export type { RevealOptions } from "./../../reveal/index.js";

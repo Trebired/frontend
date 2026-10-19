@@ -34,3 +34,19 @@ export {
   isPlainObject,
   normalizeBoolean,
 };
+
+const TOKEN_MARK = "__tbfToken";
+
+function cssToken<T extends string>(value: string): T {
+  const boxed = new String(value);
+  Object.defineProperty(boxed, TOKEN_MARK, { enumerable: false, value: true });
+  return boxed as unknown as T;
+}
+
+function isCssToken(value: unknown): boolean {
+  return typeof value === "object"
+  &&value !== null
+  &&(value as Record<string, unknown>)[TOKEN_MARK] === true;
+}
+
+export { cssToken, isCssToken };

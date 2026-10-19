@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-@use "./../../styles/utils/tone" as tone;
+@use "./../../../styles/utils/tone" as tone;
 
 #{ns.data("site-footer-root")} {
   display: contents;
@@ -94,18 +94,6 @@
   gap: var(#{ns.css-var("shell-footer-column-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
 }
 
-#{ns.element-class("site-footer", "heading")} {
-  color: var(
-    #{ns.css-var("shell-footer-heading-color")},
-    color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 85%, transparent)
-  );
-  font-family: var(#{ns.css-var("shell-footer-heading-font-family")}, inherit);
-  font-size: var(#{ns.css-var("shell-footer-heading-font-size")}, 0.72rem);
-  font-weight: var(#{ns.css-var("shell-footer-heading-font-weight")}, 600);
-  letter-spacing: var(#{ns.css-var("shell-footer-heading-letter-spacing")}, normal);
-  text-transform: var(#{ns.css-var("shell-footer-heading-text-transform")}, uppercase);
-}
-
 #{ns.element-class("site-footer", "social")} {
   display: flex;
   flex-wrap: wrap;
@@ -143,23 +131,6 @@
 #{ns.element-class("site-footer", "links")} {
   display: grid;
   gap: var(#{ns.css-var("shell-footer-links-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
-}
-
-#{ns.element-class("site-footer", "link")} {
-  color: var(
-    #{ns.css-var("shell-footer-link-color")},
-    color-mix(in srgb, currentColor 70%, transparent)
-  );
-}
-
-#{ns.element-class("site-footer", "link")}[aria-current="page"] {
-  color: var(#{ns.css-var("shell-footer-link-active-color")}, inherit);
-}
-
-#{ns.element-class("site-footer", "link")}:hover,
-
-#{ns.element-class("site-footer", "link")}:focus-visible {
-  color: var(#{ns.css-var("shell-footer-link-hover-color")}, var(#{ns.css-var("text")}, currentColor));
 }
 
 #{ns.element-class("site-footer", "note")} {

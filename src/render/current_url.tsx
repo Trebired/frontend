@@ -15,7 +15,19 @@ type RenderCurrentUrlProviderProps = {
 
 const RenderCurrentUrlContext = createContext("");
 
-const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation"];
+const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation", "page-pending"];
+const PENDING_EVENT = frontendEventName("page-pending");
+let pendingUrl = "";
+
+function trackPendingUrl() {
+  if (typeof document === "undefined") return;
+  document.addEventListener(PENDING_EVENT, (event) => {
+      const detail = (event as CustomEvent<{ url?: unknown }>).detail;
+      pendingUrl = toCurrentUrl(detail?.url);
+  });
+}
+
+trackPendingUrl();
 
 function subscribeUrl(callback: () => void) {
   if (typeof window === "undefined") return () => {};
@@ -31,7 +43,8 @@ function subscribeUrl(callback: () => void) {
 }
 
 function browserCurrentUrl() {
-  return typeof window === "undefined" ? "" : window.location.href;
+  if (typeof window === "undefined") return "";
+  return pendingUrl || window.location.href;
 }
 
 function currentUrlSnapshot(fallback = "") {
@@ -56,5 +69,5 @@ function useRenderCurrentUrl() {
   );
 }
 
-export { RenderCurrentUrlProvider, useRenderCurrentUrl };
+export { browserCurrentUrl, RenderCurrentUrlProvider, useRenderCurrentUrl };
 export type { RenderCurrentUrlProviderProps };
