@@ -214,3 +214,5 @@ export {
   themeClass,
 } from "./theme.js";
 export type *from "./theme.js";
+export { createSiteSearchIndex, SITE_SEARCH_DIR, siteSearchPath } from "./../search/site/build.js";
+export type { SiteSearchFile, SiteSearchIndex, SiteSearchIndexOptions, SiteSearchMeta, SiteSearchPage } from "./../search/site/build.js";

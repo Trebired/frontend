@@ -125,15 +125,53 @@ It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scr
 />
 ```
 
+A link with `links` is a group. In the bar it is a button that opens the header's sheet: a band directly under the bar, as wide as the header, painted with the bar's own surface and tone, with its content on the same gutter as the bar. The sheet opens when the pointer rests on the group and on a press; it closes when the pointer leaves the header, on a second press, on Escape, on a press or focus outside the header, and when a link in it is chosen. Pressing a group from the keyboard moves focus to its first link, and Escape returns it to the group. Every group's links are in the server markup, hidden until their group opens.
+
+A group whose children are groups lays out as columns, one per child, each under an `h5` that takes the page's own heading styles. A group of plain links lays out as a list. A link's `description` is one line printed under its label in the sheet. In the mobile menu the same group is a disclosure with the same headings and without the descriptions, so it stays a short list. A group with `search: true` puts the site search at the top of its section and of its mobile disclosure (see Site Search); `lang` on `SiteHeader` names the language the header is rendered in. Groups nest two levels deep and no further. The sheet has no tokens: its spacing, columns and motion are the same in every application, and its colours are the header's.
+
+```tsx
+links={[
+  { href: "/blog", label: "Blog" },
+  {
+    label: "Resources",
+    links: [
+      { label: "Organization", links: [{ description: "Why the organization exists", href: "/about", label: "About" }] },
+      { label: "Help", links: [{ description: "How to report a vulnerability", href: "/security", label: "Security" }] },
+    ],
+  },
+]}
+```
+
 A header with no links and no `menuActions` has no toggle and keeps its actions visible on a phone. `menuActions` replaces `actions` inside the menu when the two should differ, `menuIcon` and `closeIcon` replace the built-in burger, and `softRedirect` marks the links for soft navigation.
 
-The header takes the tone of whatever is behind it, and it knows which that is before the first paint. `frontendBoot()` adds the script that does it: it runs with the document parsed, finds the band under the bar among `main`'s own children and the site footer, and marks the header `data-tbf-dark` when that band declares itself dark, which is the same marker a dark band, an inverse footer or a dark card carries. After that it follows scrolling, resizing, `pageshow` and soft navigation. There is nothing to configure and nothing per page: a page that wants a dark bar under it says so on the band, once, the way it already says it for everything else inside it.
+The header takes the tone of whatever is behind it, and it knows which that is before the first paint. `frontendBoot()` adds the script that does it: it runs with the document parsed, finds the band under the bar among `main`'s own children and the site footer, and marks the header `data-tbf-dark` when that band declares itself dark, which is the same marker a dark band, an inverse footer or a dark card carries. After that it follows scrolling, resizing, `pageshow` and soft navigation. There is nothing to configure and nothing per page: a page that wants a dark bar under it says so on the band, once, the way it already says it for everything else inside it. The header has no colours of its own for this: it paints with the tone's `ground`, the background every tone region carries (the page in a light region, the ink in a dark one), and its sheet, its mobile menu and every popover it opens paint with the same `ground`, so they all change together.
 
 The header is the hydration root, so it renders itself as the `<header>` element. Server markup wraps it with `siteHeaderRootHtml(html)`, which the client hydrates through `SITE_HEADER_ROOT_SELECTOR`; the wrapper is `display: contents`, so the header still sticks to the viewport.
 
 Colors, fonts, borders and spacing are tokens under `components.shell.header`: `root` (position, background, border, backdropFilter), `maxWidth`, `brand`, `link`, `menu` and the motion pair `motionDuration` and `motionEasing`. Sizes are not: the bar is 5rem tall, its inline padding 1.5rem and 1rem once there is room for the full bar, a brand logo 3.5rem, navigation links 0.875rem, menu links 1rem, and the toggle a 3rem button with a 2rem icon, the same in every site.
 
 `tone` is the crossfade: `duration` and `easing`, 320ms by default, for the moment the bar changes tone as a band scrolls under it. The first paint never uses it, because the tone is decided before it. A soft navigation does not cross-fade either: `<html>` carries `data-tbf-page-swap` for the frame the page is replaced in, which holds every transition and animation at 1ms, so chrome arrives in the new page's colours instead of sliding into them while the reader is already looking at a different page.
+
+### Site Search
+
+Site search finds any page of a static site by its words, with no server. The package owns the whole job: reading the rendered pages into an index at build time, loading the index in the browser, matching, ranking and showing the results. The application owns which pages exist and their titles, and it writes the files the package returns.
+
+At build time, `createSiteSearchIndex()` from `@trebired/frontend/server` takes the same per-language bodies and metadata an application already renders for its shells and returns one file per language, `tbf-search/<locale>.json`:
+
+```ts
+import { createSiteSearchIndex } from "@trebired/frontend/server";
+
+for (const file of createSiteSearchIndex({
+  locales: ["en", "cs"],
+  meta: (path, locale) => ({ description: descriptionOf(path, locale), title: titleOf(path, locale) }),
+  paths: allRoutePaths,
+  render: (path, locale) => bodies[path][locale],
+})) await Bun.write(`${outDir}/${file.path}`, file.contents);
+```
+
+Only the page's own content is read: the inside of `<main>` when the page has one, without scripts, SVG, buttons, form controls, and anything `hidden`, `inert` or `aria-hidden`, so decorative duplicates and the header and footer every page shares never match. Headings up to `h4` are kept as sections, with their `id` when they have one.
+
+In the browser the search lives in the site header: a group with `search: true` shows the field. The index for the reader's current language is fetched the first time the field is focused, once, and only that language is searched. Every word of the query has to match; accents and case are ignored, so "prirucka" finds "Příručka". Titles outrank section headings, which outrank descriptions and body text. A result whose best match is a heading with an `id` opens that section. Each result shows a snippet with the matched words marked. Enter opens the first result, the arrow keys move between results, and Escape clears the query before it closes the header's sheet. The field's label, placeholder and messages come from the package in the header's `lang`.
 
 ### Prose Text
 
@@ -345,6 +383,8 @@ Static icon mode uses `registerStaticIcons()` in the browser. Missing cached ico
 ### Indented Flow
 
 `typography.indent.flow` indents paragraphs and quotes that follow a heading among the same siblings, by the given step; it is zero by default. Set it once in the components config and every heading in the application carries its text one step in, without a class on any component. Structure decides what moves: text that is a sibling after a heading moves, everything else stays on the heading's edge.
+
+The step is not a fixed distance. `flow` and `size` name the indent for body text under an `h2`, and the package scales it to what it moves: by the size of the indented text against the root size, and by the square root of the size of the largest heading in the same block against an `h2`. A list of small links under an `h5` steps in a little; a lead under a page title steps in more. The heading sizes are the `typography` heading tokens, so a heading restyled by a class still counts as its level. Browsers that cannot divide lengths in `calc()` use the configured step as it is.
 
 ### Island Preparation
 

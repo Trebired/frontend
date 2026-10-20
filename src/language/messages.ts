@@ -93,6 +93,10 @@ const EN_MESSAGES: LanguageMessages = {
   totalSizeLabel: "Total size:",
   unknown: "Unknown",
   unknownLanguage: "Unknown",
+  siteSearchEmpty: "Nothing on this site matches “{{query}}”.",
+  siteSearchFailed: "Search is not available right now.",
+  siteSearchLabel: "Search this site",
+  siteSearchPlaceholder: "Search every page",
 };
 
 const CS_MESSAGES: LanguageMessages = {
@@ -184,6 +188,10 @@ const CS_MESSAGES: LanguageMessages = {
   totalSizeLabel: "Celkova velikost:",
   unknown: "Neznamy",
   unknownLanguage: "Nezname",
+  siteSearchEmpty: "Na tomto webu nic neodpovídá „{{query}}“.",
+  siteSearchFailed: "Hledání teď není dostupné.",
+  siteSearchLabel: "Hledat na webu",
+  siteSearchPlaceholder: "Hledat na všech stránkách",
 };
 
 const MESSAGE_TABLES: Record<string, LanguageMessages> = {

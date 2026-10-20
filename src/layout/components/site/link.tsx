@@ -5,12 +5,14 @@ import { stripLocalePrefix } from "./../../../language/routing/runtime.js";
 
 type SiteLink = {
   active?: boolean;
+  description?: ReactNode;
   href?: string;
   key?: string;
   label: ReactNode;
   links?: SiteLink[];
   node?: ReactNode;
   rel?: string;
+  search?: boolean;
   softRedirect?: boolean;
   target?: string;
 };

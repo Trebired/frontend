@@ -10,7 +10,7 @@ import {
   portalElement,
   promoteZIndex,
 } from "#ccvonx3uhbte";
-import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const POPOVER_BASE_Z_INDEX = 1040;
 const POPOVER_TRIGGER_SELECTOR = `${frontendDataSelector("popover-trigger")}[aria-controls]`;
@@ -36,12 +36,18 @@ function findPopoverTarget(root: BindRoot, id: string) {
   return global instanceof HTMLElement ? global : null;
 }
 
+function adoptTone(trigger: HTMLElement, popover: HTMLElement) {
+  const dark = getComputedStyle(trigger).getPropertyValue(frontendCssVar("on-dark")).trim() === "1";
+  popover.setAttribute(frontendDataAttr("tone"), dark ? "dark" : "light");
+}
+
 function placePopover(trigger: HTMLElement, popover: HTMLElement) {
+  adoptTone(trigger, popover);
   const anchor = trigger.getBoundingClientRect();
-  const rect = popover.getBoundingClientRect();
+  const rect = { height: popover.offsetHeight, width: popover.offsetWidth };
   const gap = 8;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
+  const vw = document.documentElement.clientWidth || window.innerWidth;
+  const vh = document.documentElement.clientHeight || window.innerHeight;
   const below = anchor.bottom + gap + rect.height <= vh;
   const top = below
   ? anchor.bottom + gap

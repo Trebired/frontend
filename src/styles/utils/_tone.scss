@@ -1,5 +1,6 @@
 @use "@trebired/bundler/namespace" as ns;
 $plain:
+"ground",
 "text",
 "text-muted",
 "border",
@@ -16,6 +17,7 @@ $plain:
 
 @mixin on-dark {
   #{ns.css-var("on-dark")}: 1;
+  #{ns.css-var("ground")}: var(#{ns.css-var("dark-ground")}, var(#{ns.css-var("ink")}, #000));
   #{ns.css-var("text")}: var(#{ns.css-var("dark-text")}, var(#{ns.css-var("page")}, #fff));
   #{ns.css-var("text-muted")}: var(
     #{ns.css-var("dark-text-muted")},

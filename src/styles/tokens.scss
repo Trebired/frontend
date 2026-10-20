@@ -2,6 +2,7 @@
 @use "./utils/tone" as tone;
 :root {
   #{ns.css-var("on-dark")}: 0;
+  #{ns.css-var("ground")}: var(#{ns.css-var("page")}, #fff);
   @include tone.snapshot;
 
   --border-width: 1px;

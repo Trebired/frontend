@@ -262,6 +262,9 @@
       "#48bjo9mditvg": [
         "../../../src/inputs/advanced/dropdown/static/i18n/en.ts"
       ],
+      "#4cbgh5ijct2j": [
+        "../../../src/search/site/extract.ts"
+      ],
       "#4crvsdy99ga8": [
         "../../../scripts/verify/frontend/sidebar.mjs"
       ],
@@ -411,6 +414,9 @@
       ],
       "#6hfutrhvm6x6": [
         "../../../src/primitives/components/controls.tsx"
+      ],
+      "#6hkg6x38qd8z": [
+        "../../../scripts/verify/frontend/site/search.mjs"
       ],
       "#6k1axorwtxsf": [
         "../../../src/layout/components/site/footer.tsx"
@@ -775,6 +781,9 @@
       "#c55llzkpl4ob": [
         "../../../src/code/components/index.tsx"
       ],
+      "#c6ig033sbel1": [
+        "../../../src/search/site/load.ts"
+      ],
       "#c8jpcraitulu": [
         "../../../src/sidebar/dynamic/runtime/guards.ts"
       ],
@@ -924,6 +933,9 @@
       ],
       "#ea48edhq8nzv": [
         "../../../src/logs/client/socket/entries.ts"
+      ],
+      "#ebkckjon0wh1": [
+        "../../../src/layout/styles/site/sheet.scss"
       ],
       "#eck6shyxffsw": [
         "../../../src/language/routing/view.ts"
@@ -1081,6 +1093,9 @@
       "#gj21pqwy80ye": [
         "../../../src/styles/utils/layout-grid.scss"
       ],
+      "#gkakofcuxdtp": [
+        "../../../src/search/site/build.ts"
+      ],
       "#gknmswavy1t3": [
         "../../../src/actions/components/index.tsx"
       ],
@@ -1089,6 +1104,9 @@
       ],
       "#gorq8n1u6vrr": [
         "../../../src/inputs/advanced/upload.tsx"
+      ],
+      "#gptryh3aqocq": [
+        "../../../scripts/verify/frontend/site/header.mjs"
       ],
       "#gq44byr9jwxj": [
         "../../../src/language/direction.ts"
@@ -1360,9 +1378,6 @@
       "#ktmvwjrnvefy": [
         "../../../src/money/rates.ts"
       ],
-      "#kuao06o756nt": [
-        "../../../scripts/verify/frontend/site-header.mjs"
-      ],
       "#kv9urtb9dbq5": [
         "../../../src/language/shared.ts"
       ],
@@ -1512,6 +1527,9 @@
       ],
       "#nyut5tba5sxq": [
         "../../../src/primitives/styles/_wizard.scss"
+      ],
+      "#o3nfx9tieecc": [
+        "../../../src/layout/components/site/header/groups.tsx"
       ],
       "#o3tma6wa05fh": [
         "../../../src/config/default/scales.ts"
@@ -1924,6 +1942,9 @@
       "#vo5ds2njj5cm": [
         "../../../src/styles/utils/spacing/block.scss"
       ],
+      "#vp5p5q5lgj02": [
+        "../../../src/layout/components/site/header/search.tsx"
+      ],
       "#vu2zckbtt5gr": [
         "../../../src/graph/advanced/runtime/boot.tsx"
       ],
@@ -1932,6 +1953,9 @@
       ],
       "#vuk08leruwgb": [
         "../../../src/surface/index.ts"
+      ],
+      "#vvql6k05qa7a": [
+        "../../../src/search/site/query.ts"
       ],
       "#vw1309rgh9r2": [
         "../../../src/language/runtime-locale.ts"
@@ -2136,6 +2160,9 @@
       ],
       "#yv4ubgils4dc": [
         "../../../src/sidebar/dynamic/tree.ts"
+      ],
+      "#yw5n31q6m01b": [
+        "../../../src/layout/components/site/header/sheet.ts"
       ],
       "#ywso4j7v0tp7": [
         "../../../src/layout/boot.ts"

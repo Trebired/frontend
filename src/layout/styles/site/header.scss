@@ -23,8 +23,7 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   z-index: token("root-z-index", var(#{ns.css-var("z-header")}, 920));
   color: token("root-color", var(#{ns.css-var("text")}, currentColor));
   border-block-end: token("root-border", 1px solid color-mix(in srgb, currentColor 14%, transparent));
-  #{ns.css-var("shell-header-surface")}: token("root-bg", var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("shell-header-surface")});
+  background: token("root-bg", var(#{ns.css-var("ground")}, #fff));
   transition:
   color $tone-motion,
   border-color $tone-motion,
@@ -252,7 +251,6 @@ html:not(#{ns.data("header-tone")}) body:has(main > #{ns.data("dark")}:first-chi
 
 #{ns.data("site-header")}#{ns.data("dark")} {
   @include tone.on-dark;
-  #{ns.css-var("shell-header-surface")}: token("root-bg-dark", var(#{ns.css-var("ink")}, #000));
 }
 
 @media (min-width: 768px) {

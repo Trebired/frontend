@@ -38,6 +38,10 @@ async function verifyPopover(context) {
   assert.equal(popover.getAttribute("aria-hidden"), "true");
   assert.equal(popover.hasAttribute("inert"), true);
   assert.equal(document.activeElement, trigger);
+  assert.equal(popover.getAttribute("data-tbf-tone"), "light", "a popover opened from a light place is light");
+  trigger.style.setProperty("--tbf-on-dark", "1");
+  trigger.click();
+  assert.equal(popover.getAttribute("data-tbf-tone"), "dark", "and one opened from a dark band is dark, though it is portaled out of it");
 }
 
 async function verifyPopoverReactEvents(context) {

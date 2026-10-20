@@ -53,8 +53,8 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   background: transparent;
   cursor: pointer;
   padding-block: token("menu-link-py", 0);
-  padding-inline: token("menu-link-px", 0.2rem);
-  color: token("menu-group-label-color", currentColor);
+  padding-inline: 0;
+  color: token("menu-group-label-color", var(#{ns.css-var("text-muted")}, currentColor));
   font-family: token("menu-group-label-font-family", inherit);
   font-size: token("menu-group-label-font-size", 0.875rem);
   font-weight: token("menu-group-label-font-weight", inherit);
@@ -78,7 +78,7 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   grid-template-rows: 0fr;
   color: token("menu-color", var(#{ns.css-var("text")}, currentColor));
   border-block-end: token("menu-border", var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor));
-  background: token("menu-bg", var(#{ns.css-var("shell-header-surface")}, var(#{ns.css-var("page")}, #fff)));
+  background: token("menu-bg", var(#{ns.css-var("ground")}, #fff));
   box-shadow: token("menu-shadow", 0 24px 32px -24px rgb(0 0 0 / 18%));
   opacity: 0;
   visibility: hidden;
@@ -161,4 +161,18 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
 
 #{ns.data("site-header-compact", "true")} #{ns.element-class("site-header", "menu")} {
   display: grid;
+}
+
+#{ns.element-class("site-header", "menu-section")} {
+  display: grid;
+  gap: token("menu-links-gap", 0);
+}
+
+#{ns.element-class("site-header", "menu-section-links")} {
+  display: grid;
+  gap: token("menu-links-gap", 0);
+}
+
+#{ns.element-class("site-header", "menu-section-heading")} {
+  padding-block: token("menu-link-py", 0);
 }

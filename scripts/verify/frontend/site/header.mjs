@@ -20,8 +20,8 @@ async function verifySiteHeaderMarkup(context) {
     "every link appears twice, in the bar and in the menu, and both are the one text link",
   );
   assert.equal(/tbf-site-header__menu-link[\s"]/u.test(html), false, "the menu builds no link of its own");
-  const headerOnly = await fs.readFile(new URL("../../../src/layout/styles/site/header.scss", import.meta.url), "utf8");
-  const menuOnly = await fs.readFile(new URL("../../../src/layout/styles/site/menu.scss", import.meta.url), "utf8");
+  const headerOnly = await fs.readFile(new URL("../../../../src/layout/styles/site/header.scss", import.meta.url), "utf8");
+  const menuOnly = await fs.readFile(new URL("../../../../src/layout/styles/site/menu.scss", import.meta.url), "utf8");
   const header = `${headerOnly}\n${menuOnly}`;
   assert.ok(
     !header.includes('ns.css-var("glass-bg")'),
@@ -155,6 +155,99 @@ async function verifySiteHeaderBehaviour(context) {
   outside.remove();
 }
 
+const column = (label, keys) => ({ label, links: keys.map((key) => ({ description: `${key} line`, href: `/${key}`, label: key })) });
+
+const GROUPED = [
+  { href: "/blog", label: "Blog" },
+  { label: "More", links: [column("Who", ["about", "team"]), column("How", ["process"])] },
+  { label: "Short", links: LINKS },
+];
+
+async function verifySiteHeaderSheetMarkup(context) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement: h } = await import("react");
+  const react = await context.importDist("react");
+  const html = renderToStaticMarkup(h(react.SiteHeader, { brand: "Site", links: GROUPED }));
+  assert.ok(!html.includes("data-tbf-popover"), "a group opens the header's own band, never a popover");
+  assert.equal(html.match(/class="tbf-site-header__sheet"/gu)?.length, 1, "every group shares the one band under the bar");
+  const closed = /class="tbf-site-header__sheet"[^>]*inert=""[^>]*data-tbf-site-header-sheet="closed"/u;
+  assert.match(html, closed, "the band starts closed and inert");
+  const trigger = /<button aria-controls="([^"]+)"[^>]*aria-expanded="false" class="tbf-site-header__nav-trigger"/gu;
+  assert.ok(!/<button[^>]*aria-current[^>]*tbf-site-header__nav-trigger/u.test(html), "a group is a menu, not a page, so it never shows as current");
+  const triggers = [...html.matchAll(trigger)];
+  assert.equal(triggers.length, 2, "each group is a button that says what it controls and whether it is open");
+  for (const [, id] of triggers) {
+    assert.ok(html.includes(`id="${id}"`), "and the section it controls is in the markup for crawlers and no-script readers");
+  }
+  assert.ok(
+    html.includes('data-tbf-site-header-layout="columns"'),
+    "a group of groups lays out as columns",
+  );
+  assert.ok(html.includes('data-tbf-site-header-layout="list"'), "a group of plain links lays out as a list");
+  const headings = [...html.matchAll(/<h5 class="tbf-site-header__sheet-heading" id="([^"]+)"/gu)].map((match) => match[1]);
+  assert.equal(headings.length, 2, "every column has a real h5, styled by the page's own headings");
+  assert.equal(html.match(/class="tbf-site-header__sheet-links tbf-scroll-min"/gu)?.length, 2,
+  "a column's links sit on their heading's edge and scroll with the slim scrollbar once they pass the height cap");
+  assert.ok(!html.includes("tbf-indent"), "header links are navigation, not prose, so nothing in the header is indented");
+  for (const id of headings) assert.ok(html.includes(`aria-labelledby="${id}"`), "and the column is a group named by it");
+  assert.equal(html.match(/tbf-site-header__sheet-description/gu)?.length, 3, "each described link shows its line in the band");
+  assert.match(html, /class="tbf-site-header__sheet-entry"[^>]*><span class="tbf-text-link">about<\/span>/u,
+  "a band link labels itself with the same text link as the bar, so it shares its colour and states");
+  assert.equal(html.match(/<h5 class="tbf-site-header__menu-section-heading"/gu)?.length, 2, "the mobile menu keeps the column headings");
+  assert.match(html, /tbf-site-header__menu-group-label[^>]*><span class="tbf-text-link">More<\/span>/u,
+  "a group in the mobile menu is labelled by the same text link as every other entry");
+  const menu = html.split('class="tbf-site-header__menu"')[1] || "";
+  assert.ok(!menu.includes("sheet-description"), "and leaves the descriptions out, so the menu stays a short list");
+  const styles = await fs.readFile(path.join(context.distDir, "layout", "styles", "site", "sheet.scss"), "utf8");
+  assert.ok(
+    styles.includes('background: var(#{ns.css-var("ground")}, #fff);'),
+    "the band paints with the tone's ground, the same adaptive colour as the bar, so it follows its tone",
+  );
+  assert.ok(!/token\("sheet-/u.test(styles), "the band's layout is fixed, the same in every application");
+  assert.ok(styles.includes("clip-path: inset(0 0 100% 0);") && !styles.includes("grid-template-rows: 0fr"),
+  "the band opens at its full height behind a wipe, so its content never overflows mid-animation and no scrollbar flashes");
+  const place = await fs.readFile(new URL("../../../../src/popover/index.ts", import.meta.url), "utf8");
+  assert.ok(place.includes("popover.offsetWidth") && place.includes("documentElement.clientWidth"),
+  "a popover is placed by its laid-out size inside the scrollbar, not by the box its opening scale shrinks");
+}
+
+async function verifySiteHeaderSheetBehaviour(context) {
+  const { createElement: h } = await import("react");
+  const { createRoot } = await import("react-dom/client");
+  const { flushSync } = await import("react-dom");
+  const react = await context.importDist("react");
+  const host = document.createElement("div");
+  document.body.appendChild(host);
+  const root = createRoot(host);
+  flushSync(() => root.render(h(react.SiteHeader, { brand: "Site", links: GROUPED })));
+  const sheet = () => host.querySelector(".tbf-site-header__sheet").getAttribute("data-tbf-site-header-sheet");
+  const trigger = (index) => host.querySelectorAll(".tbf-site-header__nav-trigger")[index];
+  const visible = () => [...host.querySelectorAll(".tbf-site-header__sheet-section")].filter((section) => !section.hidden).length;
+  flushSync(() => trigger(0).click());
+  assert.equal(sheet(), "open", "pressing a group opens the band");
+  assert.equal(trigger(0).getAttribute("aria-expanded"), "true");
+  assert.equal(visible(), 1, "and shows that group's section alone");
+  flushSync(() => trigger(1).click());
+  assert.equal(trigger(1).getAttribute("aria-expanded"), "true", "pressing another group switches the band to it");
+  assert.equal(trigger(0).getAttribute("aria-expanded"), "false");
+  flushSync(() => trigger(1).click());
+  assert.equal(sheet(), "closed", "pressing the open group again closes the band");
+  flushSync(() => trigger(0).click());
+  flushSync(() => document.dispatchEvent(new document.defaultView.KeyboardEvent("keydown", { key: "Escape" })));
+  assert.equal(sheet(), "closed", "Escape closes the band");
+  flushSync(() => trigger(0).click());
+  flushSync(() => host.querySelector(".tbf-site-header__sheet-entry").click());
+  assert.equal(sheet(), "closed", "choosing a link closes the band");
+  flushSync(() => trigger(0).click());
+  const outside = document.createElement("p");
+  document.body.appendChild(outside);
+  flushSync(() => outside.dispatchEvent(new document.defaultView.PointerEvent("pointerdown", { bubbles: true })));
+  assert.equal(sheet(), "closed", "pressing outside the header closes the band");
+  flushSync(() => root.unmount());
+  host.remove();
+  outside.remove();
+}
+
 async function verifyGenericBottomBar(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement: h } = await import("react");
@@ -178,6 +271,8 @@ async function verifyGenericBottomBar(context) {
 async function verifySiteChrome(context) {
   await verifySiteHeaderMarkup(context);
   await verifySiteHeaderBehaviour(context);
+  await verifySiteHeaderSheetMarkup(context);
+  await verifySiteHeaderSheetBehaviour(context);
   await verifyGenericBottomBar(context);
 }
 

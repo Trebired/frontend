@@ -84,8 +84,8 @@ $frontend-input-tones: (
   @include component-scroll-min;
   padding: var(#{ns.css-var("ui-input-root-padding")}, 7px 9px);
   border-radius: var(--radius-sm);
-  border: $classic-field-border;
-  background: var(--background-surface-1);
+  border: var(#{ns.css-var("ui-input-root-border")}, $classic-field-border);
+  background: var(#{ns.css-var("ui-input-root-bg")}, var(--background-surface-1));
   color: var(--text-color);
   font-size: var(#{ns.css-var("ui-input-root-font-size")}, 14px);
   outline: var(--border-width) solid transparent;

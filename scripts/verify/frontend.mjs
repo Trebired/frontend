@@ -21,7 +21,8 @@ import { verifySidebar } from "./frontend/sidebar.mjs";
 import { verifyGraphs, verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
 import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyCopyComponents, verifyLocaleEndonyms } from "./frontend/copy.mjs";
-import { verifySiteChrome } from "./frontend/site-header.mjs";
+import { verifySiteChrome } from "./frontend/site/header.mjs";
+import { verifySiteSearch } from "./frontend/site/search.mjs";
 import { verifyHeadingLevels } from "./frontend/headings.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
@@ -70,6 +71,7 @@ async function verifyFrontendMain() {
   await verifyCopyComponents(context);
   await verifyLocaleEndonyms(context);
   await verifySiteChrome(context);
+  await verifySiteSearch(context);
   await verifyHeadingLevels(context);
   await verifyGraphs(context);
   await verifyWizard(context);

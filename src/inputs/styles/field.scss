@@ -3,13 +3,24 @@
   min-height: 36px;
   box-sizing: border-box;
   padding: 0 10px;
-  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000);
+  border: var(
+    #{ns.css-var("ui-input-root-border")},
+    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, #000)
+  );
   border-radius: var(#{ns.css-var("radius-sm")}, 0);
   color: var(#{ns.css-var("text")}, #000);
-  background: var(#{ns.css-var("surface")}, #fff);
+  background: var(#{ns.css-var("ui-input-root-bg")}, var(#{ns.css-var("surface")}, #fff));
+  outline: var(#{ns.css-var("border-width")}, 1px) solid transparent;
+  outline-offset: 5px;
+  transition:
+  color var(#{ns.css-var("tone-change")}),
+  background-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  border-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  outline-color var(#{ns.css-var("transition-fast")}, 180ms) ease,
+  outline-offset var(#{ns.css-var("transition-fast")}, 180ms) ease;
 }
 
 #{ns.class("input")}:focus-visible {
-  outline: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("focus")}, #000);
+  outline-color: var(#{ns.css-var("focus")}, #000);
   outline-offset: 2px;
 }

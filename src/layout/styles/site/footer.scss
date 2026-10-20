@@ -22,7 +22,7 @@
   @include tone.on-dark;
   background: var(
     #{ns.css-var("shell-footer-tone-inverse-bg")},
-    var(#{ns.css-var("ink")}, #000)
+    var(#{ns.css-var("ground")}, #000)
   );
 }
 

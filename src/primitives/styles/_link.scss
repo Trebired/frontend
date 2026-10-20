@@ -83,7 +83,9 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
 
 :where(a, button, [role="button"])[aria-expanded="true"] > #{ns.class("text-link")},
 
-:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")} {
+:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")},
+
+:where(a)[aria-current="page"] > #{ns.class("text-link")} {
   color: token("state-hover-color", var(#{ns.css-var("text")}, currentColor));
 }
 
@@ -93,7 +95,9 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
 
 :where(a, button, [role="button"])[aria-expanded="true"] > #{ns.class("text-link")}::after,
 
-:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")}::after {
+:where(a, button, [role="button"])[aria-current="true"] > #{ns.class("text-link")}::after,
+
+:where(a)[aria-current="page"] > #{ns.class("text-link")}::after {
   clip-path: inset(0 0 0 0);
 }
 

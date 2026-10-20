@@ -148,6 +148,20 @@ function verifyOutlineBoot(markup) {
   );
 }
 
+function verifyIndentStyles(indent) {
+  assert.match(indent, /"typography-indent-"/u, "the indent is its own system with its own token group");
+  assert.match(indent, /padding-inline-start: token\("size"/u, "its step is a token");
+  assert.match(indent, /border-inline-start: token\(\n\s*"border"/u, "and its rule variant draws the border from one too");
+  const flow = ":where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *))";
+  assert.ok(indent.includes(`${flow} {`), "text that follows a heading steps in, except where it is centered");
+  assert.ok(indent.includes('padding-inline-start: token("flow", 0px);'), "by the flow token, which is zero until an application sets it");
+  assert.match(indent, /\$centered: .*text-center.*error-page__body/u, "centered text is never indented, so it stays centered");
+  assert.ok(indent.includes("@supports (width: calc(1px * sqrt(1em / 1rem)))"), "the indent measures itself where the browser can divide lengths");
+  assert.ok(indent.includes("calc(#{$step} * (1em / 1rem) * sqrt(#{$title} / #{$reference}))"),
+  "and scales with its own text and with the root of its heading's size, so small text under a small title is not pushed far in");
+  assert.ok(indent.includes("@each $level in 6, 5, 4, 3, 2, 1"), "a block's largest heading names the title every indent inside it measures");
+}
+
 async function verifyIndent({ importDist, rootDir }) {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
@@ -161,14 +175,7 @@ async function verifyIndent({ importDist, rootDir }) {
 
   verifyHeadingLevels(html, proseHtml);
 
-  const indent = await fs.readFile(path.join(rootDir, "dist", "indent", "styles", "index.scss"), "utf8");
-  assert.match(indent, /"typography-indent-"/u, "the indent is its own system with its own token group");
-  assert.match(indent, /padding-inline-start: token\("size"/u, "its step is a token");
-  assert.match(indent, /border-inline-start: token\(\n\s*"border"/u, "and its rule variant draws the border from one too");
-  const flow = ":where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *))";
-  assert.ok(indent.includes(`${flow} {`), "text that follows a heading steps in, except where it is centered");
-  assert.ok(indent.includes('padding-inline-start: token("flow", 0px);'), "by the flow token, which is zero until an application sets it");
-  assert.match(indent, /\$centered: .*text-center.*error-page__body/u, "centered text is never indented, so it stays centered");
+  verifyIndentStyles(await fs.readFile(path.join(rootDir, "dist", "indent", "styles", "index.scss"), "utf8"));
 
   const document = await fs.readFile(path.join(rootDir, "dist", "document", "styles", "index.scss"), "utf8");
   assert.equal(

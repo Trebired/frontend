@@ -4,6 +4,14 @@
   @return var(#{ns.css-var("typography-indent-" + $name)}, $fallback);
 }
 
+$reference: var(#{ns.css-var("h2-font-size")}, 1.8rem);
+
+$title: var(#{ns.css-var("indent-title")}, #{$reference});
+
+@function scaled($step) {
+  @return calc(#{$step} * (1em / 1rem) * sqrt(#{$title} / #{$reference}));
+}
+
 #{ns.class("indent")} {
   padding-inline-start: token("size", var(#{ns.css-var("gap-md")}, 24px));
 }
@@ -19,4 +27,20 @@ $centered: "#{ns.class("text-center")}, #{ns.class("center")}, #{ns.class("error
 
 :where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *)) {
   padding-inline-start: token("flow", 0px);
+}
+
+@each $level in 6, 5, 4, 3, 2, 1 {
+  :where(:has(> h#{$level})) {
+    #{ns.css-var("indent-title")}: var(#{ns.css-var("h#{$level}-font-size")}, #{$reference});
+  }
+}
+
+@supports (width: calc(1px * sqrt(1em / 1rem))) {
+  #{ns.class("indent")} {
+    padding-inline-start: scaled(token("size", var(#{ns.css-var("gap-md")}, 24px)));
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) ~ :where(p, blockquote):not(:where(#{$centered}, #{$centered} *)) {
+    padding-inline-start: scaled(token("flow", 0px));
+  }
 }
