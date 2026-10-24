@@ -86,12 +86,23 @@ function scrollStateListenerSource(): string[] {
   ];
 }
 
+function scrollRestoreSource(): string[] {
+  return [
+    "if(S>0&&!location.hash&&'scrollRestoration' in history){",
+    "history.scrollRestoration='manual';h.style.visibility='hidden';",
+    "var Y=S,z=function(){if(!Y)return;window.scrollTo(0,Y);Y=0;",
+    "h.style.visibility='';history.scrollRestoration='auto'};",
+    "document.addEventListener('DOMContentLoaded',z,{once:true});setTimeout(z,3000)}",
+  ];
+}
+
 function createScrollStateBootScript(options: ScrollStateOptions = {}): string {
   return [
     "(function(){try{",
     `var A=${JSON.stringify(SCROLL_STATE_ATTRIBUTE)},G=${JSON.stringify(SCROLL_SETTLING_ATTRIBUTE)};`,
     `var T=${scrollStateThreshold(options)},h=document.documentElement;`,
     ...scrollStateSeedSource(),
+    ...scrollRestoreSource(),
     ...scrollStateUpdateSource(),
     "u();",
     ...scrollStateSettleSource(),

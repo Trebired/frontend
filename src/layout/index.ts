@@ -192,6 +192,10 @@ export {
 } from "./scroll.js";
 export type *from "./scroll.js";
 export {
+  configureSiteLinks,
+} from "./links.js";
+export type { SiteLinksOptions } from "./links.js";
+export {
   createSiteHeaderToneScript,
 } from "./header/tone.js";
 export type *from "./header/tone.js";

@@ -17,7 +17,7 @@ type ProseLink = {
 };
 
 const LINK_MARKER = frontendMarkerName("link");
-const BRACKET_LINK = /\[([^\]]+)\]\((\/[^)]*)\)/gu;
+const BRACKET_LINK = /\[([^\]]+)\]\((\/[^)]*|https?:\/\/[^)\s]+)\)/gu;
 const MARKED_LINK = new RegExp(
   `<!--\\s*${LINK_MARKER}\\s+([^>]*?)-->([\\s\\S]*?)<!--\\s*/${LINK_MARKER}\\s*-->`,
   "gu",
@@ -39,13 +39,14 @@ function markedLink(match: RegExpMatchArray): ProseLink | null {
 }
 
 function bracketLink(match: RegExpMatchArray): ProseLink {
+  const href = match[2] as string;
   return {
-    href: match[2] as string,
+    href,
     label: match[1] as string,
     length: match[0].length,
     reload: false,
     start: match.index ?? 0,
-    tab: false,
+    tab: !href.startsWith("/"),
   };
 }
 

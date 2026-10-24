@@ -2,14 +2,15 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const LINKS = [{ href: "#a", label: "Alpha" }, { href: "#b", label: "Beta" }];
+import { useLinks, verifySiteLinks } from "./links.mjs";
 
 async function verifySiteHeaderMarkup(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement: h } = await import("react");
   const react = await context.importDist("react");
+  await useLinks(context, "plain");
   const html = renderToStaticMarkup(h(react.SiteHeader, {
-        actions: h("button", { type: "button" }, "Lang"), brand: "Site", labels: { openMenu: "Open" }, links: LINKS, softRedirect: true,
+        actions: h("button", { type: "button" }, "Lang"), brand: "Site", labels: { openMenu: "Open" }, softRedirect: true,
   }));
   assert.ok(html.includes('data-tbf-site-header-open="false"'), "the site header starts closed");
   assert.ok(html.includes('aria-expanded="false"') && html.includes('aria-label="Open"'), "the menu toggle carries its state and label");
@@ -63,6 +64,7 @@ async function verifySiteHeaderMarkup(context) {
   assert.match(toneScript, /tbf:page-change/u, "and with a soft navigation");
   assert.ok(html.includes("tbf-site-header__menu-footer"), "actions are repeated in the mobile menu footer");
   assert.ok(html.includes("data-tbf-soft-redirect"), "softRedirect marks the header links");
+  await useLinks(context, "empty");
   const plain = renderToStaticMarkup(h(react.SiteHeader, { actions: "Lang", brand: "Site" }));
   assert.ok(plain.includes('data-tbf-site-header-menu="false"') && !plain.includes("tbf-site-header__toggle"),
   "a header without links has no menu toggle and keeps its actions visible");
@@ -127,7 +129,8 @@ async function verifySiteHeaderBehaviour(context) {
   const host = document.createElement("div");
   document.body.appendChild(host);
   const root = createRoot(host);
-  flushSync(() => root.render(h(react.SiteHeader, { actions: h("a", { href: "#cta" }, "CTA"), brand: "Site", links: LINKS })));
+  await useLinks(context, "plain");
+  flushSync(() => root.render(h(react.SiteHeader, { actions: h("a", { href: "#cta" }, "CTA"), brand: "Site" })));
   const header = () => host.querySelector("[data-tbf-site-header]").getAttribute("data-tbf-site-header-open");
   const click = (selector) => flushSync(() => host.querySelector(selector).click());
   const wait = () => new Promise((resolve) => setTimeout(resolve, 20));
@@ -155,19 +158,12 @@ async function verifySiteHeaderBehaviour(context) {
   outside.remove();
 }
 
-const column = (label, keys) => ({ label, links: keys.map((key) => ({ description: `${key} line`, href: `/${key}`, label: key })) });
-
-const GROUPED = [
-  { href: "/blog", label: "Blog" },
-  { label: "More", links: [column("Who", ["about", "team"]), column("How", ["process"])] },
-  { label: "Short", links: LINKS },
-];
-
 async function verifySiteHeaderSheetMarkup(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement: h } = await import("react");
   const react = await context.importDist("react");
-  const html = renderToStaticMarkup(h(react.SiteHeader, { brand: "Site", links: GROUPED }));
+  await useLinks(context, "grouped");
+  const html = renderToStaticMarkup(h(react.SiteHeader, { brand: "Site" }));
   assert.ok(!html.includes("data-tbf-popover"), "a group opens the header's own band, never a popover");
   assert.equal(html.match(/class="tbf-site-header__sheet"/gu)?.length, 1, "every group shares the one band under the bar");
   const closed = /class="tbf-site-header__sheet"[^>]*inert=""[^>]*data-tbf-site-header-sheet="closed"/u;
@@ -191,7 +187,7 @@ async function verifySiteHeaderSheetMarkup(context) {
   assert.ok(!html.includes("tbf-indent"), "header links are navigation, not prose, so nothing in the header is indented");
   for (const id of headings) assert.ok(html.includes(`aria-labelledby="${id}"`), "and the column is a group named by it");
   assert.equal(html.match(/tbf-site-header__sheet-description/gu)?.length, 3, "each described link shows its line in the band");
-  assert.match(html, /class="tbf-site-header__sheet-entry"[^>]*><span class="tbf-text-link">about<\/span>/u,
+  assert.match(html, /class="tbf-text-link tbf-site-header__sheet-entry"[^>]*><span>about<\/span>/u,
   "a band link labels itself with the same text link as the bar, so it shares its colour and states");
   assert.equal(html.match(/<h5 class="tbf-site-header__menu-section-heading"/gu)?.length, 2, "the mobile menu keeps the column headings");
   assert.match(html, /tbf-site-header__menu-group-label[^>]*><span class="tbf-text-link">More<\/span>/u,
@@ -219,7 +215,8 @@ async function verifySiteHeaderSheetBehaviour(context) {
   const host = document.createElement("div");
   document.body.appendChild(host);
   const root = createRoot(host);
-  flushSync(() => root.render(h(react.SiteHeader, { brand: "Site", links: GROUPED })));
+  await useLinks(context, "grouped");
+  flushSync(() => root.render(h(react.SiteHeader, { brand: "Site" })));
   const sheet = () => host.querySelector(".tbf-site-header__sheet").getAttribute("data-tbf-site-header-sheet");
   const trigger = (index) => host.querySelectorAll(".tbf-site-header__nav-trigger")[index];
   const visible = () => [...host.querySelectorAll(".tbf-site-header__sheet-section")].filter((section) => !section.hidden).length;
@@ -269,6 +266,7 @@ async function verifyGenericBottomBar(context) {
 }
 
 async function verifySiteChrome(context) {
+  await verifySiteLinks(context);
   await verifySiteHeaderMarkup(context);
   await verifySiteHeaderBehaviour(context);
   await verifySiteHeaderSheetMarkup(context);

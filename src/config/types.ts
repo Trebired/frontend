@@ -1,9 +1,4 @@
 import type {
-  FrontendLanguageLocale,
-  FrontendLanguageLocaleMessages,
-} from "./../language/config.js";
-
-import type {
   FrontendAssetsConfig,
   FrontendFontConfig,
   FrontendFontDisplay,
@@ -24,6 +19,8 @@ import type {
 
 import type { FrontendA11yConfig, NormalizedFrontendA11yConfig } from "./types/a11y.js";
 import type { FrontendMoneyConfig, NormalizedFrontendMoneyConfig } from "./types/money.js";
+import type { FrontendLinksConfig, NormalizedFrontendLinksConfig } from "./types/links.js";
+import type { FrontendLanguageConfig, FrontendLocaleStrategy, NormalizedFrontendLanguageConfig } from "./types/language.js";
 
 type FrontendSystemKey =
 |"a11y"
@@ -34,6 +31,7 @@ type FrontendSystemKey =
 |"flash"
 |"fullscreen"
 |"graph"
+|"hollow"
 |"icons"
 |"inputs"
 |"layer"
@@ -195,15 +193,6 @@ type FrontendRuntimeConfig = {
   theme?: FrontendThemeConfig;
 };
 
-type FrontendLanguageConfig = {
-  defaultLocale?: string;
-  error?: Record<string, FrontendLanguageLocaleMessages>;
-  locales?: FrontendLanguageLocale[];
-  strategy?: FrontendLocaleStrategy;
-};
-
-type FrontendLocaleStrategy = "none" | "prefix" | "prefix-all" | "query";
-
 type FrontendConfig = {
   a11y?: FrontendA11yConfig;
   assets?: FrontendAssetsConfig;
@@ -212,6 +201,7 @@ type FrontendConfig = {
   design?: FrontendDesignConfig;
   forVersion?: string;
   language?: FrontendLanguageConfig;
+  links?: FrontendLinksConfig;
   money?: FrontendMoneyConfig;
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
@@ -297,13 +287,6 @@ type NormalizedFrontendRuntimeConfig = {
   theme: NormalizedFrontendThemeConfig;
 };
 
-type NormalizedFrontendLanguageConfig = {
-  defaultLocale: string;
-  error: Record<string, FrontendLanguageLocaleMessages>;
-  locales: FrontendLanguageLocale[];
-  strategy: FrontendLocaleStrategy;
-};
-
 type NormalizedFrontendConfig = {
   a11y: NormalizedFrontendA11yConfig;
   assets: NormalizedFrontendAssetsConfig;
@@ -312,6 +295,7 @@ type NormalizedFrontendConfig = {
   design: NormalizedFrontendDesignConfig;
   forVersion: string;
   language: NormalizedFrontendLanguageConfig;
+  links: NormalizedFrontendLinksConfig | null;
   money: NormalizedFrontendMoneyConfig;
   prefix: string;
   runtime: NormalizedFrontendRuntimeConfig;
@@ -335,9 +319,11 @@ export type {
   FrontendA11yConfig,
   NormalizedFrontendA11yConfig,
   FrontendLanguageConfig,
+  FrontendLinksConfig,
   FrontendMoneyConfig,
   FrontendLocaleStrategy,
   NormalizedFrontendLanguageConfig,
+  NormalizedFrontendLinksConfig,
   NormalizedFrontendMoneyConfig,
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,

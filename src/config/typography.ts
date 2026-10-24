@@ -134,5 +134,18 @@ function renderHeadingVariantRules(config: NormalizedFrontendConfig): string[] {
   : lines;
 }
 
-export { renderContainerRules, renderHeadingVariantRules };
+function renderOutlineSelectionRule(config: NormalizedFrontendConfig): string[] {
+  const selection = config.design.semantics.selection;
+  const bg = isPlainRecord(selection) ? selection.bg : undefined;
+  if (typeof bg !== "string") return [];
+  const outline = `var(--${config.prefix}-typography-outline-color, var(--${config.prefix}-text, #000))`;
+  return [
+    "",
+    `:root .${FRONTEND_PREFIX}-text-outline::selection {`,
+    `  background-color: ${bg.replace(/currentcolor/giu, outline)} !important;`,
+    "}",
+  ];
+}
+
+export { renderContainerRules, renderHeadingVariantRules, renderOutlineSelectionRule };
 export type { ResponsiveValue };

@@ -15,6 +15,8 @@ import {
   type SheetProps,
 } from "./header/groups.js";
 import { isSiteLinkGroup, siteLinkKey, type SiteLink } from "./link.js";
+import { resolveSiteLinks } from "./../../links.js";
+import { useLocale } from "./../../../react/locale.js";
 
 type SiteHeaderLink = SiteLink;
 
@@ -32,7 +34,6 @@ type SiteHeaderProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   brandHref?: false | string;
   labels?: SiteHeaderLabels;
   lang?: string;
-  links?: SiteHeaderLink[];
   menuActions?: ReactNode;
   softRedirect?: boolean;
 };
@@ -134,8 +135,8 @@ function SiteHeaderToggle(props: SiteHeaderProps & { menuId: string; state: Retu
   );
 }
 
-function SiteHeaderMenu(props: SiteHeaderProps & { menuId: string; state: ReturnType<typeof useSiteHeaderMenu> }) {
-  const { actions, labels, links = [], menuActions = actions, menuId, softRedirect, state } = props;
+function SiteHeaderMenu(props: SiteHeaderProps & { links: SiteHeaderLink[]; menuId: string; state: ReturnType<typeof useSiteHeaderMenu> }) {
+  const { actions, labels, links, menuActions = actions, menuId, softRedirect, state } = props;
   return (
     <div
     aria-hidden={!state.open}
@@ -179,9 +180,12 @@ function SiteHeaderNav(props: SheetProps & { labels?: SiteHeaderLabels; links: S
 
 function SiteHeader(props: SiteHeaderProps) {
   const {
-    actions, brand, brandHref = "/", className, labels, lang, links = [], menuActions,
+    actions, brand, brandHref = "/", className, labels, lang: givenLang, menuActions,
     softRedirect, ...rest
   } = props;
+  const { locale } = useLocale();
+  const lang = givenLang || locale;
+  const links = resolveSiteLinks(lang)?.header || [];
   const state = useSiteHeaderMenu();
   const baseId = useId().replace(/:/gu, "");
   const menuId = `${baseId}_site_menu`;
@@ -211,7 +215,7 @@ function SiteHeader(props: SiteHeaderProps) {
     {hasMenu ? <SiteHeaderToggle {...props} menuId={menuId} state={state} /> : null}
     </div>
     <SiteHeaderSheetPanel lang={lang} links={links} sheet={sheet} sheetId={sheetId} softRedirect={softRedirect} />
-    {hasMenu ? <SiteHeaderMenu {...props} menuId={menuId} state={state} /> : null}
+    {hasMenu ? <SiteHeaderMenu {...props} lang={lang} links={links} menuId={menuId} state={state} /> : null}
     </header>
   );
 }

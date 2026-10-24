@@ -12,7 +12,7 @@ function toneMeasureSource(): string[] {
   return [
     `var H=${JSON.stringify(HEADER_SELECTOR)},D=${JSON.stringify(DARK_ATTRIBUTE)};`,
     `var T=${JSON.stringify(TONE_ATTRIBUTE)},B=${JSON.stringify(BAND_SELECTOR)};`,
-    "var u=function(){var h=document.querySelector(H);if(!h)return;",
+    "var u=function(){if(document.documentElement.style.visibility==='hidden')return;var h=document.querySelector(H);if(!h)return;",
     "var r=h.getBoundingClientRect(),l=r.top+r.height/2,b=null,n=-Infinity,s=document.querySelectorAll(B);",
     "for(var i=0;i<s.length;i++){var t=s[i].getBoundingClientRect().top;if(t>l||t<=n)continue;n=t;b=s[i]}",
     "if(!b)return;",
@@ -27,7 +27,9 @@ function toneHoldSource(): string[] {
     "(document.head||document.documentElement).appendChild(e);",
     "u();",
     "var f=function(){if(e.parentNode)e.parentNode.removeChild(e)};",
-    "if(window.requestAnimationFrame)requestAnimationFrame(function(){requestAnimationFrame(f)});else setTimeout(f,32);",
+    "var g=function(){if(document.documentElement.style.visibility==='hidden'){requestAnimationFrame(g);return}",
+    "u();requestAnimationFrame(function(){requestAnimationFrame(f)})};",
+    "if(window.requestAnimationFrame)requestAnimationFrame(g);else setTimeout(f,32);",
   ];
 }
 

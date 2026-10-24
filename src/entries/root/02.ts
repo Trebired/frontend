@@ -110,6 +110,7 @@ export {
   SITE_FOOTER_ROOT_SELECTOR,
   SITE_HEADER_ROOT_SELECTOR,
   bindLayouts,
+  configureSiteLinks,
   createLayoutBootScript,
   createSiteHeaderToneScript,
   ensureLayoutPortalRoot,

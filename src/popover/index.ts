@@ -6,11 +6,12 @@ import {
   type BindRoot,
 } from "#er0dlx1gtbzh";
 import {
+  adoptLayerTone,
   moveLayerElementToTop,
   portalElement,
   promoteZIndex,
 } from "#ccvonx3uhbte";
-import { frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const POPOVER_BASE_Z_INDEX = 1040;
 const POPOVER_TRIGGER_SELECTOR = `${frontendDataSelector("popover-trigger")}[aria-controls]`;
@@ -36,13 +37,8 @@ function findPopoverTarget(root: BindRoot, id: string) {
   return global instanceof HTMLElement ? global : null;
 }
 
-function adoptTone(trigger: HTMLElement, popover: HTMLElement) {
-  const dark = getComputedStyle(trigger).getPropertyValue(frontendCssVar("on-dark")).trim() === "1";
-  popover.setAttribute(frontendDataAttr("tone"), dark ? "dark" : "light");
-}
-
 function placePopover(trigger: HTMLElement, popover: HTMLElement) {
-  adoptTone(trigger, popover);
+  adoptLayerTone(trigger, popover);
   const anchor = trigger.getBoundingClientRect();
   const rect = { height: popover.offsetHeight, width: popover.offsetWidth };
   const gap = 8;

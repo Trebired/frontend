@@ -1,5 +1,23 @@
 # Changelog
 
+## 29.0.0
+
+**Breaking: the site chrome reads its links from the config.** An application declares every link once under `links` in the frontend config: a key, an `href`, the `site` a path belongs to and whether it is `external`, grouped into `categories` and listed per site in `sets`, with labels, descriptions and headings per locale in `messages`. `SiteHeader`, its sitemap sheet and `SiteFooter` read that declaration, so a link is labelled, targeted and marked the same way wherever it appears. `SiteHeader` no longer takes `links`; `SiteFooter` no longer takes `columns`, and its `site` band no longer takes `links`. Hand the config to `configureSiteLinks(links, { set, origins })` in the server and client entries.
+
+- Added external links. A link with `external: true` opens in a new tab with `rel="noopener noreferrer"`, never soft-navigates and carries the external-link icon after its label in the bar, the sheet, the mobile menu and the footer. `links.icon` replaces the icon.
+- Added the footer's note links. A set's `footer.note` links sit beside the footer's `note`.
+- Added links across sites. A link whose `site` is not the rendering set's own takes that site's origin from `origins` and hands the reader's locale over.
+- Added validation of the links config when it is read: a key no link defines, a missing label in any locale and a header group with neither links nor the sitemap are refused with the path that is wrong.
+- Removed `node` and `active` from a site link. A header link is a link from the config; it cannot be replaced by arbitrary markup or forced current.
+- Added `@trebired/frontend/hollow`. `HollowText` prints outlined text with riso shapes inside its letters, coloured by an `inks` pair or by the nearest `HollowPalette`; the print is sized in `em`, so the server markup carries it on the first paint, and each layer is swapped for a cached bitmap after hydration. `seeded()` and `scatter()` export the shape generator for prints that should match it. The print comes from `@trebired/overprint`, an optional peer dependency an application installs only when it imports the subpath.
+- Fixed selected outline text losing its outline. `tbf-text-outline` keeps its outline while selected and only the outline takes the selection colour; `design.semantics.selection.bg` colours it when set.
+- Added scroll restoration on reload and back/forward navigation. The scroll boot script restores the reader's position itself once the document is parsed, with the page hidden until then, instead of letting the browser restore it against a page still parsing and correct it with a visible jump. The header tone script waits for the page to show before it measures.
+- Changed scroll reveals to start from server markup that is visible. A target already on screen or above it when the runtime binds is shown without a transition, targets reached by a soft navigation are shown the same way, and only what is still below the fold is hidden. Reveal motion runs only for readers without `prefers-reduced-motion`. The root marker is now `data-tbf-reveal-root="live"`.
+- Changed tooltips to take the tone of the element that opened them, as popovers already did.
+- Added external short-form prose links. `[GitHub](https://github.com/Trebired)` opens in a new tab like the comment pair with `tab`.
+- Changed the text link's underline to scale with its text: the offset, the radius and the thickness are in `em`, with a 1px minimum. The link shows the pointer cursor, and its font weight, letter spacing and case tokens no longer outrank utility classes.
+- Changed a sheet entry to be one text link: the whole entry carries the link's colour and states, its label and description inside it.
+
 ## 28.2.0
 
 - Changed `SiteHeader` groups to open the header's sheet instead of a popover. The sheet is a band under the bar, as wide as the header, painted with the bar's surface and following its tone, with its content on the bar's gutter. It opens on hover and on press, closes when the pointer leaves the header, on a second press, on Escape, on a press or focus outside the header and when a link in it is chosen, and moves focus to its first link when opened from the keyboard. Its layout has no tokens and is the same in every application.

@@ -60,6 +60,13 @@
   gap: var(#{ns.css-var("shell-footer-site-links-gap")}, var(#{ns.css-var("gap-md")}, 24px));
 }
 
+#{ns.element-class("site-footer", "note-links")} {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(#{ns.css-var("shell-footer-note-links-gap")}, var(#{ns.css-var("gap-md")}, 24px));
+}
+
 #{ns.element-class("site-footer", "brand")} {
   display: flex;
   min-width: 0;

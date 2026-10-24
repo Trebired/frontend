@@ -90,11 +90,12 @@ async function verifySiteSearchHeader(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const { createElement: h } = await import("react");
   const react = await importDist("react");
-  const links = [
-    { label: "Vše", links: [{ href: "/about", label: "O nás" }], search: true },
-    { label: "Jiné", links: [{ href: "/x", label: "X" }] },
-  ];
-  const html = renderToStaticMarkup(h(react.SiteHeader, { brand: "Site", lang: "cs", links }));
+  (await context.importDistRoot()).configureSiteLinks({
+      links: { about: { href: "/about" }, x: { href: "/x" } },
+      messages: { cs: { groups: { all: "Vše", other: "Jiné" }, links: { about: "O nás", x: "X" } } },
+      sets: { site: { header: [{ group: "all", links: ["about"], search: true }, { group: "other", links: ["x"] }] } },
+    }, { set: "site" });
+  const html = renderToStaticMarkup(h(react.SiteHeader, { brand: "Site", lang: "cs" }));
   const fields = html.match(/class="tbf-input tbf-site-header__search-input"/gu)?.length;
   assert.equal(fields, 2, "a searchable group carries the field in the band and in the mobile menu");
   assert.ok(html.includes('placeholder="Hledat na všech stránkách"'), "the field speaks the header's language");

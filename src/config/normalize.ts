@@ -1,6 +1,7 @@
 import { normalizeA11yConfig } from "./a11y.js";
 import { DEFAULT_FRONTEND_CONFIG, SUPPORTED_ICON_PACKS, SYSTEM_ORDER, THEME_MODE_ATTRIBUTE } from "./default/config.js";
 import { normalizeLanguageConfig } from "./language.js";
+import { normalizeLinksConfig } from "./links.js";
 import { normalizeMoneyConfig } from "./money.js";
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import { normalizeComponentsConfig } from "./component-tokens.js";
@@ -44,6 +45,7 @@ const TOP_LEVEL_FIELDS = [
   "design",
   "forVersion",
   "language",
+  "links",
   "money",
   "runtime",
   "systems",
@@ -247,6 +249,7 @@ function normalizeFrontendConfig(
     design,
     forVersion: normalizeForVersion(source, options),
     language: normalizeLanguageConfig(source.language),
+    links: normalizeLinksConfig(source.links),
     money: normalizeMoneyConfig(source.money),
     prefix: DEFAULT_FRONTEND_CONFIG.prefix,
     runtime,

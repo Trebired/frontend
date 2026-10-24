@@ -1,13 +1,24 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-function render(react, currentUrl, links) {
+function linksConfig(links) {
+  const keys = links.map((_, index) => `link_${index}`);
+  return {
+    links: Object.fromEntries(links.map((link, index) => [keys[index], { href: link.href }])),
+    messages: { en: { links: Object.fromEntries(links.map((link, index) => [keys[index], link.label])) } },
+    sets: { site: { header: keys } },
+  };
+}
+
+function render({ react, root }, currentUrl, links) {
+  root.configureSiteLinks(linksConfig(links), { set: "site" });
   return renderToStaticMarkup(
     h(react.RenderCurrentUrlProvider, { currentUrl },
-      h(react.SiteHeader, { brand: "Brand", links })),
+      h(react.SiteHeader, { brand: "Brand" })),
   );
 }
 
@@ -49,25 +60,15 @@ async function verifyPendingUrl(rootDir) {
   );
 }
 
-function verifyCustomNode(react) {
-  const custom = render(react, "https://example.com/", [
-      { href: "/", label: "Home" },
-      { key: "own", label: "unused", node: h("button", { className: "own-control", type: "button" }, "Anything") },
-  ]);
-  assert.ok(custom.includes("own-control"), "a link may be any node the application hands the shell");
-  assert.equal(/<a[^>]*own-control/u.test(custom), false, "and the shell wraps it in no anchor of its own");
-  assert.equal(custom.includes(">unused<"), false, "a node replaces the label rather than rendering beside it");
-}
-
 async function verifyHeaderActiveLinks(importDist, rootDir) {
-  const react = await importDist("react");
+  const dist = { react: await importDist("react"), root: await import(pathToFileURL(path.join(rootDir, "dist", "index.js")).href) };
   const links = [
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
     { href: "/contact", label: "Contact" },
   ];
 
-  const onServices = render(react, "https://example.com/services", links);
+  const onServices = render(dist, "https://example.com/services", links);
   assert.match(
     onServices,
     /href="\/services" aria-current="page"|aria-current="page"[^>]*href="\/services"/u,
@@ -76,16 +77,16 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
   assert.ok(onServices.includes("tbf-text-link--active"), "and carries the active modifier on the one text link");
   assert.equal((onServices.match(/aria-current="page"/gu) || []).length, 2, "once in the nav and once in the menu, and nowhere else");
 
-  const onHome = render(react, "https://example.com/", links);
+  const onHome = render(dist, "https://example.com/", links);
   assert.equal((onHome.match(/aria-current="page"/gu) || []).length, 2, "the root link matches only the root");
 
-  const nested = render(react, "https://example.com/services/hosting", links);
+  const nested = render(dist, "https://example.com/services/hosting", links);
   assert.ok(nested.includes("tbf-text-link--active"), "a child route still marks its section");
 
-  const prefixed = render(react, "https://example.com/cs/services", links);
+  const prefixed = render(dist, "https://example.com/cs/services", links);
   assert.ok(prefixed.includes("tbf-text-link--active"), "a locale prefix in the path does not stop the match");
 
-  const sectioned = render(react, "https://example.com/", [
+  const sectioned = render(dist, "https://example.com/", [
       { href: "/", label: "Home" },
       { href: "/#about", label: "About" },
       { href: "/#contact", label: "Contact" },
@@ -101,10 +102,6 @@ async function verifyHeaderActiveLinks(importDist, rootDir) {
     "and it is the page link, not a fragment",
   );
 
-  const explicit = render(react, "https://example.com/services", [{ active: false, href: "/services", label: "Services" }]);
-  assert.equal(explicit.includes("aria-current"), false, "an explicit active wins over the address");
-
-  verifyCustomNode(react);
   await verifyPendingUrl(rootDir);
 
   await verifyOneLinkStyle(rootDir, onServices);

@@ -4,7 +4,7 @@
   @return var(#{ns.css-var("ui-link-" + $name)}, $fallback);
 }
 
-$radius: token("root-underline-radius", 0.3rem);
+$radius: token("root-underline-radius", 0.3em);
 $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
 
 #{ns.class("text-link")} {
@@ -12,13 +12,11 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
   position: relative;
   width: fit-content;
   max-width: 100%;
+  cursor: pointer;
   color: token(
     "root-color",
     var(#{ns.css-var("text-muted")}, color-mix(in srgb, currentColor 78%, transparent))
   );
-  font-weight: token("root-font-weight", inherit);
-  letter-spacing: token("root-letter-spacing", normal);
-  text-transform: token("root-text-transform", none);
   text-decoration-line: token("root-decoration-line", none);
   text-decoration-color: token("root-decoration-color", currentColor);
   text-decoration-style: token("root-decoration-style", solid);
@@ -27,13 +25,19 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
   transition: color $motion, text-decoration-color $motion;
 }
 
+:where(#{ns.class("text-link")}) {
+  font-weight: token("root-font-weight", inherit);
+  letter-spacing: token("root-letter-spacing", normal);
+  text-transform: token("root-text-transform", none);
+}
+
 #{ns.class("text-link")}::after {
   position: absolute;
   inset-inline: 0;
-  bottom: token("root-underline-offset", -0.35rem);
+  bottom: token("root-underline-offset", -0.35em);
   height: $radius;
   border-block-end-style: solid;
-  border-block-end-width: token("root-underline-height", 1px);
+  border-block-end-width: token("root-underline-height", max(1px, 0.0625em));
   border-block-end-color: token("root-underline-color", currentColor);
   border-end-end-radius: $radius;
   border-end-start-radius: $radius;
@@ -107,4 +111,10 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
   #{ns.class("text-link")}::after {
     transition: none;
   }
+}
+
+#{ns.element-class("text-link", "external")} {
+  display: inline-flex;
+  align-items: center;
+  gap: var(#{ns.css-var("gap-xs2")}, 4px);
 }

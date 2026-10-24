@@ -1,5 +1,5 @@
 import { clampNumber, isProgrammaticFocus, queryAll, type BindRoot } from "#er0dlx1gtbzh";
-import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
+import { adoptLayerTone, portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const TOOLTIP_BASE_Z_INDEX = 1100;
@@ -96,6 +96,7 @@ function measureLayer(layer: HTMLElement) {
 }
 
 function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
+  adoptLayerTone(trigger, layer);
   const anchor = trigger.getBoundingClientRect();
   const tip = measureLayer(layer);
   const gap = 8;

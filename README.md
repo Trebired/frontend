@@ -109,11 +109,13 @@ meta: {
 }
 ```
 
-It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scroll state and the reader's locale, and the body script that gives the header its tone before the first paint. `scroll` and `header` are on unless passed `false`, and `locale` is given by a site that has one. Nothing else has to be arranged by hand.
+It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scroll state and the reader's locale, and the body script that gives the header its tone before the first paint. On a reload or a back/forward navigation the scroll script also restores the reader's position itself: the browser would restore it against the first layout of a page that is still parsing and correct it when loading ends, a visible jump on a long page, so the script switches that navigation to manual restoration, keeps the page invisible until the document is parsed, then scrolls to the saved position and shows it in the same frame. `scroll` and `header` are on unless passed `false`, and `locale` is given by a site that has one. Nothing else has to be arranged by hand.
+
+There is no boot step for scroll reveals: the server renders every target visible, and `bindFrontendRuntime` with `reveal.selector` shows whatever is already on screen or above it without a transition when it binds after hydration, and hides only what is still below the fold, so nothing a reader can see changes and no hydrated element is touched before React owns it.
 
 ### Site Header
 
-`SiteHeader` is the whole header of a content site: the sticky bar, the brand, the desktop navigation, the actions beside it, and the mobile menu behind the toggle. The menu is a full-width panel under the bar; it lists the same links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. The desktop navigation appears when it fits and not at a width: the header measures the bar against the links it was given and falls back to the menu whenever they would collide with the actions, so a site with four links keeps its bar on a tablet and a site with eight does not have to cram them at 820px. Pass the links as data, not markup:
+`SiteHeader` is the whole header of a content site: the sticky bar, the brand, the desktop navigation, the actions beside it, and the mobile menu behind the toggle. The menu is a full-width panel under the bar; it lists the same links, repeats the actions in a footer row, and closes on a link, on Escape, on a press outside the header and when the viewport grows past 768px. The desktop navigation appears when it fits and not at a width: the header measures the bar against its links and falls back to the menu whenever they would collide with the actions, so a site with four links keeps its bar on a tablet and a site with eight does not have to cram them at 820px. The links come from the application's links config (see Site Links); the header takes no links of its own:
 
 ```tsx
 <SiteHeader
@@ -121,26 +123,12 @@ It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scr
   brand="Restaurace Střílky"
   brandHref="#top"
   labels={{ closeMenu: t("menuClose"), navigation: t("navLabel"), openMenu: t("menuOpen") }}
-  links={sections.map((section) => ({ href: hrefs[section], key: section, label: t(`nav.${section}`) }))}
 />
 ```
 
-A link with `links` is a group. In the bar it is a button that opens the header's sheet: a band directly under the bar, as wide as the header, painted with the bar's own surface and tone, with its content on the same gutter as the bar. The sheet opens when the pointer rests on the group and on a press; it closes when the pointer leaves the header, on a second press, on Escape, on a press or focus outside the header, and when a link in it is chosen. Pressing a group from the keyboard moves focus to its first link, and Escape returns it to the group. Every group's links are in the server markup, hidden until their group opens.
+A header group is a button in the bar that opens the header's sheet: a band directly under the bar, as wide as the header, painted with the bar's own surface and tone, with its content on the same gutter as the bar. The sheet opens when the pointer rests on the group and on a press; it closes when the pointer leaves the header, on a second press, on Escape, on a press or focus outside the header, and when a link in it is chosen. Pressing a group from the keyboard moves focus to its first link, and Escape returns it to the group. Every group's links are in the server markup, hidden until their group opens.
 
-A group whose children are groups lays out as columns, one per child, each under an `h5` that takes the page's own heading styles. A group of plain links lays out as a list. A link's `description` is one line printed under its label in the sheet. In the mobile menu the same group is a disclosure with the same headings and without the descriptions, so it stays a short list. A group with `search: true` puts the site search at the top of its section and of its mobile disclosure (see Site Search); `lang` on `SiteHeader` names the language the header is rendered in. Groups nest two levels deep and no further. The sheet has no tokens: its spacing, columns and motion are the same in every application, and its colours are the header's.
-
-```tsx
-links={[
-  { href: "/blog", label: "Blog" },
-  {
-    label: "Resources",
-    links: [
-      { label: "Organization", links: [{ description: "Why the organization exists", href: "/about", label: "About" }] },
-      { label: "Help", links: [{ description: "How to report a vulnerability", href: "/security", label: "Security" }] },
-    ],
-  },
-]}
-```
+A group of plain links lays out as a list. The sitemap group lays out as columns, one per category, each under an `h5` that takes the page's own heading styles, and prints each link's description as one line under its label. In the mobile menu the same group is a disclosure with the same headings and without the descriptions, so it stays a short list. A group with `search: true` puts the site search at the top of its section and of its mobile disclosure (see Site Search); `lang` on `SiteHeader` names the language the header is rendered in, and the current locale is used without it. The sheet has no tokens: its spacing, columns and motion are the same in every application, and its colours are the header's.
 
 A header with no links and no `menuActions` has no toggle and keeps its actions visible on a phone. `menuActions` replaces `actions` inside the menu when the two should differ, `menuIcon` and `closeIcon` replace the built-in burger, and `softRedirect` marks the links for soft navigation.
 
@@ -173,6 +161,14 @@ Only the page's own content is read: the inside of `<main>` when the page has on
 
 In the browser the search lives in the site header: a group with `search: true` shows the field. The index for the reader's current language is fetched the first time the field is focused, once, and only that language is searched. Every word of the query has to match; accents and case are ignored, so "prirucka" finds "Příručka". Titles outrank section headings, which outrank descriptions and body text. A result whose best match is a heading with an `id` opens that section. Each result shows a snippet with the matched words marked. Enter opens the first result, the arrow keys move between results, and Escape clears the query before it closes the header's sheet. The field's label, placeholder and messages come from the package in the header's `lang`.
 
+### Hollow Text
+
+`@trebired/frontend/hollow` prints outlined text with riso shapes inside its letters: `<HollowText>` takes the text as children, an optional `inks` pair, `as` for the tag and `dark` to force dark-band inks (an ancestor with `data-tbf-dark` does the same). Without `inks`, the colours come from the nearest `<HollowPalette tones={...}>`, used as given whatever their hue, so a page's hollow text matches the palette it declares; only a page without a palette falls back to the package's cool defaults. The print is sized in `em` from the text, so server markup already carries it on the first paint; after hydration each layer is swapped for a cached bitmap at the element's size.
+
+The print is generated by `@trebired/overprint`, an optional peer dependency: install it only in an application that imports `@trebired/frontend/hollow`. Nothing else in the package imports it.
+
+The shape generator behind the print is exported for other prints that should match it: `seeded(seed)` returns a deterministic random source, and `scatter(next, { box, font })` returns random geometric `path` art (irregular polygons, slivers and sectors) spread across a `box` of `[width, height]`, each shape sized from `font`. The same seed always returns the same shapes.
+
 ### Prose Text
 
 `ProseText` renders a plain string in which a marked span becomes a `TextLink`, so copy kept as strings can point at another page without becoming markup. It takes `text` and an optional `softRedirect`.
@@ -185,7 +181,7 @@ Get it from <!--tbf:link https://github.com/Trebired tab-->GitHub<!--/tbf:link--
 Start at <!--tbf:link /downloads reload-->the downloads page<!--/tbf:link-->.
 ```
 
-In source that nothing else renders, the short form: `[the philosophy page](/philosophy)`, equal to the comment pair with no flags.
+In source that nothing else renders, the short form: `[the philosophy page](/philosophy)`, equal to the comment pair with no flags. A short form whose href starts with `http://` or `https://`, such as `[GitHub](https://github.com/Trebired)`, is external and behaves as the comment pair with `tab`.
 
 The first token after the marker is the href and is required. `tab` opens a new tab and sets its `rel`; `reload` navigates fully instead of soft redirecting. Anything malformed, a missing href, an unknown flag, an unclosed pair, drops the annotation and renders the text plainly: a marker is never shown to a reader, and prose is never lost to a typo.
 
@@ -232,9 +228,47 @@ parts: disclosure
 `PageOutline` takes `items` of `{ id, label }`, lists the sections of a page and marks the one being read. `PageOutlineLayout` takes the same `items` and the page content, and lays them out side by side: the list in a column on the left, the content beside it, the column sticking to the top of the viewport while the reader scrolls. A click scrolls smoothly to the section, instantly under reduced motion, moves focus to it so the keyboard carries on from there, and replaces the fragment in the address bar rather than stacking a history entry per jump. The column appears from 1024px, where there is room beside the content; below that the layout is a single column and the list renders nothing, because the page is still read by scrolling. Called with no items the layout renders the content alone.
 
 
+### Site Links
+
+Every link in the site chrome is declared once, under `links` in the frontend config, and the header, its sitemap sheet and the footer all read that one declaration. A link is a key, an `href`, and whether it is `external`; a label never lives in a component. An external link opens in a new tab with `rel="noopener noreferrer"`, never soft-navigates, and carries the external-link icon after its label in the bar, the sheet, the menu and the footer alike.
+
+```ts
+// .trebired/frontend/links.ts
+import type { FrontendLinksConfig } from "@trebired/frontend/config";
+import cs from "./../../src/frontend/components/chrome/site/i18n/cs";
+import en from "./../../src/frontend/components/chrome/site/i18n/en";
+
+export const links: FrontendLinksConfig = {
+  links: {
+    about: { href: "/about" },
+    discussions: { external: true, href: "https://github.com/orgs/Example/discussions" },
+    downloads: { href: "/downloads", site: "app" },
+    home: { href: "/" },
+    privacy: { href: "/privacy" },
+  },
+  categories: { community: ["discussions"], organization: ["about"], legal: ["privacy"] },
+  messages: { cs: cs.links, en: en.links },
+  sets: {
+    main: {
+      header: ["home", "about", { group: "everything", search: true, sitemap: true }],
+      footer: { columns: [["organization", "community"], ["legal"]], note: ["privacy"] },
+    },
+    app: { header: ["downloads"], footer: { columns: [["organization"]], site: ["downloads"] } },
+  },
+};
+```
+
+- `links` maps each key to its `href`, its `site` when the path belongs to one of several sites built from the same code, and `external`.
+- `categories` groups link keys under a heading. A footer column is a list of categories; the sitemap is a list of categories too, all of them unless a set names its own under `sitemap`.
+- `sets` name what each site shows: its `header` (link keys, and groups with `links` or `sitemap: true`, optionally `search: true`), its `footer` (`columns`, the `note` links and the `site` band) and the `site` it renders on, which is the set's own name unless given.
+- `messages` holds, per locale, `links` (every link's label), `descriptions` (the line under a label in the sitemap), `categories` (every category's heading) and `groups` (every header group's label). Point them at the application's own i18n files rather than writing copy into the config.
+- `icon` replaces the external-link icon, `remixicon:external-link-line` by default.
+
+The config is checked when it is read: a key a set or category names that no link defines, a link, category or group without a label in some locale, or a header group with neither links nor the sitemap is refused with the path that is wrong. At runtime the application hands the same object to `configureSiteLinks(links, { set, origins })` once, in its server entry and its client entry, the way it hands over its language and money config. `set` names the set this site renders. A link whose `site` is not the set's own is written with that site's origin from `origins`, and with the reader's locale handed over, so a product site's footer can link to the organization site that builds it.
+
 ### Site Footer
 
-`SiteFooter` takes a `brand`, a `tagline`, `social` links, `columns` of links and a `note`. On a site that stands for itself they fill the whole footer: the brand on the left, the columns on the right. A site that belongs to someone else passes `site` as well, carrying that site's own `brand`, `tagline`, `social` and a row of `links`. That becomes a band above the first, with a rule between them: this site on top, and under it the owner's mark, one line saying who builds the site, and the columns that belong to the organization rather than to the product. One footer, one ground, two parts.
+`SiteFooter` takes a `brand`, a `tagline`, `social` links and a `note`; its columns of links, the links of a site band and the links beside the note come from the links config (see Site Links). On a site that stands for itself they fill the whole footer: the brand on the left, the columns on the right. A site that belongs to someone else passes `site` as well, carrying that site's own `brand`, `tagline` and `social`, and its set lists the site's own links under `footer.site`. That becomes a band above the first, with a rule between them: this site on top, and under it the owner's mark, one line saying who builds the site, and the columns that belong to the organization rather than to the product. One footer, one ground, two parts.
 
 That is the whole mechanism for telling the two apart, and it is deliberate: a column heading cannot say whose links these are, because every column looks equally weighted, while a mark is read before it is read. The two parts share one ground, because a second background reads as a second footer rather than as the rest of this one. Give the bands the same heading names on every site so a reader learns one map, and let the same label appear in both bands when both genuinely have one, such as a brand page per site.
 

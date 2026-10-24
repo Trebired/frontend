@@ -42,6 +42,7 @@ function assertStructuredExports(packageJson) {
       "./explorer",
       "./fullscreen",
       "./graph",
+      "./hollow",
       "./live",
       "./logs",
       "./react",

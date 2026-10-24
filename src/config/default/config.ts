@@ -38,6 +38,7 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "fullscreen",
   "surface",
   "graph",
+  "hollow",
   "document",
   "indent",
   "visibility",
@@ -94,6 +95,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
     }),
     forVersion: PACKAGE_VERSION,
     language: EMPTY_LANGUAGE_CONFIG,
+    links: null,
     money: EMPTY_MONEY_CONFIG,
     prefix: FRONTEND_PREFIX,
     runtime: Object.freeze({

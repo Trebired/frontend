@@ -1,4 +1,5 @@
 import { useEffect, useId, useSyncExternalStore } from "react";
+import type { ReactNode } from "react";
 import { Disclosure, DisclosureButton } from "./../../../../inputs/components/disclosure.js";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { useRenderCurrentUrl } from "./../../../../render/current_url.js";
@@ -8,6 +9,7 @@ import {
   isSiteLinkGroup,
   SiteLinkAnchor,
   siteLinkChildren,
+  SiteLinkLabel,
   siteLinkFragment,
   siteLinkKey,
   siteLinkOnCurrentPage,
@@ -52,7 +54,7 @@ function useSiteLinkState(links: SiteLink[]) {
   return { currentPaths, currentUrl, hasSection: fragments.length > 0, section };
 }
 
-function SiteHeaderAnchor(props: LinkRenderProps & { className?: string; link: SiteLink; plain?: boolean }) {
+function SiteHeaderAnchor(props: LinkRenderProps & { children?: ReactNode; className?: string; link: SiteLink; plain?: boolean }) {
   const { className, currentPaths, hasSection, link, section } = props;
   return (
     <SiteLinkAnchor
@@ -63,7 +65,9 @@ function SiteHeaderAnchor(props: LinkRenderProps & { className?: string; link: S
     plain={props.plain}
     softRedirect={props.softRedirect}
     tabIndex={props.tabIndex}
-    />
+    >
+    {props.children}
+    </SiteLinkAnchor>
   );
 }
 
@@ -94,13 +98,12 @@ function SheetEntry(props: GroupProps) {
   const description = link.description === undefined ? null : (
     <span className={frontendElementClass(block, "sheet-description")}>{link.description}</span>
   );
-  const label = (
-    <>
-    <span className={frontendClassName("text-link")}>{link.label}</span>
+  return (
+    <SiteHeaderAnchor {...props} className={frontendElementClass(block, "sheet-entry")} link={link}>
+    <span><SiteLinkLabel link={link} /></span>
     {description}
-    </>
+    </SiteHeaderAnchor>
   );
-  return <SiteHeaderAnchor {...props} plain className={frontendElementClass(block, "sheet-entry")} link={{ ...link, label }} />;
 }
 
 function SheetColumn(props: GroupProps) {

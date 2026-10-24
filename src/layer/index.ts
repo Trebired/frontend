@@ -4,7 +4,7 @@ import {
   resolveDocumentTarget,
   type BindRoot,
 } from "#er0dlx1gtbzh";
-import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const LAYER_ROOT_ID = `${FRONTEND_PREFIX}_layer_root`;
 const Z_INDEX_STEP = 10;
@@ -193,7 +193,13 @@ function elementBySafeId(id: string) {
   return document.querySelector(`#${cssEscape(id)}`);
 }
 
+function adoptLayerTone(origin: HTMLElement, layer: HTMLElement) {
+  const dark = getComputedStyle(origin).getPropertyValue(frontendCssVar("on-dark")).trim() === "1";
+  layer.setAttribute(frontendDataAttr("tone"), dark ? "dark" : "light");
+}
+
 export {
+  adoptLayerTone,
   LAYER_ROOT_ID,
   Z_INDEX_STEP,
   applyZIndex,

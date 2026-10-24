@@ -5,22 +5,8 @@ import { useRenderCurrentUrl } from "./../../../render/current_url.js";
 import { isSiteLinkActive, SiteLinkAnchor, siteLinkKey, sitePathForms, type SiteLink } from "./link.js";
 import { Icon } from "#lbkpzw8nphru";
 import { siteSocialService } from "./../../social.js";
-
-type SiteFooterLink = SiteLink;
-
-type SiteFooterGroup = {
-  heading: ReactNode;
-  key?: string;
-  links?: SiteFooterLink[];
-};
-
-type SiteFooterColumn = {
-  content?: ReactNode;
-  groups?: SiteFooterGroup[];
-  heading?: ReactNode;
-  key?: string;
-  links?: SiteFooterLink[];
-};
+import { resolveSiteLinks, type SiteLinksFooterGroup } from "./../../links.js";
+import { useLocale } from "./../../../react/locale.js";
 
 type SiteFooterSocial = {
   href: string;
@@ -31,14 +17,12 @@ type SiteFooterSocial = {
 
 type SiteFooterBand = {
   brand?: ReactNode;
-  links?: SiteFooterLink[];
   social?: SiteFooterSocial[];
   tagline?: ReactNode;
 };
 
 type SiteFooterProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   brand?: ReactNode;
-  columns?: SiteFooterColumn[];
   note?: ReactNode;
   site?: SiteFooterBand;
   social?: SiteFooterSocial[];
@@ -80,7 +64,7 @@ function SiteFooterSocialLinks({ social }: { social: SiteFooterSocial[] }) {
   );
 }
 
-function FooterLink({ link, softRedirect }: { link: SiteFooterLink; softRedirect?: boolean }) {
+function FooterLink({ link, softRedirect }: { link: SiteLink; softRedirect?: boolean }) {
   const currentPaths = sitePathForms(useRenderCurrentUrl());
   return (
     <SiteLinkAnchor
@@ -91,34 +75,22 @@ function FooterLink({ link, softRedirect }: { link: SiteFooterLink; softRedirect
   );
 }
 
-function FooterGroup({ group, softRedirect }: { group: SiteFooterGroup; softRedirect?: boolean }) {
+function FooterLinks({ className, links, softRedirect }: { className: string; links: SiteLink[]; softRedirect?: boolean }) {
+  if (!links.length) return null;
   return (
-    <div className={frontendElementClass(block, "group")}>
-    <h5>{group.heading}</h5>
-    {group.links ? (
-        <nav className={frontendElementClass(block, "links")}>
-        {group.links.map((link, index) => (
-              <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
-        ))}
-        </nav>
-      ) : null}
-    </div>
+    <nav className={frontendElementClass(block, className)}>
+    {links.map((link, index) => (
+          <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
+    ))}
+    </nav>
   );
 }
 
-function columnGroups(column: SiteFooterColumn): SiteFooterGroup[] {
-  if (column.groups?.length) return column.groups;
-  if (!column.heading) return [];
-  return [{ heading: column.heading, links: column.links }];
-}
-
-function FooterColumn({ column, softRedirect }: { column: SiteFooterColumn; softRedirect?: boolean }) {
+function FooterGroup({ group, softRedirect }: { group: SiteLinksFooterGroup; softRedirect?: boolean }) {
   return (
-    <div className={frontendElementClass(block, "column")}>
-    {columnGroups(column).map((group, index) => (
-          <FooterGroup key={group.key || index} group={group} softRedirect={softRedirect} />
-    ))}
-    {column.content}
+    <div className={frontendElementClass(block, "group")}>
+    <h5>{group.heading}</h5>
+    <FooterLinks className="links" links={group.links} softRedirect={softRedirect} />
     </div>
   );
 }
@@ -134,23 +106,20 @@ function SiteFooterBrand({ brand, social, tagline }: SiteFooterBand) {
   );
 }
 
-function SiteFooterBand({ band, softRedirect }: { band: SiteFooterBand; softRedirect?: boolean }) {
+function SiteFooterBand({ band, links, softRedirect }: { band: SiteFooterBand; links: SiteLink[]; softRedirect?: boolean }) {
   return (
     <div className={frontendElementClass(block, "site")}>
     <SiteFooterBrand {...band} />
-    {band.links?.length ? (
-        <nav className={frontendElementClass(block, "site-links")}>
-        {band.links.map((link, index) => (
-              <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
-        ))}
-        </nav>
-      ) : null}
+    <FooterLinks className="site-links" links={links} softRedirect={softRedirect} />
     </div>
   );
 }
 
 function SiteFooter(props: SiteFooterProps) {
-  const { brand, className, columns = [], note, site, social = [], softRedirect, tagline, tone, ...rest } = props;
+  const { brand, className, note, site, social = [], softRedirect, tagline, tone, ...rest } = props;
+  const links = resolveSiteLinks(useLocale().locale)?.footer;
+  const columns = links?.columns || [];
+  const noteLinks = links?.note || [];
 
   return (
     <footer
@@ -160,21 +129,28 @@ function SiteFooter(props: SiteFooterProps) {
     {...frontendDataAttrs({ "site-footer-tone": tone })}
     {...frontendDataAttrs({ dark: tone === "inverse" ? "" : undefined })}
     >
-    {site ? <SiteFooterBand band={site} softRedirect={softRedirect} /> : null}
+    {site ? <SiteFooterBand band={site} links={links?.site || []} softRedirect={softRedirect} /> : null}
     <div className={frontendElementClass(block, "inner")}>
     <SiteFooterBrand brand={brand} social={social} tagline={tagline} />
     {columns.length > 0 ? (
         <div className={frontendElementClass(block, "columns")}>
-        {columns.map((column, index) => (
-              <FooterColumn key={column.key || index} column={column} softRedirect={softRedirect} />
+        {columns.map((column) => (
+              <div className={frontendElementClass(block, "column")} key={column.key}>
+              {column.groups.map((group) => <FooterGroup key={group.key} group={group} softRedirect={softRedirect} />)}
+              </div>
         ))}
         </div>
       ) : null}
     </div>
-    {note ? <div className={frontendElementClass(block, "note")}>{note}</div> : null}
+    {note || noteLinks.length ? (
+        <div className={frontendElementClass(block, "note")}>
+        {note}
+        <FooterLinks className="note-links" links={noteLinks} softRedirect={softRedirect} />
+        </div>
+      ) : null}
     </footer>
   );
 }
 
 export { SiteFooter };
-export type { SiteFooterBand, SiteFooterColumn, SiteFooterGroup, SiteFooterLink, SiteFooterProps, SiteFooterSocial };
+export type { SiteFooterBand, SiteFooterProps, SiteFooterSocial };

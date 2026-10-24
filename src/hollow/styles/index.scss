@@ -1,0 +1,56 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("hollow-" + $name)}, $fallback);
+}
+
+#{ns.class("hollow")} {
+  position: relative;
+  isolation: isolate;
+}
+
+:where(span, strong):where(#{ns.class("hollow")}) {
+  display: inline-block;
+}
+
+#{ns.class("hollow")}::before,
+
+#{ns.class("hollow")}::after {
+  position: absolute;
+  inset: 0;
+  -webkit-text-stroke: 0;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  content: attr(data-hollow) / "";
+  mask-repeat: repeat;
+  mask-size: token("size", 4em 1em);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+#{ns.class("hollow")}::before {
+  background-color: token("a-light", #6f8fd0);
+  mask-image: token("a", none);
+  mask-position: token("a-at", 0 0);
+}
+
+#{ns.class("hollow")}::after {
+  background-color: token("b-light", #8f6fd0);
+  mask-image: token("b", none);
+  mask-position: token("b-at", 0 0);
+}
+
+:where(#{ns.data("dark")}) #{ns.class("hollow")}::before,
+
+#{ns.class("hollow")}#{ns.class("hollow--dark")}::before {
+  background-color: token("a-dark", #8a93b0);
+  mix-blend-mode: screen;
+}
+
+:where(#{ns.data("dark")}) #{ns.class("hollow")}::after,
+
+#{ns.class("hollow")}#{ns.class("hollow--dark")}::after {
+  background-color: token("b-dark", #9a8ab0);
+  mix-blend-mode: screen;
+}

@@ -6,7 +6,7 @@ import { renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
 import { breakpointDeclarations } from "./breakpoints.js";
 import { TONE_NAMESPACE, renderContainerClassRules } from "./containers.js";
-import { renderContainerRules, renderHeadingVariantRules } from "./typography.js";
+import { renderContainerRules, renderHeadingVariantRules, renderOutlineSelectionRule } from "./typography.js";
 import { cssComment, cssString, invalidConfig } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
 import { frontendDataAttr } from "#5vbaqj4pirp3";
@@ -42,6 +42,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   explorer: "explorer/styles/index.scss",
   flash: "flash/styles/index.scss",
   graph: "graph/styles/index.scss",
+  hollow: "hollow/styles/index.scss",
   icons: "icons/styles/index.scss",
   indent: "indent/styles/index.scss",
   inputs: "inputs/styles/index.scss",
@@ -298,6 +299,7 @@ function generateFrontendScss(
     ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
+    ...renderOutlineSelectionRule(config),
     ...renderContainerClassRules(config),
   ];
   assertGeneratedVariablesResolve(config.prefix, lines);

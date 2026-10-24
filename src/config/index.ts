@@ -123,6 +123,7 @@ export type {
   FrontendContainerBlock,
   FrontendContainerTone,
   FrontendContainersConfig,
+  FrontendLinksConfig,
   FrontendMoneyConfig,
   FrontendFontDisplay,
   FrontendFontFamilyConfig,

@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "28.2.0",
+  "version": "29.0.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "sideEffects": [
@@ -56,6 +56,10 @@
     "./graph": {
       "import": "./dist/graph/index.js",
       "types": "./dist/graph/index.d.ts"
+    },
+    "./hollow": {
+      "import": "./dist/hollow/index.js",
+      "types": "./dist/hollow/index.d.ts"
     },
     "./live": {
       "import": "./dist/live/index.js",
@@ -120,6 +124,7 @@
     "@trebired/bundler": "^5.18.0",
     "@trebired/code-discipline": "^7.2.0",
     "@trebired/configs": "^0.4.0",
+    "@trebired/overprint": "^0.3.0",
     "@types/bun": "^1.3.14",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
@@ -132,11 +137,15 @@
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
+    "@trebired/overprint": "^0.3.0",
     "react": ">=18",
     "react-dom": ">=18",
     "sharp": "^0.34.5"
   },
   "peerDependenciesMeta": {
+    "@trebired/overprint": {
+      "optional": true
+    },
     "react": {
       "optional": true
     },

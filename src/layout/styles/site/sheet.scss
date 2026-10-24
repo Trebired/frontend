@@ -10,6 +10,8 @@ $fast: var(#{ns.css-var("transition-fast")}, 160ms) ease;
 
 $muted: var(#{ns.css-var("text-muted")}, currentColor);
 
+$link-gap: var(#{ns.css-var("gap-sm")}, 12px);
+
 @mixin band($gutter) {
   max-width: calc(#{token("max-width", 72rem)} + #{$gutter} * 2);
   padding-inline: $gutter;
@@ -83,7 +85,7 @@ $muted: var(#{ns.css-var("text-muted")}, currentColor);
 
 #{ns.element-class("site-header", "sheet-grid")} {
   display: grid;
-  gap: 1.25rem 2rem;
+  gap: $link-gap 2rem;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
 }
 
@@ -105,17 +107,20 @@ $muted: var(#{ns.css-var("text-muted")}, currentColor);
 
 #{ns.element-class("site-header", "sheet-links")} {
   display: flex;
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
   max-height: 15rem;
   flex-direction: column;
-  gap: 1rem;
+  gap: $link-gap;
+  padding-block-end: calc(var(#{ns.css-var("ui-link-root-underline-offset")}, -0.35em) * -1 + 1px);
   padding-inline-end: 0.75rem;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
-#{ns.element-class("site-header", "sheet-entry")} {
+#{ns.element-class("site-header", "sheet-entry")},
+
+#{ns.element-class("site-header", "sheet-entry")}#{ns.class("text-link")} {
   display: flex;
   width: fit-content;
   max-width: 100%;

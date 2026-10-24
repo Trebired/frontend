@@ -1,16 +1,17 @@
 import type { MouseEvent, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
-import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+import { Icon } from "#lbkpzw8nphru";
 import { stripLocalePrefix } from "./../../../language/routing/runtime.js";
+import { siteLinksIcon } from "./../../links.js";
 
 type SiteLink = {
-  active?: boolean;
   description?: ReactNode;
+  external?: boolean;
   href?: string;
   key?: string;
   label: ReactNode;
   links?: SiteLink[];
-  node?: ReactNode;
   rel?: string;
   search?: boolean;
   softRedirect?: boolean;
@@ -74,7 +75,6 @@ function isSiteLinkActive(
   hasSection: boolean,
   currentUrl = "",
 ): boolean {
-  if (link.active !== undefined) return link.active;
   if (isForeignOrigin(link.href, currentUrl)) return false;
   if (isSiteLinkGroup(link)) {
     return siteLinkChildren(link).some((child) => isSiteLinkActive(child, currentPaths, section, hasSection, currentUrl));
@@ -87,8 +87,24 @@ function isSiteLinkActive(
   return currentPaths.some((current) => targets.some((target) => sitePathMatches(current, target)));
 }
 
+function SiteLinkLabel({ link }: { link: SiteLink }) {
+  if (!link.external) return <>{link.label}</>;
+  return (
+    <span className={frontendElementClass(linkBlock, "external")}>
+    {link.label}
+    <Icon spec={siteLinksIcon()} />
+    </span>
+  );
+}
+
+function siteLinkTarget(link: SiteLink): { rel?: string; target?: string } {
+  if (link.external) return { rel: link.rel || "noopener noreferrer", target: "_blank" };
+  return { rel: link.target === "_blank" ? link.rel || "noopener noreferrer" : link.rel, target: link.target };
+}
+
 type SiteLinkAnchorProps = {
   active?: boolean;
+  children?: ReactNode;
   className?: string;
   link: SiteLink;
   onNavigate?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -99,7 +115,6 @@ type SiteLinkAnchorProps = {
 
 function SiteLinkAnchor(props: SiteLinkAnchorProps) {
   const { active = false, className, link, plain = false } = props;
-  if (link.node !== undefined) return <>{link.node}</>;
   const base = plain ? "" : frontendClassName(linkBlock);
   const variant = className || "";
   return (
@@ -113,12 +128,11 @@ function SiteLinkAnchor(props: SiteLinkAnchorProps) {
     )}
     href={link.href}
     onClick={props.onNavigate}
-    rel={link.target === "_blank" ? link.rel || "noopener noreferrer" : link.rel}
     tabIndex={props.tabIndex}
-    target={link.target}
-    {...frontendDataAttrs({ "soft-redirect": link.softRedirect ?? props.softRedirect ? "" : undefined })}
+    {...siteLinkTarget(link)}
+    {...frontendDataAttrs({ "soft-redirect": !link.external && (link.softRedirect ?? props.softRedirect) ? "" : undefined })}
     >
-    {link.label}
+    {props.children ?? <SiteLinkLabel link={link} />}
     </a>
   );
 }
@@ -129,6 +143,7 @@ export {
   linkBlock,
   SiteLinkAnchor,
   siteLinkChildren,
+  SiteLinkLabel,
   siteLinkFragment,
   siteLinkKey,
   siteLinkOnCurrentPage,
