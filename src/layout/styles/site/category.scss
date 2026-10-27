@@ -1,0 +1,16 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("shell-category-" + $name)}, $fallback);
+}
+
+#{ns.class("link-category")} {
+  display: grid;
+  align-content: start;
+  gap: token("gap", var(#{ns.css-var("shell-footer-column-gap")}, var(#{ns.css-var("gap-sm")}, 12px)));
+}
+
+#{ns.element-class("link-category", "links")} {
+  display: grid;
+  gap: token("links-gap", var(#{ns.css-var("shell-footer-links-gap")}, var(#{ns.css-var("gap-sm")}, 12px)));
+}

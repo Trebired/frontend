@@ -198,3 +198,129 @@ $railed: "#{ns.class("page-outline-layout--frame")}:has(> #{ns.element-class("pa
     padding-block: token("frame-offset", 0);
   }
 }
+
+$dock-gutter: token("dock-inset", var(#{ns.css-var("container-px")}, 16px));
+$dock-motion: token("dock-duration", 320ms) token("dock-easing", cubic-bezier(0.22, 1, 0.36, 1));
+
+#{ns.element-class("page-outline", "dock")} {
+  position: fixed;
+  inset-block-end: calc(#{$dock-gutter} + env(safe-area-inset-bottom, 0px));
+  inset-inline-end: $dock-gutter;
+  z-index: token("dock-z", 40);
+  max-width: calc(100vw - #{$dock-gutter} * 2);
+  transition:
+  opacity $dock-motion,
+  translate $dock-motion,
+  visibility 0s;
+}
+
+#{ns.element-class("page-outline", "dock")}#{ns.data("outline-away", "true")} {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  translate: 0 calc(100% + #{$dock-gutter});
+  transition:
+  opacity $dock-motion,
+  translate $dock-motion,
+  visibility 0s linear token("dock-duration", 320ms);
+}
+
+$dock-toggle: "#{ns.element-class("page-outline", "dock")} > #{ns.class("button")}#{ns.element-class("page-outline", "dock-toggle")}";
+$dock-surface: token("dock-bg", var(#{ns.css-var("overlay-popover-panel-bg")}, var(#{ns.css-var("ground")}, #fff)));
+
+#{$dock-toggle} {
+  display: inline-flex;
+  max-width: token("dock-toggle-max", min(16rem, calc(100vw - #{$dock-gutter} * 2)));
+  align-items: center;
+  gap: var(#{ns.css-var("gap-xs")}, 8px);
+  overflow: hidden;
+  border: token(
+    "dock-border",
+    var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentColor 16%, transparent)
+  );
+  border-radius: 999px;
+  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("text")}, currentColor));
+  background: $dock-surface;
+  box-shadow: token("dock-shadow", 0 8px 28px color-mix(in srgb, #000 22%, transparent));
+  transition: width $dock-motion, border-color var(#{ns.css-var("transition-fast")}, 160ms) ease;
+}
+
+#{$dock-toggle}:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  border-color: color-mix(in srgb, currentColor 32%, transparent);
+  color: var(#{ns.css-var("overlay-popover-panel-color")}, var(#{ns.css-var("text")}, currentColor));
+  background: $dock-surface;
+}
+
+#{ns.element-class("page-outline", "dock-icon")} {
+  flex: 0 0 auto;
+  width: 0.85rem;
+  height: 0.6rem;
+  background:
+  linear-gradient(currentColor, currentColor) 0 0 / 100% 2px no-repeat,
+  linear-gradient(currentColor, currentColor) 0 50% / 70% 2px no-repeat,
+  linear-gradient(currentColor, currentColor) 0 100% / 85% 2px no-repeat;
+}
+
+#{ns.element-class("page-outline", "dock-window")} {
+  display: inline-grid;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#{ns.element-class("page-outline", "dock-current")} {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#{ns.element-class("page-outline", "dock-current")}#{ns.data("outline-motion", "down")} {
+  animation: page-outline-from-below $dock-motion both;
+}
+
+#{ns.element-class("page-outline", "dock-current")}#{ns.data("outline-motion", "up")} {
+  animation: page-outline-from-above $dock-motion both;
+}
+
+@keyframes page-outline-from-below {
+  from {
+    opacity: 0;
+    translate: 0 70%;
+  }
+}
+
+@keyframes page-outline-from-above {
+  from {
+    opacity: 0;
+    translate: 0 -70%;
+  }
+}
+
+#{ns.class("popover")}#{ns.element-class("page-outline", "dock-panel")} {
+  overflow-y: auto;
+  width: token("dock-width", 18rem);
+  max-height: token("dock-max-height", min(60vh, 26rem));
+  padding-block: token("dock-panel-py", 0.875rem);
+  padding-inline: token("dock-panel-px", 1.125rem);
+  overscroll-behavior: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{$dock-toggle},
+
+  #{ns.element-class("page-outline", "dock")} {
+    transition: none;
+  }
+
+  #{ns.element-class("page-outline", "dock-current")} {
+    animation: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  #{ns.element-class("page-outline", "dock")},
+
+  #{ns.element-class("page-outline", "dock-panel")} {
+    display: none;
+  }
+}

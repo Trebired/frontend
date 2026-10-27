@@ -7,6 +7,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { siteSocialService } from "./../../social.js";
 import { resolveSiteLinks, type SiteLinksFooterGroup } from "./../../links.js";
 import { useLocale } from "./../../../react/locale.js";
+import { SiteLinkCategory } from "./category.js";
 
 type SiteFooterSocial = {
   href: string;
@@ -88,10 +89,11 @@ function FooterLinks({ className, links, softRedirect }: { className: string; li
 
 function FooterGroup({ group, softRedirect }: { group: SiteLinksFooterGroup; softRedirect?: boolean }) {
   return (
-    <div className={frontendElementClass(block, "group")}>
-    <h5>{group.heading}</h5>
-    <FooterLinks className="links" links={group.links} softRedirect={softRedirect} />
-    </div>
+    <SiteLinkCategory heading={group.heading} nav>
+    {group.links.map((link, index) => (
+          <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
+    ))}
+    </SiteLinkCategory>
   );
 }
 

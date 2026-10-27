@@ -50,11 +50,11 @@ function bindScrollState(options: ScrollStateOptions = {}): () => void {
 
 function scrollStateSeedSource(): string[] {
   return [
-    `var K=${JSON.stringify(SCROLL_STORAGE_PREFIX)}+location.pathname+location.search,N='',S=0;`,
+    `var P=${JSON.stringify(SCROLL_STORAGE_PREFIX)},N='',S=0;`,
     "try{N=(performance.getEntriesByType('navigation')[0]||{}).type||''}catch(e){}",
-    "if(N==='reload'||N==='back_forward'){try{S=parseFloat(sessionStorage.getItem(K))||0}catch(e){}}",
+    "if(N==='reload'||N==='back_forward'){try{S=parseFloat(sessionStorage.getItem(P+location.pathname+location.search))||0}catch(e){}}",
     "window.addEventListener('pagehide',function(){",
-    "try{sessionStorage.setItem(K,String(window.scrollY||window.pageYOffset||0))}catch(e){}});",
+    "try{sessionStorage.setItem(P+location.pathname+location.search,String(window.scrollY||window.pageYOffset||0))}catch(e){}});",
   ];
 }
 

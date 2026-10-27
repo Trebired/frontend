@@ -231,7 +231,7 @@ function editorHeader(state: ReturnType<typeof readSurfaceState>) {
       layout: "none",
       children: (
         <>
-        <Title>{state.title}</Title>
+        <Title fit={false}>{state.title}</Title>
         <div className={frontendClassName("right")}>
         <InlineRow gap="xs">
         {state.actions}

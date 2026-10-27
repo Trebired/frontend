@@ -96,6 +96,20 @@ Heading levels come from where a heading sits, not from the call site. Render ti
 
 Pass `level` to `Title` (or `titleAs` to a copy card) only for a page hero title, which is `h2`. `HeadingScope` sets the depth explicitly, for markup rendered on its own, such as a fragment swapped into a card later.
 
+### Title Fit
+
+With `design.titles.fit` set, every `Title` on a narrow screen is set as big as its width allows on as few lines as it can. The package tries the title on one line, then two, three and more, each time splitting the words into lines of even length, and takes the fewest lines that keep the title at least its own size; that split's longest line then fills the width, and the lines are balanced. No word is ever wider than the title's box and the title is never bigger than its size on a wide screen. Above the breakpoint nothing changes.
+
+```ts
+design: {
+  titles: { fit: { below: "md" } },
+},
+```
+
+`below` names a design breakpoint (`md` by default). The title font is the configured font family named first in `design.semantics.heading.fontFamily`, at `design.semantics.heading.fontWeight`; `font` (a key of `assets.fonts.families`) and `weight` choose another. The package reads that font's latin WOFF file from its Fontsource package when it generates the CSS and declares each character's width as a `--tbf-glyph-<code>` variable, with the heading's `textTransform` and `letterSpacing` applied.
+
+`Title` writes each word and each candidate split as sums of those variables, so the server markup is already fitted on the first paint and hydration sees the same markup. A letter with a diacritic is measured as its base letter, and a character outside printable ASCII as the average letter. Pass `text` when the children are not plain text (a title built from styled spans), and `fit={false}` for a title that must keep its size, such as a modal's or a panel's; the package's own interface titles already do. `level` takes `1` for a page title. A title's ceiling is its `tbf-text-*` step from `design.scales.textSize`, or for a bare heading the largest size in its `design.semantics.h<level>.fontSize`.
+
 ### Boot
 
 One call builds every script a shell needs before the page runs:
@@ -188,6 +202,16 @@ The first token after the marker is the href and is required. `tab` opens a new 
 It is not a markdown renderer and will not become one. Bold, lists and headings stay out, because the moment copy carries markup the component that renders it owns a format, and a format has to be documented, versioned and escaped. A second annotation gets added when something needs one, not in advance.
 
 
+### Quote
+
+`Quote` sets a quotation apart from the text around it: a quote mark at the top, the words in a real `blockquote` behind a rule down the start edge, and the source, when `cite` is given, at the end under them.
+
+```tsx
+<Quote cite="- Edward Snowden, 2015">Arguing that you don't care about the right to privacy because you have nothing to hide is no different than saying you don't care about free speech because you have nothing to say.</Quote>
+```
+
+It renders as a `figure` with the source in its `figcaption`, so the words and their source stay together for screen readers. `components.primitives.quote` sets the rule (`root.borderWidth`, `root.borderColor`), the inset (`root.px`), the spacing (`root.gap`), the mark (`mark.size`, `mark.color`), the words (`text.fontSize`, `text.lineHeight`) and the source (`cite.color`, `cite.fontSize`, `cite.fontWeight`).
+
 ### Text Document Body
 
 `TextDocumentBody` takes a document from `parseTextDocument` and renders the whole page body: `PageOutlineLayout` with one outline entry per section, a `<section>` per chapter with its heading and id, and the parts as prose articles or as disclosure cards when the document declares `parts: disclosure`. Paragraphs render through `ProseText`, so the inline link annotations work without the application touching them; pass `paragraph` to wrap each one in your own element. `minOutlineSections` decides how long a document has to be before it gets a rail, three by default, and a document that writes `outline: false` in its front matter gets none at all.
@@ -228,6 +252,8 @@ parts: disclosure
 `PageOutline` takes `items` of `{ id, label }`, lists the sections of a page and marks the one being read. `PageOutlineLayout` takes the same `items` and the page content, and lays them out side by side: the list in a column on the left, the content beside it, the column sticking to the top of the viewport while the reader scrolls. A click scrolls smoothly to the section, instantly under reduced motion, moves focus to it so the keyboard carries on from there, and replaces the fragment in the address bar rather than stacking a history entry per jump. The column appears from 1024px, where there is room beside the content; below that the layout is a single column and the list renders nothing, because the page is still read by scrolling. Called with no items the layout renders the content alone.
 
 
+
+Below 1024px the rail is hidden and the outline becomes a dock: a small button in the bottom corner shows the current section and opens the same outline in a popover above it, and slides away when the document leaves the screen. Choosing a section, tapping outside or pressing Escape closes it. When the current section changes, its name slides in from the direction the reader is moving. It needs at least two sections. `PageOutlineDock` renders it on its own.
 ### Site Links
 
 Every link in the site chrome is declared once, under `links` in the frontend config, and the header, its sitemap sheet and the footer all read that one declaration. A link is a key, an `href`, and whether it is `external`; a label never lives in a component. An external link opens in a new tab with `rel="noopener noreferrer"`, never soft-navigates, and carries the external-link icon after its label in the bar, the sheet, the menu and the footer alike.
@@ -265,6 +291,10 @@ export const links: FrontendLinksConfig = {
 - `icon` replaces the external-link icon, `remixicon:external-link-line` by default.
 
 The config is checked when it is read: a key a set or category names that no link defines, a link, category or group without a label in some locale, or a header group with neither links nor the sitemap is refused with the path that is wrong. At runtime the application hands the same object to `configureSiteLinks(links, { set, origins })` once, in its server entry and its client entry, the way it hands over its language and money config. `set` names the set this site renders. A link whose `site` is not the set's own is written with that site's origin from `origins`, and with the reader's locale handed over, so a product site's footer can link to the organization site that builds it.
+
+### Link Categories
+
+A footer group and a section in the header's mobile menu are the same link category: a heading and the links under it. Both render `SiteLinkCategory`, so the space between the heading and its links and the space between the links are the same in both places. `components.shell.category.gap` sets the first and `components.shell.category.linksGap` the second; without them the category reads `components.shell.footer.column.gap` and `components.shell.footer.links.gap`, and then `gap-sm`. Categories that follow each other in the menu are spaced like the groups in a footer column: `components.shell.category.spacing`, else `components.shell.footer.column.groups.gap`, else `gap-lg`.
 
 ### Site Footer
 

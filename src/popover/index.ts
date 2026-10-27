@@ -128,10 +128,10 @@ function bindPopoverClose(entry: PopoverEntry) {
   const onClick = (event: MouseEvent) => {
     const target = event.target instanceof Element ? event.target : null;
     const close = target?.closest(POPOVER_CLOSE_SELECTOR);
-    if (close && entry.popover.contains(close)) hidePopover(entry.popover);
+    if (close && currentPopoverElement(entry).contains(close)) hidePopover(entry.popover);
   };
-  entry.popover.addEventListener("click", onClick);
-  return () => entry.popover.removeEventListener("click", onClick);
+  document.addEventListener("click", onClick);
+  return () => document.removeEventListener("click", onClick);
 }
 
 const HOVER_CLOSE_MS = 180;

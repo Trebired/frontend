@@ -54,6 +54,7 @@
   #{ns.css-var("focus-ring-width")}: var(--outline-width, 2px);
   #{ns.css-var("focus-ring-offset")}: var(--focus-ring-offset, 2px);
   #{ns.css-var("focus-ring-style")}: var(--focus-ring-style, solid);
+  #{ns.css-var("focus-bleed")}: calc(var(#{ns.css-var("focus-ring-width")}) + var(#{ns.css-var("focus-ring-offset")}) + 1px);
   #{ns.css-var("shadow")}: var(--shadow-overlay-lg, 0 0 0 1px #000);
   #{ns.css-var("overlay")}: color-mix(in srgb, var(#{ns.css-var("text")}) 48%, transparent);
   #{ns.css-var("transition-fast")}: var(--transition-2, 180ms);

@@ -66,6 +66,7 @@ export {
 export {
   Marquee,
   ProseText,
+  Quote,
   Stack,
   Text,
   TextLink,

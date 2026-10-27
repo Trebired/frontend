@@ -98,6 +98,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     shell: Object.freeze({
         breadcrumb: Object.freeze({ fontSize: "0.875rem" }),
         bottomBar: Object.freeze({}),
+        category: Object.freeze({}),
         footer: Object.freeze({
             brand: {}, column: {}, columns: {}, heading: {}, inner: {}, links: {}, note: {},
             root: { border: "0" }, site: { links: {} }, tagline: {}, tone: { inverse: {}, muted: {} },

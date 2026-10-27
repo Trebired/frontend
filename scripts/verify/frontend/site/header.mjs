@@ -187,9 +187,10 @@ async function verifySiteHeaderSheetMarkup(context) {
   assert.ok(!html.includes("tbf-indent"), "header links are navigation, not prose, so nothing in the header is indented");
   for (const id of headings) assert.ok(html.includes(`aria-labelledby="${id}"`), "and the column is a group named by it");
   assert.equal(html.match(/tbf-site-header__sheet-description/gu)?.length, 3, "each described link shows its line in the band");
-  assert.match(html, /class="tbf-text-link tbf-site-header__sheet-entry"[^>]*><span>about<\/span>/u,
-  "a band link labels itself with the same text link as the bar, so it shares its colour and states");
-  assert.equal(html.match(/<h5 class="tbf-site-header__menu-section-heading"/gu)?.length, 2, "the mobile menu keeps the column headings");
+  assert.match(html, /class="tbf-site-header__sheet-entry"[^>]*><span class="tbf-text-link">about<\/span>/u,
+  "a band link's label is the same text link as the bar, so only the label takes its colour, states and underline");
+  assert.equal(html.match(/<div class="tbf-link-category"><h5 class="tbf-link-category__heading"/gu)?.length, 2,
+  "the mobile menu keeps the column headings, as the same link category the footer uses");
   assert.match(html, /tbf-site-header__menu-group-label[^>]*><span class="tbf-text-link">More<\/span>/u,
   "a group in the mobile menu is labelled by the same text link as every other entry");
   const menu = html.split('class="tbf-site-header__menu"')[1] || "";

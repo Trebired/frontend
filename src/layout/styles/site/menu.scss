@@ -163,16 +163,9 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   display: grid;
 }
 
-#{ns.element-class("site-header", "menu-section")} {
-  display: grid;
-  gap: token("menu-links-gap", 0);
-}
-
-#{ns.element-class("site-header", "menu-section-links")} {
-  display: grid;
-  gap: token("menu-links-gap", 0);
-}
-
-#{ns.element-class("site-header", "menu-section-heading")} {
-  padding-block: token("menu-link-py", 0);
+#{ns.element-class("site-header", "menu-group-links")} > #{ns.class("link-category")} + #{ns.class("link-category")} {
+  padding-block-start: var(
+    #{ns.css-var("shell-category-spacing")},
+    var(#{ns.css-var("shell-footer-column-groups-gap")}, var(#{ns.css-var("gap-lg")}, 40px))
+  );
 }

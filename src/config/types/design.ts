@@ -1,4 +1,5 @@
 import type { FrontendGlassConfig, NormalizedFrontendGlassConfig } from "./glass.js";
+import type { FrontendTitlesConfig, NormalizedFrontendTitlesConfig } from "./../titles.js";
 import type {
   FrontendDesignInteractionsConfig,
   FrontendPaletteConfig,
@@ -18,6 +19,7 @@ type FrontendDesignConfig = {
   scales?: FrontendScalesConfig;
   scrollBehavior?: FrontendScrollBehavior;
   semantics?: FrontendThemeTokens;
+  titles?: FrontendTitlesConfig;
 };
 
 type NormalizedFrontendDesignConfig = {
@@ -28,6 +30,7 @@ type NormalizedFrontendDesignConfig = {
   scales: NormalizedFrontendScalesConfig;
   scrollBehavior: FrontendScrollBehavior;
   semantics: FrontendThemeTokens;
+  titles: NormalizedFrontendTitlesConfig;
 };
 
 export type { FrontendDesignConfig, NormalizedFrontendDesignConfig };

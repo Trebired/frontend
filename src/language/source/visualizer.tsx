@@ -29,7 +29,7 @@ function headerCard(model: SourceLanguageScanModel) {
       layout: "none",
       children: (
         <>
-        <Title>{translate(model.lang, "languages")}</Title>
+        <Title fit={false}>{translate(model.lang, "languages")}</Title>
         {button({
               type: "button",
               [frontendDataAttr("source-language-reset")]: "",

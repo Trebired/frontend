@@ -81,7 +81,7 @@ function shared_steps_panel(props: SharedStepsPanelProps) {
         </section>
       ),
       hidden: props.hidden === true,
-      label: <Title {...frontendDataAttrs({ "steps-title": "" })}>{model.title}</Title>,
+      label: <Title fit={false} {...frontendDataAttrs({ "steps-title": "" })}>{model.title}</Title>,
       panelClassName: primitiveStackClassName({ gap: "sm" }),
       panelId: `${model.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "steps"}_panel`,
       rootClassName: primitiveStackClassName({ gap: "sm" }),

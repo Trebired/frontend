@@ -7,7 +7,7 @@ import { Disclosure, DisclosureButton } from "./../../inputs/components/disclosu
 import { HairlineCell, HairlinePanel } from "./../../surface/components/index.js";
 import { Icon } from "./../../icons/react/index.js";
 import { ProseText } from "./../../primitives/components/prose.js";
-import { PageOutlineLayout } from "./../../layout/components/outline.js";
+import { PageOutlineLayout } from "./../../layout/components/outline_dock.js";
 
 type TextDocumentBodyProps = {
   alternate?: string[];

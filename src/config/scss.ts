@@ -22,6 +22,7 @@ import {
   paletteSuffixedDeclarations,
 } from "./palette.js";
 import { renderScalesCss } from "./scales-css.js";
+import { renderTitlesCss } from "./titles.js";
 import { renderButtonVariantRules, renderCardToneRules } from "./tones.js";
 import { flattenThemeTokens } from "./theme.js";
 import type {
@@ -299,6 +300,11 @@ function generateFrontendScss(
     ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
+    ...renderTitlesCss(config.design.titles, {
+        breakpoints: config.design.breakpoints,
+        semantics: config.design.semantics as Record<string, unknown>,
+        textSteps: config.design.scales.textSize,
+    }),
     ...renderOutlineSelectionRule(config),
     ...renderContainerClassRules(config),
   ];

@@ -77,6 +77,7 @@
 
 #{ns.element-class("site-footer", "tagline")} {
   max-width: var(#{ns.css-var("shell-footer-tagline-max")}, 20rem);
+  font-size: var(#{ns.css-var("shell-footer-tagline-font-size")}, var(--text-size-md, 1rem));
   color: var(#{ns.css-var("text-muted")}, #666);
 }
 
@@ -93,12 +94,6 @@
   display: grid;
   align-content: start;
   gap: var(#{ns.css-var("shell-footer-column-groups-gap")}, var(#{ns.css-var("gap-lg")}, 40px));
-}
-
-#{ns.element-class("site-footer", "group")} {
-  display: grid;
-  align-content: start;
-  gap: var(#{ns.css-var("shell-footer-column-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
 }
 
 #{ns.element-class("site-footer", "social")} {
@@ -133,11 +128,6 @@
     #{ns.css-var("shell-footer-social-hover-bg")},
     color-mix(in srgb, currentColor 12%, transparent)
   );
-}
-
-#{ns.element-class("site-footer", "links")} {
-  display: grid;
-  gap: var(#{ns.css-var("shell-footer-links-gap")}, var(#{ns.css-var("gap-sm")}, 12px));
 }
 
 #{ns.element-class("site-footer", "note")} {

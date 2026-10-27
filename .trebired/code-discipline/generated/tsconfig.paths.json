@@ -133,6 +133,9 @@
       "#26uyycr73i6f": [
         "../../../src/sidebar/components/index.tsx"
       ],
+      "#28xec21d5ek7": [
+        "../../../src/layout/components/outline_dock.tsx"
+      ],
       "#2cuthl91eoqk": [
         "../../../scripts/verify/frontend/server/permissions.mjs"
       ],
@@ -415,6 +418,9 @@
       "#6b0i170vfl57": [
         "../../../src/flash/types.ts"
       ],
+      "#6fgyrgig1wqz": [
+        "../../../src/layout/styles/site/category.scss"
+      ],
       "#6h58jelgbzr9": [
         "../../../src/graph/advanced/runtime/card.tsx"
       ],
@@ -423,6 +429,9 @@
       ],
       "#6hkg6x38qd8z": [
         "../../../scripts/verify/frontend/site/search.mjs"
+      ],
+      "#6iy3g03mat12": [
+        "../../../src/config/titles.ts"
       ],
       "#6k1axorwtxsf": [
         "../../../src/layout/components/site/footer.tsx"
@@ -580,6 +589,9 @@
       "#8uo12g9vupca": [
         "../../../src/icons/server/material.ts"
       ],
+      "#8uylzkd7knm2": [
+        "../../../src/primitives/components/quote.tsx"
+      ],
       "#8xqk8z5czce2": [
         "../../../src/server/react/permissions.ts"
       ],
@@ -591,6 +603,9 @@
       ],
       "#92vilwel70ga": [
         "../../../src/inputs/advanced/tabs/index.tsx"
+      ],
+      "#94ikdngwznii": [
+        "../../../src/primitives/styles/_quote.scss"
       ],
       "#96zxzatmrhnt": [
         "../../../src/config/palette.ts"
@@ -630,6 +645,9 @@
       ],
       "#9tbszvfapqrk": [
         "../../../src/styles/utils.scss"
+      ],
+      "#9u6ejwwfgazk": [
+        "../../../src/layout/components/site/category.tsx"
       ],
       "#9w9ch5jtlv9e": [
         "../../../src/sidebar/dynamic/types.ts"
@@ -1303,6 +1321,9 @@
       "#jloahtbw4bw2": [
         "../../../src/money/index.ts"
       ],
+      "#jm6hox5lyyz0": [
+        "../../../src/heading/glyphs.ts"
+      ],
       "#jox702icd6ne": [
         "../../../src/config/default/primitive-tokens.ts"
       ],
@@ -1677,6 +1698,9 @@
       ],
       "#qdbpux4f2e4m": [
         "../../../src/flash/icons.ts"
+      ],
+      "#qdlngzg5w3bp": [
+        "../../../scripts/verify/frontend/quote.mjs"
       ],
       "#qjvkd2b03ew4": [
         "../../../src/primitives/styles/_link.scss"

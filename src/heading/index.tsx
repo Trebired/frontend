@@ -1,10 +1,15 @@
-import { createContext, type HTMLAttributes, type ReactNode } from "react";
+import { createContext, isValidElement, type CSSProperties, type HTMLAttributes, type ReactNode } from "react";
 
-type HeadingLevel = 2 | 3 | 4 | 5 | 6;
+import { FRONTEND_PREFIX } from "./../namespace/index.js";
+import { titleFitVars } from "./glyphs.js";
+
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TitleProps = HTMLAttributes<HTMLHeadingElement> & {
   children?: ReactNode;
+  fit?: boolean;
   level?: HeadingLevel;
+  text?: string;
 };
 
 type HeadingScopeProps = {
@@ -25,13 +30,27 @@ function headingLevelForDepth(depth: number): HeadingLevel {
 
 function explicitLevel(value: unknown): HeadingLevel | null {
   const level = Number(value);
-  return Number.isInteger(level) && level >= 2 && level <= MAX_LEVEL ? level as HeadingLevel : null;
+  return Number.isInteger(level) && level >= 1 && level <= MAX_LEVEL ? level as HeadingLevel : null;
+}
+
+function textOf(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children);
+  return "";
 }
 
 function renderHeading(level: HeadingLevel, props: TitleProps) {
-  const { children, level: _level, ...rest } = props;
+  const { children, className, fit = true, level: _level, style, text, ...rest } = props;
   const Tag = `h${level}` as const;
-  return <Tag {...rest}>{children}</Tag>;
+  const vars = fit ? titleFitVars(text ?? textOf(children)) : null;
+  if (!vars) return <Tag className={className} style={style} {...rest}>{children}</Tag>;
+  const classes = [`${FRONTEND_PREFIX}-title`, className].filter(Boolean).join(" ");
+  return (
+    <Tag className={classes} style={{ ...style, ...vars } as CSSProperties} {...rest}>
+    <span className={`${FRONTEND_PREFIX}-title__fit`}>{children}</span>
+    </Tag>
+  );
 }
 
 function Title(props: TitleProps) {

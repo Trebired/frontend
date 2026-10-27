@@ -73,7 +73,7 @@ function renderGroupedDetails(groups: key_value_group[]) {
           className={primitiveCardClassName({ gap: "sm" })}
           key={`graph_group_${group.title || "group"}_${groupIndex}`}
           >
-          {group.title ? <HeadingScope><Title>{group.title}</Title></HeadingScope> : null}
+          {group.title ? <HeadingScope><Title fit={false}>{group.title}</Title></HeadingScope> : null}
           <Grid gap="sm">
           {group.rows.map((row, rowIndex) => (
                 <Stack

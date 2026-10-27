@@ -7,13 +7,13 @@ $outline-fill: var(#{ns.css-var("typography-outline-fill")}, var(#{ns.css-var("p
 
 $outline-width: var(#{ns.css-var("typography-outline-width")}, 2px);
 
-@function outline-ring($steps: 16) {
+@function outline-ring($per-side: 4) {
   $shadows: "0 0 0 #{$outline-fill}";
-  @for $step from 0 to $steps {
-    $turn: math.div(2 * math.$pi * $step, $steps);
-    $across: math.div(math.round(math.cos($turn) * 5000), 10000);
-    $down: math.div(math.round(math.sin($turn) * 5000), 10000);
-    $shadows: "#{$shadows}, calc(#{$outline-width} * #{$across}) calc(#{$outline-width} * #{$down}) 0 #{$outline-color}";
+  @for $step from 0 to $per-side {
+    $along: math.div($step, $per-side) - 0.5;
+    @each $across, $down in ($along, -0.5), (0.5, $along), (-$along, 0.5), (-0.5, -$along) {
+      $shadows: "#{$shadows}, calc(#{$outline-width} * #{$across}) calc(#{$outline-width} * #{$down}) 0 #{$outline-color}";
+    }
   }
   @return $shadows;
 }

@@ -109,7 +109,7 @@ function filesHeader(
   return (
     <Stack className={frontendClassName("title-desc")} gap="sm">
     <InlineRow gap="sm">
-    <Title>{translate(props.lang, "files")}</Title>
+    <Title fit={false}>{translate(props.lang, "files")}</Title>
     {model.matchingPathsText ? (
         <div className={frontendClassName("right")}>
         {copy_button({

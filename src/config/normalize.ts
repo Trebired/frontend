@@ -29,6 +29,7 @@ import type {
   FrontendRuntimeConfig,
   FrontendSystemKey,
 } from "./types.js";
+import { normalizeTitlesConfig } from "./titles.js";
 
 type NormalizeOptions = {
   configPath?: string;
@@ -61,6 +62,7 @@ const DESIGN_FIELDS = [
   "scales",
   "scrollBehavior",
   "semantics",
+  "titles",
 ];
 const SCROLL_BEHAVIORS = ["auto", "smooth"];
 const RUNTIME_FIELDS = ["layer", "layout", "progress", "theme"];
@@ -188,19 +190,24 @@ function normalizeRuntimeConfig(value: unknown): NormalizedFrontendConfig["runti
 function normalizeDesignConfig(
   value: unknown,
   modeKeys: string[],
+  fonts: NormalizedFrontendConfig["assets"]["fonts"],
 ): NormalizedFrontendConfig["design"] {
   const source = value === undefined
   ? {}
   : assertPlainObject(value, "design") as FrontendDesignConfig;
   assertKnownFields(source, DESIGN_FIELDS, "design");
+  const breakpoints = normalizeBreakpointsConfig((source as Record<string, unknown>).breakpoints);
+  const semantics = normalizeThemeTokens(source.semantics, "design.semantics");
+  const heading = (semantics.heading || {}) as Record<string, unknown>;
   return {
-    breakpoints: normalizeBreakpointsConfig((source as Record<string, unknown>).breakpoints),
+    breakpoints,
     glass: normalizeGlassConfig(source.glass),
     interactions: normalizeInteractionsConfig(source.interactions),
     palette: normalizePaletteConfig(source.palette, modeKeys),
     scales: normalizeScalesConfig(source.scales),
     scrollBehavior: normalizeScrollBehavior(source.scrollBehavior),
-    semantics: normalizeThemeTokens(source.semantics, "design.semantics"),
+    semantics,
+    titles: normalizeTitlesConfig(source.titles, { breakpoints, fonts, heading }),
   };
 }
 
@@ -240,10 +247,11 @@ function normalizeFrontendConfig(
   const source = assertPlainObject(config, "config");
   assertKnownFields(source, TOP_LEVEL_FIELDS, "config");
   const runtime = normalizeRuntimeConfig(source.runtime);
-  const design = normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key));
+  const assets = normalizeAssetsConfig(source.assets);
+  const design = normalizeDesignConfig(source.design, runtime.theme.modes.map((mode) => mode.key), assets.fonts);
   return {
     a11y: normalizeA11yConfig(source.a11y),
-    assets: normalizeAssetsConfig(source.assets),
+    assets,
     components: normalizeComponentsConfig(source.components),
     containers: normalizeContainersConfig(source.containers, Object.keys(design.breakpoints)),
     design,

@@ -5,6 +5,9 @@
 }
 
 $radius: token("root-underline-radius", 0.3em);
+$gap: token("root-underline-gap", calc(0.35em + 0.375rem));
+$midline: token("root-underline-midline", 0.325em);
+$offset: token("root-underline-offset", calc(1lh / 2 - #{$midline} - #{$gap}));
 $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
 
 #{ns.class("text-link")} {
@@ -12,6 +15,7 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
   position: relative;
   width: fit-content;
   max-width: 100%;
+  padding-block-end: max(0px, -1 * #{$offset});
   cursor: pointer;
   color: token(
     "root-color",
@@ -34,7 +38,7 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
 #{ns.class("text-link")}::after {
   position: absolute;
   inset-inline: 0;
-  bottom: token("root-underline-offset", -0.35em);
+  bottom: max(0px, #{$offset});
   height: $radius;
   border-block-end-style: solid;
   border-block-end-width: token("root-underline-height", max(1px, 0.0625em));

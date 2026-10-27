@@ -40,7 +40,7 @@ function listHeader<T>(props: EntityListProps<T>) {
   if (!props.title && !props.description) return null;
   return (
     <>
-    {props.title ? <Title>{props.title}</Title> : null}
+    {props.title ? <Title fit={false}>{props.title}</Title> : null}
     {props.description ? <Text as="p" muted>{props.description}</Text> : null}
     </>
   );

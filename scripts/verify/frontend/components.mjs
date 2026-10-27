@@ -8,6 +8,7 @@ import { verifyBottomBar } from "./bottom-bar.mjs";
 import { verifyHeaderActiveLinks } from "./header-active.mjs";
 import { verifyLogsViewScrollContract } from "./logs-scroll.mjs";
 import { verifyProgressBars } from "./progress-bars.mjs";
+import { verifyQuote } from "./quote.mjs";
 import { verifyScrollbarFollowsTheDevice } from "./scrollbar.mjs";
 import { verifySectionSurfaces } from "./sections.mjs";
 import { verifyRenderedUpload, verifyUploadStyles } from "./upload-components.mjs";
@@ -28,6 +29,7 @@ async function verifyFrontendComponents(context) {
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);
   await verifyProgressBars(context.rootDir, context.importDist);
+  await verifyQuote(context.importDist, context.rootDir);
   await verifySectionSurfaces(context);
   await verifyHeaderActiveLinks(context.importDist, context.rootDir);
   await verifyScrollbarFollowsTheDevice(context.rootDir, context.importDist);

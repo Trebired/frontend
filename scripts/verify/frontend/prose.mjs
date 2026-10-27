@@ -113,7 +113,7 @@ function verifyArticle(markup) {
     1,
     "exactly one, since a nested article is a second candidate for a reader to pick instead of the whole document",
   );
-  const article = markup.slice(markup.indexOf("<article"));
+  const article = markup.slice(markup.indexOf("<article"), markup.indexOf("</article>"));
   assert.equal(
     article.includes("<nav"),
     false,
@@ -145,6 +145,16 @@ function verifyOutlineBoot(markup) {
     markup,
     /sessionStorage\.setItem/u,
     "and records the section it leaves on, so a reload comes back to it rather than to a stale hash",
+  );
+  assert.match(
+    markup,
+    /pagehide',function\(\)\{try\{var k=document\.querySelector/u,
+    "it finds the current link when the page is left rather than holding the node it booted with, which a soft navigation replaces",
+  );
+  assert.match(
+    markup,
+    /setItem\(P\+location\.pathname/u,
+    "and keys the saved section by the address the page is left from, not the one it was first loaded at",
   );
 }
 
@@ -204,6 +214,7 @@ async function verifyIndent({ importDist, rootDir }) {
   verifyOutlineBoot(railed);
   verifyArticle(railed);
 } async function verifyProse({ importDist, rootDir }) {
+
   await verifyProseText({ importDist });
   verifyTextDocument(await importDist("config"));
   await verifyIndent({ importDist, rootDir });

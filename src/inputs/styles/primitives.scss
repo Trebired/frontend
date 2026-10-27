@@ -63,13 +63,18 @@
 }
 
 #{ns.element-class("disclosure", "panel-content")} {
+  $bleed: var(#{ns.css-var("focus-bleed")}, 5px);
   min-height: 0;
   overflow: hidden;
-  padding-block-start: var(#{ns.css-var("gap-sm")}, 12px);
+  padding-block: var(#{ns.css-var("gap-sm")}, 12px) $bleed;
+  padding-inline: $bleed;
+  margin-block-end: calc(-1 * #{$bleed});
+  margin-inline: calc(-1 * #{$bleed});
 }
 
 #{ns.element-class("disclosure", "panel")}:not(#{ns.data("disclosure-panel-open", "true")}) #{ns.element-class("disclosure", "panel-content")} {
-  padding-block-start: 0;
+  padding-block: 0;
+  margin-block-end: 0;
 }
 
 #{ns.class("tabs")} {

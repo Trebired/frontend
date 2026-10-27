@@ -23,7 +23,7 @@ import { verifyFrontendServer } from "./frontend/server.mjs";
 import { verifyCopyComponents, verifyLocaleEndonyms } from "./frontend/copy.mjs";
 import { verifySiteChrome } from "./frontend/site/header.mjs";
 import { verifySiteSearch } from "./frontend/site/search.mjs";
-import { verifyHeadingLevels } from "./frontend/headings.mjs";
+import { verifyHeadings } from "./frontend/headings.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyFrontendTheme } from "./frontend/theme.mjs";
 import { verifyA11y } from "./frontend/a11y.mjs";
@@ -72,7 +72,7 @@ async function verifyFrontendMain() {
   await verifyLocaleEndonyms(context);
   await verifySiteChrome(context);
   await verifySiteSearch(context);
-  await verifyHeadingLevels(context);
+  await verifyHeadings(context);
   await verifyGraphs(context);
   await verifyWizard(context);
   await verifyFrontendLive(context);

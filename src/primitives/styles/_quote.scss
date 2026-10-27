@@ -1,0 +1,34 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("ui-quote-" + $name)}, $fallback);
+}
+
+#{ns.class("quote")} {
+  display: flex;
+  flex-direction: column;
+  gap: token("root-gap", var(#{ns.css-var("gap-sm")}, 12px));
+  padding-inline-start: token("root-px", var(#{ns.css-var("gap-lg")}, 24px));
+  border-inline-start: token("root-border-width", 3px) solid
+  token("root-border-color", color-mix(in srgb, currentColor 22%, transparent));
+}
+
+#{ns.element-class("quote", "mark")} {
+  flex: none;
+  width: token("mark-size", 2.5rem);
+  height: token("mark-size", 2.5rem);
+  color: token("mark-color", var(#{ns.css-var("text-muted")}, currentColor));
+}
+
+#{ns.element-class("quote", "text")} {
+  font-size: token("text-font-size", inherit);
+  line-height: token("text-line-height", 1.45);
+}
+
+#{ns.element-class("quote", "cite")} {
+  align-self: flex-end;
+  color: token("cite-color", var(#{ns.css-var("text-muted")}, currentColor));
+  font-size: token("cite-font-size", 0.95rem);
+  font-weight: token("cite-font-weight", 600);
+  text-align: end;
+}

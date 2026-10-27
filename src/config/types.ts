@@ -119,6 +119,7 @@ type FrontendPrimitiveComponentsConfig = {
   marquee?: FrontendComponentTokens;
   pill?: FrontendComponentTokens;
   progress?: FrontendComponentTokens;
+  quote?: FrontendComponentTokens;
   tabs?: FrontendComponentTokens;
   textLink?: FrontendComponentTokens;
   toggle?: FrontendComponentTokens;
@@ -152,6 +153,7 @@ type FrontendMediaComponentsConfig = {
 
 type FrontendShellComponentsConfig = {
   bottomBar?: FrontendComponentTokens;
+  category?: FrontendComponentTokens;
   error?: FrontendComponentTokens;
   header?: FrontendComponentTokens;
   language?: FrontendComponentTokens;

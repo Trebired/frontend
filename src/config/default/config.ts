@@ -92,6 +92,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         scales: DEFAULT_FRONTEND_SCALES_CONFIG,
         scrollBehavior: "smooth",
         semantics: Object.freeze({}),
+        titles: Object.freeze({ fit: null }),
     }),
     forVersion: PACKAGE_VERSION,
     language: EMPTY_LANGUAGE_CONFIG,

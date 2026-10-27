@@ -48,7 +48,7 @@ function detailTitle(model: any) {
   return (
     <Stack className={frontendClassName("title-desc")} gap="sm">
     <InlineRow gap="sm">
-    <Title>{model.t("logEntry")}</Title>
+    <Title fit={false}>{model.t("logEntry")}</Title>
     <div className={frontendClassName("right")}>
     {copyAction(
         `#${model.ids.detailRaw}`,

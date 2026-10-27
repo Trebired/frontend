@@ -73,7 +73,7 @@ function copyCardRowsId(props: CopyCardProps) {
 
 function copyCardTitle(props: CopyCardProps) {
   const override = /^h[2-6]$/u.test(String(props.titleAs || "")) ? Number(String(props.titleAs).slice(1)) as HeadingLevel : undefined;
-  return <Title level={override}>{props.title}</Title>;
+  return <Title fit={false} level={override}>{props.title}</Title>;
 }
 
 function copyCardHeader(props: CopyCardProps, target: string) {

@@ -10,7 +10,7 @@ $fast: var(#{ns.css-var("transition-fast")}, 160ms) ease;
 
 $muted: var(#{ns.css-var("text-muted")}, currentColor);
 
-$link-gap: var(#{ns.css-var("gap-sm")}, 12px);
+$link-gap: var(#{ns.css-var("gap-xs2")}, 4px);
 
 @mixin band($gutter) {
   max-width: calc(#{token("max-width", 72rem)} + #{$gutter} * 2);
@@ -44,27 +44,18 @@ $link-gap: var(#{ns.css-var("gap-sm")}, 12px);
   inset-inline: 0;
   inset-block-start: 100%;
   color: inherit;
-  border-block-end: token("root-border", 1px solid color-mix(in srgb, currentColor 14%, transparent));
-  background: var(#{ns.css-var("ground")}, #fff);
-  box-shadow: 0 24px 32px -24px rgb(0 0 0 / 18%);
-  clip-path: inset(0 0 100% 0);
   opacity: 0;
   visibility: hidden;
   transition:
-  clip-path $motion,
   opacity $motion,
-  background-color $tone-motion,
   visibility 0s linear token("motion-duration", 500ms);
 }
 
 #{ns.element-class("site-header", "sheet")}#{ns.data("site-header-sheet", "open")} {
-  clip-path: inset(0 0 -3rem 0);
   opacity: 1;
   visibility: visible;
   transition:
-  clip-path $motion,
   opacity $motion,
-  background-color $tone-motion,
   visibility 0s;
 }
 
@@ -72,6 +63,17 @@ $link-gap: var(#{ns.css-var("gap-sm")}, 12px);
   max-height: calc(100dvh - var(#{ns.css-var("shell-header-height")}, 5rem));
   overflow-y: auto;
   overscroll-behavior: contain;
+  border-block-end: token("root-border", 1px solid color-mix(in srgb, currentColor 14%, transparent));
+  background: var(#{ns.css-var("ground")}, #fff);
+  box-shadow: 0 24px 32px -24px rgb(0 0 0 / 18%);
+  clip-path: inset(0 0 100% 0);
+  transition:
+  clip-path $motion,
+  background-color $tone-motion;
+}
+
+#{ns.data("site-header-sheet", "open")} > #{ns.element-class("site-header", "sheet-body")} {
+  clip-path: inset(0 0 -3rem 0);
 }
 
 #{ns.element-class("site-header", "sheet-content")} {
@@ -118,16 +120,18 @@ $link-gap: var(#{ns.css-var("gap-sm")}, 12px);
   overscroll-behavior: contain;
 }
 
-#{ns.element-class("site-header", "sheet-entry")},
-
-#{ns.element-class("site-header", "sheet-entry")}#{ns.class("text-link")} {
+#{ns.element-class("site-header", "sheet-entry")} {
   display: flex;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   flex-direction: column;
   gap: 0.25rem;
   color: inherit;
   text-decoration: none;
+}
+
+#{ns.element-class("site-header", "sheet-entry")} > #{ns.class("text-link")} {
+  color: inherit;
 }
 
 #{ns.element-class("site-header", "sheet-description")} {
@@ -190,7 +194,8 @@ $link-gap: var(#{ns.css-var("gap-sm")}, 12px);
 
 @media (prefers-reduced-motion: reduce) {
   #{ns.element-class("site-header", "sheet")},
-  #{ns.element-class("site-header", "sheet")}#{ns.data("site-header-sheet", "open")} {
+  #{ns.element-class("site-header", "sheet")}#{ns.data("site-header-sheet", "open")},
+  #{ns.element-class("site-header", "sheet-body")} {
     transition: none;
   }
 }

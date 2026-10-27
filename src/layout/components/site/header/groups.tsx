@@ -18,6 +18,7 @@ import {
 } from "./../link.js";
 import type { SiteHeaderSheet } from "./sheet.js";
 import { SiteHeaderSearch } from "./search.js";
+import { SiteLinkCategory } from "./../category.js";
 
 type LinkRenderProps = {
   currentPaths: string[];
@@ -99,8 +100,8 @@ function SheetEntry(props: GroupProps) {
     <span className={frontendElementClass(block, "sheet-description")}>{link.description}</span>
   );
   return (
-    <SiteHeaderAnchor {...props} className={frontendElementClass(block, "sheet-entry")} link={link}>
-    <span><SiteLinkLabel link={link} /></span>
+    <SiteHeaderAnchor {...props} className={frontendElementClass(block, "sheet-entry")} link={link} plain>
+    <span className={frontendClassName("text-link")}><SiteLinkLabel link={link} /></span>
     {description}
     </SiteHeaderAnchor>
   );
@@ -192,14 +193,11 @@ function SiteHeaderChevron() {
 
 function MenuSection(props: GroupProps) {
   return (
-    <div className={frontendElementClass(block, "menu-section")}>
-    <h5 className={frontendElementClass(block, "menu-section-heading")}>{props.link.label}</h5>
-    <div className={frontendElementClass(block, "menu-section-links")}>
+    <SiteLinkCategory heading={props.link.label}>
     {siteLinkChildren(props.link).map((child, index) => (
           <SiteHeaderAnchor {...props} key={siteLinkKey(child, index)} link={child} />
     ))}
-    </div>
-    </div>
+    </SiteLinkCategory>
   );
 }
 

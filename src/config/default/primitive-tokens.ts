@@ -89,6 +89,7 @@ const DEFAULT_PRIMITIVE_COMPONENTS_CONFIG = Object.freeze({
         separator: { fontSize: "1em", opacity: "0.45" }, track: { duration: "38s" } }),
     pill: Object.freeze({}),
     progress: Object.freeze({}),
+    quote: Object.freeze({}),
     tabs: Object.freeze({
         list: { gap: "0.5rem" },
         responsive: {
