@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.2.1
+
+- Fixed an uncaught `InvalidStateError` when the browser aborts a theme view transition. Chrome aborts one when the layout changes before its first frame, for example while images load during the first scroll, and the transition's `ready` promise rejected with nothing to catch it. The theme still applies; the rejection is now handled.
+- Fixed the locale switcher trigger repeating the language code when a locale has no flag. With `flagCountry: false` and no `icon`, the trigger showed the code as its mark and again as its label; it now shows the code once. The menu keeps the code beside each language name.
+- Fixed the `textLink` decoration tokens skipping external links. An external link wraps its text and icon in an inline-flex span, which a link's own `text-decoration` never reaches, so a configured underline showed on every link except the external ones. The span now carries the link's decoration itself, under the text and not under the icon.
+
 ## 29.2.0
 
 - Added frost. `frost: true` on a container, a part or a variant blurs whatever lies behind the body text inside it, so text stays readable over a print or a photo without a colour, an outline or a box. Each paragraph, list item, quote, caption and definition gets a backdrop blur shaped around its own lines, with an uneven, soft edge, so the frost sits only behind the words and never fills the block's width. Titles are left alone. `--tbf-ui-frost-blur` and `--tbf-ui-frost-feather` adjust it.
