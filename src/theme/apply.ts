@@ -94,7 +94,7 @@ function dispatchThemeChange(theme: ThemeValue, themeKey: ThemeValue): void {
 }
 
 type ThemeSwitchMode = "instant" | "uniform";
-type ViewTransitionHandle = { finished: Promise<unknown> };
+type ViewTransitionHandle = { finished: Promise<unknown>; ready: Promise<unknown> };
 
 const THEME_SWITCH_BUFFER_MS = 120;
 const THEME_SWITCH_DEFAULT_MS = 240;
@@ -186,6 +186,7 @@ function applyTheme(theme: ThemeValue, options: ThemeRuntimeOptions = {}): Theme
       commit();
   });
   if (transition) {
+    void Promise.resolve(transition.ready).then(() => undefined, () => undefined);
     void Promise.resolve(transition.finished).then(endThemeSwitch, endThemeSwitch);
     return next;
   }
