@@ -1,5 +1,14 @@
 # Changelog
 
+All notable changes to `@trebired/frontend` will be documented here.
+
+This project follows semantic versioning once published.
+
+## 29.2.0
+
+- Added frost. `frost: true` on a container, a part or a variant blurs whatever lies behind the body text inside it, so text stays readable over a print or a photo without a colour, an outline or a box. Each paragraph, list item, quote, caption and definition gets a backdrop blur shaped around its own lines, with an uneven, soft edge, so the frost sits only behind the words and never fills the block's width. Titles are left alone. `--tbf-ui-frost-blur` and `--tbf-ui-frost-feather` adjust it.
+- Changed the optional `@trebired/overprint` peer to `^0.6.0`.
+
 ## 29.1.0
 
 - Fixed a popover close button doing nothing after its `PopoverPanel` moved into the layer root. The panel renders in place on the server and is portaled after hydration, and the close listener stayed on the element it replaced. Close buttons are now matched against the popover's current element.
@@ -313,7 +322,6 @@ This is the accessibility release. The package held a claim it could not support
 - A variant's colour is written as a static value in config. A custom property declared at `:root` resolves there and inherits already resolved, so a `var()` written into config froze the root's ink and painted dark text on a dark header. The reference belongs in the rule's fallback, where it resolves per element; config carries only what is genuinely static.
 
 - The header trigger look is one definition. `styles/utils/chrome-trigger` holds the base, square and hover mixins that the locale trigger and the accessibility trigger both include, so the two cannot drift. It reads `--tbf-shell-chrome-trigger-*` and falls back to the existing `--tbf-shell-language-trigger-*`, so a site that already themed the language trigger themes both and nothing moves.
-
 
 ## 24.0.0
 
@@ -1011,10 +1019,6 @@ Not yet namespaced: the package's `data-*` attributes. 189 of them (`data-dropdo
 - `EmbedFrame` shows the standard `loader-circle` while the frame is loading, and on timeout it blanks the frame to cancel the pending request and shows a warning mark with an explanatory message. The timeout defaults to 10 seconds and is set with `timeoutMs`.
 - `labels.loading` and `labels.error` override the built-in English strings, and `onState` reports `loading`, `ready` or `error` to the host.
 - `MapEmbed` now renders through `EmbedFrame`, so existing map embeds get the loading, timeout and failure handling without a code change. It gained optional `labels` and `timeoutMs`.
-
-All notable changes to `@trebired/frontend` will be documented here.
-
-This project follows semantic versioning once published.
 
 ## 13.14.0
 
@@ -2297,8 +2301,6 @@ This project follows semantic versioning once published.
 ## 7.1.17
 
 - Updated shared utilities to `@trebired/utils@^0.4.4`.
-
-All notable package changes are documented here.
 
 ## 7.1.16
 
