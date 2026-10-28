@@ -111,7 +111,7 @@ function localeTriggerFace(props: LocaleSwitcherProps, current: string) {
   if (!active) return <Icon spec="remixicon translate-2" />;
   return (
     <>
-    {localeOptionIcon(active)}
+    {active.icon || localeFlagCountry(active) ? localeOptionIcon(active) : null}
     <span className={frontendClassName("locale-code")}>
     {text(active.shortLabel, active.code).slice(0, 3).toUpperCase()}
     </span>
