@@ -709,6 +709,9 @@
       "#anp2kkmztc16": [
         "../../../src/inputs/advanced/radio/styles.scss"
       ],
+      "#aoprhr6tt1by": [
+        "../../../src/frost/index.ts"
+      ],
       "#apfhdgoqq90o": [
         "../../../src/logs/client/i18n/cs.ts"
       ],
@@ -834,6 +837,9 @@
       ],
       "#cgoxrfs83ypy": [
         "../../../src/settings/save-policy/constants.ts"
+      ],
+      "#cnmpii8tpepd": [
+        "../../../src/styles/utils/_frost.scss"
       ],
       "#cob3jyiq5xo0": [
         "../../../src/layout/components/shell/product/mobile.tsx"

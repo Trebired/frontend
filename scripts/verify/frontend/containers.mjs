@@ -42,6 +42,15 @@ async function verifyContainers(context) {
   assert.match(toned, /@use "[^"]*styles\/utils\/tone" as tone;/u, "which the generated stylesheet loads once");
   assert.match(generate({ cell: { tone: "dark" } }), /@include tone\.on-dark;/u, "and a dark one takes the inverted palette the same way");
 
+  const frosted = generate({ band: { frost: true, parts: { lead: { frost: true } } } });
+  const frostedText = /:where\(\.tbfm-band\) :where\(p, li:not\(\[class\]\), [^{]*\) \{\n {2}@include frost\.text;/u;
+  assert.match(frosted, frostedText, "a frosted container blurs what lies behind its text, at no specificity");
+  assert.match(frosted, /:where\(\.tbfm-band__lead\) :where\(/u, "a part can be frosted on its own");
+  assert.ok(!/:where\(p, li[^{]*h[1-6]/u.test(frosted), "titles are never frosted, only body text");
+  assert.match(frosted, /@use "[^"]*styles\/utils\/frost" as frost;/u, "from the package's own mixin");
+  assert.ok(!generate({ band: { style: { display: "grid" } } }).includes("@include frost"), "a container is not frosted unless it asks");
+  assert.throws(() => generate({ band: { frost: "yes" } }), /must be true or false/u, "frost is on or off");
+
   assert.throws(
     () => generate({ card: { style: { color: "var(--tbf-text)" } } }),
     /writes a package token by hand/u,

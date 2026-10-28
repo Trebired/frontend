@@ -27,6 +27,7 @@ import { bindModals } from "./modal/index.js";
 import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
 import { bindReveals, type RevealOptions } from "./reveal/index.js";
+import { bindFrost } from "./frost/index.js";
 import { type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
@@ -136,6 +137,7 @@ function bindFrontendWidgets(
   runBindStep(logger, "actionForms", () => bindActionForms(scope, { adapters }));
   runBindStep(logger, "actionButtons", () => bindActionButtons(scope, { adapters }));
   runBindStep(logger, "copyButtons", () => bindCopyButtons(scope));
+  runBindStep(logger, "frost", () => bindFrost(scope));
   if (options.reveal !== false) {
     runBindStep(logger, "reveals", () => bindReveals(scope, options.reveal || {}));
   }

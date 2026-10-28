@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
 import { breakpointDeclarations } from "./breakpoints.js";
-import { TONE_NAMESPACE, renderContainerClassRules } from "./containers.js";
+import { FROST_NAMESPACE, TONE_NAMESPACE, renderContainerClassRules } from "./containers.js";
 import { renderContainerRules, renderHeadingVariantRules, renderOutlineSelectionRule } from "./typography.js";
 import { cssComment, cssString, invalidConfig } from "./shared.js";
 import { componentGroupCssName, componentTokenCssName } from "#lccfzjsnej6t";
@@ -286,6 +286,7 @@ function generateFrontendScss(
     `/* prefix: ${cssComment(config.prefix)} */`,
     '@use "sass:meta";',
     `@use ${cssString(packageStylePath("styles/utils/tone"))} as ${TONE_NAMESPACE};`,
+    `@use ${cssString(packageStylePath("styles/utils/frost"))} as ${FROST_NAMESPACE};`,
     ...renderFontsCss(config.assets.fonts),
     ...renderFlagRules(config.assets.flags),
     packageStyleLoad("styles/tokens.scss"),

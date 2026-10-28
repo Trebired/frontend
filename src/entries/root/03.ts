@@ -150,3 +150,4 @@ export {
   REVEAL_SELECTOR,
 } from "./../../reveal/index.js";
 export type { RevealOptions } from "./../../reveal/index.js";
+export { bindFrost } from "./../../frost/index.js";

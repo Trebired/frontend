@@ -12,9 +12,11 @@ import type {
 
 const NAME_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
 const PROPERTY_PATTERN = /^-{0,2}[a-zA-Z][a-zA-Z0-9-]*$/u;
-const DEFINITION_FIELDS = ["at", "on", "parts", "style", "tone", "variants"];
+const DEFINITION_FIELDS = ["at", "frost", "on", "parts", "style", "tone", "variants"];
 const TONES = ["dark", "light"];
 const TONE_NAMESPACE = "tone";
+const FROST_NAMESPACE = "frost";
+const FROST_TEXT = ":where(p, li:not([class]), blockquote, figcaption, dd):not(:where(li, blockquote, figcaption, dd) *)";
 const RAW_TOKEN_PATTERN = new RegExp(`var\\(\\s*--${FRONTEND_PREFIX}-`, "u");
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
@@ -91,6 +93,16 @@ function normalizeTone(value: unknown, label: string): FrontendContainerTone {
   return value as FrontendContainerTone;
 }
 
+function normalizeFrost(value: unknown, label: string): boolean {
+  if (value === undefined) return false;
+  if (typeof value !== "boolean") throw invalidConfig(`${label} must be true or false`);
+  return value;
+}
+
+function frostRule(selector: string, frost: boolean): string[] {
+  return frost ? [`:where(${selector}) ${FROST_TEXT} {`, `  @include ${FROST_NAMESPACE}.text;`, "}"] : [];
+}
+
 function toneDeclarations(tone: FrontendContainerTone): string[] {
   return tone ? [`  @include ${TONE_NAMESPACE}.on-${tone};`] : [];
 }
@@ -113,6 +125,7 @@ function normalizeDefinition(
 
   const definition: FrontendContainerDefinition = {
     at: normalizeStyleMap(value.at, `${label}.at`, breakpoints),
+    frost: normalizeFrost(value.frost, `${label}.frost`),
     on: normalizeStyleMap(value.on, `${label}.on`),
     parts: {},
     style: value.style === undefined ? {} : normalizeStyle(value.style, `${label}.style`),
@@ -174,6 +187,7 @@ function renderDefinition(
   const tone = toneDeclarations(definition.tone);
   const body = [...tone, ...declarations(definition.style)];
   const lines = body.length ? [`${selector} {`, ...body, "}"] : [];
+  lines.push(...frostRule(selector, definition.frost));
   for (const [state, style] of Object.entries(definition.on)) {
     lines.push(...ruleFor(stateSelector(selector, state), style));
   }
@@ -207,4 +221,4 @@ function renderContainerClassRules(config: NormalizedFrontendConfig): string[] {
   return lines;
 }
 
-export { TONE_NAMESPACE, defineContainers, normalizeContainersConfig, renderContainerClassRules };
+export { FROST_NAMESPACE, TONE_NAMESPACE, defineContainers, normalizeContainersConfig, renderContainerClassRules };

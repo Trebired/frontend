@@ -1,0 +1,30 @@
+@use "@trebired/bundler/namespace" as ns;
+
+$feather: var(#{ns.css-var("ui-frost-feather")}, 1.5rem);
+
+@property #{ns.css-var("frost")} {
+  inherits: false;
+  initial-value: off;
+  syntax: "on | off";
+}
+
+@function edge($side) {
+  @return linear-gradient($side, transparent, #000 $feather, #000 calc(100% - #{$feather}), transparent);
+}
+
+@mixin text {
+  #{ns.css-var("frost")}: on;
+  position: relative;
+
+  &::after {
+    backdrop-filter: blur(var(#{ns.css-var("ui-frost-blur")}, 6px));
+    content: "";
+    inset: calc(-1 * #{$feather});
+    mask-composite: intersect;
+    mask-image: var(#{ns.css-var("frost-mask")}, edge(to right), edge(to bottom));
+    mask-size: 100% 100%;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+  }
+}

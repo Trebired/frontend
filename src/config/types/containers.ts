@@ -6,6 +6,7 @@ type FrontendContainerTone = "dark" | "light" | null;
 
 type FrontendContainerBlock = {
   at?: Record<string, FrontendContainerDeclarations>;
+  frost?: boolean;
   on?: Record<string, FrontendContainerDeclarations>;
   style?: FrontendContainerDeclarations;
   tone?: Exclude<FrontendContainerTone, null>;
@@ -20,6 +21,7 @@ type FrontendContainersConfig = Record<string, FrontendContainer>;
 
 type FrontendContainerDefinition = {
   at: Record<string, FrontendContainerStyle>;
+  frost: boolean;
   on: Record<string, FrontendContainerStyle>;
   parts: Record<string, FrontendContainerDefinition>;
   style: FrontendContainerStyle;
