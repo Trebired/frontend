@@ -121,4 +121,5 @@ $motion: token("motion-duration", 0.3s) token("motion-easing", ease);
   display: inline-flex;
   align-items: center;
   gap: var(#{ns.css-var("gap-xs2")}, 4px);
+  text-decoration: inherit;
 }
