@@ -31,7 +31,7 @@ type LinkRenderProps = {
   tabIndex?: number;
 };
 
-type GroupProps = LinkRenderProps & { link: SiteLink };
+type GroupProps = LinkRenderProps & { link: SiteLink; siblings?: SiteLink[] };
 
 type SheetProps = { sheet: SiteHeaderSheet; sheetId: string };
 
@@ -55,11 +55,13 @@ function useSiteLinkState(links: SiteLink[]) {
   return { currentPaths, currentUrl, hasSection: fragments.length > 0, section };
 }
 
-function SiteHeaderAnchor(props: LinkRenderProps & { children?: ReactNode; className?: string; link: SiteLink; plain?: boolean }) {
+type AnchorProps = LinkRenderProps & { children?: ReactNode; className?: string; link: SiteLink; plain?: boolean; siblings?: SiteLink[] };
+
+function SiteHeaderAnchor(props: AnchorProps) {
   const { className, currentPaths, hasSection, link, section } = props;
   return (
     <SiteLinkAnchor
-    active={isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl)}
+    active={isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl, props.siblings)}
     className={className}
     link={link}
     onNavigate={props.onNavigate}
@@ -113,7 +115,9 @@ function SheetColumn(props: GroupProps) {
     <div aria-labelledby={headingId} className={frontendElementClass(block, "sheet-column")} role="group">
     <h5 className={frontendElementClass(block, "sheet-heading")} id={headingId}>{props.link.label}</h5>
     <div className={`${frontendElementClass(block, "sheet-links")} ${frontendClassName("scroll-min")}`}>
-    {siteLinkChildren(props.link).map((child, index) => <SheetEntry {...props} key={siteLinkKey(child, index)} link={child} />)}
+    {siteLinkChildren(props.link).map((child, index, siblings) => (
+          <SheetEntry {...props} key={siteLinkKey(child, index)} link={child} siblings={siblings} />
+    ))}
     </div>
     </div>
   );
@@ -130,7 +134,7 @@ function SheetGrid(props: GroupProps) {
     {children.map((child, index) => {
           const key = siteLinkKey(child, index);
           if (isSiteLinkGroup(child)) return <SheetColumn {...props} key={key} link={child} />;
-          return <SheetEntry {...props} key={key} link={child} />;
+          return <SheetEntry {...props} key={key} link={child} siblings={children} />;
     })}
     </div>
   );
@@ -194,8 +198,8 @@ function SiteHeaderChevron() {
 function MenuSection(props: GroupProps) {
   return (
     <SiteLinkCategory heading={props.link.label}>
-    {siteLinkChildren(props.link).map((child, index) => (
-          <SiteHeaderAnchor {...props} key={siteLinkKey(child, index)} link={child} />
+    {siteLinkChildren(props.link).map((child, index, siblings) => (
+          <SiteHeaderAnchor {...props} key={siteLinkKey(child, index)} link={child} siblings={siblings} />
     ))}
     </SiteLinkCategory>
   );
@@ -204,10 +208,10 @@ function MenuSection(props: GroupProps) {
 function MenuGroupLinks(props: GroupProps) {
   const links = (
     <div className={frontendElementClass(block, "menu-group-links")}>
-    {siteLinkChildren(props.link).map((child, index) => {
+    {siteLinkChildren(props.link).map((child, index, siblings) => {
           const key = siteLinkKey(child, index);
           if (isSiteLinkGroup(child)) return <MenuSection {...props} key={key} link={child} />;
-          return <SiteHeaderAnchor {...props} key={key} link={child} />;
+          return <SiteHeaderAnchor {...props} key={key} link={child} siblings={siblings} />;
     })}
     </div>
   );

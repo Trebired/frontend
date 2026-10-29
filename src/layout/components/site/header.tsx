@@ -70,7 +70,7 @@ function SiteHeaderLinks(props: Partial<SheetProps> & {
     <>
     {props.links.map((link, index) => {
           const key = siteLinkKey(link, index);
-          if (!isSiteLinkGroup(link)) return <SiteHeaderAnchor {...shared} key={key} link={link} />;
+          if (!isSiteLinkGroup(link)) return <SiteHeaderAnchor {...shared} key={key} link={link} siblings={props.links} />;
           if (!sheet || !sheetId) return <SiteHeaderMenuGroup {...shared} key={key} link={link} />;
           return <SiteHeaderNavTrigger {...shared} index={index} key={key} link={link} sheet={sheet} sheetId={sheetId} />;
     })}

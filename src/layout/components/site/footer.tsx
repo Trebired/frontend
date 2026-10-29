@@ -65,11 +65,11 @@ function SiteFooterSocialLinks({ social }: { social: SiteFooterSocial[] }) {
   );
 }
 
-function FooterLink({ link, softRedirect }: { link: SiteLink; softRedirect?: boolean }) {
-  const currentPaths = sitePathForms(useRenderCurrentUrl());
+function FooterLink({ link, siblings, softRedirect }: { link: SiteLink; siblings: SiteLink[]; softRedirect?: boolean }) {
+  const currentUrl = useRenderCurrentUrl();
   return (
     <SiteLinkAnchor
-    active={isSiteLinkActive(link, currentPaths, "", false, useRenderCurrentUrl())}
+    active={isSiteLinkActive(link, sitePathForms(currentUrl), "", false, currentUrl, siblings)}
     link={link}
     softRedirect={softRedirect}
     />
@@ -81,7 +81,7 @@ function FooterLinks({ className, links, softRedirect }: { className: string; li
   return (
     <nav className={frontendElementClass(block, className)}>
     {links.map((link, index) => (
-          <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
+          <FooterLink key={siteLinkKey(link, index)} link={link} siblings={links} softRedirect={softRedirect} />
     ))}
     </nav>
   );
@@ -91,7 +91,7 @@ function FooterGroup({ group, softRedirect }: { group: SiteLinksFooterGroup; sof
   return (
     <SiteLinkCategory heading={group.heading} nav>
     {group.links.map((link, index) => (
-          <FooterLink key={siteLinkKey(link, index)} link={link} softRedirect={softRedirect} />
+          <FooterLink key={siteLinkKey(link, index)} link={link} siblings={group.links} softRedirect={softRedirect} />
     ))}
     </SiteLinkCategory>
   );

@@ -68,12 +68,28 @@ function siteLinkOnCurrentPage(link: SiteLink, currentPaths: string[]): boolean 
   return currentPaths.some((current) => targets.some((target) => sitePathMatches(current, target)));
 }
 
+function siteLinkMatchLength(link: SiteLink, currentPaths: string[]): number {
+  const targets = sitePathForms(link.href);
+  const lengths = currentPaths.flatMap((current) => targets.filter((target) => sitePathMatches(current, target)));
+  return Math.max(-1, ...lengths.map((target) => target.length));
+}
+
+function hasCloserSibling(link: SiteLink, siblings: SiteLink[], currentPaths: string[], currentUrl: string): boolean {
+  const own = siteLinkMatchLength(link, currentPaths);
+  return siblings.some((other) => other !== link
+    && !isSiteLinkGroup(other)
+    && !siteLinkFragment(other)
+    && !isForeignOrigin(other.href, currentUrl)
+    && siteLinkMatchLength(other, currentPaths) > own);
+}
+
 function isSiteLinkActive(
   link: SiteLink,
   currentPaths: string[],
   section: string,
   hasSection: boolean,
   currentUrl = "",
+  siblings: SiteLink[] = [],
 ): boolean {
   if (isForeignOrigin(link.href, currentUrl)) return false;
   if (isSiteLinkGroup(link)) {
@@ -84,7 +100,8 @@ function isSiteLinkActive(
   if (hasSection && section) return false;
   const targets = sitePathForms(link.href);
   if (targets.includes("/")) return currentPaths.includes("/");
-  return currentPaths.some((current) => targets.some((target) => sitePathMatches(current, target)));
+  if (!currentPaths.some((current) => targets.some((target) => sitePathMatches(current, target)))) return false;
+  return !hasCloserSibling(link, siblings, currentPaths, currentUrl);
 }
 
 function SiteLinkLabel({ link }: { link: SiteLink }) {
