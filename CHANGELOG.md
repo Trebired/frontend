@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.4.0
+
+- Added `credit` to `SiteFooter`. A site turns it on to end the note row with "Made by Trebired", in the reader's language ("Vytvořil Trebired" in Czech), where "Trebired" links to trebired.com in a new tab with the outside-link icon and keeps the referrer. `credit={{ href, name }}` credits another maker. A footer shows no credit unless the site asks for it.
+
 ## 29.3.0
 
 - Added consent to `EmbedFrame` and `MapEmbed`. With `consent={{ provider: "Google Maps" }}` the frame loads nothing at first: it names the provider, says that loading the content sends the visitor's IP address and browser details there, and shows a button with an eye icon that loads it. The choice is kept per provider in `localStorage` and applies at once to every embed of that provider on the page, so a visitor who has agreed sees the content straight away on later visits. The message and the button come in English and Czech. `EmbedFrameState` gains `"consent"` for a frame waiting for the click, and `EmbedFrameConsent` is exported.
