@@ -43,6 +43,7 @@ export type {
   CarouselControlsPlacement,
   CarouselProps,
   CarouselSlide,
+  EmbedFrameConsent,
   EmbedFrameLabels,
   EmbedFrameProps,
   EmbedFrameState,

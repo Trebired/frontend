@@ -16,7 +16,7 @@ export type { GalleryState } from "./gallery-state.js";
 export { Lightbox } from "./lightbox.js";
 export type { LightboxProps } from "./lightbox.js";
 export { EmbedFrame } from "./embed-frame.js";
-export type { EmbedFrameLabels, EmbedFrameProps, EmbedFrameState } from "./embed-frame.js";
+export type { EmbedFrameConsent, EmbedFrameLabels, EmbedFrameProps, EmbedFrameState } from "./embed-frame.js";
 export { MapEmbed } from "./map-embed.js";
 export type { MapEmbedProps } from "./map-embed.js";
 export { lockBodyScroll } from "#f3dd7yszexpp";
