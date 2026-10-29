@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import { useLinks, verifySiteLinks } from "./links.mjs";
+import { verifySitePages } from "./../pages.mjs";
 
 async function verifySiteHeaderMarkup(context) {
   const { renderToStaticMarkup } = await import("react-dom/server");
@@ -273,6 +274,7 @@ async function verifySiteChrome(context) {
   await verifySiteHeaderSheetMarkup(context);
   await verifySiteHeaderSheetBehaviour(context);
   await verifyGenericBottomBar(context);
+  await verifySitePages(context);
 }
 
 export { verifySiteChrome };

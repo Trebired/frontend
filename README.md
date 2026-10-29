@@ -456,6 +456,29 @@ The step is not a fixed distance. `flow` and `size` name the indent for body tex
 
 `mountLiveIsland({ prepare })` awaits `prepare` before the island renders or hydrates, on the first mount and on every remount after a soft navigation. It receives `url`, the address the island is about to render: during a soft navigation that is the target, which the browser history does not show until the new content is in place, so read the route from `url` rather than from `location`. Load what the island renders there, such as the page module of the current route, and the server markup hydrates against it without a mismatch.
 
+### Site Pages
+
+`createSitePages` is the page system of a static site, so an app lists its routes and writes no island, page map or loader of its own:
+
+```tsx
+import { createSitePages } from "@trebired/frontend/react";
+
+export const sitePages = createSitePages({
+  error: SiteErrorPage,
+  pages: {
+    "/": async() => (await import("./pages/home")).HomePage,
+    "/kontakt": async() => (await import("./pages/kontakt")).ContactPage,
+  },
+});
+```
+
+Each route is a loader, so every page is its own chunk and the first visit downloads only the page it opens. `pages` may also be a function from a route to its loader, for routes made from data such as articles. `wrap` puts each page inside what the app needs around it and receives the route.
+
+- The server awaits `sitePages.preparePage(path)` and renders `<sitePages.PageContent path={path} />` in the content island.
+- The client calls `sitePages.mountPages("live_content")`. It prepares the current route before hydrating and the target before every soft navigation swaps the content, and it starts loading a page's code as soon as a soft-redirect link to it is hovered or focused, so the click usually finds it loaded.
+- Error routes (`/404`, `/500`, ...) render `error` with their status, and a route with no loader renders it with `404`.
+- `usePageRoute()` returns the current route inside a page.
+
 ## Public API
 
 Entrypoints:

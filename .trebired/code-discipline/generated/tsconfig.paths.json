@@ -241,6 +241,9 @@
       "#3wry9farewj4": [
         "../../../src/inputs/choice.ts"
       ],
+      "#404ceolhrsoe": [
+        "../../../src/react/site-pages.tsx"
+      ],
       "#42944u9i75ap": [
         "../../../src/settings/save-policy/fields.ts"
       ],
@@ -837,6 +840,9 @@
       ],
       "#cgoxrfs83ypy": [
         "../../../src/settings/save-policy/constants.ts"
+      ],
+      "#cirumw6bydvd": [
+        "../../../scripts/verify/frontend/pages.mjs"
       ],
       "#cnmpii8tpepd": [
         "../../../src/styles/utils/_frost.scss"

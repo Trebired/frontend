@@ -172,4 +172,6 @@ export {
 };
 export type { LiveIslandMountOptions, ReactRootOptions };
 
+export { createSitePages, usePageRoute } from "./site-pages.js";
+export type { SitePage, SitePageContent, SitePageLoader, SitePageLoaders, SitePages, SitePagesOptions } from "./site-pages.js";
 export *from "./re-exports.js";
