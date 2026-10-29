@@ -302,6 +302,8 @@ A footer group and a section in the header's mobile menu are the same link categ
 
 That is the whole mechanism for telling the two apart, and it is deliberate: a column heading cannot say whose links these are, because every column looks equally weighted, while a mark is read before it is read. The two parts share one ground, because a second background reads as a second footer rather than as the rest of this one. Give the bands the same heading names on every site so a reader learns one map, and let the same label appear in both bands when both genuinely have one, such as a brand page per site.
 
+`credit` credits whoever made the site at the end of the note row: "Made by Trebired", in the reader's language ("Vytvořil Trebired" in Czech), with "Trebired" linking to trebired.com in a new tab like any other outside link. A site Trebired built for a client turns it on with `credit`; a site made by someone else passes `credit={{ href, name }}`. It is off unless a site asks for it.
+
 
 ### Bottom Bar
 

@@ -7,6 +7,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { siteSocialService } from "./../../social.js";
 import { resolveSiteLinks, type SiteLinksFooterGroup } from "./../../links.js";
 import { useLocale } from "./../../../react/locale.js";
+import { sourceLanguageMessage } from "./../../../language/messages.js";
 import { SiteLinkCategory } from "./category.js";
 
 type SiteFooterSocial = {
@@ -22,8 +23,14 @@ type SiteFooterBand = {
   tagline?: ReactNode;
 };
 
+type SiteFooterCredit = {
+  href?: string;
+  name?: string;
+};
+
 type SiteFooterProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   brand?: ReactNode;
+  credit?: boolean | SiteFooterCredit;
   note?: ReactNode;
   site?: SiteFooterBand;
   social?: SiteFooterSocial[];
@@ -33,6 +40,8 @@ type SiteFooterProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 };
 
 const block = "site-footer";
+
+const TREBIRED: Required<SiteFooterCredit> = { href: "https://trebired.com", name: "Trebired" };
 
 function socialEntry(entry: SiteFooterSocial) {
   const known = entry.service ? siteSocialService(entry.service) : null;
@@ -117,9 +126,21 @@ function SiteFooterBand({ band, links, softRedirect }: { band: SiteFooterBand; l
   );
 }
 
+function SiteFooterCreditLine({ credit, lang }: { credit?: boolean | SiteFooterCredit; lang: string }) {
+  if (!credit) return null;
+  const { href, name } = { ...TREBIRED, ...(credit === true ? {} : credit) };
+  return (
+    <span className={frontendElementClass(block, "credit")}>
+    {sourceLanguageMessage("footerCredit", lang)}{" "}
+    <SiteLinkAnchor link={{ external: true, href, label: name, rel: "noopener" }} />
+    </span>
+  );
+}
+
 function SiteFooter(props: SiteFooterProps) {
-  const { brand, className, note, site, social = [], softRedirect, tagline, tone, ...rest } = props;
-  const links = resolveSiteLinks(useLocale().locale)?.footer;
+  const { brand, className, credit, note, site, social = [], softRedirect, tagline, tone, ...rest } = props;
+  const { locale } = useLocale();
+  const links = resolveSiteLinks(locale)?.footer;
   const columns = links?.columns || [];
   const noteLinks = links?.note || [];
 
@@ -144,10 +165,11 @@ function SiteFooter(props: SiteFooterProps) {
         </div>
       ) : null}
     </div>
-    {note || noteLinks.length ? (
+    {note || noteLinks.length || credit ? (
         <div className={frontendElementClass(block, "note")}>
         {note}
         <FooterLinks className="note-links" links={noteLinks} softRedirect={softRedirect} />
+        <SiteFooterCreditLine credit={credit} lang={locale} />
         </div>
       ) : null}
     </footer>
@@ -155,4 +177,4 @@ function SiteFooter(props: SiteFooterProps) {
 }
 
 export { SiteFooter };
-export type { SiteFooterBand, SiteFooterProps, SiteFooterSocial };
+export type { SiteFooterBand, SiteFooterCredit, SiteFooterProps, SiteFooterSocial };

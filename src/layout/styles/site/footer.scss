@@ -130,6 +130,10 @@
   );
 }
 
+#{ns.element-class("site-footer", "credit")} {
+  white-space: nowrap;
+}
+
 #{ns.element-class("site-footer", "note")} {
   display: flex;
   flex-wrap: wrap;

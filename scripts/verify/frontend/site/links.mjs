@@ -87,11 +87,35 @@ async function verifyExternalLinks(context) {
   "a link that belongs to another site gets that site's origin and hands the reader's language over");
   assert.match(footer, /tbf-site-footer__site-links[^]*?Ke stažení/u, "the site band lists the set's own site links");
   assert.match(footer, /tbf-site-footer__note-links[^]*?Bezpečnost/u, "the note lists the set's note links beside the note");
+  assert.ok(!footer.includes("tbf-site-footer__credit"), "a footer carries no credit unless the site turns it on");
+}
+
+async function verifyFooterCredit(context) {
+  const react = await context.importDist("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const el = (await import("react")).createElement;
+  const render = (locale, credit) => renderToStaticMarkup(el(react.LocaleProvider, { locale }, el(react.SiteFooter, { credit, note: "©" })));
+  assert.match(
+    render("cs", true),
+    new RegExp(
+      '<span class="tbf-site-footer__credit">Vytvořil <a class="tbf-text-link" href="https://trebired\\.com" rel="noopener" target="_blank">'
+      +'<span class="tbf-text-link__external">Trebired<',
+      "u",
+    ),
+    "credit names Trebired in the reader's language and opens trebired.com in a new tab, keeping the referrer",
+  );
+  const other = render("en", { href: "https://example.com", name: "Example" });
+  assert.match(
+    other,
+    /Made by <a class="tbf-text-link" href="https:\/\/example\.com"[^>]*>[^]*?Example</u,
+    "a site can credit another maker by name and address"
+  );
 }
 
 async function verifySiteLinks(context) {
   await verifyLinksConfig(context);
   await verifyExternalLinks(context);
+  await verifyFooterCredit(context);
 }
 
 export { useLinks, verifySiteLinks };
