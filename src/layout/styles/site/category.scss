@@ -10,6 +10,10 @@
   gap: token("gap", var(#{ns.css-var("shell-footer-column-gap")}, var(#{ns.css-var("gap-sm")}, 12px)));
 }
 
+#{ns.element-class("link-category", "heading")} {
+  font-size: var(#{ns.css-var("h5-font-size")}, 1.15rem);
+}
+
 #{ns.element-class("link-category", "links")} {
   display: grid;
   gap: token("links-gap", var(#{ns.css-var("shell-footer-links-gap")}, var(#{ns.css-var("gap-sm")}, 12px)));

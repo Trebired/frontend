@@ -51,7 +51,7 @@ function accessibility_menu(props: AccessibilityMenuProps) {
     className={frontendClassNames("modal__content", "a11y-panel")}
     {...frontendDataAttrs({ "a11y-panel": "", "modal-content": "" })}
     >
-    <h4 id={titleId}>{localT("a11yPanelLabel")}</h4>
+    <h2 className={frontendClassName("a11y-title")} id={titleId}>{localT("a11yPanelLabel")}</h2>
     {a11ySections({ lang: props.lang, settings: props.settings, textSizes: props.textSizes })}
     </div>
     </div>

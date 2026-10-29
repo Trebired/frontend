@@ -100,6 +100,10 @@ $link-gap: var(#{ns.css-var("gap-xs2")}, 4px);
   display: none;
 }
 
+#{ns.element-class("site-header", "sheet-heading")} {
+  font-size: var(#{ns.css-var("h5-font-size")}, 1.15rem);
+}
+
 #{ns.element-class("site-header", "sheet-column")} {
   display: flex;
   min-width: 0;

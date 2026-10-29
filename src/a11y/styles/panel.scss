@@ -6,6 +6,23 @@
   gap: var(#{ns.css-var("gap-md")}, 1.5rem);
 }
 
+#{ns.class("a11y-title")} {
+  font-size: var(#{ns.css-var("h4-font-size")}, 1.35rem);
+}
+
+@media (max-width: 640px) {
+  #{ns.class("a11y-title")} {
+    font-size: var(
+      #{ns.css-var("h4-font-size-mobile")},
+      var(#{ns.css-var("h4-font-size")}, 1.25rem)
+    );
+  }
+}
+
+#{ns.class("a11y-section-title")} {
+  font-size: var(#{ns.css-var("h5-font-size")}, 1.15rem);
+}
+
 #{ns.class("a11y-section")} {
   display: flex;
   flex-direction: column;

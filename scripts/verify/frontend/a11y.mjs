@@ -214,13 +214,13 @@ async function verifyChromeVariant(importDist) {
     "and the trigger says so, so a screen reader announces a dialog rather than a menu",
   );
   assert.ok(
-    /aria-labelledby="[^"]+"/u.test(panel) && /<h4[^>]*id="[^"]+"/u.test(panel),
-    "the dialog is named by its own heading",
+    /aria-labelledby="[^"]+"/u.test(panel) && /<h2 class="tbf-a11y-title" id="[^"]+"/u.test(panel),
+    "the dialog is named by its own h2, the top of the dialog's outline",
   );
   assert.equal(
-    (panel.match(/<h5/gu) || []).length,
+    (panel.match(/<h3 class="tbf-a11y-section-title"/gu) || []).length,
     3,
-    "each group of settings is a heading under that one, not a paragraph dressed as a title",
+    "each group of settings is the next heading level under that one, not a paragraph dressed as a title",
   );
   assert.equal(
     /data-tbf-popover[=\s]/u.test(panel),

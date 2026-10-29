@@ -14,7 +14,7 @@ function SiteLinkCategory({ children, heading, headingId, nav = false }: SiteLin
   const Links = nav ? "nav" : "div";
   return (
     <div className={frontendClassName(block)}>
-    <h5 className={frontendElementClass(block, "heading")} id={headingId}>{heading}</h5>
+    <h2 className={frontendElementClass(block, "heading")} id={headingId}>{heading}</h2>
     <Links aria-labelledby={nav ? headingId : undefined} className={frontendElementClass(block, "links")}>{children}</Links>
     </div>
   );

@@ -113,7 +113,7 @@ function SheetColumn(props: GroupProps) {
   const headingId = `${useId().replace(/:/gu, "")}_sheet_heading`;
   return (
     <div aria-labelledby={headingId} className={frontendElementClass(block, "sheet-column")} role="group">
-    <h5 className={frontendElementClass(block, "sheet-heading")} id={headingId}>{props.link.label}</h5>
+    <h2 className={frontendElementClass(block, "sheet-heading")} id={headingId}>{props.link.label}</h2>
     <div className={`${frontendElementClass(block, "sheet-links")} ${frontendClassName("scroll-min")}`}>
     {siteLinkChildren(props.link).map((child, index, siblings) => (
           <SheetEntry {...props} key={siteLinkKey(child, index)} link={child} siblings={siblings} />

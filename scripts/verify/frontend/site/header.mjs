@@ -180,8 +180,8 @@ async function verifySiteHeaderSheetMarkup(context) {
     "a group of groups lays out as columns",
   );
   assert.ok(html.includes('data-tbf-site-header-layout="list"'), "a group of plain links lays out as a list");
-  const headings = [...html.matchAll(/<h5 class="tbf-site-header__sheet-heading" id="([^"]+)"/gu)].map((match) => match[1]);
-  assert.equal(headings.length, 2, "every column has a real h5, styled by the page's own headings");
+  const headings = [...html.matchAll(/<h2 class="tbf-site-header__sheet-heading" id="([^"]+)"/gu)].map((match) => match[1]);
+  assert.equal(headings.length, 2, "every column has a real h2, the level below none, sized like an h5");
   assert.equal(html.match(/class="tbf-site-header__sheet-links tbf-scroll-min"/gu)?.length, 2,
   "a column's links sit on their heading's edge and scroll with the slim scrollbar once they pass the height cap");
   assert.ok(!html.includes("tbf-indent"), "header links are navigation, not prose, so nothing in the header is indented");
@@ -189,7 +189,7 @@ async function verifySiteHeaderSheetMarkup(context) {
   assert.equal(html.match(/tbf-site-header__sheet-description/gu)?.length, 3, "each described link shows its line in the band");
   assert.match(html, /class="tbf-site-header__sheet-entry"[^>]*><span class="tbf-text-link">about<\/span>/u,
   "a band link's label is the same text link as the bar, so only the label takes its colour, states and underline");
-  assert.equal(html.match(/<div class="tbf-link-category"><h5 class="tbf-link-category__heading"/gu)?.length, 2,
+  assert.equal(html.match(/<div class="tbf-link-category"><h2 class="tbf-link-category__heading"/gu)?.length, 2,
   "the mobile menu keeps the column headings, as the same link category the footer uses");
   assert.match(html, /tbf-site-header__menu-group-label[^>]*><span class="tbf-text-link">More<\/span>/u,
   "a group in the mobile menu is labelled by the same text link as every other entry");

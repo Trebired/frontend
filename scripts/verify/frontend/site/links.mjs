@@ -79,7 +79,7 @@ async function verifyExternalLinks(context) {
   assert.ok(header.includes('href="/downloads"'), "a link on the set's own site stays a path");
   const props = { brand: "Site", note: "©", site: { brand: "App" } };
   const footer = renderToStaticMarkup(h(react.LocaleProvider, { locale: "cs" }, h(react.SiteFooter, props)));
-  assert.match(footer, /<div class="tbf-link-category"><h5 class="tbf-link-category__heading">Pomoc<\/h5><nav class="tbf-link-category__links">/u,
+  assert.match(footer, /<div class="tbf-link-category"><h2 class="tbf-link-category__heading">Pomoc<\/h2><nav class="tbf-link-category__links">/u,
   "footer columns are the set's categories, headed in the reader's language, as the same link category the header menu uses");
   assert.match(footer, external, "the same external link opens the same way in the footer");
   assert.match(footer, /tbf-text-link__external">Zdroj</u, "with the same icon");
