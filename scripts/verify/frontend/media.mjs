@@ -79,6 +79,40 @@ function verifyEmbedFrame(react, render) {
   const sandboxed = render(react.EmbedFrame, { sandbox: "allow-scripts", src: "https://example.test/s", title: "S" });
   assert.match(sandboxed, /<iframe/u, "sandbox must fall back to an iframe, since object carries no sandbox attribute");
   assert.match(sandboxed, /sandbox="allow-scripts"/u, "the sandbox value must reach the element");
+  assert.match(html, /<object data-tbf-frame=""/u, "the object surface must carry the frame verification attribute");
+  assert.match(sandboxed, /<iframe data-tbf-frame=""/u, "the iframe surface must carry the frame verification attribute");
+}
+
+async function verifyUnverifiedFrames(root) {
+  assert.deepEqual(root.frontendFrameAttrs(), { "data-tbf-frame": "" });
+  const script = root.frontendBoot().bootScripts.find((entry) => entry.includes("MutationObserver"));
+  assert.ok(script, "frontendBoot must remove unverified frames by default");
+  assert.ok(!root.frontendBoot({ frames: false }).bootScripts.some((script) => script.includes("MutationObserver")));
+  new Function(script)();
+  const verified = document.createElement("iframe");
+  verified.setAttribute(root.FRAME_ATTRIBUTE, "");
+  const injected = document.createElement("iframe");
+  const wrapper = document.createElement("div");
+  wrapper.append(document.createElement("embed"));
+  const rendered = document.createElement("iframe");
+  rendered.__reactFiber$probe = {};
+  const warnings = [];
+  const warn = console.warn;
+  console.warn = (...args) => warnings.push(args);
+  document.body.append(verified, injected, wrapper, rendered);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  console.warn = warn;
+  assert.ok(verified.isConnected, "a verified frame must stay");
+  assert.ok(!injected.isConnected, "an unverified frame must be removed when it is inserted");
+  assert.equal(wrapper.querySelector("embed"), null, "an unverified frame nested in an inserted subtree must be removed too");
+  assert.ok(rendered.isConnected, "a frame React rendered must stay in place, or React loses a node it owns");
+  assert.equal(warnings.length, 3, "every unverified frame must be reported in the console");
+  assert.match(warnings[0][0], /Unverified iframe removed: it has no data-tbf-frame attribute/u);
+  assert.equal(warnings[0][1], injected, "the warning must carry the frame");
+  assert.match(warnings[2][0], /Unverified iframe hidden/u);
+  verified.remove();
+  wrapper.remove();
+  rendered.remove();
 }
 
 function verifyCarouselMarkup(react, render) {
@@ -181,6 +215,7 @@ async function verifyMedia(context) {
   verifyMediaState(root);
   verifyMapEmbed(react, render);
   verifyEmbedFrame(react, render);
+  await verifyUnverifiedFrames(root);
   verifyCarouselMarkup(react, render);
   verifyLocalizedLabels(react, render);
   verifyContextLocale(react, createElement, renderToStaticMarkup);

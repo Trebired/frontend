@@ -1924,6 +1924,9 @@
       "#u6dhm63x47vk": [
         "../../../src/a11y/styles/index.scss"
       ],
+      "#u7e5t8kxt1m5": [
+        "../../../src/media/frames.ts"
+      ],
       "#u8nmcwbcma9p": [
         "../../../src/graph/advanced/contributions_heatmap/i18n/en.ts"
       ],

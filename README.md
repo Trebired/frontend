@@ -123,7 +123,21 @@ meta: {
 }
 ```
 
-It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scroll state and the reader's locale, and the body script that gives the header its tone before the first paint. On a reload or a back/forward navigation the scroll script also restores the reader's position itself: the browser would restore it against the first layout of a page that is still parsing and correct it when loading ends, a visible jump on a long page, so the script switches that navigation to manual restoration, keeps the page invisible until the document is parsed, then scrolls to the saved position and shows it in the same frame. `scroll` and `header` are on unless passed `false`, and `locale` is given by a site that has one. Nothing else has to be arranged by hand.
+It returns `{ bootScripts, bodyScripts }`: the head scripts that restore the scroll state and the reader's locale, and the body script that gives the header its tone before the first paint. On a reload or a back/forward navigation the scroll script also restores the reader's position itself: the browser would restore it against the first layout of a page that is still parsing and correct it when loading ends, a visible jump on a long page, so the script switches that navigation to manual restoration, keeps the page invisible until the document is parsed, then scrolls to the saved position and shows it in the same frame. `scroll`, `header` and `frames` are on unless passed `false`, and `locale` is given by a site that has one. Nothing else has to be arranged by hand.
+
+### Unverified frames
+
+A page shows only the frames it declares. Every `iframe`, `frame`, `object` and `embed` must carry `data-tbf-frame`; one without it is unverified. `frontendBoot()` adds a head script that hides every unverified frame with a stylesheet before the first paint, so none is ever seen, and watches the document for the rest of the page's life. An unverified frame inserted after the page has parsed by anything other than React, such as a script the host appends to the page, is removed. One that came in the server markup or that React rendered stays in place, hidden, because React owns it and would fail to hydrate or update a node taken from under it. Either way the console gets a warning naming the frame and whether it was removed or hidden, so an app frame that lacks the attribute is found in the browser's console.
+
+`EmbedFrame`, `MapEmbed` and the editor surface carry the attribute already. A frame an app renders itself spreads `frontendFrameAttrs()` onto the element, and `FRAME_ATTRIBUTE` names the attribute for code that builds frames by hand:
+
+```tsx
+import { frontendFrameAttrs } from "@trebired/frontend";
+
+<iframe {...frontendFrameAttrs()} src={src} title={title} />
+```
+
+The script is on unless `frontendBoot({ frames: false })` turns it off.
 
 There is no boot step for scroll reveals: the server renders every target visible, and `bindFrontendRuntime` with `reveal.selector` shows whatever is already on screen or above it without a transition when it binds after hydration, and hides only what is still below the fold, so nothing a reader can see changes and no hydrated element is touched before React owns it.
 

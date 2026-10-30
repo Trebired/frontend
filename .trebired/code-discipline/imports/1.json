@@ -640,6 +640,7 @@
   "#u0knshei0xi3": "./src/theme/browser-sync.ts",
   "#u525cvfu2zk3": "./src/spa/links.ts",
   "#u6dhm63x47vk": "./src/a11y/styles/index.scss",
+  "#u7e5t8kxt1m5": "./src/media/frames.ts",
   "#u8nmcwbcma9p": "./src/graph/advanced/contributions_heatmap/i18n/en.ts",
   "#uctpnjosv6it": "./src/language/names.ts",
   "#ue31afhvhvc0": "./src/graph/advanced/contributions_heatmap/types.ts",

@@ -210,12 +210,17 @@ async function verifyRadiusFallbacks(sourceDir) {
   }
 }
 
+const INLINE_BOOT_CONSOLE_FILES = [
+  path.join("media", "frames.ts"),
+];
+
 async function verifyNoDirectBrowserLogging(sourceDir) {
   const files = await sourceFiles(sourceDir);
   for (const file of files) {
     const source = await fs.readFile(file, "utf8");
+    const inlineBoot = INLINE_BOOT_CONSOLE_FILES.includes(path.relative(sourceDir, file));
     assert.equal(
-      /\bconsole\.(debug|error|info|log|warn)\b/u.test(source),
+      !inlineBoot && /\bconsole\.(debug|error|info|log|warn)\b/u.test(source),
       false,
       `${file} uses direct console logging.`,
     );

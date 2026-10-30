@@ -1,6 +1,7 @@
 import { createLocaleBootScript } from "./../language/routing/boot.js";
 import type { LocaleBootOptions } from "./../language/routing/boot.js";
 import type { LocaleRoutingOptions } from "./../language/routing/options.js";
+import { createUnverifiedFrameBootScript } from "./../media/frames.js";
 import { createScrollStateBootScript } from "./scroll.js";
 import type { ScrollStateOptions } from "./scroll.js";
 import { createSiteHeaderToneBootScript, createSiteHeaderToneScript } from "./header/tone.js";
@@ -8,6 +9,7 @@ import { createSiteHeaderToneBootScript, createSiteHeaderToneScript } from "./he
 type FrontendBootLocale = LocaleBootOptions& { routing?: LocaleRoutingOptions };
 
 type FrontendBootOptions = {
+  frames?: boolean;
   header?: boolean;
   locale?: FrontendBootLocale | false;
   scroll?: ScrollStateOptions | boolean;
@@ -27,6 +29,7 @@ function frontendBoot(options: FrontendBootOptions = {}): FrontendBootScripts {
   const bootScripts: string[] = [];
   const bodyScripts: string[] = [];
 
+  if (options.frames !== false) bootScripts.push(createUnverifiedFrameBootScript());
   if (options.scroll !== false) {
     bootScripts.push(createScrollStateBootScript(options.scroll === true ? {} : options.scroll || {}));
   }

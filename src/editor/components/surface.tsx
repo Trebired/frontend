@@ -128,7 +128,7 @@ function editSurface(state: ReturnType<typeof readSurfaceState>) {
     <iframe
     aria-label={state.labels.editor}
     className={frontendClassNames("display-block", "overflow-hidden", "width-max", "height-xl4", "bg-transparent", "border-0")}
-    {...frontendDataAttrs({ "editor-frame": "" })}
+    {...frontendDataAttrs({ "editor-frame": "", frame: "" })}
     hidden
     name="editor_frame"
     src="about:blank"

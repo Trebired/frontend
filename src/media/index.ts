@@ -17,6 +17,7 @@ export { Lightbox } from "./lightbox.js";
 export type { LightboxProps } from "./lightbox.js";
 export { EmbedFrame } from "./embed-frame.js";
 export type { EmbedFrameConsent, EmbedFrameLabels, EmbedFrameProps, EmbedFrameState } from "./embed-frame.js";
+export { FRAME_ATTRIBUTE, frontendFrameAttrs } from "./frames.js";
 export { MapEmbed } from "./map-embed.js";
 export type { MapEmbedProps } from "./map-embed.js";
 export { lockBodyScroll } from "#f3dd7yszexpp";

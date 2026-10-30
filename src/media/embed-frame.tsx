@@ -4,6 +4,7 @@ import { button as Button } from "#6hfutrhvm6x6";
 import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { fullscreenSupported, toggleFullscreen } from "#e1wjbzbsyghi";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
+import { frontendFrameAttrs } from "./frames.js";
 import { useResolvedLang } from "./lang.js";
 
 type EmbedFrameLabels = {
@@ -208,6 +209,7 @@ function EmbedSurface({ props, refs }: { props: EmbedFrameProps; refs: EmbedRefs
     return (
       <iframe
       ref={refs.frameRef}
+      {...frontendFrameAttrs()}
       allowFullScreen={props.allowFullScreen}
       loading="lazy"
       referrerPolicy={props.referrerPolicy}
@@ -216,7 +218,7 @@ function EmbedSurface({ props, refs }: { props: EmbedFrameProps; refs: EmbedRefs
       />
     );
   }
-  return <object ref={refs.objectRef} type="text/html" aria-label={props.title} />;
+  return <object ref={refs.objectRef} {...frontendFrameAttrs()} type="text/html" aria-label={props.title} />;
 }
 
 type EmbedLifecycleResult = EmbedRefs & { failureReason: EmbedFrameFailureReason; state: EmbedFrameState };
