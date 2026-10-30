@@ -21,7 +21,7 @@
         "@trebired/bundler": "^5.18.0",
         "@trebired/code-discipline": "^7.2.0",
         "@trebired/configs": "^0.4.0",
-        "@trebired/overprint": "^0.8.0",
+        "@trebired/overprint": "^0.9.0",
         "@types/bun": "^1.3.14",
         "@types/node": "^24.13.3",
         "@types/react": "^19.2.18",
@@ -34,7 +34,7 @@
         "typescript": "^6.0.3",
       },
       "peerDependencies": {
-        "@trebired/overprint": "^0.8.0",
+        "@trebired/overprint": "^0.9.0",
         "react": ">=18",
         "react-dom": ">=18",
         "sharp": "^0.34.5",
@@ -200,7 +200,7 @@
 
     "@trebired/grammar": ["@trebired/grammar@0.2.1", "", { "dependencies": { "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.6.0", "@trebired/utils": "^0.9.4" } }, "sha512-JjAtsMcZT/5knIjSEtHsxo39e8mieGkHKuAV01qg3pjnzJcsS1P1Gf7OOYtDiK6CK9Q4d0fpxVV+JkG9sAuxOQ=="],
 
-    "@trebired/overprint": ["@trebired/overprint@0.8.0", "", { "dependencies": { "country-flag-icons": "^1.6.20", "roughjs": "^4.6.6" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-A5xbhmnN3AA8hud1VJRngoi/m1RnHBeHIqZBNZqjfLDgsnOITtIB0fI3Ewh4Ilmv5VQCoVWf5jZuGwW7cikJYQ=="],
+    "@trebired/overprint": ["@trebired/overprint@0.9.0", "", { "dependencies": { "country-flag-icons": "^1.6.20", "roughjs": "^4.6.6" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-R41aq9WscXTCd0Gn2pboD5e3+sld9xv0DjsFmeDyLbm9UQ2ZyU1+wNQGr3hjJvidFpqcRm7OXPcttaC6duNxlA=="],
 
     "@trebired/utils": ["@trebired/utils@0.9.4", "", {}, "sha512-oFXNPejhhT/eTerlG6LTqfbVq7MsI8z6BsRnabRPXgcE6IeJmcpUeu6g60gGWq6X4F9yBdFfmkFBX3Mz5+cOrw=="],
 

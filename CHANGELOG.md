@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.8.0
+
+- Added `css` to the config: a string added to the end of the generated stylesheet, for CSS another package builds, such as `printGrainCss()` from `@trebired/overprint/grain`.
+- Changed the `@trebired/overprint` peer range to `^0.9.0`.
+
 ## 29.7.0
 
 - Changed `frost` on a device whose main input cannot hover, `(hover: none)`, such as a phone or a tablet. A live blur behind every paragraph made scrolling stutter there, so the block gets a 72% tint of the ground it sits on, faded at its edges, and the runtime measures nothing. `--tbf-glass-filter` is `none` on the same condition.
