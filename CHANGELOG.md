@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.5.0
+
+- Added unverified frames. An `iframe`, `frame`, `object` or `embed` is shown only when it carries `data-tbf-frame`. `frontendBoot()` adds a head script that hides every frame without it before the first paint and removes one that a script other than React inserts after the page has parsed, such as a frame the host appends; a frame in the server markup or rendered by React stays in place hidden, so hydration is never broken. Each one is reported in the browser console as removed or hidden. `EmbedFrame`, `MapEmbed` and the editor surface carry the attribute; an app's own frame spreads the new `frontendFrameAttrs()`, and `FRAME_ATTRIBUTE` names it. `frontendBoot({ frames: false })` turns the script off.
+
 ## 29.4.0
 
 - Added `credit` to `SiteFooter`. A site turns it on to end the note row with "Made by Trebired", in the reader's language ("Vytvořil Trebired" in Czech), where "Trebired" links to trebired.com in a new tab with the outside-link icon and keeps the referrer. `credit={{ href, name }}` credits another maker. A footer shows no credit unless the site asks for it.
