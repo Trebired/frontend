@@ -4,6 +4,14 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.7.0
+
+- Changed `frost` on a device whose main input cannot hover, `(hover: none)`, such as a phone or a tablet. A live blur behind every paragraph made scrolling stutter there, so the block gets a 72% tint of the ground it sits on, faded at its edges, and the runtime measures nothing. `--tbf-glass-filter` is `none` on the same condition.
+- Changed reveals to stay off on those devices. A block sliding up while a finger scrolls the page reads as the layout shifting, so every block is simply in place.
+- Changed page minimum heights from `100dvh` to `100svh`, in the layout, the centred viewport and the error page. `dvh` follows the mobile address bar, so anything sized by it moved while the page scrolled. Overlays that must fit the visible area keep `dvh`.
+- Changed the scroll state and header tone scripts to touch `<html>` only when a value changes, and the header tone to measure at most once a frame instead of on every scroll event.
+- Raised the `@trebired/overprint` peer range to `^0.8.0`.
+
 ## 29.6.0
 
 - Added `preload` to each font family in `assets.fonts.families`. It lists the weights to preload in every subset and style of the family (`true` for all of them), and a family without it is no longer preloaded. Sites preloaded every font file they declared, often a dozen or more, so the first visit downloaded weights no page shows first and the browser warned about each preload a page did not use. `loadConfig()` returns the files as `fontPreloads`, and `generateFontPreloads(config)` is exported; `@trebired/bundler` 5.19.0 preloads only those. A weight in `preload` that is not in `weights` fails the config.
