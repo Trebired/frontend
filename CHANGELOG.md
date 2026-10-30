@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.5.1
+
+- Fixed an unverified frame staying in the page, hidden, when a script appended it to `body` before the page had finished parsing. A frame placed straight into `body`, `html` or `head` belongs to no island, so it is removed whenever it arrives; only a frame inside the markup, which React may hydrate, stays hidden in place.
+
 ## 29.5.0
 
 - Added unverified frames. An `iframe`, `frame`, `object` or `embed` is shown only when it carries `data-tbf-frame`. `frontendBoot()` adds a head script that hides every frame without it before the first paint and removes one that a script other than React inserts after the page has parsed, such as a frame the host appends; a frame in the server markup or rendered by React stays in place hidden, so hydration is never broken. Each one is reported in the browser console as removed or hidden. `EmbedFrame`, `MapEmbed` and the editor surface carry the attribute; an app's own frame spreads the new `frontendFrameAttrs()`, and `FRAME_ATTRIBUTE` names it. `frontendBoot({ frames: false })` turns the script off.
