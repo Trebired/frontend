@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.6.0
+
+- Added `preload` to each font family in `assets.fonts.families`. It lists the weights to preload in every subset and style of the family (`true` for all of them), and a family without it is no longer preloaded. Sites preloaded every font file they declared, often a dozen or more, so the first visit downloaded weights no page shows first and the browser warned about each preload a page did not use. `loadConfig()` returns the files as `fontPreloads`, and `generateFontPreloads(config)` is exported; `@trebired/bundler` 5.19.0 preloads only those. A weight in `preload` that is not in `weights` fails the config.
+
 ## 29.5.2
 
 - Changed the unverified frame warning to a short line logged under `trebired.frontend.frames`, such as `Removed tbf-unverified iframe#chat "Support" https://chat.example/widget`, which names the frame by its tag, id, title and address instead of printing the whole element. It goes through the page's logger when one is installed, the way the bundler's attribution does, and to the console otherwise.
