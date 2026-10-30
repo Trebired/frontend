@@ -14,6 +14,9 @@ async function verifyContainers(context) {
       forVersion: forVersion(context),
   });
 
+  const extra = config.generateFrontendScss({ css: ".verify-extra{color:red}", forVersion: forVersion(context) });
+  assert.ok(extra.trimEnd().endsWith(".verify-extra{color:red}"), "config css closes the generated stylesheet");
+
   const css = generate({
       card: {
         on: { hover: { borderColor: "red" } },

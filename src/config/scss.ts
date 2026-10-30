@@ -314,6 +314,7 @@ function generateFrontendScss(
     }),
     ...renderOutlineSelectionRule(config),
     ...renderContainerClassRules(config),
+    config.css,
   ];
   assertGeneratedVariablesResolve(config.prefix, lines);
   return `${lines.join("\n")}\n`;

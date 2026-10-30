@@ -200,6 +200,7 @@ type FrontendConfig = {
   assets?: FrontendAssetsConfig;
   components?: FrontendComponentsConfig;
   containers?: FrontendContainersConfig;
+  css?: string;
   design?: FrontendDesignConfig;
   forVersion?: string;
   language?: FrontendLanguageConfig;
@@ -294,6 +295,7 @@ type NormalizedFrontendConfig = {
   assets: NormalizedFrontendAssetsConfig;
   components: NormalizedFrontendComponentsConfig;
   containers: NormalizedFrontendContainers;
+  css: string;
   design: NormalizedFrontendDesignConfig;
   forVersion: string;
   language: NormalizedFrontendLanguageConfig;

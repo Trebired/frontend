@@ -357,6 +357,16 @@ Unknown sections fall through to the next handler. The request's own query is ke
 
 Static apps set `assets.icons.mode: "static"` and `assets.icons.endpoint: false`, then register a build-generated icon cache before calling `bindFrontendRuntime(document, { icons: { mode: "static" } })`.
 
+### Extra CSS
+
+`css` in the config is a string added to the end of the generated stylesheet, for CSS another package builds, such as the print grain:
+
+```ts
+import { printGrainCss } from "@trebired/overprint/grain";
+
+export default defineConfig({ css: printGrainCss() });
+```
+
 ### Fonts
 
 `assets.fonts.families` declares each typeface from its Fontsource package: `package`, `family`, `subsets`, `weights` and `styles`. The package writes an `@font-face` for every combination, and the bundler emits the files.
