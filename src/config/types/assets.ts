@@ -16,6 +16,7 @@ type FrontendFontFamilyConfig = {
   family?: string;
   fontsource?: string;
   package?: string;
+  preload?: boolean | readonly number[];
   styles?: readonly FrontendFontStyle[];
   subsets?: readonly string[];
   weights?: readonly number[];
@@ -57,6 +58,7 @@ type NormalizedFrontendFontFamilyConfig = {
   family: string;
   key: string;
   packageName: string;
+  preload: number[];
   styles: FrontendFontStyle[];
   subsets: string[];
   weights: number[];

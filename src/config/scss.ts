@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { renderFontsCss } from "./fonts.js";
+import { fontPreloadFiles, renderFontsCss } from "./fonts.js";
 import { renderFlagRules } from "./flags.js";
 import { breakpointDeclarations } from "./breakpoints.js";
 import { FROST_NAMESPACE, TONE_NAMESPACE, renderContainerClassRules } from "./containers.js";
@@ -313,4 +313,9 @@ function generateFrontendScss(
   return `${lines.join("\n")}\n`;
 }
 
-export { generateFrontendScss };
+function generateFontPreloads(configInput: FrontendConfig | NormalizedFrontendConfig): string[] {
+  const config = isNormalizedConfig(configInput) ? configInput : normalizeFrontendConfig(configInput);
+  return fontPreloadFiles(config.assets.fonts);
+}
+
+export { generateFontPreloads, generateFrontendScss };

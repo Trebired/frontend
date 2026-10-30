@@ -34,15 +34,26 @@ function normalizeFontsConfig(value: unknown): NormalizedFrontendFontConfig {
 function normalizeFontFamily(key: string, value: unknown): NormalizedFrontendFontFamilyConfig {
   const source = assertPlainObject(value, `fonts.families.${key}`);
   const packageName = normalizeFontsourcePackage(source.package || source.fontsource || key, `fonts.families.${key}.package`);
+  const weights = normalizeFontWeights(source.weights, `fonts.families.${key}.weights`);
   return {
     display: normalizeFontDisplay(source.display, `fonts.families.${key}.display`),
     family: normalizeFontFamilyName(source.family || fontFamilyFromPackage(packageName), `fonts.families.${key}.family`),
     key: normalizeFontKey(key),
     packageName,
+    preload: normalizeFontPreload(source.preload, weights, `fonts.families.${key}.preload`),
     styles: normalizeFontStyles(source.styles, `fonts.families.${key}.styles`),
     subsets: normalizeStringArray(source.subsets, DEFAULT_FONT_SUBSETS, `fonts.families.${key}.subsets`, normalizeFontSubset),
-    weights: normalizeFontWeights(source.weights, `fonts.families.${key}.weights`),
+    weights,
   };
+}
+
+function normalizeFontPreload(value: unknown, weights: number[], pathLabel: string): number[] {
+  if (value === undefined || value === false) return [];
+  if (value === true) return weights.slice();
+  const preload = normalizeFontWeights(value, pathLabel);
+  const undeclared = preload.filter((weight) => !weights.includes(weight));
+  if (undeclared.length) throw invalidConfig(`${pathLabel} lists weights the family does not load :: ${undeclared.join(", ")}`);
+  return preload;
 }
 
 function normalizeFontKey(value: unknown): string {
@@ -224,6 +235,16 @@ function fontsourceFileUrl(
   return `@fontsource/${packageName}/files/${packageName}-${subset}-${weight}-${style}.woff2`;
 }
 
+function fontPreloadFiles(config: NormalizedFrontendFontConfig): string[] {
+  return config.families.flatMap((family) =>
+    family.subsets.flatMap((subset) =>
+      family.preload.flatMap((weight) =>
+        family.styles.map((style) => `${family.packageName}-${subset}-${weight}-${style}`),
+      ),
+    ),
+  );
+}
+
 function fontRootDeclarations(config: NormalizedFrontendFontConfig): string[] {
   const lines: string[] = [];
   if (config.sans) lines.push(`  ${frontendCssVar("font-sans")}: ${config.sans};`);
@@ -233,4 +254,4 @@ function fontRootDeclarations(config: NormalizedFrontendFontConfig): string[] {
   return lines;
 }
 
-export { normalizeFontsConfig, renderFontsCss };
+export { fontPreloadFiles, normalizeFontsConfig, renderFontsCss };

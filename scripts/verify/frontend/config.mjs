@@ -32,6 +32,26 @@ async function verifyFrontendConfig(context) {
   );
   await assert.rejects(() => config.loadConfig(fixture), /Fontsource package name/u);
   await verifyTextBody(config, fixture, configPath, context);
+  verifyFontPreloads(config, context);
+}
+
+function verifyFontPreloads(config, context) {
+  const families = {
+    body: { package: "inter", preload: [400], subsets: ["latin", "latin-ext"], weights: [400, 700] },
+    title: { package: "urbanist", preload: true, weights: [800] },
+    unused: { package: "manrope", weights: [600] },
+  };
+  const input = { assets: { fonts: { families } }, forVersion: context.packageVersion };
+  assert.deepEqual(config.generateFontPreloads(input), [
+      "inter-latin-400-normal",
+      "inter-latin-ext-400-normal",
+      "urbanist-latin-800-normal",
+    ], "only the weights a family lists in preload are preloaded, in each of its subsets");
+  const undeclared = { body: { package: "inter", preload: [700], weights: [400] } };
+  assert.throws(
+    () => config.generateFontPreloads({ assets: { fonts: { families: undeclared } }, forVersion: context.packageVersion }),
+    /does not load :: 700/u,
+  );
 }
 
 async function verifyTextBody(config, fixture, configPath, context) {
@@ -161,6 +181,7 @@ function assertLoadedConfigShape(loaded, configPath) {
   assert.deepEqual(loaded.config.assets.icons.packs, ["simple-icons"]);
   assert.equal(loaded.config.assets.icons.mode, "server");
   assert.equal(loaded.config.assets.fonts.families[0].packageName, "inter");
+  assert.deepEqual(loaded.fontPreloads, [], "a family without preload is not preloaded");
   assert.equal(loaded.config.design.interactions.activePress.filter, "brightness(0.8)");
 }
 

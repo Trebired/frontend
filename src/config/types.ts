@@ -308,6 +308,7 @@ type LoadedFrontendConfig = {
   config: NormalizedFrontendConfig;
   configPath: string | null;
   dependencies: string[];
+  fontPreloads: string[];
   generatedScss: string;
 };
 

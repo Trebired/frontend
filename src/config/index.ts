@@ -3,7 +3,7 @@ import path from "node:path";
 import { defineValue } from "#ndsvdqv80epr";
 import { collectConfigDependencies, importConfigModule, pathExists } from "./module.js";
 import { DEFAULT_FRONTEND_CONFIG, FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
-import { generateFrontendScss } from "./scss.js";
+import { generateFontPreloads, generateFrontendScss } from "./scss.js";
 import type {
   LoadFrontendConfigOptions,
   LoadedFrontendConfig,
@@ -35,6 +35,7 @@ function createDefaultLoadedConfig(): LoadedFrontendConfig {
     config,
     configPath: null,
     dependencies: [],
+    fontPreloads: generateFontPreloads(config),
     generatedScss: generateFrontendScss(config),
   };
 }
@@ -68,6 +69,7 @@ async function loadConfig(
     config,
     configPath: resolvedPath,
     dependencies,
+    fontPreloads: generateFontPreloads(config),
     generatedScss: generateFrontendScss(config),
   };
 }
@@ -85,7 +87,7 @@ export {
 } from "./normalize.js";
 export { frontendConfigCheck } from "./startup.js";
 export type { FrontendConfigCheckOptions } from "./startup.js";
-export { generateFrontendScss } from "./scss.js";
+export { generateFontPreloads, generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
 export { createFrontendTokenHelpers } from "./tokens.js";
 export { defineConfig, findConfig, loadConfig };

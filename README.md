@@ -357,6 +357,23 @@ Unknown sections fall through to the next handler. The request's own query is ke
 
 Static apps set `assets.icons.mode: "static"` and `assets.icons.endpoint: false`, then register a build-generated icon cache before calling `bindFrontendRuntime(document, { icons: { mode: "static" } })`.
 
+### Fonts
+
+`assets.fonts.families` declares each typeface from its Fontsource package: `package`, `family`, `subsets`, `weights` and `styles`. The package writes an `@font-face` for every combination, and the bundler emits the files.
+
+`preload` names the weights the first screen of every page uses, so the browser fetches them with the stylesheet instead of after it. `preload: [400, 700]` preloads those weights in each of the family's subsets and styles, `true` preloads every weight the family loads, and a family without `preload` is not preloaded: its files load when text first uses them. A preloaded file the page does not use is a wasted download and a browser warning, so list only the body text and title weights every page opens with. Each weight in `preload` must also be in `weights`.
+
+```ts
+fonts: {
+  families: {
+    body: { package: "manrope", subsets: ["latin", "latin-ext"], weights: [400, 500, 600, 700], preload: [400, 700] },
+    title: { package: "urbanist", subsets: ["latin", "latin-ext"], weights: [800], preload: true },
+  },
+}
+```
+
+`loadConfig()` returns the file names to preload as `fontPreloads`, and `generateFontPreloads(config)` gives the same list for a config object.
+
 ### Accessibility
 
 `a11y` config owns the three settings a visitor sets for themselves: animation, text size and contrast.
