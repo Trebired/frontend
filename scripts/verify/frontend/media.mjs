@@ -92,6 +92,9 @@ async function verifyUnverifiedFrames(root) {
   const verified = document.createElement("iframe");
   verified.setAttribute(root.FRAME_ATTRIBUTE, "");
   const injected = document.createElement("iframe");
+  injected.id = "injected";
+  injected.title = "Ad";
+  injected.setAttribute("src", "https://example.test/ad?campaign=1");
   const wrapper = document.createElement("div");
   wrapper.append(document.createElement("embed"));
   const rendered = document.createElement("iframe");
@@ -107,13 +110,27 @@ async function verifyUnverifiedFrames(root) {
   assert.equal(wrapper.querySelector("embed"), null, "an unverified frame nested in an inserted subtree must be removed too");
   assert.ok(rendered.isConnected, "a frame React rendered must stay in place, or React loses a node it owns");
   assert.equal(warnings.length, 3, "every unverified frame must be reported in the console");
-  assert.match(warnings[0][0], /Unverified iframe removed: it has no data-tbf-frame attribute/u);
-  assert.equal(warnings[0][1], injected, "the warning must carry the frame");
-  assert.match(warnings[2][0], /Unverified iframe hidden/u);
+  assert.deepEqual(warnings[0], [
+      "[WARN, trebired.frontend.frames] Removed tbf-unverified iframe#injected \"Ad\" https://example.test/ad",
+    ], "the warning must name the frame by its identifiers, never print the element");
+  assert.equal(warnings[2][0], "[WARN, trebired.frontend.frames] Hid tbf-unverified iframe");
+  await verifyFrameLoggerAdapter(script);
   verified.remove();
   wrapper.remove();
   rendered.remove();
   await verifyFramesWhileParsing();
+}
+
+async function verifyFrameLoggerAdapter(script) {
+  const entries = [];
+  globalThis.__logger_adapter_logger__ = { warn: (group, message) => entries.push([group, message]) };
+  new Function(script)();
+  const frame = document.createElement("embed");
+  document.body.append(frame);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  delete globalThis.__logger_adapter_logger__;
+  assert.equal(entries.length >= 1, true, "a page logger must receive the warning instead of the console");
+  assert.deepEqual(entries[0], ["trebired.frontend.frames", "Removed tbf-unverified embed"]);
 }
 
 async function verifyFramesWhileParsing() {
