@@ -113,6 +113,23 @@ async function verifyUnverifiedFrames(root) {
   verified.remove();
   wrapper.remove();
   rendered.remove();
+  await verifyFramesWhileParsing();
+}
+
+async function verifyFramesWhileParsing() {
+  Object.defineProperty(document, "readyState", { configurable: true, value: "loading" });
+  const container = document.createElement("div");
+  container.append(document.createElement("iframe"));
+  const appended = document.createElement("iframe");
+  const warn = console.warn;
+  console.warn = () => undefined;
+  document.body.append(container, appended);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  console.warn = warn;
+  delete document.readyState;
+  assert.ok(container.querySelector("iframe"), "a frame inside the markup being parsed must stay hidden in place, since React may hydrate it");
+  assert.ok(!appended.isConnected, "a frame added straight to body while the page parses belongs to no island and must be removed");
+  container.remove();
 }
 
 function verifyCarouselMarkup(react, render) {
