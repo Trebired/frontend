@@ -114,7 +114,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             body: { align: "center", gap: "0.75rem", max: "40rem", textAlign: "center" },
             lead: { fontSize: "1.05rem", max: "36rem" },
             locale: { offset: "clamp(1rem, 3vw, 2rem)" },
-            root: { minHeight: "100dvh", px: "clamp(1rem, 3vw, 2rem)", py: "clamp(3rem, 8vw, 7rem)" },
+            root: { minHeight: "100svh", px: "clamp(1rem, 3vw, 2rem)", py: "clamp(3rem, 8vw, 7rem)" },
             status: { fontSize: "clamp(4.5rem, 18vw, 10rem)", fontWeight: "900", letterSpacing: "-0.02em" },
             title: {},
         }),

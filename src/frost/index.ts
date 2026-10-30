@@ -1,5 +1,5 @@
 import { frontendCssVar } from "#5vbaqj4pirp3";
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { queryAll, touchOnly, type BindRoot } from "#er0dlx1gtbzh";
 
 type Box = { bottom: number; left: number; right: number; top: number };
 
@@ -91,7 +91,7 @@ function observers(): void {
 }
 
 function bindFrost(root: BindRoot = document): number {
-  if (typeof window === "undefined") return 0;
+  if (typeof window === "undefined" || touchOnly()) return 0;
   observers();
   for (const block of frosted) {
     if (block.isConnected) continue;

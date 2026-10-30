@@ -16,7 +16,8 @@ function toneMeasureSource(): string[] {
     "var r=h.getBoundingClientRect(),l=r.top+r.height/2,b=null,n=-Infinity,s=document.querySelectorAll(B);",
     "for(var i=0;i<s.length;i++){var t=s[i].getBoundingClientRect().top;if(t>l||t<=n)continue;n=t;b=s[i]}",
     "if(!b)return;",
-    "document.documentElement.setAttribute(T,b.hasAttribute(D)?'dark':'light')};",
+    "var c=b.hasAttribute(D)?'dark':'light',o=document.documentElement;if(o.getAttribute(T)!==c)o.setAttribute(T,c)};",
+    "var q=0,y=function(){if(q)return;q=requestAnimationFrame(function(){q=0;u()})};",
   ];
 }
 
@@ -35,8 +36,8 @@ function toneHoldSource(): string[] {
 
 function toneListenerSource(): string[] {
   return [
-    "addEventListener('scroll',u,{passive:true});",
-    "addEventListener('resize',u,{passive:true});",
+    "addEventListener('scroll',y,{passive:true});",
+    "addEventListener('resize',y,{passive:true});",
     "addEventListener('pageshow',u);",
     "addEventListener('load',u);",
     `document.addEventListener(${JSON.stringify(PAGE_CHANGE_EVENT)},function(){requestAnimationFrame(u)});`,

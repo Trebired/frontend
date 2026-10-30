@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: var(#{ns.css-var("shell-error-root-min-h")}, 100dvh);
+  min-height: var(#{ns.css-var("shell-error-root-min-h")}, 100svh);
   padding-block: var(#{ns.css-var("shell-error-root-py")}, clamp(3rem, 8vw, 7rem));
   padding-inline: var(#{ns.css-var("shell-error-root-px")}, clamp(1rem, 3vw, 2rem));
   color: var(#{ns.css-var("shell-error-root-color")}, var(#{ns.css-var("text")}, #000));

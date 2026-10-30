@@ -357,3 +357,4 @@ export {
   syncListEmptyState,
 } from "./element-helpers.js";
 export type *from "./element-helpers.js";
+export { touchOnly } from "./touch.js";

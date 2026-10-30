@@ -817,6 +817,9 @@
       "#c55llzkpl4ob": [
         "../../../src/code/components/index.tsx"
       ],
+      "#c6fwrb74t8as": [
+        "../../../scripts/verify/frontend/touch.mjs"
+      ],
       "#c6ig033sbel1": [
         "../../../src/search/site/load.ts"
       ],
@@ -2253,6 +2256,9 @@
       ],
       "#zfr3cxn2g1wf": [
         "../../../src/logs/client/detail/load.ts"
+      ],
+      "#zfsodl8e7pjb": [
+        "../../../src/dom/touch.ts"
       ],
       "#zgttxcjd88sc": [
         "../../../src/explorer/index.ts"

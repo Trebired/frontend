@@ -26,5 +26,11 @@ $feather: var(#{ns.css-var("ui-frost-feather")}, 1.5rem);
     pointer-events: none;
     position: absolute;
     z-index: -1;
+
+    @media (hover: none) {
+      backdrop-filter: none;
+      background: color-mix(in srgb, var(#{ns.css-var("ground")}, var(#{ns.css-var("page")}, transparent)) 72%, transparent);
+      mask-image: edge(to right), edge(to bottom);
+    }
   }
 }

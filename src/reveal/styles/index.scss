@@ -4,7 +4,7 @@
   @return var(#{ns.css-var("reveal-" + $name)}, $fallback);
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
   #{ns.data("reveal-root")} {
     #{ns.data("reveal")} {
       transition:

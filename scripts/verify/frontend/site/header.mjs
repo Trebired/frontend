@@ -54,7 +54,7 @@ async function verifySiteHeaderMarkup(context) {
   assert.match(toneScript, /main > \*, \[data-tbf-site-footer\]/u, "and reads the page's own bands and the footer");
   assert.match(
     toneScript,
-    /document\.documentElement\.setAttribute\(T,b\.hasAttribute\(D\)\?'dark':'light'\)/u,
+    /o=document\.documentElement;if\(o\.getAttribute\(T\)!==c\)o\.setAttribute\(T,c\)/u,
     "the tone lands on the document, never on the header React hydrates, so there is no mismatch to patch up",
   );
   assert.ok(

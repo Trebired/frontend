@@ -1,5 +1,5 @@
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
-import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { queryAll, touchOnly, type BindRoot } from "#er0dlx1gtbzh";
 
 const REVEAL_ATTR = frontendDataAttr("reveal");
 const SHOWN_ATTR = frontendDataAttr("reveal-shown");
@@ -93,7 +93,7 @@ function watch(element: HTMLElement, live: IntersectionObserver | null) {
 }
 
 function bindReveals(root: BindRoot = document, options: RevealOptions = {}) {
-  if (typeof window === "undefined") return 0;
+  if (typeof window === "undefined" || touchOnly()) return 0;
   const live = revealObserver(options);
   if (live) {
     markRoot();

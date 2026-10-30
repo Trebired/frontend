@@ -126,7 +126,13 @@ function glassDeclarations(config: NormalizedFrontendConfig): string[] {
 function renderGlassCss(config: NormalizedFrontendConfig): string[] {
   const declarations = glassDeclarations(config);
   if (!declarations.length) return [];
-  return ["", ...renderBlock("*,\n::before,\n::after", declarations)];
+  return [
+    "",
+    ...renderBlock("*,\n::before,\n::after", declarations),
+    "@media (hover: none) {",
+    ...renderBlock("  *,\n  ::before,\n  ::after", [`  --${config.prefix}-glass-filter: none;`]),
+    "}",
+  ];
 }
 
 function rootDeclarations(config: NormalizedFrontendConfig): string[] {

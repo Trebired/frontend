@@ -24,7 +24,9 @@ function readScrollState(options: ScrollStateOptions = {}): boolean {
 function applyScrollState(options: ScrollStateOptions = {}): boolean {
   const scrolled = readScrollState(options);
   if (typeof document !== "undefined") {
-    document.documentElement.setAttribute(SCROLL_STATE_ATTRIBUTE, scrolled ? "true" : "false");
+    const state = scrolled ? "true" : "false";
+    const root = document.documentElement;
+    if (root.getAttribute(SCROLL_STATE_ATTRIBUTE) !== state) root.setAttribute(SCROLL_STATE_ATTRIBUTE, state);
   }
   return scrolled;
 }
@@ -62,7 +64,7 @@ function scrollStateUpdateSource(): string[] {
   return [
     "var u=function(){var v=window.scrollY||window.pageYOffset||0;",
     "if(S){if(v)S=0;else v=S}",
-    "h.setAttribute(A,v>T?'true':'false')};",
+    "var n=v>T?'true':'false';if(h.getAttribute(A)!==n)h.setAttribute(A,n)};",
   ];
 }
 

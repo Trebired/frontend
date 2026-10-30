@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { verifyTouch } from "./touch.mjs";
 
 function verifyScrollLockNesting(api) {
   const root = document.documentElement;
@@ -255,6 +256,7 @@ async function verifyMedia(context) {
   verifyContextLocale(react, createElement, renderToStaticMarkup);
   await verifyIconSpecsCoverAllUsage(context, root);
   await verifyOpenLightboxShowsImage(react);
+  await verifyTouch(context);
 }
 
 export { verifyMedia };
