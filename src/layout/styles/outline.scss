@@ -31,7 +31,7 @@ $anchor: var(#{ns.css-var("anchor-offset")}, var(#{ns.css-var("anchor-top")}, 0p
   inset-inline-start: 0;
   width: token("marker-width", 2px);
   height: var(#{ns.css-var("outline-marker-height")}, 0);
-  background: token("link-active-border-color", currentColor);
+  background: token("link-active-border", currentColor);
   translate: 0 var(#{ns.css-var("outline-marker-top")}, 0);
 }
 
@@ -299,7 +299,7 @@ $dock-surface: token("dock-bg", var(#{ns.css-var("overlay-popover-panel-bg")}, v
 #{ns.class("popover")}#{ns.element-class("page-outline", "dock-panel")} {
   overflow-y: auto;
   width: token("dock-width", 18rem);
-  max-height: token("dock-max-height", min(60vh, 26rem));
+  max-height: token("dock-max-h", min(60vh, 26rem));
   padding-block: token("dock-panel-py", 0.875rem);
   padding-inline: token("dock-panel-px", 1.125rem);
   overscroll-behavior: contain;

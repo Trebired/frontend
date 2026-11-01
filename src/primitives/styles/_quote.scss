@@ -10,7 +10,7 @@
   gap: token("root-gap", var(#{ns.css-var("gap-sm")}, 12px));
   padding-inline-start: token("root-px", var(#{ns.css-var("gap-lg")}, 24px));
   border-inline-start: token("root-border-width", 3px) solid
-  token("root-border-color", color-mix(in srgb, currentColor 22%, transparent));
+  token("root-border", color-mix(in srgb, currentColor 22%, transparent));
 }
 
 #{ns.element-class("quote", "mark")} {
@@ -22,7 +22,7 @@
 
 #{ns.element-class("quote", "text")} {
   font-size: token("text-font-size", inherit);
-  line-height: token("text-line-height", 1.45);
+  line-height: token("text-line-h", 1.45);
 }
 
 #{ns.element-class("quote", "cite")} {
