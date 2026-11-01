@@ -4,6 +4,12 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.11.1
+
+- Raised the dependency ranges to the current releases: `@trebired/logger-adapter` to `^0.8.2`.
+- Retargeted the repository's own bundler config at `@trebired/bundler` 5.19.
+- Moved the repository's own Code Discipline config to `@trebired/code-discipline` 8 and the named preset `@trebired/configs/code-discipline/preset_01` from `@trebired/configs` 0.6.0.
+
 ## 29.11.0
 
 - Breaking for presets: a preset is named `<package>/frontend/<preset>` and resolves through `applyPresets` in `@trebired/utils`, the system every Trebired tool shares. It is read from `.<organization>/frontend/<preset>/config.ts` in that package; a bare package name and a preset written for another tool are refused. Use `presets: { use: ["@trebired/configs/frontend/preset_01"] }` with `@trebired/configs` 0.6.0.

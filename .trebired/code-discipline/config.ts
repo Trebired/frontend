@@ -9,7 +9,7 @@ const PREFIX_PATTERN_ALLOWED_FILES = [
 
 export default defineConfig({
     presets: {
-      use: ["@trebired/configs"],
+      use: ["@trebired/configs/code-discipline/preset_01"],
     },
     rules: {
       bannedPatterns: {
