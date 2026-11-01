@@ -65,8 +65,8 @@ type FrontendConfigTokenHelpers<Palette extends FrontendPaletteConfig> = {
   variable: FrontendConfigVariableHelper;
 };
 
-function createFrontendTokenHelpers<const Palette extends FrontendPaletteConfig>(
-  palette: Palette,
+function createFrontendTokenHelpers<const Palette extends FrontendPaletteConfig=FrontendPaletteConfig>(
+  palette?: Palette,
 ): FrontendConfigTokenHelpers<Palette> {
   void palette;
 
