@@ -203,7 +203,7 @@ span:not(#{ns.class("dropdown-check")}) {
 
 #{ns.class("options")}#{ns.data("dropdown-portaled", "true")} #{ns.class("dropdown-check")} {
   opacity: 0.35;
-  transition: opacity 120ms ease;
+  transition: opacity var(#{ns.css-var("ui-dropdown-motion-duration")}, 120ms) var(#{ns.css-var("ui-dropdown-motion-easing")}, ease);
 }
 
 #{ns.class("options")}#{ns.data("dropdown-portaled", "true")}

@@ -1,5 +1,7 @@
 const DEFAULT_MEDIA_COMPONENTS_CONFIG = Object.freeze({
+    carousel: Object.freeze({ motion: { controlDuration: "180ms", duration: "1000ms", easing: "ease" } }),
     expandableImage: Object.freeze({
+        motion: { easing: "ease", iconDuration: "180ms", zoomDuration: "500ms" },
         ratio: "auto",
         icon: {
           background: "oklch(14.5% 0 0 / 70%)",
@@ -8,7 +10,7 @@ const DEFAULT_MEDIA_COMPONENTS_CONFIG = Object.freeze({
           size: "2.5rem",
         },
     }),
-    embedFrame: Object.freeze({ ratio: "16 / 9" }),
+    embedFrame: Object.freeze({ motion: { duration: "0.2s", easing: "ease" }, ratio: "16 / 9" }),
     lightbox: Object.freeze({
         backdrop: {
           background: "oklch(14.5% 0 0 / 88%)",
@@ -33,6 +35,7 @@ const DEFAULT_MEDIA_COMPONENTS_CONFIG = Object.freeze({
           radius: "0",
           shadow: "0 25px 50px -12px oklch(0% 0 0 / 25%)",
         },
+        motion: { closeDuration: "320ms", controlDuration: "180ms", duration: "300ms", easing: "ease-out" },
     }),
 });
 

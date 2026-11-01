@@ -113,6 +113,7 @@
 }
 
 #{ns.data("popover-trigger")}::after {
+  display: var(#{ns.css-var("overlay-popover-trigger-indicator-display")}, none);
   width: var(#{ns.css-var("overlay-popover-trigger-indicator-size")}, 0.4rem);
   height: var(#{ns.css-var("overlay-popover-trigger-indicator-size")}, 0.4rem);
   flex: 0 0 auto;
@@ -129,6 +130,10 @@
 
 #{ns.data("popover-trigger")}#{ns.data("popover-indicator", "false")}::after {
   display: none;
+}
+
+#{ns.data("popover-trigger")}#{ns.data("popover-indicator", "true")}::after {
+  display: block;
 }
 
 #{ns.class("popover")} :where(a, button)#{ns.class("popover-item")}#{ns.data("popover-item-stacked", "true")},

@@ -265,7 +265,7 @@
   }
   #{ns.class("dropdown-check")} {
     opacity: 0.35;
-    transition: opacity 120ms ease;
+    transition: opacity var(#{ns.css-var("ui-dropdown-motion-duration")}, 120ms) var(#{ns.css-var("ui-dropdown-motion-easing")}, ease);
   }
 
   #{ns.class("dropdown-list")} li#{ns.data("dropdown-selected", "true")} #{ns.class("dropdown-check")} {

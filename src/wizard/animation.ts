@@ -1,5 +1,6 @@
 import { setStepState, showWizardStep } from "./step_state.js";
 import { motionReduced } from "./../a11y/attributes.js";
+import { cssTimeMs } from "./../dom/motion.js";
 
 const WIZARD_ANIMATION_MS = 240;
 const wizardAnimationTokens = new WeakMap<HTMLElement, number>();
@@ -58,7 +59,7 @@ function animateWizardStep(
 
   window.setTimeout(() => {
       finishWizardAnimation(root, token, steps, toIndex, onDone);
-    }, WIZARD_ANIMATION_MS + 80);
+    }, cssTimeMs(root, "ui-wizard-motion-duration", cssTimeMs(root, "transition-normal", WIZARD_ANIMATION_MS)) + 80);
 }
 
 export { animateWizardStep };

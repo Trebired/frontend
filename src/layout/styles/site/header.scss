@@ -164,7 +164,10 @@ $tone-motion: token("tone-duration", 320ms) token("tone-easing", cubic-bezier(0.
   height: 2px;
   border-radius: 2px;
   background: currentColor;
-  transition: transform 300ms ease, opacity 200ms ease, top 300ms ease;
+  transition:
+  transform token("burger-duration", 300ms) token("burger-easing", ease),
+  opacity token("burger-fade-duration", 200ms) token("burger-easing", ease),
+  top token("burger-duration", 300ms) token("burger-easing", ease);
 }
 
 #{ns.element-class("site-header", "burger")} > span:nth-child(1) {

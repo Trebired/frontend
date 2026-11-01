@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { PrimitiveButtonVariant } from "./../primitives/components/classes.js";
 
 type LocaleOption = {
   code: string;
@@ -18,6 +19,7 @@ type LocaleSwitcherProps = {
   lang?: string;
   locales?: LocaleOption[];
   trigger?: LocaleSwitcherTrigger;
+  variant?: PrimitiveButtonVariant;
 };
 
 type SourceLanguageBucket = "everything" | "repository" | "supporting";

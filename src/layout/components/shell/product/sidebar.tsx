@@ -12,6 +12,7 @@ import {
 } from "#26uyycr73i6f";
 import { ThemeSelect } from "#wavczpl1zxvg";
 import { primitiveStackClassName } from "#hzrmwbvgt2ax";
+import { primitiveButtonClassName } from "./../../../../primitives/components/classes.js";
 import { productShellLabel } from "./state.js";
 import type {
   ProductShellAboutButtonProps,
@@ -47,7 +48,11 @@ function ProductShellSidebarFooter(props: ProductShellSidebarFooterProps) {
 function ProductShellSidebarControls(props: ProductShellSidebarControlsProps) {
   const { about, className, language, minimize, theme, ...rest } = props;
   return (
-    <Card {...rest} className={classNames(frontendClassName("product-shell-sidebar-controls"), className)}>
+    <Card
+    {...rest}
+    className={classNames(frontendClassName("product-shell-sidebar-controls"), className)}
+    {...frontendDataAttrs({ "dense": "" })}
+    >
     {minimize}
     {theme}
     {language}
@@ -107,7 +112,7 @@ function ProductShellSidebarDefaultControls(
 ) {
   const {
     aboutHref,
-    buttonClassName = "btn icon has-tooltip",
+    buttonClassName = primitiveButtonClassName({ icon: true, tooltip: true }),
     controlsId,
     dark,
     idPrefix,
@@ -151,7 +156,7 @@ function ProductShellSidebarDefaultControls(
         theme={theme}
         />
     )}
-    language={locale_switcher({ id: `${prefix}_lang_switch_btn`, lang })}
+    language={locale_switcher({ id: `${prefix}_lang_switch_btn`, lang, variant: "secondary" })}
     about={(
         <ProductShellAboutButton
         href={aboutHref}
@@ -178,7 +183,7 @@ function productShellThemeSelect(props: ProductShellThemeSelectProps) {
     label={props.label}
     light={props.light}
     modes={props.modes}
-    optionClassName="popover-item"
+    optionClassName={frontendClassName("popover-item")}
     value={props.theme}
     variant="buttons"
     />

@@ -112,6 +112,7 @@ type FrontendPrimitiveComponentsConfig = {
   actionControl?: FrontendComponentTokens;
   button?: FrontendComponentTokens;
   choice?: FrontendComponentTokens;
+  disclosure?: FrontendComponentTokens;
   dot?: FrontendComponentTokens;
   dropdown?: FrontendComponentTokens;
   input?: FrontendComponentTokens;
@@ -120,9 +121,11 @@ type FrontendPrimitiveComponentsConfig = {
   pill?: FrontendComponentTokens;
   progress?: FrontendComponentTokens;
   quote?: FrontendComponentTokens;
+  steps?: FrontendComponentTokens;
   tabs?: FrontendComponentTokens;
   textLink?: FrontendComponentTokens;
   toggle?: FrontendComponentTokens;
+  wizard?: FrontendComponentTokens;
   upload?: FrontendComponentTokens;
 };
 
@@ -134,6 +137,7 @@ type FrontendSurfaceComponentsConfig = {
   motif?: FrontendComponentTokens;
   logo?: FrontendComponentTokens;
   scrollbar?: FrontendComponentTokens;
+  visibility?: FrontendComponentTokens;
 };
 
 type FrontendOverlayComponentsConfig = {
@@ -147,6 +151,8 @@ type FrontendFeedbackComponentsConfig = {
 };
 
 type FrontendMediaComponentsConfig = {
+  carousel?: FrontendComponentTokens;
+  embedFrame?: FrontendComponentTokens;
   expandableImage?: FrontendComponentTokens;
   lightbox?: FrontendComponentTokens;
 };

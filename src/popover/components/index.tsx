@@ -51,7 +51,7 @@ function PopoverOpenButton(props: PopoverOpenButtonProps) {
     className={classNames(frontendClassName("button"), className)}
     {...frontendDataAttrs({ "popover-hover": dataBool(hover) })}
     {...frontendDataAttrs({ "popover-trigger": "" })}
-    {...frontendDataAttrs({ "popover-indicator": indicator === false ? "false" : undefined })}
+    {...frontendDataAttrs({ "popover-indicator": typeof indicator === "boolean" ? String(indicator) : undefined })}
     aria-controls={controls}
     aria-expanded="false"
     type={type}

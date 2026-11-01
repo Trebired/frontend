@@ -63,6 +63,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
         popover: Object.freeze({
             group: {},
+            trigger: { indicator: { display: "none", size: "0.4rem" } },
             item: {
               root: {
                 height: "2.1875rem",
@@ -105,6 +106,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
         }),
         header: Object.freeze({
             brand: { button: {}, tag: { offsetY: "0" } },
+            burger: { duration: "300ms", easing: "ease", fadeDuration: "200ms" },
             tone: { duration: "320ms", easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
         }),
         language: Object.freeze({ option: { states: { current: {} } }, trigger: {} }),
@@ -148,10 +150,11 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               secondary: { states: { hover: {} } },
             },
         }),
-        hairline: Object.freeze({ cell: {}, root: { min: "16rem" } }),
+        hairline: Object.freeze({ cell: {}, motion: { duration: "0.3s", easing: "ease" }, root: { min: "16rem" } }),
         motif: Object.freeze({ root: { opacity: "1" } }),
         logo: Object.freeze({ root: { height: "2rem", max: "100%" } }),
         scrollbar: Object.freeze({ root: { gutter: "stable", width: "auto" } }),
+        visibility: Object.freeze({ duration: "320ms", easing: "cubic-bezier(0.22, 1, 0.36, 1)" }),
         card: Object.freeze({
             body: {
               divider: {},

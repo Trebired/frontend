@@ -2,8 +2,9 @@ import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { bindTooltip } from "#yf1o70q7eshd";
 import { closeAll } from "./static/position.js";
 import { CLOSE_ANIMATION_MS } from "./shared.js";
+import { cssTimeMs } from "./../../../dom/motion.js";
 import { setDropdownOptionConfig } from "./registry.js";
-import { frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 const DROPDOWN_BASE_Z_INDEX = 1020;
 
@@ -31,7 +32,7 @@ function closeDynamic(immediate = false) {
     wrap.removeAttribute(frontendDataAttr("dropdown-open"));
     window.setTimeout(function() {
         removeDynamicRequest(req);
-      }, CLOSE_ANIMATION_MS);
+      }, cssTimeMs(wrap, "ui-dropdown-motion-close-duration", CLOSE_ANIMATION_MS));
   }
 
   if (typeof req.onClose === "function") {
@@ -66,12 +67,12 @@ function createDynamicWrap(opts) {
 
 function createDynamicList(opts) {
   const options = document.createElement("div");
-  options.className = "options";
+  options.className = frontendClassName("options");
   options.setAttribute(frontendDataAttr("dropdown-options"), "");
   options.setAttribute(frontendDataAttr("dropdown-portaled"), "true");
 
   const list = document.createElement("ul");
-  list.className = "dropdown-list";
+  list.className = frontendClassName("dropdown-list");
   list.setAttribute(frontendDataAttr("dropdown-list"), "");
 
   for (let i = 0; i < opts.items.length; i += 1) {

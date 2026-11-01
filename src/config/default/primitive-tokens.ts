@@ -65,6 +65,7 @@ const DEFAULT_PRIMITIVE_COMPONENTS_CONFIG = Object.freeze({
     dropdown: Object.freeze({
         arrow: Object.freeze({}),
         menu: Object.freeze({}),
+        motion: Object.freeze({ closeDuration: "240ms", duration: "120ms", easing: "ease" }),
         option: Object.freeze({
             states: {
               hover: {},
@@ -84,14 +85,17 @@ const DEFAULT_PRIMITIVE_COMPONENTS_CONFIG = Object.freeze({
           focus: {},
         },
     }),
-    loader: Object.freeze({}),
+    disclosure: Object.freeze({}),
+    loader: Object.freeze({ motion: { duration: "1s" } }),
     marquee: Object.freeze({ item: { gap: "1.5rem", px: "0.875rem" }, root: { py: "1.1rem" },
         separator: { fontSize: "1em", opacity: "0.45" }, track: { duration: "38s" } }),
     pill: Object.freeze({}),
-    progress: Object.freeze({}),
+    progress: Object.freeze({ motion: { duration: "180ms", easing: "ease", slideDuration: "1.05s" } }),
     quote: Object.freeze({}),
+    steps: Object.freeze({ motion: { duration: "180ms", easing: "ease" } }),
     tabs: Object.freeze({
         list: { gap: "0.5rem" },
+        motion: { duration: "290ms", easing: "cubic-bezier(0.22, 1, 0.36, 1)", offset: "8px" },
         responsive: {
           mobile: { fontSize: "0.8125rem", height: "2.25rem" },
         },
@@ -111,9 +115,11 @@ const DEFAULT_PRIMITIVE_COMPONENTS_CONFIG = Object.freeze({
     }),
     toggle: Object.freeze({
         active: Object.freeze({}),
+        motion: Object.freeze({ duration: "140ms", easing: "ease" }),
         thumb: Object.freeze({}),
         track: Object.freeze({}),
     }),
+    wizard: Object.freeze({ motion: { duration: `var(${frontendCssVar("transition-normal")}, 240ms)`, easing: "ease" } }),
     upload: Object.freeze({
         actions: { gap: "0.5rem" },
         content: { gap: "0.5rem" },

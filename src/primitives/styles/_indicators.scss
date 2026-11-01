@@ -87,7 +87,7 @@
   border-radius: 50%;
   border: calc(var(--border-width) * 8) solid;
   border-color: var(#{ns.css-var("ui-loader-color")}, currentColor) transparent;
-  animation: #{ns.token("primitive-loader-spin")} 1s infinite;
+  animation: #{ns.token("primitive-loader-spin")} var(#{ns.css-var("ui-loader-motion-duration")}, 1s) infinite;
 
   &#{ns.class("xs")} {
     width: 16px;
@@ -144,7 +144,7 @@
   height: 100%;
   border-radius: inherit;
   background: var(--progress-color);
-  transition: width 180ms ease;
+  transition: width var(#{ns.css-var("ui-progress-motion-duration")}, 180ms) var(#{ns.css-var("ui-progress-motion-easing")}, ease);
   will-change: width, transform;
 }
 
@@ -153,7 +153,7 @@
   opacity: 1;
   background: var(--progress-color);
   transform: translateX(-140%);
-  animation: #{ns.token("primitive-progress-slide")} 1.05s linear infinite;
+  animation: #{ns.token("primitive-progress-slide")} var(#{ns.css-var("ui-progress-motion-slide-duration")}, 1.05s) linear infinite;
 }
 
 @keyframes #{ns.token("primitive-loader-spin")} {

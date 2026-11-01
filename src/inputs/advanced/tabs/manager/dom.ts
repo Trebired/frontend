@@ -6,19 +6,9 @@ import {
   ownedNodes,
 } from "./ownership.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { animateTabPane, cancelPaneAnimation } from "./../motion.js";
 
-const TAB_PANE_ANIMATION_MS = 290;
-const TAB_PANE_ANIMATION_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
-
-const paneAnimations = new WeakMap<HTMLElement, Animation>();
 const overflowFrames = new WeakMap<HTMLElement, number>();
-
-function cancelPaneAnimation(pane: HTMLElement) {
-  const animation = paneAnimations.get(pane);
-  if (!animation) return;
-  animation.cancel();
-  paneAnimations.delete(pane);
-}
 
 function simplifyRouteToken(value) {
   return toString(value)
@@ -149,31 +139,7 @@ function showPane(pane, animate) {
   pane.style.opacity = "";
   pane.style.transform = "";
 
-  if (!animate || typeof pane.animate !== "function") return;
-
-  pane.style.willChange = "opacity, transform";
-  const nextAnimation = pane.animate(
-    [
-      { opacity: 0, transform: "translateY(8px)" },
-      { opacity: 1, transform: "translateY(0)" },
-    ],
-    {
-      duration: TAB_PANE_ANIMATION_MS,
-      easing: TAB_PANE_ANIMATION_EASING,
-    },
-  );
-
-  paneAnimations.set(pane, nextAnimation);
-  void nextAnimation.finished?.catch (() => undefined);
-  const finish = () => {
-    if (paneAnimations.get(pane) === nextAnimation) paneAnimations.delete(pane);
-    pane.style.willChange = "";
-    pane.style.opacity = "";
-    pane.style.transform = "";
-  };
-
-  nextAnimation.addEventListener("finish", finish, { once: true });
-  nextAnimation.addEventListener("cancel", finish, { once: true });
+  if (animate) animateTabPane(pane);
 }
 
 function tabLabel(tab) {

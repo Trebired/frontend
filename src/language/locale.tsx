@@ -130,7 +130,8 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
     className={primitiveButtonClassName({
           className: classNames(frontendClassName("locale-trigger"), props.className),
           icon: compact,
-          variant: "chrome",
+          tooltip: compact,
+          variant: props.variant || "chrome",
     })}
     aria-controls={popoverId}
     aria-haspopup="menu"

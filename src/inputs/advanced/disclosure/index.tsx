@@ -39,7 +39,6 @@ function disclosureModel(props: disclosure_props) {
     panelClassName: classNames([
         frontendElementClass("disclosure", "panel"),
         frontendClassName("cursor-auto"),
-        "disclosure-panel",
         toString(props.panelClassName),
     ]),
     rootAttrs:
@@ -50,10 +49,7 @@ function disclosureModel(props: disclosure_props) {
     rootId,
     TriggerTag: props.triggerTag === "div" ? "div" : "button",
     triggerClassName: classNames([
-        primitiveInlineRowClassName({
-            className: "disclosure-trigger",
-            gap: "xs",
-        }),
+        primitiveInlineRowClassName({ gap: "xs" }),
         toString(props.triggerClassName),
     ]),
   };

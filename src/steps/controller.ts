@@ -2,6 +2,7 @@ import { resolveDocumentTarget } from "#er0dlx1gtbzh";
 import { createDisclosure } from "#z2c0jqmjqds4";
 import { renderSharedSteps } from "./dom.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { cssTimeMs, cssToken } from "./../dom/motion.js";
 
 const lastSteps = new WeakMap();
 const actionControls = new Set<HTMLElement>();
@@ -91,8 +92,8 @@ function begin(target) {
 
   if (list && typeof list.animate === "function") {
     list.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 180,
-        easing: "ease",
+        duration: cssTimeMs(list, "ui-steps-motion-duration", 180),
+        easing: cssToken(list, "ui-steps-motion-easing", "ease"),
     });
   }
 }

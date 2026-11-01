@@ -349,6 +349,9 @@
       "#54nduadwduvd": [
         "../../../scripts/verify/frontend/icons.mjs"
       ],
+      "#570bjy2vun55": [
+        "../../../src/inputs/advanced/tabs/motion.ts"
+      ],
       "#58rj84wj84p8": [
         "../../../src/inputs/upload/files.ts"
       ],
@@ -1131,6 +1134,9 @@
       ],
       "#g7shujp997gd": [
         "../../../src/server/seo.ts"
+      ],
+      "#g82fdp1z6p89": [
+        "../../../src/dom/motion.ts"
       ],
       "#ggsv3udz97t0": [
         "../../../src/inputs/advanced/input/styles/input.scss"

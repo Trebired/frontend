@@ -323,6 +323,22 @@ That is the whole mechanism for telling the two apart, and it is deliberate: a c
 
 `BottomBar` renders the mobile bar at the bottom of the viewport from an `items` array. An item with `href` is a link, one with `controls` toggles a mobile nav, one with `onClick` alone is a button, and one with `node` renders whatever it carries. `ProductShellBottomBar` is that component with a product shell's own items. `components.shell.bottomBar` tokens cover its height, background, border, radius, shadow and item colors.
 
+### Tabs
+
+`Tabs` with `TabList`, `TabButton` and `TabPanel` is the plain tab set; `tabs()` with `tab_panel()` adds routed families, nested tabs and hoisted headers. Both render the same tab list and buttons, so one `components.primitives.tabs` block styles both: `list.gap`, `root` (`height`, `paddingInline`, `border`, `radius`, `color`, `background`, `fontFamily`, `fontSize`, `fontWeight`), `states.hover` and `states.active` (`background`, `border`, `color`), and `responsive.mobile` (`height`, `fontSize`). Switching tabs animates the incoming pane in both: `motion.duration`, `motion.easing` and `motion.offset` set it, and readers who reduce motion see no animation.
+
+### Motion
+
+Every animation the package runs reads its timing from the component config, so a config owns all motion: `primitives.tabs.motion`, `primitives.dropdown.motion`, `primitives.toggle.motion`, `primitives.loader.motion`, `primitives.progress.motion`, `primitives.steps.motion`, `primitives.wizard.motion`, `surfaces.hairline.motion`, `surfaces.visibility`, `shell.header.burger`, `shell.header.tone`, `media.carousel.motion`, `media.embedFrame.motion`, `media.expandableImage.motion`, `media.lightbox.motion`, and the existing `overlays.modal.motion`, `overlays.tooltip.motion`, `primitives.textLink.motion` and `shell.outline` marker and dock timings. Animations that run from script read the same tokens from the computed style, so a stylesheet and a script cannot disagree.
+
+### Popover Trigger
+
+A popover trigger draws no arrow by default. `components.overlays.popover.trigger.indicator` sets `display` (`block` shows the arrow on every trigger) and `size`; `PopoverTrigger` takes `indicator` to show or hide it on one trigger.
+
+### Disclosure
+
+`disclosure()` and `DisclosureButton` read `components.primitives.disclosure`: `root.padding` (a disclosure drawn as a card), `trigger` (`color`, `fontSize`, `fontWeight`), `indicator` (`size`, `color`, `offset`) and `panel.gap`, the space between the trigger and the opened content. Without it they keep their current look.
+
 ### Tab Routes
 
 Tabs keep their selection in the query string, one `tab-<familyKey>` parameter per family, so nested tabs are addressed by one parameter per level. `tabRouteUrl(url, steps)` builds that URL from `{ familyKey, route }` steps. On the server, `tabSectionRedirect({ sections, target })` turns a path segment into a redirect to the tabbed page, so a path such as `/@someone/repositories` can land on the matching nested tab:

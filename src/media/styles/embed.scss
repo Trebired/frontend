@@ -68,7 +68,7 @@
   color: inherit;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(#{ns.css-var("media-embed-frame-motion-duration")}, 0.2s) var(#{ns.css-var("media-embed-frame-motion-easing")}, ease);
 }
 
 #{ns.class("embed-frame")}:hover #{ns.class("embed-frame-fullscreen")},

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cssTimeMs } from "./../dom/motion.js";
 
 const CLOSE_ANIMATION_MS = 320;
 
@@ -23,7 +24,7 @@ function useGalleryState(length: number, initialIndex: number): GalleryState {
   const close = useCallback(() => {
       setVisible(false);
       window.clearTimeout(closeTimer.current);
-      closeTimer.current = window.setTimeout(() => setOpen(false), CLOSE_ANIMATION_MS);
+      closeTimer.current = window.setTimeout(() => setOpen(false), cssTimeMs(null, "media-lightbox-motion-close-duration", CLOSE_ANIMATION_MS));
     }, []);
 
   const expand = useCallback((next: number) => {

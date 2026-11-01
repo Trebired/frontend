@@ -1,6 +1,7 @@
 @use "@trebired/bundler/namespace" as ns;
-$tabs-pane-animation-ms: 290ms;
-$tabs-pane-animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
+$tabs-pane-animation-ms: var(#{ns.css-var("ui-tabs-motion-duration")}, 290ms);
+
+$tabs-pane-animation-easing: var(#{ns.css-var("ui-tabs-motion-easing")}, cubic-bezier(0.22, 1, 0.36, 1));
 
 #{ns.class("tabs")} {
   display: flex;

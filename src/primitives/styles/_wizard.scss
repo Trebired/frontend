@@ -53,7 +53,9 @@ wizard-final-action {
 }
 
 #{ns.class("wizard")}#{ns.data("wizard-ready", "true")} #{ns.class("wizard-step")} {
-  transition: opacity var(#{ns.css-var("transition-normal")}, 240ms) ease;
+  transition:
+  opacity var(#{ns.css-var("ui-wizard-motion-duration")}, var(#{ns.css-var("transition-normal")}, 240ms))
+  var(#{ns.css-var("ui-wizard-motion-easing")}, ease);
 }
 
 #{ns.class("wizard-step")}#{ns.data("wizard-step-state", "active")} {

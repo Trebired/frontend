@@ -15,7 +15,7 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   width: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 1000ms ease;
+  transition: opacity var(#{ns.css-var("media-carousel-motion-duration")}, 1000ms) var(#{ns.css-var("media-carousel-motion-easing")}, ease);
 }
 
 #{ns.class("carousel-slide")}#{ns.class("is-active")} {
@@ -37,7 +37,7 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   background: oklch(14.5% 0 0 / 35%);
   color: var(--white-500, #fff);
   cursor: pointer;
-  transition: background 180ms ease;
+  transition: background var(#{ns.css-var("media-carousel-motion-control-duration")}, 180ms) ease;
 }
 
 #{ns.class("carousel-nav")}:hover {
@@ -69,7 +69,9 @@ $bottom: ns.modifier("carousel", "controls-bottom");
   background: oklch(100% 0 0 / 55%);
   cursor: pointer;
   padding: 0;
-  transition: background 180ms ease, width 180ms ease;
+  transition:
+  background var(#{ns.css-var("media-carousel-motion-control-duration")}, 180ms) ease,
+  width var(#{ns.css-var("media-carousel-motion-control-duration")}, 180ms) ease;
 }
 
 #{ns.class("carousel-dot")}#{ns.class("is-active")} {
