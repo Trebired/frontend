@@ -32,7 +32,7 @@ type CarouselPartProps = {
 };
 
 function activeClass(name: string, active: boolean): string {
-  return `${frontendClassName(name)}${active ? " is-active" : ""}`;
+  return `${frontendClassName(name)}${active ? ` ${frontendClassName("is-active")}` : ""}`;
 }
 
 function rootClass(props: CarouselProps): string {

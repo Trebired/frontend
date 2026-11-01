@@ -107,7 +107,7 @@ function graphBootJson(props: graph_props, model: any) {
       points: model.pointItems,
       datasets: model.datasetItems,
       legend: model.legendItems,
-      loaderHtml: '<div class="loader md" aria-hidden="true"></div>',
+      loaderHtml: `<div class="${frontendClassName("loader")} ${frontendClassName("md")}" aria-hidden="true"></div>`,
       loading: model.isLoading,
       state: model.resolvedState,
       stateIcon: model.resolvedStateIcon,

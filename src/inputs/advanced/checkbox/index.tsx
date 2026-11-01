@@ -35,7 +35,8 @@ function checkboxModel(props: checkbox_props) {
     "radius-lg",
     optionClassName,
   );
-  const optionBodyClassName = `checkbox-option-body flex-1${toString(props.bodyClassName) ? ` ${toString(props.bodyClassName)}` : ""}`;
+  const bodyClassName = toString(props.bodyClassName);
+  const optionBodyClassName = `${frontendClassName("checkbox-option-body")} flex-1${bodyClassName ? ` ${bodyClassName}` : ""}`;
   const computedInputClassName = joinClassNames(
     frontendClassName("checkbox-input"),
     "checkbox",

@@ -54,7 +54,7 @@ function platformToggle(model: any) {
   return (
     <div {...frontendDataAttrs({ "logs-raw-hide": "" })}>
     {checkbox({
-          bodyClassName: "logs-platform-toggle-body",
+          bodyClassName: frontendClassName("logs-platform-toggle-body"),
           checked: true,
           id: model.ids.platformToggle,
           input_attrs: {},

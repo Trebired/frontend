@@ -187,7 +187,7 @@ function currentLinkAttrs(current: CurrentNavigation, input: unknown, opts: Curr
 }
 
 function currentLiAttrs(current: CurrentNavigation, input: unknown, opts: CurrentMatchOptions = {}) {
-  return currentIsCurrent(current, input, opts) ? ' class="active"' : "";
+  return currentIsCurrent(current, input, opts) ? ` class="${frontendClassName("active")}"` : "";
 }
 
 function currentClassName(

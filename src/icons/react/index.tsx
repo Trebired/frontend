@@ -82,7 +82,7 @@ function Icon(props: IconProps) {
     ...rest,
     "aria-hidden": rest["aria-hidden"] ?? hidden,
     "aria-label": rest["aria-label"] || label || undefined,
-    className: classNames(frontendClassName("icon"), "icon-glyph", className),
+    className: classNames(frontendClassName("icon"), frontendClassName("icon-glyph"), className),
     [frontendDataAttr("icon")]: normalizedSpec || undefined,
     [BRAND_COLOR_ATTR]:
     !color && colorMode === "brand" && colorValue ? colorValue : undefined,

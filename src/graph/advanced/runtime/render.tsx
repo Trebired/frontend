@@ -14,8 +14,8 @@ import {
 import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 const GRAPH_CARD_ROOT_CLASS = "graph-card-root";
-const GRAPH_FRAME_CLASS = "graph-card-frame bg-canvas";
-const GRAPH_FRAME_CHROME_CLASS = "radius-md border";
+const GRAPH_FRAME_CLASS = `graph-card-frame ${frontendClassName("bg-canvas")}`;
+const GRAPH_FRAME_CHROME_CLASS = frontendClassNames("radius-md", "border");
 
 function graphFrameClassName() {
   return [

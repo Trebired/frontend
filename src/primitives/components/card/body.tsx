@@ -18,7 +18,7 @@ import { InlineRow, Stack } from "#tlkyab3pczjn";
 import { joinClassNames, toText, wrapTriggerHostNode } from "#6mupcizo1mwq";
 import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
-const CARD_BODY_DIVIDER_CLASS = "card-body-divider";
+const CARD_BODY_DIVIDER_CLASS = frontendClassName("card-body-divider");
 
 function stripGapClasses(value: string) {
   return value

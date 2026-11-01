@@ -16,10 +16,10 @@ import type {
   PromptOptions,
 } from "./types.js";
 import { toText as text } from "#ndsvdqv80epr";
-import { frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
 
-const DIALOG_BUTTON_CLASS = "btn";
-const DIALOG_BUTTON_STRONG_CLASS = "btn highlight";
+const DIALOG_BUTTON_CLASS = frontendClassName("btn");
+const DIALOG_BUTTON_STRONG_CLASS = frontendClassNames("btn", "highlight");
 
 function finishDialog<T>(
   stack: HTMLElement,
@@ -89,7 +89,7 @@ function createConfirmInput(options: ConfirmModel, ok: HTMLButtonElement) {
   if (options.confirmMode !== "text" || !confirmationText) return null;
   ok.disabled = true;
   const input = document.createElement("input");
-  input.className = "input classic";
+  input.className = frontendClassNames("input", "classic");
   input.type = "text";
   input.autocomplete = "off";
   input.placeholder = options.placeholder || confirmationText;
@@ -122,7 +122,7 @@ function createPromptForm(options: PromptOptions) {
   const form = document.createElement("form");
   form.className = frontendElementClass("flash", "form");
   const input = document.createElement("input");
-  input.className = "input classic";
+  input.className = frontendClassNames("input", "classic");
   input.name = "value";
   input.placeholder = options.placeholder || "";
   input.value = options.value || "";
@@ -147,7 +147,7 @@ function bindPromptControls(
   finish: (value: string | null) => void,
 ) {
   const input = form.querySelector<HTMLInputElement>("input");
-  const cancel = form.querySelector<HTMLButtonElement>(`.${DIALOG_BUTTON_CLASS}:not(.highlight)`);
+  const cancel = form.querySelector<HTMLButtonElement>(`.${DIALOG_BUTTON_CLASS}:not(.${frontendClassName("highlight")})`);
   form.addEventListener("submit", (event) => {
       event.preventDefault();
       finish(input?.value.trim() || null);

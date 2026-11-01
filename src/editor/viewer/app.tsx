@@ -52,7 +52,7 @@ function EditorViewerApp(props: any) {
   return (
     <div ref={rootRef} className={primitiveStackClassName({ gap: "sm", grow: true })} style={rootStyle}>
     <div
-    className={primitiveInlineRowClassName({ className: `${frontendClassName("editor-viewer-layout")} grow`, gap: "sm" })}
+    className={primitiveInlineRowClassName({ className: `${frontendClassName("editor-viewer-layout")} ${frontendClassName("grow")}`, gap: "sm" })}
     style={rowStyle}
     >
     <ViewerSidebar

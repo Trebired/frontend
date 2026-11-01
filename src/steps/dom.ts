@@ -131,7 +131,7 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
 
   const tone = stepTone(input && input.level);
   const badge = doc.createElement("span");
-  badge.className = `pill no-shrink ${tone.className}`.trim();
+  badge.className = `${frontendClassName("pill")} ${frontendClassName("no-shrink")} ${tone.className}`.trim();
   badge.textContent = tone.label;
 
   const messageEl = doc.createElement("span");

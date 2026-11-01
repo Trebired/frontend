@@ -1,13 +1,13 @@
 import { escapeHtml, jsonScriptPayload, toText } from "./text.js";
 import { uploadModel } from "./model.js";
 import type { UploadFieldOptions } from "./types.js";
-import { frontendClassName, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendElementClass } from "#5vbaqj4pirp3";
 
 const directoryPickerAttrs = " webkitdirectory directory";
 
 function iconHtml(spec: string) {
   return spec
-  ? `<i aria-hidden="true" class="${frontendClassName("icon")} icon-glyph"${data("icon", spec)}></i>`
+  ? `<i aria-hidden="true" class="${frontendClassNames("icon", "icon-glyph")}"${data("icon", spec)}></i>`
   : "";
 }
 
@@ -118,7 +118,7 @@ function triggerButtons(model: ReturnType<typeof uploadModel>) {
 
 function uploadButton(slot: string, label: string, iconSpec: string) {
   return [
-    `<button class="btn" type="button"${data("upload-slot", slot)}>`,
+    `<button class="${frontendClassName("btn")}" type="button"${data("upload-slot", slot)}>`,
     iconHtml(iconSpec),
     `<span>${escapeHtml(label)}</span>`,
     "</button>",
@@ -129,7 +129,7 @@ function uploadRemoteAction(model: ReturnType<typeof uploadModel>) {
   const action = model.remoteAction;
   if (!action) return "";
   return [
-    '<button class="btn" type="button"',
+    `<button class="${frontendClassName("btn")}" type="button"`,
     attr("id", action.id),
     attr("aria-label", action.ariaLabel),
     attr("name", action.name),
@@ -149,7 +149,7 @@ function uploadRemoteAction(model: ReturnType<typeof uploadModel>) {
 function uploadClearButton(model: ReturnType<typeof uploadModel>) {
   const hidden = model.canClearCurrentPreview ? "" : " hidden";
   return [
-    '<button class="btn" type="button"',
+    `<button class="${frontendClassName("btn")}" type="button"`,
     `${data("upload-slot", "clear")}${hidden}>`,
     iconHtml(model.clearIconSpec),
     `<span>${escapeHtml(model.clearLabel)}</span>`,

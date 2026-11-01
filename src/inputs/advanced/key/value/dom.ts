@@ -15,7 +15,7 @@ import type {
   key_value_input_dom_field,
   key_value_input_dom_props,
 } from "./shared.js";
-import { frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function appendDomField(
   controls: HTMLElement,
@@ -41,7 +41,7 @@ function appendDomLabel(
 ) {
   if (!field || !field.label) return;
   const label = doc.createElement("span");
-  label.className = "label";
+  label.className = frontendClassName("label");
   label.textContent = toString(field.label);
   label.style.gridColumn = String(columnIndex);
   label.style.gridRow = "1";

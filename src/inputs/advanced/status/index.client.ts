@@ -1,4 +1,4 @@
-import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { createLocalTranslator } from "#dqy2d22qyujv";
 import { requestJson } from "#dqy2d22qyujv";
 import { setTooltipText } from "#yf1o70q7eshd";
@@ -62,13 +62,13 @@ function setBadReason(bad: HTMLElement | null, reason: unknown) {
   const text = String(reason || "").trim();
   if (text) {
     bad.setAttribute("aria-label", text);
-    bad.classList.add("has-tooltip");
+    bad.classList.add(frontendClassName("has-tooltip"));
     setTooltipText(bad, text);
     return;
   }
 
   bad.removeAttribute("aria-label");
-  bad.classList.remove("has-tooltip");
+  bad.classList.remove(frontendClassName("has-tooltip"));
   setTooltipText(bad, "");
 }
 

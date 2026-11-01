@@ -10,7 +10,7 @@ import {
   primitivePaddingClass,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function jsonScriptConfig(config: Record<string, unknown>) {
   return {
@@ -43,7 +43,7 @@ function view(props: view_props) {
           contentClassName: primitiveStackClassName({
               className: [
                 primitivePaddingClass("xs"),
-                "log-box-shell",
+                frontendClassName("log-box-shell"),
               ],
           }),
           extendGroup: model.logsExtendGroup,

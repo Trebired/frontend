@@ -21,7 +21,7 @@ function defaultCountNode(context: DynamicSidebarRuntimeCountContext) {
 
 function loaderNode(documentRef: Document, size: string) {
   const node = documentRef.createElement("div");
-  node.className = `loader-circle ${size}`;
+  node.className = `${frontendClassName("loader-circle")} ${frontendClassName(size)}`;
   node.setAttribute("aria-hidden", "true");
   return node;
 }

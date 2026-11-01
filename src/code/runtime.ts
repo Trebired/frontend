@@ -7,7 +7,7 @@ import {
   getPreferredMonacoColorizeThemeName,
   getPreferredMonacoThemeName,
 } from "./monaco.js";
-import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 
 const CODE_BLOCK_TAG = "code-block";
 const CODE_SELECTOR = `${CODE_BLOCK_TAG},${frontendDataSelector("code-block")}`;
@@ -57,7 +57,7 @@ function markSnippet(host: Element, target: Element) {
 }
 
 function restoreBreakableSpaces(target: Element) {
-  if (!target.classList.contains("pre-wrap")) return;
+  if (!target.classList.contains(frontendClassName("pre-wrap"))) return;
   const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     if (node.nodeValue && node.nodeValue.includes("\u00a0")) {

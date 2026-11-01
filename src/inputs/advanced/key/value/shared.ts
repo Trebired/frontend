@@ -6,7 +6,7 @@ import {
   primitiveButtonClassName,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
-import { frontendCssVar } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendCssVar } from "#5vbaqj4pirp3";
 
 type AttrMap = Record<string, unknown>;
 
@@ -152,7 +152,7 @@ function removeButtonProps(
   );
   const removeClassName = primitiveButtonClassName({
       className: [
-        "no-shrink",
+        frontendClassName("no-shrink"),
         toString(props.removeClassName),
         toString((props.removeAttrs as any)?.className),
       ],

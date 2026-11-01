@@ -10,7 +10,7 @@ import stats_breakdown from "#ojqk8hhrpft6";
 
 function statsTabs(model: any) {
   return tabs({
-      familyClassName: "width-full",
+      familyClassName: frontendClassName("width-full"),
       headerClassName: primitiveInlineRowClassName({
           className: frontendClassName("logs-stats-header"),
           gap: "sm",
@@ -30,8 +30,8 @@ function statsTabs(model: any) {
         { id: model.logId("stats-loaded"), label: model.t("loadedTab") },
         { id: model.logId("stats-total"), label: model.t("totalTab") },
       ],
-      listClassName: "width-full",
-      rootClassName: "width-full",
+      listClassName: frontendClassName("width-full"),
+      rootClassName: frontendClassName("width-full"),
   });
 }
 

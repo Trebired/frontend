@@ -18,6 +18,7 @@ import {
   normalizeGraphUnitScale,
   registerGraphRoot,
 } from "./utils.js";
+import { frontendClassName } from "#5vbaqj4pirp3";
 
 function stateMessageText(props, graphState) {
   const message =
@@ -38,7 +39,7 @@ function frameState(props, modalWaiting) {
     loaderHtml:
     typeof props.loaderHtml === "string" && props.loaderHtml.trim()
     ? props.loaderHtml
-    : '<div class="loader md" aria-hidden="true"></div>',
+    : `<div class="${frontendClassName("loader")} ${frontendClassName("md")}" aria-hidden="true"></div>`,
     showEmpty,
     showLoader:
     !showWarning && !showEmpty && (graphState === "loading" || modalWaiting),

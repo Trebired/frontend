@@ -32,7 +32,7 @@ import type {
   IconSvgSuccess,
   RenderIconHtmlAttrs,
 } from "./types.js";
-import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
 
 export { withIconServerRenderer } from "#6o6fqz7svsts";
 export { attachIconAliasLocals, attachIconServer } from "./attachment.js";
@@ -197,7 +197,7 @@ function createServerIconRenderer(
 
 function renderHostAttrs(attrs: RenderIconHtmlAttrs, parsed: ParsedIconSpec): string {
   const pairs = new Map<string, string|true>();
-  const className = classNames(frontendClassName("icon"), "icon-glyph", text(attrs.class ||attrs.className));
+  const className = classNames(frontendClassName("icon"), frontendClassName("icon-glyph"), text(attrs.class ||attrs.className));
   pairs.set("class", className);
   pairs.set(frontendDataAttr("icon"), parsed.spec);
   const label = text(attrs.label || attrs["aria-label"]);
@@ -225,7 +225,7 @@ function renderIconHtml(
 ): string {
   const parsed = parseServerIconSpec(spec, options);
   const tag = text(attrs.tag) || "i";
-  if (!parsed) return `<${tag} class="${frontendClassName("icon")} icon-glyph" aria-hidden="true"></${tag}>`;
+  if (!parsed) return `<${tag} class="${frontendClassNames("icon", "icon-glyph")}" aria-hidden="true"></${tag}>`;
   const svgResult = resolveIconSvg(parsed.spec, {
       ...options,
       preserveSourceColors: attrs.preserveSourceColors ?? options.preserveSourceColors,

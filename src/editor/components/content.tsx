@@ -2,13 +2,13 @@ import { createElement, type ReactNode } from "react";
 import { card } from "#6hfutrhvm6x6";
 import { Text, primitiveStackClassName } from "#hzrmwbvgt2ax";
 import type { EditorContentProps, EditorSidebarProps } from "./types.js";
-import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function editor_content(props: EditorContentProps) {
   const className = String(props.className || primitiveStackClassName({ gap: "sm", grow: true })).trim();
   const minHeight = resolvedMinHeight(props.minHeight);
   const surfaceClassName = String(
-    props.surfaceClassName || "border radius-md overflow-hidden bg-canvas grow",
+    props.surfaceClassName || frontendClassNames("border", "radius-md", "overflow-hidden", "bg-canvas", "grow"),
   ).trim();
   return (
     <div className={className}>
