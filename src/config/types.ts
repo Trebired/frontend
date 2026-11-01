@@ -18,6 +18,17 @@ import type {
 } from "./types/containers.js";
 
 import type { FrontendA11yConfig, NormalizedFrontendA11yConfig } from "./types/a11y.js";
+import type {
+  FrontendComponentTokens,
+  FrontendComponentsConfig,
+  FrontendDataComponentsConfig,
+  FrontendFeedbackComponentsConfig,
+  FrontendMediaComponentsConfig,
+  FrontendOverlayComponentsConfig,
+  FrontendPrimitiveComponentsConfig,
+  FrontendShellComponentsConfig,
+  FrontendSurfaceComponentsConfig,
+} from "./types/components.js";
 import type { FrontendMoneyConfig, NormalizedFrontendMoneyConfig } from "./types/money.js";
 import type { FrontendLinksConfig, NormalizedFrontendLinksConfig } from "./types/links.js";
 import type { FrontendLanguageConfig, FrontendLocaleStrategy, NormalizedFrontendLanguageConfig } from "./types/language.js";
@@ -106,83 +117,6 @@ type FrontendScalesConfig = {
   zIndex?: FrontendZIndexScaleConfig;
 };
 
-type FrontendComponentTokens = FrontendThemeTokens;
-
-type FrontendPrimitiveComponentsConfig = {
-  actionControl?: FrontendComponentTokens;
-  button?: FrontendComponentTokens;
-  choice?: FrontendComponentTokens;
-  disclosure?: FrontendComponentTokens;
-  dot?: FrontendComponentTokens;
-  dropdown?: FrontendComponentTokens;
-  input?: FrontendComponentTokens;
-  loader?: FrontendComponentTokens;
-  marquee?: FrontendComponentTokens;
-  pill?: FrontendComponentTokens;
-  progress?: FrontendComponentTokens;
-  quote?: FrontendComponentTokens;
-  steps?: FrontendComponentTokens;
-  tabs?: FrontendComponentTokens;
-  textLink?: FrontendComponentTokens;
-  toggle?: FrontendComponentTokens;
-  wizard?: FrontendComponentTokens;
-  upload?: FrontendComponentTokens;
-};
-
-type FrontendSurfaceComponentsConfig = {
-  brandCanvas?: FrontendComponentTokens;
-  button?: FrontendComponentTokens;
-  card?: FrontendComponentTokens;
-  hairline?: FrontendComponentTokens;
-  motif?: FrontendComponentTokens;
-  logo?: FrontendComponentTokens;
-  scrollbar?: FrontendComponentTokens;
-  visibility?: FrontendComponentTokens;
-};
-
-type FrontendOverlayComponentsConfig = {
-  modal?: FrontendComponentTokens;
-  popover?: FrontendComponentTokens;
-  tooltip?: FrontendComponentTokens;
-};
-
-type FrontendFeedbackComponentsConfig = {
-  flash?: FrontendComponentTokens;
-};
-
-type FrontendMediaComponentsConfig = {
-  carousel?: FrontendComponentTokens;
-  embedFrame?: FrontendComponentTokens;
-  expandableImage?: FrontendComponentTokens;
-  lightbox?: FrontendComponentTokens;
-};
-
-type FrontendShellComponentsConfig = {
-  bottomBar?: FrontendComponentTokens;
-  category?: FrontendComponentTokens;
-  error?: FrontendComponentTokens;
-  header?: FrontendComponentTokens;
-  language?: FrontendComponentTokens;
-  sidebar?: FrontendComponentTokens;
-  theme?: FrontendComponentTokens;
-};
-
-type FrontendDataComponentsConfig = {
-  graph?: FrontendComponentTokens;
-  log?: FrontendComponentTokens;
-};
-
-type FrontendComponentsConfig = {
-  data?: FrontendDataComponentsConfig;
-  feedback?: FrontendFeedbackComponentsConfig;
-  media?: FrontendMediaComponentsConfig;
-  overlays?: FrontendOverlayComponentsConfig;
-  primitives?: FrontendPrimitiveComponentsConfig;
-  shell?: FrontendShellComponentsConfig;
-  surfaces?: FrontendSurfaceComponentsConfig;
-  typography?: FrontendComponentTokens;
-};
-
 type FrontendActivePressInteractionConfig = {
   brightness?: number | string;
   enabled?: boolean;
@@ -212,6 +146,7 @@ type FrontendConfig = {
   language?: FrontendLanguageConfig;
   links?: FrontendLinksConfig;
   money?: FrontendMoneyConfig;
+  presets?: { use?: string | readonly string[] };
   runtime?: FrontendRuntimeConfig;
   systems?: Partial<Record<FrontendSystemKey, boolean>>;
 };
