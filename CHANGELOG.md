@@ -4,6 +4,15 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.11.0
+
+- Breaking for presets: a preset is named `<package>/frontend/<preset>` and resolves through `applyPresets` in `@trebired/utils`, the system every Trebired tool shares. It is read from `.<organization>/frontend/<preset>/config.ts` in that package; a bare package name and a preset written for another tool are refused. Use `presets: { use: ["@trebired/configs/frontend/preset_01"] }` with `@trebired/configs` 0.6.0.
+- Fixed dropdown values sitting low in their box. The touch-target floor set a 44px minimum on the dropdown label while the box stayed at `--height-input`, so the label overflowed the box and centred its text below the middle. The floor now sizes the box, `max(--height-input, --tbf-target-min)`, and the label fills it; the label stays on one line and ends in an ellipsis.
+- Changed a text input's minimum height from a fixed 36px to the dropdown's box height, so inputs and dropdowns in one row are the same height.
+- Changed the touch-target floor to be set from config: `design.semantics.targetMin` writes `--tbf-target-min`, and the package default no longer outranks it.
+- Added `label` to `input` and `textarea`, rendered like a dropdown's label.
+- Fixed checkboxes and radio rows writing `radius-lg` without the namespace.
+
 ## 29.10.0
 
 - Added `presets` to the frontend config. `presets: { use: ["<package>"] }` loads each package's `.trebired/frontend/config.ts` and merges the application's own config over it, the same shape Code Discipline uses for its presets. A preset declares its own `forVersion` and cannot nest presets; the startup config check applies presets too.

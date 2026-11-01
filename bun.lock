@@ -6,7 +6,7 @@
       "name": "@trebired/frontend",
       "dependencies": {
         "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.7.0",
-        "@trebired/utils": "^0.9.4",
+        "@trebired/utils": "^0.9.7",
         "chart.js": "^4.5.1",
         "country-flag-icons": "^1.6.20",
         "cropperjs": "^1.6.2",
@@ -202,7 +202,7 @@
 
     "@trebired/overprint": ["@trebired/overprint@0.9.0", "", { "dependencies": { "country-flag-icons": "^1.6.20", "roughjs": "^4.6.6" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-R41aq9WscXTCd0Gn2pboD5e3+sld9xv0DjsFmeDyLbm9UQ2ZyU1+wNQGr3hjJvidFpqcRm7OXPcttaC6duNxlA=="],
 
-    "@trebired/utils": ["@trebired/utils@0.9.4", "", {}, "sha512-oFXNPejhhT/eTerlG6LTqfbVq7MsI8z6BsRnabRPXgcE6IeJmcpUeu6g60gGWq6X4F9yBdFfmkFBX3Mz5+cOrw=="],
+    "@trebired/utils": ["@trebired/utils@0.9.7", "", {}, "sha512-t1y3oJeBJmG5Lz74444XktAjUwiWEcw8T9sYKXrB+SS9BHCaITpdIoojH68+MRIHSPVLkAbvsJhzC45oKMvwoQ=="],
 
     "@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
 
@@ -596,6 +596,6 @@
 
     "@package/result/@package/logger-adapter/@trebired/utils": ["@trebired/utils@0.8.0", "", {}, "sha512-J7KWJsd2inrO1B3rx7O48KIcFFX0+3c+kR/Cxf4BPRpD1ytLXMWLdDJHbuamxYQCXZRK58aofBYR6AZSw9LxSg=="],
 
-    "@package/result/@package/logger-adapter/@package/logger/@trebired/utils": ["@trebired/utils@0.9.4", "", {}, "sha512-oFXNPejhhT/eTerlG6LTqfbVq7MsI8z6BsRnabRPXgcE6IeJmcpUeu6g60gGWq6X4F9yBdFfmkFBX3Mz5+cOrw=="],
+    "@package/result/@package/logger-adapter/@package/logger/@trebired/utils": ["@trebired/utils@0.9.7", "", {}, "sha512-t1y3oJeBJmG5Lz74444XktAjUwiWEcw8T9sYKXrB+SS9BHCaITpdIoojH68+MRIHSPVLkAbvsJhzC45oKMvwoQ=="],
   }
 }
