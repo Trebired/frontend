@@ -32,7 +32,7 @@ function checkboxModel(props: checkbox_props) {
     primitiveButtonClassName({ variant: "chrome" }),
     frontendClassName("choice-row"),
     frontendClassName("checkbox-option"),
-    "radius-lg",
+    frontendClassName("radius-lg"),
     optionClassName,
   );
   const bodyClassName = toString(props.bodyClassName);
