@@ -373,6 +373,26 @@ Unknown sections fall through to the next handler. The request's own query is ke
 
 Static apps set `assets.icons.mode: "static"` and `assets.icons.endpoint: false`, then register a build-generated icon cache before calling `bindFrontendRuntime(document, { icons: { mode: "static" } })`.
 
+### Presets
+
+A preset is a frontend config another package ships, and an application loads it by package name, the same way a Code Discipline preset is loaded:
+
+```ts
+import { defineConfig } from "@trebired/frontend/config";
+
+import { containers } from "./containers";
+
+export default defineConfig({
+  forVersion: "29.10.0",
+  presets: {
+    use: ["@trebired/configs"],
+  },
+  containers,
+});
+```
+
+Each name in `presets.use` resolves to that package's `.trebired/frontend/config.ts`. The preset default-exports a config object with its own `forVersion`, checked against the installed `@trebired/frontend` like the application's, and it may not declare presets of its own. Presets merge in the order listed, and the application's own config merges over them: objects merge key by key, any other value replaces. The preset's files count as config dependencies, so editing one rebuilds the stylesheet.
+
 ### Extra CSS
 
 `css` in the config is a string added to the end of the generated stylesheet, for CSS another package builds, such as the print grain:

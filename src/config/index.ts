@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { defineValue } from "#ndsvdqv80epr";
 import { collectConfigDependencies, importConfigModule, pathExists } from "./module.js";
+import { applyFrontendPresets } from "./presets.js";
 import { DEFAULT_FRONTEND_CONFIG, FRONTEND_CONFIG_PATH, normalizeFrontendConfig } from "./normalize.js";
 import { generateFontPreloads, generateFrontendScss } from "./scss.js";
 import type {
@@ -60,15 +61,13 @@ async function loadConfig(
     throw new Error(`frontend-config-not-found :: ${resolvedPath}`);
   }
 
-  const dependencies = await collectConfigDependencies(resolvedPath);
-  const config = normalizeFrontendConfig(
-    await importConfigModule(root, resolvedPath, dependencies),
-    { configPath: resolvedPath, requireForVersion: true },
-  );
+  const ownDependencies = await collectConfigDependencies(resolvedPath);
+  const resolved = await applyFrontendPresets(await importConfigModule(root, resolvedPath, ownDependencies), root);
+  const config = normalizeFrontendConfig(resolved.config, { configPath: resolvedPath, requireForVersion: true });
   return {
     config,
     configPath: resolvedPath,
-    dependencies,
+    dependencies: [...ownDependencies, ...resolved.dependencies],
     fontPreloads: generateFontPreloads(config),
     generatedScss: generateFrontendScss(config),
   };
@@ -90,6 +89,7 @@ export type { FrontendConfigCheckOptions } from "./startup.js";
 export { generateFontPreloads, generateFrontendScss } from "./scss.js";
 export { collectConfigDependencies } from "./module.js";
 export { createFrontendTokenHelpers } from "./tokens.js";
+export type { FrontendPresetsConfig } from "./presets.js";
 export { defineConfig, findConfig, loadConfig };
 export type {
   LoadFrontendConfigOptions,

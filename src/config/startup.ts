@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { frontendConfigPath } from "./package.js";
 import { normalizeFrontendConfig } from "./normalize.js";
+import { applyFrontendPresets } from "./presets.js";
 
 type StartupRequirementFailure = {
   check: string;
@@ -39,7 +40,7 @@ function frontendConfigCheck(options: FrontendConfigCheckOptions = {}) {
     }
 
     try {
-      normalizeFrontendConfig(source, { configPath: file });
+      normalizeFrontendConfig((await applyFrontendPresets(source, cwd)).config, { configPath: file });
     } catch (error) {
       return [{
           check: REQUIREMENT,

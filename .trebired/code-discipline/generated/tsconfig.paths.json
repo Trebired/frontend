@@ -616,6 +616,9 @@
       "#96zxzatmrhnt": [
         "../../../src/config/palette.ts"
       ],
+      "#9dwb43q67cb1": [
+        "../../../src/config/types/components.ts"
+      ],
       "#9f65kwzv6ci4": [
         "../../../src/inputs/advanced/disclosure/index.client.ts"
       ],
@@ -1330,6 +1333,9 @@
       "#jelhbg7zpnb6": [
         "../../../src/actions/index.ts"
       ],
+      "#jfdq84ll1cab": [
+        "../../../scripts/verify/frontend/presets.mjs"
+      ],
       "#jgykpfsajzy1": [
         "../../../src/primitives/styles/index.scss"
       ],
@@ -2010,6 +2016,9 @@
       ],
       "#vin0vyabn25a": [
         "../../../src/visibility/components/index.tsx"
+      ],
+      "#vkg0staaw1wz": [
+        "../../../src/config/presets.ts"
       ],
       "#vn2vr51nstim": [
         "../../../src/a11y/styles/contrast.scss"
