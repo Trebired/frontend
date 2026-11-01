@@ -4,6 +4,21 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.9.0
+
+- Changed `Tabs`, `TabList` and `TabButton` to render the same tab list and buttons as `tabs()`, so `components.primitives.tabs` styles both. The plain tab set had its own hardcoded height, padding and selected state that no config reached, so two applications with the same config showed two different tab bars. The plain root is now `tbf-tabs-group`; `TabList` carries `tbf-tabs` and each `TabButton` carries `tbf-tab`.
+- Added motion tokens wherever the package animated on a hardcoded timing, so a config sets every animation: `primitives.tabs.motion` (`duration`, `easing`, `offset` of the pane entering), `primitives.dropdown.motion` (`duration`, `easing`, `closeDuration`), `primitives.toggle.motion`, `primitives.loader.motion.duration`, `primitives.progress.motion` (`duration`, `easing`, `slideDuration`), `surfaces.hairline.motion`, `shell.header.burger` (`duration`, `fadeDuration`, `easing`), `media.embedFrame.motion`, `media.expandableImage.motion` (`zoomDuration`, `iconDuration`, `easing`) and `media.lightbox.motion` (`duration`, `easing`, `controlDuration`, `closeDuration`). The defaults are the timings that were hardcoded.
+- Added `primitives.steps`, `primitives.wizard`, `media.carousel` and `surfaces.visibility` to the config, each with its `motion` (visibility: `duration`, `easing`). Their animations had no config at all.
+- Changed `TabPanel` to animate in when a `TabButton` switches to it, with the same animation and tokens as a `tabs()` pane. A switch in the plain tab set used to swap the content without any motion.
+- Changed popover triggers to draw no arrow by default. `components.overlays.popover.trigger.indicator.display` turns it back on for every trigger (`block`), and `PopoverTrigger` with `indicator` turns it on or off for one. Every popover trigger on every site drew a chevron unless it opted out.
+- Fixed components writing class names without the namespace, so tbf's own styles never reached them since 15.0.0: the sidebar's minimize, theme and about controls, the language and theme popovers, the logs viewer, the editor surface, the graph shell, the file tree, carousel controls, key-value inputs, flash dialogs and more. They now build every class with `frontendClassName`.
+- Changed the product shell sidebar controls to render as one button: minimize, theme, language and about share `primitiveButtonClassName({ icon: true, tooltip: true })`. `locale_switcher` takes `variant`, `chrome` by default as in the header, and the sidebar passes `secondary`. The controls card carries `data-tbf-dense`, so the four icon buttons are square at the button height instead of 44px wide and fit the sidebar.
+- Added `components.primitives.disclosure`: `root.padding`, `trigger.color`, `trigger.fontSize`, `trigger.fontWeight`, `indicator.size`, `indicator.color` and `panel.gap`. A disclosure took none of its look from config before.
+- Fixed the `download_graph` and `upload_graph` colours and the contribution heatmap levels ignoring `components.data.graph`. Since the data attributes were namespaced in 15.1.0 they read `--tbf-data-tbf-graph-…`, a name no config writes, so `download`, `upload` and `heatmap` had no effect.
+- Fixed `components.primitives.quote` `root.borderColor` and `text.lineHeight`, and `components.shell.outline` `link.active.borderColor` and `dock.maxHeight`, having no effect. Their stylesheets read `…-border-color`, `…-line-height` and `…-max-height`, names the config never writes because it shortens them to `…-border`, `…-line-h` and `…-max-h`.
+- Removed the unprefixed `disclosure-trigger` and `disclosure-panel` classes a disclosure wrote into its markup. Nothing styled them.
+- Exported `graph` from `@trebired/frontend/graph` again. It is the chart the presets `cpu_graph`, `memory_graph` and the rest are built on, and a product that charts something with no preset, such as disk reads and writes, had no way to render one after the export lists were drawn in 26.0.0.
+
 ## 29.8.0
 
 - Added `css` to the config: a string added to the end of the generated stylesheet, for CSS another package builds, such as `printGrainCss()` from `@trebired/overprint/grain`.
