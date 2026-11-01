@@ -6,15 +6,23 @@ import {
   type PrimitiveInputSize,
   type PrimitiveInputTone,
 } from "#0rl8rpgzssot";
+import type { ReactNode } from "react";
+import { labelledControl } from "./../field/labelled.js";
 
 type InputProps = {
   className?: string;
+  label?: ReactNode;
   size?: PrimitiveInputSize;
   tone?: PrimitiveInputTone;
   [key: string]: unknown;
 };
 
 function input(props: InputProps) {
+  const { label, ...rest } = props;
+  return labelledControl(label, inputControl(rest));
+}
+
+function inputControl(props: InputProps) {
   const { className, size, tone, ...rest } = props;
   const search = String(rest.type || "").toLowerCase() === "search";
   const classes = splitInputClasses(className);
