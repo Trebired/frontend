@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 29.10.0
+
+- Added `presets` to the frontend config. `presets: { use: ["<package>"] }` loads each package's `.trebired/frontend/config.ts` and merges the application's own config over it, the same shape Code Discipline uses for its presets. A preset declares its own `forVersion` and cannot nest presets; the startup config check applies presets too.
+- Changed `createFrontendTokenHelpers()` to take its palette as an optional argument. Without one, semantic names and colour families are plain strings, so an application whose palette comes from a preset builds its container tokens without importing that palette.
+
 ## 29.9.0
 
 - Changed `Tabs`, `TabList` and `TabButton` to render the same tab list and buttons as `tabs()`, so `components.primitives.tabs` styles both. The plain tab set had its own hardcoded height, padding and selected state that no config reached, so two applications with the same config showed two different tab bars. The plain root is now `tbf-tabs-group`; `TabList` carries `tbf-tabs` and each `TabButton` carries `tbf-tab`.
