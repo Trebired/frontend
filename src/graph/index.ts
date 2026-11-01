@@ -174,6 +174,7 @@ export {
   cpu_graph,
   download_graph,
   gpu_graph,
+  graph,
   memory_graph,
   roadmap,
   upload_graph,
