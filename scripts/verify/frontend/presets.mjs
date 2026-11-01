@@ -30,16 +30,20 @@ function appSource(packageVersion, preset) {
 async function writePresetFixture(context, name, presetConfig) {
   const fixture = path.join(context.rootDir, ".tmp", "verify-frontend", name);
   const preset = path.join(fixture, "node_modules", "@fixture", "preset");
-  const presetConfigDir = path.join(preset, context.configDirName, "frontend");
+  const presetConfigDir = path.join(preset, context.configDirName, "frontend", "dense");
   const appConfigDir = path.join(fixture, context.configDirName, "frontend");
   await fs.rm(fixture, { force: true, recursive: true });
   await fs.mkdir(presetConfigDir, { recursive: true });
   await fs.mkdir(appConfigDir, { recursive: true });
   await fs.writeFile(path.join(fixture, "package.json"), JSON.stringify({ name: `fixture-${name}`, private: true }));
-  await fs.writeFile(path.join(preset, "package.json"), JSON.stringify({ name: "@fixture/preset", version: "1.0.0" }));
+  await fs.writeFile(path.join(preset, "package.json"), JSON.stringify({
+        config: { organization: { name: context.configDirName.replace(/^\./u, "") } },
+        name: "@fixture/preset",
+        version: "1.0.0",
+  }));
   await fs.writeFile(path.join(presetConfigDir, "config.ts"), presetConfig);
   await fs.writeFile(path.join(presetConfigDir, "motion.ts"), "export const duration = \"500ms\";\n");
-  await fs.writeFile(path.join(appConfigDir, "config.ts"), appSource(context.packageVersion, "@fixture/preset"));
+  await fs.writeFile(path.join(appConfigDir, "config.ts"), appSource(context.packageVersion, "@fixture/preset/frontend/dense"));
   return { fixture, presetConfigDir };
 }
 
@@ -66,7 +70,7 @@ async function verifyPresetRefusals(context, config) {
   await assert.rejects(() => config.loadConfig(nested.fixture), /cannot declare presets/u);
 
   const stale = await writePresetFixture(context, "presets-stale", presetSource("1.0.0"));
-  await assert.rejects(() => config.loadConfig(stale.fixture), /preset @fixture\/preset config targets 1\.0\.0/u);
+  await assert.rejects(() => config.loadConfig(stale.fixture), /preset @fixture\/preset\/frontend\/dense config targets 1\.0\.0/u);
 
   const missing = await writePresetFixture(context, "presets-missing", presetSource(context.packageVersion));
   await fs.rm(path.join(missing.fixture, "node_modules"), { force: true, recursive: true });

@@ -375,7 +375,7 @@ Static apps set `assets.icons.mode: "static"` and `assets.icons.endpoint: false`
 
 ### Presets
 
-A preset is a frontend config another package ships, and an application loads it by package name, the same way a Code Discipline preset is loaded:
+A preset is a frontend config another package ships. An application names it under `presets.use`, the same way it names a Code Discipline preset:
 
 ```ts
 import { defineConfig } from "@trebired/frontend/config";
@@ -383,15 +383,23 @@ import { defineConfig } from "@trebired/frontend/config";
 import { containers } from "./containers";
 
 export default defineConfig({
-  forVersion: "29.10.0",
+  forVersion: "29.11.0",
   presets: {
-    use: ["@trebired/configs"],
+    use: ["@trebired/configs/frontend/preset_01"],
   },
   containers,
 });
 ```
 
-Each name in `presets.use` resolves to that package's `.trebired/frontend/config.ts`. The preset default-exports a config object with its own `forVersion`, checked against the installed `@trebired/frontend` like the application's, and it may not declare presets of its own. Presets merge in the order listed, and the application's own config merges over them: objects merge key by key, any other value replaces. The preset's files count as config dependencies, so editing one rebuilds the stylesheet.
+A name is `<package>/frontend/<preset>` and reads `.<organization>/frontend/<preset>/config.ts` from that package, so one package carries many named presets for many tools, and a preset written for another tool is refused. Resolution, the `forVersion` check against the installed `@trebired/frontend`, and the rule that a preset declares no presets come from `applyPresets` in `@trebired/utils`, the same system every Trebired tool uses. Presets merge in the order listed and the application's own config merges over them: objects merge key by key, any other value replaces. The preset's files count as config dependencies, so editing one rebuilds the stylesheet.
+
+### Touch Targets
+
+Buttons, choice rows, text inputs and dropdowns are at least `--tbf-target-min` tall, 2.75rem by default. A config sets it once with `design.semantics.targetMin`; a dense product sets `1.5rem`, still the AA floor. A region carrying `data-tbf-dense` drops to the dense floor locally. A text input and a dropdown share one box height, `max(--height-input, --tbf-target-min)`, so they line up in a row.
+
+### Field Labels
+
+`input` and `textarea` take `label` and render it as `tbf-label` above the control with an `xs` gap, the same as a dropdown's label, so a form needs no label markup of its own.
 
 ### Extra CSS
 

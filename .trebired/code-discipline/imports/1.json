@@ -623,6 +623,7 @@
   "#spl6rsq1r3yw": "./src/a11y/announce.ts",
   "#swfduhum0kob": "./scripts/verify/frontend/headings.mjs",
   "#sxnylgdztq2x": "./src/actions/response.ts",
+  "#sy5m34ptknga": "./src/inputs/advanced/field/labelled.tsx",
   "#t1ek0xw4n5ju": "./src/inputs/advanced/key/value/i18n/en.ts",
   "#t4wtca23txbg": "./src/logs/client/react_view/row.ts",
   "#t5cwv4bhc7o4": "./src/sidebar/dynamic/components/slots.tsx",
