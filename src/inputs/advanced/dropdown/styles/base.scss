@@ -2,7 +2,7 @@
 @use "#m8aga4kgmeuh" as *;
 
 #{ns.data("dropdown-root")} {
-  --dd-h: var(--height-input);
+  --dd-h: max(var(--height-input), var(#{ns.css-var("target-min")}, 2.75rem));
   --dd-arrow-space: 26px;
   --dd-arrow-right: 8px;
   position: relative;
@@ -130,7 +130,14 @@
     padding: 0 9px;
     pointer-events: none;
     overflow: hidden;
+    white-space: nowrap;
     z-index: 1;
+
+    > span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     color: var(#{ns.css-var("text")}, currentColor);
     font-size: 13px;
     line-height: 1.4;

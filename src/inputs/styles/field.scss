@@ -1,6 +1,6 @@
 @use "@trebired/bundler/namespace" as ns;
 #{ns.class("input")} {
-  min-height: 36px;
+  min-height: max(var(--height-input, 2.1875rem), var(#{ns.css-var("target-min")}, 2.75rem));
   box-sizing: border-box;
   padding: 0 10px;
   border: var(

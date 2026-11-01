@@ -1,5 +1,5 @@
 @use "@trebired/bundler/namespace" as ns;
-:root {
+:where(:root) {
   #{ns.css-var("target-min")}: 2.75rem;
   #{ns.css-var("target-min-dense")}: 1.5rem;
 }
@@ -10,9 +10,7 @@
 
 #{ns.class("btn")},
 
-#{ns.class("choice-row")},
-
-#{ns.class("dropdown-label")} {
+#{ns.class("choice-row")} {
   min-height: max(
     var(#{ns.css-var("ui-btn-root-height")}, 1.75rem),
     var(#{ns.css-var("target-min")}, 2.75rem)
