@@ -5,12 +5,15 @@ import { type ReactNode } from "react";
 import { DisclosureButton } from "#h6suogfkcg6i";
 import { icon } from "#dqy2d22qyujv";
 import {
+  primitiveButtonClassName,
   primitiveCardClassName,
   primitiveInlineRowClassName,
+  type PrimitiveButtonClassOptions,
 } from "#hzrmwbvgt2ax";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type disclosure_props = {
+  button?: Pick<PrimitiveButtonClassOptions, "size" | "variant">;
   card?: boolean;
   content?: ReactNode;
   hidden?: boolean;
@@ -50,6 +53,7 @@ function disclosureModel(props: disclosure_props) {
     TriggerTag: props.triggerTag === "div" ? "div" : "button",
     triggerClassName: classNames([
         primitiveInlineRowClassName({ gap: "xs" }),
+        props.button ? primitiveButtonClassName({ align: "start", ...props.button }) : "",
         toString(props.triggerClassName),
     ]),
   };
@@ -126,6 +130,7 @@ function advancedDisclosure(props: disclosure_props) {
     {...(model.rootId ? { id: model.rootId } : {})}
     className={model.rootClassName}
     {...frontendDataAttrs({ "disclosure": "" })}
+    {...frontendDataAttrs({ "disclosure-button": props.button ? "" : undefined })}
     {...frontendDataAttrs({ "disclosure-open": model.isOpen ? "true" : "false" })}
     aria-controls={props.panelId}
     aria-expanded={model.isOpen ? "true" : "false"}

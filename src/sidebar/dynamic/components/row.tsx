@@ -110,6 +110,7 @@ function DynamicSidebarLinkNode(props: {
     item={context.item}
     render={options.renderLoader}
     sidebar={sidebar}
+    statuses={options.statuses}
     />
     </a>
   );

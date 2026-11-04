@@ -1,5 +1,4 @@
 import {
-  browserLocalStorage,
   cssEscape,
   isModifiedMouseClick,
   queryAll,
@@ -13,6 +12,12 @@ import {
   type DynamicSidebarLiveOptions,
 } from "./dynamic/runtime/index.js";
 import { bindSidebarLiveSlots } from "./live.js";
+import {
+  DEFAULT_SIDEBAR_COOKIE_PREFIX,
+  DEFAULT_SIDEBAR_COOKIE_SUFFIX,
+  SIDEBAR_COOKIE_MAX_AGE,
+  defaultSidebarCookieName,
+} from "./cookie.js";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
 import { softRedirect } from "#xhefk4bgh568";
 
@@ -23,7 +28,6 @@ const SIDEBAR_CLOSE_SELECTOR = frontendDataSelector("sidebar-close");
 const SIDEBAR_LINK_SELECTOR = `${frontendDataSelector("sidebar-link")}[href]`;
 const SIDEBAR_BOOT_ATTRIBUTE = frontendDataAttr("sidebar-boot");
 const SIDEBAR_STATE_EVENT = frontendEventName("sidebar-state");
-const SIDEBAR_STORAGE_PREFIX = `${frontendEventName("sidebar")}:`;
 
 type SidebarSide = "left" | "right" | string;
 
@@ -86,10 +90,6 @@ function bindSidebarLink(link: HTMLAnchorElement) {
   });
 }
 
-function storageKey(side: SidebarSide) {
-  return `${SIDEBAR_STORAGE_PREFIX}${String(side || "left")}:minimized`;
-}
-
 function normalizeSide(value: unknown): SidebarSide {
   const side = String(value || "left").trim();
   return side || "left";
@@ -100,17 +100,17 @@ function isPersistent(shell: HTMLElement) {
 }
 
 function readSavedMinimized(side: SidebarSide) {
-  const storage = browserLocalStorage();
-  const saved = storage?.getItem(storageKey(side));
-  if (saved === "1") return true;
-  if (saved === "0") return false;
-  return false;
+  if (typeof document === "undefined") return false;
+  const name = defaultSidebarCookieName(String(side || "left"));
+  return document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`, "u"))?.[1] === "1";
 }
 
 function writeSavedMinimized(side: SidebarSide, minimized: boolean) {
-  const storage = browserLocalStorage();
-  if (!storage) return;
-  storage.setItem(storageKey(side), minimized ? "1" : "0");
+  if (typeof document === "undefined") return;
+  const name = defaultSidebarCookieName(String(side || "left"));
+  document.cookie = minimized
+  ? `${name}=1; Path=/; Max-Age=${SIDEBAR_COOKIE_MAX_AGE}; SameSite=Lax`
+  : `${name}=; Path=/; Max-Age=0; SameSite=Lax`;
 }
 
 function dispatchSidebarState(state: SidebarState) {
@@ -323,17 +323,17 @@ function bindSidebars(root: BindRoot = document, options: SidebarRuntimeOptions 
 function createSidebarBootScript(sides: SidebarSide[] = ["left"]): string {
   const payload = JSON.stringify({
       attrPrefix: frontendDataAttr("sidebar-"),
-      prefix: SIDEBAR_STORAGE_PREFIX,
+      prefix: DEFAULT_SIDEBAR_COOKIE_PREFIX,
       sides,
+      suffix: DEFAULT_SIDEBAR_COOKIE_SUFFIX,
   }).replace(/</gu, "\\u003c");
   return [
     "(function(){try{",
     `var config=${payload};`,
-    "var storage=window.localStorage;",
     "for(var i=0;i<config.sides.length;i++){",
     "var side=String(config.sides[i]||'left');",
-    "var value=storage&&storage.getItem(config.prefix+side+':minimized');",
-    "if(value==='1'||value==='0'){document.body.setAttribute(config.attrPrefix+side+'-minimized',value==='1'?'true':'false');}",
+    "var match=document.cookie.match(new RegExp('(?:^|; )'+config.prefix+side+config.suffix+'=([^;]*)'));",
+    "document.body.setAttribute(config.attrPrefix+side+'-minimized',match&&match[1]==='1'?'true':'false');",
     "}",
     "}catch(e){}})();",
   ].join("");

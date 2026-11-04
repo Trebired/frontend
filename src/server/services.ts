@@ -26,6 +26,7 @@ import {
   type SeoRouteOptions,
 } from "./seo/routes.js";
 import {
+  attachSidebarMiddleware,
   attachSidebarRoutes,
   type SidebarServerOptions,
   type SidebarToggleHandlerOptions,
@@ -65,6 +66,7 @@ LanguageSetHandlerOptions& {
 
 type FrontendSidebarServiceOptions =
 SidebarToggleHandlerOptions& {
+  middleware?: boolean;
   options?: SidebarServerOptions;
   routes?: boolean;
 };
@@ -140,6 +142,7 @@ function attachSidebarService(
 ) {
   if (!serviceEnabled(input)) return false;
   const config = serviceConfig<FrontendSidebarServiceOptions>(input);
+  if (config.middleware !== false) attachSidebarMiddleware(app, config.options || {});
   if (config.routes !== false) attachSidebarRoutes(app, config);
   return true;
 }

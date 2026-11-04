@@ -120,6 +120,8 @@ export {
   ProductShellSidebarDefaultControls,
   ProductShellThemeToggle,
   RenderCurrentUrlProvider,
+  useCurrentUrl,
+  useRenderCurrentUrl,
   ShellSupportLinks,
   SiteFooter,
   SiteHeader,

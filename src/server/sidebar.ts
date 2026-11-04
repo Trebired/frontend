@@ -7,9 +7,8 @@ import {
   type ServerRequestLike,
   type ServerResponseLike,
 } from "./http.js";
+import { DEFAULT_SIDEBAR_COOKIE_PREFIX, DEFAULT_SIDEBAR_COOKIE_SUFFIX } from "./../sidebar/cookie.js";
 
-const DEFAULT_SIDEBAR_COOKIE_PREFIX = "sidebar_";
-const DEFAULT_SIDEBAR_COOKIE_SUFFIX = "_minimized";
 const DEFAULT_SIDEBAR_SIDES = Object.freeze(["left", "right"]);
 
 type SidebarServerOptions = {
@@ -34,7 +33,14 @@ type SidebarToggleHandlerOptions = {
   respond?: (context: SidebarToggleContext) => unknown;
 };
 
+type SidebarLocals = Record<string, {minimized:boolean}>;
+
 type SidebarServer = {
+  applyToLocals: (
+    req: ServerRequestLike | null | undefined,
+    res: ServerResponseLike | null | undefined,
+  ) => ReturnType<typeof applySidebarToLocals>;
+  attachMiddleware: (app: unknown) => ReturnType<typeof attachSidebarMiddleware>;
   attachRoutes: (
     app: unknown,
     config?: Omit<SidebarToggleHandlerOptions, "options">,
@@ -125,6 +131,44 @@ function setSidebarMinimizedCookie(
   return true;
 }
 
+function readSidebarLocals(
+  req: ServerRequestLike | null | undefined,
+  options: SidebarServerOptions = {},
+): SidebarLocals {
+  const sides = options.allowedSides || DEFAULT_SIDEBAR_SIDES;
+  return Object.fromEntries(sides.map((side) => [side, { minimized: currentSidebarMinimized(req, side, options) }]));
+}
+
+function applySidebarToLocals(
+  req: ServerRequestLike | null | undefined,
+  res: ServerResponseLike | null | undefined,
+  options: SidebarServerOptions = {},
+): SidebarLocals {
+  const sidebar = readSidebarLocals(req, options);
+  if (res) {
+    if (!res.locals || typeof res.locals !== "object") res.locals = {};
+    res.locals.sidebar = sidebar;
+  }
+  return sidebar;
+}
+
+function createSidebarMiddleware(options: SidebarServerOptions = {}) {
+  return function sidebarMiddleware(
+    req: ServerRequestLike,
+    res: ServerResponseLike,
+    next: () => unknown,
+  ) {
+    applySidebarToLocals(req, res, options);
+    return next();
+  };
+}
+
+function attachSidebarMiddleware(app: unknown, options: SidebarServerOptions = {}) {
+  if (app && typeof(app as { use?: unknown }).use === "function") {
+    (app as { use: (handler: unknown) => unknown }).use(createSidebarMiddleware(options));
+  }
+}
+
 function setServerSidebarMinimized(
   req: ServerRequestLike | null | undefined,
   res: ServerResponseLike | null | undefined,
@@ -141,6 +185,7 @@ function setServerSidebarMinimized(
     if (next) cookies[cookieName] = "1";
     else delete cookies[cookieName];
   }
+  if (res?.locals && typeof res.locals === "object") res.locals.sidebar = readSidebarLocals(req, options);
   return { side: normalizedSide, minimized: next };
 }
 
@@ -194,6 +239,8 @@ function attachSidebarRoutes(app: unknown, config: SidebarToggleHandlerOptions =
 function createSidebarServer(options: SidebarServerOptions = {}): SidebarServer {
   const serverOptions = { ...options };
   return {
+    applyToLocals: (req, res) => applySidebarToLocals(req, res, serverOptions),
+    attachMiddleware: (app) => attachSidebarMiddleware(app, serverOptions),
     attachRoutes: (app, config = {}) =>
     attachSidebarRoutes(app, { ...config, options: serverOptions }),
     cookieName: (side) => sidebarCookieName(side, serverOptions),
@@ -215,8 +262,11 @@ export {
   DEFAULT_SIDEBAR_COOKIE_PREFIX,
   DEFAULT_SIDEBAR_COOKIE_SUFFIX,
   DEFAULT_SIDEBAR_SIDES,
+  applySidebarToLocals,
+  attachSidebarMiddleware,
   attachSidebarRoutes,
   createSidebarToggleHandler,
+  createSidebarMiddleware,
   createSidebarServer,
   currentSidebarMinimized,
   normalizeMinimized,
@@ -228,6 +278,7 @@ export {
   sidebarTogglePayload,
 };
 export type {
+  SidebarLocals,
   SidebarServer,
   SidebarServerOptions,
   SidebarToggleContext,

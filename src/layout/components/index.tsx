@@ -8,7 +8,7 @@ import { classNames } from "#ndsvdqv80epr";
 import { LayerRoot } from "#4okrafkbueid";
 import { TooltipLayer } from "#8sfk4kby98q6";
 import { createLayoutBootScript, LAYOUT_PORTAL_ROOT_ID, type LayoutBodyState } from "#ieim4iimrwal";
-import { RenderCurrentUrlProvider } from "#pwuc6i9ku53k";
+import { RenderCurrentUrlProvider, useCurrentUrl, useRenderCurrentUrl } from "#pwuc6i9ku53k";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 type LayoutDocumentProps = {
@@ -267,6 +267,8 @@ export {
   LayoutPortalRoot,
   LayoutSecondaryHeader,
   RenderCurrentUrlProvider,
+  useCurrentUrl,
+  useRenderCurrentUrl,
   ViewportCenter,
 };
 export * from "./bottom_bar.js";

@@ -90,6 +90,56 @@ Runtime components that submit HTTP actions, expect data-attribute request/respo
 
 The React entrypoint renders package-owned document, layout, header, sidebar, portal, upload, tabs, tooltip, popover, modal, fullscreen, flash, text-link, language, and theme controls. The markup is generic and configured through `.trebired/frontend/config.ts`.
 
+`ProductShellLayout` builds the navigation itself from `nav`:
+
+```tsx
+<ProductShellLayout
+  nav={{
+    items: [
+      { href: "/", iconSpec: "remixicon dashboard-line", kind: "link", label: "Overview" },
+      { kind: "divider" },
+      { href: "/settings", iconSpec: "remixicon settings-3-line", kind: "link", label: "Settings" },
+    ],
+    label: "Primary navigation",
+  }}
+  shell={shell}
+/>
+```
+
+The items are one list in the left sidebar and in the mobile menu, and a `divider` item draws the sidebar's separator between sections. A link is active on its own path and every path below it, `/` only on itself, and follows with a soft redirect. The sidebar carries the default controls, minimize included, already pointed at its own shell, and takes the language, theme and product name from `shell`. The layout is the only way to render the shell sidebars; there is no render override.
+
+A link can carry counts and live state, and `nav` may be a function of the sidebar context, for navigation that changes per page:
+
+```tsx
+<ProductShellLayout
+  aside={(context) => ({ content: <Members sidebar={context.sidebar} />, label: "Members" })}
+  labels={{ minimize: "Minimalizovat", toggleTheme: "Přepnout vzhled" }}
+  nav={(context) => ({
+    items: itemsFor(context.sidebar.type, context.currentPath),
+    label: "Navigation",
+    mobile: { account: <Account />, header: <SupportLinks /> },
+    statuses: { failed: { color: "#c0392b", icon: "remixicon close-circle-line", title: "Failed" } },
+  })}
+  shell={shell}
+/>
+```
+
+`items` are dynamic sidebar items: links with `countPath`, `loaderPath`, `statusPath` and `statusIdleCountPath` read from the sidebar's `entity_counts`, and dividers. A link with a running count shows a loader; otherwise the text at `statusPath` picks an icon, colour and title from `statuses`; otherwise the count at `statusIdleCountPath` shows while the link is active. The server render and the live refresh draw the same thing. `mobile` adds the header links and account section of the mobile menu, `aside` renders the right sidebar, and `labels` replaces the chrome strings of the sidebar controls and the mobile menu.
+
+On the server one source feeds the counts:
+
+```ts
+createSidebarSource({
+  counts: ({ req, res, type }) => countsFor(req, res, type),
+  rooms: (type, params) => roomsFor(type, params),
+  scope: ({ params, req, res }) => scopeViewer(req, res, params),
+});
+```
+
+The source is the app's sidebar source: render mode and `createLiveSocketServer` use it with no further wiring. Render mode hydrates every shown sidebar with its live descriptor and counts, so a page load asks for nothing. When a room the sidebar follows broadcasts a `sidebar` event, the browser asks for fresh counts over the live socket (`sidebar:sync`) and gets them in the reply; no HTTP request is made, and no other event in the room triggers a refresh. The request carries only the sidebar type, path and params; the source recomputes the rooms, rebuilds the request for that path and runs `scope` before `counts`. A live server given its own `sidebarSync` uses that instead, and `sidebarSync: false` turns the socket refresh off. The browser subscribes through the runtime's `subscribe` adapter and needs no sidebar options of its own.
+
+A minimized sidebar stays minimized across reloads with no app code. Minimize writes the `sidebar_<side>_minimized` cookie, the `sidebar` service of `attachFrontendFramework` reads it on every request into `res.locals.sidebar`, and the server render draws the sidebar and the body already minimized, so nothing collapses after load. `ProductShellSidebar` takes the state from the layout when `minimized` is not passed.
+
 ### Headings
 
 Heading levels come from where a heading sits, not from the call site. Render titles with `Title`, never a hand-written `<h3>`. A heading outside any card is `h3`, a card's own title is `h3`, and every card nested inside another adds one level: a card inside a card is `h4`, one more is `h5`. A modal starts over: its title is `h3` and a card inside it is `h4`. `copy_card`, `copy_code_card`, graph cards and `TitleDescription` follow the same rule, and a `TitleDescription`'s children sit one level below its title.
@@ -339,6 +389,10 @@ A popover trigger draws no arrow by default. `components.overlays.popover.trigge
 
 `disclosure()` and `DisclosureButton` read `components.primitives.disclosure`: `root.padding` (a disclosure drawn as a card), `trigger` (`color`, `fontSize`, `fontWeight`), `indicator` (`size`, `color`, `offset`) and `panel.gap`, the space between the trigger and the opened content. Without it they keep their current look.
 
+### Text Marks
+
+`textarea({ highlight: /\[[^\]]*\]/ })` marks every match in red while the person types, with the same value and events as a plain `textarea`. A textarea cannot colour part of its text, so it draws the marks in a layer over the text and keeps both scrolled together. `useTextHighlight(ref, pattern, { exclude })` from `@trebired/frontend/react` does the same for a `contentEditable` element through the CSS Custom Highlight API, so the DOM and the saved HTML stay untouched; it returns a function to call after changing the content from script, and `exclude` is a selector for text to leave unmarked.
+
 ### Tab Routes
 
 Tabs keep their selection in the query string, one `tab-<familyKey>` parameter per family, so nested tabs are addressed by one parameter per level. `tabRouteUrl(url, steps)` builds that URL from `{ familyKey, route }` steps. On the server, `tabSectionRedirect({ sections, target })` turns a path segment into a redirect to the tabbed page, so a path such as `/@someone/repositories` can land on the matching nested tab:
@@ -356,6 +410,18 @@ app.get("/@:username/:section", tabSectionRedirect({
 ```
 
 Unknown sections fall through to the next handler. The request's own query is kept, and `redirectToTabs(req, res, { target, steps })` does the same for a handler that has already resolved its steps.
+
+### URL State
+
+What a page has selected belongs in its URL, so a reload lands in the same place. `useCurrentUrl()` from `@trebired/frontend/react` returns the URL as a `URL` on the server and in the browser and re-renders when it changes. `updateUrl(url)` from `@trebired/frontend` changes it without a navigation, so the page keeps its content and back and forward stay in the page. `updateUrl({ query: { q: "text", page: null } })` patches the query and leaves the rest, a value of `null` removes the key, and `{ replace: true }` adds no history entry, for typing and filters.
+
+```tsx
+const url = useCurrentUrl();
+const folder = url.pathname.split("/")[2] ?? "inbox";
+button({ onClick: () => updateUrl("/mail/sent") });
+```
+
+The server route has to accept the same paths, because a reload asks it for them.
 
 ## Configuration
 
@@ -502,6 +568,8 @@ Use it for every box an application would otherwise wrap in a component of its o
 ### Button variants
 
 `design.components.primitives.button.variants` configures `chrome`, `danger`, `ghost`, `primary` and `secondary`. `chrome` is the header's own look: a compact quiet outline over whatever it sits on, and what the language switcher, the accessibility trigger and the choice rows in radio and checkbox groups all render as, so the three cannot drift apart. It is shorter than a content button and opts into the dense pointer tier, which is why it stays at 2rem beside a 2.75rem button. A variant may set `bg`, `border`, `color`, `radius`, `height`, `padding`, `fontSize` and a `states.hover` block.
+
+A button centres its content. `align: "start"` lines the icon and label up on the start edge instead, for a column of buttons that reads as a list, such as an in-page navigation. A `disclosure` given `button: { size, variant }` renders its trigger as that button, start-aligned and full width, so a group heading sits in the same list as the buttons inside it. Its panel opens with the list's own row gap and indents what it holds by `gap-sm`.
 
 Write only static values there. A variant value is emitted as a custom property on `:root`, so a `var()` written into config resolves once at the root and inherits already resolved. Leave the token unset and the rule's own fallback resolves it per element.
 

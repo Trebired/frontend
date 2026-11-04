@@ -7,9 +7,11 @@ import {
   Layout,
   LayoutContent,
   LayoutDocument,
+  ProductShellSidebarMinimizedContext,
   type LayoutDocumentProps,
 } from "#qsb4858ln9g5";
 import { BootScript } from "./boot.js";
+import { productShellAside, productShellNavMobile, productShellNavSidebar } from "./shell-nav.js";
 import { SeoHeadTags } from "./seo.js";
 import { readProductShellLayoutState } from "#etloxyxm9hhu";
 import type {
@@ -66,15 +68,30 @@ function productShellSidebarContext(
   };
 }
 
+function resolveProductShellNav(props: ProductShellLayoutProps, context: ProductShellSidebarRenderContext) {
+  return typeof props.nav === "function" ? props.nav(context) : props.nav ?? null;
+}
+
 function renderProductShellSidebar(
   state: ProductShellLayoutState,
   props: ProductShellLayoutProps,
   side: "left" | "right",
 ) {
   const visible = side === "left" ? state.showLeftSidebar : state.showRightSidebar;
-  return visible && props.renderSidebar
-  ? props.renderSidebar(productShellSidebarContext(state, side))
-  : null;
+  if (!visible) return null;
+  const context = productShellSidebarContext(state, side);
+  if (side === "left") {
+    const nav = resolveProductShellNav(props, context);
+    return nav ? productShellNavSidebar(context, nav, props.labels) : null;
+  }
+  const aside = typeof props.aside === "function" ? props.aside(context) : props.aside ?? null;
+  return aside ? productShellAside(context, aside) : null;
+}
+
+function renderProductShellMobileNav(state: ProductShellLayoutState, props: ProductShellLayoutProps) {
+  if (!state.showHeader) return null;
+  const nav = resolveProductShellNav(props, productShellSidebarContext(state, "left"));
+  return nav ? productShellNavMobile(state, nav, props.labels) : null;
 }
 
 function resolveProductShellValue<T>(
@@ -97,25 +114,27 @@ function renderProductShellContent(
 
 function ProductShellLayout(props: ProductShellLayoutProps) {
   const {
+    aside: _aside,
     body: _body,
     children: _children,
     currentPath,
+    labels: _labels,
     mainId = `${FRONTEND_PREFIX}_live_content`,
+    nav: _nav,
     renderBottomBar,
     renderHeader,
-    renderMobileNav,
     renderSecondaryHeader,
-    renderSidebar: _renderSidebar,
     shell,
     ...rest
   } = props;
   const state = readProductShellLayoutState(shell, { currentPath });
 
   return (
+    <ProductShellSidebarMinimizedContext.Provider value={state.sidebarMinimized}>
     <Layout
     {...rest}
     header={state.showHeader && renderHeader ? renderHeader(state) : null}
-    mobileNav={state.showHeader && renderMobileNav ? renderMobileNav(state) : null}
+    mobileNav={renderProductShellMobileNav(state, props)}
     leftSidebar={renderProductShellSidebar(state, props, "left")}
     mainId={mainId}
     rightSidebar={renderProductShellSidebar(state, props, "right")}
@@ -130,6 +149,7 @@ function ProductShellLayout(props: ProductShellLayoutProps) {
     >
     <LayoutContent>{renderProductShellContent(props, state)}</LayoutContent>
     </Layout>
+    </ProductShellSidebarMinimizedContext.Provider>
   );
 }
 
@@ -158,6 +178,8 @@ function productShellBodyAttributes(
     [frontendDataAttr("layout-mobile")]: state.hasMobileBottomBar ? "true" : "false",
     [frontendDataAttr("sidebar-left")]: state.showLeftSidebar ? "true" : "false",
     [frontendDataAttr("sidebar-right")]: state.showRightSidebar ? "true" : "false",
+    [frontendDataAttr("sidebar-left-minimized")]: state.sidebarMinimized.left ? "true" : "false",
+    [frontendDataAttr("sidebar-right-minimized")]: state.sidebarMinimized.right ? "true" : "false",
   };
   return attrs as HTMLAttributes<HTMLBodyElement>;
 }

@@ -46,6 +46,24 @@
   }
 }
 
+#{ns.class("checkbox-option")}#{ns.class("checkbox-bare")} {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
+    outline-offset: -2px;
+    border-radius: var(--radius-xs);
+  }
+}
+
 #{ns.class("checkbox-control")} {
   display: inline-flex;
   align-items: center;

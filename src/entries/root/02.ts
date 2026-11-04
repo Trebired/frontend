@@ -132,8 +132,9 @@ export {
   removeStalePortaledOverlays,
   softRedirect,
   softReload,
+  updateUrl,
 } from "#o9lroe7t0ma6";
-export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage, UnsavedWorkCheck } from "#o9lroe7t0ma6";
+export type { PageCleanup, SoftRedirectOptions, SpaOptions, SpaPage, UnsavedWorkCheck, UpdateUrlOptions, UrlQueryPatch } from "#o9lroe7t0ma6";
 export {
   createFrontendBrowserLogger,
   frontendBrowserLogger,

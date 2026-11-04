@@ -4,6 +4,35 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 30.0.0
+
+- Breaking: `button()` without a `variant` is `primary` instead of `secondary`. Primary is the standard button and secondary the quieter one; the surface `Button` keeps its own `secondary` default.
+- Breaking: removed `renderSidebar` and `renderMobileNav` from `ProductShellLayout`. The layout renders the left sidebar and the mobile menu from `nav` and the right sidebar from `aside`, so an app hands over data and the package owns the whole sidebar pipeline.
+- Breaking: removed `statusRepositoryId` from dynamic sidebar items and `repositoryId` from the loader contexts. A loader slot is general now: a running count shows a loader, otherwise the status text picks an icon, colour and title from the `statuses` passed to `DynamicSidebarLinkList` or `nav`, otherwise the idle count shows while the link is active. The server render and the browser runtime draw it from the same map, so an app no longer writes a loader renderer twice.
+- Added `items`, `statuses` and `mobile` to `nav`, and `nav` may be a function of the sidebar context. `items` replaced link groups: a `divider` item draws the sidebar's own separator, so every app's sections look the same. Groups stacked separate lists with a gap and no separator.
+- Added `aside` and `labels` to `ProductShellLayout`.
+- Added `createSidebarSource` on the server. From `counts`, `rooms` and an optional `scope` it hydrates render-mode sidebars (pass it as `sidebarSource` to `createRenderModeApi`) and resolves live refreshes. The latest source created is the app's: `createRenderModeApi` and `createLiveSocketServer` use it when they are not given one, so an app wires nothing. A refresh rebuilds the request for the sidebar's path with own properties, so the getter-only `req.path` of Express does not throw.
+- Breaking: removed the HTTP sidebar refresh. `attachFrontendFramework` no longer takes `sidebarLive` or registers `/ui/sidebar/live`, and `attachSidebarLiveRoute`, `createSidebarLiveRefreshHandler` and `SidebarLiveRouteOptions` are gone. Dynamic sidebars refresh over the live socket (`sidebar:sync`) when no `request` is passed, subscribing through the runtime's `subscribe` adapter.
+- A dynamic sidebar refreshes only on a room message whose event is `sidebar`. A message without an event refreshed it too, and binding and every page change asked for counts the server render had just drawn.
+- Added `onActivate` and `active` to `card_body`. A row that acts in place, such as one opening an item in the same page, is a keyboard-operable button that ignores clicks on the controls inside it, and `active` marks it the way a selected card is marked. `actionTrigger` only follows a link.
+- A card link ignores clicks on a label and on elements with the `button`, `checkbox` or `switch` role inside it. Ticking a checkbox in a linked card row followed the link.
+- The themed favicon's `render` may return a promise.
+- Added the `ink` tone for `status_dot`: the strongest foreground of the theme, for a mark that has to stand out without implying a status. It reads `--tbf-tone-ink` and falls back to the text colour.
+- A checkbox with no title and no description renders as the bare box: no chrome button, no padding and no empty body, with a 24px pointer target.
+- A card row that acts as a button draws its focus ring inside its border, so a scrolling list no longer clips it.
+- Card segments shrink to the card. A long segment wraps onto more lines instead of running past the card's edge, and a `truncate` text inside one ends in an ellipsis. `tbf-truncate-1` is an inline block capped at its container, so it truncates on inline elements too.
+- Breaking: removed `"2xs"` from the gap scale. It produced `tbf-gap-2xs`, a class with no rule, so a stack given it had no gap at all, the steps header included. The extra-small gap is `"xs2"`.
+- A minimized sidebar centres its controls. The column stretched them, so fixed-size icon buttons sat on the start padding edge and a card padding wider than the column pushed them off centre.
+- Added `align` to `button`. `align: "start"` lines the icon and label up on the start edge, so a column of buttons used as an in-page navigation reads as a list instead of a stack of centred labels. The default stays centred.
+- Added `button` to `disclosure`. Given `{ size, variant }`, the trigger renders as that button, start-aligned and full width, so a disclosure inside a button list looks like the buttons it holds. Its panel opens with the `gap-xs2` row gap instead of the `gap-sm` panel gap and indents its content by `gap-sm`.
+- Added `nav` to `ProductShellLayout`. Given its items, the layout renders the left sidebar and the mobile menu itself: active links from the current path, soft redirects, and the default sidebar controls with minimize already wired to the sidebar. An app no longer composes `ProductShellSidebar`, its controls and the mobile nav by hand.
+- The package keeps a minimized sidebar minimized across reloads by itself. Minimize now writes the `sidebar_<side>_minimized` cookie the server side already read, instead of a localStorage key the server could not see, and the `sidebar` service attaches a middleware that puts every side's state on `res.locals.sidebar`. The React render shell carries it as `shell.sidebar`, and `ProductShellLayout` renders `ProductShellSidebar` and the body minimized from it. Before, an app that did not read the cookie and pass `minimized` itself got a sidebar rendered expanded that collapsed across the page after load. `middleware: false` on the service turns the middleware off. The boot script reads the cookie too.
+- Raised `@trebired/utils` to `^0.9.9`, whose `requestCookies` reads the `Cookie` header when no cookie parser ran, so the theme and sidebar cookies reach the server render without `cookie-parser`.
+- `ProductShellSidebarDefaultControls` takes `controlsId` as optional. Inside a `ProductShellSidebar` the minimize button targets that sidebar's own shell, so a `controlsId` that names nothing on the page can no longer leave the button dead. Outside one it falls back to `sidebar_shell_<side>`, the id `ProductShellSidebar` gives its shell by default.
+- `button()` takes the icon sizes `xs` and `xs2` with `icon: true`, so every square icon button size the theme defines is a prop instead of a class name.
+- Without a theme, `primary` draws the standard bordered button and `secondary` a transparent one with the same border. The filled `primary` fallback is gone.
+- Fixed a disclosure's open arrow turning the arrows of every disclosure nested inside it. Only the disclosure's own trigger arrow turns now, so a closed disclosure inside an open one keeps pointing right.
+
 ## 29.11.1
 
 - Raised the dependency ranges to the current releases: `@trebired/logger-adapter` to `^0.8.2`.

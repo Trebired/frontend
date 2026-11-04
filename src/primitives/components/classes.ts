@@ -2,8 +2,9 @@ import { frontendClassName, frontendClassName as ns, frontendClassNames } from "
 
 import { appendClassName, joinClassNames, toText } from "./shared.js";
 
-type PrimitiveGap = "2xs" | "lg" | "md" | "sm" | "xs" | "xs2";
+type PrimitiveGap = "lg" | "md" | "sm" | "xs" | "xs2";
 type PrimitiveButtonSize = "lg" | "md" | "sm";
+type PrimitiveIconButtonSize = PrimitiveButtonSize | "xs" | "xs2";
 type PrimitiveStatusTone = "green" | "highlight" | "red" | "yellow";
 type PrimitiveButtonVariant = "chrome" | "danger" | "ghost" | "primary" | "secondary";
 type PrimitiveTextSize = "lg" | "md" | "sm" | "xs";
@@ -12,9 +13,10 @@ type PrimitivePadding = "lg" | "md" | "sm" | "xs";
 
 type PrimitiveButtonClassOptions = {
   active?: boolean;
+  align?: "center" | "start";
   className?: unknown;
   icon?: boolean;
-  size?: PrimitiveButtonSize;
+  size?: PrimitiveIconButtonSize;
   tone?: PrimitiveStatusTone;
   tooltip?: boolean | string;
   variant?: PrimitiveButtonVariant;
@@ -95,12 +97,13 @@ function primitivePaddingClass(padding?: PrimitivePadding) {
 }
 
 function primitiveButtonVariant(options: PrimitiveButtonClassOptions) {
-  return ns(options.variant || "secondary");
+  return ns(options.variant || "primary");
 }
 
 function primitiveButtonClassName(options: PrimitiveButtonClassOptions = {}) {
   return appendClassName(
     frontendClassName("btn"),
+    options.align === "start" ? frontendClassName("align-start") : "",
     options.icon ? frontendClassName("icon") : "",
     options.size ? ns(options.size) : "",
     primitiveButtonVariant(options),
@@ -231,6 +234,7 @@ export {
 export type {
   PrimitiveButtonClassOptions,
   PrimitiveButtonSize,
+  PrimitiveIconButtonSize,
   PrimitiveButtonVariant,
   PrimitiveStatusTone,
   PrimitiveCardClassOptions,

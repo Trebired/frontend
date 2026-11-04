@@ -1,3 +1,4 @@
+import { isInPageEntry } from "./update_url.js";
 import { applySpaOptions, spaConfig, type SpaOptions } from "./config.js";
 import {
   isSamePathAsLastKnown,
@@ -26,6 +27,7 @@ function bindPopstate() {
         return;
       }
       notePathChange();
+      if (isInPageEntry()) return;
       void softRedirect(window.location.href, { history: "none" });
   });
 }
@@ -66,6 +68,8 @@ export {
 export { createLiveOverlayState, removeStalePortaledOverlays } from "./overlays.js";
 export { currentPage, onPageChange } from "./page.js";
 export { rehydrate, softRedirect, softRefresh, softReload } from "./navigate.js";
+export { updateUrl } from "./update_url.js";
+export type { UpdateUrlOptions, UrlQueryPatch } from "./update_url.js";
 export { runSpaRebind, setSpaRebind } from "./config.js";
 export type { SpaOptions } from "./config.js";
 export type { SpaPage } from "./page.js";

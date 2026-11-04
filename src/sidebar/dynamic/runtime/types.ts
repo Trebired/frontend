@@ -1,4 +1,4 @@
-import type { DynamicSidebarDescriptor, DynamicSidebarResponseItem } from "#9w9ch5jtlv9e";
+import type { DynamicSidebarDescriptor, DynamicSidebarResponseItem, DynamicSidebarStatus } from "#9w9ch5jtlv9e";
 
 type DynamicSidebarRuntimeRenderContext = {
   active: boolean;
@@ -19,8 +19,8 @@ DynamicSidebarRuntimeRenderContext& {
   idleCountPath: string;
   lastStatus: string;
   loaderPath: string;
-  repositoryId: string;
   running: number;
+  status: DynamicSidebarStatus | null;
   statusPath: string;
 };
 

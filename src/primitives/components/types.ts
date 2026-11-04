@@ -8,8 +8,8 @@ import type {
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import type {
-  PrimitiveButtonSize,
   PrimitiveButtonVariant,
+  PrimitiveIconButtonSize,
   PrimitiveStatusTone,
   PrimitiveGap,
   PrimitivePadding,
@@ -24,10 +24,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>&PrimitiveAttrs& {
   actionButton?: SubmitActionButtonOptions;
   actionTrigger?: BindActionTriggerOptions;
   active?: boolean;
+  align?: "center" | "start";
   href?: string;
   icon?: boolean;
   rel?: string;
-  size?: PrimitiveButtonSize;
+  size?: PrimitiveIconButtonSize;
   softRedirect?: boolean;
   target?: string;
   tone?: PrimitiveStatusTone;
@@ -153,6 +154,7 @@ type StatusDotTone =
 |"gray"
 |"green"
 |"info"
+|"ink"
 |"muted"
 |"purple"
 |"red"
@@ -203,6 +205,7 @@ type CardSegmentsProps = {
 
 type BodyProps = {
   actionTrigger?: BindActionTriggerOptions;
+  active?: boolean;
   actions?: ReactNode;
   actionsClassName?: string;
   bodyClassName?: string;
@@ -212,6 +215,7 @@ type BodyProps = {
   icon?: ReactNode;
   live?: { id: string; kind: string };
   meta?: ReactNode;
+  onActivate?: () => void;
   search?: Record<string, unknown>;
   segments?: ReactNode;
   select?: {

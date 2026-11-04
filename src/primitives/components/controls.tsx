@@ -44,6 +44,7 @@ function primitiveButton(props: ButtonProps) {
     actionButton,
     actionTrigger,
     active,
+    align,
     children,
     className,
     icon,
@@ -58,6 +59,7 @@ function primitiveButton(props: ButtonProps) {
     <FrontendButton
     className={primitiveButtonClassName({
           active,
+          align,
           className,
           icon,
           size,

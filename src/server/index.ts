@@ -165,6 +165,9 @@ export {
 } from "./services.js";
 export type *from "./services.js";
 export {
+  applySidebarToLocals,
+  attachSidebarMiddleware,
+  createSidebarMiddleware,
   createSidebarServer,
   currentSidebarMinimized,
   normalizeMinimized,
@@ -183,8 +186,10 @@ export {
   normalizeSidebarLiveSide,
   readSidebarLiveItems,
   roomFromSidebarLiveDescriptor,
-} from "./sidebar-live.js";
-export type *from "./sidebar-live.js";
+} from "./sidebar/live.js";
+export type *from "./sidebar/live.js";
+export { createSidebarSource } from "./sidebar/source.js";
+export type *from "./sidebar/source.js";
 export {
   attachStaticDirectory,
   createStaticDirectoryMiddleware,

@@ -110,22 +110,18 @@ async function verifyFrontendSeoRoutes(server) {
 
 async function verifyFrontendFrameworkAttach(server) {
   const app = appCapture();
-  const attached = server.attachFrontendFramework(app, {
-      navigation: true,
-      sidebarLive: {
-        resolve: ({ items }) => items.map((item) => ({ key: item.key })),
-        roomsForType: (type) => [`room:${type}`],
-      },
-  });
+  const attached = server.attachFrontendFramework(app, { navigation: true });
   assert.equal(attached.services.navigation, true);
-  assert.equal(attached.sidebarLive, true);
-  assert.deepEqual(app.posts.map((route) => route.path), ["/ui/sidebar/live"]);
-  const res = serverResponseProbe();
-  const body = {
-    sidebars: [{ path: "/apps/1", side: "left", type: "app" }],
-  };
-  await app.posts[0].handler({ body }, res);
-  assert.equal(res.body.data.sidebars[0].key.startsWith("left:app:/apps/1"), true);
+  assert.deepEqual(app.posts.map((route) => route.path), []);
+  const source = server.createSidebarSource({
+      counts: ({ type }) => ({ type }),
+      rooms: (type) => [`room:${type}`],
+  });
+  const items = [{ params: {}, path: "/apps/1", rooms: [], side: "left", type: "app" }];
+  const sidebars = await source.resolve({ items, req: {}, res: {} });
+  assert.equal(sidebars[0].key.startsWith("left:app:/apps/1"), true);
+  assert.deepEqual(sidebars[0].entity_counts, { type: "app" });
+  assert.equal(sidebars[0].resolved, true);
 }
 
 function verifyStaticServer(server) {

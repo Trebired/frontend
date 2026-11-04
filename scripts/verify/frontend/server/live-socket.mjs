@@ -168,6 +168,20 @@ async function verifyLiveResource(server) {
   assert.equal(await empty.broadcast(), false);
 }
 
+async function verifyAppSidebarSource(server) {
+  server.createSidebarSource({
+      counts: ({ type }) => ({ type }),
+      rooms: (type) => [`room:${type}`],
+  });
+  const socket = createSocket([]);
+  const namespace = createNamespace();
+  assert.equal(server.createLiveSocketServer().attach({ of: () => namespace }), true);
+  namespace.connectionHandler(socket);
+  const response = await sidebarSyncResult(socket);
+  assert.equal(response.ok, true);
+  assert.deepEqual(response.data.sidebars[0].entity_counts, { type: "app" });
+}
+
 async function verifyLiveSocketServer(server) {
   const emitted = [];
   const socket = createSocket(emitted);
@@ -181,6 +195,7 @@ async function verifyLiveSocketServer(server) {
   await verifySidebarSync(socket);
   verifyBroadcast(server, liveServer, namespace);
   await verifyLiveResource(server);
+  await verifyAppSidebarSource(server);
 }
 
 export { verifyLiveSocketServer };

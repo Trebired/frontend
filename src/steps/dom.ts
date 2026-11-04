@@ -178,7 +178,7 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   wrapper.appendChild(separator);
 
   const header = doc.createElement("div");
-  header.className = primitiveStackClassName({ gap: "2xs" });
+  header.className = primitiveStackClassName({ gap: "xs2" });
 
   const title = doc.createElement("h5");
   title.textContent = group.label;

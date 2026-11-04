@@ -111,10 +111,15 @@ function collectDynamicSidebarRooms() {
   return rooms;
 }
 
+async function requestDynamicSidebarSync(descriptors: DynamicSidebarDescriptor[]) {
+  const { requestSidebarSync } = await import("#b86twz2e2cb3");
+  return await requestSidebarSync(descriptors) as DynamicSidebarResponseItem[] | null;
+}
+
 async function requestDynamicSidebarCounts() {
   const descriptors = collectDynamicSidebarDescriptors();
-  if (!descriptors.length || typeof liveOptions.request !== "function") return [];
-  return await liveOptions.request(descriptors);
+  if (!descriptors.length) return [];
+  return await (liveOptions.request || requestDynamicSidebarSync)(descriptors);
 }
 
 function applyDynamicSidebarResponse(itemsInput: unknown) {
@@ -167,8 +172,7 @@ function syncDynamicSidebarRooms() {
   const eventName = liveOptions.event || "sidebar";
   unsubscribeRooms = collectDynamicSidebarRooms()
   .map((room) => liveOptions.subscribe?.(room, (payload) => {
-        if (payload && typeof payload === "object" && "event"in payload &&
-            textValue((payload as { event?: unknown }).event) !== eventName) return;
+        if (textValue((payload as { event?: unknown } | null)?.event) !== eventName) return;
         scheduleDynamicSidebarRefresh(liveOptions.refreshDelayMs || 120);
   }))
   .filter((cleanup): cleanup is DynamicSidebarCleanup => {
@@ -191,17 +195,13 @@ function bindDynamicSidebarLiveHost(host: HTMLElement) {
   );
   bindDynamicSidebarDisabledLinkGuard(root);
   syncDynamicSidebarRooms();
-  scheduleDynamicSidebarRefresh(0);
   return root;
 }
 
 function bindDynamicSidebarLivePageLifecycle() {
   if (livePageLifecycleBound || typeof document === "undefined") return;
   livePageLifecycleBound = true;
-  onPageChange(() => {
-      syncDynamicSidebarRooms();
-      scheduleDynamicSidebarRefresh(0);
-  });
+  onPageChange(syncDynamicSidebarRooms);
 }
 
 function bindDynamicSidebarLive(

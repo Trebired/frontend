@@ -33,36 +33,31 @@ function defaultDynamicSidebarCount(context: DynamicSidebarCountContext) {
 }
 
 function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {
-  if (context.repositoryId) {
-    if (context.running <= 0 && context.idleCountPath) {
-      return context.active && context.idleCount != null
-      ? defaultDynamicSidebarCount({
-          ...context,
-          count: context.idleCount,
-          path: context.idleCountPath,
-      })
-      : null;
-    }
-    return context.running > 0 ? (
+  if (context.running > 0) {
+    return (
       <span className={primitiveInlineRowClassName({
             className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
             gap: "xs",
             verticalCenter: true,
       })}>
-      {circle({ size: "xs" })}
+      {circle({ size: context.statusPath ? "xs" : "sm" })}
       </span>
-    ) : null;
+    );
   }
-  if (context.running <= 0) return null;
-  return (
-    <span className={primitiveInlineRowClassName({
-          className: primitiveTextClassName({ className: frontendClassName("no-select"), muted: true }),
-          gap: "xs",
-          verticalCenter: true,
-    })}>
-    {circle({ size: "sm" })}
-    </span>
-  );
+  if (context.status) {
+    return (
+      <span
+      aria-hidden="true"
+      className={primitiveInlineRowClassName({ className: frontendClassName("no-select"), verticalCenter: true })}
+      style={context.status.color ? { color: context.status.color } : undefined}
+      title={context.status.title || undefined}
+      >
+      <Icon spec={context.status.icon} />
+      </span>
+    );
+  }
+  if (!context.active || context.idleCount == null) return null;
+  return defaultDynamicSidebarCount({ ...context, count: context.idleCount, path: context.idleCountPath });
 }
 
 function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {

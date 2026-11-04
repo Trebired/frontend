@@ -5,10 +5,14 @@ const INTERACTIVE_TARGET_SELECTOR = [
   "a",
   "button",
   "input",
+  "label",
   "select",
   "textarea",
   "summary",
   '[contenteditable="true"]',
+  '[role="button"]',
+  '[role="checkbox"]',
+  '[role="switch"]',
 ].join(",");
 
 type BindRoot = Document | DocumentFragment | Element;

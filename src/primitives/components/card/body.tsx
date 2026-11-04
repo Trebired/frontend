@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import { Icon } from "#lbkpzw8nphru";
 import { search_config_script } from "#f1earyowcgbb";
 import type {
@@ -17,6 +17,7 @@ import {
 import { InlineRow, Stack } from "#tlkyab3pczjn";
 import { joinClassNames, toText, wrapTriggerHostNode } from "#6mupcizo1mwq";
 import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
+import { INTERACTIVE_TARGET_SELECTOR } from "#er0dlx1gtbzh";
 
 const CARD_BODY_DIVIDER_CLASS = frontendClassName("card-body-divider");
 
@@ -223,7 +224,7 @@ function searchableBodyNode(props: BodyProps, node: ReactNode) {
 function bodyState(props: BodyProps) {
   const typeConfig = props.type && typeof props.type === "object" ? props.type : {};
   const showIcon = typeConfig.icon !== false;
-  const selected = props.select && props.select.selected === true;
+  const selected = (props.select && props.select.selected === true) || props.active === true;
   return {
     baseClassName: primitiveCardRowClassName({
         className: props.className,
@@ -243,12 +244,36 @@ function bodyState(props: BodyProps) {
   };
 }
 
+function activatedFromRow(event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>) {
+  const target = event.target instanceof Element ? event.target.closest(INTERACTIVE_TARGET_SELECTOR) : null;
+  return !target || target === event.currentTarget;
+}
+
+function activationProps(props: BodyProps) {
+  const activate = props.onActivate;
+  if (!activate) return {};
+  return {
+    "aria-current": props.active ? "true" as const : undefined,
+    "onClick": (event: MouseEvent<HTMLElement>) => {
+      if (activatedFromRow(event)) activate();
+    },
+    "onKeyDown": (event: KeyboardEvent<HTMLElement>) => {
+      if ((event.key !== "Enter" && event.key !== " ") || event.target !== event.currentTarget) return;
+      event.preventDefault();
+      activate();
+    },
+    "role": "button",
+    "tabIndex": 0,
+  };
+}
+
 function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNode) {
   const rendered = (
     <div
     {...((props.dataAttrs || {}) as attr_map)}
     className={baseClassName}
     {...frontendDataAttrs({ "card-row": "" })}
+    {...activationProps(props)}
     >
     {content}
     </div>

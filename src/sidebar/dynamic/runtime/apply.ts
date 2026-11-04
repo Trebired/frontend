@@ -17,6 +17,7 @@ import {
   DYNAMIC_SIDEBAR_STATE_SLOT_SELECTOR,
 } from "./selectors.js";
 import type { DynamicSidebarRuntimeRenderers } from "./types.js";
+import type { DynamicSidebarStatuses } from "#9w9ch5jtlv9e";
 import {
   dynamicSidebarNumber,
   dynamicSidebarText,
@@ -67,29 +68,13 @@ function applyDynamicSidebarStateSlots(
   });
 }
 
-function applyRepositoryIdleLoader(
-  slot: HTMLElement,
-  root: HTMLElement,
-  counts: unknown,
-  idleCountPath: string,
-  renderers: DynamicSidebarRuntimeRenderers,
-) {
-  if (!idleCountPath || slot.getAttribute(frontendDataAttr("sidebar-active")) !== "1") {
-    clearChildren(slot);
-    return true;
+function slotStatuses(slot: HTMLElement): DynamicSidebarStatuses {
+  try {
+    const parsed = JSON.parse(slot.getAttribute(frontendDataAttr("sidebar-statuses")) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
   }
-  const idleCount = dynamicSidebarNumber(counts, idleCountPath);
-  if (idleCount == null) {
-    clearChildren(slot);
-    return true;
-  }
-  const node = (renderers.count || defaultCountNode)({
-      ...runtimeContext(root, counts, slot),
-      count: idleCount,
-      path: idleCountPath,
-  });
-  slot.replaceChildren(...(node ? [node] : []));
-  return true;
 }
 
 function applyDynamicSidebarLoaderSlot(
@@ -99,9 +84,6 @@ function applyDynamicSidebarLoaderSlot(
   renderers: DynamicSidebarRuntimeRenderers = {},
 ) {
   const loaderPath = textValue(slot.getAttribute(frontendDataAttr("sidebar-loader-path")));
-  const repositoryId = textValue(
-    slot.getAttribute(frontendDataAttr("sidebar-status-repository-id")),
-  );
   const idleCountPath = textValue(
     slot.getAttribute(frontendDataAttr("sidebar-status-idle-count-path")),
   );
@@ -111,17 +93,15 @@ function applyDynamicSidebarLoaderSlot(
     clearChildren(slot);
     return;
   }
-  if (repositoryId && running <= 0 && idleCountPath) {
-    if (applyRepositoryIdleLoader(slot, root, counts, idleCountPath, renderers)) return;
-  }
+  const lastStatus = dynamicSidebarText(counts, statusPath);
   const node = (renderers.loader || defaultLoaderNode)({
       ...runtimeContext(root, counts, slot),
       idleCount: idleCountPath ? dynamicSidebarNumber(counts, idleCountPath) : null,
       idleCountPath,
-      lastStatus: dynamicSidebarText(counts, statusPath),
+      lastStatus,
       loaderPath,
-      repositoryId,
       running,
+      status: (lastStatus && slotStatuses(slot)[lastStatus]) || null,
       statusPath,
   });
   slot.replaceChildren(...(node ? [node] : []));

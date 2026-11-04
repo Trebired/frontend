@@ -15,7 +15,7 @@ type RenderCurrentUrlProviderProps = {
 
 const RenderCurrentUrlContext = createContext("");
 
-const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation", "page-pending"];
+const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation", "page-pending", "url-change"];
 const PENDING_EVENT = frontendEventName("page-pending");
 let pendingUrl = "";
 
@@ -24,6 +24,9 @@ function trackPendingUrl() {
   document.addEventListener(PENDING_EVENT, (event) => {
       const detail = (event as CustomEvent<{ url?: unknown }>).detail;
       pendingUrl = toCurrentUrl(detail?.url);
+  });
+  document.addEventListener(frontendEventName("page-change"), () => {
+      pendingUrl = "";
   });
 }
 
@@ -69,5 +72,9 @@ function useRenderCurrentUrl() {
   );
 }
 
-export { browserCurrentUrl, RenderCurrentUrlProvider, useRenderCurrentUrl };
+function useCurrentUrl() {
+  return new URL(useRenderCurrentUrl() || "/", "http://localhost");
+}
+
+export { browserCurrentUrl, RenderCurrentUrlProvider, useCurrentUrl, useRenderCurrentUrl };
 export type { RenderCurrentUrlProviderProps };

@@ -49,6 +49,11 @@
     color: var(#{ns.css-var("ui-btn-state-hover-color")}, currentColor);
   }
 
+  &#{ns.class("align-start")} {
+    justify-content: flex-start;
+    text-align: start;
+  }
+
   &:disabled,
   &[disabled],
   &#{ns.class("disabled")} {
@@ -98,9 +103,15 @@
 
   &#{ns.class("primary")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-variants-primary-icon")}, currentColor);
-    background: var(#{ns.css-var("ui-btn-variants-primary-bg")}, var(#{ns.css-var("text")}, currentColor));
-    color: var(#{ns.css-var("ui-btn-variants-primary-color")}, var(#{ns.css-var("page")}, canvas));
-    border-color: var(#{ns.css-var("ui-btn-variants-primary-border")}, transparent);
+    background: var(#{ns.css-var("ui-btn-variants-primary-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
+    color: var(
+      #{ns.css-var("ui-btn-variants-primary-color")},
+      var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("text")}, currentColor))
+    );
+    border-color: var(
+      #{ns.css-var("ui-btn-variants-primary-border")},
+      var(#{ns.css-var("border")}, currentColor)
+    );
 
     &:hover,
     &[aria-pressed="true"],
@@ -108,20 +119,20 @@
       --button-icon-color: var(#{ns.css-var("ui-btn-variants-primary-state-hover-icon")}, currentColor);
       background: var(
         #{ns.css-var("ui-btn-variants-primary-state-hover-bg")},
-        color-mix(in srgb, var(#{ns.css-var("text")}, currentColor) 88%, var(#{ns.css-var("page")}, canvas))
+        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
       );
-      border-color: var(#{ns.css-var("ui-btn-variants-primary-state-hover-border")}, transparent);
-      color: var(#{ns.css-var("ui-btn-variants-primary-state-hover-color")}, var(#{ns.css-var("page")}, canvas));
+      border-color: var(
+        #{ns.css-var("ui-btn-variants-primary-state-hover-border")},
+        var(#{ns.css-var("border")}, currentColor)
+      );
+      color: var(#{ns.css-var("ui-btn-variants-primary-state-hover-color")}, currentColor);
     }
   }
 
   &#{ns.class("secondary")} {
     --button-icon-color: var(#{ns.css-var("ui-btn-variants-secondary-icon")}, currentColor);
-    background: var(#{ns.css-var("ui-btn-variants-secondary-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent));
-    color: var(
-      #{ns.css-var("ui-btn-variants-secondary-color")},
-      var(#{ns.css-var("ui-btn-root-color")}, var(#{ns.css-var("text")}, currentColor))
-    );
+    background: var(#{ns.css-var("ui-btn-variants-secondary-bg")}, transparent);
+    color: var(#{ns.css-var("ui-btn-variants-secondary-color")}, var(#{ns.css-var("text")}, currentColor));
     border-color: var(
       #{ns.css-var("ui-btn-variants-secondary-border")},
       var(#{ns.css-var("border")}, currentColor)
@@ -133,7 +144,7 @@
       --button-icon-color: var(#{ns.css-var("ui-btn-variants-secondary-state-hover-icon")}, currentColor);
       background: var(
         #{ns.css-var("ui-btn-variants-secondary-state-hover-bg")},
-        var(#{ns.css-var("ui-btn-state-hover-bg")}, var(#{ns.css-var("ui-btn-root-bg")}, transparent))
+        color-mix(in srgb, currentColor 8%, transparent)
       );
       border-color: var(
         #{ns.css-var("ui-btn-variants-secondary-state-hover-border")},

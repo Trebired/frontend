@@ -54,6 +54,8 @@ $frontend-primitive-avatar-sizes: (
 );
 
 $frontend-primitive-tone-colors: (
+  "ink": var(#{ns.css-var("tone-ink")}, var(#{ns.css-var("text")}, currentColor)),
+
   "green": var(#{ns.css-var("tone-green")}, var(#{ns.css-var("tone-success")}, currentColor)),
 
   "success": var(#{ns.css-var("tone-success")}, currentColor),

@@ -3,6 +3,7 @@ import {
   type ServerRequestLike,
   type ServerResponseLike,
 } from "#hf241ii8z71i";
+import { currentSidebarSource, type SidebarSource } from "./../sidebar/source.js";
 
 type RenderModeRecord = Record<string, any>;
 
@@ -35,6 +36,7 @@ type RenderModeOptions = {
     context: RenderModeSidebarContext,
   ) => RenderModeRecord | Promise<RenderModeRecord>;
   modes: RenderModeRecord;
+  sidebarSource?: SidebarSource;
 };
 
 function cloneRenderModeValue<T>(value: T): T {
@@ -225,13 +227,13 @@ async function hydrateRenderModeSidebars(
   options: RenderModeOptions,
 ) {
   for (const side of ["left", "right"]) {
-    const normalized: RenderModeRecord = normalizeRenderModeSidebar(
+    let sidebar: RenderModeRecord = normalizeRenderModeSidebar(
       (serverObject(ui.sidebars) as RenderModeRecord)[side],
     );
-    ui.sidebars[side] =
-    normalized.show === true && options.hydrateSidebar
-    ? await options.hydrateSidebar({ req, res, side, sidebar: normalized })
-    : normalized;
+    const source = options.sidebarSource || currentSidebarSource();
+    if (sidebar.show === true && source) sidebar = await source.hydrate({ req, res, side, sidebar });
+    if (sidebar.show === true && options.hydrateSidebar) sidebar = await options.hydrateSidebar({ req, res, side, sidebar });
+    ui.sidebars[side] = sidebar;
   }
   ui.sidebar = ui.sidebars.left;
 }

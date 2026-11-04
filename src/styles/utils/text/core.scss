@@ -76,8 +76,11 @@ $outline-width: var(#{ns.css-var("typography-outline-width")}, 2px);
 }
 
 #{ns.class("truncate-1")} {
+  display: inline-block;
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
+  vertical-align: bottom;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

@@ -251,9 +251,9 @@ function assertLayeredSystemsMarkup(html) {
   assert.ok(html.includes("data-tbf-layout-root"));
   assert.ok(html.includes("data-tbf-layout-content"));
   assert.equal(html.includes("data-tbf-theme-button"), false);
-  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-icon tbf-secondary tbf-has-tooltip tbf-product-shell-theme-control"));
-  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-secondary tbf-product-shell-theme-control"));
-  assert.equal(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-secondary tbf-has-tooltip tbf-product-shell-theme-control"), false);
+  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-icon tbf-primary tbf-has-tooltip tbf-product-shell-theme-control"));
+  assert.ok(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-primary tbf-product-shell-theme-control"));
+  assert.equal(html.includes("tbf-button tbf-button--secondary tbf-btn tbf-primary tbf-has-tooltip tbf-product-shell-theme-control"), false);
   assert.ok(html.includes("data-tbf-popover-trigger"));
   assert.equal(html.includes("data-tbf-popover-open"), false);
   assert.ok(html.includes("data-tbf-theme-select"));

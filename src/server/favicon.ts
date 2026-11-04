@@ -14,7 +14,7 @@ type ThemedFaviconOptions = {
   logger?: { error?: (scope: string, message: string, metadata?: Record<string, unknown>) => unknown };
   noCache?: boolean;
   redirectStatus?: number;
-  render: (themeKey: string, req: ServerRequestLike) => string;
+  render: (themeKey: string, req: ServerRequestLike) => string | Promise<string>;
   route?: string;
   theme?: ThemeServerOptions;
   themeQueryName?: string;
@@ -46,7 +46,7 @@ function themedFaviconTheme(
   : effectiveThemeKey(req, themeOptions);
 }
 
-function sendThemedFavicon(
+async function sendThemedFavicon(
   req: ServerRequestLike,
   res: ServerResponseLike,
   options: ThemedFaviconOptions,
@@ -55,7 +55,7 @@ function sendThemedFavicon(
   const theme = themedFaviconTheme(req, options);
   return sendText(
     res,
-    options.render(theme, req),
+    await options.render(theme, req),
     options.contentType || "image/svg+xml; charset=utf-8",
   );
 }
@@ -80,7 +80,7 @@ function handleFaviconError(
 function createThemedFaviconHandler(options: ThemedFaviconOptions) {
   return async function themedFaviconHandler(req: ServerRequestLike, res: ServerResponseLike) {
     try {
-      return sendThemedFavicon(req, res, options);
+      return await sendThemedFavicon(req, res, options);
     } catch (error) {
       return handleFaviconError(error, res, options);
     }

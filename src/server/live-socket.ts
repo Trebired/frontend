@@ -1,4 +1,5 @@
-import { readSidebarLiveItems } from "./sidebar-live.js";
+import { readSidebarLiveItems } from "./sidebar/live.js";
+import { currentSidebarSource } from "./sidebar/source.js";
 import { serverObject, serverString } from "./http.js";
 import { resolveFrontendServerLogger } from "./logging.js";
 import {
@@ -78,18 +79,23 @@ function createLiveSocketServer(
     return sync.withContext ? sync.withContext(context, run) : run();
   }
 
+  function sidebarSync(): LiveSocketSidebarSyncOptions | null {
+    if (options.sidebarSync === false) return null;
+    return options.sidebarSync || currentSidebarSource();
+  }
+
   async function handleSidebarSync(
     socket: LiveSocketLike,
     payload: unknown,
     done?: (response: unknown) => unknown,
   ) {
-    const sync = options.sidebarSync;
-    if (!sync) return;
+    const sync = sidebarSync();
     const reply =
     typeof done === "function"
     ? done
     : (response: unknown) =>
-    socket.emit?.(sync.responseEvent || DEFAULT_LIVE_SIDEBAR_SYNC_EVENT, response);
+    socket.emit?.(sync?.responseEvent || DEFAULT_LIVE_SIDEBAR_SYNC_EVENT, response);
+    if (!sync) return reply({ data: { sidebars: [] }, error: "no-sidebar-source", ok: false });
     const context: LiveSocketSidebarSyncContext = {
       items: (sync.readItems || readSidebarLiveItems)(payload),
       payload,
@@ -114,9 +120,9 @@ function createLiveSocketServer(
     socket.on?.(normalized.subscribeEvent, (payload) => {
         return handleSubscribe(socket, payload);
     });
-    if (options.sidebarSync !== false && options.sidebarSync) {
+    if (options.sidebarSync !== false) {
       socket.on?.(
-        options.sidebarSync.event || DEFAULT_LIVE_SIDEBAR_SYNC_EVENT,
+        options.sidebarSync?.event || DEFAULT_LIVE_SIDEBAR_SYNC_EVENT,
         (payload, done) => {
           return handleSidebarSync(socket, payload, done);
         },

@@ -24,6 +24,7 @@ function DynamicSidebarLinkList(props: DynamicSidebarLinkListProps) {
     renderLoader: _renderLoader,
     renderState: _renderState,
     sidebar: sidebarInput,
+    statuses: _statuses,
     wrapLink: _wrapLink,
     ...rest
   } = props;

@@ -7,6 +7,7 @@ import type {
 import type { SidebarSide } from "#dyryux7b683c";
 import type { ShellChromeState } from "#boxcxvsyrtdl";
 import type { ThemeModeOptions } from "#zzt5zj380sl9";
+import type { DynamicSidebarItem, DynamicSidebarStatuses } from "#9w9ch5jtlv9e";
 
 type ProductShellLabelKey =
 |"about"
@@ -37,6 +38,7 @@ type ProductShellState = {
   leftSidebar: Record<string, unknown>;
   rightSidebar: Record<string, unknown>;
   shell: Record<string, unknown>;
+  sidebarMinimized: { left: boolean; right: boolean };
 };
 
 type ProductShellLayoutState = ProductShellState& {
@@ -114,17 +116,30 @@ type ProductShellBottomBarProps = HTMLAttributes<HTMLElement>& {
   profileIcon?: ReactNode;
 };
 
+type ProductShellNav = {
+  items: readonly DynamicSidebarItem[];
+  label?: string;
+  mobile?: { account?: ReactNode; header?: ReactNode };
+  statuses?: DynamicSidebarStatuses;
+};
+
+type ProductShellAside = {
+  content: ReactNode;
+  label?: string;
+};
+
 type ProductShellLayoutProps =
 Omit<HTMLAttributes<HTMLDivElement>, "children">& {
   body?: ReactNode;
   children?: ReactNode | ((context: ProductShellLayoutRenderContext) => ReactNode);
   currentPath?: unknown;
+  aside?: ProductShellAside | null | ((context: ProductShellSidebarRenderContext) => ProductShellAside | null);
+  labels?: ProductShellLabels;
   mainId?: string;
+  nav?: ProductShellNav | null | ((context: ProductShellSidebarRenderContext) => ProductShellNav | null);
   renderBottomBar?: (context: ProductShellLayoutRenderContext) => ReactNode;
   renderHeader?: (context: ProductShellLayoutRenderContext) => ReactNode;
-  renderMobileNav?: (context: ProductShellLayoutRenderContext) => ReactNode;
   renderSecondaryHeader?: (context: ProductShellLayoutRenderContext) => ReactNode;
-  renderSidebar?: (context: ProductShellSidebarRenderContext) => ReactNode;
   shell?: unknown;
 };
 
@@ -161,7 +176,7 @@ Omit<ProductShellSidebarControlsProps, "about"|"language"|"minimize"|"theme">&
 Pick<ProductShellThemeToggleProps, "dark"|"light"|"modes">& {
   aboutHref?: string;
   buttonClassName?: string;
-  controlsId: string;
+  controlsId?: string;
   idPrefix?: string;
   labels?: ProductShellLabels;
   lang?: string;
@@ -204,6 +219,8 @@ export type {
   ProductShellLayoutRenderContext,
   ProductShellLayoutState,
   ProductShellMobileNavProps,
+  ProductShellAside,
+  ProductShellNav,
   ProductShellSidebarControlsProps,
   ProductShellSidebarDefaultControlsProps,
   ProductShellSidebarFooterProps,

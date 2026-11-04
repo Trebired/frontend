@@ -71,7 +71,7 @@ function writeRoute() {
 
   const search = params.toString();
   history.replaceState(
-    null,
+    history.state,
     "",
     `${location.pathname}${search ? `?${search}` : ""}${location.hash}`,
   );

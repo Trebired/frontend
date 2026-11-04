@@ -37,6 +37,10 @@
   appearance: none;
 }
 
+#{ns.class("disclosure")} > #{ns.class("btn")} {
+  width: 100%;
+}
+
 #{ns.element-class("disclosure", "indicator")} {
   display: inline-flex;
   flex: 0 0 auto;
@@ -46,7 +50,7 @@
   transition: transform var(#{ns.css-var("transition-fast")}, 120ms) ease;
 }
 
-#{ns.data("disclosure-open", "true")} #{ns.element-class("disclosure", "indicator")} {
+#{ns.data("disclosure-open", "true")} > #{ns.data("disclosure-trigger")} > #{ns.element-class("disclosure", "indicator")} {
   transform: rotate(90deg);
 }
 
@@ -70,6 +74,11 @@
   padding-inline: $bleed;
   margin-block-end: calc(-1 * #{$bleed});
   margin-inline: calc(-1 * #{$bleed});
+}
+
+#{ns.data("disclosure-button")} > #{ns.element-class("disclosure", "panel")} > #{ns.element-class("disclosure", "panel-content")} {
+  padding-block-start: var(#{ns.css-var("gap-xs2")}, 2px);
+  padding-inline-start: calc(var(#{ns.css-var("focus-bleed")}, 5px) + var(#{ns.css-var("gap-sm")}, 8px));
 }
 
 #{ns.element-class("disclosure", "panel")}:not(#{ns.data("disclosure-panel-open", "true")}) #{ns.element-class("disclosure", "panel-content")} {

@@ -41,6 +41,10 @@
   &[role="button"] {
     cursor: pointer;
 
+    &:focus-visible {
+      outline-offset: calc(-1 * var(#{ns.css-var("focus-ring-width")}, 2px));
+    }
+
     &[aria-disabled="true"] {
       cursor: not-allowed;
     }

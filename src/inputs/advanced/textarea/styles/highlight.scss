@@ -1,0 +1,38 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("textarea-highlight")} {
+  position: relative;
+  display: grid;
+  width: 100%;
+
+  > textarea {
+    scrollbar-gutter: stable;
+  }
+
+  #{ns.class("textarea-backdrop")}#{ns.class("textarea-backdrop")} {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    scrollbar-gutter: stable;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    color: transparent;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    pointer-events: none;
+    resize: none;
+    transition: none;
+  }
+}
+
+#{ns.class("text-mark")} {
+  border-radius: 2px;
+  background: color-mix(in srgb, var(#{ns.css-var("tone-red")}, #c0392b) 45%, transparent);
+  color: transparent;
+}
+
+::highlight(text-mark) {
+  background-color: color-mix(in srgb, var(#{ns.css-var("tone-red")}, #c0392b) 45%, transparent);
+}

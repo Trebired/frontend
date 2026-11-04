@@ -169,6 +169,9 @@
       "#2qlqsnwrvrgx": [
         "../../../src/actions/triggers.ts"
       ],
+      "#2rr008m3ggi4": [
+        "../../../src/spa/update_url.ts"
+      ],
       "#2tnhcse5w1g6": [
         "../../../src/graph/advanced/graph.tsx"
       ],
@@ -521,7 +524,7 @@
         "../../../src/graph/advanced/graph/details.tsx"
       ],
       "#7spp0gelxmvi": [
-        "../../../src/server/sidebar-live.ts"
+        "../../../src/server/sidebar/live.ts"
       ],
       "#7w0wx4bp7kar": [
         "../../../src/icons/server/types.ts"
@@ -910,6 +913,9 @@
       "#dhm2bwxenzs7": [
         "../../../scripts/verify/frontend/sections.mjs"
       ],
+      "#dkyubvme49ju": [
+        "../../../src/server/sidebar/source.ts"
+      ],
       "#dlkmvw22tjsb": [
         "../../../src/layout/styles/index.scss"
       ],
@@ -921,6 +927,9 @@
       ],
       "#dotjuks8qbkc": [
         "../../../src/error/index.tsx"
+      ],
+      "#dpyy2o8z8rs2": [
+        "../../../src/sidebar/cookie.ts"
       ],
       "#dq0pvmly1nnp": [
         "../../../src/config/favicon.ts"
@@ -1326,6 +1335,9 @@
       ],
       "#jasgul1sasqe": [
         "../../../src/sidebar/dynamic/components/row.tsx"
+      ],
+      "#jb3f7zdwlyj2": [
+        "../../../src/inputs/advanced/textarea/styles/highlight.scss"
       ],
       "#jdm7qktkge73": [
         "../../../src/steps/index.ts"
@@ -1936,6 +1948,9 @@
       "#u0knshei0xi3": [
         "../../../src/theme/browser-sync.ts"
       ],
+      "#u2l800ysb4xy": [
+        "../../../src/react/shell-nav.tsx"
+      ],
       "#u525cvfu2zk3": [
         "../../../src/spa/links.ts"
       ],
@@ -2067,6 +2082,9 @@
       ],
       "#w1ndw6lrphk4": [
         "../../../src/inputs/styles/cropper-internals.scss"
+      ],
+      "#w8y234c7otvc": [
+        "../../../src/inputs/advanced/textarea/mark.ts"
       ],
       "#wavczpl1zxvg": [
         "../../../src/theme/components/index.tsx"

@@ -72,6 +72,7 @@ function buildReactRenderShell(
     requirePermission: objectWithFallback(shellInput?.requirePermission, locals.requirePermission),
     security: shellSecurity(locals, shellInput, nonce),
     seo: objectWithFallback(shellInput?.seo, locals.seo),
+    sidebar: objectWithFallback(shellInput?.sidebar, locals.sidebar),
     theme: typeof shellInput?.theme === "string" ? shellInput.theme : toText(locals.theme),
     ui: objectWithFallback(shellInput?.ui, locals.ui || readDefaultUi(options)),
     viewer: shellInput?.viewer || (serverObject(locals.viewer) as any) || null,

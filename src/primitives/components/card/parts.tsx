@@ -11,12 +11,12 @@ import { card } from "#6hfutrhvm6x6";
 import { card_body } from "./body.js";
 import { primitiveTextClassName } from "#0rl8rpgzssot";
 import { InlineRow, Stack, TitleDescription } from "#tlkyab3pczjn";
-import { toText } from "#6mupcizo1mwq";
+import { joinClassNames, toText } from "#6mupcizo1mwq";
 
 const CARD_SEGMENTS_CLASS = "card-segments";
 
 function segmentSpan(entry: CardSegment | undefined, rowIndex: number, segmentIndex: number) {
-  const className = toText(entry?.className, primitiveTextClassName({ muted: true }));
+  const className = joinClassNames(toText(entry?.className, primitiveTextClassName({ muted: true })), frontendClassName("text-break"));
   const text = entry?.value != null ? String(entry.value) : "";
   if (entry?.kind === "html") {
     return (

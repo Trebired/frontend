@@ -12,6 +12,7 @@ type FrontendRenderShell = {
   requirePermission?: Record<string, unknown>;
   renderMode?: Record<string, unknown>;
   security?: Record<string, unknown>;
+  sidebar?: Record<string, unknown>;
   product?: Record<string, unknown>;
   theme?: string;
   ui?: Record<string, unknown>;

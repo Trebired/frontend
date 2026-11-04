@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { classNames } from "#ndsvdqv80epr";
 import { Card } from "#4woymc9xhupl";
 import { button } from "#6hfutrhvm6x6";
@@ -24,6 +25,9 @@ import type {
   ProductShellThemeToggleProps,
 } from "./types.js";
 import { FRONTEND_PREFIX, frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
+
+const ProductShellSidebarIdContext = createContext<string | null>(null);
+const ProductShellSidebarMinimizedContext = createContext<{ left?: boolean; right?: boolean }>({});
 
 type ProductShellThemeSelectProps =
 Pick<ProductShellThemeToggleProps, "dark" | "light" | "modes" | "theme"> & {
@@ -125,6 +129,7 @@ function ProductShellSidebarDefaultControls(
     theme,
     ...rest
   } = props;
+  const shellId = useContext(ProductShellSidebarIdContext);
   const prefix = idPrefix || `product_shell_sidebar_${side}`;
   const minimizeLabel = productShellLabel(labels, "minimize");
   const themeLabel = productShellLabel(labels, "toggleTheme");
@@ -135,7 +140,7 @@ function ProductShellSidebarDefaultControls(
     {...rest}
     minimize={(
         <ProductShellSidebarMinimizeButton
-        controls={controlsId}
+        controls={controlsId || shellId || `sidebar_shell_${side}`}
         className={buttonClassName}
         expandedIcon={productShellControlIcon("remixicon arrow-left-s-line")}
         labels={labels}
@@ -259,8 +264,11 @@ function ProductShellSidebar(props: ProductShellSidebarProps) {
   const side = props.side || "left";
   const shellId = props.id || `sidebar_shell_${side}`;
   const bodyId = props.bodyId || `sidebar_body_${side}`;
+  const saved = useContext(ProductShellSidebarMinimizedContext);
+  const minimized = props.minimized ?? saved[side === "right" ? "right" : "left"];
   return (
-    <SidebarShell className={classNames(String(side), props.className)} id={shellId} minimized={props.minimized} persist={props.persist} side={side}>
+    <ProductShellSidebarIdContext.Provider value={shellId}>
+    <SidebarShell className={classNames(String(side), props.className)} id={shellId} minimized={minimized} persist={props.persist} side={side}>
     <Sidebar aria-label={props.ariaLabel} className={primitiveStackClassName({ gap: "sm" })}>
     <SidebarBody className={primitiveStackClassName({ className: props.bodyClassName, gap: "sm" })} id={bodyId}>
     {props.content ?? props.children}
@@ -272,12 +280,14 @@ function ProductShellSidebar(props: ProductShellSidebarProps) {
     )}
     </Sidebar>
     </SidebarShell>
+    </ProductShellSidebarIdContext.Provider>
   );
 }
 
 export {
   ProductShellAboutButton,
   ProductShellSidebar,
+  ProductShellSidebarMinimizedContext,
   ProductShellSidebarControls,
   ProductShellSidebarDefaultControls,
   ProductShellSidebarFooter,

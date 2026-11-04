@@ -44,8 +44,15 @@ type DynamicSidebarLinkItem = {
   statePath?: string;
   statusIdleCountPath?: string;
   statusPath?: string;
-  statusRepositoryId?: string;
 };
+
+type DynamicSidebarStatus = {
+  color?: string;
+  icon: string;
+  title?: string;
+};
+
+type DynamicSidebarStatuses = Readonly<Record<string, DynamicSidebarStatus>>;
 
 type DynamicSidebarItem = DynamicSidebarDividerItem | DynamicSidebarLinkItem;
 
@@ -66,8 +73,8 @@ type DynamicSidebarLoaderContext = DynamicSidebarItemContext& {
   idleCountPath: string;
   lastStatus: string;
   loaderPath: string;
-  repositoryId: string;
   running: number;
+  status: DynamicSidebarStatus | null;
   statusPath: string;
 };
 
@@ -86,6 +93,7 @@ Omit<HTMLAttributes<HTMLUListElement>, "children">& {
   renderLoader?: (context: DynamicSidebarLoaderContext) => ReactNode;
   renderState?: (context: DynamicSidebarStateContext) => ReactNode;
   sidebar?: DynamicSidebarContext | null;
+  statuses?: DynamicSidebarStatuses;
   wrapLink?: (
     node: ReactNode,
     context: DynamicSidebarItemContext& { href: string },
@@ -125,5 +133,7 @@ export type {
   DynamicSidebarLoaderContext,
   DynamicSidebarResponseItem,
   DynamicSidebarStateContext,
+  DynamicSidebarStatus,
+  DynamicSidebarStatuses,
   DynamicSidebarVisibility,
 };

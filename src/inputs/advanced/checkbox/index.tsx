@@ -28,7 +28,12 @@ function checkboxModel(props: checkbox_props) {
   const localT = createLocalTranslator(import.meta.url, props.lang);
   const Tag: any = props.tag === "div" ? "div" : "label";
   const optionClassName = toString(props.optionClassName);
-  const computedOptionClassName = joinClassNames(
+  const title =
+  props.title ?? (props.all === true ? localT("selection.all") : "");
+  const bare = !title && !props.description;
+  const computedOptionClassName = bare
+  ? joinClassNames(frontendClassName("checkbox-option"), frontendClassName("checkbox-bare"), optionClassName)
+  : joinClassNames(
     primitiveButtonClassName({ variant: "chrome" }),
     frontendClassName("choice-row"),
     frontendClassName("checkbox-option"),
@@ -45,9 +50,8 @@ function checkboxModel(props: checkbox_props) {
   const inputName = toString(props.name);
   const inputGroup = toString(props.group, inputName);
   const inputValue = props.value == null ? "1" : String(props.value);
-  const title =
-  props.title ?? (props.all === true ? localT("selection.all") : "");
   return {
+    bare,
     computedInputClassName,
     computedOptionClassName,
     inputGroup,
@@ -118,10 +122,12 @@ function checkbox(props: checkbox_props) {
       ) : null}
     {checkboxInput(props, model)}
     {checkboxControl()}
-    <span className={model.optionBodyClassName}>
-    <span className={frontendClassName("checkbox-option-title")}>{model.title}</span>
-    {checkboxDescription(props.description)}
-    </span>
+    {model.bare ? null : (
+        <span className={model.optionBodyClassName}>
+        <span className={frontendClassName("checkbox-option-title")}>{model.title}</span>
+        {checkboxDescription(props.description)}
+        </span>
+    )}
     </Tag>
   );
 }

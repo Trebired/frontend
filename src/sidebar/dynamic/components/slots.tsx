@@ -14,6 +14,7 @@ import type {
   DynamicSidebarLiveRootProps,
   DynamicSidebarLoaderContext,
   DynamicSidebarStateContext,
+  DynamicSidebarStatuses,
 } from "#9w9ch5jtlv9e";
 import {
   dynamicSidebarCount,
@@ -72,18 +73,20 @@ function loaderContext(props: {
     context: DynamicSidebarItemContext;
     item: DynamicSidebarLinkItem;
     sidebar: DynamicSidebarContext;
+    statuses?: DynamicSidebarStatuses;
 }): DynamicSidebarLoaderContext {
   const idleCountPath = textValue(props.item.statusIdleCountPath);
   const loaderPath = textValue(props.item.loaderPath);
   const statusPath = textValue(props.item.statusPath);
+  const lastStatus = dynamicSidebarTextValue(props.sidebar, statusPath);
   return {
     ...props.context,
     idleCount: idleCountPath ? dynamicSidebarCount(props.sidebar, idleCountPath) : null,
     idleCountPath,
-    lastStatus: dynamicSidebarTextValue(props.sidebar, statusPath),
+    lastStatus,
     loaderPath,
-    repositoryId: textValue(props.item.statusRepositoryId),
     running: dynamicSidebarCount(props.sidebar, loaderPath),
+    status: (lastStatus && props.statuses?.[lastStatus]) || null,
     statusPath,
   };
 }
@@ -94,9 +97,10 @@ function DynamicSidebarLoaderSlot(props: {
     item: DynamicSidebarLinkItem;
     render?: (context: DynamicSidebarLoaderContext) => ReactNode;
     sidebar: DynamicSidebarContext;
+    statuses?: DynamicSidebarStatuses;
 }) {
   const context = loaderContext(props);
-  if (!context.loaderPath && !context.statusPath && !context.repositoryId) return null;
+  if (!context.loaderPath && !context.statusPath) return null;
   const visibility = props.item.loaderVisibility === "active" ? "active" : "always";
   const render = props.render || defaultDynamicSidebarLoader;
   const hidden = props.context.disabled || (visibility === "active" && !props.active);
@@ -109,7 +113,7 @@ function DynamicSidebarLoaderSlot(props: {
     {...frontendDataAttrs({ "sidebar-loader-visibility": visibility })}
     {...frontendDataAttrs({ "sidebar-status-idle-count-path": context.idleCountPath })}
     {...frontendDataAttrs({ "sidebar-status-path": context.statusPath })}
-    {...frontendDataAttrs({ "sidebar-status-repository-id": context.repositoryId })}
+    {...frontendDataAttrs({ "sidebar-statuses": context.statusPath && props.statuses ? JSON.stringify(props.statuses) : undefined })}
     >
     {hidden ? null : render(context)}
     </span>

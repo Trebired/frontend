@@ -83,6 +83,7 @@ function bindFrontendShell(scope: BindRoot, options: FrontendRuntimeOptions) {
   bindPortals(scope);
   bindSidebars(scope, {
       ...(options.sidebar || {}),
+      dynamicLive: { subscribe: options.adapters?.subscribe, ...options.sidebar?.dynamicLive },
       persistence: options.adapters?.sidebarPersistence || options.sidebar?.persistence,
   });
 }

@@ -79,6 +79,16 @@ function productShellCurrentPath(shellInput: unknown, override?: unknown) {
   return hasRoutePlaceholderPath(normalized) ? "/" : normalized;
 }
 
+function shellSidebarMinimized(
+  shell: Record<string, unknown>,
+  side: "left" | "right",
+  sidebar: Record<string, unknown>,
+) {
+  const saved = objectRecord(objectRecord(shell.sidebar)[side]);
+  if (typeof saved.minimized === "boolean") return saved.minimized;
+  return sidebar.minimized === true;
+}
+
 function readProductShellState(shellInput: unknown): ProductShellState {
   const shell = objectRecord(shellInput);
   const ui = shellUi(shell);
@@ -95,6 +105,10 @@ function readProductShellState(shellInput: unknown): ProductShellState {
     leftSidebar,
     rightSidebar,
     shell,
+    sidebarMinimized: {
+      left: shellSidebarMinimized(shell, "left", leftSidebar),
+      right: shellSidebarMinimized(shell, "right", rightSidebar),
+    },
   };
 }
 

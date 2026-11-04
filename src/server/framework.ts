@@ -3,18 +3,11 @@ import {
   type FrontendServerServicesAttachment,
   type FrontendServerServicesOptions,
 } from "./services.js";
-import {
-  attachSidebarLiveRoute,
-  type SidebarLiveRouteOptions,
-} from "./sidebar-live.js";
 
-type FrontendFrameworkOptions = FrontendServerServicesOptions& {
-  sidebarLive?: false | SidebarLiveRouteOptions;
-};
+type FrontendFrameworkOptions = FrontendServerServicesOptions;
 
 type FrontendFrameworkAttachment = {
   services: FrontendServerServicesAttachment;
-  sidebarLive: boolean;
 };
 
 type FrontendFramework = {
@@ -26,12 +19,7 @@ function attachFrontendFramework(
   app: unknown,
   options: FrontendFrameworkOptions = {},
 ): FrontendFrameworkAttachment {
-  const services = attachFrontendServerServices(app, options);
-  const sidebarLive =
-  options.sidebarLive === false || options.sidebarLive == null
-  ? false
-  : attachSidebarLiveRoute(app, options.sidebarLive);
-  return { services, sidebarLive };
+  return { services: attachFrontendServerServices(app, options) };
 }
 
 function createFrontendFramework(

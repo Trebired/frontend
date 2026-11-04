@@ -1,11 +1,9 @@
 import {
-  requestBody,
-  sendJson,
   serverObject,
   serverString,
   type ServerRequestLike,
   type ServerResponseLike,
-} from "./http.js";
+} from "./../http.js";
 
 type SidebarLiveParams = Record<string, string>;
 
@@ -26,13 +24,6 @@ type SidebarLiveResolveContext = {
   items: SidebarLiveDescriptor[];
   req: ServerRequestLike;
   res: ServerResponseLike;
-};
-
-type SidebarLiveRouteOptions = SidebarLiveProtocolOptions& {
-  middleware?: unknown | readonly unknown[];
-  path?: string;
-  resolve: (context: SidebarLiveResolveContext) => unknown | Promise<unknown>;
-  respond?: (context: SidebarLiveResolveContext& { result: unknown }) => unknown;
 };
 
 function normalizeSidebarLivePath(value: unknown) {
@@ -124,39 +115,8 @@ function roomFromSidebarLiveDescriptor(descriptor: SidebarLiveDescriptor | null)
   return descriptor ? descriptor.rooms : [];
 }
 
-function createSidebarLiveRefreshHandler(options: SidebarLiveRouteOptions) {
-  return async function sidebarLiveRefreshHandler(
-    req: ServerRequestLike,
-    res: ServerResponseLike,
-  ) {
-    const items = readSidebarLiveItems(requestBody(req), options);
-    const context = { items, req, res };
-    const result = await options.resolve(context);
-    if (options.respond) return options.respond({ ...context, result });
-    return sendJson(res, { data: { sidebars: result }, ok: true });
-  };
-}
-
-function sidebarLiveMiddlewareList(options: SidebarLiveRouteOptions) {
-  if (Array.isArray(options.middleware)) return [...options.middleware];
-  return options.middleware ? [options.middleware] : [];
-}
-
-function attachSidebarLiveRoute(app: unknown, options: SidebarLiveRouteOptions) {
-  if (!(app && typeof(app as { post?: unknown }).post === "function")) return false;
-  const post = (app as { post: (...args: unknown[]) => unknown }).post.bind(app);
-  post(
-    options.path || "/ui/sidebar/live",
-    ...sidebarLiveMiddlewareList(options),
-    createSidebarLiveRefreshHandler(options),
-  );
-  return true;
-}
-
 export {
-  attachSidebarLiveRoute,
   buildSidebarLiveDescriptor,
-  createSidebarLiveRefreshHandler,
   normalizeSidebarLiveItem,
   normalizeSidebarLiveParams,
   normalizeSidebarLivePath,
@@ -170,5 +130,4 @@ export type {
   SidebarLiveParams,
   SidebarLiveProtocolOptions,
   SidebarLiveResolveContext,
-  SidebarLiveRouteOptions,
 };
