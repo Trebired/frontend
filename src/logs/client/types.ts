@@ -132,6 +132,7 @@ export interface LogsConfig {
   platformLogsDefaultOff?: boolean;
   allowFrontendLogs?: boolean;
   logsDataUrl?: unknown;
+  refreshIntervalMs?: unknown;
   initialLogsPage?: {
     logs?: LogEntry[];
     offset?: unknown;
@@ -172,6 +173,7 @@ export interface NormalizedLogsConfig {
   platformLogsDefaultOff: boolean;
   allowFrontendLogs: boolean;
   logsDataUrl: string;
+  refreshIntervalMs: number;
   initialLogsPage: NonNullable<LogsConfig["initialLogsPage"]>;
   allowEmptyScopeIds: boolean;
   loadingMessage: string;

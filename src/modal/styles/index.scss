@@ -45,6 +45,13 @@
   visibility 0s;
 }
 
+#{ns.data("modal")} > #{ns.class("btn")}#{ns.data("modal-close")} {
+  position: absolute;
+  top: var(#{ns.css-var("overlay-modal-backdrop-padding")}, 24px);
+  right: var(#{ns.css-var("overlay-modal-backdrop-padding")}, 24px);
+  z-index: 1;
+}
+
 #{ns.element-class("modal", "content")},
 
 #{ns.data("modal-content")} {

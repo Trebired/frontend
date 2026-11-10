@@ -13,6 +13,8 @@ import {
   promoteZIndex,
 } from "#ccvonx3uhbte";
 import { lockBodyScroll } from "#f3dd7yszexpp";
+import iconRuntime from "#e55z7pkijewq";
+import { primitiveButtonClassName } from "#0rl8rpgzssot";
 import { frontendClassName, frontendDataAttr, frontendDataSelector, frontendElementClass, frontendEventName } from "#5vbaqj4pirp3";
 
 const MODAL_BASE_Z_INDEX = 1060;
@@ -40,6 +42,7 @@ const triggerBindings = new WeakMap<HTMLElement, ()=>void>();
 const closeCounts = new WeakMap<HTMLElement, number>();
 let listenersInstalled = false;
 let releaseScrollLock: (() => void) | null = null;
+let pressTarget: Element | null = null;
 
 function dispatchModalEvent(modal: HTMLElement, name: string, detail: Record<string, unknown> = {}): void {
   modal.dispatchEvent(new CustomEvent(name, {
@@ -144,6 +147,7 @@ function modalCloseCount(modal: HTMLElement | null | undefined) {
 function openModal(modalOrSelector: HTMLElement | string, trigger: HTMLElement | null = null) {
   const modal = resolveDocumentTarget(modalOrSelector);
   if (!(modal instanceof HTMLElement)) return null;
+  installModalListeners();
   if (isOpenOnTop(modal)) return modal;
   const existingIndex = modalStack.findIndex((entry) => entry.modal === modal);
   if (existingIndex >= 0) modalStack.splice(existingIndex, 1);
@@ -234,15 +238,20 @@ function bindModals(root: BindRoot = document) {
 function installModalListeners() {
   if (listenersInstalled) return;
   listenersInstalled = true;
+  document.addEventListener("pointerdown", (event) => {
+      pressTarget = event.target instanceof Element ? event.target : null;
+    }, true);
   document.addEventListener("click", (event) => {
       const target = event.target instanceof Element ? event.target : null;
+      const pressedInside = pressTarget !== null && pressTarget !== target;
+      pressTarget = null;
       const closer = target?.closest(MODAL_CLOSE_SELECTOR);
       if (closer) {
         closeModal(closer.closest(MODAL_SELECTOR) as HTMLElement | null);
         return;
       }
       const top = modalStack[modalStack.length - 1]?.modal;
-      if (target === top && top.getAttribute(frontendDataAttr("modal-backdrop-close")) !== "false") closeModal(top);
+      if (target === top && !pressedInside && top.getAttribute(frontendDataAttr("modal-backdrop-close")) !== "false") closeModal(top);
   });
   document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
@@ -254,7 +263,19 @@ function installModalListeners() {
   });
 }
 
+function overlayCloseElement(label: string) {
+  const close = document.createElement("button");
+  close.type = "button";
+  close.className = primitiveButtonClassName({ icon: true, size: "sm", variant: "secondary" });
+  close.title = label;
+  close.setAttribute("aria-label", label);
+  close.setAttribute(frontendDataAttr("modal-close"), "");
+  iconRuntime.append(close, "remixicon close-line", { "aria-hidden": "true" });
+  return close;
+}
+
 function createModal(options: {
+    closeLabel?: string;
     content?: Node | string;
     id: string;
     title?: string;
@@ -273,6 +294,7 @@ function createModal(options: {
   }
   if (typeof options.content === "string") content.insertAdjacentHTML("beforeend", options.content);
   else if (options.content) content.appendChild(options.content);
+  modal.appendChild(overlayCloseElement(options.closeLabel ?? "Close"));
   modal.appendChild(content);
   prepareModal(modal);
   return modal;

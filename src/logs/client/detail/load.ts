@@ -155,6 +155,24 @@ function restoreScrollPosition(
   });
 }
 
+export async function refreshLatestLogs(page: LogsPage, handlers: LoadHandlers) {
+  const { config, state } = page;
+  if (!config.logsDataUrl || state.isLoadingInitialLogs || state.isLoadingOlderLogs) return;
+  try {
+    const chunk = await fetchJson(config.logsDataUrl, {
+        offset: 0,
+        limit: Number(state.historyPageSize || LOGS_PAGE_SIZE),
+    });
+    const incoming = Array.isArray(chunk && chunk.logs) ? chunk.logs : [];
+    state.allLogs = mergeLogEntries(state.allLogs || [], incoming);
+    state.loadedLogs = mergeLogEntries(state.loadedLogs || [], incoming);
+    if (chunk && chunk.stats && typeof chunk.stats === "object") state.totalStats = chunk.stats;
+    renderAfterHistoryLoad(page, handlers);
+  } catch {
+    state.didBootstrap = true;
+  }
+}
+
 export async function loadOlderLogs(page: LogsPage, handlers: LoadHandlers) {
   const { config, state } = page;
   const ui = refreshLogDom(page);

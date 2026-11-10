@@ -7,7 +7,7 @@ import { refreshLogDom } from "./view_state.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 export { bindLogEvents } from "./detail/events.js";
-export { loadInitialLogs, loadOlderLogs } from "./detail/load.js";
+export { loadInitialLogs, loadOlderLogs, refreshLatestLogs } from "./detail/load.js";
 
 function prettyJson(value: unknown) {
   if (!value || typeof value !== "object") return "";

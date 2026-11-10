@@ -34,6 +34,7 @@ function view(props: view_props) {
     hidden
     type="application/json"
     dangerouslySetInnerHTML={jsonScriptConfig({
+          ...props.config,
           fullscreenGroup: model.logsExtendGroup,
           fullscreenId: model.logsInstanceId,
     })}

@@ -160,7 +160,7 @@ function LogRowView({ view, onOpen, onToggleMarker }) {
   return React.createElement(
     "div",
     {
-      className: ["log-line", primitiveGapClass("xs")].join(" "),
+      className: [frontendClassName("log-line"), primitiveGapClass("xs")].join(" "),
       [frontendDataAttr("log-key")]: view.logKey,
       role: "button",
       tabIndex: 0,

@@ -38,6 +38,7 @@ const messages: Record<string, string> = {
   "actions.chooseFile": "Choose file",
   "actions.chooseFolder": "Choose folder",
   "actions.clear": "Clear",
+  "actions.close": "Close",
   "actions.remove": "Remove",
   "actions.search": "Search",
   "actions.select": "Select",

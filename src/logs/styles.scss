@@ -157,7 +157,7 @@
   cursor: pointer;
 
   &:hover {
-    background: var(#{ns.css-var("data-log-line-state-hover-bg")}, color-mix(in srgb, var(--border-surface-1, currentColor) 28%, transparent));
+    background: var(#{ns.css-var("data-log-line-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, transparent));
   }
 
   &::after {

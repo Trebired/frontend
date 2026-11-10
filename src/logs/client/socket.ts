@@ -121,7 +121,7 @@ function hasMissingConnectionScope(context) {
 }
 
 function markConnectionSkipped(context) {
-  context.state.didBootstrap = true;
+  if (!context.config.logsDataUrl) context.state.didBootstrap = true;
   scheduleUiRefresh(context);
 }
 

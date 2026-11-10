@@ -1036,6 +1036,9 @@
       "#erdpsy3wbzsw": [
         "../../../scripts/verify/frontend/progress-bars.mjs"
       ],
+      "#ere6jdvp922x": [
+        "../../../src/modal/components/i18n/cs.ts"
+      ],
       "#erxa9ulhy0gv": [
         "../../../src/theme/apply.ts"
       ],
@@ -1791,6 +1794,9 @@
       ],
       "#rf9js8ovmz75": [
         "../../../src/server/live-socket/shared.ts"
+      ],
+      "#rh5lkkmriafc": [
+        "../../../src/modal/components/i18n/en.ts"
       ],
       "#rkfoqxddyl4k": [
         "../../../src/surface/styles/index.scss"

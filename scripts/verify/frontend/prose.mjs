@@ -213,8 +213,9 @@ async function verifyIndent({ importDist, rootDir }) {
   const railed = railedMarkup(render, config);
   verifyOutlineBoot(railed);
   verifyArticle(railed);
-} async function verifyProse({ importDist, rootDir }) {
+}
 
+async function verifyProse({ importDist, rootDir }) {
   await verifyProseText({ importDist });
   verifyTextDocument(await importDist("config"));
   await verifyIndent({ importDist, rootDir });

@@ -244,6 +244,7 @@ export function normalizeLogsConfig(
     platformLogsDefaultOff: (cfg as any).platformLogsDefaultOff === true,
     allowFrontendLogs: (cfg as any).allowFrontendLogs === true,
     logsDataUrl: safeStr((cfg as any).logsDataUrl),
+    refreshIntervalMs: Math.max(0, Number((cfg as any).refreshIntervalMs) || 0),
     initialLogsPage,
     allowEmptyScopeIds: Boolean((cfg as any).allowEmptyScopeIds === true),
     loadingMessage:

@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 30.1.0
+
+- Added `config` to `logs_view`. It is written into the view's settings script, so a page can hand the log viewer a `logsDataUrl`, its messages and other settings without a client file of its own.
+- A modal opened from script closes on an outside click and on Escape, and traps focus. The listeners were only installed when a trigger bound, so a modal without one, such as the log entry window, ignored all three.
+- A modal closes on an outside click only when the press also began on the backdrop. A text selection dragged out of the modal no longer closes it.
+- Every `ModalRoot` and `createModal` modal has a close button at the top right of the overlay, not of its content. `closeButton={false}` leaves it out, a modal with `modal-backdrop-close="false"` has none by default, and `closeLabel` or `lang` set its label.
+- Added `refreshIntervalMs` to the logs config. With a `logsDataUrl`, the viewer fetches the newest page on that interval and merges it into what it shows, so an app without a log socket still gets a live log. It skips while the view or the browser tab is hidden, and stops when the view leaves the page.
+- Log lines carry `tbf-log-line` again. They were rendered with a bare `log-line` class, so the line styles never applied: no hover background, no pointer cursor and no padding. A hovered line falls back to the muted surface, the colour a hovered dropdown option uses.
+- A log view with a `logsDataUrl` and no deployment to stream loads its first page from the URL. It used to count the skipped socket as loaded and stayed empty.
+
 ## 30.0.0
 
 - Breaking: `button()` without a `variant` is `primary` instead of `secondary`. Primary is the standard button and secondary the quieter one; the surface `Button` keeps its own `secondary` default.

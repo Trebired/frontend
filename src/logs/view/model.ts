@@ -1,7 +1,9 @@
 import { createLocalTranslator, toString } from "#aq4qe9opqpbm";
 import { primitiveGridClassName } from "#hzrmwbvgt2ax";
+import type { LogsConfig } from "./../client/types.js";
 
 type view_props = {
+  config?: LogsConfig;
   extendGroup?: string;
   exportOptions?: Array<{href?:string;label?:string}>;
   allowPlatformToggle?: boolean;

@@ -4,6 +4,7 @@ import type {
   ReactNode,
 } from "react";
 import { renderCloseButton } from "#5e51rp1mtb3n";
+import { button, createLocalTranslator, icon } from "#dqy2d22qyujv";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { useEffect, useState } from "react";
@@ -13,6 +14,8 @@ import { HeadingScope } from "#7ly3b59upz0n";
 
 type ModalRootProps = HTMLAttributes<HTMLDivElement> & {
   children?: ReactNode;
+  closeButton?: boolean;
+  closeLabel?: string;
   labelledBy?: string;
 };
 
@@ -24,8 +27,23 @@ type ModalOpenButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   controls: string;
 };
 
+function overlayCloseButton(label: string) {
+  return button({
+      "aria-label": label,
+      [frontendDataAttr("modal-close")]: "",
+      children: icon({ spec: "remixicon close-line" }),
+      icon: true,
+      size: "sm",
+      title: label,
+      tooltip: true,
+      variant: "secondary",
+  });
+}
+
 function ModalRoot(props: ModalRootProps) {
-  const { children, className, labelledBy, role = "dialog", ...rest } = props;
+  const { children, className, closeButton, closeLabel, labelledBy, role = "dialog", ...rest } = props;
+  const refusesClickClose = (rest as Record<string, unknown>)[frontendDataAttr("modal-backdrop-close")] === "false";
+  const showClose = closeButton ?? !refusesClickClose;
   const [layerRoot, setLayerRoot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -41,6 +59,7 @@ function ModalRoot(props: ModalRootProps) {
     aria-hidden="true"
     aria-labelledby={labelledBy}
     >
+    {showClose ? overlayCloseButton(closeLabel ?? createLocalTranslator(import.meta.url, rest.lang)("actions.close")) : null}
     {children}
     </div>
   );

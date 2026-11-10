@@ -1,5 +1,5 @@
 import { frontendDataAttr } from "#5vbaqj4pirp3";
-import { bindLogEvents, loadInitialLogs, loadOlderLogs } from "./detail.js";
+import { bindLogEvents, loadInitialLogs, loadOlderLogs, refreshLatestLogs } from "./detail.js";
 import { resolveLogsDomRoot } from "./dom.js";
 import { syncGroupSelect, syncLevelSelect } from "./dropdowns.js";
 import { connectLogs } from "./socket.js";
@@ -123,7 +123,19 @@ function bootstrapNewLogsPartial(page: any, options: any) {
     });
   }
   void loadInitialLogs(page, { renderLogs, syncGroupSelect, syncLevelSelect });
+  startLogsRefresh(page);
   return page;
+}
+
+function startLogsRefresh(page: any) {
+  const every = Number(page.config && page.config.refreshIntervalMs) || 0;
+  if (!every || !page.config.logsDataUrl) return;
+  const timer = setInterval(() => {
+      if (!page.ui.root || !page.ui.root.isConnected) return clearInterval(timer);
+      if (document.hidden || page.ui.root.offsetParent === null) return;
+      void refreshLatestLogs(page, { renderLogs, syncGroupSelect, syncLevelSelect });
+    }, every);
+  registerPageCleanup(page.ui.root, () => clearInterval(timer));
 }
 
 function logEventHandlers() {

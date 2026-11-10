@@ -22,6 +22,7 @@ async function verifyFrontendComponents(context) {
   await verifyTabsStyles(context.rootDir);
   await verifyUploadStyles(context.rootDir);
   await verifyReactEntrypoint(context.importDist);
+  await verifyModalOverlayClose(context.importDist);
   await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
@@ -59,6 +60,16 @@ async function verifyTabsStyles(rootDir) {
   assert.ok(source.includes('&[aria-selected="true"]'));
   assert.ok(source.includes('&#{ns.data("active", "true")}'));
   assert.ok(source.includes('var(#{ns.css-var("ui-tabs-state-active-bg")},'));
+}
+
+async function verifyModalOverlayClose(importDist) {
+  const { ModalContent, ModalRoot } = await importDist("react");
+  const modal = (props) => renderToStaticMarkup(h(ModalRoot, { id: "m", ...props }, h(ModalContent, null, "Body")));
+  const closeBeforeContent = /data-tbf-modal=""[^>]*>\s*<button[^>]*data-tbf-modal-close=""[\s\S]*data-tbf-modal-content/u;
+  assert.match(modal({}), closeBeforeContent, "a modal's close button is a child of the overlay, not of its content");
+  assert.match(modal({ lang: "cs" }), /aria-label="(Zavřít|Close)"/u, "the close button is labelled");
+  assert.doesNotMatch(modal({ closeButton: false }), /data-tbf-modal-close/u, "closeButton false leaves it out");
+  assert.doesNotMatch(modal({ "data-tbf-modal-backdrop-close": "false" }), /data-tbf-modal-close/u, "a modal that refuses click close has none");
 }
 
 async function verifyModalStyles(rootDir) {
