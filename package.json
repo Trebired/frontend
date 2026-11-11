@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "30.1.0",
+  "version": "30.2.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "sideEffects": [
@@ -32,6 +32,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./cms": {
+      "import": "./dist/cms/index.js",
+      "types": "./dist/cms/index.d.ts"
     },
     "./code": {
       "import": "./dist/code/index.js",

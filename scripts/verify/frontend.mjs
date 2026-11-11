@@ -4,9 +4,9 @@ import path from "node:path";
 import { Window } from "happy-dom";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { verifyFrontendActions } from "./frontend/actions.mjs";
+import { verifyPackageSurface } from "./frontend/surface.mjs";
 import { verifyConfigContract } from "./frontend/contract.mjs";
 
-import { verifyFrontendComponents } from "./frontend/components.mjs";
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
@@ -14,8 +14,6 @@ import { verifyLocaleRouting } from "./frontend/locale.mjs";
 import { verifyMedia } from "./frontend/media.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
-import { verifyProse } from "./frontend/prose.mjs";
-import { verifyBuildSources } from "./frontend/sources.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
 import { verifySidebar } from "./frontend/sidebar.mjs";
 import { verifyGraphs, verifyNamespace, verifyPopover, verifyPopoverReactEvents, verifyViewportCenter, verifyWizard } from "./frontend/runtime.mjs";
@@ -25,9 +23,6 @@ import { verifySiteChrome } from "./frontend/site/header.mjs";
 import { verifySiteSearch } from "./frontend/site/search.mjs";
 import { verifyHeadings } from "./frontend/headings.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
-import { verifyFrontendTheme } from "./frontend/theme.mjs";
-import { verifyA11y } from "./frontend/a11y.mjs";
-import { verifyMoney } from "./frontend/money.mjs";
 import { verifyLayering } from "./frontend/layering.mjs";
 import { verifySelectCards } from "./frontend/select-cards.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
@@ -86,18 +81,9 @@ async function verifyFrontendMain() {
   await verifyFrontendLogging(context);
   await verifyFrontendSource(context);
   await verifyFrontendServer(context);
-  await verifyPackageSurface({ importDist, importDistRoot, packageVersion, rootDir });
+  await verifyPackageSurface({ importDist, importDistRoot, packageVersion, rootDir, window });
   await closeDom(window);
   log.info("verify.frontend", "Frontend verification succeeded.");
-}
-
-async function verifyPackageSurface({ importDist, importDistRoot, packageVersion, rootDir }) {
-  await verifyFrontendComponents({ importDist, packageVersion, rootDir });
-  await verifyFrontendTheme({ importDist, packageVersion, rootDir });
-  await verifyMoney(importDist);
-  await verifyProse({ importDist, rootDir });
-  await verifyBuildSources({ importDist });
-  await verifyA11y(importDist, importDistRoot);
 }
 
 async function closeDom(window) {

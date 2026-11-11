@@ -4,6 +4,13 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 30.2.0
+
+- Added `@trebired/frontend/cms`, a content system an editor application drives. `defineContent` declares fields and collections with their limits, `CmsProvider` and the `CmsText`, `CmsRichText`, `CmsImage`, `CmsLink` and `CmsCollection` components render them, and `validateCmsDocument` checks a content document against the model in every locale.
+- Added the `cms` config key: `enabled`, `contentDir`, `mediaBase` and `editorOrigins`. It is off by default, and with it off the components render content without markers or edit code.
+- Added edit mode. It starts only inside a frame from one of `editorOrigins` that sends the nonce the page was opened with, outlines editable content, edits plain text in place within the field's limits and shows the parent's drafts without a rebuild.
+- Added `readCmsDocument`, `copyCmsMedia` and `writeCmsManifest` to `@trebired/frontend/server`. Published content is `<contentDir>/content.json` in the app's repository, written in one key order by `serializeCmsDocument`.
+
 ## 30.1.0
 
 - Added `config` to `logs_view`. It is written into the view's settings script, so a page can hand the log viewer a `logsDataUrl`, its messages and other settings without a client file of its own.

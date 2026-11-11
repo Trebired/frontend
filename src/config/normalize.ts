@@ -2,6 +2,7 @@ import { normalizeA11yConfig } from "./a11y.js";
 import { DEFAULT_FRONTEND_CONFIG, SUPPORTED_ICON_PACKS, SYSTEM_ORDER, THEME_MODE_ATTRIBUTE } from "./default/config.js";
 import { normalizeLanguageConfig } from "./language.js";
 import { normalizeLinksConfig } from "./links.js";
+import { normalizeCmsConfig } from "./cms.js";
 import { normalizeMoneyConfig } from "./money.js";
 import { assertPlainObject, invalidConfig } from "./shared.js";
 import { normalizeComponentsConfig } from "./component-tokens.js";
@@ -41,6 +42,7 @@ const FRONTEND_CONFIG_PATH = frontendConfigPath();
 const TOP_LEVEL_FIELDS = [
   "a11y",
   "assets",
+  "cms",
   "components",
   "containers",
   "css",
@@ -253,6 +255,7 @@ function normalizeFrontendConfig(
   return {
     a11y: normalizeA11yConfig(source.a11y),
     assets,
+    cms: normalizeCmsConfig(source.cms),
     components: normalizeComponentsConfig(source.components),
     containers: normalizeContainersConfig(source.containers, Object.keys(design.breakpoints)),
     css: typeof source.css === "string" ? source.css : "",

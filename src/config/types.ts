@@ -29,6 +29,7 @@ import type {
   FrontendShellComponentsConfig,
   FrontendSurfaceComponentsConfig,
 } from "./types/components.js";
+import type { FrontendCmsConfig, NormalizedFrontendCmsConfig } from "./types/cms.js";
 import type { FrontendMoneyConfig, NormalizedFrontendMoneyConfig } from "./types/money.js";
 import type { FrontendLinksConfig, NormalizedFrontendLinksConfig } from "./types/links.js";
 import type { FrontendLanguageConfig, FrontendLocaleStrategy, NormalizedFrontendLanguageConfig } from "./types/language.js";
@@ -138,6 +139,7 @@ type FrontendRuntimeConfig = {
 type FrontendConfig = {
   a11y?: FrontendA11yConfig;
   assets?: FrontendAssetsConfig;
+  cms?: FrontendCmsConfig | false;
   components?: FrontendComponentsConfig;
   containers?: FrontendContainersConfig;
   css?: string;
@@ -234,6 +236,7 @@ type NormalizedFrontendRuntimeConfig = {
 type NormalizedFrontendConfig = {
   a11y: NormalizedFrontendA11yConfig;
   assets: NormalizedFrontendAssetsConfig;
+  cms: NormalizedFrontendCmsConfig;
   components: NormalizedFrontendComponentsConfig;
   containers: NormalizedFrontendContainers;
   css: string;
@@ -261,6 +264,7 @@ type LoadFrontendConfigOptions = {
   searchFrom?: string;
 };
 
+export type { FrontendCmsConfig, NormalizedFrontendCmsConfig };
 export type {
   FrontendA11yConfig,
   NormalizedFrontendA11yConfig,

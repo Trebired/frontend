@@ -93,6 +93,7 @@ function packageExportEntries(packageJson) {
   const exportKeys = Object.keys(packageJson.exports || {}).sort();
   assert.deepEqual(exportKeys, [
       ".",
+      "./cms",
       "./code",
       "./config",
       "./editor",

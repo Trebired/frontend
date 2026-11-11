@@ -5,6 +5,7 @@ import { DEFAULT_FRONTEND_COMPONENTS_CONFIG } from "./../component-tokens.js";
 import { DEFAULT_FRONTEND_SCALES_CONFIG } from "./scales.js";
 import { defaultIconAliases } from "#rqcj8y6keks2";
 import { EMPTY_LANGUAGE_CONFIG } from "./../language.js";
+import { DISABLED_CMS_CONFIG } from "./../cms.js";
 import { EMPTY_MONEY_CONFIG } from "./../money.js";
 import { FRONTEND_PREFIX, frontendDataAttr } from "#5vbaqj4pirp3";
 import { PACKAGE_VERSION } from "./../package.js";
@@ -72,6 +73,7 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
             specs: Object.freeze([]) as unknown as string[],
         }),
     }),
+    cms: DISABLED_CMS_CONFIG,
     components: DEFAULT_FRONTEND_COMPONENTS_CONFIG,
     containers: Object.freeze({}),
     css: "",

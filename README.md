@@ -423,6 +423,54 @@ button({ onClick: () => updateUrl("/mail/sent") });
 
 The server route has to accept the same paths, because a reload asks it for them.
 
+### Content Management
+
+`@trebired/frontend/cms` lets an editor application change the content of a site without touching its code. The developer decides what is editable and within which limits; the editor changes values only inside those limits.
+
+Turn it on in `.trebired/frontend/config.ts`. It is off by default, and with it off the components render their content and nothing else:
+
+```ts
+cms: {
+  enabled: true,
+  contentDir: "content",
+  editorOrigins: ["https://editor.example"],
+},
+```
+
+Declare the content model once with `defineContent`. Ids are lowercase and dotted. A collection is a list of items with its own fields, bounded by `min` and `max`; `slugFrom` gives every item a slug, so a list of posts, team members or questions can each have a page of its own:
+
+```ts
+const content = defineContent({
+  fields: {
+    "home.title": cmsField.text({ label: { cs: "Nadpis", en: "Title" }, maxLength: 80, required: true }),
+    "home.body": cmsField.richText({ label: "Body", marks: ["bold", "italic", "link"] }),
+    "home.photo": cmsField.image({ label: "Photo", aspect: 16 / 9 }),
+  },
+  collections: {
+    posts: cmsCollection({
+      label: "Posts",
+      slugFrom: "title",
+      fields: { title: cmsField.text({ label: "Title", required: true }), body: cmsField.richText({ label: "Body" }) },
+    }),
+  },
+});
+```
+
+Field kinds are `text`, `richText`, `image`, `link`, `date`, `number` and `toggle`. Rich text is stored as paragraphs and lists of runs, never as HTML, and only the marks the field allows pass validation.
+
+Wrap the page in `CmsProvider` with the schema, the content document and the locale, and render values with `CmsText`, `CmsRichText`, `CmsImage`, `CmsLink` and `CmsCollection`. `useCmsValue`, `useCmsCollection` and `useCmsItem` read the same values for anything the components do not cover. Pass `enabled` from the app's config on the server and in the browser alike, so both render the same markup.
+
+```tsx
+<CmsProvider document={document} enabled={cms.enabled} locale={lang} schema={content}>
+  <CmsText as="h1" field="home.title" />
+  <CmsCollection id="posts" render={(post) => <CmsText field={post.field("title")} />} />
+</CmsProvider>
+```
+
+Published content is a file in the app's repository: `<contentDir>/content.json` holds every value per locale, and `<contentDir>/media/` holds the images. `serializeCmsDocument` writes it in one key order, so a change is a small diff. `readCmsDocument` and `copyCmsMedia` from `@trebired/frontend/server` read the file and copy the images into the build, and `writeCmsManifest` writes the content model to `.well-known/<prefix>-cms/schema.json` in the build output, where an editor reads it.
+
+Edit mode loads only inside a frame whose parent is one of `editorOrigins` and that opened the page with the edit parameter and a nonce. It outlines editable fields and collections, edits plain text in place within its limits, reports every other selection to the parent, and shows the draft content the parent sends without a rebuild. The site never writes content itself; the editor publishes by committing the content file.
+
 ## Configuration
 
 ### Design
@@ -642,7 +690,7 @@ Entrypoints:
 - `@trebired/frontend/config`
 - `@trebired/frontend/react`
 - `@trebired/frontend/server`
-- `@trebired/frontend/code`, `/editor`, `/explorer`, `/fullscreen`, `/graph`, `/live`, `/logs`, `/realtime`, `/socket`
+- `@trebired/frontend/cms`, `/code`, `/editor`, `/explorer`, `/fullscreen`, `/graph`, `/live`, `/logs`, `/realtime`, `/socket`
 
 The root entrypoint exports browser runtime binders, namespace helpers, and static icon cache registration. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers plus build-time static icon cache helpers.
 

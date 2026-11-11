@@ -181,6 +181,9 @@
       "#2zdl1lzrgn6p": [
         "../../../src/actions/forms.ts"
       ],
+      "#2zmjqhu8wafs": [
+        "../../../src/cms/schema.ts"
+      ],
       "#2zwv053mg3ba": [
         "../../../src/a11y/boot.ts"
       ],
@@ -195,6 +198,9 @@
       ],
       "#33o6e7mug9pg": [
         "../../../src/flash/index.ts"
+      ],
+      "#34txhshloxjd": [
+        "../../../src/config/cms.ts"
       ],
       "#36iuc8ncbccq": [
         "../../../src/inputs/upload/manager.ts"
@@ -391,6 +397,9 @@
       "#5m0t5qgtjxkc": [
         "../../../src/config/text-document.ts"
       ],
+      "#5nqfhipue5ma": [
+        "../../../src/cms/edit.ts"
+      ],
       "#5ssjolog3tb8": [
         "../../../src/settings/save-policy/bindings.ts"
       ],
@@ -447,6 +456,9 @@
       ],
       "#6khlfwer4ydm": [
         "../../../src/styles/utils/_tone.scss"
+      ],
+      "#6l554yamnxel": [
+        "../../../src/cms/document.ts"
       ],
       "#6lnzlptmw1nk": [
         "../../../src/graph/advanced/graph/i18n/en.ts"
@@ -589,6 +601,9 @@
       "#8rm3pzkj3gge": [
         "../../../src/modal/index.ts"
       ],
+      "#8rrkb7azx36b": [
+        "../../../scripts/verify/frontend/surface.mjs"
+      ],
       "#8sesrhm9y9pv": [
         "../../../src/primitives/components/card/parts.tsx"
       ],
@@ -618,6 +633,9 @@
       ],
       "#96zxzatmrhnt": [
         "../../../src/config/palette.ts"
+      ],
+      "#9bgiz7mq68ss": [
+        "../../../src/cms/manifest.ts"
       ],
       "#9dwb43q67cb1": [
         "../../../src/config/types/components.ts"
@@ -706,6 +724,9 @@
       "#absdhgg7omca": [
         "../../../src/document/components/index.tsx"
       ],
+      "#agf1mlh4omde": [
+        "../../../src/cms/markers.ts"
+      ],
       "#air3o8hiiqf1": [
         "../../../scripts/verify/frontend/bottom-bar.mjs"
       ],
@@ -750,6 +771,9 @@
       ],
       "#b4y4bvkt749j": [
         "../../../src/static-icons.ts"
+      ],
+      "#b5agg8qj6p0b": [
+        "../../../src/cms/protocol.ts"
       ],
       "#b86twz2e2cb3": [
         "../../../src/realtime/connections.ts"
@@ -912,6 +936,9 @@
       ],
       "#dhm2bwxenzs7": [
         "../../../scripts/verify/frontend/sections.mjs"
+      ],
+      "#diq0w1cq3ykb": [
+        "../../../src/server/cms.ts"
       ],
       "#dkyubvme49ju": [
         "../../../src/server/sidebar/source.ts"
@@ -1135,6 +1162,9 @@
       "#fzfi2jetusop": [
         "../../../src/logs/i18n/cs.ts"
       ],
+      "#g009kjuysp6i": [
+        "../../../src/cms/store.ts"
+      ],
       "#g0evlkujhynl": [
         "../../../scripts/verify/frontend/copy.mjs"
       ],
@@ -1300,6 +1330,9 @@
       "#i9wurh0pb6bq": [
         "../../../src/explorer/components/file/tree/keys.ts"
       ],
+      "#iam9x6ou22ty": [
+        "../../../src/cms/runtime.ts"
+      ],
       "#ieim4iimrwal": [
         "../../../src/layout/index.ts"
       ],
@@ -1383,6 +1416,9 @@
       ],
       "#k0q2s2kidqtq": [
         "../../../src/language/format.ts"
+      ],
+      "#k20c1urredpc": [
+        "../../../src/config/types/cms.ts"
       ],
       "#k23mb8n3ma0d": [
         "../../../src/config/breakpoints.ts"
@@ -1789,6 +1825,9 @@
       "#rb90fwqwv6e6": [
         "../../../src/layout/components/site/link.tsx"
       ],
+      "#rbfxbnl7x75x": [
+        "../../../scripts/verify/frontend/cms.mjs"
+      ],
       "#rctntu2uqs8e": [
         "../../../src/surface/styles/layout.scss"
       ],
@@ -1812,6 +1851,9 @@
       ],
       "#rmmv8vkb3dbt": [
         "../../../src/react/boot.tsx"
+      ],
+      "#rmwm869hiz77": [
+        "../../../src/cms/values.ts"
       ],
       "#rntxe2b9ybvj": [
         "../../../src/editor/viewer/hooks.ts"
@@ -2245,11 +2287,17 @@
       "#ybhrhm4jyu26": [
         "../../../src/sidebar/live.ts"
       ],
+      "#ybm060ryiqs2": [
+        "../../../src/cms/index.ts"
+      ],
       "#yf1o70q7eshd": [
         "../../../src/tooltip/index.ts"
       ],
       "#yfxtmn9z4sx7": [
         "../../bundler/config.ts"
+      ],
+      "#ygkbsu5v5x52": [
+        "../../../src/cms/react.tsx"
       ],
       "#yhpwd8s1vkmw": [
         "../../../src/config/default/component-tokens.ts"
