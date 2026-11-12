@@ -197,9 +197,12 @@ async function verifyButtonVariantVocabulary(importDist) {
     assert.equal(html.includes(gone), false, `${gone} is not part of the button vocabulary`);
   }
   assert.ok(html.includes("tbf-locale-trigger"), "the locale switcher is its own control");
+  const iconButton = renderToStaticMarkup(react.button({ children: "x", icon: true }));
+  const iconButtonClass = /class="([^"]*)"/u.exec(iconButton)[1];
+  const trigger = renderToStaticMarkup(h(react.LocaleSwitcher, { lang: "en", locales: [{ code: "en", label: "English" }] }));
   assert.ok(
-    html.includes("tbf-btn") && html.includes("tbf-chrome"),
-    "the locale trigger is the chrome button variant, which is where its border, fill and hover are configured",
+    trigger.includes(`class="${iconButtonClass} `) && !trigger.includes("tbf-chrome"),
+    "the locale trigger is the default button variant, like the theme button beside it",
   );
   assertNoCustomElementTags(html, "rendered button variants");
 }

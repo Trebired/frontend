@@ -1,6 +1,5 @@
 import { Icon } from "#lbkpzw8nphru";
 import { languageDirection } from "./direction.js";
-import { primitiveButtonClassName } from "./../primitives/components/classes.js";
 import { button } from "#6hfutrhvm6x6";
 import { classNames } from "#ndsvdqv80epr";
 import { localeBase, localeTag, normalizedLang, text, translate } from "./shared.js";
@@ -123,31 +122,25 @@ function localeTrigger(triggerId: string, popoverId: string, props: LocaleSwitch
   const current = normalizedLang(props.lang);
   const compact = props.trigger !== "locale";
   const label = translate(current, "label");
-  return (
-    <button
-    type="button"
-    id={triggerId}
-    className={primitiveButtonClassName({
-          className: classNames(frontendClassName("locale-trigger"), props.className),
-          icon: compact,
-          tooltip: compact,
-          variant: props.variant || "chrome",
-    })}
-    aria-controls={popoverId}
-    aria-haspopup="menu"
-    aria-expanded="false"
-    aria-label={label}
-    aria-description={compact ? label : undefined}
-    {...frontendDataAttrs({
+  return button({
+      "aria-controls": popoverId,
+      "aria-description": compact ? label : undefined,
+      "aria-expanded": "false",
+      "aria-haspopup": "menu",
+      "aria-label": label,
+      children: localeTriggerFace(props, current),
+      className: classNames(frontendClassName("locale-trigger"), props.className),
+      icon: compact,
+      id: triggerId,
+      tooltip: compact ? label : undefined,
+      type: "button",
+      variant: props.variant,
+      ...frontendDataAttrs({
           "locale-trigger-compact": compact ? "true" : undefined,
           "popover-indicator": compact ? "false" : undefined,
           "popover-trigger": "",
-          "tooltip": compact ? label : undefined,
-    })}
-    >
-    {localeTriggerFace(props, current)}
-    </button>
-  );
+      }),
+  });
 }
 
 function localeOptionButton(

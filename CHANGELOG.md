@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 30.2.1
+
+- The locale switcher's trigger renders through `button()` like the theme button beside it, with the same classes. It was forced to the `chrome` variant in the header and to `secondary` in the product sidebar, so it never matched. A `variant` passed to `locale_switcher` still wins.
+
 ## 30.2.0
 
 - Added `@trebired/frontend/cms`, a content system an editor application drives. `defineContent` declares fields and collections with their limits, `CmsProvider` and the `CmsText`, `CmsRichText`, `CmsImage`, `CmsLink` and `CmsCollection` components render them, and `validateCmsDocument` checks a content document against the model in every locale.

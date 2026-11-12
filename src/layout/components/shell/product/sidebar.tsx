@@ -161,7 +161,7 @@ function ProductShellSidebarDefaultControls(
         theme={theme}
         />
     )}
-    language={locale_switcher({ id: `${prefix}_lang_switch_btn`, lang, variant: "secondary" })}
+    language={locale_switcher({ id: `${prefix}_lang_switch_btn`, lang })}
     about={(
         <ProductShellAboutButton
         href={aboutHref}
