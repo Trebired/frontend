@@ -1,4 +1,3 @@
-import { io } from "#7bf07c0wd67q";
 import { debugLogs } from "./debug.js";
 import { logsT, safeStr } from "./utils.js";
 import { describeEntryConfigCheck, entryMatchesConfig } from "./identity.js";
@@ -8,6 +7,8 @@ import {
   trimLoadedLogsForCollapsedView,
 } from "./socket/entries.js";
 import { incrementTotalStats } from "./socket/stats.js";
+import { createRoomLogsTransport, requestRoomLogs } from "./socket/room.js";
+import { logAcceptedBootstrap, shouldIgnoreBootstrap } from "./socket/checks.js";
 import { LogsHandlers, LogsPage } from "./types.js";
 
 export { mergeLogEntries, trimLoadedLogsForCollapsedView };
@@ -46,13 +47,11 @@ export function buildSubscribePayload(page: LogsPage, options: any = null) {
 }
 
 export function subscribe(page: LogsPage, options: any = null) {
-  if (!page.state.socket) return;
+  if (!page.state.socket || !page.state.roomCallbacks) return;
   const payload = buildSubscribePayload(page, options);
-  debugLogs(page, "subscribe", {
-      event: page.config.subscribeEvent,
-      payload,
-  });
-  page.state.socket.emit(page.config.subscribeEvent, payload);
+  if (payload.bootstrap === false) return;
+  debugLogs(page, "subscribe", { channel: page.config.channel, payload, room: page.config.room });
+  void requestRoomLogs(page.state.socket, payload, page.state.roomCallbacks);
 }
 
 function resolveConnectionHandlers(handlers: LogsHandlers) {
@@ -97,27 +96,8 @@ function scheduleUiRefresh(context) {
   );
 }
 
-function requiresDeploymentScope(context) {
-  const hasCustomSubscribePayload =
-  typeof context.config.subscribePayload === "function";
-  return (
-    !hasCustomSubscribePayload &&
-      safeStr(context.config.socketNamespace || "/deployments/logs") ===
-    "/deployments/logs"
-  );
-}
-
 function hasMissingConnectionScope(context) {
-  const hasCustomSubscribePayload =
-  typeof context.config.subscribePayload === "function";
-  if (!context.config.config_key) return true;
-  if (requiresDeploymentScope(context) && !context.config.deploymentId)
-  return true;
-  return (
-    !hasCustomSubscribePayload &&
-      !context.config.allowEmptyScopeIds &&
-      !Object.keys(context.config.scopeIds || {}).length
-  );
+  return !context.config.channel || !context.config.room;
 }
 
 function markConnectionSkipped(context) {
@@ -131,26 +111,15 @@ function markConnecting(context) {
   context.renderPage(context.page);
 }
 
-function createLogsSocket(context) {
-  const socketOptions =
-  context.config.socketOptions &&
-    typeof context.config.socketOptions === "object"
-  ? context.config.socketOptions
-  : {};
-  return io(context.config.socketNamespace || "/deployments/logs", socketOptions);
-}
-
 function startBootstrapTimer(context) {
   context.bootstrapTimer = setTimeout(function() {
       if (context.state.didBootstrap) return;
       context.state.didBootstrap = true;
       context.state.socketMessage = "";
       debugLogs(context.page, "bootstrap:timeout", {
-          namespace: context.config.socketNamespace,
+          channel: context.config.channel,
           config_key: context.config.config_key,
-          connected: Boolean(
-            context.state.socket && context.state.socket.connected === true,
-          ),
+          room: context.config.room,
       });
       context.renderPage(context.page);
     }, 2500);
@@ -179,40 +148,6 @@ function acceptBootstrapLogs(context, data, matchingLogs) {
   if (state.isFollowingBottom && !state.isHistoryExpanded) {
     state.forceBottomVersion = Number(state.forceBottomVersion || 0) + 1;
   }
-}
-
-function logAcceptedBootstrap(context, data, incomingLogs, matchingLogs) {
-  debugLogs(context.page, "bootstrap:accepted", {
-      payload_config_key: safeStr(data.config_key),
-      expected_config_key: safeStr(context.config.config_key),
-      total_logs: incomingLogs.length,
-      matching_logs: matchingLogs.length,
-      sample_entry_config_keys: incomingLogs.slice(0, 5).map(function(entry) {
-          return safeStr(entry && entry.config_key);
-      }),
-      sample_messages: incomingLogs.slice(0, 3).map(function(entry) {
-          return safeStr(entry && entry.message);
-      }),
-  });
-}
-
-function shouldIgnoreBootstrap(context, data) {
-  if (!data || typeof data !== "object") {
-    debugLogs(context.page, "bootstrap:ignored", {
-        reason: "invalid-payload",
-        data,
-    });
-    return true;
-  }
-  if (safeStr(data.config_key) === safeStr(context.config.config_key))
-  return false;
-  debugLogs(context.page, "bootstrap:ignored", {
-      reason: "config-key-mismatch",
-      payload_config_key: safeStr(data.config_key),
-      expected_config_key: safeStr(context.config.config_key),
-      log_count: Array.isArray(data.logs) ? data.logs.length : 0,
-  });
-  return true;
 }
 
 function handleLogsBootstrap(context, data) {
@@ -291,26 +226,17 @@ function handleConnectError(context) {
   scheduleUiRefresh(context);
 }
 
-function bindLogsSocketEvents(context, socket) {
-  socket.on("connect", function() {
-      debugLogs(context.page, "socket:connect", {
-          namespace: context.config.socketNamespace,
-          config_key: context.config.config_key,
-      });
-      subscribe(context.page);
-  });
-  socket.on("bootstrap", (data) => handleLogsBootstrap(context, data));
-  socket.on("log", (entry) => handleLogEntry(context, entry));
-  socket.on("disconnect", () => handleLogsDisconnect(context));
-  socket.on("connect_error", () => handleConnectError(context));
-}
-
-function subscribeIfAlreadyConnected(context, socket) {
-  if (socket.connected !== true) return;
-  debugLogs(context.page, "socket:already-connected", {
-      namespace: context.config.socketNamespace,
-      config_key: context.config.config_key,
-  });
+function connectRoomLogs(context) {
+  const callbacks = {
+    onBootstrap: (data) => handleLogsBootstrap(context, data),
+    onConnectError: () => handleConnectError(context),
+    onDisconnect: () => handleLogsDisconnect(context),
+    onError: () => handleConnectError(context),
+    onLog: (entry) => handleLogEntry(context, entry),
+  };
+  context.state.roomCallbacks = callbacks;
+  context.state.socket = createRoomLogsTransport(context.config.channel, context.config.room, callbacks);
+  startBootstrapTimer(context);
   subscribe(context.page);
 }
 
@@ -321,9 +247,5 @@ export function connectLogs(page: LogsPage, handlers: LogsHandlers = {}) {
     return;
   }
   markConnecting(context);
-  const socket = createLogsSocket(context);
-  context.state.socket = socket;
-  startBootstrapTimer(context);
-  bindLogsSocketEvents(context, socket);
-  subscribeIfAlreadyConnected(context, socket);
+  connectRoomLogs(context);
 }

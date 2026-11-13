@@ -32,10 +32,12 @@ function stripGapClasses(value: string) {
 function liveCardNode(props: BodyProps, node: ReactNode) {
   const kind = toText(props.live?.kind);
   const id = toText(props.live?.id);
-  if (!kind || !id) return node;
+  const channel = toText(props.live?.channel);
+  if (!kind || !id || !channel) return node;
   return (
     <span
     {...frontendDataAttrs({ "live-card": "" })}
+    {...frontendDataAttrs({ "live-channel": channel })}
     {...frontendDataAttrs({ "live-id": id })}
     {...frontendDataAttrs({ "live-kind": kind })}
     style={{ display: "contents" }}
@@ -195,6 +197,7 @@ function selectCardNode(
   return (
     <div
     {...((props.dataAttrs || {}) as attr_map)}
+    id={props.id}
     aria-disabled={disabled ? "true" : undefined}
     aria-selected={selected ? "true" : "false"}
     className={className}
@@ -271,6 +274,7 @@ function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNo
   const rendered = (
     <div
     {...((props.dataAttrs || {}) as attr_map)}
+    id={props.id}
     className={baseClassName}
     {...frontendDataAttrs({ "card-row": "" })}
     {...activationProps(props)}

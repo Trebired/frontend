@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { appCapture, serverResponseProbe } from "./server/probe.mjs";
 import { verifyFrontendServerFramework } from "./server/services.mjs";
 import { verifyFallbackServer } from "./server/fallback.mjs";
-import { verifyLiveSocketServer } from "./server/live-socket.mjs";
 import {
   verifyPerformanceServer,
   verifyReactRenderServer,
@@ -15,7 +14,6 @@ async function verifyFrontendServer(context) {
   await verifyThemeServer(server);
   await verifyLanguageServer(server);
   await verifyFrontendServerFramework(server);
-  await verifyLiveSocketServer(server);
   verifySidebarServer(server);
   verifyNavigationServer(server);
   verifyTabRedirectServer(server, root);

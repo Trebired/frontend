@@ -23,8 +23,8 @@ function normalizeConfigSignature(config: any) {
       config_key: safeStr(src.config_key),
       deploymentId: safeStr(src.deploymentId),
       logsDataUrl: safeStr(src.logsDataUrl),
-      socketNamespace: safeStr(src.socketNamespace),
-      subscribeEvent: safeStr(src.subscribeEvent),
+      room: safeStr(src.room),
+      channel: safeStr(src.channel),
       platformLogs: src.platformLogs !== false,
       status: safeStr(src.status),
       logsLength: Array.isArray(src.deploymentLogs)

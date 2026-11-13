@@ -22,6 +22,8 @@ import type {
   DynamicSidebarResponseItem,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
+import { defaultLiveSubscribe } from "#lytaqsyqfq8e";
+import { readSidebarRoom } from "#tp79ea6klq0c";
 import { onPageChange } from "#o9lroe7t0ma6";
 
 const liveRoots = new Set<HTMLElement>();
@@ -111,9 +113,25 @@ function collectDynamicSidebarRooms() {
   return rooms;
 }
 
+function sidebarSyncChannel() {
+  for (const root of visibleLiveRoots()) {
+    const channel = textValue(liveConfigs.get(root)?.channel);
+    if (channel) return channel;
+  }
+  return "";
+}
+
 async function requestDynamicSidebarSync(descriptors: DynamicSidebarDescriptor[]) {
-  const { requestSidebarSync } = await import("#b86twz2e2cb3");
-  return await requestSidebarSync(descriptors) as DynamicSidebarResponseItem[] | null;
+  const channel = sidebarSyncChannel();
+  if (!channel) return null;
+  const { connectChannel } = await import("@trebired/sockets/client");
+  const response = await connectChannel(channel).emitAck<{data?:{sidebars?:unknown[]};ok?:boolean}>(
+    "sidebar:sync",
+    { sidebars: descriptors },
+  );
+  if (!response || response.ok !== true) return null;
+  const sidebars = response.data && Array.isArray(response.data.sidebars) ? response.data.sidebars : [];
+  return sidebars as DynamicSidebarResponseItem[];
 }
 
 async function requestDynamicSidebarCounts() {
@@ -168,10 +186,12 @@ function scheduleDynamicSidebarRefresh(delayMs = liveOptions.refreshDelayMs || 1
 function syncDynamicSidebarRooms() {
   unsubscribeRooms.forEach((unsubscribe) => unsubscribe());
   unsubscribeRooms = [];
-  if (typeof liveOptions.subscribe !== "function") return;
+  const subscribe = liveOptions.subscribe || defaultLiveSubscribe;
   const eventName = liveOptions.event || "sidebar";
   unsubscribeRooms = collectDynamicSidebarRooms()
-  .map((room) => liveOptions.subscribe?.(room, (payload) => {
+  .map((address) => readSidebarRoom(address))
+  .filter((address) => address !== null)
+  .map((address) => subscribe(address.channel, address.room, (payload) => {
         if (textValue((payload as { event?: unknown } | null)?.event) !== eventName) return;
         scheduleDynamicSidebarRefresh(liveOptions.refreshDelayMs || 120);
   }))

@@ -55,6 +55,7 @@ export {
   resolveNamedDropdownInput,
   searchManager,
   setDropdownOptionConfig,
+  setDropdownOptions,
   switchDisclosureEntry,
   syncFromHidden,
   updateDropdownRootConfig,
@@ -121,7 +122,6 @@ export {
 } from "#ieim4iimrwal";
 export type *from "#ieim4iimrwal";
 export type *from "#obwq3g3n1oe3";
-export type *from "#savw6pzo5sa6";
 export {
   configureSpa,
   createLiveOverlayState,

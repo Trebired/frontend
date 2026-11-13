@@ -45,8 +45,8 @@ function isFullReloadOptOut(element: Element | null) {
 
 function spaNavigationAdapter() {
   return {
-    navigate(url: string) {
-      return softRedirect(url);
+    navigate(url: string, options: { highlight?: string } = {}) {
+      return softRedirect(url, { highlight: options.highlight });
     },
     shouldFullReload(trigger: HTMLElement) {
       return isFullReloadOptOut(trigger);
@@ -67,7 +67,8 @@ export {
 } from "./links.js";
 export { createLiveOverlayState, removeStalePortaledOverlays } from "./overlays.js";
 export { currentPage, onPageChange } from "./page.js";
-export { rehydrate, softRedirect, softRefresh, softReload } from "./navigate.js";
+export { rehydrate, softRedirect, softReload } from "./navigate.js";
+export { refreshElements, softRefresh } from "./refresh.js";
 export { updateUrl } from "./update_url.js";
 export type { UpdateUrlOptions, UrlQueryPatch } from "./update_url.js";
 export { runSpaRebind, setSpaRebind } from "./config.js";

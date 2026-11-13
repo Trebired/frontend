@@ -113,15 +113,20 @@ async function verifyFrontendFrameworkAttach(server) {
   const attached = server.attachFrontendFramework(app, { navigation: true });
   assert.equal(attached.services.navigation, true);
   assert.deepEqual(app.posts.map((route) => route.path), []);
+  const unowned = server.createSidebarSource({ channel: "/rooms", counts: () => ({}), rooms: (type) => [`unowned:${type}`] });
+  const dropped = await unowned.resolve({ items: [{ params: {}, path: "/apps/1", side: "left", type: "app" }], req: {}, res: {} });
+  assert.equal(dropped[0].resolved, false, "a plain room no channel owns is dropped");
   const source = server.createSidebarSource({
+      channel: "/rooms",
       counts: ({ type }) => ({ type }),
-      rooms: (type) => [`room:${type}`],
+      rooms: (type) => [server.sidebarRoom("/rooms", `room:${type}`)],
   });
   const items = [{ params: {}, path: "/apps/1", rooms: [], side: "left", type: "app" }];
   const sidebars = await source.resolve({ items, req: {}, res: {} });
   assert.equal(sidebars[0].key.startsWith("left:app:/apps/1"), true);
   assert.deepEqual(sidebars[0].entity_counts, { type: "app" });
   assert.equal(sidebars[0].resolved, true);
+  assert.deepEqual(server.readSidebarRoom("/rooms room:app"), { channel: "/rooms", room: "room:app" });
 }
 
 function verifyStaticServer(server) {

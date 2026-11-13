@@ -123,8 +123,8 @@ async function verifyLiveScopedSubscriptionDisposal(context) {
   const live = await context.importDist("live");
   const { softRedirect } = await context.importDist("spa");
   document.body.innerHTML = simpleLiveMarkup("before", [
-      '<div data-tbf-live-card data-tbf-live-kind="task" data-tbf-live-id="1">Card</div>',
-      '<live-list data-tbf-live-list-room="tasks"></live-list>',
+      '<div data-tbf-live-card data-tbf-live-channel="/tasks" data-tbf-live-kind="task" data-tbf-live-id="1">Card</div>',
+      '<live-list data-tbf-live-list-channel="/tasks" data-tbf-live-list-room="tasks:all"></live-list>',
     ].join(""));
   let unsubscribed = 0;
   const subscribe = () => () => {

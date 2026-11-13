@@ -28,6 +28,7 @@ import { bindPopovers } from "./popover/index.js";
 import { bindPrimitiveControllers } from "./primitives/index.js";
 import { bindReveals, type RevealOptions } from "./reveal/index.js";
 import { bindFrost } from "./frost/index.js";
+import { applyQueuedHighlight } from "./highlight/index.js";
 import { type ProgressBindOptions, type ProgressHandle } from "./progress/index.js";
 import { bindSidebars, type SidebarRuntimeOptions } from "./sidebar/index.js";
 import { bindThemeRuntime, type ThemeRuntimeOptions } from "./theme/index.js";
@@ -169,6 +170,7 @@ function bindFrontendRuntime(
   });
   setSpaRebind((nextRoot) => bindFrontendRuntimeOnce(nextRoot, options));
   bindFrontendRuntimeOnce(scope, options);
+  applyQueuedHighlight();
   logger.info("runtime", "bound", {
       observe: options.observe !== false,
   });

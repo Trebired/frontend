@@ -104,9 +104,7 @@ function packageExportEntries(packageJson) {
       "./live",
       "./logs",
       "./react",
-      "./realtime",
       "./server",
-      "./socket",
       "./static-icons"
   ]);
   for (const key of exportKeys) {

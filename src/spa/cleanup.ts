@@ -39,9 +39,20 @@ function runPageCleanups(removed: HTMLElement | null) {
   }
 }
 
+function runCleanupsWithin(container: HTMLElement) {
+  for (const entry of Array.from(entries)) {
+    if (!entry.root || entry.root === container || !container.contains(entry.root)) continue;
+    entries.delete(entry);
+    try {
+      entry.dispose();
+    } catch {
+    }
+  }
+}
+
 function pageCleanupCount() {
   return entries.size;
 }
 
-export { pageCleanupCount, registerPageCleanup, runPageCleanups };
+export { pageCleanupCount, registerPageCleanup, runCleanupsWithin, runPageCleanups };
 export type { PageCleanup };

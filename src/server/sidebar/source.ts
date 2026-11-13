@@ -23,6 +23,7 @@ type SidebarSourceContext = {
 };
 
 type SidebarSourceOptions = {
+  channel: string;
   counts: (context: SidebarSourceContext) => unknown | Promise<unknown>;
   logger?: FrontendServerLoggerInput;
   rooms: (type: string, params: SidebarLiveParams) => readonly string[];
@@ -90,10 +91,11 @@ function createSidebarSource(options: SidebarSourceOptions): SidebarSource {
 
   async function hydrate(context: Parameters<SidebarSource["hydrate"]>[0]) {
     const type = serverString(context.sidebar.type).trim();
-    const live = buildSidebarLiveDescriptor(context.side, type, context.req, protocol);
-    if (!live) return { ...context.sidebar, entity_counts: {}, live: null };
+    const descriptor = buildSidebarLiveDescriptor(context.side, type, context.req, protocol);
+    if (!descriptor) return { ...context.sidebar, entity_counts: {}, live: null };
+    const live = { ...descriptor, channel: serverString(options.channel).trim() };
     try {
-      const counts = await options.counts({ ...live, req: context.req, res: context.res });
+      const counts = await options.counts({ ...descriptor, req: context.req, res: context.res });
       return { ...context.sidebar, entity_counts: serverObject(counts), live };
     } catch (error) {
       warn("sidebar counts failed", type, error);

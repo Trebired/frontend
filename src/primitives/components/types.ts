@@ -212,8 +212,9 @@ type BodyProps = {
   className?: string;
   dataAttrs?: Record<string, unknown>;
   extra?: ReactNode;
+  id?: string;
   icon?: ReactNode;
-  live?: { id: string; kind: string };
+  live?: { channel: string; id: string; kind: string };
   meta?: ReactNode;
   onActivate?: () => void;
   search?: Record<string, unknown>;

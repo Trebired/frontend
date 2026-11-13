@@ -57,7 +57,7 @@ const LAZY_SYSTEMS: LazySystem[] = [
       (await import("./../live/lazy.js")).bind(scope, context.subscribe);
     },
     name: "live",
-    presence: () => `${frontendDataSelector("live-card")}, live-list${frontendDataSelector("live-list-room")}`,
+    presence: () => `${frontendDataSelector("live-card")}, live-list${frontendDataSelector("live-list-room")}, ${frontendDataSelector("live-room")}`,
   },
 ];
 

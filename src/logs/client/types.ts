@@ -125,9 +125,8 @@ export interface LogsConfig {
   deploymentLogs?: LogEntry[];
   logStyle?: LogStyle | null;
   totalStats?: LogsStatsSummary | null;
-  socketNamespace?: unknown;
-  socketOptions?: Record<string, unknown>|null;
-  subscribeEvent?: unknown;
+  room?: unknown;
+  channel?: unknown;
   platformLogs?: boolean;
   platformLogsDefaultOff?: boolean;
   allowFrontendLogs?: boolean;
@@ -166,9 +165,8 @@ export interface NormalizedLogsConfig {
   deploymentLogs: LogEntry[];
   logStyle: LogStyle | null;
   totalStats: LogsStatsSummary | null;
-  socketNamespace: string;
-  socketOptions?: Record<string, unknown>|null;
-  subscribeEvent: string;
+  room: string;
+  channel: string;
   platformLogs: boolean;
   platformLogsDefaultOff: boolean;
   allowFrontendLogs: boolean;
@@ -198,6 +196,7 @@ export interface LogsPage {
     logStyle: LogStyle | null;
     totalStats?: LogsStatsSummary | null;
     socket: any;
+    roomCallbacks?: any;
     pagedLiveSocket?: any;
     didBootstrap: boolean;
     didPagedBootstrap?: boolean;

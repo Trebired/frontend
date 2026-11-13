@@ -1,4 +1,9 @@
 import assert from "node:assert/strict";
+import { verifyHighlight } from "./highlight.mjs";
+import { verifyUnsavedWorkStaysSoft } from "./unsaved.mjs";
+import { verifyLiveRegionsRefreshPerElement } from "./live/regions.mjs";
+import { verifyModalTrigger } from "./live/modal_trigger.mjs";
+import { verifySetDropdownOptions } from "./live/dropdown_options.mjs";
 
 async function verifyActionConfetti(importDist) {
   const { submitActionButton } = await importDist("actions");
@@ -99,6 +104,11 @@ async function verifyActionFormSubmitsOnce(importDist) {
 
 async function verifyFrontendActions(context) {
   await verifyRuntimeDoesNotInterceptAnchorNavigation(context.importDistRoot);
+  await verifyHighlight(context);
+  await verifyUnsavedWorkStaysSoft(context);
+  await verifyLiveRegionsRefreshPerElement(context);
+  await verifyModalTrigger(context);
+  await verifySetDropdownOptions(context);
   await verifyActionConfetti(context.importDist);
   await verifyActionFormSubmitsOnce(context.importDist);
 }

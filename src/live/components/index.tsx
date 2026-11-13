@@ -4,8 +4,11 @@ import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4
 
 type LiveRegionProps = HTMLAttributes<HTMLElement> & {
   as?: "div" | "main" | "section";
+  channel?: string;
   children?: ReactNode;
+  event?: string | string[];
   region: string;
+  room?: string;
   skip?: boolean;
 };
 
@@ -24,13 +27,19 @@ type LiveIslandStateProps = {
 };
 
 function LiveRegion(props: LiveRegionProps) {
-  const { as: Tag = "section", children, className, region, skip, ...rest } = props;
+  const { as: Tag = "section", channel, children, className, event, region, room, skip, ...rest } = props;
+  const events = Array.isArray(event) ? event.join(",") : event;
   return (
     <Tag
     {...rest}
     className={classNames(frontendClassName("live-region"), className)}
     {...frontendDataAttrs({ "live-region": region })}
     {...frontendDataAttrs({ "live-skip": dataBool(skip) })}
+    {...frontendDataAttrs({
+          "live-channel": room ? channel || undefined : undefined,
+          "live-event": room ? events || undefined : undefined,
+          "live-room": room || undefined,
+    })}
     >
     {children}
     </Tag>

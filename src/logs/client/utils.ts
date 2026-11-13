@@ -230,16 +230,8 @@ export function normalizeLogsConfig(
       (cfg as any).totalStats ||
         ((cfg as any).initialLogsPage && (cfg as any).initialLogsPage.stats),
     ),
-    socketNamespace:
-    safeStr((cfg as any).socketNamespace) || "/deployments/logs",
-    socketOptions:
-    (cfg as any).socketOptions &&
-      typeof(cfg as any).socketOptions === "object" &&
-      !Array.isArray((cfg as any).socketOptions)
-    ? { ...((cfg as any).socketOptions as Record<string, unknown>) }
-    : null,
-    subscribeEvent:
-    safeStr((cfg as any).subscribeEvent) || "subscribeDeployment",
+    room: safeStr((cfg as any).room),
+    channel: safeStr((cfg as any).channel),
     platformLogs: (cfg as any).platformLogs !== false,
     platformLogsDefaultOff: (cfg as any).platformLogsDefaultOff === true,
     allowFrontendLogs: (cfg as any).allowFrontendLogs === true,

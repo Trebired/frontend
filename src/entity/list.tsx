@@ -7,6 +7,7 @@ import { Title } from "#7ly3b59upz0n";
 
 type EntityListLive = {
   event?: string;
+  channel: string;
   room: string;
 };
 
@@ -88,10 +89,11 @@ function listBody<T>(props: EntityListProps<T>, familyKey: string, anchorId: str
 }
 
 function liveMarker(live: EntityListLive | undefined, anchorId: string) {
-  if (!live || !live.room) return null;
+  if (!live || !live.channel || !live.room) return null;
   return createElement("live-list", {
       hidden: true,
       [frontendDataAttr("live-list-anchor")]: anchorId,
+      [frontendDataAttr("live-list-channel")]: live.channel,
       [frontendDataAttr("live-list-event")]: text(live.event),
       [frontendDataAttr("live-list-room")]: live.room,
   });

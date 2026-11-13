@@ -52,6 +52,9 @@
       "#0mdb644lpzkk": [
         "../../../src/media/carousel-state.ts"
       ],
+      "#0n07kcsve07w": [
+        "../../../scripts/verify/frontend/live/modal_trigger.mjs"
+      ],
       "#0rl8rpgzssot": [
         "../../../src/primitives/components/classes.ts"
       ],
@@ -63,9 +66,6 @@
       ],
       "#0xdojsommovs": [
         "../../../src/graph/advanced/runtime/server.ts"
-      ],
-      "#0xorgttnobcf": [
-        "../../../src/server/live-socket.ts"
       ],
       "#0yc21f5ew13h": [
         "../../../src/progress/bars.ts"
@@ -151,9 +151,6 @@
       "#2eo44c56ebfi": [
         "../../../src/modal/components/index.tsx"
       ],
-      "#2fc46rdspg2t": [
-        "../../../scripts/verify/frontend/server/live-socket.mjs"
-      ],
       "#2kli5ltbqc2x": [
         "../../../src/hollow/shapes.ts"
       ],
@@ -177,6 +174,9 @@
       ],
       "#2w72xmq6rvza": [
         "../../../src/language/types.ts"
+      ],
+      "#2y38900wnejb": [
+        "../../../scripts/verify/frontend/live/regions.mjs"
       ],
       "#2zdl1lzrgn6p": [
         "../../../src/actions/forms.ts"
@@ -463,14 +463,14 @@
       "#6lnzlptmw1nk": [
         "../../../src/graph/advanced/graph/i18n/en.ts"
       ],
-      "#6ltyw193gvyw": [
-        "../../../src/realtime/socket.ts"
-      ],
       "#6mupcizo1mwq": [
         "../../../src/primitives/components/shared.tsx"
       ],
       "#6o6fqz7svsts": [
         "../../../src/icons/server-context.ts"
+      ],
+      "#6vced8qqft82": [
+        "../../../src/inputs/advanced/dropdown/static/options.ts"
       ],
       "#6wbag3hira71": [
         "../../../src/media/styles/index.scss"
@@ -480,9 +480,6 @@
       ],
       "#6y4s2stk8any": [
         "../../../scripts/verify/frontend/site/links.mjs"
-      ],
-      "#70l5p0ml3pgq": [
-        "../../../src/realtime/subscriptions.ts"
       ],
       "#733tpmda201o": [
         "../../../src/inputs/advanced/dropdown/static/i18n/cs.ts"
@@ -504,9 +501,6 @@
       ],
       "#7b8bn65jhw4r": [
         "../../../src/logs/client/identity.ts"
-      ],
-      "#7bf07c0wd67q": [
-        "../../../src/socket/index.ts"
       ],
       "#7gwlr4f85sic": [
         "../../../src/graph/advanced/runtime/chart.ts"
@@ -546,6 +540,9 @@
       ],
       "#7yo06l20dfgo": [
         "../../../src/actions/types.ts"
+      ],
+      "#80xip00xzctv": [
+        "../../../src/highlight/styles/index.scss"
       ],
       "#811iejbmdqof": [
         "../../../src/styles/utils/base.scss"
@@ -615,6 +612,9 @@
       ],
       "#8uylzkd7knm2": [
         "../../../src/primitives/components/quote.tsx"
+      ],
+      "#8xdkni5exuif": [
+        "../../../src/highlight/index.ts"
       ],
       "#8xqk8z5czce2": [
         "../../../src/server/react/permissions.ts"
@@ -754,6 +754,9 @@
       "#aqxk8k1dief3": [
         "../../../src/editor/viewer/readonly.tsx"
       ],
+      "#avrm3xd2c5ct": [
+        "../../../src/live/regions.ts"
+      ],
       "#awiesfak8uw2": [
         "../../../src/inputs/advanced/input/affix.ts"
       ],
@@ -774,9 +777,6 @@
       ],
       "#b5agg8qj6p0b": [
         "../../../src/cms/protocol.ts"
-      ],
-      "#b86twz2e2cb3": [
-        "../../../src/realtime/connections.ts"
       ],
       "#b99m28a51fja": [
         "../../../src/wizard/index.tsx"
@@ -813,6 +813,9 @@
       ],
       "#bpcbqwfeno37": [
         "../../../src/inputs/components/status.tsx"
+      ],
+      "#bpsq8b38dsbi": [
+        "../../../src/inputs/advanced/dropdown/controlled.tsx"
       ],
       "#bq7jopbru8qh": [
         "../../../src/inputs/upload/runtime.ts"
@@ -921,6 +924,9 @@
       ],
       "#d96n0tisczzd": [
         "../../../src/settings/save-policy/controller.ts"
+      ],
+      "#d9d69c7qvx5d": [
+        "../../../scripts/verify/frontend/unsaved.mjs"
       ],
       "#d9gbd4jkefih": [
         "../../../src/icons/middleware/index.ts"
@@ -1183,6 +1189,9 @@
       "#g82fdp1z6p89": [
         "../../../src/dom/motion.ts"
       ],
+      "#gag8f3apljoe": [
+        "../../../src/logs/client/socket/room.ts"
+      ],
       "#ggsv3udz97t0": [
         "../../../src/inputs/advanced/input/styles/input.scss"
       ],
@@ -1233,9 +1242,6 @@
       ],
       "#gzxmlc2wghx4": [
         "../../../src/inputs/advanced/dropdown/static/value.ts"
-      ],
-      "#h00x28j87qxu": [
-        "../../../src/server/live-socket/types.ts"
       ],
       "#h09giqhlv5b2": [
         "../../../src/layout/styles/error.scss"
@@ -1300,6 +1306,9 @@
       "#hwjztpfp3lpu": [
         "../../../src/entity/registry.ts"
       ],
+      "#hwx6vwkxbge1": [
+        "../../../src/server/sidebar/socket.ts"
+      ],
       "#hzrmwbvgt2ax": [
         "../../../src/primitives/components/index.tsx"
       ],
@@ -1311,6 +1320,9 @@
       ],
       "#i3oaed3jc28j": [
         "../../../src/language/runtime/source/parse.ts"
+      ],
+      "#i3p47spgpbdw": [
+        "../../../src/live/connections.ts"
       ],
       "#i3p68u9n2acm": [
         "../../../src/config/sources/types.ts"
@@ -1579,6 +1591,9 @@
       "#mcb435mvk9yx": [
         "../../../src/sidebar/dynamic/runtime/dom.ts"
       ],
+      "#md3hr77wyofd": [
+        "../../../src/live/subscriptions.ts"
+      ],
       "#mdvv9ei7yug3": [
         "../../../src/inputs/search.ts"
       ],
@@ -1735,6 +1750,9 @@
       "#phikqix8e831": [
         "../../../src/server/react/types.ts"
       ],
+      "#pi0csbsvtly9": [
+        "../../../scripts/verify/frontend/highlight.mjs"
+      ],
       "#pig3dty9tb77": [
         "../../../src/server/framework.ts"
       ],
@@ -1761,6 +1779,9 @@
       ],
       "#q48lh39vs495": [
         "../../../src/language/runtime.ts"
+      ],
+      "#q54epo0nq9it": [
+        "../../../scripts/verify/frontend/live/dropdown_options.mjs"
       ],
       "#q7mvsmbelrz2": [
         "../../../src/server/static.ts"
@@ -1831,9 +1852,6 @@
       "#rctntu2uqs8e": [
         "../../../src/surface/styles/layout.scss"
       ],
-      "#rf9js8ovmz75": [
-        "../../../src/server/live-socket/shared.ts"
-      ],
       "#rh5lkkmriafc": [
         "../../../src/modal/components/i18n/en.ts"
       ],
@@ -1896,9 +1914,6 @@
       ],
       "#saog6hpfri36": [
         "../../../src/a11y/effects.ts"
-      ],
-      "#savw6pzo5sa6": [
-        "../../../src/realtime/index.ts"
       ],
       "#sf68mrloxp0r": [
         "../../../src/language/source/visualizer.tsx"
@@ -1975,6 +1990,9 @@
       "#touvmnyy4wpp": [
         "../../../src/config/types/design.ts"
       ],
+      "#tp79ea6klq0c": [
+        "../../../src/sidebar/dynamic/rooms.ts"
+      ],
       "#trsq4tcfjnxe": [
         "../../../src/inputs/advanced/toggle/i18n/cs.ts"
       ],
@@ -1989,6 +2007,9 @@
       ],
       "#tvicwpnoy4rk": [
         "../../../src/spa/cleanup.ts"
+      ],
+      "#tw5vbi786qb6": [
+        "../../../src/logs/client/socket/checks.ts"
       ],
       "#tytcmts991st": [
         "../../../src/logs/client/ingest.ts"
@@ -2259,6 +2280,9 @@
       ],
       "#xpy3g4zz7ui5": [
         "../../../src/sidebar/dynamic/runtime/types.ts"
+      ],
+      "#xqo3vantasv9": [
+        "../../../src/spa/refresh.ts"
       ],
       "#xqxdxmrwfwqt": [
         "../../../src/document/styles/index.scss"

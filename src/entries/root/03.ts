@@ -94,7 +94,6 @@ export {
   resolveSavePolicy,
 } from "#4hlk3mrarcqi";
 export type *from "#4hlk3mrarcqi";
-export type *from "#7bf07c0wd67q";
 export {
   surfaceClass,
 } from "#vuk08leruwgb";
@@ -151,3 +150,11 @@ export {
 } from "./../../reveal/index.js";
 export type { RevealOptions } from "./../../reveal/index.js";
 export { bindFrost } from "./../../frost/index.js";
+export {
+  HIGHLIGHT_ATTR,
+  clearHighlight,
+  highlightAttrs,
+  highlightElement,
+  highlightWhenPresent,
+} from "./../../highlight/index.js";
+export type { HighlightOptions } from "./../../highlight/index.js";

@@ -39,8 +39,9 @@ type DynamicSidebarRuntimeRenderers = {
 type DynamicSidebarCleanup = () => void;
 
 type DynamicSidebarSubscribe = (
+  channel: string,
   room: string,
-  listener: (payload: unknown) => void,
+  listener: (payload: { event?: string; [key: string]: unknown }) => void,
 ) => DynamicSidebarCleanup | void;
 
 type DynamicSidebarLiveOptions = {

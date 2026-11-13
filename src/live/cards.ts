@@ -1,8 +1,8 @@
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector, frontendEventName } from "#5vbaqj4pirp3";
-import { disconnectLiveSubscriptionHost } from "#70l5p0ml3pgq";
+import { disconnectLiveSubscriptionHost } from "#md3hr77wyofd";
 import { registerPageCleanup } from "#o9lroe7t0ma6";
-import type { LiveSubscribe } from "./subscribe.js";
+import { defaultLiveSubscribe, type LiveSubscribe } from "./subscribe.js";
 
 type LiveCleanup = () => void;
 type LiveCardsOptions = {
@@ -85,12 +85,12 @@ function bindLiveCardHost(
   options: LiveCardsOptions = {},
 ) {
   if (boundLiveCards.has(host)) return false;
-  const subscribe = options.subscribe;
-  if (typeof subscribe !== "function") return false;
+  const subscribe = options.subscribe || defaultLiveSubscribe;
+  const channel = String(host.getAttribute(frontendDataAttr("live-channel")) || "").trim();
   const room = (options.room || defaultLiveCardRoom)(host);
-  if (!room) return false;
+  if (!channel || !room) return false;
   boundLiveCards.add(host);
-  const cleanup = subscribe(room, (payload) => {
+  const cleanup = subscribe(channel, room, (payload) => {
       if (!host.isConnected) {
         disconnectLiveCardHost(host);
         return;

@@ -423,6 +423,44 @@ button({ onClick: () => updateUrl("/mail/sent") });
 
 The server route has to accept the same paths, because a reload asks it for them.
 
+### Live Regions
+
+A region of the page keeps itself current from a socket channel, without touching anything around it. Give `LiveRegion` the channel and room it belongs to and the events that change it:
+
+```tsx
+<LiveRegion region="repository-transfer" channel="/repositories" room={`repository:${id}`} event="settings">
+  {transferCard}
+</LiveRegion>
+```
+
+When one of those events arrives, the page is fetched once in the background and only that region's content is replaced. Modals, scroll position, tabs and the rest of the page stay as they are, form input inside the region is kept, and events that arrive together cause one fetch. A live list refreshes only its own list the same way. `refreshElements([element])` refreshes regions on demand.
+
+### Live Channels
+
+This package listens; it hosts no socket. Channels belong to the application's systems and are served by `@trebired/sockets`. Every live component names a channel and a room, and subscribes through `connectChannel` from `@trebired/sockets/client`:
+
+- `LiveRegion` takes `channel` and `room`.
+- `entity_list({ live: { channel, room, event } })` refreshes a live list.
+- `card_body({ live: { channel, kind, id } })` swaps a live card.
+- `useLive(channel, room, options)` and `connectLiveFields({ channel, room, fields })` from `@trebired/frontend/live` follow a room's data.
+- The log viewer takes `channel` and `room` in its config. It receives `log` events from the room and asks the room's `bootstrap` request for the first page with the viewer's own filters (`includePlatform`, `limit`, `with_style`).
+- The dynamic sidebar subscribes to the rooms its source names. A plain room is resolved to the channel that owns its kind through `channelOf` from `@trebired/sockets/server`; `sidebarRoom(channel, room)` names the channel explicitly. It refreshes its counts through the `sidebar:sync` event on the channel passed to `createSidebarSource({ channel })`. Register `createSidebarSyncHandler()` from `@trebired/frontend/server` as that event on the channel.
+
+Every listener ignores the `snapshot` event a room sends on subscribe, because the page already rendered that state. A listener passed as `subscribe` (`(channel, room, onChange) => cleanup`) replaces the default subscription.
+
+### Element Highlight
+
+A link can point the reader at one element on the page it opens. Name the element by its id: the page is opened by soft navigation, the element is scrolled into view if it is off screen, and a ring is drawn around it for about a second and a half. Only ids are used, never classes or selectors, and the ring is drawn in its own layer, so the element itself is not changed and its parents cannot clip it.
+
+```tsx
+card_body({ actionTrigger: { href: "/repositories/42", highlight: "repository_transfer_7" }, title: "Transfer" });
+<a href="/settings" {...highlightAttrs("billing_card")}>Billing</a>;
+highlightElement("billing_card");
+softRedirect("/settings", { highlight: "billing_card" });
+```
+
+When a navigation falls back to a full page load, the highlight is applied after the load. Nothing happens when no element has that id. The ring takes `--tbf-highlight-color`, `--tbf-highlight-width`, `--tbf-highlight-glow` and `--tbf-highlight-duration`, and holds still under reduced motion.
+
 ### Content Management
 
 `@trebired/frontend/cms` lets an editor application change the content of a site without touching its code. The developer decides what is editable and within which limits; the editor changes values only inside those limits.
@@ -690,7 +728,7 @@ Entrypoints:
 - `@trebired/frontend/config`
 - `@trebired/frontend/react`
 - `@trebired/frontend/server`
-- `@trebired/frontend/cms`, `/code`, `/editor`, `/explorer`, `/fullscreen`, `/graph`, `/live`, `/logs`, `/realtime`, `/socket`
+- `@trebired/frontend/cms`, `/code`, `/editor`, `/explorer`, `/fullscreen`, `/graph`, `/live`, `/logs`
 
 The root entrypoint exports browser runtime binders, namespace helpers, and static icon cache registration. The config entrypoint exports config loading, normalization, generated CSS, and dependency collection. The React entrypoint exports generic UI components. The server entrypoint exports frontend-related backend helpers plus build-time static icon cache helpers.
 
@@ -700,7 +738,9 @@ Each system subpath exports that system whole, its runtime and its React compone
 
 Applications import public APIs only from the package root, `/config`, `/react`, `/server`, and the system subpaths. There is no public Sass, style, or internal component subpath API.
 
-**28.0.0 moved the heavy systems to their own subpaths.** Graphs, logs, editors, the file explorer, code text, fullscreen, live cards and lists, realtime and the socket client are no longer exported from `@trebired/frontend` or `@trebired/frontend/react`. Import them from `@trebired/frontend/graph`, `/logs`, `/editor`, `/explorer`, `/code`, `/fullscreen`, `/live`, `/realtime` and `/socket`. The names are unchanged; only the import path moves. `LiveIslandMount`, `LiveRegion` and the fullscreen buttons stay on `/react`.
+**31.0.0 moved sockets to `@trebired/sockets`.** `createLiveSocketServer`, the `/live` namespace, `@trebired/frontend/realtime` and `@trebired/frontend/socket` are gone. Each system serves its own channel with `createChannel` from `@trebired/sockets/server`, and pages connect with `connectChannel` from `@trebired/sockets/client`. Every live component, the log viewer and the sidebar now name a `channel` as well as a room; sidebar rooms are `sidebarRoom(channel, room)`, and `createSidebarSource` requires `channel`. `useLive` and `connectLiveFields` moved to `@trebired/frontend/live` and take the channel first. The `subscribe` adapter receives `(channel, room, onChange)`.
+
+**28.0.0 moved the heavy systems to their own subpaths.** Graphs, logs, editors, the file explorer, code text, fullscreen, live cards and lists are no longer exported from `@trebired/frontend` or `@trebired/frontend/react`. Import them from `@trebired/frontend/graph`, `/logs`, `/editor`, `/explorer`, `/code`, `/fullscreen`, and `/live`. The names are unchanged; only the import path moves. `LiveIslandMount`, `LiveRegion` and the fullscreen buttons stay on `/react`.
 
 **27.0.0 removed every container component.** `PageBand`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `HairlinePanel`, `HairlineCell`, `ActionRow`, `TrackList`, `TrackItem`, `PinnedSplit`, `IconTile`, `Tag`, `AccentRule`, `Frame`, `FrameCover`, `FrameScrim`, `FrameCaption`, `FrameAction` and `CanvasPanel` are gone, and so are the `tbf-band`, `tbf-tile`, `tbf-tag`, `tbf-rule`, `tbf-action-row`, `tbf-track` and `tbf-frame` classes. Declare what the application needs under `containers` and write the class. `HeadingScope` is now exported, because a container no longer opens a heading level: wrap a section in it where a nested title should step down.
 

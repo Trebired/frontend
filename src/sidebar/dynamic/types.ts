@@ -3,6 +3,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 type DynamicSidebarVisibility = "active" | "always";
 
 type DynamicSidebarLiveConfig = {
+  channel?: string;
   params?: Record<string, unknown>;
   path?: string;
   rooms?: string[];

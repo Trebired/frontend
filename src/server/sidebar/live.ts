@@ -4,6 +4,8 @@ import {
   type ServerRequestLike,
   type ServerResponseLike,
 } from "./../http.js";
+import { channelOf, parseRoom } from "@trebired/sockets/server";
+import { readSidebarRoom, sidebarRoom } from "./../../sidebar/dynamic/rooms.js";
 
 type SidebarLiveParams = Record<string, string>;
 
@@ -48,13 +50,21 @@ function normalizeSidebarLiveParams(input: unknown) {
   return out;
 }
 
+function sidebarRoomAddress(value: unknown) {
+  const text = serverString(value).trim();
+  if (readSidebarRoom(text)) return text;
+  const room = parseRoom(text);
+  const channel = room ? channelOf(room.kind) : null;
+  return room && channel ? sidebarRoom(channel.namespace, room.room) : "";
+}
+
 function sidebarLiveRooms(
   type: string,
   params: SidebarLiveParams,
   options: SidebarLiveProtocolOptions = {},
 ) {
   const rooms = options.roomsForType ? options.roomsForType(type, params) : [];
-  return Array.from(rooms).map((room) => serverString(room).trim()).filter(Boolean);
+  return Array.from(rooms).map((room) => sidebarRoomAddress(room)).filter(Boolean);
 }
 
 function normalizeSidebarLiveItem(

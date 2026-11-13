@@ -77,17 +77,9 @@
       "import": "./dist/react/index.js",
       "types": "./dist/react/index.d.ts"
     },
-    "./realtime": {
-      "import": "./dist/realtime/index.js",
-      "types": "./dist/realtime/index.d.ts"
-    },
     "./server": {
       "import": "./dist/server/index.js",
       "types": "./dist/server/index.d.ts"
-    },
-    "./socket": {
-      "import": "./dist/socket/index.js",
-      "types": "./dist/socket/index.d.ts"
     },
     "./static-icons": {
       "import": "./dist/static-icons.js",
@@ -113,6 +105,7 @@
   },
   "dependencies": {
     "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.8.2",
+    "@trebired/sockets": "^0.1.0",
     "@trebired/utils": "^0.9.9",
     "chart.js": "^4.5.1",
     "country-flag-icons": "^1.6.20",
@@ -121,8 +114,7 @@
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "remixicon": "^4.9.1",
-    "simple-icons": "^16.28.0",
-    "socket.io-client": "^4.8.3"
+    "simple-icons": "^16.28.0"
   },
   "devDependencies": {
     "@trebired/bundler": "^5.19.0",

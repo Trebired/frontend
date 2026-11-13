@@ -90,15 +90,6 @@ export {
 } from "./live.js";
 export type *from "./live.js";
 export {
-  DEFAULT_LIVE_CHANGE_EVENT,
-  DEFAULT_LIVE_DENIED_EVENT,
-  createLiveSocketServer,
-  liveRoomFor,
-  liveSocketRequest,
-  parseLiveRoom,
-} from "./live-socket.js";
-export type *from "./live-socket.js";
-export {
   attachNavigationMiddleware,
   createNavigationState,
   decorateActiveLink,
@@ -189,6 +180,10 @@ export {
 } from "./sidebar/live.js";
 export type *from "./sidebar/live.js";
 export { createSidebarSource } from "./sidebar/source.js";
+export { createSidebarSyncHandler, socketRequest, socketResponse } from "./sidebar/socket.js";
+export type { SidebarSocketLike } from "./sidebar/socket.js";
+export { readSidebarRoom, sidebarRoom } from "./../sidebar/dynamic/rooms.js";
+export type { SidebarRoomAddress } from "./../sidebar/dynamic/rooms.js";
 export type *from "./sidebar/source.js";
 export {
   attachStaticDirectory,

@@ -118,6 +118,7 @@ function dynamicSidebarLiveConfig(
   const type = textValue(live?.type, textValue(sidebar?.type));
   if (!type) return {};
   return {
+    channel: textValue((live as { channel?: unknown } | null)?.channel),
     params: live?.params && typeof live.params === "object" ? live.params : {},
     path: textValue(live?.path),
     rooms: Array.isArray(live?.rooms)
