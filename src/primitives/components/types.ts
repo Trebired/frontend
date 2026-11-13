@@ -38,10 +38,15 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>&PrimitiveAttrs& {
 
 type CardProps = HTMLAttributes<HTMLDivElement>&PrimitiveAttrs& {
   actionTrigger?: BindActionTriggerOptions;
+  center?: boolean;
   gap?: PrimitiveGap;
+  grow?: boolean;
+  horizontalCenter?: boolean;
   layout?: "column" | "none";
+  noShrink?: boolean;
   padding?: PrimitivePadding;
   scroll?: boolean;
+  verticalCenter?: boolean;
 };
 
 type ActionFormProps = Omit<

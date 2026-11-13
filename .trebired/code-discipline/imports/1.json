@@ -191,6 +191,7 @@
   "#8axipzwu32d3": "./src/layout/styles/outline.scss",
   "#8bfu1ekdes3l": "./scripts/verify/frontend/server.mjs",
   "#8bxcsshlrjh4": "./src/logs/client/render.ts",
+  "#8dlpd8ox54u8": "./scripts/verify/frontend/card.mjs",
   "#8egdy32zm0ku": "./src/layout/components/mobile.tsx",
   "#8f21tdnsct1q": "./src/react/assets.tsx",
   "#8g75p9e51kcx": "./scripts/verify/frontend/icons/react.mjs",

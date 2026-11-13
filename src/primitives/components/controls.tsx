@@ -80,9 +80,13 @@ function primitiveButton(props: ButtonProps) {
 }
 
 function primitiveCard(props: CardProps) {
-  const { actionTrigger, children, className, gap, layout, padding, scroll, ...rest } = props;
+  const {
+    actionTrigger, center, children, className, gap, grow, horizontalCenter,
+    layout, noShrink, padding, scroll, verticalCenter, ...rest
+  } = props;
+  const classOptions = { center, className, gap, grow, horizontalCenter, layout, noShrink, padding, scroll, verticalCenter };
   return wrapTriggerHostNode(
-    <FrontendCard className={primitiveCardClassName({ className, gap, layout, padding, scroll })} {...rest}>
+    <FrontendCard className={primitiveCardClassName(classOptions)} {...rest}>
     {children}
     </FrontendCard>,
     actionTrigger,

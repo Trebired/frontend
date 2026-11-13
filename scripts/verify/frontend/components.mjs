@@ -5,6 +5,7 @@ import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { assertNoCustomElementTags } from "./html-assertions.mjs";
 import { verifyBottomBar } from "./bottom-bar.mjs";
+import { verifyCardStackOptions } from "./card.mjs";
 import { verifyHeaderActiveLinks } from "./header-active.mjs";
 import { verifyLogsViewScrollContract } from "./logs-scroll.mjs";
 import { verifyProgressBars } from "./progress-bars.mjs";
@@ -26,6 +27,7 @@ async function verifyFrontendComponents(context) {
   await verifyAdvancedTabsSsr(context.importDist);
   await verifyRenderedUpload(context.importDist);
   await verifyRenderedSystems(context.importDist);
+  await verifyCardStackOptions(context.importDist);
   await verifyBottomBar(context.importDist, context.rootDir);
   await verifyLogsViewScrollContract(context.importDist, context.rootDir);
   await verifyRootImportIsolation(context.rootDir);

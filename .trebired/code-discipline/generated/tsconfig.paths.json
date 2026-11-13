@@ -577,6 +577,9 @@
       "#8bxcsshlrjh4": [
         "../../../src/logs/client/render.ts"
       ],
+      "#8dlpd8ox54u8": [
+        "../../../scripts/verify/frontend/card.mjs"
+      ],
       "#8egdy32zm0ku": [
         "../../../src/layout/components/mobile.tsx"
       ],
