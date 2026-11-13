@@ -47,6 +47,7 @@ function bindHiddenSync(drop, hidden) {
 }
 
 function toggleDropdown(drop, e) {
+  if (drop.getAttribute("aria-disabled") === "true") return;
   const ignore = closest(e.target, frontendDataSelector("dropdown-ignore"));
   if (ignore) return;
 
@@ -120,6 +121,7 @@ function selectOption(drop, li) {
 }
 
 function openDropdown(drop) {
+  if (drop.getAttribute("aria-disabled") === "true") return;
   if (closeDynamicBeforeStaticToggle) closeDynamicBeforeStaticToggle();
   closeAll(drop);
   openStatic(drop);
@@ -160,7 +162,6 @@ function bindStaticDropdown(drop) {
   ensureDefaultPlaceholder(drop);
   updateEmptyState(drop);
 
-  if (drop.getAttribute("aria-disabled") === "true") return;
   boundStaticDropdowns.add(drop);
 
   const hidden = getHidden(drop);

@@ -10,6 +10,7 @@ type TextareaProps = {
   className?: string;
   highlight?: RegExp;
   label?: ReactNode;
+  onValue?: (value: string) => void;
   tone?: PrimitiveInputTone;
   [key: string]: unknown;
 };
@@ -71,8 +72,21 @@ function HighlightedTextarea(props: HighlightedProps) {
   );
 }
 
+function withTextValueCallback(rest: Record<string, unknown>, onValue?: (value: string) => void) {
+  if (typeof onValue !== "function") return rest;
+  const onChange = rest.onChange as ((event: ChangeEvent<HTMLTextAreaElement>) => void) | undefined;
+  return {
+    ...rest,
+    onChange: (event: ChangeEvent<HTMLTextAreaElement>) => {
+      onChange?.(event);
+      onValue(event.target.value);
+    },
+  };
+}
+
 function textarea(props: TextareaProps) {
-  const { className, highlight, label, tone, ...rest } = props;
+  const { className, highlight, label, onValue, tone, ...given } = props;
+  const rest = withTextValueCallback(given, onValue);
   if (highlight) return labelledControl(label, <HighlightedTextarea className={className} highlight={highlight} tone={tone} {...rest} />);
   return labelledControl(
     label,

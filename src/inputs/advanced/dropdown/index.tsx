@@ -8,6 +8,7 @@ import {
 } from "#hzrmwbvgt2ax";
 import type { dropdown_option, dropdown_props } from "./model.js";
 import { dropdownModel, mapAttrs } from "./model.js";
+import { controlledDropdown } from "./controlled.js";
 import { search_config_script, search_query_input } from "#f1earyowcgbb";
 import type { DropdownOptionConfig, DropdownRootConfig } from "./registry.js";
 import "./index.client.js";
@@ -268,6 +269,9 @@ function dropdownNode(
 }
 
 function advancedDropdown(props: dropdown_props) {
+  if (typeof props.onChange === "function" || typeof props.onValuesChange === "function") {
+    return controlledDropdown(props, advancedDropdown);
+  }
   const model = dropdownModel(props);
   const node = dropdownNode(props, model);
   if (!model.labelText) return node;

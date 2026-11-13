@@ -18,6 +18,7 @@ import {
   defineDropdownElement,
 } from "./dropdown/index.client.js";
 import dropdownManager from "./dropdown/manager.js";
+import { setDropdownOptions } from "./dropdown/static/options.js";
 import {
   dropdownOptionSelected,
   dropdownOptionValue,
@@ -183,6 +184,7 @@ export {
   syncDropdownHiddenInput,
   syncDropdownHiddenInputs,
   syncFromHidden,
+  setDropdownOptions,
   updateDropdownRootConfig,
   updateEmptyState,
 };

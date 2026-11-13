@@ -6,20 +6,33 @@ import {
   type PrimitiveInputSize,
   type PrimitiveInputTone,
 } from "#0rl8rpgzssot";
-import type { ReactNode } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import { labelledControl } from "./../field/labelled.js";
 
 type InputProps = {
   className?: string;
   label?: ReactNode;
+  onValue?: (value: string) => void;
   size?: PrimitiveInputSize;
   tone?: PrimitiveInputTone;
   [key: string]: unknown;
 };
 
+function withValueCallback(rest: Record<string, unknown>, onValue?: (value: string) => void) {
+  if (typeof onValue !== "function") return rest;
+  const onChange = rest.onChange as ((event: ChangeEvent<HTMLInputElement>) => void) | undefined;
+  return {
+    ...rest,
+    onChange: (event: ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+      onValue(event.target.value);
+    },
+  };
+}
+
 function input(props: InputProps) {
-  const { label, ...rest } = props;
-  return labelledControl(label, inputControl(rest));
+  const { label, onValue, ...rest } = props;
+  return labelledControl(label, inputControl(withValueCallback(rest, onValue)));
 }
 
 function inputControl(props: InputProps) {

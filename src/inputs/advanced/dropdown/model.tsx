@@ -32,6 +32,8 @@ type dropdown_props = {
   listId?: string;
   multiple?: boolean;
   name?: string;
+  onChange?: (value: string) => void;
+  onValuesChange?: (values: string[]) => void;
   options?: dropdown_option[];
   optionsTop?: ReactNode;
   placeholder?: string;

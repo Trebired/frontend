@@ -1,6 +1,6 @@
 import { joinClassNames, createLocalTranslator } from "#dqy2d22qyujv";
 import { toString } from "#dqy2d22qyujv";
-import { type ReactNode } from "react";
+import { type ChangeEvent, type ReactNode } from "react";
 import { primitiveButtonClassName, primitiveTextClassName } from "#hzrmwbvgt2ax";
 import "./index.client.js";
 import { frontendClassName, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
@@ -17,6 +17,7 @@ type checkbox_props = {
   inputClassName?: string;
   lang?: string;
   name?: string;
+  onChecked?: (checked: boolean) => void;
   optionClassName?: string;
   tag?: "div" | "label";
   title?: ReactNode;
@@ -74,6 +75,9 @@ function checkboxInput(props: checkbox_props, model: any) {
     tabIndex={-1}
     defaultChecked={props.checked === true}
     disabled={props.disabled === true}
+    {...(typeof props.onChecked === "function"
+        ? { onChange: (event: ChangeEvent<HTMLInputElement>) => props.onChecked?.(event.target.checked) }
+        : {})}
     {...(props.input_attrs && typeof props.input_attrs === "object"
         ? props.input_attrs
         : {})}

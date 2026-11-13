@@ -53,20 +53,37 @@ function toggleDisclosure(root: HTMLElement) {
   return setDisclosureOpen(root, !readDisclosureOpen(root));
 }
 
+let delegationInstalled = false;
+
+function disclosureFromEvent(event: Event) {
+  const trigger = closestElement<HTMLElement>(event.target, DISCLOSURE_TRIGGER_SELECTOR);
+  const root = trigger ? closestElement<HTMLElement>(trigger, DISCLOSURE_SELECTOR) : null;
+  return trigger && root ? { root, trigger } : null;
+}
+
+function installDisclosureDelegation() {
+  if (delegationInstalled || typeof document === "undefined") return;
+  delegationInstalled = true;
+  document.addEventListener("click", (event) => {
+      const hit = disclosureFromEvent(event);
+      if (!hit || event.defaultPrevented) return;
+      event.preventDefault();
+      toggleDisclosure(hit.root);
+  });
+  document.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const hit = disclosureFromEvent(event);
+      if (!hit || hit.trigger.matches("button, a[href]")) return;
+      event.preventDefault();
+      toggleDisclosure(hit.root);
+  });
+}
+
 function bindDisclosure(root: HTMLElement | null) {
+  installDisclosureDelegation();
   if (!(root instanceof HTMLElement) || root.hasAttribute(frontendDataAttr("disclosure-bound"))) return null;
   root.setAttribute(frontendDataAttr("disclosure-bound"), "true");
-  const state = setDisclosureOpen(root, readDisclosureOpen(root));
-  state.trigger?.addEventListener("click", (event) => {
-      event.preventDefault();
-      toggleDisclosure(root);
-  });
-  state.trigger?.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      event.preventDefault();
-      toggleDisclosure(root);
-  });
-  return state;
+  return setDisclosureOpen(root, readDisclosureOpen(root));
 }
 
 function bindDisclosures(root: BindRoot = document) {
