@@ -63,6 +63,10 @@ const messages: Record<string, string> = {
   "files.uploadPreview": "Upload preview",
   "selection.all": "All",
   "state.unavailable": "Unavailable",
+  "unsaved.description": "Your changes on this page are not saved and will be lost.",
+  "unsaved.leave": "Leave",
+  "unsaved.stay": "Stay",
+  "unsaved.title": "Leave without saving?",
 };
 
 const defineMessages = defineValue as <T extends Record<string, unknown>>(messagesMap: T) => T;

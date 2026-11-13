@@ -2,6 +2,7 @@ import { isInUnhydratedIsland, isModifiedMouseClick, queryAll, type BindRoot } f
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { spaConfig } from "./config.js";
 import { softRedirect } from "./navigate.js";
+import { highlightTargetOf } from "#8xdkni5exuif";
 
 const SOFT_REDIRECT_ATTR = frontendDataAttr("soft-redirect");
 const SOFT_REDIRECT_SELECTOR = frontendDataSelector("soft-redirect");
@@ -56,7 +57,7 @@ function runSoftRedirect(event: Event, trigger: HTMLElement) {
   if (!target) return;
   event.preventDefault();
   event.stopPropagation();
-  void softRedirect(target);
+  void softRedirect(target, { highlight: highlightTargetOf(trigger) || undefined });
 }
 
 function bindSoftRedirectLink(trigger: HTMLElement | null) {

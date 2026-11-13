@@ -1,14 +1,12 @@
-import { cssEscape, queryAll } from "#er0dlx1gtbzh";
+import { cssEscape } from "#er0dlx1gtbzh";
 import type { BindRoot } from "#er0dlx1gtbzh";
-import {
-  frontendDataAttr,
-  frontendDataSelector,
-  frontendEventName,
-} from "#5vbaqj4pirp3";
+import { frontendDataAttr, frontendEventName } from "#5vbaqj4pirp3";
 import { PORTALED_SELECTOR, runSpaRebind, spaConfig } from "./config.js";
 import { runPageCleanups } from "./cleanup.js";
 import { fetchDocument } from "./fetch-document.js";
 import { hasUnsavedWork } from "./guards.js";
+import { createLocalTranslator, documentLang } from "#dqy2d22qyujv";
+import { confirm } from "#xt1nnckfzd7c";
 import { closeAllOverlays } from "./close.js";
 import {
   overlayPortalRoots,
@@ -16,6 +14,7 @@ import {
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
 import { syncShell } from "./shell.js";
+import { highlightWhenPresent, queueHighlight } from "#8xdkni5exuif";
 import {
   beginNavigation,
   emitPageChange,
@@ -34,14 +33,13 @@ import {
 
 type SoftRedirectOptions = {
   force?: boolean;
+  highlight?: string;
   history?: SpaHistoryMode;
   preserveState?: boolean;
 };
 
-const LIVE_REGION_SELECTOR = frontendDataSelector("live-region");
 const loadedScriptSrcs = new Set<string>();
 let navigationInflight = false;
-let refreshInflight = false;
 let lastKnownPath = "";
 
 function seedLoadedScripts() {
@@ -236,7 +234,26 @@ function applyHistoryMode(mode: SpaHistoryMode, resolvedUrl: string, targetHash 
   else history.replaceState({ tbfSpa: true }, "", path);
 }
 
-function fallbackNavigate(url: string, updateUrl: boolean) {
+async function confirmLeavingUnsavedWork() {
+  const localT = createLocalTranslator(import.meta.url, documentLang());
+  try {
+    return await confirm(localT("unsaved.title"), localT("unsaved.description"), {
+        cancelText: localT("unsaved.stay"),
+        confirmButtonText: localT("unsaved.leave"),
+        type: "warn",
+    });
+  } catch {
+    return false;
+  }
+}
+
+function restoreKnownPath() {
+  const current = `${window.location.pathname}${window.location.search}`;
+  if (lastKnownPath && lastKnownPath !== current) history.pushState({ tbfSpa: true }, "", lastKnownPath);
+}
+
+function fallbackNavigate(url: string, updateUrl: boolean, highlight = "") {
+  if (highlight) queueHighlight(updateUrl && url ? url : window.location.href, highlight);
   if (updateUrl && url) {
     window.location.assign(url);
     return false;
@@ -253,21 +270,23 @@ async function softRedirect(url: string, options: SoftRedirectOptions = {}) {
   const targetHash = hashOf(targetUrl);
   let navigation: ReturnType<typeof beginNavigation>|null = null;
   try {
-    if (options.force !== true && hasUnsavedWork()) {
-      return fallbackNavigate(targetUrl, historyMode !== "none");
+    if (options.force !== true && hasUnsavedWork() && !(await confirmLeavingUnsavedWork())) {
+      if (historyMode === "none") restoreKnownPath();
+      return false;
     }
     navigation = beginNavigation(targetUrl, historyMode);
     const fetched = await fetchDocument(targetUrl, "router");
-    if (!fetched) return fallbackNavigate(targetUrl, historyMode !== "none");
+    if (!fetched) return fallbackNavigate(targetUrl, historyMode !== "none", options.highlight || "");
     navigation = retargetNavigation(navigation, fetched.url);
     if (!replaceContent(fetched.doc, navigation, options.preserveState === true, targetHash)) {
-      return fallbackNavigate(targetUrl, historyMode !== "none");
+      return fallbackNavigate(targetUrl, historyMode !== "none", options.highlight || "");
     }
     applyHistoryMode(historyMode, fetched.url, targetHash, targetUrl);
     emitPageChange(navigation);
+    if (options.highlight) highlightWhenPresent(options.highlight);
     return true;
   } catch {
-    return fallbackNavigate(targetUrl, historyMode !== "none");
+    return fallbackNavigate(targetUrl, historyMode !== "none", options.highlight || "");
   } finally {
     navigationInflight = false;
     emitPendingPage("");
@@ -282,68 +301,14 @@ function softReload(options: { preserveState?: boolean } = {}) {
   });
 }
 
-function shouldSkipLiveElement(element: Element) {
-  if (element.hasAttribute(frontendDataAttr("live-skip"))) return true;
-  return spaConfig().skip?.(element) === true;
-}
-
-function liveRegionKey(element: Element) {
-  return (
-    element.getAttribute(frontendDataAttr("live-region")) ||
-      element.id ||
-      element.getAttribute(frontendDataAttr("live-key")) ||
-      ""
-  ).trim();
-}
-
-function findMatchingRegion(doc: Document, current: Element) {
-  const key = liveRegionKey(current);
-  if (!key) return null;
-  const byId = doc.getElementById(key);
-  if (byId) return byId;
-  return doc.querySelector(frontendDataSelector("live-region", key));
-}
-
-function replaceLiveRegions(doc: Document) {
-  let changed = false;
-  queryAll<HTMLElement>(document, LIVE_REGION_SELECTOR).forEach((current) => {
-      if (shouldSkipLiveElement(current)) return;
-      const next = findMatchingRegion(doc, current);
-      if (!(next instanceof HTMLElement)) return;
-      const formState = captureFormState(current);
-      const wizardState = captureWizardSteps(current);
-      runPageCleanups(current);
-      current.replaceChildren(...importChildNodes(next));
-      syncIslandRootHydration(current, next);
-      restoreWizardSteps(current, wizardState);
-      restoreFormState(current, formState);
-      rehydrate(current);
-      changed = true;
-  });
-  return changed;
-}
-
-async function softRefresh(options: { url?: string } = {}) {
-  if (refreshInflight || typeof window === "undefined") return false;
-  refreshInflight = true;
-  try {
-    const fetched = await fetchDocument(options.url || window.location.href, "live");
-    if (!fetched) return false;
-    return replaceLiveRegions(fetched.doc);
-  } finally {
-    refreshInflight = false;
-  }
-}
-
 export {
-  LIVE_REGION_SELECTOR,
   contentRoot,
   isSamePathAsLastKnown,
   notePathChange,
   rehydrate,
   seedLoadedScripts,
   softRedirect,
-  softRefresh,
   softReload,
+  syncIslandRootHydration,
 };
 export type { SoftRedirectOptions };
