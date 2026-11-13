@@ -4,6 +4,30 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.0
+
+- Removed the socket server and client. `createLiveSocketServer`, the `/live` namespace, `liveSocketRequest`, `liveSocketResponse`, the `@trebired/frontend/realtime` and `@trebired/frontend/socket` subpaths and the `socket.io-client` dependency are gone. Sockets belong to `@trebired/sockets`, where each system serves its own channel.
+- Changed every live listener to name a channel. `LiveRegion` takes `channel`, live lists take `live.channel`, live cards take `live.channel`, and the log viewer takes `channel` with `room` in place of `socketNamespace`, `socketOptions` and `subscribeEvent`. They subscribe through `connectChannel` from `@trebired/sockets/client` by default; a `subscribe` adapter receives `(channel, room, onChange)`.
+- Changed the dynamic sidebar: a room its source names is resolved to the channel that owns its kind, or named explicitly with `sidebarRoom(channel, room)`; `createSidebarSource` requires the `channel` that serves `sidebar:sync`, and `createSidebarSyncHandler()` answers that event on the app's channel.
+- Moved `useLive`, `connectLiveFields`, `liveConnect` and `applyLiveFieldValue` to `@trebired/frontend/live`; they take the channel first.
+- Live listeners ignore the `snapshot` event a room sends on subscribe.
+
+- Added element highlighting. `highlightElement(id)` scrolls an element into view when it is off screen and draws a ring around it for about a second and a half. It looks the element up by its id only, never by class or selector, and draws the ring in its own layer, so it neither changes the element nor gets clipped by its parents.
+- A link can name an element to highlight on the page it opens: `actionTrigger: { href, highlight: "<id>" }`, or `highlightAttrs("<id>")` on any link. `softRedirect` takes the same `highlight` option and applies it once the new page is in place. When a navigation falls back to a full page load, the highlight is carried over and applied after the load.
+- Added per-element live updates. `LiveRegion` takes a socket `room` and an optional `event` (one name or a list). When an event arrives in that room, only that region is refreshed: the page is fetched once in the background and the region's content is swapped. Modals, scroll position, tabs and the rest of the page stay as they are. Events that arrive close together cause one fetch.
+- A live region keeps its open disclosures open across a refresh.
+- A live region that owns an open modal waits until the modal closes before it refreshes, so a modal the reader is working in is never replaced. Stale copies of portaled overlays are removed after a refresh.
+- After a region refreshes, a `tbf:live-region-refresh` event bubbles from it with `detail.region`, for page code that needs to bind to the new content.
+- Added `setDropdownOptions(root, options, { placeholder, disabled })`, which replaces a rendered dropdown's options in the browser, for a dropdown that depends on another field. A dropdown rendered disabled can now be enabled later; it used to stay unbound.
+- Disclosures toggle through one delegated listener, so a disclosure keeps working after React re-renders its trigger.
+- A live list (`list({ live })`) now refreshes only its own list when its room fires. It used to reload the whole page content.
+- Added `refreshElements(elements)` to `@trebired/frontend`, which refreshes the given live regions from the current page in one fetch.
+- A soft navigation away from a page with unsaved work now asks in the page ("Leave without saving?", Stay or Leave) and stays a soft navigation when the reader leaves. It used to fall back to a full page load so the browser could show its own leave-page prompt, which closed open dialogs and reloaded the app.
+- `dropdown` takes `onChange(value)`, or `onValuesChange(values)` when `multiple`, and then works as a controlled React input: the value you pass is the value shown, and an empty option value works. `input` and `textarea` take `onValue(value)`, and `checkbox` takes `onChecked(checked)`, so no event handling is needed for a plain value.
+- An action trigger can open a modal: `actionTrigger: { modal: "<modal id>" }`, on click and on Enter, with button semantics.
+- `card_body` takes an `id`, so a card row can be a highlight target.
+- Added the `highlight` system and its tokens `--tbf-highlight-color`, `--tbf-highlight-width`, `--tbf-highlight-glow` and `--tbf-highlight-duration`. The ring follows reduced motion.
+
 ## 30.2.1
 
 - The locale switcher's trigger renders through `button()` like the theme button beside it, with the same classes. It was forced to the `chrome` variant in the header and to `secondary` in the product sidebar, so it never matched. A `variant` passed to `locale_switcher` still wins.
