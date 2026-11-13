@@ -235,6 +235,13 @@ function isInteractiveTarget(target: unknown, extraSelector = "") {
   return Boolean(element.closest(selector));
 }
 
+function isNestedInteractiveTarget(target: unknown, host: Element) {
+  const element = asElement(target);
+  if (!element || element === host) return false;
+  const interactive = element.closest(INTERACTIVE_TARGET_SELECTOR);
+  return Boolean(interactive && interactive !== host && host.contains(interactive));
+}
+
 function setControlDisabled(element: HTMLElement | null, disabled: boolean) {
   if (!element) return;
   if ("disabled"in element) {
@@ -315,6 +322,7 @@ export {
   formDataSearchParams,
   formDataStringRecord,
   isInteractiveTarget,
+  isNestedInteractiveTarget,
   isInUnhydratedIsland,
   isModifiedMouseClick,
   onReady,

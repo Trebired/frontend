@@ -1225,6 +1225,9 @@
       "#gptryh3aqocq": [
         "../../../scripts/verify/frontend/site/header.mjs"
       ],
+      "#gptyjyonh0z5": [
+        "../../../scripts/verify/frontend/nested-interactive.mjs"
+      ],
       "#gq44byr9jwxj": [
         "../../../src/language/direction.ts"
       ],

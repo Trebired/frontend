@@ -1,6 +1,6 @@
 import {
   dispatchInputChange,
-  isInteractiveTarget,
+  isNestedInteractiveTarget,
   noop as defineRadioGroupElement,
   resolveDocumentTarget,
 } from "#dqy2d22qyujv";
@@ -129,7 +129,7 @@ function bindGroup(root) {
       option.addEventListener("click", function(event) {
           if (input.disabled) return;
           if (option.tagName === "LABEL") return;
-          if (isInteractiveTarget(event.target)) return;
+          if (isNestedInteractiveTarget(event.target, option)) return;
           event.preventDefault();
           selectOption(option);
       });

@@ -1,7 +1,7 @@
 import { isInUnhydratedIsland, noop as defineCheckboxOptionElement } from "#dqy2d22qyujv";
 import {
   dispatchInputChange,
-  isInteractiveTarget,
+  isNestedInteractiveTarget,
   resolveDocumentTarget,
 } from "#dqy2d22qyujv";
 import {
@@ -177,7 +177,7 @@ function bindCheckboxOption(option: Element | null) {
   option.addEventListener("click", (event) => {
       if (input.disabled) return;
       if (option.tagName === "LABEL") return;
-      if (isInteractiveTarget(event.target)) return;
+      if (isNestedInteractiveTarget(event.target, option)) return;
       event.preventDefault();
       toggleOption(option);
   });

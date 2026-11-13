@@ -1,4 +1,4 @@
-import { bindRoot, isInteractiveTarget, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { bindRoot, isNestedInteractiveTarget, queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { text } from "#kv9urtb9dbq5";
 import { mountSourceLanguageFileTrees } from "./file-tree.js";
 import { getActiveSourceLanguageBucket, parseSourceLanguageItems } from "./parse.js";
@@ -72,7 +72,7 @@ function handleRowToggle(
   const target = event.target instanceof Element ? event.target : null;
   const row = target?.closest<HTMLElement>(SOURCE_ROW_SELECTOR);
   if (!row || !root.contains(row)) return;
-  if (target !== row && isInteractiveTarget(target)) return;
+  if (isNestedInteractiveTarget(target, row)) return;
   event.preventDefault();
   const languageId = text(row.getAttribute(frontendDataAttr("source-language-id")));
   if (!languageId) return;

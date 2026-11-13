@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.5
+
+- Fixed language rows in the source language visualizer ignoring clicks. Each row is itself a `role="button"`, and the check that skips clicks on controls inside a row matched the row too, so a click anywhere on its content did nothing. Only the row's bare padding toggled it. The check now counts only controls nested inside the row, and checkbox options, which carry `role="checkbox"`, use the same check.
+- Added `isNestedInteractiveTarget(target, host)` beside `isInteractiveTarget`.
+
 ## 31.0.4
 
 - Fixed menu items built with `button()` or `copy_button()` looking like buttons. Given `tbf-popover-item`, they still got the button classes, so inside a popover they rendered centred, smaller and filled, unlike the other items. A `button()` with that class now renders a plain item, which `copy_button()` builds on.
