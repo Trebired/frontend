@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.1
+
+- Fixed the right sidebar on phones. Its shell kept its desktop width below 900px because its own width rule was more specific than the phone rule, so every page with a right sidebar squeezed its content into the remaining width.
+
 ## 31.0.0
 
 - Removed the socket server and client. `createLiveSocketServer`, the `/live` namespace, `liveSocketRequest`, `liveSocketResponse`, the `@trebired/frontend/realtime` and `@trebired/frontend/socket` subpaths and the `socket.io-client` dependency are gone. Sockets belong to `@trebired/sockets`, where each system serves its own channel.
