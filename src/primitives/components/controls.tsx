@@ -39,7 +39,34 @@ function primitiveTooltipAttrs(tooltipText: string, title: ButtonProps["title"])
   };
 }
 
+const POPOVER_ITEM_CLASS = frontendClassName("popover-item");
+
+function isPopoverItem(className: unknown) {
+  return toText(className).split(/\s+/u).includes(POPOVER_ITEM_CLASS);
+}
+
+function popoverItemButton(props: ButtonProps) {
+  const {
+    actionButton, actionTrigger, active, align: _align, children, className, icon: _icon,
+    size: _size, title, tone: _tone, tooltip, type = "button", variant: _variant, ...rest
+  } = props;
+  return (
+    <button
+    type={type}
+    className={toText(className)}
+    {...frontendDataAttrs({ "active": active ? "true" : undefined })}
+    {...actionButtonAttrs(actionButton)}
+    {...actionTriggerAttrs(actionTrigger)}
+    {...rest}
+    {...primitiveTooltipAttrs(primitiveTooltipText(tooltip), title)}
+    >
+    {children}
+    </button>
+  );
+}
+
 function primitiveButton(props: ButtonProps) {
+  if (isPopoverItem(props.className)) return popoverItemButton(props);
   const {
     actionButton,
     actionTrigger,

@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.4
+
+- Fixed menu items built with `button()` or `copy_button()` looking like buttons. Given `tbf-popover-item`, they still got the button classes, so inside a popover they rendered centred, smaller and filled, unlike the other items. A `button()` with that class now renders a plain item, which `copy_button()` builds on.
+
 ## 31.0.3
 
 - Fixed the file tree's rows in dark themes. Each row is a plain `<button>`, which kept the browser's black text and centred it, so names were nearly invisible on a dark background. Plain buttons now inherit the text colour, and the `tbf-text-left` utility the rows ask for exists.

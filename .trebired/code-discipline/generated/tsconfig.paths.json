@@ -205,6 +205,9 @@
       "#36iuc8ncbccq": [
         "../../../src/inputs/upload/manager.ts"
       ],
+      "#38dol9ll7lat": [
+        "../../../scripts/verify/frontend/primitives.mjs"
+      ],
       "#3b9m6d1wbusd": [
         "../../../src/config/containers.ts"
       ],
@@ -1152,6 +1155,9 @@
       ],
       "#ftky4711z79n": [
         "../../../src/logs/client/dom.ts"
+      ],
+      "#fu8ssupu1ikm": [
+        "../../../scripts/verify/frontend/popover-item.mjs"
       ],
       "#fuumbbxo1f9l": [
         "../../../src/media/lightbox.tsx"
