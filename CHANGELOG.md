@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.6
+
+- Fixed a React "unique key" warning from the source language visualizer. Its three bucket panels rendered as a list without keys; each now carries its bucket as key.
+
 ## 31.0.5
 
 - Fixed language rows in the source language visualizer ignoring clicks. Each row is itself a `role="button"`, and the check that skips clicks on controls inside a row matched the row too, so a click anywhere on its content did nothing. Only the row's bare padding toggled it. The check now counts only controls nested inside the row, and checkbox options, which carry `role="checkbox"`, use the same check.

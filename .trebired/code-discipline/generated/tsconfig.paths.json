@@ -1669,6 +1669,9 @@
       "#nn6lx6ueg6es": [
         "../../../src/editor/components/index.tsx"
       ],
+      "#nt6xjgxgaaiz": [
+        "../../../scripts/verify/frontend/language-keys.mjs"
+      ],
       "#ntrsoidc3kye": [
         "../../../src/code/lazy.ts"
       ],

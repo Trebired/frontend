@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import tabs, { tab_panel } from "#92vilwel70ga";
 import { formatLanguagePercent } from "#k0q2s2kidqtq";
 import {
@@ -186,15 +187,18 @@ function sourceLanguageTabs(model: SourceLanguageTabsContentProps) {
 
 function sourceLanguageTabPanels(model: SourceLanguageTabsContentProps) {
   return (["everything", "repository", "supporting"] as SourceLanguageBucket[]).map(
-    (bucket) =>
-    tab_panel({
-        className: primitiveStackClassName({ gap: "sm" }),
-        defaultActive: bucket === "everything",
-        familyKey: "source-language-bucket",
-        id: sourceLanguageBucketPanelId(bucket),
-        route: bucket,
-        children: languagePanel(model, bucket),
-    }),
+    (bucket) => (
+      <Fragment key={bucket}>
+      {tab_panel({
+            className: primitiveStackClassName({ gap: "sm" }),
+            defaultActive: bucket === "everything",
+            familyKey: "source-language-bucket",
+            id: sourceLanguageBucketPanelId(bucket),
+            route: bucket,
+            children: languagePanel(model, bucket),
+      })}
+      </Fragment>
+    ),
   );
 }
 

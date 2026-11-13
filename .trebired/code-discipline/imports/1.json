@@ -555,6 +555,7 @@
   "#njm93vxresgv": "./src/runtime/components.tsx",
   "#nm6ab49uw5o2": "./src/language/index.ts",
   "#nn6lx6ueg6es": "./src/editor/components/index.tsx",
+  "#nt6xjgxgaaiz": "./scripts/verify/frontend/language-keys.mjs",
   "#ntrsoidc3kye": "./src/code/lazy.ts",
   "#nway658d7fin": "./src/styles/utils/text/core.scss",
   "#nyut5tba5sxq": "./src/primitives/styles/_wizard.scss",
