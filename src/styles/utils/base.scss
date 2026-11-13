@@ -46,6 +46,10 @@ textarea {
   font-family: var(#{ns.css-var("font-sans")}, "Inter", sans-serif);
 }
 
+:where(button) {
+  color: inherit;
+}
+
 html,
 body {
   margin: 0;

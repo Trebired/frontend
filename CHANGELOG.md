@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.3
+
+- Fixed the file tree's rows in dark themes. Each row is a plain `<button>`, which kept the browser's black text and centred it, so names were nearly invisible on a dark background. Plain buttons now inherit the text colour, and the `tbf-text-left` utility the rows ask for exists.
+
 ## 31.0.2
 
 - Fixed `card` dropping its stack options. It passed `center`, `horizontalCenter`, `verticalCenter`, `grow` and `noShrink` through to its `<div>` instead of its class, so the card was never centred and React warned about unknown DOM attributes. The code editor's empty-file message showed both. The card now applies them as it applies `gap`.

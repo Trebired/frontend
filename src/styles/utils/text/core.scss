@@ -109,6 +109,10 @@ $outline-width: var(#{ns.css-var("typography-outline-width")}, 2px);
   list-style: none;
 }
 
+#{ns.class("text-left")} {
+  text-align: left;
+}
+
 #{ns.class("text-center")} {
   text-align: center;
 }

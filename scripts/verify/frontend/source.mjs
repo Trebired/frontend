@@ -159,6 +159,8 @@ async function assertBundledFrontendCss(result) {
   assert.equal(css.includes(".tbf-graph"), true);
   assert.equal(css.includes(".tbf-card"), true);
   assert.equal(css.includes(".tbf-card-row"), true);
+  assert.match(css, /\.tbf-text-left\s*\{\s*text-align:\s*left;?\s*\}/su, "tbf-text-left aligns text left");
+  assert.match(css, /:where\(button\)\s*\{\s*color:\s*inherit;?\s*\}/su, "plain buttons inherit the text colour");
   assert.equal(css.includes(".tbf-pill"), true);
   assert.equal(css.includes(".tbf-disclosure"), true);
   assert.equal(css.includes(".tbf-modal,\n[data-tbf-modal]"), false);
