@@ -223,7 +223,8 @@
 
 @media (max-width: 900px) {
   #{ns.class("sidebar-shell")},
-  #{ns.data("sidebar-shell")} {
+  #{ns.data("sidebar-shell")},
+  #{ns.data("sidebar-shell")}#{ns.data("sidebar-side", "right")} {
     width: 0;
   }
 

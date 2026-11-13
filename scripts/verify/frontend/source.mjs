@@ -150,6 +150,11 @@ async function assertBundledFrontendCss(result) {
   assert.equal(css.includes(".tbf-flash"), true);
   assert.equal(css.includes(".tbf-upload"), true);
   assert.equal(css.includes(".tbf-sidebar-shell"), true);
+  assert.match(
+    css,
+    /@media \(max-width: 900px\)\s*\{[^@]*\[data-tbf-sidebar-shell\]\[data-tbf-sidebar-side=right\]\s*\{\s*width:\s*0;/su,
+    "the right sidebar shell collapses on phones",
+  );
   assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
   assert.equal(css.includes(".tbf-graph"), true);
   assert.equal(css.includes(".tbf-card"), true);
