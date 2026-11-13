@@ -44,6 +44,7 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "indent",
   "visibility",
   "reveal",
+  "highlight",
   "a11y",
 ];
 

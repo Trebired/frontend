@@ -43,6 +43,7 @@ type FrontendSystemKey =
 |"flash"
 |"fullscreen"
 |"graph"
+|"highlight"
 |"hollow"
 |"icons"
 |"inputs"

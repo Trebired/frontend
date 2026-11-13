@@ -1,0 +1,58 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("highlight-" + $name)}, $fallback);
+}
+
+$ring-color: token("color", var(#{ns.css-var("tone-ink")}, var(#{ns.css-var("focus-ring-color")}, currentColor)));
+
+$glow: 0 0 0 token("glow", 8px) color-mix(in srgb, #{$ring-color} 30%, transparent);
+
+$rest: 0 0 0 0 color-mix(in srgb, #{$ring-color} 0%, transparent);
+
+#{ns.data("highlight-ring")} {
+  position: fixed;
+  z-index: calc(var(#{ns.css-var("z-header")}, 100) - 1);
+  box-sizing: border-box;
+  pointer-events: none;
+  border: token("width", 2px) solid $ring-color;
+  opacity: 0;
+  animation: #{ns.token("highlight-pulse")} token("duration", 1600ms) ease-out forwards;
+}
+
+@keyframes #{ns.token("highlight-pulse")} {
+  0% {
+    opacity: 0;
+    box-shadow: $rest;
+  }
+
+  12% {
+    opacity: 1;
+    box-shadow: $glow;
+  }
+
+  32% {
+    box-shadow: $rest;
+  }
+
+  50% {
+    box-shadow: $glow;
+  }
+
+  75% {
+    opacity: 1;
+    box-shadow: $rest;
+  }
+
+  100% {
+    opacity: 0;
+    box-shadow: $rest;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{ns.data("highlight-ring")} {
+    animation: none;
+    opacity: 1;
+  }
+}

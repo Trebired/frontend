@@ -43,6 +43,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   explorer: "explorer/styles/index.scss",
   flash: "flash/styles/index.scss",
   graph: "graph/styles/index.scss",
+  highlight: "highlight/styles/index.scss",
   hollow: "hollow/styles/index.scss",
   icons: "icons/styles/index.scss",
   indent: "indent/styles/index.scss",

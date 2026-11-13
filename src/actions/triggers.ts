@@ -1,3 +1,5 @@
+import { openModal } from "#8rm3pzkj3gge";
+import { highlightTargetOf, queueHighlight } from "#8xdkni5exuif";
 import {
   INTERACTIVE_TARGET_SELECTOR,
   closestElement,
@@ -10,6 +12,7 @@ const ACTION_TRIGGER_SELECTOR = [
   frontendDataSelector("action-trigger"),
   frontendDataSelector("href"),
   frontendDataSelector("external-href"),
+  frontendDataSelector("action-modal"),
 ].join(",");
 const ACTION_FULL_RELOAD_SELECTOR = frontendDataSelector("full-reload");
 const registry = new Map<string, Array<(payload: ActionPayload) => void>>();
@@ -27,9 +30,11 @@ type BindActionTriggerOptions = {
   action?: string;
   externalHref?: string;
   fullReloadSelector?: string;
+  highlight?: string;
+  modal?: string;
   href?: string;
   navigation?: {
-    navigate?: (url: string) => unknown;
+    navigate?: (url: string, options?: { highlight?: string }) => unknown;
     shouldFullReload?: (trigger: HTMLElement, url: string) => boolean;
   };
 };
@@ -118,14 +123,28 @@ function navigateHref(trigger: HTMLElement, options: BindActionTriggerOptions) {
   }
   const href = String(options.href || trigger.getAttribute(frontendDataAttr("href")) || "").trim();
   if (!href) return false;
+  const highlight = String(options.highlight || highlightTargetOf(trigger)).trim();
   if (
     options.navigation?.navigate &&
       !shouldNavigateWithFullReload(trigger, href, options)
   ) {
-    void options.navigation.navigate(href);
+    void options.navigation.navigate(href, highlight ? { highlight } : undefined);
   } else {
+    if (highlight) queueHighlight(href, highlight);
     window.location.assign(href);
   }
+  return true;
+}
+
+function triggerModalId(trigger: HTMLElement, options: BindActionTriggerOptions) {
+  return String(options.modal || trigger.getAttribute(frontendDataAttr("action-modal")) || "").trim();
+}
+
+function openTriggerModal(trigger: HTMLElement, options: BindActionTriggerOptions) {
+  const modalId = triggerModalId(trigger, options);
+  const modal = modalId ? document.getElementById(modalId) : null;
+  if (!modal) return false;
+  openModal(modal, trigger);
   return true;
 }
 
@@ -136,7 +155,7 @@ function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOption
       trigger.getAttribute(frontendDataAttr("href")) ||
       trigger.getAttribute(frontendDataAttr("external-href")),
   );
-  if (!parseAction(trigger, options).action && !hasHref) return;
+  if (!parseAction(trigger, options).action && !hasHref && !triggerModalId(trigger, options)) return;
   if (trigger.matches("button,a,input,select,textarea")) return;
   if (!trigger.hasAttribute("role")) trigger.setAttribute("role", hasHref ? "link" : "button");
   if (!trigger.hasAttribute("tabindex")) trigger.tabIndex = 0;
@@ -177,6 +196,10 @@ function handleTrigger(
       interactiveTarget !== trigger &&
       trigger.contains(interactiveTarget)
   ) {
+    return;
+  }
+  if (openTriggerModal(trigger, options)) {
+    event.preventDefault();
     return;
   }
   if (navigateHref(trigger, options)) {

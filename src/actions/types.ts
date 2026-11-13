@@ -25,7 +25,7 @@ type ActionAdapters = {
   };
   i18n?: (key: string, fallback: string) => string;
   navigation?: {
-    navigate?: (url: string) => Promise<unknown>|unknown;
+    navigate?: (url: string, options?: { highlight?: string }) => Promise<unknown>|unknown;
     shouldFullReload?: (trigger: HTMLElement, url: string) => boolean;
   };
   progress?: ProgressHandle;

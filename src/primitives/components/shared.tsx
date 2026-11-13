@@ -1,4 +1,5 @@
 import { cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
+import { highlightAttrs } from "#8xdkni5exuif";
 import type { BindActionTriggerOptions } from "#2qlqsnwrvrgx";
 import type { SubmitActionButtonOptions } from "#7yo06l20dfgo";
 import { appendClassName, joinClassNames, jsonScript, toText } from "#ndsvdqv80epr";
@@ -33,6 +34,8 @@ function actionTriggerAttrs(options?: BindActionTriggerOptions) {
     [frontendDataAttr("action-trigger")]: options.action,
     [frontendDataAttr("external-href")]: options.externalHref,
     [frontendDataAttr("href")]: options.href,
+    [frontendDataAttr("action-modal")]: options.modal,
+    ...highlightAttrs(options.highlight),
   };
 }
 
@@ -53,7 +56,7 @@ function triggerSemanticsAttrs(
 }
 
 function wrapTriggerHostNode(children: ReactNode, options?: BindActionTriggerOptions) {
-  if (!options || (!options.action && !options.href && !options.externalHref)) {
+  if (!options || (!options.action && !options.href && !options.externalHref && !options.modal)) {
     return children;
   }
   if (isValidElement(children) && typeof children.type === "string") {
