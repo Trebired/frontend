@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.7
+
+- Checkbox and radio choice rows look like inputs. They took the chrome button style, with a border in the text colour at 24% (42% on hover), no fill and a large radius, so they stood out far more than the fields beside them. They now take the input's border, background and radius, and on hover the input's focus border. The checked state keeps its own colours.
+
 ## 31.0.6
 
 - Fixed a React "unique key" warning from the source language visualizer. Its three bucket panels rendered as a list without keys; each now carries its bucket as key.

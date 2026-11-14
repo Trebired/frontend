@@ -98,6 +98,19 @@ $frontend-input-tones: (
   line-height: 1.4;
 }
 
+@mixin classic-choice-row {
+  border: var(#{ns.css-var("ui-input-root-border")}, $classic-field-border);
+  border-radius: var(--radius-sm);
+  background: var(#{ns.css-var("ui-input-root-bg")}, var(--background-surface-1));
+  color: var(--text-color);
+
+  &:hover {
+    border-color: $classic-field-focus-color;
+    background: var(#{ns.css-var("ui-input-root-bg")}, var(--background-surface-1));
+    color: var(--text-color);
+  }
+}
+
 @mixin classic-field-focus {
   &:focus {
     outline-color: $classic-field-focus-color;

@@ -60,7 +60,6 @@ function radioOptionModel(props: radio_option_render_props) {
     primitiveButtonClassName({ variant: "chrome" }),
     frontendClassName("choice-row"),
     frontendClassName("radio-option"),
-    frontendClassName("radius-lg"),
     optionClass,
   );
   const optionBodyClassName = joinClassNames(

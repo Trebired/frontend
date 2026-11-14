@@ -24,6 +24,7 @@
   font-size: inherit;
   font-weight: inherit;
   line-height: 1.4;
+  @include classic-choice-row;
 
   &:focus-visible {
     outline: var(--border-width) solid var(#{ns.css-var("ui-input-state-focus-color")}, var(#{ns.css-var("focus")}, currentColor));
