@@ -119,3 +119,5 @@ export {
 } from "#wi9q25odclpm";
 export { ErrorPage } from "#dotjuks8qbkc";
 export type { ErrorPageProps } from "#dotjuks8qbkc";
+export { tooltipAttrs } from "#8sfk4kby98q6";
+export type { TooltipAttrsOptions } from "#8sfk4kby98q6";

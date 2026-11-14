@@ -114,7 +114,16 @@ function placeTooltip(trigger: HTMLElement, layer: HTMLElement) {
   layer.setAttribute(frontendDataAttr("placement"), fitsTop ? "top" : "bottom");
 }
 
+function isTextCut(trigger: HTMLElement) {
+  return trigger.scrollWidth > trigger.clientWidth + 1 || trigger.scrollHeight > trigger.clientHeight + 1;
+}
+
+function wantsTooltip(trigger: HTMLElement) {
+  return !trigger.hasAttribute(frontendDataAttr("tooltip-overflow")) || isTextCut(trigger);
+}
+
 function showTooltip(trigger: HTMLElement) {
+  if (!wantsTooltip(trigger)) return false;
   const text = readTooltipText(trigger);
   if (!text) return false;
   if (trigger.hasAttribute("title")) trigger.removeAttribute("title");

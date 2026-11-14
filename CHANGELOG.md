@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 31.0.8
+
+- Added `tooltipAttrs(text, { overflow })` to `@trebired/frontend/react`. It returns the tooltip data attributes for any element. With `overflow: true` the tooltip only shows while the element's text is cut off, so a truncated path or name can show its full text without every row getting a tooltip.
+- The product shell's sidebar controls card takes its padding from the `shell.sidebar.controls.padding` token (`--tbf-shell-sidebar-controls-padding`). Its own padding rule never applied, because the card's padding rule has the same specificity and comes later. The default is still the card padding.
+
 ## 31.0.7
 
 - Checkbox and radio choice rows look like inputs. They took the chrome button style, with a border in the text colour at 24% (42% on hover), no fill and a large radius, so they stood out far more than the fields beside them. They now take the input's border, background and radius, and on hover the input's focus border. The checked state keeps its own colours.

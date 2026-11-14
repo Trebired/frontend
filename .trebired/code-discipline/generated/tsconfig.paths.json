@@ -2167,6 +2167,9 @@
       "#w1ndw6lrphk4": [
         "../../../src/inputs/styles/cropper-internals.scss"
       ],
+      "#w8uygce567jt": [
+        "../../../scripts/verify/frontend/tooltip-overflow.mjs"
+      ],
       "#w8y234c7otvc": [
         "../../../src/inputs/advanced/textarea/mark.ts"
       ],

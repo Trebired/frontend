@@ -18,6 +18,14 @@ type StatusIconProps = HTMLAttributes<HTMLSpanElement> & {
   label: string;
 };
 
+type TooltipAttrsOptions = {
+  overflow?: boolean;
+};
+
+function tooltipAttrs(text: string, options: TooltipAttrsOptions = {}) {
+  return frontendDataAttrs({ "tooltip": text, ...(options.overflow ? { "tooltip-overflow": "" } : {}) });
+}
+
 function TooltipButton(props: TooltipButtonProps) {
   const { children, className, tooltip, type = "button", ...rest } = props;
   return (
@@ -76,5 +84,5 @@ function TooltipLayer(props: HTMLAttributes<HTMLDivElement>) {
   );
 }
 
-export { StatusIcon, TooltipButton, TooltipLayer, TooltipText };
-export type { StatusIconProps, TooltipButtonProps, TooltipTextProps };
+export { StatusIcon, TooltipButton, TooltipLayer, TooltipText, tooltipAttrs };
+export type { StatusIconProps, TooltipAttrsOptions, TooltipButtonProps, TooltipTextProps };
