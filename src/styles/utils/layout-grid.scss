@@ -18,6 +18,54 @@
   }
 }
 
+$divided-wrapper: "search-item, #{ns.data("search-item")}";
+$divided-item: ":not([hidden], script, template, style)";
+$divided-line: var(#{ns.css-var("border-width")}, 1px) solid var(--border-surface-1, var(#{ns.css-var("border")}, currentColor));
+
+$divided-offset: calc(var(#{ns.css-var("divide-gap")}, 0px) / -2 - var(#{ns.css-var("border-width")}, 1px) / 2);
+
+#{ns.class("divided")} {
+  #{ns.css-var("divide-gap")}: 0px;
+}
+
+#{ns.class("inline-row")}#{ns.class("divided")} {
+  #{ns.css-var("divide-gap")}: var(#{ns.css-var("gap-sm")});
+}
+
+@each $size in (xs2, xs, sm, md, lg, xl, xl2) {
+  #{ns.class("divided")}#{ns.class("gap-#{$size}")} {
+    #{ns.css-var("divide-gap")}: var(#{ns.css-var("gap-#{$size}")});
+  }
+}
+
+:where(#{ns.class("divided")} > #{$divided-item} ~ #{$divided-item}:not(#{$divided-wrapper})),
+
+:where(#{ns.class("divided")} > #{$divided-item} ~ :is(#{$divided-wrapper}):not([hidden]) > #{$divided-item}) {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: #{$divided-offset};
+    border-top: #{$divided-line};
+    pointer-events: none;
+  }
+}
+
+:where(#{ns.class("inline-row")}#{ns.class("divided")} > #{$divided-item} ~ #{$divided-item}:not(#{$divided-wrapper})),
+
+:where(#{ns.class("inline-row")}#{ns.class("divided")} > #{$divided-item} ~ :is(#{$divided-wrapper}):not([hidden]) > #{$divided-item}) {
+  &::before {
+    inset-block: 0;
+    inset-inline: auto;
+    top: 0;
+    left: #{$divided-offset};
+    border-top: 0;
+    border-left: #{$divided-line};
+  }
+}
+
 #{ns.class("grid")} {
   display: grid;
   grid-template-columns: var(#{ns.css-var("grid-template-columns")}, minmax(0, 1fr) minmax(0, 1fr));
@@ -40,6 +88,10 @@
     align-items: stretch;
   }
 
+  &#{ns.class("aside")} {
+    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  }
+
   &#{ns.class("cols-2")} {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -54,6 +106,10 @@
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+
+    &#{ns.class("aside")} {
+      grid-template-columns: 1fr;
+    }
 
     &#{ns.class("cols-3")},
     &#{ns.class("cols-4")} {

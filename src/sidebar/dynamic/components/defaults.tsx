@@ -1,10 +1,10 @@
 import { Icon } from "#lbkpzw8nphru";
 import {
   circle,
+  number,
   primitiveInlineRowClassName,
   primitiveStatusDotClassName,
   primitiveTextClassName,
-  time_counter,
 } from "#hzrmwbvgt2ax";
 import type {
   DynamicSidebarCountContext,
@@ -25,11 +25,7 @@ function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
 
 function defaultDynamicSidebarCount(context: DynamicSidebarCountContext) {
   if (context.count == null) return null;
-  return time_counter({
-      bare: true,
-      count: context.count,
-      mode: "count",
-  });
+  return number({ value: context.count });
 }
 
 function defaultDynamicSidebarLoader(context: DynamicSidebarLoaderContext) {

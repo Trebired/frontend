@@ -48,8 +48,14 @@ function infiniteRootRect(state: InfiniteObserverState) {
   };
 }
 
+function isRendered(element: Element) {
+  return element.getClientRects().length > 0;
+}
+
 function isInfiniteSentinelVisible(state: InfiniteObserverState) {
   if (state.sentinel.hidden === true) return false;
+  if (!isRendered(state.sentinel)) return false;
+  if (state.root && !isRendered(state.root)) return false;
   const sentinelRect = state.sentinel.getBoundingClientRect();
   const margin = infiniteRootMarginPixels(state);
   const rootRect = infiniteRootRect(state);

@@ -1,9 +1,15 @@
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { Children, isValidElement, useId } from "react";
+import { copy_button } from "#k632wzgl64a3";
 import { classNames } from "#ndsvdqv80epr";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type BreadcrumbProps = HTMLAttributes<HTMLElement> & {
+  copy?: boolean;
+  copyLabel?: string;
+  copyValue?: string;
   label?: string;
+  lang?: string;
 };
 
 type BreadcrumbItemProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -13,16 +19,35 @@ type BreadcrumbItemProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   softRedirect?: boolean;
 };
 
+function breadcrumbLabels(children: ReactNode) {
+  return Children.toArray(children)
+  .map((child) => (isValidElement<{ children?: ReactNode }>(child) ? child.props.children : null))
+  .filter((label) => typeof label === "string" || typeof label === "number")
+  .map(String);
+}
+
+function BreadcrumbCopy(props: { children: ReactNode; label?: string; lang?: string; value?: string }) {
+  const id = `${frontendClassName("breadcrumb")}-copy-${useId().replace(/[^a-zA-Z0-9_-]/gu, "")}`;
+  const value = typeof props.value === "string" ? props.value : breadcrumbLabels(props.children).join("/");
+  return (
+    <span className={frontendElementClass("breadcrumb", "copy")}>
+    <code hidden id={id} {...frontendDataAttrs({ "breadcrumb-copy-value": "" })}>{value}</code>
+    {copy_button({ lang: props.lang, size: "sm", target: id, title: props.label, tooltip: props.label })}
+    </span>
+  );
+}
+
 function Breadcrumb(props: BreadcrumbProps) {
-  const { children, className, label = "Breadcrumb", ...rest } = props;
+  const { children, className, copy, copyLabel, copyValue, label = "Breadcrumb", lang, ...rest } = props;
   return (
     <nav
     {...rest}
     aria-label={label}
     className={classNames(frontendClassName("breadcrumb"), className)}
-    {...frontendDataAttrs({ "breadcrumb": "" })}
+    {...frontendDataAttrs({ "breadcrumb": "", "breadcrumb-copyable": copy ? "" : undefined })}
     >
     <ol className={frontendElementClass("breadcrumb", "list")}>{children}</ol>
+    {copy ? <BreadcrumbCopy label={copyLabel} lang={lang} value={copyValue}>{children}</BreadcrumbCopy> : null}
     </nav>
   );
 }

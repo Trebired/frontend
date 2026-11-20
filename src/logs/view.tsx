@@ -49,6 +49,8 @@ function view(props: view_props) {
           }),
           extendGroup: model.logsExtendGroup,
           extendId: model.logsInstanceId,
+          fullscreen: true,
+          lang: model.lang,
           panelClassName: model.panelClassName,
           title: model.title,
           toolbarContent: logsToolbar(model),

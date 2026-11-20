@@ -3,7 +3,6 @@ import {
   mergeIconAliases,
   normalizeIconAliasMap,
 } from "#rqcj8y6keks2";
-import { createIconMiddleware } from "#d9gbd4jkefih";
 import { text } from "#bu1nq95e3k0f";
 import { renderIconHtml } from "./index.js";
 import { createIconServerOptions } from "./defaults.js";
@@ -12,7 +11,6 @@ import type { IconServerOptions, RenderIconHtmlAttrs } from "./types.js";
 type IconServerAttachment = {
   aliases: ReturnType<typeof normalizeIconAliasMap>;
   icon: (spec: unknown, attrs?: RenderIconHtmlAttrs) => string;
-  route: string;
 };
 
 type AttachIconServerOptions = IconServerOptions& {
@@ -20,11 +18,9 @@ type AttachIconServerOptions = IconServerOptions& {
   iconLocalKey?: string;
   iconsLocalKey?: string;
   includeDefaultAliases?: boolean;
-  route?: string | false;
 };
 
 type IconServerApp = {
-  get?: (path: string, handler: unknown) => unknown;
   locals?: Record<string, unknown>;
   use?: (handler: unknown) => unknown;
 };
@@ -94,7 +90,6 @@ function attachIconServer(
   const serverOptions = iconServerOptions(options);
   const icon = (spec: unknown, attrs: RenderIconHtmlAttrs = {}) =>
   renderIconHtml(spec, attrs, serverOptions);
-  const route = options.route === false ? "" : text(options.route) || "/__icons/svg";
   const aliases = attachIconAliasLocals(
     app,
     options.aliases,
@@ -102,10 +97,7 @@ function attachIconServer(
     { includeDefaultAliases: options.includeDefaultAliases !== false },
   );
   attachIconRendererLocals(app, icon, text(options.iconLocalKey) || "icon");
-  if (route && typeof app.get === "function") {
-    app.get(route, createIconMiddleware(serverOptions));
-  }
-  return { aliases, icon, route };
+  return { aliases, icon };
 }
 
 export { attachIconAliasLocals, attachIconServer, normalizeServerIconAliases };

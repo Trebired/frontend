@@ -157,8 +157,10 @@ async function assertBundledFrontendCss(result) {
   );
   assert.equal(css.includes(".tbf-fullscreen-overlay"), true);
   assert.equal(css.includes(".tbf-graph"), true);
-  assert.equal(css.includes(".tbf-card"), true);
-  assert.equal(css.includes(".tbf-card-row"), true);
+  assert.equal(/\.tbf-card\s*[{,]/u.test(css), false, "tbf ships no card box; a container claims the card role");
+  assert.equal(/\.tbf-card-row\s*[{,]/u.test(css), false, "tbf ships no card row box; a container claims the card-row role");
+  assert.equal(/\.tbf-log-line\s*[{,]/u.test(css), false, "tbf ships no log line box; a container claims the log-line role");
+  assert.match(css, /\.tbf-divided > :not\(\[hidden\], script, template, style\) ~ /u, "tbf-divided draws the line between children");
   assert.match(css, /\.tbf-text-left\s*\{\s*text-align:\s*left;?\s*\}/su, "tbf-text-left aligns text left");
   assert.match(css, /:where\(button\)\s*\{\s*color:\s*inherit;?\s*\}/su, "plain buttons inherit the text colour");
   assert.match(

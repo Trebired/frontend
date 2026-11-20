@@ -41,6 +41,7 @@ const SYSTEM_ORDER: FrontendSystemKey[] = [
   "graph",
   "hollow",
   "document",
+  "markdown",
   "indent",
   "visibility",
   "reveal",
@@ -68,7 +69,6 @@ const DEFAULT_FRONTEND_CONFIG: NormalizedFrontendConfig = Object.freeze({
         }),
         icons: Object.freeze({
             aliases: Object.freeze({ ...defaultIconAliases }),
-            endpoint: "/__icons/svg",
             mode: "server",
             packs: Object.freeze([...SUPPORTED_ICON_PACKS]) as FrontendIconPack[],
             specs: Object.freeze([]) as unknown as string[],

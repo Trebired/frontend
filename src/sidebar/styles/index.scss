@@ -154,6 +154,13 @@
   margin-inline-start: auto;
 }
 
+#{ns.class("sidebar-link")} > #{ns.class("right")},
+
+#{ns.data("sidebar-link")} > #{ns.class("right")} {
+  flex: none;
+  margin-inline-start: auto;
+}
+
 #{ns.data("sidebar-live-slot")} {
   display: inline-flex;
   min-width: 0;

@@ -22,7 +22,7 @@ import {
   textValue,
 } from "#yv4ubgils4dc";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
-import { frontendDataAttrs } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function DynamicSidebarLiveRoot(props: DynamicSidebarLiveRootProps) {
   const { children, config, style, ...rest } = props;
@@ -58,6 +58,7 @@ function DynamicSidebarCountSlot(props: {
   const render = props.render || defaultDynamicSidebarCount;
   return (
     <span
+    className={frontendClassName("right")}
     {...frontendDataAttrs({ "sidebar-active": props.active ? "1" : "0" })}
     {...frontendDataAttrs({ "sidebar-count-path": props.path })}
     {...frontendDataAttrs({ "sidebar-count-slot": "" })}

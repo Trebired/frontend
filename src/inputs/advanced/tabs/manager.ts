@@ -122,10 +122,6 @@ function handleRouteChange(context) {
 
 function prepareTabsContext(root, options: any = {}) {
   if (!(root instanceof HTMLElement)) return null;
-  if (
-    root.closest(`${frontendDataSelector("live-island-root")}${frontendDataSelector("live-island-hydrated", "false")}`)
-  )
-  return null;
   const existing = tabBindings.get(root);
   if (existing) {
     if (options && options.force === true) {

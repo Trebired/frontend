@@ -1,4 +1,4 @@
-import { applyZIndex } from "#ccvonx3uhbte";
+import { applyZIndex, promoteZIndex } from "#ccvonx3uhbte";
 import { FRONTEND_PREFIX, frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const FLASH_STACK_ID = `${FRONTEND_PREFIX}_flash_stack`;
@@ -31,6 +31,10 @@ function ensureFlashStack() {
       layoutFlashStack(stack);
   });
   return stack;
+}
+
+function raiseFlashStack(stack: HTMLElement) {
+  promoteZIndex(stack, { fallback: FLASH_BASE_Z_INDEX });
 }
 
 function orderedFlashItems(stack: HTMLElement) {
@@ -89,4 +93,5 @@ export {
   ensureFlashStack,
   hideFlashElement,
   layoutFlashStack,
+  raiseFlashStack,
 };

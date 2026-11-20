@@ -58,7 +58,7 @@ function verifyBrandColorSurvivesHydration(iconRuntime, iconReact, iconServer, r
   host.innerHTML = html;
   document.body.appendChild(host);
   try {
-    iconRuntime.harvestInlineIcons(host);
+    iconRuntime.icons.harvestInline(host);
     const cached = iconRuntime.readIconCacheEntry(spec);
     assert.equal(
       cached?.colorValue,

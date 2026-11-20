@@ -67,7 +67,7 @@ export {
 } from "./links.js";
 export { createLiveOverlayState, removeStalePortaledOverlays } from "./overlays.js";
 export { currentPage, onPageChange } from "./page.js";
-export { rehydrate, softRedirect, softReload } from "./navigate.js";
+export { rebind, softRedirect, softReload } from "./navigate.js";
 export { refreshElements, softRefresh } from "./refresh.js";
 export { updateUrl } from "./update_url.js";
 export type { UpdateUrlOptions, UrlQueryPatch } from "./update_url.js";

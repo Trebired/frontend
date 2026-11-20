@@ -4,6 +4,7 @@ import { Icon } from "#lbkpzw8nphru";
 import { joinClassNames } from "#6mupcizo1mwq";
 import {
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
 } from "#hzrmwbvgt2ax";
 
@@ -46,6 +47,7 @@ function wizard(props: wizard_props) {
         "wizard-step",
         {
           className: primitiveCardClassName({ className: frontendClassName("wizard-step"), gap: "sm" }),
+          ...primitiveCardAttrs(),
           id: `${props.id}_${step.id}`,
           key: step.id,
           ...(index === 0 ? { [frontendDataAttr("wizard-step-state")]: "active" } : {}),

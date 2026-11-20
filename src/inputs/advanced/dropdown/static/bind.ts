@@ -8,7 +8,6 @@ import {
   updateEmptyState,
 } from "#c0ew0jlb0c87";
 import searchManager from "#f1earyowcgbb";
-import { isInUnhydratedIsland } from "#dqy2d22qyujv";
 import { closeAll, closeStatic, openStatic } from "./position.js";
 import { bindStaticDropdownKeys } from "./keys.js";
 import { dropdownCombobox } from "./aria.js";
@@ -157,7 +156,6 @@ function bindSearchOptions(options) {
 function bindStaticDropdown(drop) {
   if (!(drop instanceof Element)) return;
   if (boundStaticDropdowns.has(drop)) return;
-  if (isInUnhydratedIsland(drop)) return;
 
   ensureDefaultPlaceholder(drop);
   updateEmptyState(drop);

@@ -68,7 +68,7 @@ async function verifyFrontendServerServices(server) {
   assert.equal(attached.theme, true);
   assert.equal(attached.language, true);
   assert.equal(attached.sidebar, true);
-  assert.equal(attached.icons.route, "/__icons/svg");
+  assert.equal(attached.icons.route, undefined);
   assert.equal(app.locals.icons.save, "remixicon:save-3-line");
   assert.deepEqual(
     app.posts.map((route) => route.path),

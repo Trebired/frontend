@@ -163,6 +163,7 @@ function save_icon(props: SaveIconButtonProps = {}) {
       ...(props.form ? { form: props.form } : {}),
       ...(props.id ? { id: props.id } : {}),
       ...(props.dataAttrs || {}),
+      ...(props.button_attrs && typeof props.button_attrs === "object" ? props.button_attrs : {}),
       ...(props.disabled ? { disabled: true } : {}),
       className: props.className,
       icon: display === "icon",
@@ -182,7 +183,6 @@ function copy_button(props: CopyButtonProps) {
     { className: "copy-button-host", style: { display: "contents" } },
     <script {...frontendDataAttrs({ "copy-config": "" })} hidden type="application/json">
     {JSON.stringify({
-          iconOnly: !props.children,
           target,
           ...(typeof props.value === "string" ? { value: props.value } : {}),
       }).replace(/</g, "\\u003c")}
@@ -199,7 +199,12 @@ function copy_button(props: CopyButtonProps) {
         ...(props.attrs || {}),
         ...(typeof props.value === "string" ? { value: props.value } : {}),
         title: tooltip,
-        children: props.children || <Icon spec="remixicon clipboard-line" />,
+        children: props.children || (
+          <>
+          <Icon spec="remixicon clipboard-line" {...frontendDataAttrs({ "copy-icon": "idle" })} />
+          <Icon hidden spec="remixicon checkbox-circle-line" {...frontendDataAttrs({ "copy-icon": "done" })} />
+          </>
+        ),
     }),
   );
 }

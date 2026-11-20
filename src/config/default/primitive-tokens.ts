@@ -89,6 +89,7 @@ const DEFAULT_PRIMITIVE_COMPONENTS_CONFIG = Object.freeze({
     loader: Object.freeze({ motion: { duration: "1s" } }),
     marquee: Object.freeze({ item: { gap: "1.5rem", px: "0.875rem" }, root: { py: "1.1rem" },
         separator: { fontSize: "1em", opacity: "0.45" }, track: { duration: "38s" } }),
+    number: Object.freeze({}),
     pill: Object.freeze({}),
     progress: Object.freeze({ motion: { duration: "180ms", easing: "ease", slideDuration: "1.05s" } }),
     quote: Object.freeze({}),

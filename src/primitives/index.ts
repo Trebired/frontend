@@ -1,17 +1,11 @@
 import { queryAll, readElementJson, type BindRoot } from "#er0dlx1gtbzh";
-import {
-  formatDuration,
-  formatWrappedCount,
-  parseDateMsOrNull,
-  parseCountValue,
-} from "./components/index.js";
+import { formatDuration, parseDateMsOrNull } from "./components/index.js";
 import { frontendDataSelector } from "#5vbaqj4pirp3";
 
 type TimeCounterConfig = {
-  count?: number | string | null;
   end?: string;
   live?: boolean;
-  mode?: "count" | "remaining";
+  mode?: "remaining";
   reloadOnZero?: boolean;
   start?: string;
 };
@@ -30,10 +24,6 @@ function timeCounterTarget(host: HTMLElement) {
       return entry instanceof HTMLElement && entry.tagName.toLowerCase() !== "script";
   });
   return child instanceof HTMLElement ? child : host;
-}
-
-function renderCount(el: HTMLElement, config: TimeCounterConfig) {
-  el.textContent = formatWrappedCount(parseCountValue(config.count));
 }
 
 function renderForward(el: HTMLElement, config: TimeCounterConfig) {
@@ -76,8 +66,7 @@ function tickLive(el: HTMLElement, config: TimeCounterConfig) {
 function refreshTimeCounter(el: HTMLElement | null) {
   if (!(el instanceof HTMLElement)) return false;
   const config = configs.get(el) || {};
-  if (config.mode === "count") renderCount(el, config);
-  else if (config.mode === "remaining") renderRemaining(el, config);
+  if (config.mode === "remaining") renderRemaining(el, config);
   else if (config.live === true) tickLive(el, config);
   else renderForward(el, config);
   return true;
@@ -176,21 +165,23 @@ export {
   card_item,
   card_segments,
   circle,
+  createNumberElement,
   csrfInput,
   flag,
   formatDuration,
-  formatWrappedCount,
   joinClassNames,
   keyValueRow,
   keyValueTimeRow,
   key_value,
   list,
   masonry,
-  parseCountValue,
+  number,
   parseDateMsOrNull,
   pill,
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
+  primitiveCardRowAttrs,
   primitiveCardRowClassName,
   primitiveGapClass,
   primitiveGridClassName,

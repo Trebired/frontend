@@ -112,6 +112,10 @@
   background: var(#{ns.css-var("overlay-popover-item-state-selected-bg")}, transparent);
 }
 
+#{ns.data("popover-trigger")} {
+  cursor: pointer;
+}
+
 #{ns.data("popover-trigger")}::after {
   display: var(#{ns.css-var("overlay-popover-trigger-indicator-display")}, none);
   width: var(#{ns.css-var("overlay-popover-trigger-indicator-size")}, 0.4rem);

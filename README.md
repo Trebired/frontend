@@ -389,6 +389,10 @@ A popover trigger draws no arrow by default. `components.overlays.popover.trigge
 
 `disclosure()` and `DisclosureButton` read `components.primitives.disclosure`: `root.padding` (a disclosure drawn as a card), `trigger` (`color`, `fontSize`, `fontWeight`), `indicator` (`size`, `color`, `offset`) and `panel.gap`, the space between the trigger and the opened content. Without it they keep their current look.
 
+### Dividers
+
+`tbf-divided` draws a hairline between the children of a layout, next to the layout and gap classes: `<div class="tbf-column tbf-gap-xs tbf-divided">`. The line belongs to the layout, not to the items, so a card or a row inside keeps its own box. It sits in the middle of the gap, at the edge between items when there is none, and runs vertically in a `tbf-inline-row`. It skips hidden children, scripts and templates, and it looks through a `search-item` wrapper, so a list a search filters stays divided without a line above the first visible item. The log viewer's lines are divided this way.
+
 ### Text Marks
 
 `textarea({ highlight: /\[[^\]]*\]/ })` marks every match in red while the person types, with the same value and events as a plain `textarea`. A textarea cannot colour part of its text, so it draws the marks in a layer over the text and keeps both scrolled together. `useTextHighlight(ref, pattern, { exclude })` from `@trebired/frontend/react` does the same for a `contentEditable` element through the CSS Custom Highlight API, so the DOM and the saved HTML stay untouched; it returns a function to call after changing the content from script, and `exclude` is a selector for text to leave unmarked.
@@ -410,6 +414,8 @@ app.get("/@:username/:section", tabSectionRedirect({
 ```
 
 Unknown sections fall through to the next handler. The request's own query is kept, and `redirectToTabs(req, res, { target, steps })` does the same for a handler that has already resolved its steps.
+
+A tab's `number` is rendered on the server. When the list behind it changes in the browser, `setTabNumber(familyKey, route, value)` from `@trebired/frontend` updates the count on that tab, and `null` removes it.
 
 ### URL State
 
@@ -651,6 +657,32 @@ A container name is kebab-case and may not start with `tbf-` or `tbfm-`, both of
 
 Use it for every box an application would otherwise wrap in a component of its own: a card, a band, a panel, a cell, a row. The package ships no such components, so there is nothing to import and nothing to keep in step.
 
+#### Roles
+
+The package draws no box of its own either. Where one of its components renders a box, it marks the element with a role and leaves the look to the container that claims it:
+
+| Role | Rendered by |
+| --- | --- |
+| `card` | `card`, `copy_card`, `key_value` with `card`, `bar` with `card`, disclosures, search controls, wizard steps, graph panels, the canvas panel header, the log toolbar toggle |
+| `card-row` | `card_body`, `card_item`, select cards, step rows, `RecentPages` |
+| `log-line` | every line of the log viewer, which keeps its own `padding-xs2` and `min-height-fit` |
+
+A container claims roles with `roles`:
+
+```ts
+containers: {
+  "card-03": {
+    roles: ["log-line"],
+    style: { display: "flex", padding: "12px 14px" },
+    on: { ":hover": { background: token.color("gray", 800) } },
+  },
+}
+```
+
+That emits `.tbfm-card-03, [data-tbf-container~="log-line"]`, so the application's own `<div class="tbfm-card-03">` and every log line share one look. States apply to both selectors. A variant also matches the element's `data-tbf-variant`: a card rendered with `tone: "muted"` takes the `muted` variant of the container that claims `card`. Selected and excluded rows carry `data-tbf-card-selected="true"` and `data-tbf-card-excluded="true"`.
+
+`roles` is declared on a container itself, never on a part or a variant. A role is one of `card`, `card-row` and `log-line`, and one container answers for it; an unknown role and a role claimed twice are refused when the config is read. A role no container claims renders unstyled.
+
 ### Button variants
 
 `design.components.primitives.button.variants` configures `chrome`, `danger`, `ghost`, `primary` and `secondary`. `chrome` is the header's own look: a compact quiet outline over whatever it sits on, and what the language switcher, the accessibility trigger and the choice rows in radio and checkbox groups all render as, so the three cannot drift apart. It is shorter than a content button and opts into the dense pointer tier, which is why it stays at 2rem beside a 2.75rem button. A variant may set `bg`, `border`, `color`, `radius`, `height`, `padding`, `fontSize` and a `states.hover` block.
@@ -693,32 +725,17 @@ Static icon mode uses `registerStaticIcons()` in the browser. Missing cached ico
 
 The step is not a fixed distance. `flow` and `size` name the indent for body text under an `h2`, and the package scales it to what it moves: by the size of the indented text against the root size, and by the square root of the size of the largest heading in the same block against an `h2`. A list of small links under an `h5` steps in a little; a lead under a page title steps in more. The heading sizes are the `typography` heading tokens, so a heading restyled by a class still counts as its level. Browsers that cannot divide lengths in `calc()` use the configured step as it is.
 
-### Island Preparation
+### Rendering
 
-`mountLiveIsland({ prepare })` awaits `prepare` before the island renders or hydrates, on the first mount and on every remount after a soft navigation. It receives `url`, the address the island is about to render: during a soft navigation that is the target, which the browser history does not show until the new content is in place, so read the route from `url` rather than from `location`. Load what the island renders there, such as the page module of the current route, and the server markup hydrates against it without a mismatch.
+Every page renders on the server. The browser receives HTML and the runtime binds behaviour to it; it never renders an application's React tree and never hydrates.
 
-### Site Pages
+- State lives in the URL. Paths and query parameters name the view, the selection, the tab and the filters, and the server renders that view.
+- Navigation is a `softRedirect` link or a GET form with `data-tbf-soft-redirect`. The runtime fetches the server HTML of the target and swaps the content.
+- Mutations are `action_form` posts. The endpoint answers with the result shape, and `success: "soft-reload"` or the result's `redirect` brings the new server HTML.
+- Live updates are `LiveRegion`s. An event on the region's channel and room makes the runtime fetch the page again and swap that region.
+- Scripts handle input that a link or a form cannot express, such as a rich text editor, keyboard shortcuts or messages to a preview frame. They never decide what a page shows.
 
-`createSitePages` is the page system of a static site, so an app lists its routes and writes no island, page map or loader of its own:
-
-```tsx
-import { createSitePages } from "@trebired/frontend/react";
-
-export const sitePages = createSitePages({
-  error: SiteErrorPage,
-  pages: {
-    "/": async() => (await import("./pages/home")).HomePage,
-    "/kontakt": async() => (await import("./pages/kontakt")).ContactPage,
-  },
-});
-```
-
-Each route is a loader, so every page is its own chunk and the first visit downloads only the page it opens. `pages` may also be a function from a route to its loader, for routes made from data such as articles. `wrap` puts each page inside what the app needs around it and receives the route.
-
-- The server awaits `sitePages.preparePage(path)` and renders `<sitePages.PageContent path={path} />` in the content island.
-- The client calls `sitePages.mountPages("live_content")`. It prepares the current route before hydrating and the target before every soft navigation swaps the content, and it starts loading a page's code as soon as a soft-redirect link to it is hovered or focused, so the click usually finds it loaded.
-- Error routes (`/404`, `/500`, ...) render `error` with their status, and a route with no loader renders it with `404`.
-- `usePageRoute()` returns the current route inside a page.
+The package's own browser widgets (graphs, the log viewer, editors and the file explorer) render themselves inside their server-rendered host. They are package internals; an application mounts them through their bind functions, such as `mountEditorViewer` and `mountReadonlyEditorDiff`, and renders nothing in the browser itself.
 
 ## Public API
 
@@ -738,9 +755,11 @@ Each system subpath exports that system whole, its runtime and its React compone
 
 Applications import public APIs only from the package root, `/config`, `/react`, `/server`, and the system subpaths. There is no public Sass, style, or internal component subpath API.
 
+**32.0.0 removed hydration.** `mountLiveIsland`, `mountReactRoot`, `renderReactRoot`, `LiveIslandMount`, `live_island_mount`, `LiveIslandState`, `createSitePages`, `usePageRoute` and `harvestInlineIcons` are gone, and `rehydrate` is now `rebind`, dispatching `tbf:rebind`. A site that used `createSitePages` renders each route on the server and links between them with `softRedirect`, which swaps the server HTML of the target; the language switch stays in place through `applyLocaleView`. An app that hydrated an island renders it on the server, keeps its view in the URL and posts its changes through `action_form`.
+
 **31.0.0 moved sockets to `@trebired/sockets`.** `createLiveSocketServer`, the `/live` namespace, `@trebired/frontend/realtime` and `@trebired/frontend/socket` are gone. Each system serves its own channel with `createChannel` from `@trebired/sockets/server`, and pages connect with `connectChannel` from `@trebired/sockets/client`. Every live component, the log viewer and the sidebar now name a `channel` as well as a room; sidebar rooms are `sidebarRoom(channel, room)`, and `createSidebarSource` requires `channel`. `useLive` and `connectLiveFields` moved to `@trebired/frontend/live` and take the channel first. The `subscribe` adapter receives `(channel, room, onChange)`.
 
-**28.0.0 moved the heavy systems to their own subpaths.** Graphs, logs, editors, the file explorer, code text, fullscreen, live cards and lists are no longer exported from `@trebired/frontend` or `@trebired/frontend/react`. Import them from `@trebired/frontend/graph`, `/logs`, `/editor`, `/explorer`, `/code`, `/fullscreen`, and `/live`. The names are unchanged; only the import path moves. `LiveIslandMount`, `LiveRegion` and the fullscreen buttons stay on `/react`.
+**28.0.0 moved the heavy systems to their own subpaths.** Graphs, logs, editors, the file explorer, code text, fullscreen, live cards and lists are no longer exported from `@trebired/frontend` or `@trebired/frontend/react`. Import them from `@trebired/frontend/graph`, `/logs`, `/editor`, `/explorer`, `/code`, `/fullscreen`, and `/live`. The names are unchanged; only the import path moves. `LiveRegion` and the fullscreen buttons stay on `/react`.
 
 **27.0.0 removed every container component.** `PageBand`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `HairlinePanel`, `HairlineCell`, `ActionRow`, `TrackList`, `TrackItem`, `PinnedSplit`, `IconTile`, `Tag`, `AccentRule`, `Frame`, `FrameCover`, `FrameScrim`, `FrameCaption`, `FrameAction` and `CanvasPanel` are gone, and so are the `tbf-band`, `tbf-tile`, `tbf-tag`, `tbf-rule`, `tbf-action-row`, `tbf-track` and `tbf-frame` classes. Declare what the application needs under `containers` and write the class. `HeadingScope` is now exported, because a container no longer opens a heading level: wrap a section in it where a nested title should step down.
 

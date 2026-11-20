@@ -17,6 +17,7 @@ import type {
 } from "./types.js";
 import {
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveGridClassName,
   primitiveInlineRowClassName,
@@ -275,8 +276,9 @@ function bar(props: bar_props) {
   const className = props.card === true
   ? primitiveCardClassName({ gap: props.gap || "xs" })
   : primitiveStackClassName({ gap: props.gap || "xs" });
+  const cardAttrs = props.card === true ? primitiveCardAttrs() : {};
   return (
-    <div className={className} hidden={props.hidden === true} {...parse_wrapper_attributes(props.wrapperAttributes)}>
+    <div className={className} hidden={props.hidden === true} {...cardAttrs} {...parse_wrapper_attributes(props.wrapperAttributes)}>
     <div className={primitiveInlineRowClassName({ gap: "xs" })}>
     <span className={primitiveTextClassName({ size: "sm" })} {...frontendDataAttrs({ "progress-meta": "" })}>
     {String(props.meta || "")}

@@ -4,14 +4,14 @@
       "#02pycymwtgdb": [
         "../../../src/inputs/upload/config.ts"
       ],
+      "#037clzb6e2kz": [
+        "../../../src/recent/model.ts"
+      ],
       "#03ful7wb2aou": [
         "../../../src/language/runtime/source/render.ts"
       ],
       "#03uxh6jyk32u": [
         "../../../src/graph/advanced/roadmap.tsx"
-      ],
-      "#04zsw6ejqm57": [
-        "../../../src/react/re-exports.ts"
       ],
       "#06zpvzf2j5uf": [
         "../../../scripts/verify/pack.mjs"
@@ -70,14 +70,14 @@
       "#0yc21f5ew13h": [
         "../../../src/progress/bars.ts"
       ],
+      "#0z80bsmzdcp1": [
+        "../../../scripts/verify/frontend/tree/folder-toggle.mjs"
+      ],
       "#10izypt17cpn": [
         "../../../src/primitives/styles/_display.scss"
       ],
       "#10xvohu6frhd": [
         "../../../src/actions/styles/index.scss"
-      ],
-      "#14ck52r7oxnw": [
-        "../../../src/icons/middleware/response.ts"
       ],
       "#14d2b8xbgh6m": [
         "../../../src/markdown/index.ts"
@@ -135,6 +135,9 @@
       ],
       "#28xec21d5ek7": [
         "../../../src/layout/components/outline_dock.tsx"
+      ],
+      "#2crs6mf3yxjw": [
+        "../../../scripts/verify/frontend/search/remote.mjs"
       ],
       "#2cuthl91eoqk": [
         "../../../scripts/verify/frontend/server/permissions.mjs"
@@ -226,6 +229,9 @@
       "#3hbzxk4x1jod": [
         "../../../src/react/advanced-types.ts"
       ],
+      "#3hxncttv60gl": [
+        "../../../scripts/verify/frontend/infinite-hidden.mjs"
+      ],
       "#3je9yksfgj8c": [
         "../../../src/inputs/advanced/checkbox/index.client.ts"
       ],
@@ -252,9 +258,6 @@
       ],
       "#3wry9farewj4": [
         "../../../src/inputs/choice.ts"
-      ],
-      "#404ceolhrsoe": [
-        "../../../src/react/site-pages.tsx"
       ],
       "#42944u9i75ap": [
         "../../../src/settings/save-policy/fields.ts"
@@ -523,6 +526,9 @@
       "#7pos3jago314": [
         "../../../src/layout/styles/breadcrumb.scss"
       ],
+      "#7qeme73x47mm": [
+        "../../../scripts/verify/frontend/route-entities.mjs"
+      ],
       "#7qhlvomvsrzw": [
         "../../../src/logs/client/metadata.ts"
       ],
@@ -553,11 +559,17 @@
       "#814xyrvngclz": [
         "../../../src/server/performance.ts"
       ],
+      "#81cb3ink0grf": [
+        "../../../src/search/client/remote.ts"
+      ],
       "#84olngdg3ry7": [
         "../../../src/config/types/language.ts"
       ],
       "#84xpb8ep71dz": [
         "../../../src/inputs/advanced/toggle/i18n/en.ts"
+      ],
+      "#85ylxmukhmrq": [
+        "../../../src/fullscreen/components/toggle.tsx"
       ],
       "#86xbht2xl19o": [
         "../../../src/layout/components/bottom_bar.tsx"
@@ -579,6 +591,9 @@
       ],
       "#8bxcsshlrjh4": [
         "../../../src/logs/client/render.ts"
+      ],
+      "#8ci86cgmapx6": [
+        "../../../src/config/flash-glyphs.ts"
       ],
       "#8dlpd8ox54u8": [
         "../../../scripts/verify/frontend/card.mjs"
@@ -675,6 +690,9 @@
       ],
       "#9r9eh5d3jidb": [
         "../../../src/styles/utils/text/extra.scss"
+      ],
+      "#9shp0zvrq8ev": [
+        "../../../scripts/verify/frontend/breadcrumb.mjs"
       ],
       "#9stjpd958hwi": [
         "../../../src/inputs/advanced/dropdown/i18n/cs.ts"
@@ -886,9 +904,6 @@
       "#cgoxrfs83ypy": [
         "../../../src/settings/save-policy/constants.ts"
       ],
-      "#cirumw6bydvd": [
-        "../../../scripts/verify/frontend/pages.mjs"
-      ],
       "#cnmpii8tpepd": [
         "../../../src/styles/utils/_frost.scss"
       ],
@@ -919,6 +934,9 @@
       "#d1zt949xdh46": [
         "../../../src/sidebar/styles/index.scss"
       ],
+      "#d57jjtyrv1be": [
+        "../../../src/markdown/styles/index.scss"
+      ],
       "#d5kvkm72r187": [
         "../../../src/flash/stack.ts"
       ],
@@ -933,9 +951,6 @@
       ],
       "#d9d69c7qvx5d": [
         "../../../scripts/verify/frontend/unsaved.mjs"
-      ],
-      "#d9gbd4jkefih": [
-        "../../../src/icons/middleware/index.ts"
       ],
       "#d9m9kagiuv72": [
         "../../../src/modal/styles/index.scss"
@@ -1141,6 +1156,9 @@
       "#fnubdebc4up1": [
         "../../../src/config/theme.ts"
       ],
+      "#fo1pnv46j98r": [
+        "../../../src/inputs/advanced/tabs/number.ts"
+      ],
       "#frluvajeia4x": [
         "../../../src/inputs/advanced/checkbox/styles.scss"
       ],
@@ -1164,6 +1182,9 @@
       ],
       "#fwdmm996jtkw": [
         "../../../src/logs/i18n/en.ts"
+      ],
+      "#fwhftyn782p9": [
+        "../../../scripts/verify/frontend/tree/drag.mjs"
       ],
       "#fx26lwsxxkxw": [
         "../../../src/surface/components/motif.tsx"
@@ -1267,6 +1288,9 @@
       "#h3ez8memjsmz": [
         "../../../src/explorer/components/file/tree/row.tsx"
       ],
+      "#h4kzwuj7jda0": [
+        "../../../scripts/verify/frontend/tree/links.mjs"
+      ],
       "#h57czu9ndxg1": [
         "../../../src/reveal/styles/index.scss"
       ],
@@ -1357,11 +1381,17 @@
       "#iam9x6ou22ty": [
         "../../../src/cms/runtime.ts"
       ],
+      "#icla5qd9cfj3": [
+        "../../../scripts/verify/frontend/number.mjs"
+      ],
       "#ieim4iimrwal": [
         "../../../src/layout/index.ts"
       ],
       "#ifn2xslc7n8z": [
         "../../../src/inputs/styles/index.scss"
+      ],
+      "#igzdg4lm0c9b": [
+        "../../../src/recent/components.tsx"
       ],
       "#ih5pu3v7rxf2": [
         "../../../src/config/types/a11y.ts"
@@ -1504,6 +1534,9 @@
       "#kglbvvg0e45p": [
         "../../../src/server/react/document.ts"
       ],
+      "#khmnuu1q24w1": [
+        "../../../src/icons/react/registry.tsx"
+      ],
       "#kk6mmnsbr6qk": [
         "../../../src/a11y/settings.ts"
       ],
@@ -1528,6 +1561,9 @@
       "#l0c9jc8zqq5i": [
         "../../../src/inputs/advanced/dropdown/static/aria.ts"
       ],
+      "#l4tszfsvf9fb": [
+        "../../../scripts/verify/frontend/recent.mjs"
+      ],
       "#l75icbim0gxu": [
         "../../../src/actions/copy-components.tsx"
       ],
@@ -1548,6 +1584,9 @@
       ],
       "#lfmfr1d3wv2q": [
         "../../../src/logs/view/i18n/en.ts"
+      ],
+      "#lgpl2lux6pwt": [
+        "../../../scripts/verify/frontend/markdown.mjs"
       ],
       "#lh941e0cjcmv": [
         "../../../src/graph/advanced/styles.scss"
@@ -1572,6 +1611,9 @@
       ],
       "#lxlcr5r141p6": [
         "../../../src/config/interactions.ts"
+      ],
+      "#lxybsda4076d": [
+        "../../../scripts/verify/frontend/rendering.mjs"
       ],
       "#lytaqsyqfq8e": [
         "../../../src/live/subscribe.ts"
@@ -1635,6 +1677,9 @@
       ],
       "#myfyglzubipj": [
         "../../../scripts/verify/frontend.mjs"
+      ],
+      "#mz6salv3hoz4": [
+        "../../../scripts/verify/frontend/search/input-width.mjs"
       ],
       "#mzas1wvri3n5": [
         "../../../src/logs/client/page_registry.ts"
@@ -1809,9 +1854,6 @@
       ],
       "#qcn06n1cy78l": [
         "../../../src/flash/elements.ts"
-      ],
-      "#qdbpux4f2e4m": [
-        "../../../src/flash/icons.ts"
       ],
       "#qdlngzg5w3bp": [
         "../../../scripts/verify/frontend/quote.mjs"
@@ -1992,6 +2034,9 @@
       ],
       "#thewrgx0yg0f": [
         "../../../src/server/sidebar.ts"
+      ],
+      "#tib2jy28tjzk": [
+        "../../../src/server/route-entities.ts"
       ],
       "#tkxej735h125": [
         "../../../scripts/verify/frontend/runtime.mjs"
@@ -2188,6 +2233,9 @@
       "#wdc5d4rf1bzc": [
         "../../../src/layout/styles/site/footer.scss"
       ],
+      "#wdwrwbzc7cn2": [
+        "../../../src/recent/server.ts"
+      ],
       "#wf2q34bnji7a": [
         "../../../src/config/scales-css.ts"
       ],
@@ -2241,6 +2289,9 @@
       ],
       "#x1mo025ujnbf": [
         "../../../src/icons/server/defaults.ts"
+      ],
+      "#x3som1j9rjre": [
+        "../../../src/icons/server/registry.ts"
       ],
       "#x512fe8hcddo": [
         "../../../scripts/build/generated/namespace.mjs"
@@ -2320,6 +2371,9 @@
       "#y2lnly185oli": [
         "../../../src/logs/view.tsx"
       ],
+      "#y7fl1ao2lby6": [
+        "../../../src/explorer/components/file/tree/drag.tsx"
+      ],
       "#y9b4htfi3ng8": [
         "../../../src/primitives/styles/_marquee.scss"
       ],
@@ -2353,6 +2407,9 @@
       "#ynsobdupwxdf": [
         "../../../src/layout/styles/site/header.scss"
       ],
+      "#yqq4li47ao7b": [
+        "../../../src/icons/registry.ts"
+      ],
       "#yrscdg72qcm6": [
         "../../../src/search/model.ts"
       ],
@@ -2371,6 +2428,9 @@
       "#ywso4j7v0tp7": [
         "../../../src/layout/boot.ts"
       ],
+      "#z1ajnkhjieay": [
+        "../../../src/primitives/components/number.tsx"
+      ],
       "#z2c0jqmjqds4": [
         "../../../src/inputs/advanced/index.ts"
       ],
@@ -2379,6 +2439,9 @@
       ],
       "#z593qq79i6gd": [
         "../../../src/editor/components/content.tsx"
+      ],
+      "#z7q8jtf96evw": [
+        "../../../scripts/verify/frontend/canvas-panel-fullscreen.mjs"
       ],
       "#z8s8ga6gzetk": [
         "../../../src/layout/components/shell/product/header.tsx"

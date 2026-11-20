@@ -1,4 +1,7 @@
-import { withIconServerRenderer } from "#6o6fqz7svsts";
+import { withRenderLocale } from "@trebired/utils";
+import { withIconServerRenderer, type ServerIconRenderer } from "#6o6fqz7svsts";
+import { RUNTIME_ICON_SPECS } from "#yqq4li47ao7b";
+import { renderIconRegistryHtml } from "#x3som1j9rjre";
 import {
   applyScriptNonce,
   buildDocumentContext,
@@ -20,8 +23,15 @@ import type { ServerResponseLike } from "#hf241ii8z71i";
 function renderWithIcons(
   render: () => string,
   iconRenderer?: ((spec: string) => unknown) | undefined,
+  lang?: unknown,
 ) {
-  return withIconServerRenderer(iconRenderer as any, render);
+  return withRenderLocale(lang, () => withIconServerRenderer(iconRenderer as any, render));
+}
+
+function withRuntimeIcons(html: string, renderer: ServerIconRenderer | undefined) {
+  const registry = renderIconRegistryHtml(RUNTIME_ICON_SPECS, renderer);
+  const end = html.lastIndexOf("</body>");
+  return registry && end >= 0 ? `${html.slice(0, end)}${registry}${html.slice(end)}` : html;
 }
 
 function timedRender(render: () => string, options: FrontendReactRendererOptions) {
@@ -106,6 +116,7 @@ function renderFragment(
     () => renderWithIcons(
       () => options.renderToStaticMarkup!(options.createElement(component, props)),
       options.createIconRenderer?.(),
+      props && props.lang,
     ),
     options,
   );
@@ -134,17 +145,22 @@ function sendDocument(
   const context = buildDocumentContext(res, pageId, componentId, props, options, shellInput);
   const root = resolveRootDocument(options);
   logDocumentStart(context, res, options);
+  const iconRenderer = options.createIconRenderer?.() as ServerIconRenderer | undefined;
   const html = timedRender(
     () => renderWithIcons(
       () => options.renderToString(
         options.createElement(root, rootDocumentProps(body, context, options)),
       ),
-      options.createIconRenderer?.(),
+      iconRenderer,
+      context.shell.lang || context.locale.effective || options.defaultLang,
     ),
     options,
   );
   if (typeof(res as any).type === "function")(res as any).type("html");
-  return res.send?.(`<!DOCTYPE html>${applyScriptNonce(html, context.shell.nonce)}`);
+  const page = withRuntimeIcons(html, iconRenderer);
+  const sent = res.send?.(`<!DOCTYPE html>${applyScriptNonce(page, context.shell.nonce)}`);
+  void options.recentPages?.record(res, context);
+  return sent;
 }
 
 function renderPage(

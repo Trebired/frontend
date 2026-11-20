@@ -2,6 +2,7 @@ import { frontendClassName, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4
 import { type CSSProperties, type ReactNode } from "react";
 import { icon, joinClassNames, toString, useRenderCurrentUrl } from "#dqy2d22qyujv";
 import {
+  number,
   primitiveInlineRowClassName,
   primitiveStackClassName,
 } from "#hzrmwbvgt2ax";
@@ -15,7 +16,14 @@ import { buildTabsModel, routeInitialValue } from "./model.js";
 import "./client.js";
 
 function renderTabContent(item: tabs_item) {
-  return <span className={frontendClassName("tab-label")}>{item.label}</span>;
+  return (
+    <>
+    <span className={frontendClassName("tab-label")}>{item.label}</span>
+    {item.number == null ? null : (
+        <span className={frontendClassName("right")}>{number({ value: item.number })}</span>
+    )}
+    </>
+  );
 }
 
 function renderTabButton(item: tabs_item, activeId: string) {
@@ -124,7 +132,7 @@ function renderTabsRow(
     className={joinClassNames([
           primitiveInlineRowClassName({
               className: frontendClassName("tabs-row"),
-              gap: "sm",
+              gap: "xs",
               verticalCenter: true,
           }),
           toString(props.headerClassName),
@@ -156,7 +164,7 @@ function renderTabsList(props: tabs_props, model: tabs_model) {
 
 function familyContent(props: tabs_props, model: tabs_model) {
   const headerClassName = joinClassNames([
-      model.hasHeaderLeading ? primitiveInlineRowClassName({ gap: "sm" }) : "",
+      model.hasHeaderLeading ? primitiveInlineRowClassName({ gap: "xs" }) : "",
       toString(props.headerClassName),
   ]);
   if (model.hasHeaderLeading && model.requestedHeaderLeadingRow <= 0) {

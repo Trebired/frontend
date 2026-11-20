@@ -145,8 +145,16 @@ function getMultiSummary(drop, labels) {
   return `${list.length} ${suffix}`;
 }
 
+function labelMarkup(html: unknown) {
+  const template = document.createElement("template");
+  template.innerHTML = String(html == null ? "" : html);
+  template.content.querySelectorAll("script").forEach((node) => node.remove());
+  return { html: template.innerHTML.trim(), text: String(template.content.textContent || "").trim() };
+}
+
 function setDropdownLabel(drop, text, html ? ) {
-  const next = String(text == null ? "" : text).trim();
+  const markup = html != null && String(html).trim() ? labelMarkup(html) : null;
+  const next = markup ? markup.text : String(text == null ? "" : text).trim();
   const labelHost = getLabelHost(drop);
 
   if (next) {
@@ -159,8 +167,8 @@ function setDropdownLabel(drop, text, html ? ) {
 
   if (!labelHost) return;
 
-  if (html != null && String(html).trim()) {
-    labelHost.innerHTML = String(html);
+  if (markup && markup.html) {
+    labelHost.innerHTML = markup.html;
     return;
   }
 

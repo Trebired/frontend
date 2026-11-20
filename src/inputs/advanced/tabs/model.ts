@@ -13,6 +13,7 @@ type tabs_item = {
   hidden?: boolean;
   id: string;
   label?: ReactNode;
+  number?: number | string | null;
   route?: string;
   value?: string;
 };

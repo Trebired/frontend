@@ -39,10 +39,10 @@ function syncLiveCardAttributes(target: HTMLElement, fresh: Element) {
   });
 }
 
-function rehydrateLiveCard(target: HTMLElement, options: LiveCardsOptions) {
+function rebindLiveCard(target: HTMLElement, options: LiveCardsOptions) {
   options.bind?.(target);
   target.dispatchEvent(
-    new CustomEvent(frontendEventName("rehydrate"), {
+    new CustomEvent(frontendEventName("rebind"), {
         bubbles: true,
         detail: { root: target },
     }),
@@ -62,7 +62,7 @@ function swapLiveCardHtml(
   if (!(fresh instanceof Element)) return false;
   target.innerHTML = fresh.innerHTML;
   syncLiveCardAttributes(target, fresh);
-  rehydrateLiveCard(target, options);
+  rebindLiveCard(target, options);
   return true;
 }
 

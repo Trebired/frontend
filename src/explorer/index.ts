@@ -21,6 +21,11 @@ function renderFileTreeExplorer(container: HTMLElement | null, input: any) {
   }
   root.render(createElement(FileTreeView, {
         autoExpandPaths: Array.isArray(source.autoExpandPaths) ? source.autoExpandPaths : [],
+        canMove: typeof source.canMove === "function" ? source.canMove : undefined,
+        dragHandleLabel: text(source.dragHandleLabel),
+        height: Number(source.height) > 0 ? Number(source.height) : undefined,
+        onMove: typeof source.onMove === "function" ? source.onMove : undefined,
+        rootLabel: text(source.rootLabel),
         emptyMessage: text(source.emptyMessage),
         highlightedPaths: Array.isArray(source.highlightedPaths) ? source.highlightedPaths : [],
         interactive: source.interactive !== false,

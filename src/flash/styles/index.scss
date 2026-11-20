@@ -47,36 +47,36 @@
 }
 
 #{ns.element-class("flash", "icon")} {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   flex: 0 0 auto;
+  width: 1em;
+  height: 1em;
   color: var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor);
   font-size: var(#{ns.css-var("feedback-flash-slot-icon-size")}, 13px);
-  font-weight: var(#{ns.css-var("feedback-flash-slot-icon-font-weight")}, 700);
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
 }
 
 #{ns.class("flash")}#{ns.data("flash-type", "success")} #{ns.element-class("flash", "icon")} {
+  mask-image: var(#{ns.css-var("feedback-flash-intents-success-glyph")});
   color: var(#{ns.css-var("feedback-flash-intents-success-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
-  #{ns.css-var("icon-color")}: var(
-    #{ns.css-var("feedback-flash-intents-success-icon")},
-    var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor)
-  );
 }
 
 #{ns.class("flash")}#{ns.data("flash-type", "error")} #{ns.element-class("flash", "icon")} {
+  mask-image: var(#{ns.css-var("feedback-flash-intents-error-glyph")});
   color: var(#{ns.css-var("feedback-flash-intents-error-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
-  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-error-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
 #{ns.class("flash")}#{ns.data("flash-type", "warn")} #{ns.element-class("flash", "icon")} {
+  mask-image: var(#{ns.css-var("feedback-flash-intents-warn-glyph")});
   color: var(#{ns.css-var("feedback-flash-intents-warn-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
-  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-warn-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
 #{ns.class("flash")}#{ns.data("flash-type", "info")} #{ns.element-class("flash", "icon")} {
+  mask-image: var(#{ns.css-var("feedback-flash-intents-info-glyph")});
   color: var(#{ns.css-var("feedback-flash-intents-info-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
-  #{ns.css-var("icon-color")}: var(#{ns.css-var("feedback-flash-intents-info-icon")}, var(#{ns.css-var("feedback-flash-slot-icon")}, currentColor));
 }
 
 #{ns.element-class("flash", "body")},

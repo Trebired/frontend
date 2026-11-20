@@ -37,6 +37,7 @@ $tabs-pane-animation-easing: var(#{ns.css-var("ui-tabs-motion-easing")}, cubic-b
     font-weight: var(#{ns.css-var("ui-tabs-root-font-weight")}, inherit);
     line-height: 1.2;
     text-align: left;
+    gap: var(#{ns.css-var("gap-sm")}, 8px);
 
     &:hover {
       background: var(#{ns.css-var("ui-tabs-state-hover-bg")}, color-mix(in srgb, currentColor 6%, transparent));
@@ -53,7 +54,13 @@ $tabs-pane-animation-easing: var(#{ns.css-var("ui-tabs-motion-easing")}, cubic-b
       color: var(#{ns.css-var("ui-tabs-state-active-color")}, var(#{ns.css-var("text")}, currentColor));
     }
 
+    > #{ns.class("right")} {
+      flex: none;
+      margin-left: auto;
+    }
+
     #{ns.class("tab-label")} {
+      min-width: 0;
       display: block;
       font-family: inherit;
       white-space: nowrap;

@@ -1,4 +1,6 @@
 import { Icon } from "#lbkpzw8nphru";
+import { IconRegistry } from "#khmnuu1q24w1";
+import { fileTreeIconSpecs } from "#m6ckog6p21a3";
 import { bar as progress_bar } from "#6hfutrhvm6x6";
 import { card } from "#6hfutrhvm6x6";
 import {
@@ -193,6 +195,7 @@ function viewerSurface(state: ReturnType<typeof readSurfaceState>) {
     {...{ [state.viewer.stateDataAttr]: "" }}
     dangerouslySetInnerHTML={jsonHtml(state.viewer.state)}
     />
+    <IconRegistry specs={fileTreeIconSpecs(state.viewer.state.tree)} />
     <Stack
     id={state.viewer.rootId || undefined}
     gap="sm"

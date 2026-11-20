@@ -17,7 +17,7 @@ import {
   queryElements,
   removeStalePortaledOverlaysFromRoot,
 } from "./overlay-dom.js";
-import { rehydrate } from "./navigate.js";
+import { rebind } from "./navigate.js";
 
 type LiveOverlayRoot =
 BindRoot | string | (() => BindRoot | null | undefined);
@@ -40,7 +40,7 @@ type LiveOverlayStateOptions = {
   popoverTriggerSelector?: string;
   portaledSelector?: string | string[];
   preserveWindowScroll?: boolean;
-  rehydrate?: boolean;
+  rebind?: boolean;
   root?: LiveOverlayRoot;
 };
 
@@ -287,7 +287,7 @@ function syncLiveOverlayRoot(
   const root = liveOverlayRoot(options, rootInput);
   if (!root) return null;
   removeStalePortaledOverlays(options, root);
-  if (options.rehydrate !== false) rehydrate(root);
+  if (options.rebind !== false) rebind(root);
   if (options.bindTabs !== false) bindLiveOverlayTabs(root);
   return root;
 }

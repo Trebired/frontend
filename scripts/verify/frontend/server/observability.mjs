@@ -75,6 +75,46 @@ function verifyReactRenderServer(server) {
     }), "<span>A</span>");
 }
 
+async function verifyDocumentRendersInPageLanguage(server) {
+  const { time } = await import("@trebired/utils");
+  const fiveDaysAgo = new Date(Date.now() - 5 * 86_400_000 - 60_000).toISOString();
+  const renderNode = (node) => (node && typeof node.component === "function" ? renderNode(node.component(node.props)) : String(node));
+  const renderer = server.createFrontendReactRenderer({
+      buildAssetLinks: () => ({}),
+      createElement: (component, props) => ({ component, props }),
+      renderToString: renderNode,
+      resolvePageComponent: () => () => `<main>${time(fiveDaysAgo, "rel_long")}</main>`,
+      resolveRootDocument: () => (props) => `<html><body>${renderNode(props.body)}</body></html>`,
+  });
+  const res = serverResponseProbe();
+  res.locals = { lang: "cs" };
+  renderer.renderPage(res, "home", {});
+  assert.ok(String(res.body).includes("před 5 dny"), "dates and times formatted during a render use the page's language");
+  assert.equal(time(fiveDaysAgo, "rel_long"), "5 days ago", "outside a render the language is not left behind");
+}
+
+function verifyDocumentCarriesRuntimeIcons(server) {
+  const base = {
+    buildAssetLinks: () => ({}),
+    createElement: (component, props) => component(props),
+    renderToString: (node) => String(node),
+    resolvePageComponent: () => () => "<main></main>",
+    resolveRootDocument: () => (props) => `<html><body>${props.body}</body></html>`,
+  };
+  const plain = serverResponseProbe();
+  server.createFrontendReactRenderer(base).renderPage(plain, "home", {});
+  assert.ok(!String(plain.body).includes("data-tbf-icon-registry"), "without a server icon renderer no registry is added");
+  const res = serverResponseProbe();
+  server.createFrontendReactRenderer({
+      ...base,
+      createIconRenderer: () => (spec) => ({ normalizedSpec: spec.replace(" ", ":"), svg: "<svg></svg>" }),
+  }).renderPage(res, "home", {});
+  const body = String(res.body);
+  assert.match(body, /<main><\/main><div hidden data-tbf-icon-registry="">.*<\/div><\/body><\/html>$/u,
+  "the document ends its body with the icons tbf builds in the browser");
+  assert.ok(body.includes('data-tbf-icon="remixicon:draggable"'), "the file tree drag handle ships with the page");
+}
+
 function verifyPerformanceServer(server) {
   const app = appCapture();
   const events = [];
@@ -108,5 +148,7 @@ function verifyPerformanceServer(server) {
 
 export {
   verifyPerformanceServer,
+  verifyDocumentCarriesRuntimeIcons,
+  verifyDocumentRendersInPageLanguage,
   verifyReactRenderServer,
 };

@@ -1,4 +1,4 @@
-import { isInUnhydratedIsland, noop as defineCheckboxOptionElement } from "#dqy2d22qyujv";
+import { noop as defineCheckboxOptionElement } from "#dqy2d22qyujv";
 import {
   dispatchInputChange,
   isNestedInteractiveTarget,
@@ -152,7 +152,6 @@ function toggleOption(
 
 function bindCheckboxOption(option: Element | null) {
   if (!(option instanceof Element)) return;
-  if (isInUnhydratedIsland(option)) return;
   if (boundCheckboxOptions.has(option)) return;
 
   boundCheckboxOptions.add(option);

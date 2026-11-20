@@ -38,11 +38,11 @@ function code_block(props: CodeBlockProps) {
     },
     <pre
     className={joinClassNames(
-        frontendClassNames("code-block", "card", "padding-xs", "bg-canvas"),
+        frontendClassNames("code-block", "padding-xs", "bg-canvas"),
         scroll ? frontendClassNames("scroll", "scroll-min") : "",
         props.className,
     )}
-    {...frontendDataAttrs({ "code": "" })}
+    {...frontendDataAttrs({ "code": "", container: "card" })}
     {...preProps}
     >
     <code

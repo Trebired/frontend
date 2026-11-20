@@ -337,6 +337,28 @@
       color: var(#{ns.css-var("ui-btn-variants-chrome-state-hover-color")}, currentColor);
     }
   }
+
+  &:is(
+    #{ns.class("danger")},
+    #{ns.class("red")},
+    #{ns.class("yellow")},
+    #{ns.class("green")},
+    #{ns.class("highlight")}
+  ):is(:disabled, [disabled], #{ns.class("disabled")}) {
+    --button-icon-color: var(
+      #{ns.css-var("ui-btn-state-disabled-color")},
+      var(#{ns.css-var("ui-btn-variants-secondary-color")}, var(#{ns.css-var("text")}, currentColor))
+    );
+    background: var(#{ns.css-var("ui-btn-variants-secondary-bg")}, transparent);
+    color: var(
+      #{ns.css-var("ui-btn-state-disabled-color")},
+      var(#{ns.css-var("ui-btn-variants-secondary-color")}, var(#{ns.css-var("text")}, currentColor))
+    );
+    border-color: var(
+      #{ns.css-var("ui-btn-state-disabled-border")},
+      var(#{ns.css-var("ui-btn-variants-secondary-border")}, var(#{ns.css-var("border")}, currentColor))
+    );
+  }
 }
 
 #{ns.class("avatar")} {

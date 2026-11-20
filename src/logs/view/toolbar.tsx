@@ -1,14 +1,12 @@
 import { copy_button } from "#k632wzgl64a3";
-import {
-  FullscreenCloseButton,
-  FullscreenOpenButton,
-} from "#vbkfq413o3u7";
+import { FullscreenOpenButton } from "#vbkfq413o3u7";
 import { Icon as icon } from "#lbkpzw8nphru";
 import checkbox from "#2ne919slwy5h";
 import dropdown from "#79y0zfcyhzga";
 import {
   button,
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveGapClass,
 } from "#hzrmwbvgt2ax";
@@ -68,6 +66,7 @@ function platformToggle(model: any) {
             primitiveGapClass("xs"),
           ].join(" "),
           title: model.t("productLogs", { product: model.productName }),
+          wrap_attrs: primitiveCardAttrs(),
     })}
     </div>
   );
@@ -112,27 +111,16 @@ function toolbarButton(
   attrs: any,
   spec: string,
   trigger?: BindActionOptions,
-  fullscreen?: { group: unknown; id: unknown; mode: "close" | "open" },
+  fullscreen?: { group: unknown; id: unknown },
 ) {
   if (fullscreen) {
-    const fullscreenProps = {
-      ...attrs,
-      className: primitiveButtonClassName({
-          className: attrs.className,
-          icon: true,
-          size: "md",
-          tooltip: true,
-      }),
-      fullscreenId: String(fullscreen.id || ""),
-      group: String(fullscreen.group || "default"),
-    };
-    const node =
-    fullscreen.mode === "close" ? (
-      <FullscreenCloseButton {...fullscreenProps}>
-      {icon({ spec })}
-      </FullscreenCloseButton>
-    ) : (
-      <FullscreenOpenButton {...fullscreenProps}>
+    const node = (
+      <FullscreenOpenButton
+      {...attrs}
+      className={primitiveButtonClassName({ className: attrs.className, icon: true, size: "md", tooltip: true })}
+      fullscreenId={String(fullscreen.id || "")}
+      group={String(fullscreen.group || "default")}
+      >
       {icon({ spec })}
       </FullscreenOpenButton>
     );
@@ -166,7 +154,6 @@ function searchToggleButton(model: any) {
     {
       group: model.logsExtendGroup,
       id: model.logsInstanceId,
-      mode: "open",
     },
   );
 }
@@ -206,40 +193,6 @@ function exportPopover(model: any) {
     ))}
     </div>
     </>
-  );
-}
-
-function fullscreenButtons(model: any) {
-  return (
-    <div className={frontendClassName("right")}>
-    {toolbarButton(
-        {
-          "aria-label": model.t("display.fullscreen"),
-          title: model.t("display.fullscreen"),
-        },
-        "remixicon fullscreen-line",
-        undefined,
-        {
-          group: model.logsExtendGroup,
-          id: model.logsInstanceId,
-          mode: "open",
-        },
-    )}
-    {toolbarButton(
-        {
-          "aria-label": model.t("display.exitFullscreen"),
-          [frontendDataAttr("fullscreen-hidden")]: "true",
-          title: model.t("display.exitFullscreen"),
-        },
-        "remixicon fullscreen-exit-line",
-        undefined,
-        {
-          group: model.logsExtendGroup,
-          id: model.logsInstanceId,
-          mode: "close",
-        },
-    )}
-    </div>
   );
 }
 
@@ -284,7 +237,6 @@ function secondaryToolbarRow(model: any) {
           size: "md",
     })}
     {exportPopover(model)}
-    {fullscreenButtons(model)}
     </div>
   );
 }

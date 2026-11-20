@@ -46,7 +46,6 @@ type FrontendAssetsConfig = {
   fonts?: FrontendFontConfig;
   icons?: {
     aliases?: Record<string, FrontendIconAliasValue>;
-    endpoint?: string | false;
     mode?: FrontendIconMode;
     packs?: readonly FrontendIconPack[];
     specs?: readonly string[];
@@ -88,7 +87,6 @@ type NormalizedFrontendAssetsConfig = {
   fonts: NormalizedFrontendFontConfig;
   icons: {
     aliases: Record<string, string>;
-    endpoint: string;
     mode: FrontendIconMode;
     packs: FrontendIconPack[];
     specs: string[];

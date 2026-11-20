@@ -2,26 +2,12 @@ import type { CSSProperties } from "react";
 import { handleTreeFocus, handleTreeKeyDown } from "./file/tree/keys.js";
 import { createElement } from "react";
 
-import {
-  normalizePath,
-  readFileTreeIconSpec,
-  text,
-} from "#m6ckog6p21a3";
-import {
-  FileTreeCount,
-  FileTreeIcon,
-  FileTreeName,
-  FileTreeToggle,
-  fileTreeLeftBorderColor,
-} from "./file/tree/parts.js";
+import { normalizePath, text } from "#m6ckog6p21a3";
+import { FileTreeRow } from "./file/tree/row.js";
 import { FileTreeShell } from "./file/tree/shell.js";
-import {
-  primitiveInlineRowClassName,
-  primitiveTextClassName,
-} from "#hzrmwbvgt2ax";
+import { primitiveTextClassName } from "#hzrmwbvgt2ax";
 import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
 
-const FILE_TREE_INDENT = 18;
 const FILE_TREE_ROW_HEIGHT = 34;
 
 type StaticFileTreeViewProps = {
@@ -63,75 +49,6 @@ function flattenStaticRows(nodesInput: any, initialOpenState: any, level = 1): a
   return rows;
 }
 
-function staticRowModel(row: any, highlightedPaths: Set<string>) {
-  const node = row?.node && typeof row.node === "object" ? row.node : {};
-  const kind = text(node.kind);
-  const relPath = nodePath(node);
-  return {
-    fileCount: Math.max(0, Number(node.file_count) || 0),
-    highlighted: highlightedPaths instanceof Set && highlightedPaths.has(relPath),
-    iconSpec: readFileTreeIconSpec(node),
-    isOpen: Boolean(row?.isOpen),
-    kind,
-    name: text(node.name) || relPath || "Entry",
-  };
-}
-
-function staticRowBackground(model: ReturnType<typeof staticRowModel>) {
-  return model.highlighted
-  ? "color-mix(in srgb, var(--background-surface-2, currentColor) 60%, transparent)"
-  : "transparent";
-}
-
-function StaticFileTreeRow(props: { highlightedPaths: Set<string>; row: any }) {
-  const model = staticRowModel(props.row, props.highlightedPaths);
-  const rowLevel = Math.max(1, Number(props.row?.level) || 1);
-  return (
-    <div
-    role="none"
-    className={primitiveInlineRowClassName({ verticalCenter: true })}
-    style={{
-        borderBottom: "var(--border-width) solid var(--border-surface-1)",
-        height: FILE_TREE_ROW_HEIGHT,
-        minHeight: FILE_TREE_ROW_HEIGHT,
-    }}
-    >
-    <button
-    type="button"
-    role="treeitem"
-    aria-level={rowLevel}
-    aria-expanded={model.kind === "dir" ? model.isOpen : undefined}
-    className={primitiveInlineRowClassName({
-          className: primitiveTextClassName({
-              className: frontendClassNames("width-max", "text-left"),
-              muted: model.kind !== "dir",
-          }),
-          gap: "xs",
-          verticalCenter: true,
-    })}
-    style={{
-        background: staticRowBackground(model),
-        border: "var(--border-width) solid transparent",
-        borderLeft: `calc(var(--border-width) * 2) solid ${fileTreeLeftBorderColor(model)}`,
-        borderRadius: 0,
-        cursor: "default",
-        minHeight: 0,
-        padding: "5px 10px",
-        paddingLeft: 10 + (rowLevel - 1) * FILE_TREE_INDENT,
-        width: "100%",
-    }}
-    aria-disabled="true"
-    tabIndex={-1}
-    >
-    <FileTreeToggle isDir={model.kind === "dir"} isOpen={model.isOpen} />
-    <FileTreeIcon highlighted={model.highlighted} iconSpec={model.iconSpec} />
-    <FileTreeName name={model.name} />
-    <FileTreeCount fileCount={model.fileCount} kind={model.kind} />
-    </button>
-    </div>
-  );
-}
-
 function scrollStyleFor(options: StaticFileTreeViewProps, rows: any[]) {
   const treeHeight = Number(options.treeHeight) > 0 ? Number(options.treeHeight) : 360;
   const contentHeight = rows.length * FILE_TREE_ROW_HEIGHT;
@@ -152,10 +69,13 @@ function scrollStyleFor(options: StaticFileTreeViewProps, rows: any[]) {
 function renderStaticFileTreeRow(row: any, index: number, options: StaticFileTreeViewProps) {
   const key = nodePath(row?.node) || text(row?.node?.id) || `${row.level}:${index}`;
   return (
-    <StaticFileTreeRow
+    <FileTreeRow
     key={key}
-    row={row}
     highlightedPaths={options.highlightedPaths || new Set()}
+    interactive={false}
+    isOpen={row.isOpen}
+    level={row.level}
+    node={row.node}
     />
   );
 }

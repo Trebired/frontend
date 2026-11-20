@@ -1,4 +1,4 @@
-import { frontendClassName } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { createElement, Fragment, type ReactNode } from "react";
 import {
   search_config_script,
@@ -10,10 +10,12 @@ import input from "#8y47rueq20kg";
 import {
   InlineRow,
   Text,
+  circle,
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveInlineRowClassName,
 } from "#hzrmwbvgt2ax";
-import { toText } from "./model.js";
+import { toText, type search_remote_config } from "./model.js";
 
 type search_filter_node = ReactNode | null | undefined | false;
 
@@ -32,6 +34,7 @@ type search_panel_props = {
   emptyText?: ReactNode;
   familyKey: string;
   id?: string;
+  remote?: search_remote_config;
 };
 
 function controlsRow(props: search_props) {
@@ -74,7 +77,7 @@ function searchControls(props: search_props) {
       "search-controls",
       attrs,
       config,
-      <div className={primitiveCardClassName({ gap: "xs" })}>
+      <div className={primitiveCardClassName({ gap: "xs" })} {...primitiveCardAttrs()}>
       <InlineRow className={frontendClassName("content-filter-bar")} gap="xs">
       {controlsRow(props)}
       </InlineRow>
@@ -90,27 +93,49 @@ function searchControls(props: search_props) {
     <div className={primitiveCardClassName({
           className: primitiveInlineRowClassName({ className: frontendClassName("content-filter-bar"), gap: "xs" }),
           layout: "none",
-    })}>
+    })} {...primitiveCardAttrs()}>
     {controlsRow(props)}
     </div>,
+  );
+}
+
+function remoteConfig(remote: search_remote_config | undefined) {
+  if (!remote || !toText(remote.channel) || !toText(remote.room)) return undefined;
+  return {
+    channel: toText(remote.channel),
+    hasMore: remote.hasMore === true,
+    nextOffset: Number(remote.nextOffset) || 0,
+    pageSize: Number(remote.pageSize) || undefined,
+    room: toText(remote.room),
+  };
+}
+
+function remoteTail(remote: ReturnType<typeof remoteConfig>) {
+  if (!remote) return null;
+  return (
+    <>
+    <div {...frontendDataAttrs({ "search-loading": "" })} hidden>{circle({ size: "sm" })}</div>
+    <div aria-hidden="true" {...frontendDataAttrs({ "search-sentinel": "" })} hidden={!remote.hasMore} />
+    </>
   );
 }
 
 function search_panel(props: search_panel_props) {
   const familyKey = toText(props.familyKey);
   const id = toText(props.id);
+  const remote = remoteConfig(props.remote);
   return createElement(
     "search-panel",
     { style: { display: "contents" } },
     search_config_script({
         kind: "panel",
-        config: { familyKey },
+        config: remote ? { familyKey, remote } : { familyKey },
     }),
     <div
     {...(id ? { id } : {})}
     className={toText(props.className) || undefined}
     >
-    {props.children}
+    {remote ? <div {...frontendDataAttrs({ "search-results": "" })}>{props.children}</div> : props.children}
     {props.emptyText
       ? createElement(
         "search-empty",
@@ -118,6 +143,7 @@ function search_panel(props: search_panel_props) {
         <Text as="p" muted>{props.emptyText}</Text>,
       )
       : null}
+    {remoteTail(remote)}
     </div>,
   );
 }

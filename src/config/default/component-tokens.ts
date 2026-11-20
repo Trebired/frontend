@@ -6,7 +6,7 @@ import { DEFAULT_PRIMITIVE_COMPONENTS_CONFIG } from "./primitive-tokens.js";
 const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     data: Object.freeze({
         graph: Object.freeze({ download: Object.freeze({}), heatmap: Object.freeze({}), upload: Object.freeze({}) }),
-        log: Object.freeze({ line: Object.freeze({}), selection: Object.freeze({}) }),
+        log: Object.freeze({ selection: Object.freeze({}) }),
     }),
     feedback: Object.freeze({
         flash: Object.freeze({
@@ -17,7 +17,12 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
               padding: "0.9375rem",
               radius: "0",
             },
-            intents: { error: {}, info: {}, success: {}, warn: {} },
+            intents: {
+              error: { glyph: "circled" },
+              info: { glyph: "circled" },
+              success: { glyph: "circled" },
+              warn: { glyph: "circled" },
+            },
             layout: {
               actionsGap: "0.5rem",
               bodyGap: "0.5rem",
@@ -29,7 +34,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             },
             slots: {
               description: { fontSize: "0.92rem" },
-              icon: { fontWeight: "700", size: "1.125rem" },
+              icon: { size: "1.125rem" },
               progress: { height: "0.25rem" },
               title: { fontWeight: "400" },
             },
@@ -97,7 +102,7 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
     }),
     primitives: DEFAULT_PRIMITIVE_COMPONENTS_CONFIG,
     shell: Object.freeze({
-        breadcrumb: Object.freeze({ fontSize: "0.875rem" }),
+        breadcrumb: Object.freeze({ fontSize: "0.875rem", glyph: "none" }),
         bottomBar: Object.freeze({}),
         category: Object.freeze({}),
         footer: Object.freeze({
@@ -159,30 +164,12 @@ const DEFAULT_FRONTEND_COMPONENTS_CONFIG = Object.freeze({
             body: {
               divider: {},
             },
-            root: {
-              background: "transparent",
-              border: "1px solid currentColor",
-              minHeight: "2.1875rem",
-              padding: "0.875rem 0.875rem 0.75rem 0.875rem",
-              radius: "0",
-            },
             sizes: { lg: {}, md: {}, sm: {} },
-            row: {
-              background: "transparent",
-              padding: "0.5625rem 0.75rem",
-              radius: "0",
-              states: {
-                excluded: {},
-                hover: {},
-                selected: {},
-              },
-            },
             title: {
               fontSize: "0.9375rem",
               fontWeight: "700",
               margin: "0 0 0.625rem 0",
             },
-            tones: { accent: {}, inverse: {}, muted: {}, surface: {} },
         }),
     }),
   } satisfies NormalizedFrontendComponentsConfig);

@@ -1,12 +1,7 @@
-import {
-  appendIcon,
-  renderIconElement,
-} from "#e55z7pkijewq";
 import { onReady, queryAll, readElementJson, type BindRoot } from "#er0dlx1gtbzh";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type CopyButtonOptions = {
-  iconOnly?: boolean;
   target?: Element | string | null;
   value?: string | null;
 };
@@ -125,23 +120,22 @@ function buttonValue(button: HTMLElement, options: CopyButtonOptions) {
   return readTargetValue(resolveCopyTarget(target));
 }
 
-function restoreIcon(button: HTMLElement, originalHtml: string, iconOnly: boolean) {
-  if (!iconOnly) {
-    button.innerHTML = originalHtml;
-    return;
-  }
-  button.replaceChildren();
-  appendIcon(button, "remixicon clipboard-line");
+const COPIED_MS = 1200;
+
+function copyIcon(button: HTMLElement, state: "done" | "idle") {
+  return button.querySelector<HTMLElement>(frontendDataSelector("copy-icon", state));
 }
 
-function showCopied(button: HTMLElement, originalHtml: string, iconOnly: boolean) {
-  if (!iconOnly) return;
-  button.replaceChildren();
-  void renderIconElement(
-    appendIcon(button, "remixicon checkbox-circle-line"),
-    "remixicon checkbox-circle-line",
-  );
-  window.setTimeout(() => restoreIcon(button, originalHtml, iconOnly), 1200);
+function showCopied(button: HTMLElement) {
+  const idle = copyIcon(button, "idle");
+  const done = copyIcon(button, "done");
+  if (!idle || !done) return;
+  idle.hidden = true;
+  done.hidden = false;
+  window.setTimeout(() => {
+      idle.hidden = false;
+      done.hidden = true;
+    }, COPIED_MS);
 }
 
 async function runCopyButton(
@@ -152,16 +146,13 @@ async function runCopyButton(
   event?.preventDefault();
   const value = buttonValue(button, options);
   if (!value) return false;
-  const originalHtml = button.innerHTML;
-  const iconOnly = options.iconOnly === true;
   (button as HTMLButtonElement).disabled = true;
   try {
     const ok = await writeClipboard(value);
-    if (ok) showCopied(button, originalHtml, iconOnly);
+    if (ok) showCopied(button);
     return ok;
   } finally {
     (button as HTMLButtonElement).disabled = false;
-    if (!iconOnly) button.innerHTML = originalHtml;
   }
 }
 

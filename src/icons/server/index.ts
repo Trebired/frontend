@@ -2,7 +2,6 @@ import fs from "node:fs";
 
 import {
   applySvgColor,
-  applySvgRootAttrs,
   classNames,
   derivePrimarySvgColor,
   escapeHtml,
@@ -71,7 +70,6 @@ function createBoundedIconCache<T>(maxEntries = ICON_CACHE_MAX_ENTRIES): Bounded
 const svgMarkupCache = createBoundedIconCache<IconSvgResult>();
 const iconColorCache = createBoundedIconCache<string>();
 const iconColorModeCache = createBoundedIconCache<""|"brand"|"monochrome">();
-const iconSvgResponseCache = createBoundedIconCache<string>();
 
 function failure(
   parsed: ParsedIconSpec | null,
@@ -242,43 +240,11 @@ function renderIconHtml(
   return `<${tag} ${renderHostAttrs(attrs, parsed)}>${svg}</${tag}>`;
 }
 
-function createIconSvgResponse(spec: unknown, options: IconServerOptions = {}) {
-  const svgResult = resolveIconSvg(spec, options);
-  if (svgResult.ok !== true) {
-    return {
-      body: svgResult.statusCode,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-      status: svgResult.status,
-    };
-  }
-  const cacheKey = svgResult.file || svgResult.spec;
-  let body = iconSvgResponseCache.get(cacheKey);
-  if (body === undefined) {
-    const color = resolveIconColor(svgResult.spec, options);
-    const colorMode = classifyIconColorMode(color);
-    const svg = color ? applySvgColor(svgResult.svg, color) : svgResult.svg;
-    body = applySvgRootAttrs(svg, {
-        [frontendDataAttr("icon-color-mode")]: colorMode || undefined,
-        [frontendDataAttr("icon-color-value")]: color || undefined,
-    });
-    iconSvgResponseCache.set(cacheKey, body);
-  }
-  return {
-    body,
-    headers: {
-      "Cache-Control": "public, max-age=3600",
-      "Content-Type": "image/svg+xml; charset=utf-8",
-    },
-    status: 200,
-  };
-}
-
 export {
   allowedIconPacks,
   buildPackIndex,
   buildRenderedIconCacheEntry,
   classifyIconColorMode,
-  createIconSvgResponse,
   createServerIconRenderer,
   isIconPackAllowed,
   listSvgFiles,

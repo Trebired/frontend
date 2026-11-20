@@ -1,60 +1,8 @@
 @use "@trebired/bundler/namespace" as ns;
-#{ns.class("card")} {
-  min-height: var(#{ns.css-var("surf-card-root-min-h")}, var(--height-xs4, 35px));
-  border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
-  border: var(#{ns.css-var("surf-card-root-border")}, var(--border-width) solid var(--border-surface-1));
-  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page));
-  padding: var(#{ns.css-var("surf-card-root-padding")}, 14px 14px 12px 14px);
-  overflow: hidden;
-}
-
 #{ns.class("card-title")} {
   margin: var(#{ns.css-var("surf-card-title-margin")}, 0 0 10px 0);
   font-size: var(#{ns.css-var("surf-card-title-font-size")}, 15px);
   font-weight: var(#{ns.css-var("surf-card-title-font-weight")}, 700);
-}
-
-#{ns.class("card-row")} {
-  min-height: 0;
-  border-radius: var(#{ns.css-var("surf-card-row-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
-  border: var(#{ns.css-var("surf-card-row-border")}, var(--border-width) solid var(--border-surface-1));
-  background: var(#{ns.css-var("surf-card-row-bg")}, transparent);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  padding: var(#{ns.css-var("surf-card-row-padding")}, 9px 12px);
-  transition: all var(--transition-2) ease;
-
-  &#{ns.class("excluded")} {
-    border-color: var(#{ns.css-var("surf-card-row-state-excluded-border")}, var(--border-surface-1));
-  }
-
-  &#{ns.class("selected")} {
-    background: var(#{ns.css-var("surf-card-row-state-selected-bg")}, var(--background-surface-1));
-  }
-
-  > * {
-    min-width: 0;
-  }
-
-  &[role="button"] {
-    cursor: pointer;
-
-    &:focus-visible {
-      outline-offset: calc(-1 * var(#{ns.css-var("focus-ring-width")}, 2px));
-    }
-
-    &[aria-disabled="true"] {
-      cursor: not-allowed;
-    }
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  #{ns.class("card-row")}:hover {
-    background: var(#{ns.css-var("surf-card-row-state-hover-bg")}, var(--background-surface-1, transparent));
-  }
 }
 
 #{ns.class("card-body")} {

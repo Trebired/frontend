@@ -56,7 +56,7 @@ const TOP_LEVEL_FIELDS = [
 ];
 
 const ASSET_FIELDS = ["favicon", "flags", "fonts", "icons"];
-const ICON_FIELDS = ["aliases", "endpoint", "mode", "packs", "specs"];
+const ICON_FIELDS = ["aliases", "mode", "packs", "specs"];
 const DESIGN_FIELDS = [
   "breakpoints",
   "glass",
@@ -86,23 +86,6 @@ function normalizeIconMode(value: unknown): NormalizedFrontendConfig["assets"]["
   const mode = String(value || DEFAULT_FRONTEND_CONFIG.assets.icons.mode).trim().toLowerCase();
   if (mode === "server" || mode === "static") return mode;
   throw invalidConfig("assets.icons.mode must be server or static");
-}
-
-function normalizeEndpoint(
-  value: unknown,
-  mode: NormalizedFrontendConfig["assets"]["icons"]["mode"],
-): string {
-  if (value === false) {
-    if (mode === "static") return "";
-    throw invalidConfig("assets.icons.endpoint can be false only when assets.icons.mode is static");
-  }
-  const fallback = mode === "static" ? "" : DEFAULT_FRONTEND_CONFIG.assets.icons.endpoint;
-  const endpoint = String(value || fallback).trim();
-  if (!endpoint && mode === "static") return "";
-  if (!endpoint || /[\s"'<>]/u.test(endpoint)) {
-    throw invalidConfig("assets.icons.endpoint must be a URL path without whitespace");
-  }
-  return endpoint;
 }
 
 function normalizeConfigIconPack(value: unknown): FrontendIconPack {
@@ -169,7 +152,6 @@ function normalizeAssetsConfig(value: unknown): NormalizedFrontendConfig["assets
     fonts: normalizeFontsConfig(source.fonts),
     icons: {
       aliases: normalizeIconAliases(icons.aliases),
-      endpoint: normalizeEndpoint(icons.endpoint, mode),
       mode,
       packs: normalizeIconPacks(icons.packs),
       specs: normalizeIconSpecs(icons.specs),

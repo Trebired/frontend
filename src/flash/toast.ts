@@ -1,6 +1,6 @@
 import { computeFlashDurationMs, flashId, normalizeFlashType } from "./duration.js";
 import { createFlashElement } from "./elements.js";
-import { ensureFlashStack, hideFlashElement, layoutFlashStack } from "./stack.js";
+import { ensureFlashStack, hideFlashElement, layoutFlashStack, raiseFlashStack } from "./stack.js";
 import type { FlashHandle, FlashOptions, FlashType } from "./types.js";
 import { frontendDataAttr } from "#5vbaqj4pirp3";
 
@@ -27,6 +27,7 @@ function showFlashImpl(
   const existing = stack.querySelector<HTMLElement>(attrSelector(frontendDataAttr("flash-id"), id));
   if (existing && options.update === true) existing.remove();
   const controls = createFlashElement(type, message, description, id, options);
+  raiseFlashStack(stack);
   stack.appendChild(controls.element);
   startFlashLifetime(stack, controls, message, description, options);
   const dismiss = () => dismissFlash(id);

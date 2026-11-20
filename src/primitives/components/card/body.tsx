@@ -8,6 +8,7 @@ import type {
   attr_map,
 } from "#xb7hv37sq5h5";
 import {
+  primitiveCardRowAttrs,
   primitiveCardRowClassName,
   primitiveGridClassName,
   primitiveInlineRowClassName,
@@ -200,10 +201,9 @@ function selectCardNode(
     id={props.id}
     aria-disabled={disabled ? "true" : undefined}
     aria-selected={selected ? "true" : "false"}
-    className={className}
-    {...frontendDataAttrs({ "card-excluded": props.select && !selected ? "true" : undefined })}
+    className={className || undefined}
+    {...primitiveCardRowAttrs({ excluded: Boolean(props.select && !selected), selected })}
     {...frontendDataAttrs({ "card-row": "" })}
-    {...frontendDataAttrs({ "card-selected": selected ? "true" : undefined })}
     {...frontendDataAttrs({ "select-card": "" })}
     {...frontendDataAttrs({ "value": toText(props.select?.value) || undefined })}
     role="button"
@@ -270,12 +270,13 @@ function activationProps(props: BodyProps) {
   };
 }
 
-function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNode) {
+function plainBodyNode(props: BodyProps, baseClassName: string, content: ReactNode, selected: boolean) {
   const rendered = (
     <div
     {...((props.dataAttrs || {}) as attr_map)}
     id={props.id}
-    className={baseClassName}
+    className={baseClassName || undefined}
+    {...primitiveCardRowAttrs({ selected })}
     {...frontendDataAttrs({ "card-row": "" })}
     {...activationProps(props)}
     >
@@ -297,7 +298,7 @@ function card_body(props: BodyProps) {
       ),
     );
   }
-  return searchableBodyNode(props, plainBodyNode(props, state.baseClassName, content));
+  return searchableBodyNode(props, plainBodyNode(props, state.baseClassName, content, state.selected));
 }
 
 function selectLayoutClassName(props: SelectCardsProps) {

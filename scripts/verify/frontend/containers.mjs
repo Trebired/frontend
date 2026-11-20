@@ -89,6 +89,45 @@ async function verifyContainers(context) {
     /must be a string, a number or a config token/u,
     "a declaration carries one value",
   );
+
+  const claimed = generate({
+      "card-03": {
+        on: { ":hover": { background: "grey" } },
+        roles: ["log-line"],
+        style: { display: "flex" },
+        variants: { quiet: { style: { opacity: "0.6" } } },
+      },
+  });
+  assert.match(
+    claimed,
+    /:where\(\.tbfm-card-03, \[data-tbf-container~="log-line"\]\) \{\n {2}display: flex;/u,
+    "a container that claims a role styles the package's elements carrying that role, at no specificity",
+  );
+  assert.match(
+    claimed,
+    /:where\(\.tbfm-card-03, \[data-tbf-container~="log-line"\]\):hover \{/u,
+    "its states apply to the role too",
+  );
+  assert.match(
+    claimed,
+    /:where\(\.tbfm-card-03--quiet, \[data-tbf-container~="log-line"\]\[data-tbf-variant~="quiet"\]\) \{/u,
+    "and a variant matches the role's variant attribute",
+  );
+  assert.throws(
+    () => generate({ card: { roles: ["sidebar"] } }),
+    /unknown role/u,
+    "a role is one the package renders",
+  );
+  assert.throws(
+    () => generate({ card: { roles: ["card"] }, panel: { roles: ["card"] } }),
+    /already claimed by containers\.card/u,
+    "one container answers for a role",
+  );
+  assert.throws(
+    () => generate({ card: { parts: { head: { roles: ["card"] } } } }),
+    /may only be declared on a container itself/u,
+    "a part cannot claim a role",
+  );
 }
 
 export { verifyContainers };

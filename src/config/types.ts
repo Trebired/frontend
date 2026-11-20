@@ -52,6 +52,7 @@ type FrontendSystemKey =
 |"language"
 |"logs"
 |"media"
+|"markdown"
 |"modal"
 |"popover"
 |"primitives"

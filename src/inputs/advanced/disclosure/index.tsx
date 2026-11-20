@@ -6,6 +6,7 @@ import { DisclosureButton } from "#h6suogfkcg6i";
 import { icon } from "#dqy2d22qyujv";
 import {
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveInlineRowClassName,
   type PrimitiveButtonClassOptions,
@@ -33,7 +34,6 @@ function disclosureModel(props: disclosure_props) {
   const rootClassName = classNames([
       frontendClassName("disclosure"),
       props.card === false ? "" : primitiveCardClassName({ layout: "none" }),
-      frontendClassName("cursor-pointer"),
       frontendClassName("disclosure"),
       toString(props.rootClassName),
   ]);
@@ -41,13 +41,12 @@ function disclosureModel(props: disclosure_props) {
     isOpen: props.open === true,
     panelClassName: classNames([
         frontendElementClass("disclosure", "panel"),
-        frontendClassName("cursor-auto"),
         toString(props.panelClassName),
     ]),
-    rootAttrs:
-    props.rootAttrs && typeof props.rootAttrs === "object"
-    ? props.rootAttrs
-    : {},
+    rootAttrs: {
+      ...(props.card === false ? {} : primitiveCardAttrs()),
+      ...(props.rootAttrs && typeof props.rootAttrs === "object" ? props.rootAttrs : {}),
+    },
     rootClassName,
     rootId,
     TriggerTag: props.triggerTag === "div" ? "div" : "button",

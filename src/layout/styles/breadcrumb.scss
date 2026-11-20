@@ -1,11 +1,32 @@
 @use "@trebired/bundler/namespace" as ns;
 #{ns.class("breadcrumb")} {
+  display: flex;
+  flex: 1 1 auto;
   min-width: 0;
+  min-height: var(#{ns.css-var("shell-breadcrumb-min-h")}, 0);
+  box-sizing: border-box;
+  align-items: center;
+  padding: var(#{ns.css-var("shell-breadcrumb-padding")}, 0);
+  border: var(#{ns.css-var("shell-breadcrumb-border")}, 0);
+  border-radius: var(#{ns.css-var("shell-breadcrumb-radius")}, 0);
+  color: var(#{ns.css-var("shell-breadcrumb-color")}, inherit);
+  background: var(#{ns.css-var("shell-breadcrumb-bg")}, transparent);
   font-size: var(#{ns.css-var("shell-breadcrumb-font-size")}, 14px);
+}
+
+#{ns.class("breadcrumb")}::before {
+  flex: 0 0 auto;
+  width: var(#{ns.css-var("shell-breadcrumb-icon-size")}, 0);
+  height: var(#{ns.css-var("shell-breadcrumb-icon-size")}, 0);
+  margin-inline-end: var(#{ns.css-var("shell-breadcrumb-icon-gap")}, 0);
+  content: "";
+  background-color: var(#{ns.css-var("shell-breadcrumb-icon")}, currentColor);
+  mask: var(#{ns.css-var("shell-breadcrumb-glyph")}, none) center / contain no-repeat;
 }
 
 #{ns.element-class("breadcrumb", "list")} {
   display: flex;
+  flex: 1 1 auto;
   min-width: 0;
   align-items: center;
   gap: 6px;
@@ -24,7 +45,7 @@
 #{ns.element-class("breadcrumb", "item")} + #{ns.element-class("breadcrumb", "item")}::before {
   content: "/";
   margin-inline-end: 6px;
-  color: var(#{ns.css-var("text-muted")}, #666);
+  color: var(#{ns.css-var("shell-breadcrumb-separator-color")}, var(#{ns.css-var("text-muted")}, #666));
 }
 
 #{ns.element-class("breadcrumb", "link")},
@@ -38,9 +59,28 @@
   text-decoration: none;
 }
 
+#{ns.element-class("breadcrumb", "link")} {
+  color: var(#{ns.css-var("shell-breadcrumb-link-color")}, inherit);
+}
+
+#{ns.element-class("breadcrumb", "link")}:hover {
+  color: var(#{ns.css-var("shell-breadcrumb-link-hover-color")}, inherit);
+}
+
+#{ns.element-class("breadcrumb", "current")} {
+  color: var(#{ns.css-var("shell-breadcrumb-current-color")}, inherit);
+}
+
 #{ns.element-class("breadcrumb", "label")} {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+#{ns.element-class("breadcrumb", "copy")} {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding-inline-start: 6px;
 }

@@ -115,6 +115,7 @@ function createLogsViewModel(props: view_props) {
     exportOptions: exportOptionsFor(props),
     exportPopoverId: logId("export-popover"),
     ids: logIds(logId, logSnakeId, logsInstanceSnake, logsInstanceId),
+    lang: props.lang,
     logId,
     logsExtendGroup: toString(
       props.extendGroup,

@@ -10,6 +10,7 @@ type FrontendPrimitiveComponentsConfig = {
   input?: FrontendComponentTokens;
   loader?: FrontendComponentTokens;
   marquee?: FrontendComponentTokens;
+  number?: FrontendComponentTokens;
   pill?: FrontendComponentTokens;
   progress?: FrontendComponentTokens;
   quote?: FrontendComponentTokens;
@@ -51,6 +52,7 @@ type FrontendMediaComponentsConfig = {
 
 type FrontendShellComponentsConfig = {
   bottomBar?: FrontendComponentTokens;
+  breadcrumb?: FrontendComponentTokens;
   category?: FrontendComponentTokens;
   error?: FrontendComponentTokens;
   header?: FrontendComponentTokens;

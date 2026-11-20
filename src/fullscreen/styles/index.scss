@@ -119,6 +119,11 @@
   display: none !important;
 }
 
+#{ns.class("fullscreen-toggle")} {
+  display: inline-flex;
+  flex: none;
+}
+
 html#{ns.data("fullscreen-scroll-locked", "true")},
 
 body#{ns.data("fullscreen-scroll-locked", "true")} {

@@ -184,6 +184,7 @@ export {
 };
 export {
   bindBreadcrumbs,
+  setBreadcrumbItems,
 } from "./breadcrumb.js";
 export type *from "./breadcrumb.js";
 export {

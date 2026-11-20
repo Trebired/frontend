@@ -62,6 +62,10 @@ function inputControl(props: InputProps) {
   );
 }
 
+function isWrapperClass(name: string) {
+  return name.startsWith(frontendClassName("width-")) || name === frontendClassName("grow");
+}
+
 function splitInputClasses(className: unknown) {
   const inputClasses: string[] = [];
   const wrapperClasses: string[] = [];
@@ -69,7 +73,7 @@ function splitInputClasses(className: unknown) {
   .split(/\s+/)
   .filter(Boolean)
   .forEach((name) => {
-      if (/^width-/.test(name) || name === "grow") wrapperClasses.push(name);
+      if (isWrapperClass(name)) wrapperClasses.push(name);
       else inputClasses.push(name);
   });
   return {

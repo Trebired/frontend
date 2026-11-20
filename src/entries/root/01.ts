@@ -57,7 +57,6 @@ export {
   firstHTMLElementChild,
   firstNonScriptHTMLElementChild,
   formDataFlatRecord,
-  isInUnhydratedIsland,
   readHostJsonConfig,
   readJsonScript,
   readViewerId,

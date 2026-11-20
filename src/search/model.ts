@@ -16,8 +16,17 @@ type search_item_config = {
   text?: search_value;
 };
 
+type search_remote_config = {
+  channel: string;
+  hasMore?: boolean;
+  nextOffset?: number;
+  pageSize?: number;
+  room: string;
+};
+
 type search_panel_config = {
   familyKey?: string;
+  remote?: search_remote_config;
 };
 
 type search_filter_config = {
@@ -36,6 +45,7 @@ export type {
   search_filters,
   search_item_config,
   search_panel_config,
+  search_remote_config,
   search_value,
 };
 export { searchText, search_config_json, toText };

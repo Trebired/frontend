@@ -5,7 +5,7 @@ import { removeOrphanedPortaledOverlays } from "./overlay-dom.js";
 import { layerPortalOrigin } from "#ccvonx3uhbte";
 import { runCleanupsWithin } from "./cleanup.js";
 import { fetchDocument } from "./fetch-document.js";
-import { rehydrate, syncIslandRootHydration } from "./navigate.js";
+import { rebind } from "./navigate.js";
 import {
   captureFormState,
   captureWizardSteps,
@@ -49,10 +49,9 @@ function replaceLiveRegions(doc: Document) {
       const wizardState = captureWizardSteps(current);
       runCleanupsWithin(current);
       current.replaceChildren(...importChildNodes(next));
-      syncIslandRootHydration(current, next);
       restoreWizardSteps(current, wizardState);
       restoreFormState(current, formState);
-      rehydrate(current);
+      rebind(current);
       changed = true;
   });
   return changed;
@@ -92,10 +91,9 @@ function replaceLiveElement(doc: Document, current: HTMLElement) {
   runCleanupsWithin(current);
   current.replaceChildren(...importChildNodes(next));
   if (next.className !== current.className) current.className = next.className;
-  syncIslandRootHydration(current, next);
   restoreWizardSteps(current, wizardState);
   restoreFormState(current, formState);
-  rehydrate(current);
+  rebind(current);
   current.dispatchEvent(new CustomEvent(frontendEventName("live-region-refresh"), { bubbles: true, detail: { region: current } }));
   return true;
 }

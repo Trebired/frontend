@@ -100,14 +100,6 @@ function isOpenOverlay(element: Element) {
   );
 }
 
-function syncIslandRootHydration(current: Element, next: Element) {
-  if (!current.hasAttribute(frontendDataAttr("live-island-root"))) return;
-  const attr = frontendDataAttr("live-island-hydrated");
-  const nextValue = next.getAttribute(attr);
-  if (nextValue === null) current.removeAttribute(attr);
-  else current.setAttribute(attr, nextValue);
-}
-
 function reconcilePortaledDuplicates(root: ParentNode) {
   if (!root || typeof root.querySelectorAll !== "function") return;
   const portals = overlayPortalRoots();
@@ -128,11 +120,11 @@ function reconcilePortaledDuplicates(root: ParentNode) {
   });
 }
 
-function rehydrate(root: BindRoot = document) {
+function rebind(root: BindRoot = document) {
   reconcilePortaledDuplicates(root);
   runSpaRebind(root);
   document.dispatchEvent(
-    new CustomEvent(frontendEventName("rehydrate"), { detail: { root } }),
+    new CustomEvent(frontendEventName("rebind"), { detail: { root } }),
   );
 }
 
@@ -184,7 +176,6 @@ function replaceContent(
     }),
   );
   currentRoot.replaceChildren(...importChildNodes(nextRoot));
-  syncIslandRootHydration(currentRoot, nextRoot);
   syncShell(doc);
   removeOrphanedPortaledOverlays({ portaledSelector: PORTALED_SELECTOR });
   if (wizardState) restoreWizardSteps(currentRoot, wizardState);
@@ -192,7 +183,7 @@ function replaceContent(
   updateDocumentMeta(doc);
   injectNewScripts(doc);
   if (!preserveState) applyLandingScroll(targetHash);
-  rehydrate(document);
+  rebind(document);
   void navigation;
   return true;
 }
@@ -305,10 +296,9 @@ export {
   contentRoot,
   isSamePathAsLastKnown,
   notePathChange,
-  rehydrate,
+  rebind,
   seedLoadedScripts,
   softRedirect,
   softReload,
-  syncIslandRootHydration,
 };
 export type { SoftRedirectOptions };

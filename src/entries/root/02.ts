@@ -1,6 +1,5 @@
 export {
   defaultIconAliases,
-  harvestInlineIcons,
   iconSpec,
   icons,
   normalizeIconAliasMap,
@@ -38,6 +37,7 @@ export {
   selectedCardValue,
   setDisclosureOpen,
   setStatus,
+  setTabNumber,
   setUploadFiles,
   setUploadRemoteSelection,
   uploadFieldHtml,
@@ -117,6 +117,7 @@ export {
   ensureLayoutPortalRoot,
   frontendBoot,
   openMobileNav,
+  setBreadcrumbItems,
   siteBodyHtml,
   siteHeaderRootHtml,
 } from "#ieim4iimrwal";
@@ -127,8 +128,8 @@ export {
   createLiveOverlayState,
   currentPage,
   onPageChange,
+  rebind,
   registerPageCleanup,
-  rehydrate,
   removeStalePortaledOverlays,
   softRedirect,
   softReload,

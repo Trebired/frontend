@@ -23,8 +23,9 @@ import {
 } from "./palette.js";
 import { renderScalesCss } from "./scales-css.js";
 import { renderTitlesCss } from "./titles.js";
-import { renderButtonVariantRules, renderCardToneRules } from "./tones.js";
+import { renderButtonVariantRules } from "./tones.js";
 import { flattenThemeTokens } from "./theme.js";
+import { componentTokenValue } from "./flash-glyphs.js";
 import type {
   NormalizedFrontendConfig,
   NormalizedFrontendThemeMode,
@@ -52,6 +53,7 @@ const SYSTEM_STYLE_FILES: Partial<Record<string, string>> = {
   layer: "layer/styles/index.scss",
   layout: "layout/styles/index.scss",
   logs: "logs/styles/index.scss",
+  markdown: "markdown/styles/index.scss",
   media: "media/styles/index.scss",
   modal: "modal/styles/index.scss",
   popover: "popover/styles/index.scss",
@@ -94,7 +96,7 @@ function componentTokenDeclarations(config: NormalizedFrontendConfig): string[] 
   for (const [componentGroup, tokens] of Object.entries(config.components)) {
     const componentKey = componentGroupCssName(componentGroup);
     for (const [key, value] of flattenThemeTokens(tokens)) {
-      lines.push(`  --${config.prefix}-${componentKey}-${componentTokenCssName(key)}: ${String(value)};`);
+      lines.push(`  --${config.prefix}-${componentKey}-${componentTokenCssName(key)}: ${componentTokenValue(componentGroup, key, value, config)};`);
     }
   }
   return lines;
@@ -140,7 +142,6 @@ function rootDeclarations(config: NormalizedFrontendConfig): string[] {
   const { modes, defaultMode } = config.runtime.theme;
   return [
     `  --${config.prefix}-config-prefix: ${cssString(config.prefix)};`,
-    `  --${config.prefix}-icon-endpoint: ${cssString(config.assets.icons.endpoint)};`,
     `  --${config.prefix}-icon-mode: ${cssString(config.assets.icons.mode)};`,
     `  --${config.prefix}-interaction-active-filter: ${config.design.interactions.activePress.filter};`,
     ...breakpointDeclarations(config.prefix, config.design.breakpoints),
@@ -305,7 +306,6 @@ function generateFrontendScss(
     ...renderScalesRootBlock(scalesCss.vars),
     ...renderScalesBody(scalesCss.body),
     ...renderButtonVariantRules(config),
-    ...renderCardToneRules(config),
     ...renderContainerRules(config),
     ...renderHeadingVariantRules(config),
     ...renderTitlesCss(config.design.titles, {

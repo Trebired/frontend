@@ -12,8 +12,11 @@ type FrontendContainerBlock = {
   tone?: Exclude<FrontendContainerTone, null>;
 };
 
+type FrontendContainerRole = "card" | "card-row" | "log-line";
+
 type FrontendContainer = FrontendContainerBlock& {
   parts?: Record<string, FrontendContainerBlock>;
+  roles?: readonly FrontendContainerRole[];
   variants?: Record<string, FrontendContainerBlock>;
 };
 
@@ -24,6 +27,7 @@ type FrontendContainerDefinition = {
   frost: boolean;
   on: Record<string, FrontendContainerStyle>;
   parts: Record<string, FrontendContainerDefinition>;
+  roles: string[];
   style: FrontendContainerStyle;
   tone: FrontendContainerTone;
   variants: Record<string, FrontendContainerDefinition>;
@@ -37,6 +41,7 @@ export type {
   FrontendContainerBlock,
   FrontendContainerDeclarations,
   FrontendContainerDefinition,
+  FrontendContainerRole,
   FrontendContainerStyle,
   FrontendContainersConfig,
   NormalizedFrontendContainers,

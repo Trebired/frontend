@@ -2,7 +2,6 @@ import type { BindRoot } from "#er0dlx1gtbzh";
 import { toText } from "./model.js";
 import {
   firstNonScriptHTMLElementChild,
-  isInUnhydratedIsland,
 } from "./client/dom.js";
 import {
   searchControlHostsFromNode,
@@ -24,6 +23,7 @@ import {
   readSearchControlsConfig,
   readSearchPanelConfig,
 } from "./client/config.js";
+import { bindRemotePanel, onRemoteInput, remotePanelFor } from "./client/remote.js";
 import {
   registerFamilyElement,
   registeredSearchPanels,
@@ -48,7 +48,6 @@ function panelBindingFromRoot(root: unknown) {
 
 function searchPanelFromHost(host: HTMLElement | null) {
   if (!(host instanceof HTMLElement)) return null;
-  if (isInUnhydratedIsland(host)) return null;
   const root = firstNonScriptHTMLElementChild(host);
   if (!(root instanceof HTMLElement)) return null;
   const config = readSearchPanelConfig(host);
@@ -66,6 +65,7 @@ function renderSearchPanelNow(panel: SearchPanelBinding) {
     window.cancelAnimationFrame(panel.renderFrame);
     panel.renderFrame = 0;
   }
+  if (remotePanelFor(panel)) return;
   const cache = panelCache(panel);
   const query = getCombinedQuery(panel);
   const filters = getFilterInputs(panel);
@@ -128,7 +128,9 @@ function bindControlForPanel(
   const key = `${eventName}:${token}`;
   if (bindings.has(key)) return;
   bindings.add(key);
-  input.addEventListener(eventName, () => scheduleSearchPanel(panel));
+  input.addEventListener(eventName, () => {
+      if (!onRemoteInput(panel, eventName)) scheduleSearchPanel(panel);
+  });
 }
 
 function bindSearchPanel(host: HTMLElement | null) {
@@ -137,6 +139,8 @@ function bindSearchPanel(host: HTMLElement | null) {
   panelBindings.set(panel.host, panel);
   registerFamilyElement(searchPanelsByFamily, panel.familyKey, panel.host);
   refreshPanelCache(panel);
+  const remote = readSearchPanelConfig(panel.host).remote;
+  if (remote) bindRemotePanel(panel, remote);
   getSearchInputs(panel).forEach((input) => {
       bindControlForPanel(panel, input, "input");
   });
@@ -155,7 +159,6 @@ function panelsForFamily(familyKey: string) {
 
 function bindSearchControls(host: HTMLElement | null) {
   if (!(host instanceof HTMLElement)) return null;
-  if (isInUnhydratedIsland(host)) return null;
   const config = readSearchControlsConfig(host);
   const familyKey = toText(config.familyKey);
   registerFamilyElement(searchControlsByFamily, familyKey, host);

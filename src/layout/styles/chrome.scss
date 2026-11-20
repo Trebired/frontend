@@ -256,10 +256,10 @@
   padding: var(#{ns.css-var("shell-sidebar-controls-padding")}, var(#{ns.css-var("spacing-xs")}, 6px));
 }
 
-#{ns.class("card")}#{ns.class("product-shell-sidebar-controls")} {
+#{ns.data("container", "card")}#{ns.class("product-shell-sidebar-controls")} {
   padding: var(
     #{ns.css-var("shell-sidebar-controls-padding")},
-    var(#{ns.css-var("surf-card-root-padding")}, 14px 14px 12px 14px)
+    14px 14px 12px 14px
   );
 }
 

@@ -1,6 +1,4 @@
 import { flashId } from "./duration.js";
-import { renderIconElement } from "#e55z7pkijewq";
-import { flashFallbackIconText, flashIconSpec } from "./icons.js";
 import type { FlashOptions, FlashType } from "./types.js";
 import { frontendClassName, frontendDataAttr, frontendElementClass, frontendModifierClass } from "#5vbaqj4pirp3";
 
@@ -28,7 +26,7 @@ function createFlashElement(
   setOptionalAttr(element, frontendDataAttr("progress-tone"), normalizeAttrValue(options.progressTone || options.progressType || type));
   element.setAttribute("role", type === "error" ? "alert" : "status");
   element.append(
-    flashIcon(type),
+    flashIcon(),
     flashBody(message, description, options),
     flashProgress(),
   );
@@ -38,12 +36,10 @@ function createFlashElement(
   };
 }
 
-function flashIcon(type: FlashType) {
+function flashIcon() {
   const icon = document.createElement("span");
   icon.className = frontendElementClass("flash", "icon");
   icon.setAttribute("aria-hidden", "true");
-  icon.textContent = flashFallbackIconText(type);
-  void renderIconElement(icon, flashIconSpec(type), { className: frontendElementClass("flash", "icon") });
   return icon;
 }
 

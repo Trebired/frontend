@@ -46,6 +46,15 @@ function editorContentChildren(root: HTMLElement) {
   return { host, input };
 }
 
+function editorLayer(host: HTMLElement): HTMLElement {
+  const layer = document.createElement("div");
+  layer.style.position = "absolute";
+  layer.style.inset = "0";
+  host.style.position = "relative";
+  host.appendChild(layer);
+  return layer;
+}
+
 function createEditor(
   monacoRef: any,
   host: HTMLElement,
@@ -80,7 +89,7 @@ async function bindEditorContent(root: HTMLElement) {
   const config = editorContentConfig(root, input);
   const monacoRef = await ensureMonaco();
   await activateLanguage(monacoRef, config.language);
-  const editor = createEditor(monacoRef, host, input, config);
+  const editor = createEditor(monacoRef, editorLayer(host), input, config);
   editor.onDidChangeModelContent(() => {
       input.value = String(editor.getValue() || "");
   });

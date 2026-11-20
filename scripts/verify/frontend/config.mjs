@@ -110,7 +110,6 @@ function configuredSource(context) {
     "    icons: {",
     "      aliases: { add: \"remixicon:add-line\", github: { pack: \"simple-icons\", name: \"github\" } },",
     "      packs: [\"simple-icons\"],",
-    "      endpoint: \"/icons/svg\",",
     "    },",
     "  },",
     "  design: {",
@@ -213,12 +212,13 @@ function assertNormalizeFrontendConfig(config, context) {
     }).design.interactions.activePress.filter,
     "none"
   );
-  assert.equal(
-    config.normalizeFrontendConfig({
+  assert.throws(
+    () => config.normalizeFrontendConfig({
         forVersion: context.packageVersion,
-        assets: { icons: { endpoint: false, mode: "static" } },
-    }).assets.icons.endpoint,
-    ""
+        assets: { icons: { endpoint: "/__icons/svg" } },
+    }),
+    /endpoint/u,
+    "icons are never fetched, so there is no icon endpoint to configure",
   );
   assert.equal(
     config.normalizeFrontendConfig({

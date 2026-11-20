@@ -20,6 +20,12 @@ async function verifySetDropdownOptions(context) {
     const options = Array.from(document.querySelectorAll("#tags_options [data-tbf-dropdown-option]")).map((node) => node.textContent);
     assert.deepEqual(options.map((text) => text.replace(/^.*\}/u, "")), ["v1.0.0", "v1.1.0"], "the options are replaced");
     assert.equal(drop.getAttribute("aria-disabled"), null, "a dropdown rendered disabled can be enabled");
+    drop.querySelector("[data-tbf-dropdown-label]").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    const picked = Array.from(document.querySelectorAll("#tags_options [data-tbf-dropdown-option]"))
+    .find((node) => node.textContent.endsWith("v1.1.0"));
+    picked.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    assert.equal(document.querySelector('input[name="tag"]').value, "v1.1.0", "picking a replaced option sets the value");
+    assert.equal(drop.querySelector("[data-tbf-dropdown-label]").textContent, "v1.1.0", "the label shows the picked option");
     root.setDropdownOptions(drop, [], { disabled: true, placeholder: "Create a tag first" });
     assert.equal(drop.getAttribute("aria-disabled"), "true", "the dropdown can be disabled again");
     assert.equal(document.querySelectorAll("#tags_options [data-tbf-dropdown-option]").length, 0, "no options remain");

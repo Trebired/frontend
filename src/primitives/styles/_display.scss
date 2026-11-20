@@ -1,4 +1,17 @@
 @use "@trebired/bundler/namespace" as ns;
+#{ns.class("number")} {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  &::before {
+    content: var(#{ns.css-var("ui-number-open")}, none);
+  }
+
+  &::after {
+    content: var(#{ns.css-var("ui-number-close")}, none);
+  }
+}
+
 #{ns.class("canvas-panel")} {
   display: flex;
   min-height: 0;

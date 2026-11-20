@@ -187,6 +187,16 @@ function maybeCloseContainingModal(
   if (modal instanceof HTMLElement) closeModal(modal);
 }
 
+function releaseOnce(form: HTMLFormElement, submitter: HTMLElement | null) {
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    submittingForms.delete(form);
+    setControlDisabled(submitter, false);
+  };
+}
+
 async function submitActionForm(
   form: HTMLFormElement,
   event?: SubmitEvent,
@@ -203,6 +213,7 @@ async function submitActionForm(
   const ui = formUi(options, config);
   submittingForms.add(form);
   setControlDisabled(submitter, true);
+  const release = releaseOnce(form, submitter);
   try {
     ensureFormCsrfToken(form);
     options.beforeSubmit?.(form, submitter);
@@ -234,10 +245,12 @@ async function submitActionForm(
       );
       maybeCloseContainingModal(form, options, config);
     }
+    release();
     options.onComplete?.(ok, json);
     dispatchActionFormEvent(form, frontendEventName("action-complete"), { json, ok, submitter });
     return json;
   } catch (error) {
+    release();
     options.onComplete?.(false, { ok: false });
     dispatchActionFormEvent(form, frontendEventName("action-complete"), {
         error,
@@ -247,8 +260,7 @@ async function submitActionForm(
     });
     throw error;
   } finally {
-    submittingForms.delete(form);
-    setControlDisabled(submitter, false);
+    release();
   }
 }
 

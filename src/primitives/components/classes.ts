@@ -1,4 +1,4 @@
-import { frontendClassName, frontendClassName as ns, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassName as ns, frontendClassNames, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 import { appendClassName, joinClassNames, toText } from "./shared.js";
 
@@ -175,7 +175,6 @@ function primitiveCardClassName(options: PrimitiveCardClassOptions = {}) {
   const usesStackLayout = options.layout === "column" ||
     Boolean(options.gap || options.center || options.horizontalCenter || options.verticalCenter || options.grow || options.noShrink);
   return joinClassNames(
-    frontendClassName("card"),
     options.layout === "none" || !usesStackLayout ? "" : primitiveStackClassName(stackOptions),
     primitivePaddingClass(options.padding),
     options.scroll ? frontendClassNames("scroll", "scroll-min") : "",
@@ -184,12 +183,19 @@ function primitiveCardClassName(options: PrimitiveCardClassOptions = {}) {
 }
 
 function primitiveCardRowClassName(options: PrimitiveCardRowClassOptions = {}) {
-  return joinClassNames(
-    frontendClassName("card-row"),
-    options.selected ? frontendClassName("selected") : "",
-    options.excluded ? frontendClassName("excluded") : "",
-    options.className,
-  );
+  return joinClassNames(options.className);
+}
+
+function primitiveCardAttrs(variant?: string) {
+  return frontendDataAttrs({ container: "card", variant: variant || undefined });
+}
+
+function primitiveCardRowAttrs(options: { excluded?: boolean; selected?: boolean } = {}) {
+  return frontendDataAttrs({
+      "card-excluded": options.excluded ? "true" : undefined,
+      "card-selected": options.selected ? "true" : undefined,
+      container: "card-row",
+  });
 }
 
 function primitiveTextClassName(options: PrimitiveTextClassOptions = {}) {
@@ -219,7 +225,9 @@ function primitiveStatusDotClassName(options: {
 
 export {
   primitiveButtonClassName,
+  primitiveCardAttrs,
   primitiveCardClassName,
+  primitiveCardRowAttrs,
   primitiveCardRowClassName,
   primitiveGapClass,
   primitiveGridClassName,

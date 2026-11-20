@@ -17,7 +17,7 @@ import {
   type SourceLanguageRuntimeOptions,
 } from "./language/index.js";
 
-import { bindIcons, type IconRuntimeOptions } from "./icons/index.js";
+import { bindIcons } from "./icons/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
 import type { LiveSubscribe } from "./live/index.js";
 import { bindLazySystems } from "./runtime/lazy.js";
@@ -57,7 +57,6 @@ type FrontendRuntimeOptions = {
   adapters?: FrontendRuntimeAdapters;
   reveal?: RevealOptions | false;
   frontend_quiet?: boolean;
-  icons?: IconRuntimeOptions;
   layout?: LayoutRuntimeOptions;
   locale?: LocaleRuntimeOptions;
   observe?: boolean;
@@ -112,7 +111,7 @@ function bindFrontendWidgets(
       frontend_quiet: options.frontend_quiet,
       quiet: options.quiet,
   });
-  runBindStep(logger, "icons", () => bindIcons(scope, options.icons || {}));
+  runBindStep(logger, "icons", () => bindIcons(scope));
   runBindStep(logger, "locale", () => bindLocaleSwitchers(scope, localeRuntimeOptions(options, adapters)));
   bindLazySystems(scope, { sourceLanguage: options.sourceLanguage, subscribe: adapters.subscribe }, (label, step) => {
       step().catch ((error: unknown) => logger.warn("runtime", "bind-step-failed", {

@@ -35,7 +35,9 @@ type CanvasPanelCompatProps = {
   contentClassName?: string;
   extendGroup?: string;
   extendId?: string;
+  fullscreen?: boolean;
   id?: string;
+  lang?: string;
   panelClassName?: string;
   rootAttrs?: Record<string, unknown>;
   scroll?: boolean;
@@ -94,18 +96,22 @@ function canvas_panel(props: CanvasPanelCompatProps) {
   const content = props.content == null ? props.children : props.content;
   const rootAttrs = objectAttrs(props.rootAttrs);
   const CanvasPanel = FrontendCanvasPanel as any;
+  const fullscreenId = props.fullscreen === true && props.extendId ? String(props.extendId) : undefined;
   const panel = (
     <CanvasPanel
     {...rootAttrs}
     {...(props.id ? { id: String(props.id) } : {})}
     actions={props.toolbar === false ? undefined : props.toolbarContent}
     className={panelClassName(props)}
+    fullscreenGroup={fullscreenId ? props.extendGroup : undefined}
+    fullscreenId={fullscreenId}
+    lang={props.lang}
     title={props.toolbar === false ? undefined : props.title}
     >
     <div className={contentClassName(props)}>{content}</div>
     </CanvasPanel>
   );
-  if (!props.extendId || !props.extendGroup) return panel;
+  if (fullscreenId || !props.extendId || !props.extendGroup) return panel;
   return (
     <FullscreenTarget fullscreenId={props.extendId} group={props.extendGroup}>
     {panel}

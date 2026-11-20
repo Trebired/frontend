@@ -147,26 +147,6 @@
   padding-bottom: 0;
 }
 
-#{ns.class("log-line")} {
-  display: block;
-  width: 100%;
-  padding: 2px 4px;
-  border-radius: var(--radius-xs);
-  white-space: normal;
-  line-height: var(--lh-xs, 1.2);
-  cursor: pointer;
-
-  &:hover {
-    background: var(#{ns.css-var("data-log-line-state-hover-bg")}, var(#{ns.css-var("surface-muted")}, transparent));
-  }
-
-  &::after {
-    content: "";
-    display: block;
-    clear: both;
-  }
-}
-
 #{ns.class("log-cell")} {
   min-width: 0;
   vertical-align: top;

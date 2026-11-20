@@ -1,3 +1,4 @@
+import { registerStaticIcons } from "#e55z7pkijewq";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -55,6 +56,7 @@ function fetchTree(
   .then(readJsonOrThrow(loadFailed))
   .then((payload) => {
       if (!active) return;
+      registerStaticIcons(payload?.data?.icons || {});
       setTreeLoaded(true);
       setTree(Array.isArray(payload?.data?.tree) ? payload.data.tree : []);
   })

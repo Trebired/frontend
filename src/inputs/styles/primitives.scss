@@ -5,9 +5,27 @@
   flex-direction: column;
 }
 
-#{ns.class("disclosure")}#{ns.class("card")},
+#{ns.data("disclosure")} {
+  cursor: pointer;
+}
 
-#{ns.class("disclosure")}#{ns.class("card")} {
+#{ns.class("disclosure")}#{ns.class("disclosure")} {
+  gap: 0;
+}
+
+#{ns.data("search-results")} {
+  display: flex;
+  min-width: 0;
+  flex: none;
+  flex-direction: column;
+  gap: inherit;
+
+  &:empty {
+    display: none;
+  }
+}
+
+#{ns.class("disclosure")}#{ns.data("container", "card")} {
   padding: var(#{ns.css-var("ui-disclosure-root-padding")}, var(#{ns.css-var("gap-sm")}, 8px));
 }
 
@@ -55,6 +73,7 @@
 }
 
 #{ns.element-class("disclosure", "panel")} {
+  cursor: auto;
   display: grid;
   min-width: 0;
   align-items: stretch;

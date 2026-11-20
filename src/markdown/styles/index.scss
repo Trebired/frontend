@@ -1,0 +1,147 @@
+@use "@trebired/bundler/namespace" as ns;
+
+@function token($name, $fallback) {
+  @return var(#{ns.css-var("markdown-" + $name)}, $fallback);
+}
+
+$rule: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor);
+
+$code-bg: token("code-bg", var(#{ns.css-var("surface-muted")}, rgba(127, 127, 127, 0.15)));
+
+$mono: var(#{ns.css-var("font-mono")}, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+
+#{ns.class("markdown")},
+
+#{ns.class("markdown")} :is(div, blockquote, details) {
+  display: flex;
+  flex-direction: column;
+  gap: token("gap", 16px);
+}
+
+#{ns.class("markdown")} :is(p, h1, h2, h3, h4, h5, h6, ul, ol, dl, pre, blockquote, table, hr, figure) {
+  margin: 0;
+}
+
+#{ns.class("markdown")} :is(h1, h2) {
+  padding-block-end: 0.3em;
+  border-block-end: $rule;
+}
+
+#{ns.class("markdown")} :is(h1, h2, h3, h4, h5, h6) {
+  padding-block-start: token("heading-gap", 8px);
+}
+
+#{ns.class("markdown")} > :first-child,
+
+#{ns.class("markdown")} > :first-child > :first-child {
+  padding-block-start: 0;
+}
+
+#{ns.class("markdown")} [align="center"] {
+  text-align: center;
+}
+
+#{ns.class("markdown")} [align="right"] {
+  text-align: end;
+}
+
+#{ns.class("markdown")} :is(ul, ol) {
+  margin: 0;
+  padding-inline-start: 2em;
+}
+
+#{ns.class("markdown")} ul {
+  list-style: disc;
+}
+
+#{ns.class("markdown")} ol {
+  list-style: decimal;
+}
+
+#{ns.class("markdown")} :is(ul, ol) :is(ul, ol) {
+  margin-block-start: 0.25em;
+}
+
+#{ns.class("markdown")} li + li {
+  margin-block-start: 0.25em;
+}
+
+#{ns.class("markdown")} li > p {
+  margin: 0;
+}
+
+#{ns.class("markdown")} li:has(> input[type="checkbox"]) {
+  margin-inline-start: -1.5em;
+  list-style: none;
+}
+
+#{ns.class("markdown")} :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: var(#{ns.css-var("radius-sm")}, 4px);
+  background: $code-bg;
+  font-family: $mono;
+  font-size: 0.875em;
+}
+
+#{ns.element-class("markdown", "code")} {
+  position: relative;
+}
+
+#{ns.element-class("markdown", "code")} pre {
+  margin: 0;
+  padding: 16px 48px 16px 16px;
+  overflow-x: auto;
+  border-radius: var(#{ns.css-var("radius-sm")}, 6px);
+  background: $code-bg;
+  font-family: $mono;
+  font-size: 0.875em;
+  line-height: 1.45;
+}
+
+#{ns.element-class("markdown", "code")} pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+#{ns.element-class("markdown", "copy")} {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+}
+
+#{ns.class("markdown")} blockquote {
+  margin: 0;
+  padding-inline-start: 1em;
+  border-inline-start: 0.25em solid var(#{ns.css-var("border")}, currentColor);
+  color: var(#{ns.css-var("text-muted")}, inherit);
+}
+
+#{ns.class("markdown")} hr {
+  width: 100%;
+  height: 0;
+  border: 0;
+  border-block-start: $rule;
+}
+
+#{ns.class("markdown")} table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+#{ns.class("markdown")} :is(th, td) {
+  padding: 6px 13px;
+  border: $rule;
+}
+
+#{ns.class("markdown")} th {
+  font-weight: 600;
+}
+
+#{ns.class("markdown")} img {
+  max-width: 100%;
+  vertical-align: middle;
+}

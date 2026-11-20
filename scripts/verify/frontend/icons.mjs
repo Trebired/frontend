@@ -15,6 +15,8 @@ async function verifyIcons(context) {
   verifyIconAliases(iconRuntime);
   verifyEntityIconAliases(iconRuntime);
   verifyIconServer(iconServer, context.rootDir);
+  verifyIconRegistry(iconServer, iconReact, context.rootDir);
+  await verifyIconRegistryComponent(iconServer, iconReact, context.rootDir);
   await verifyIconRuntime(iconRuntime);
   verifyIconReact(iconReact, iconServer, context.rootDir);
   await verifyIconCallableFromComponentBody(iconReact);
@@ -111,7 +113,6 @@ function verifyIconServer(iconServer, rootDir) {
         color: "#123456",
         label: "Add",
       }, { rootDir }).includes("--tbf-icon-color: #123456"));
-  verifyIconMiddleware(iconServer, rootDir);
   verifyStaticIconModule(iconServer, rootDir);
   verifyIconAliasLocals(iconServer);
   verifyCustomIconPack(iconServer);
@@ -157,7 +158,6 @@ function verifyCustomIconPack(iconServer) {
   assert.equal(svg.ok, true);
   assert.equal(svg.spec, "custom-icons:logo");
   assert.ok(iconServer.renderIconHtml("custom-icons:logo", {}, options).includes("data-tbf-icon=\"custom-icons:logo\""));
-  assert.equal(iconServer.createIconSvgResponse("custom-icons:logo", options).status, 200);
   verifyMaterialIconHelpers(iconServer, tmp);
 }
 
@@ -208,18 +208,36 @@ function verifyMaterialIconHelpers(iconServer, tmp) {
   );
 }
 
-function verifyIconMiddleware(iconServer, rootDir) {
-  const response = iconServer.createIconSvgResponse("simple-icons:github", { rootDir });
-  assert.equal(response.status, 200);
-  assert.equal(response.headers["Content-Type"].startsWith("image/svg+xml"), true);
-  let sent = "";
-  iconServer.createIconMiddleware({ rootDir })(
-    { query: { spec: "remixicon:add-line" } },
-    responseCapture((body) => {
-        sent = body;
-    }),
-  );
-  assert.ok(sent.includes("<svg"));
+function verifyIconRegistry(iconServer, _iconReact, rootDir) {
+  const renderer = iconServer.createServerIconRenderer({}, { rootDir });
+  const html = iconServer.renderIconRegistryHtml(["remixicon add-line", "remixicon:add-line", "remixicon:no-such-icon"], renderer);
+  assert.match(html, /^<div hidden data-tbf-icon-registry="">/u, "the registry is one hidden block");
+  assert.equal((html.match(/data-tbf-icon="remixicon:add-line"/gu) || []).length, 1, "each icon is rendered once, whatever spelling asked for it");
+  assert.ok(html.includes("<svg") && !html.includes("no-such-icon"), "known icons carry their svg, unknown ones are left out");
+  assert.equal(iconServer.renderIconRegistryHtml(["remixicon:add-line"], null), "", "without a server renderer nothing is emitted");
+  const entries = iconServer.renderIconRegistryEntries(["remixicon add-line"], renderer);
+  assert.ok(entries["remixicon:add-line"].svg.includes("<svg"), "JSON payloads can carry the same svgs");
+  const treeIcons = iconServer.renderFileTreeIconEntries([
+      { children: [{ icon: "remixicon:add-line", kind: "file", name: "a" }], icon: "remixicon folder-line", kind: "dir", name: "src" },
+    ], renderer);
+  assert.deepEqual(Object.keys(treeIcons).sort(), [
+      "remixicon:add-line",
+      "remixicon:folder-line"
+    ], "a file tree payload carries the svgs of every icon in it");
+  for (const spec of iconServer.RUNTIME_ICON_SPECS) {
+    assert.ok(renderer(spec), `${spec} is created in the browser by tbf and must render on the server`);
+  }
+}
+
+async function verifyIconRegistryComponent(iconServer, iconReact, rootDir) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const renderer = iconServer.createServerIconRenderer({}, { rootDir });
+  const html = iconServer.withIconServerRenderer(renderer, () =>
+    renderToStaticMarkup(createElement(iconReact.IconRegistry, { specs: ["remixicon:add-line", "remixicon add-line"] })));
+  assert.match(html, /^<div hidden="" data-tbf-icon-registry="">/u, "IconRegistry renders a hidden block");
+  assert.equal((html.match(/<svg/gu) || []).length, 1, "IconRegistry inlines each icon once");
+  assert.equal(renderToStaticMarkup(createElement(iconReact.IconRegistry, { specs: [] })), "", "an empty registry renders nothing");
 }
 
 function verifyStaticIconModule(iconServer, rootDir) {
@@ -239,60 +257,33 @@ function verifyStaticIconModule(iconServer, rootDir) {
     ), /frontend-static-icon-missing/u);
 }
 
-function responseCapture(send) {
-  return {
-    set: ignoreResponseHeader,
-    status(value) {
-      assert.equal(value, 200);
-      return this;
-    },
-    type() {
-      return this;
-    },
-    send,
-  };
-}
-
-function ignoreResponseHeader(_name, _value) {
-  void _name;
-  void _value;
-  return undefined;
-}
-
 async function verifyIconRuntime(iconRuntime) {
   let fetchCount = 0;
+  const previousFetch = globalThis.fetch;
   globalThis.fetch = async() => {
     fetchCount += 1;
-    return new Response('<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>', {
-        headers: { "Content-Type": "image/svg+xml" },
-    });
+    return new Response("<svg></svg>");
   };
-  const host = document.createElement("i");
-  await iconRuntime.renderIconElement(host, "remixicon:add-line", {
-      className: "component-icon",
-      color: "red",
-      endpoint: "/icons",
-  });
-  assert.equal(host.querySelector("svg") !== null, true);
-  assert.equal(host.classList.contains("component-icon"), true);
-  await iconRuntime.renderIconElement(host, "remixicon:add-line", { endpoint: "/icons" });
-  assert.equal(host.classList.contains("component-icon"), true);
-  assert.equal(fetchCount, 1);
-  const secondHost = document.createElement("i");
-  await iconRuntime.renderIconElement(secondHost, "remixicon:add-line", { endpoint: "/icons" });
-  assert.equal(fetchCount, 1);
   const registration = iconRuntime.registerStaticIcons({
       "remixicon:static-line": '<svg viewBox="0 0 1 1"><path d="M0 0h1v1H0z"/></svg>',
   });
   const staticHost = document.createElement("i");
+  iconRuntime.renderIconElement(staticHost, "remixicon:static-line", { className: "component-icon", color: "red" });
+  document.body.innerHTML = '<div hidden data-tbf-icon-registry=""><i data-tbf-icon="remixicon:page-line"><svg viewBox="0 0 2 2"></svg></i></div>';
+  const pageHost = document.createElement("i");
+  iconRuntime.renderIconElement(pageHost, "remixicon page-line");
   const missingHost = document.createElement("i");
-  await iconRuntime.renderIconElement(staticHost, "remixicon:static-line", { mode: "static" });
-  await iconRuntime.renderIconElement(missingHost, "remixicon:missing-static-line", { mode: "static" });
+  iconRuntime.renderIconElement(missingHost, "remixicon:missing-line");
+  iconRuntime.renderIconElement(document.createElement("i"), "remixicon:missing-line");
+  await new Promise((resolve) => setTimeout(resolve, 10));
+  globalThis.fetch = previousFetch;
+  document.body.innerHTML = "";
 
   assert.equal(registration.registered, 1);
-  assert.equal(staticHost.querySelector("svg") !== null, true);
-  assert.equal(missingHost.querySelector("svg"), null);
-  assert.equal(fetchCount, 1);
+  assert.ok(staticHost.querySelector("svg") && staticHost.classList.contains("component-icon"), "a registered icon renders at once");
+  assert.ok(pageHost.querySelector("svg"), "an icon the server put on the page renders without a request");
+  assert.equal(missingHost.querySelector("svg"), null, "an icon the server did not send stays empty");
+  assert.equal(fetchCount, 0, "the browser never fetches an icon");
 }
 
 function verifyIconReact(iconReact, iconServer, rootDir) {

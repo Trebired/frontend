@@ -1,4 +1,4 @@
-import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendDataAttr } from "#5vbaqj4pirp3";
 import { clearDropdownActive, setDropdownExpanded } from "./aria.js";
 import { portalElement, promoteZIndex } from "#ccvonx3uhbte";
 import { CLOSE_ANIMATION_MS, getDropdownOptions } from "#c0ew0jlb0c87";
@@ -98,27 +98,11 @@ function positionStaticOptions(drop) {
   options.setAttribute(frontendDataAttr("dropdown-position"), position);
 }
 
-function connectedLiveIslandRoot(drop, options) {
-  const fromDrop =
-  drop && drop.closest ? drop.closest(frontendDataSelector("live-island-root")) : null;
-  const fromOptions =
-  options && options.closest
-  ? options.closest(frontendDataSelector("live-island-root"))
-  : null;
-  const root = fromDrop || fromOptions;
-  return root instanceof HTMLElement && root.isConnected ? root : null;
-}
-
 function portalStaticOptions(drop) {
   const options = getDropdownOptions(drop);
   if (!drop || !options) return;
 
   options.setAttribute(frontendDataAttr("dropdown-portaled"), "true");
-
-  if (connectedLiveIslandRoot(drop, options)) {
-    positionStaticOptions(drop);
-    return;
-  }
 
   portalElement(options);
 

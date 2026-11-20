@@ -181,56 +181,6 @@
   font-size: var(#{ns.css-var("surf-btn-sizes-lg-font-size")}, var(#{ns.css-var("ui-btn-sizes-lg-font-size")}, 13px));
 }
 
-#{ns.class("card")},
-
-#{ns.data("card")} {
-  min-width: 0;
-  box-sizing: border-box;
-  transition: var(
-    #{ns.css-var("surf-card-root-transition")},
-    background-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
-    border-color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease),
-    color var(#{ns.css-var("transition-fast")}, 180ms) var(#{ns.css-var("transition-easing")}, ease)
-  );
-  border: var(
-    #{ns.css-var("surf-card-root-border")},
-    var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentColor)
-  );
-  border-radius: var(#{ns.css-var("surf-card-root-radius")}, var(--radius-lg, var(#{ns.css-var("radius")}, 0)));
-  color: var(#{ns.css-var("surf-card-root-color")}, var(#{ns.css-var("text")}, #000));
-  background: var(#{ns.css-var("surf-card-root-bg")}, var(--background-page, var(#{ns.css-var("page")}, #fff)));
-}
-
-#{ns.class("card")}#{ns.data("interactive", "true")}:hover {
-  border-color: var(#{ns.css-var("surf-card-state-hover-border")}, var(#{ns.css-var("focus")}, #000));
-}
-
-#{ns.class("card")}--muted {
-  border-color: var(#{ns.css-var("surf-card-tone-muted-border")}, var(#{ns.css-var("surface-muted")}, #eee));
-  color: var(#{ns.css-var("surf-card-tone-muted-color")}, var(#{ns.css-var("text")}, #000));
-  background: var(#{ns.css-var("surf-card-tone-muted-bg")}, var(#{ns.css-var("surface-muted")}, #eee));
-}
-
-#{ns.class("card")}--inverse {
-  border-color: var(#{ns.css-var("surf-card-tone-inverse-border")}, var(#{ns.css-var("text")}, #000));
-  #{ns.css-var("text-muted")}: var(
-    #{ns.css-var("surf-card-tone-inverse-text-muted")},
-    color-mix(in srgb, currentColor 62%, transparent)
-  );
-  color: var(#{ns.css-var("surf-card-tone-inverse-color")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("surf-card-tone-inverse-bg")}, var(#{ns.css-var("text")}, #000));
-}
-
-#{ns.class("card")}--accent {
-  border-color: var(#{ns.css-var("surf-card-tone-accent-border")}, var(#{ns.css-var("focus")}, #000));
-  #{ns.css-var("text-muted")}: var(
-    #{ns.css-var("surf-card-tone-accent-text-muted")},
-    color-mix(in srgb, currentColor 70%, transparent)
-  );
-  color: var(#{ns.css-var("surf-card-tone-accent-color")}, var(#{ns.css-var("page")}, #fff));
-  background: var(#{ns.css-var("surf-card-tone-accent-bg")}, var(#{ns.css-var("focus")}, #000));
-}
-
 #{ns.element-class("card", "header")},
 
 #{ns.element-class("card", "body")},
@@ -238,7 +188,7 @@
 #{ns.element-class("card", "footer")} {
   min-width: 0;
   box-sizing: border-box;
-  padding: var(#{ns.css-var("surf-card-section-padding")}, var(#{ns.css-var("surf-card-root-padding")}, 12px));
+  padding: var(#{ns.css-var("surf-card-section-padding")}, 12px);
 }
 
 #{ns.data("card-padding", "sm")} {
@@ -289,15 +239,27 @@
   gap: var(#{ns.css-var("gap-xs")}, 8px);
 }
 
-#{ns.element-class("canvas-panel", "header")}#{ns.class("card")} {
+#{ns.element-class("canvas-panel", "header")}#{ns.data("container", "card")} {
   min-height: 0;
   padding: 8px 10px;
   overflow: visible;
 }
 
+#{ns.element-class("canvas-panel", "top")} {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(#{ns.css-var("gap-xs")}, 8px);
+
+  > :first-child {
+    flex: 1 1 auto;
+  }
+}
+
 #{ns.element-class("canvas-panel", "titles")} {
   display: flex;
   min-width: 0;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 2px;
 }

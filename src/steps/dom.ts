@@ -1,5 +1,6 @@
 import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 import {
+  primitiveCardRowAttrs,
   primitiveCardRowClassName,
   primitiveInlineRowClassName,
   primitiveStackClassName,
@@ -124,6 +125,9 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
           gap: "xs",
       }),
   });
+  for (const [name, value] of Object.entries(primitiveCardRowAttrs())) {
+    if (value !== undefined) row.setAttribute(name, String(value));
+  }
 
   const header = doc.createElement("div");
   header.className = primitiveInlineRowClassName({ gap: "xs" });

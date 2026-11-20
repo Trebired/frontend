@@ -1,6 +1,6 @@
-import { isInUnhydratedIsland, queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
+import { resolveFrontendLogger } from "#mhi409n0a05q";
 import {
-  buildIconUrl,
   iconSpec,
   normalizeIconName,
   normalizeIconPack,
@@ -19,7 +19,7 @@ import {
 } from "./catalog.js";
 import type { ParsedIconSpec } from "./shared.js";
 import type { IconAliasMap, IconAliasValue } from "./catalog.js";
-import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector, frontendToken } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendCssVar, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 type IconCacheEntry = {
   colorMode?: string;
@@ -27,19 +27,10 @@ type IconCacheEntry = {
   svg?: string;
 };
 
-type IconRuntimeMode = "auto" | "fetch" | "static";
-
-type IconRuntimeOptions = {
-  endpoint?: string;
-  mode?: IconRuntimeMode;
-};
-
 type RenderIconElementAttrs = Record<string, unknown>& {
   class?: string;
   className?: string;
   color?: string;
-  endpoint?: string;
-  mode?: IconRuntimeMode;
   tag?: string;
 };
 
@@ -53,7 +44,7 @@ const ICON_SELECTOR = `${frontendDataSelector("icon")},${frontendDataSelector("i
 const CUSTOM_COLOR_VAR = frontendCssVar("icon-color");
 const BRAND_COLOR_ATTR = frontendDataAttr("icon-brand-color");
 const LEGACY_CUSTOM_COLOR_VAR = "--icon-custom-color";
-const svgFetchCache = new Map<string, Promise<string>>();
+const missingIconSpecs = new Set<string>();
 const iconCacheEntries = new Map<string, IconCacheEntry>();
 const renderedIconSpecs = new WeakMap<Element, string>();
 
@@ -65,10 +56,6 @@ function readIconCacheEntry(spec: unknown): IconCacheEntry | null {
 function storeIconCacheEntry(spec: unknown, entry: IconCacheEntry): void {
   const parsed = parseIconSpec(spec);
   if (parsed && entry && typeof entry === "object") iconCacheEntries.set(parsed.spec, entry);
-}
-
-function normalizeIconRuntimeMode(value: unknown): IconRuntimeMode {
-  return value === "fetch" || value === "static" ? value : "auto";
 }
 
 function readRenderedSpec(host: Element | null | undefined): string {
@@ -120,11 +107,6 @@ function registerStaticIcons(
   return { registered };
 }
 
-function storeFetchedSvg(spec: string, svgMarkup: unknown): void {
-  const entry = readSvgCacheEntry(svgMarkup);
-  if (entry) storeIconCacheEntry(spec, entry);
-}
-
 function uniqueClassName(...values: string[]): string {
   return Array.from(
     new Set(values.join(" ").split(/\s+/u).filter(Boolean)),
@@ -141,7 +123,7 @@ function applyElementAttrs(host: Element, attrs: RenderIconElementAttrs = {}): v
   const customColor = text(attrs.color);
   for (const [keyRaw, value] of Object.entries(attrs)) {
     const key = text(keyRaw);
-    if (!key || ["class", "className", "color", "endpoint", "tag"].includes(key) || value == null || value === false) {
+    if (!key || ["class", "className", "color", "tag"].includes(key) || value == null || value === false) {
       continue;
     }
     if (key === "style" && value && typeof value === "object" && host instanceof HTMLElement) {
@@ -179,29 +161,26 @@ function renderSvgIntoHost(host: Element, svgMarkup: string): SVGElement | null 
   return svg;
 }
 
-function fetchSvg(spec: string, endpoint = "/__icons/svg"): Promise<string> {
-  const cacheKey = `${endpoint} ${spec}`;
-  const cached = svgFetchCache.get(cacheKey);
-  if (cached) return cached;
-  const pending = fetch(buildIconUrl(spec, endpoint), {
-      credentials: "same-origin",
-      headers: { Accept: "image/svg+xml,text/plain;q=0.9,*/*;q=0.8" },
-  }).then(async(response) => {
-      if (!response.ok) throw new Error(`${frontendToken("icon-http")}-${response.status}`);
-      const svg = String(await response.text()).trim();
-      if (!/^<svg\b/iu.test(svg)) throw new Error(frontendClassName("icon-invalid-svg"));
-      storeFetchedSvg(spec, svg);
-      return svg;
-  });
-  svgFetchCache.set(cacheKey, pending);
-  return pending;
+function pageIconEntry(spec: string): IconCacheEntry | null {
+  const cached = readIconCacheEntry(spec);
+  if (cached || typeof document === "undefined") return cached;
+  harvestInlineIcons(document);
+  return readIconCacheEntry(spec);
 }
 
-async function renderIconElement(
+function reportMissingIcon(spec: string): void {
+  if (missingIconSpecs.has(spec)) return;
+  missingIconSpecs.add(spec);
+  try {
+    resolveFrontendLogger().warn("icons", "icon-not-on-page", { hint: "render it on the server with Icon or IconRegistry", spec });
+  } catch {}
+}
+
+function renderIconElement(
   host: Element | null | undefined,
   spec: unknown,
   attrs: RenderIconElementAttrs = {},
-): Promise<Element|null> {
+): Element | null {
   if (!host || typeof host.getAttribute !== "function") return null;
   const parsed = parseIconSpec(spec);
   const normalizedSpec = parsed ? parsed.spec : normalizeSpace(spec);
@@ -212,14 +191,9 @@ async function renderIconElement(
     applyHostSvgColor(host, host.firstElementChild as SVGElement);
     return host;
   }
-  try {
-    const cachedSvg = text(readIconCacheEntry(parsed.spec)?.svg);
-    if (cachedSvg && renderSvgIntoHost(host, cachedSvg)) return host;
-    if (normalizeIconRuntimeMode(attrs.mode) === "static") return null;
-    const svgMarkup = await fetchSvg(parsed.spec, attrs.endpoint || "/__icons/svg");
-    if (readRenderedSpec(host) !== parsed.spec) return null;
-    if (renderSvgIntoHost(host, svgMarkup)) return host;
-  } catch {}
+  const svg = text(pageIconEntry(parsed.spec)?.svg);
+  if (svg && renderSvgIntoHost(host, svg)) return host;
+  reportMissingIcon(parsed.spec);
   return null;
 }
 
@@ -228,7 +202,7 @@ function createIconElement(spec: unknown, attrs: RenderIconElementAttrs = {}, do
   if (!owner || typeof owner.createElement !== "function") return null;
   const tag = text(attrs.tag) || "i";
   const host = owner.createElement(tag);
-  void renderIconElement(host, spec, attrs);
+  renderIconElement(host, spec, attrs);
   return host;
 }
 
@@ -259,33 +233,33 @@ function harvestInlineIcon(host: Element): boolean {
   return true;
 }
 
-function harvestInlineIcons(root: BindRoot = document): number {
-  return queryAll<Element>(root, ICON_SELECTOR).filter(harvestInlineIcon).length;
+function inlineIconHosts(root: BindRoot): Element[] {
+  const scope = root && "querySelectorAll"in root ? root : document;
+  const hosts = Array.from(scope.querySelectorAll(ICON_SELECTOR));
+  return scope instanceof Element && scope.matches(ICON_SELECTOR) ? [scope, ...hosts] : hosts;
 }
 
-function bindIcon(host: Element | null | undefined, options: IconRuntimeOptions = {}): boolean {
+function harvestInlineIcons(root: BindRoot = document): number {
+  return inlineIconHosts(root).filter(harvestInlineIcon).length;
+}
+
+function bindIcon(host: Element | null | undefined): boolean {
   if (!(host instanceof Element)) return false;
-  if (isInUnhydratedIsland(host)) return false;
   const spec = readHostSpec(host);
   if (!spec) return false;
-  void renderIconElement(host, spec, {
-      color: host.getAttribute(frontendDataAttr("icon-color")) || "",
-      endpoint: options.endpoint,
-      mode: options.mode,
-  });
+  renderIconElement(host, spec, { color: host.getAttribute(frontendDataAttr("icon-color")) || "" });
   return true;
 }
 
-function bindIcons(root: BindRoot = document, options: IconRuntimeOptions = {}): void {
+function bindIcons(root: BindRoot = document): void {
   harvestInlineIcons(root);
-  queryAll<Element>(root, ICON_SELECTOR).forEach((host) => bindIcon(host, options));
+  queryAll<Element>(root, ICON_SELECTOR).forEach((host) => bindIcon(host));
 }
 
 const icons = Object.freeze({
     append: appendIcon,
     bind: bindIcon,
     bindAll: bindIcons,
-    buildUrl: buildIconUrl,
     createElement: createIconElement,
     harvestInline: harvestInlineIcons,
     mergeAliases: mergeIconAliases,
@@ -307,7 +281,6 @@ export {
   appendIcon,
   bindIcon,
   bindIcons,
-  buildIconUrl,
   createIconElement,
   defaultIconAliases,
   harvestInlineIcons,
@@ -333,8 +306,6 @@ export type {
   IconAliasMap,
   IconAliasValue,
   IconCacheEntry,
-  IconRuntimeMode,
-  IconRuntimeOptions,
   ParsedIconSpec,
   RenderIconElementAttrs,
   StaticIconCacheEntry,

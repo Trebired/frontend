@@ -1,8 +1,6 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
-import { flashIconSpec } from "#qdbpux4f2e4m";
 import type { FlashType } from "#33o6e7mug9pg";
-import { Icon } from "#lbkpzw8nphru";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 type FlashStackProps = HTMLAttributes<HTMLDivElement> & {
@@ -62,7 +60,7 @@ function FlashShell(props: FlashShellProps) {
     {...frontendDataAttrs({ "progress-tone": type })}
     role={type === "error" ? "alert" : "status"}
     >
-    <Icon className={frontendElementClass("flash", "icon")} spec={flashIconSpec(type)} />
+    <span className={frontendElementClass("flash", "icon")} aria-hidden="true" />
     <div className={frontendElementClass("flash", "body")}>
     <span className={frontendElementClass("flash", "title")}>{title}</span>
     {description ? <span className={frontendElementClass("flash", "description")}>{description}</span> : null}

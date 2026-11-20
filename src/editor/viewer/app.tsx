@@ -80,19 +80,17 @@ function viewerLabels(input: any = {}) {
   return {
     chooseFileFromTree: input.chooseFileFromTree || "Choose a file from the tree.",
     fetchingLatestFileContents: input.fetchingLatestFileContents || "Fetching latest file contents.",
-    fileOpenViewMode: input.fileOpenViewMode || "File open in read-only view mode.",
     fileTree: input.fileTree || "File tree",
-    fileTreeDescription: input.fileTreeDescription || "Browse files in this tree.",
+    fileTreeDescription: input.fileTreeDescription || "",
     fileTreeUnavailable: input.fileTreeUnavailable || "File tree unavailable",
     fileUnavailable: input.fileUnavailable || "File unavailable",
-    imageOpenViewMode: input.imageOpenViewMode || "Image open in preview mode.",
     loadingFile: input.loadingFile || "Loading file",
     loadingFileTree: input.loadingFileTree || "Loading file tree",
     loadingSelectedFile: input.loadingSelectedFile || "Loading selected file.",
     noFileSelected: input.noFileSelected || "No file selected",
     noFileTreeAvailable: input.noFileTreeAvailable || "No file tree available.",
     pickFileFromTree: input.pickFileFromTree || "Pick a file from the tree.",
-    preparingFileBrowserViewMode: input.preparingFileBrowserViewMode || "Preparing file browser.",
+    preparingFileBrowser: input.preparingFileBrowser || "Preparing file browser.",
     readonlyFileViewer: input.readonlyFileViewer || "Readonly file viewer",
   };
 }
@@ -136,7 +134,7 @@ function ViewerSidebarBody(props: any) {
   if (props.treeState.treeLoading) {
     return (
       <EmptyEditorMessage
-      copy={props.labels.preparingFileBrowserViewMode}
+      copy={props.labels.preparingFileBrowser}
       minHeight={420}
       title={props.labels.loadingFileTree}
       />
@@ -176,10 +174,11 @@ function ViewerTree(props: any) {
 }
 
 function selectViewerPath(props: any, nextPath: string, kind: string) {
+  if (kind === "dir") return;
   const relPath = normalizePath(nextPath);
   props.allowUrlPathSyncRef.current = true;
   props.setFocusedPath(relPath);
-  props.setOpenedFilePath(kind === "dir" ? "" : relPath);
+  props.setOpenedFilePath(relPath);
 }
 
 function ViewerContent(props: any) {
@@ -265,8 +264,7 @@ function viewerContentDescription(fileState: any, labels: ReturnType<typeof view
   if (fileState.loading) return labels.loadingSelectedFile;
   if (fileState.error) return fileState.error;
   if (!fileState.path) return labels.pickFileFromTree;
-  if (isImagePath(fileState.path)) return labels.imageOpenViewMode;
-  return labels.fileOpenViewMode;
+  return "";
 }
 
 export { EditorViewerApp, viewerLabels };

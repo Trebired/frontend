@@ -4,6 +4,7 @@ import { joinClassNames, toText } from "./shared.js";
 import { separator } from "./controls.js";
 import { frontendClassName, frontendClassNames, frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import {
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveGridClassName,
   primitiveInlineRowClassName,
@@ -175,6 +176,7 @@ function keyValueModel(props: key_value_props) {
     rowClassName: toText(props.rowClassName),
     rows,
     separated,
+    wrapperAttrs: !isInlineList && wrapInCard ? primitiveCardAttrs() : {},
     wrapperClassName: isInlineList
     ? primitiveTextClassName({ className: joinClassNames("card-segments", className), size: "sm" })
     : wrapInCard
@@ -189,7 +191,7 @@ function key_value(props: key_value_props) {
     return (
       <div className={primitiveGridClassName({ gap: "sm" })}>
       {model.groups.map((group, index) => (
-            <div className={model.wrapperClassName} key={`${String(group.title || "group")}_${index}`}>
+            <div className={model.wrapperClassName} {...model.wrapperAttrs} key={`${String(group.title || "group")}_${index}`}>
             {group.title ? <div className={frontendClassNames("label", "lh-xs")}>{String(group.title)}</div> : null}
             {model.separated ? separator({}) : null}
             <div className={model.bodyClassName}>
@@ -204,7 +206,7 @@ function key_value(props: key_value_props) {
     );
   }
   return (
-    <div className={model.wrapperClassName}>
+    <div className={model.wrapperClassName} {...model.wrapperAttrs}>
     {model.separated ? separator({}) : null}
     <div className={model.bodyClassName}>
     {key_value_rows(model.rows, {

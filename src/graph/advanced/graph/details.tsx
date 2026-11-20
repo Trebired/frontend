@@ -5,6 +5,7 @@ import type { key_value_group, key_value_row } from "./types.js";
 import {
   Grid,
   Stack,
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
@@ -71,6 +72,7 @@ function renderGroupedDetails(groups: key_value_group[]) {
     {safeGroups.map((group, groupIndex) => (
           <div
           className={primitiveCardClassName({ gap: "sm" })}
+          {...primitiveCardAttrs()}
           key={`graph_group_${group.title || "group"}_${groupIndex}`}
           >
           {group.title ? <HeadingScope><Title fit={false}>{group.title}</Title></HeadingScope> : null}

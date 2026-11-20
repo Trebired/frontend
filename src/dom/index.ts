@@ -1,4 +1,3 @@
-import { frontendDataSelector } from "#5vbaqj4pirp3";
 import { escapeHtml } from "#ndsvdqv80epr";
 
 const INTERACTIVE_TARGET_SELECTOR = [
@@ -53,11 +52,9 @@ function queryAll<T extends Element=Element>(
 ): T[] {
   const scope = bindRoot(root);
   const items: T[] = [];
-  if (scope instanceof Element && scope.matches(selector) && !isInUnhydratedIsland(scope)) {
-    items.push(scope as T);
-  }
+  if (scope instanceof Element && scope.matches(selector)) items.push(scope as T);
   scope.querySelectorAll<T>(selector).forEach((node) => {
-      if (!isInUnhydratedIsland(node)) items.push(node);
+      items.push(node);
   });
   return items;
 }
@@ -196,13 +193,6 @@ function firstNonScriptHTMLElementChild(host: Element) {
   }) as HTMLElement | undefined;
 }
 
-function isInUnhydratedIsland(node: unknown) {
-  const element = node instanceof Element ? node : null;
-  return Boolean(
-    element?.closest(`${frontendDataSelector("live-island-root")}${frontendDataSelector("live-island-hydrated", "false")}`),
-  );
-}
-
 function isModifiedMouseClick(event: MouseEvent) {
   return Boolean(
     event.metaKey ||
@@ -323,7 +313,6 @@ export {
   formDataStringRecord,
   isInteractiveTarget,
   isNestedInteractiveTarget,
-  isInUnhydratedIsland,
   isModifiedMouseClick,
   onReady,
   parseJsonText,

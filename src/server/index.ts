@@ -1,7 +1,9 @@
-export {
-  createIconMiddleware,
-} from "#d9gbd4jkefih";
-export type *from "#d9gbd4jkefih";
+export { createRecentPages } from "#wdwrwbzc7cn2";
+export type { RecentPages, RecentPagesOptions } from "#wdwrwbzc7cn2";
+export { normalizeRecentPages } from "#037clzb6e2kz";
+export type { RecentPage } from "#037clzb6e2kz";
+export { renderFileTreeIconEntries, renderIconRegistryEntries, renderIconRegistryHtml } from "#x3som1j9rjre";
+export { RUNTIME_ICON_SPECS } from "#yqq4li47ao7b";
 export {
   buildStaticIconCache,
   renderStaticIconCacheModule,
@@ -11,7 +13,6 @@ export {
   attachIconAliasLocals,
   attachIconServer,
   createIconServerOptions,
-  createIconSvgResponse,
   createMaterialFileIconOptions,
   createServerIconRenderer,
   readMaterialIconTheme,
@@ -104,6 +105,8 @@ export {
   runPageTask,
 } from "./page-task.js";
 export type *from "./page-task.js";
+export { createRouteEntities } from "./route-entities.js";
+export type *from "./route-entities.js";
 export {
   attachFrontendPerformanceMiddleware,
   current,

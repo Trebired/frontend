@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { verifyHighlight } from "./highlight.mjs";
 import { verifyUnsavedWorkStaysSoft } from "./unsaved.mjs";
 import { verifyLiveRegionsRefreshPerElement } from "./live/regions.mjs";
+import { verifyInfiniteHiddenSentinel } from "./infinite-hidden.mjs";
 import { verifyModalTrigger } from "./live/modal_trigger.mjs";
 import { verifySetDropdownOptions } from "./live/dropdown_options.mjs";
 
@@ -97,16 +98,35 @@ async function verifyActionFormSubmitsOnce(importDist) {
     const third = submitActionForm(form, undefined, { ui: { silent: true } });
     await settle();
     assert.notEqual(await withTimeout(third, "follow-up submit"), null, "the form accepts a new submit once the previous one finished");
+    const button = form.querySelector("button");
+    form.addEventListener("tbf:action-complete", () => {
+        button.disabled = true;
+      }, { once: true });
+    const fourth = submitActionForm(form, undefined, { ui: { silent: true } });
+    await settle();
+    await withTimeout(fourth, "submit whose handler disables the button");
+    assert.equal(button.disabled, true, "a completion handler may keep the submit button disabled");
   } finally {
     globalThis.fetch = previousFetch;
   }
 }
 
+async function verifyStandardButtonAttrs(importDist) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const react = await importDist("react");
+  for (const name of ["save_icon", "delete_button", "create_button"]) {
+    const html = renderToStaticMarkup(react[name]({ button_attrs: { "data-probe": "yes" }, type: "button" }));
+    assert.match(html, /data-probe="yes"/u, `${name} passes button_attrs to its button: ${html}`);
+  }
+}
+
 async function verifyFrontendActions(context) {
+  await verifyStandardButtonAttrs(context.importDist);
   await verifyRuntimeDoesNotInterceptAnchorNavigation(context.importDistRoot);
   await verifyHighlight(context);
   await verifyUnsavedWorkStaysSoft(context);
   await verifyLiveRegionsRefreshPerElement(context);
+  await verifyInfiniteHiddenSentinel(context);
   await verifyModalTrigger(context);
   await verifySetDropdownOptions(context);
   await verifyActionConfetti(context.importDist);

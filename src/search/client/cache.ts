@@ -1,6 +1,5 @@
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { searchText, toText } from "#yrscdg72qcm6";
-import { isInUnhydratedIsland } from "./dom.js";
 import { searchPanelHostFromNode } from "./hosts.js";
 import {
   firstFormControl,
@@ -19,9 +18,7 @@ import type {
 
 function controlsForPanel(panel: SearchPanelBinding) {
   if (!panel.familyKey) return [];
-  return registeredSearchControls(panel.familyKey).filter(
-    (node) => !isInUnhydratedIsland(node),
-  );
+  return registeredSearchControls(panel.familyKey);
 }
 
 function belongsToPanel(panel: SearchPanelBinding, node: Element) {

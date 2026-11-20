@@ -60,6 +60,35 @@ async function verifyCopyComponents(context) {
   const rooted = renderToStaticMarkup(createElement(react.copy_card,
       { id: "pairing_root", title: "Pairing", rows: [{ label: "Code", value: "x" }] }));
   assert.ok(rooted.includes('id="pairing_root"') && rooted.includes('id="pairing_root_rows"'), "id names the card, and its rows derive their own id");
+  await verifyCopiedIconIsPreloaded(context);
+  document.body.innerHTML = "";
+}
+
+async function verifyCopiedIconIsPreloaded(context) {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const react = await context.importDist("react");
+  const actions = await context.importDist("actions");
+  document.body.innerHTML = `<code id="copied_probe">abc</code>${renderToStaticMarkup(createElement(react.copy_button, { target: "copied_probe" }))}`;
+  const done = document.querySelector('[data-tbf-copy-icon="done"]');
+  const idle = document.querySelector('[data-tbf-copy-icon="idle"]');
+  assert.ok(done && done.hidden && idle && !idle.hidden, "copy_button renders the copied checkmark up front, hidden");
+  assert.equal(done.getAttribute("data-tbf-icon"), "remixicon:checkbox-circle-line", "the hidden checkmark is a real icon");
+  const previousClipboard = navigator.clipboard;
+  const previousFetch = globalThis.fetch;
+  let fetched = 0;
+  globalThis.fetch = async() => {
+    fetched += 1;
+    return new Response("<svg></svg>");
+  };
+  Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async() => {} } });
+  actions.bindCopyButtons(document);
+  document.querySelector("copy-button button").click();
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  Object.defineProperty(navigator, "clipboard", { configurable: true, value: previousClipboard });
+  globalThis.fetch = previousFetch;
+  assert.ok(!done.hidden && idle.hidden, "copying shows the checkmark that is already on the page");
+  assert.equal(fetched, 0, "copying fetches nothing");
   document.body.innerHTML = "";
 }
 

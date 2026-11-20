@@ -6,6 +6,7 @@ export * from "./display.js";
 export * from "./key_value.js";
 export * from "./link.js";
 export * from "./marquee.js";
+export * from "./number.js";
 export * from "./prose.js";
 export * from "./quote.js";
 export * from "./layout.js";

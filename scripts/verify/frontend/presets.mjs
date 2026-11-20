@@ -8,7 +8,7 @@ function presetSource(forVersion, extra = "") {
     "",
     "export default {",
     `  forVersion: "${forVersion}",`,
-    "  components: { primitives: { tabs: { motion: { duration, easing: \"ease\" } } } },",
+    "  components: { primitives: { number: { close: '\")\"', open: '\"(\"' }, tabs: { motion: { duration, easing: \"ease\" } } } },",
     "  systems: { tooltip: false },",
     extra,
     "};",
@@ -55,6 +55,8 @@ async function verifyPresetMerge(context, config) {
   assert.equal(loaded.config.systems.tooltip, false);
   assert.ok(loaded.dependencies.includes(path.join(presetConfigDir, "motion.ts")));
   assert.ok(loaded.generatedScss.includes("--tbf-ui-tabs-motion-duration: 500ms;"));
+  assert.ok(loaded.generatedScss.includes('--tbf-ui-number-open: "(";'), "a preset sets the characters a number is wrapped in");
+  assert.ok(loaded.generatedScss.includes('--tbf-ui-number-close: ")";'));
 
   await fs.writeFile(path.join(presetConfigDir, "motion.ts"), "export const duration = \"700ms\";\n");
   const reloaded = await config.loadConfig(fixture);

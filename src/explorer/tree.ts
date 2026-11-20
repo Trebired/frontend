@@ -40,6 +40,17 @@ function readFileTreeIconSpec(nodeInput: unknown) {
   return text(node.icon);
 }
 
+function fileTreeIconSpecs(nodesInput: unknown, specs: Set<string> = new Set()): string[] {
+  const nodes = Array.isArray(nodesInput) ? nodesInput : [];
+  for (const nodeInput of nodes) {
+    const node = objectNode(nodeInput);
+    const spec = readFileTreeIconSpec(node);
+    if (spec) specs.add(spec);
+    fileTreeIconSpecs(node.children, specs);
+  }
+  return Array.from(specs);
+}
+
 function selectableEntryPath(relPath: unknown) {
   return /\.[a-z0-9]+$/iu.test(normalizeFileTreePath(relPath));
 }
@@ -145,6 +156,7 @@ function findFirstFilePath(nodesInput: unknown): string {
 export {
   buildInitialOpenState,
   extensionFromName,
+  fileTreeIconSpecs,
   findFirstFilePath,
   findTreeNodeByPath,
   isImagePath,

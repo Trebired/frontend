@@ -12,7 +12,8 @@ import type {
 
 const NAME_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
 const PROPERTY_PATTERN = /^-{0,2}[a-zA-Z][a-zA-Z0-9-]*$/u;
-const DEFINITION_FIELDS = ["at", "frost", "on", "parts", "style", "tone", "variants"];
+const DEFINITION_FIELDS = ["at", "frost", "on", "parts", "roles", "style", "tone", "variants"];
+const CONTAINER_ROLES = ["card", "card-row", "log-line"] as const;
 const TONES = ["dark", "light"];
 const TONE_NAMESPACE = "tone";
 const FROST_NAMESPACE = "frost";
@@ -118,7 +119,7 @@ function normalizeDefinition(
     if (!DEFINITION_FIELDS.includes(field)) {
       throw invalidConfig(`${label}.${field} is not a container field, expected ${DEFINITION_FIELDS.join(", ")}`);
     }
-    if (nested && (field === "parts" || field === "variants")) {
+    if (nested && (field === "parts" || field === "roles" || field === "variants")) {
       throw invalidConfig(`${label}.${field} may only be declared on a container itself`);
     }
   }
@@ -128,6 +129,7 @@ function normalizeDefinition(
     frost: normalizeFrost(value.frost, `${label}.frost`),
     on: normalizeStyleMap(value.on, `${label}.on`),
     parts: {},
+    roles: nested ? [] : normalizeRoles(value.roles, `${label}.roles`),
     style: value.style === undefined ? {} : normalizeStyle(value.style, `${label}.style`),
     tone: normalizeTone(value.tone, `${label}.tone`),
     variants: {},
@@ -146,6 +148,30 @@ function normalizeDefinition(
   return definition;
 }
 
+function normalizeRoles(value: unknown, label: string): string[] {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) throw invalidConfig(`${label} must be an array of roles`);
+  const roles: string[] = [];
+  for (const role of value) {
+    if (typeof role !== "string" || !(CONTAINER_ROLES as readonly string[]).includes(role)) {
+      throw invalidConfig(`${label} has an unknown role :: ${String(role)} :: expected ${CONTAINER_ROLES.join(", ")}`);
+    }
+    if (!roles.includes(role)) roles.push(role);
+  }
+  return roles;
+}
+
+function assertUniqueRoles(containers: NormalizedFrontendContainers) {
+  const owners = new Map<string, string>();
+  for (const [name, definition] of Object.entries(containers)) {
+    for (const role of definition.roles) {
+      const owner = owners.get(role);
+      if (owner) throw invalidConfig(`containers.${name}.roles claims ${role}, already claimed by containers.${owner}`);
+      owners.set(role, name);
+    }
+  }
+}
+
 function defineContainers<const T extends FrontendContainersConfig>(containers: T): T {
   return containers;
 }
@@ -161,6 +187,7 @@ function normalizeContainersConfig(
     const name = normalizeName(rawName, `containers.${rawName}`);
     containers[name] = normalizeDefinition(declared, `containers.${rawName}`, false, breakpoints);
   }
+  assertUniqueRoles(containers);
   return containers;
 }
 
@@ -168,9 +195,9 @@ function declarations(style: FrontendContainerStyle): string[] {
   return Object.entries(style).map(([property, value]) => `  ${property}: ${value};`);
 }
 
-function ruleFor(selector: string, style: FrontendContainerStyle): string[] {
+function ruleFor(selectors: readonly string[], style: FrontendContainerStyle): string[] {
   const body = declarations(style);
-  return body.length ? [`${selector} {`, ...body, "}"] : [];
+  return body.length ? [`${selectors.join(",\n")} {`, ...body, "}"] : [];
 }
 
 function stateSelector(selector: string, state: string): string {
@@ -180,21 +207,22 @@ function stateSelector(selector: string, state: string): string {
 }
 
 function renderDefinition(
-  selector: string,
+  selectors: readonly string[],
   definition: FrontendContainerDefinition,
   breakpoints: Record<string, number>,
 ): string[] {
+  const selector = selectors.join(",\n");
   const tone = toneDeclarations(definition.tone);
   const body = [...tone, ...declarations(definition.style)];
   const lines = body.length ? [`${selector} {`, ...body, "}"] : [];
-  lines.push(...frostRule(selector, definition.frost));
+  lines.push(...frostRule(selectors.join(", "), definition.frost));
   for (const [state, style] of Object.entries(definition.on)) {
-    lines.push(...ruleFor(stateSelector(selector, state), style));
+    lines.push(...ruleFor(selectors.map((item) => stateSelector(item, state)), style));
   }
   for (const [name] of breakpointEntries(breakpoints)) {
     const style = definition.at[name];
     if (!style) continue;
-    const body = ruleFor(selector, style);
+    const body = ruleFor(selectors, style);
     if (!body.length) continue;
     lines.push(
       `@media (max-width: ${breakpoints[name]}px) {`,
@@ -205,20 +233,30 @@ function renderDefinition(
   return lines;
 }
 
+function containerRoleSelector(role: string): string {
+  return `[data-${FRONTEND_PREFIX}-container~="${role}"]`;
+}
+
+function claimedSelectors(own: string, roleSelectors: readonly string[]): string[] {
+  return roleSelectors.length ? [`:where(${[own, ...roleSelectors].join(", ")})`] : [own];
+}
+
 function renderContainerClassRules(config: NormalizedFrontendConfig): string[] {
   const breakpoints = config.design.breakpoints;
   const lines: string[] = [];
   for (const [name, definition] of Object.entries(config.containers)) {
     const selector = `.${FRONTEND_CONTAINER_PREFIX}-${name}`;
-    lines.push(...renderDefinition(selector, definition, breakpoints));
+    const roleSelectors = definition.roles.map(containerRoleSelector);
+    lines.push(...renderDefinition(claimedSelectors(selector, roleSelectors), definition, breakpoints));
     for (const [part, nested] of Object.entries(definition.parts)) {
-      lines.push(...renderDefinition(`${selector}__${part}`, nested, breakpoints));
+      lines.push(...renderDefinition([`${selector}__${part}`], nested, breakpoints));
     }
     for (const [variant, nested] of Object.entries(definition.variants)) {
-      lines.push(...renderDefinition(`${selector}--${variant}`, nested, breakpoints));
+      const variantSelectors = roleSelectors.map((item) => `${item}[data-${FRONTEND_PREFIX}-variant~="${variant}"]`);
+      lines.push(...renderDefinition(claimedSelectors(`${selector}--${variant}`, variantSelectors), nested, breakpoints));
     }
   }
   return lines;
 }
 
-export { FROST_NAMESPACE, TONE_NAMESPACE, defineContainers, normalizeContainersConfig, renderContainerClassRules };
+export { CONTAINER_ROLES, FROST_NAMESPACE, TONE_NAMESPACE, defineContainers, normalizeContainersConfig, renderContainerClassRules };

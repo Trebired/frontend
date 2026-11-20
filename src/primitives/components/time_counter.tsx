@@ -2,6 +2,7 @@ import { jsonScript } from "#ndsvdqv80epr";
 import type { TimeCounterProps } from "./types.js";
 import { joinClassNames, toText } from "./shared.js";
 import { primitiveTextClassName } from "./classes.js";
+import { number } from "./number.js";
 import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function normalizeDurationMs(value: number) {
@@ -23,32 +24,11 @@ function formatDuration(ms: number) {
   return parts.join(" ");
 }
 
-function parseCountValue(value: unknown) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return null;
-  return Math.max(0, parsed);
-}
-
-function formatWrappedCount(value: unknown) {
-  const parsed = parseCountValue(value);
-  if (parsed == null) return "";
-  return `(${parsed.toLocaleString("en-US")})`;
-}
-
 function parseDateMsOrNull(value: unknown) {
   const text = toText(value);
   if (!text) return null;
   const parsed = Date.parse(text);
   return Number.isFinite(parsed) ? parsed : null;
-}
-
-function countCounterState(props: TimeCounterProps) {
-  const countValue = parseCountValue(props.count);
-  return {
-    countValue,
-    initialText: formatWrappedCount(countValue),
-    shouldRenderCounter: countValue != null,
-  };
 }
 
 function durationCounterState(props: TimeCounterProps, startRaw: string, endRaw: string) {
@@ -71,52 +51,35 @@ function durationCounterState(props: TimeCounterProps, startRaw: string, endRaw:
   };
 }
 
-function counterClassName(props: TimeCounterProps, countMode: boolean) {
+function counterClassName(props: TimeCounterProps) {
   const unstyled = props.unstyled === true || props.bare === true;
   return joinClassNames(
     "time-counter",
-    unstyled || countMode ? "" : frontendClassName("font-mono"),
-    unstyled || countMode ? "" : primitiveTextClassName({ size: "sm" }),
+    unstyled ? "" : frontendClassName("font-mono"),
+    unstyled ? "" : primitiveTextClassName({ size: "sm" }),
     props.className,
   );
 }
 
 function counterConfig(
   props: TimeCounterProps,
-  config: {
-    countMode: boolean;
-    countValue: number | null;
-    endRaw: string;
-    live: boolean;
-    remaining: boolean;
-    startRaw: string;
-  },
+  config: { endRaw: string; live: boolean; remaining: boolean; startRaw: string },
 ) {
   return {
-    count: config.countMode ? config.countValue : undefined,
-    end:
-    !config.countMode &&
-      ((!config.live && config.endRaw) || (config.remaining && config.endRaw))
-    ? config.endRaw
-    : "",
-    live: !config.countMode && config.live,
-    mode: config.countMode ? "count" : config.remaining ? "remaining" : undefined,
-    reloadOnZero: !config.countMode && props.reloadOnZero === true,
-    start: !config.countMode ? config.startRaw : "",
+    end: (!config.live && config.endRaw) || (config.remaining && config.endRaw) ? config.endRaw : "",
+    live: config.live,
+    mode: config.remaining ? "remaining" : undefined,
+    reloadOnZero: props.reloadOnZero === true,
+    start: config.startRaw,
   };
 }
 
 function time_counter(props: TimeCounterProps) {
-  const countMode = props.mode === "count";
+  if (props.mode === "count") return number({ className: props.className, id: props.id, value: props.count });
   const startRaw = toText(props.start);
   const endRaw = toText(props.end);
-  const state = countMode
-  ? countCounterState(props)
-  : durationCounterState(props, startRaw, endRaw);
+  const state = durationCounterState(props, startRaw, endRaw);
   if (!state.shouldRenderCounter && props.alwaysRender !== true) return null;
-  const countValue = "countValue" in state ? state.countValue : null;
-  const live = "live" in state ? state.live : false;
-  const remaining = "remaining" in state ? state.remaining : false;
   return (
     <span {...frontendDataAttrs({ "time-counter": "" })} style={{ display: "contents" }}>
     <script
@@ -124,12 +87,12 @@ function time_counter(props: TimeCounterProps) {
     hidden
     type="application/json"
     dangerouslySetInnerHTML={{
-        __html: jsonScript(counterConfig(props, { countMode, countValue, endRaw, live, remaining, startRaw })),
+        __html: jsonScript(counterConfig(props, { endRaw, live: state.live, remaining: state.remaining, startRaw })),
     }}
     />
     <span
     {...(props.id ? { id: props.id } : {})}
-    className={counterClassName(props, countMode)}
+    className={counterClassName(props)}
     >
     {state.initialText}
     </span>
@@ -137,4 +100,4 @@ function time_counter(props: TimeCounterProps) {
   );
 }
 
-export { formatDuration, formatWrappedCount, parseCountValue, parseDateMsOrNull, time_counter };
+export { formatDuration, parseDateMsOrNull, time_counter };

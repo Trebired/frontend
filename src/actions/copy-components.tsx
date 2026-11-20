@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { code_block } from "#c55llzkpl4ob";
 import {
+  primitiveCardAttrs,
   primitiveCardClassName,
   primitiveInlineRowClassName,
   primitiveTextClassName,
@@ -122,6 +123,7 @@ function copy_card(props: CopyCardProps) {
     className={primitiveCardClassName({ className: props.className, gap: "sm" })}
     {...(props.id ? { id: props.id } : {})}
     {...frontendDataAttrs({ "card": "" })}
+    {...primitiveCardAttrs()}
     >
     <HeadingScope>
     {copyCardHeader(props, target)}

@@ -79,6 +79,14 @@ export {
 } from "#lbkpzw8nphru";
 export type *from "#lbkpzw8nphru";
 export {
+  RecentPages,
+} from "#igzdg4lm0c9b";
+export type *from "#igzdg4lm0c9b";
+export {
+  IconRegistry,
+} from "#khmnuu1q24w1";
+export type *from "#khmnuu1q24w1";
+export {
   Disclosure,
   DisclosureButton,
   Dropdown,
@@ -168,6 +176,8 @@ export {
   FullscreenTarget,
 } from "#vbkfq413o3u7";
 export type *from "#vbkfq413o3u7";
+export { FullscreenToggle } from "#85ylxmukhmrq";
+export type *from "#85ylxmukhmrq";
 export {
   VisibilityScope,
   VisibilityTarget,

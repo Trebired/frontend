@@ -1,6 +1,5 @@
 import {
   firstNonScriptHTMLElementChild,
-  isInUnhydratedIsland,
   type BindRoot,
 } from "#er0dlx1gtbzh";
 
@@ -11,4 +10,4 @@ function scopeRoot(target: unknown): BindRoot | null {
   return typeof document === "undefined" ? null : document;
 }
 
-export { firstNonScriptHTMLElementChild, isInUnhydratedIsland, scopeRoot };
+export { firstNonScriptHTMLElementChild, scopeRoot };

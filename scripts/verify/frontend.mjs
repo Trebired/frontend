@@ -9,6 +9,8 @@ import { verifyConfigContract } from "./frontend/contract.mjs";
 
 import { verifyFlash } from "./frontend/flash.mjs";
 import { verifyIcons } from "./frontend/icons.mjs";
+import { verifyRecentPages } from "./frontend/recent.mjs";
+import { verifyRouteEntities } from "./frontend/route-entities.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
 import { verifyLocaleRouting } from "./frontend/locale.mjs";
 import { verifyMedia } from "./frontend/media.mjs";
@@ -25,6 +27,9 @@ import { verifyHeadings } from "./frontend/headings.mjs";
 import { verifyFrontendSource } from "./frontend/source.mjs";
 import { verifyLayering } from "./frontend/layering.mjs";
 import { verifySelectCards } from "./frontend/select-cards.mjs";
+import { verifyTreeDrag } from "./frontend/tree/drag.mjs";
+import { verifyBreadcrumbCopy, verifyBreadcrumbTokens } from "./frontend/breadcrumb.mjs";
+import { verifyMarkdownArticle } from "./frontend/markdown.mjs";
 import { packageName, workspaceConfigDir } from "#kdfvp4fq2m77";
 import { resolveLogger } from "@package/logger-adapter";
 
@@ -35,9 +40,9 @@ const distDir = path.join(rootDir, "dist");
 const sourceDir = path.join(rootDir, "src");
 const packageVersion = JSON.parse(await fs.readFile(path.join(rootDir, "package.json"), "utf8")).version;
 
-async function verifyFrontendMain() {
+async function verifyContext() {
   const configDirName = await workspaceConfigDir(rootDir);
-  const context = {
+  return {
     configDirName,
     configRelPath: `${configDirName}/frontend/config.ts`,
     distDir,
@@ -48,6 +53,10 @@ async function verifyFrontendMain() {
     rootDir,
     sourceDir,
   };
+}
+
+async function verifyFrontendMain() {
+  const context = await verifyContext();
   const window = installDom();
   await verifyConfigContract(context);
   await verifyNamespace(context);
@@ -58,6 +67,8 @@ async function verifyFrontendMain() {
   await verifyFrontendActions({ importDist, importDistRoot });
   await verifyProductIdentity(context);
   await verifyIcons(context);
+  await verifyRecentPages(context);
+  await verifyRouteEntities(context);
   await verifyFlash(context);
   await verifyTooltip();
   await verifyPopover(context);
@@ -76,6 +87,10 @@ async function verifyFrontendMain() {
   await verifyFullscreen();
   await verifyLayering(context);
   await verifySelectCards(context);
+  await verifyTreeDrag(context);
+  await verifyBreadcrumbCopy(context);
+  await verifyBreadcrumbTokens(context);
+  await verifyMarkdownArticle(context);
   await verifySidebar(context);
   await verifyUpload();
   await verifyFrontendLogging(context);

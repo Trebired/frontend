@@ -11,13 +11,10 @@ import { BRAND_COLOR_ATTR, readIconCacheEntry, renderIconElement } from "#e55z7p
 import { applySvgColor } from "#bu1nq95e3k0f";
 import { getActiveIconServerRenderer } from "#6o6fqz7svsts";
 import { frontendClassName, frontendCssVar, frontendDataAttr } from "#5vbaqj4pirp3";
-import type { IconRuntimeMode } from "#e55z7pkijewq";
 
 type IconProps = Omit<HTMLAttributes<HTMLElement>, "color"> & {
   color?: string;
-  endpoint?: string;
   label?: string;
-  mode?: IconRuntimeMode;
   name?: string;
   pack?: string;
   spec?: string;
@@ -60,9 +57,7 @@ function Icon(props: IconProps) {
   const {
     className,
     color,
-    endpoint,
     label,
-    mode,
     name: _name,
     pack: _pack,
     spec: _spec,
@@ -88,7 +83,7 @@ function Icon(props: IconProps) {
     !color && colorMode === "brand" && colorValue ? colorValue : undefined,
     ref: (element: Element | null) => {
       if (!element || !normalizedSpec) return;
-      void renderIconElement(element, normalizedSpec, { color, endpoint, mode });
+      renderIconElement(element, normalizedSpec, { color });
     },
     style: resolveStyle({ ...props, color }, colorMode, colorValue),
     suppressHydrationWarning: true,

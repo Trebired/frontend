@@ -17,7 +17,6 @@ import {
   documentLanguageTag as documentLang,
   isInteractiveTarget,
   isNestedInteractiveTarget,
-  isInUnhydratedIsland,
   readElementJson as readHostJsonConfig,
   resolveDocumentTarget,
 } from "#er0dlx1gtbzh";
@@ -108,7 +107,6 @@ export {
   icon,
   isInteractiveTarget,
   isNestedInteractiveTarget,
-  isInUnhydratedIsland,
   joinClassNames,
   noop,
   toString as onlyString,

@@ -1,6 +1,7 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { classNames } from "#ndsvdqv80epr";
-import { FullscreenCloseButton, FullscreenOpenButton, FullscreenTarget } from "#vbkfq413o3u7";
+import { FullscreenTarget } from "#vbkfq413o3u7";
+import { FullscreenToggle } from "#85ylxmukhmrq";
 import { surfaceClass, type SurfaceSize, type SurfaceTone } from "#vuk08leruwgb";
 import type { PrimitiveButtonVariant } from "#0rl8rpgzssot";
 import { FRONTEND_PREFIX, frontendClassName, frontendDataAttr, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
@@ -48,7 +49,9 @@ type HairlineCellProps = HTMLAttributes<HTMLElement> & {
 
 type CanvasPanelProps = HTMLAttributes<HTMLDivElement> & {
   actions?: ReactNode;
+  fullscreenGroup?: string;
   fullscreenId?: string;
+  lang?: string;
   subtitle?: ReactNode;
   title?: ReactNode;
 };
@@ -98,9 +101,9 @@ function Card(props: CardProps) {
   return (
     <Tag
     {...rest}
-    className={classNames(surfaceClass(frontendClassName("card"), { tone }), className)}
+    className={classNames(className) || undefined}
     href={Tag === "a" ? href : undefined}
-    {...frontendDataAttrs({ "card": "" })}
+    {...frontendDataAttrs({ "card": "", container: "card", variant: tone || undefined })}
     {...frontendDataAttrs({ "interactive": isInteractive ? "true" : undefined })}
     {...frontendDataAttrs({ "soft-redirect": softRedirect === true ? "" : undefined })}
     >
@@ -191,29 +194,50 @@ function HairlineCell(props: HairlineCellProps) {
 }
 
 function CanvasPanel(props: CanvasPanelProps) {
-  const { actions, children, className, fullscreenId, subtitle, title, ...rest } = props;
+  const { actions, children, className, fullscreenGroup, fullscreenId, lang, subtitle, title, ...rest } = props;
   const body = (
     <div {...rest} className={classNames(frontendClassName("canvas-panel"), className)} {...frontendDataAttrs({ "canvas-panel": "" })}>
-    <CanvasPanelHeader actions={actions} fullscreenId={fullscreenId} subtitle={subtitle} title={title} />
+    <CanvasPanelHeader
+    actions={actions}
+    fullscreenGroup={fullscreenGroup}
+    fullscreenId={fullscreenId}
+    lang={lang}
+    subtitle={subtitle}
+    title={title}
+    />
     <div className={frontendElementClass("canvas-panel", "body")}>{children}</div>
     </div>
   );
-  return fullscreenId ? <FullscreenTarget fullscreenId={fullscreenId}>{body}</FullscreenTarget> : body;
+  return fullscreenId
+  ? <FullscreenTarget fullscreenId={fullscreenId} group={fullscreenGroup}>{body}</FullscreenTarget>
+  : body;
 }
 
-function CanvasPanelHeader(props: Pick<CanvasPanelProps, "actions" | "fullscreenId" | "subtitle" | "title">) {
+type CanvasPanelHeaderProps = Pick<
+CanvasPanelProps,
+"actions" | "fullscreenGroup" | "fullscreenId" | "lang" | "subtitle" | "title"
+>;
+
+function CanvasPanelHeader(props: CanvasPanelHeaderProps) {
   if (!props.title && !props.subtitle && !props.actions && !props.fullscreenId) return null;
+  const hasTitles = Boolean(props.title || props.subtitle);
+  const actions = props.actions
+  ? <div className={frontendElementClass("canvas-panel", "actions")}>{props.actions}</div>
+  : null;
   return (
-    <div className={classNames(frontendElementClass("canvas-panel", "header"), frontendClassName("card"))}>
-    <div className={frontendElementClass("canvas-panel", "titles")}>
-    {props.title ? <span className={frontendElementClass("canvas-panel", "title")}>{props.title}</span> : null}
-    {props.subtitle ? <span className={frontendElementClass("canvas-panel", "subtitle")}>{props.subtitle}</span> : null}
+    <div className={classNames(frontendElementClass("canvas-panel", "header"))} {...frontendDataAttrs({ container: "card" })}>
+    <div className={frontendElementClass("canvas-panel", "top")}>
+    {hasTitles ? (
+        <div className={frontendElementClass("canvas-panel", "titles")}>
+        {props.title ? <span className={frontendElementClass("canvas-panel", "title")}>{props.title}</span> : null}
+        {props.subtitle ? <span className={frontendElementClass("canvas-panel", "subtitle")}>{props.subtitle}</span> : null}
+        </div>
+      ) : actions}
+    {props.fullscreenId ? (
+        <FullscreenToggle fullscreenId={props.fullscreenId} group={props.fullscreenGroup} lang={props.lang} />
+      ) : null}
     </div>
-    <div className={frontendElementClass("canvas-panel", "actions")}>
-    {props.actions}
-    {props.fullscreenId ? <FullscreenOpenButton fullscreenId={props.fullscreenId}>Open</FullscreenOpenButton> : null}
-    {props.fullscreenId ? <FullscreenCloseButton fullscreenId={props.fullscreenId}>Close</FullscreenCloseButton> : null}
-    </div>
+    {hasTitles ? actions : null}
     </div>
   );
 }

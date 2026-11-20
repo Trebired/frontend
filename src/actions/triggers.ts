@@ -148,6 +148,19 @@ function openTriggerModal(trigger: HTMLElement, options: BindActionTriggerOption
   return true;
 }
 
+function mirrorTriggerAttrs(trigger: HTMLElement, options: BindActionTriggerOptions) {
+  const values: [string, unknown][] = [
+    ["action-trigger", options.action],
+    ["external-href", options.externalHref],
+    ["href", options.href],
+    ["action-modal", options.modal],
+  ];
+  for (const [name, value] of values) {
+    const attr = frontendDataAttr(name);
+    if (typeof value === "string" && value && !trigger.hasAttribute(attr)) trigger.setAttribute(attr, value);
+  }
+}
+
 function ensureActionA11y(trigger: HTMLElement, options: BindActionTriggerOptions) {
   const hasHref = Boolean(
     options.href ||
@@ -216,6 +229,7 @@ function bindActionTrigger(
   if (!(trigger instanceof HTMLElement)) return false;
   const existing = triggerBindings.get(trigger);
   if (existing) existing();
+  mirrorTriggerAttrs(trigger, options);
   ensureActionA11y(trigger, options);
   const onClick = (event: MouseEvent) => handleTrigger("click", event, trigger, options);
   const onKey = (event: KeyboardEvent) => {

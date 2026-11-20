@@ -1,5 +1,5 @@
 import {
-  formatWrappedCount,
+  createNumberElement,
   primitiveInlineRowClassName,
   primitiveStatusDotClassName,
   primitiveTextClassName,
@@ -14,10 +14,7 @@ import { appendIcon } from "#e55z7pkijewq";
 import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
 function defaultCountNode(context: DynamicSidebarRuntimeCountContext) {
-  const node = context.document.createElement("span");
-  node.className = "time-counter";
-  node.textContent = formatWrappedCount(context.count);
-  return node;
+  return createNumberElement(context.document, context.count);
 }
 
 function loaderNode(documentRef: Document, size: string) {

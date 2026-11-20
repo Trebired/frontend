@@ -61,6 +61,7 @@ type FrontendReactRendererOptions = {
   };
   normalizePageId?: (pageId: unknown) => string;
   product?: Record<string, unknown>;
+  recentPages?: { record: (res: ServerResponseLike, context: FrontendDocumentContext) => unknown };
   recordRender?: (durationMs: number) => unknown;
   renderToStaticMarkup?: (node: unknown) => string;
   renderToString: (node: unknown) => string;

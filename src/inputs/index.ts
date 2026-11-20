@@ -158,6 +158,7 @@ export type *from "./status.js";
 export {
   bindTabs,
 } from "./tabs.js";
+export { setTabNumber } from "./advanced/tabs/number.js";
 export type *from "./tabs.js";
 export type {
   UploadEmptyToggle,

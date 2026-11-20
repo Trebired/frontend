@@ -181,18 +181,10 @@ function normalizeSvgMarkup(
   return raw.replace(/^<svg\b[^>]*>/iu, nextOpen);
 }
 
-function buildIconUrl(spec: unknown, endpoint = "/__icons/svg"): string {
-  const parsed = parseIconSpec(spec);
-  const normalizedSpec = parsed ? parsed.spec : normalizeSpace(spec);
-  const separator = endpoint.includes("?") ? "&" : "?";
-  return `${endpoint}${separator}spec=${encodeURIComponent(normalizedSpec)}`;
-}
-
 export {
   SUPPORTED_ICON_PACKS,
   applySvgColor,
   applySvgRootAttrs,
-  buildIconUrl,
   classNames,
   derivePrimarySvgColor,
   escapeHtml,

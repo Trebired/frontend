@@ -1,4 +1,4 @@
-import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttr } from "#5vbaqj4pirp3";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { buildLogLineViews } from "./line.js";
@@ -124,7 +124,8 @@ function emptyChildren(emptyText) {
       "div",
       {
         key: "empty",
-        className: frontendClassName("log-line"),
+        className: frontendClassNames("padding-xs2", "min-height-fit"),
+        [frontendDataAttr("container")]: "log-line",
         [frontendDataAttr("role")]: "text",
       },
       emptyText,
@@ -183,7 +184,7 @@ function LogViewport(props) {
     React.createElement(
       "div",
       {
-        className: frontendClassName("log-box-content"),
+        className: frontendClassNames("log-box-content", "divided"),
       },
       viewportChildren(props),
     ),

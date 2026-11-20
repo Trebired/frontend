@@ -25,6 +25,7 @@ export {
   getEditorViewerRoot,
   isImagePath,
   mountEditorViewer,
+  mountReadonlyEditorDiff,
   nextEditorViewerModelInstanceId,
   normalizePath,
   readFullscreenState,

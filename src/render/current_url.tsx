@@ -15,7 +15,7 @@ type RenderCurrentUrlProviderProps = {
 
 const RenderCurrentUrlContext = createContext("");
 
-const SPA_EVENTS = ["page-change", "rehydrate", "live-navigation", "page-pending", "url-change"];
+const SPA_EVENTS = ["page-change", "rebind", "live-navigation", "page-pending", "url-change"];
 const PENDING_EVENT = frontendEventName("page-pending");
 let pendingUrl = "";
 

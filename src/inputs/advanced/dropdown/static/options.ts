@@ -19,7 +19,14 @@ function optionElement(panelId: string, option: DropdownOptionInput, index: numb
   item.id = `${panelId}_opt_${index}`;
   item.setAttribute("role", "option");
   item.setAttribute("aria-selected", "false");
-  setDropdownOptionConfig(item, { label: option.label, selected: false, value: option.value });
+  const config = { label: option.label, selected: false, value: option.value };
+  const script = document.createElement("script");
+  script.hidden = true;
+  script.type = "application/json";
+  script.setAttribute(frontendDataAttr("dropdown-option-config"), "");
+  script.textContent = JSON.stringify(config);
+  item.append(script);
+  setDropdownOptionConfig(item, config);
   const label = document.createElement("span");
   label.textContent = option.label;
   item.append(label);
