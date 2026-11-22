@@ -1,3 +1,4 @@
+import { frontendClassNames } from "#5vbaqj4pirp3";
 import { createLocalTranslator, toString } from "#aq4qe9opqpbm";
 import { primitiveGridClassName } from "#hzrmwbvgt2ax";
 import type { LogsConfig } from "./../client/types.js";
@@ -122,7 +123,7 @@ function createLogsViewModel(props: view_props) {
       logsInstanceId === "logs-view" ? "logs-container" : logId("container"),
     ),
     logsInstanceId,
-    panelClassName: toString(props.panelClassName, "height-xl"),
+    panelClassName: toString(props.panelClassName, frontendClassNames("height-xl", "min-height-xl")),
     productName: toString(
       props.productName,
       localT("productFallback"),

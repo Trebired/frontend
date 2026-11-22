@@ -283,9 +283,11 @@ function bar(props: bar_props) {
     <span className={primitiveTextClassName({ size: "sm" })} {...frontendDataAttrs({ "progress-meta": "" })}>
     {String(props.meta || "")}
     </span>
-    <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} {...frontendDataAttrs({ "progress-label": "" })}>
-    {String(props.label || "")}
-    </span>
+    {props.showLabel === false ? null : (
+        <span className={primitiveTextClassName({ muted: true, right: true, size: "sm" })} {...frontendDataAttrs({ "progress-label": "" })}>
+        {String(props.label || "")}
+        </span>
+    )}
     </div>
     <div
     className={frontendClassName("progress")}

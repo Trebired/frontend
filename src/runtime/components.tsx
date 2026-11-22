@@ -1,15 +1,20 @@
+import type { ReactNode } from "react";
 import { frontendDataAttr, frontendDataAttrs } from "#5vbaqj4pirp3";
 import { toString } from "#dqy2d22qyujv";
 import dropdown from "#79y0zfcyhzga";
 import { Icon } from "#lbkpzw8nphru";
 import shared_steps_panel from "#hpgy4recky69";
+import type { StepsRecord, StepsSave } from "./../steps/record.js";
 import { jsonScript } from "#ndsvdqv80epr";
 
 type attr_map = Record<string, string | number | boolean | null | undefined>;
 
 type RuntimeActionProgressProps = {
   emptyCopy?: string;
+  groupHeaders?: Record<string, ReactNode> | null;
   lang?: string;
+  record?: StepsRecord | null;
+  save?: StepsSave | null;
 };
 
 type RuntimeActivityBootstrapProps = {
@@ -73,6 +78,9 @@ function runtime_action_progress(props: RuntimeActionProgressProps = {}) {
       emptyCopy:
       String(props.emptyCopy || "").trim() || "No steps yet.",
       hidden: false,
+      groupHeaders: props.groupHeaders,
+      record: props.record,
+      save: props.save,
   });
 }
 

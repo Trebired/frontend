@@ -145,6 +145,7 @@ type bar_props = {
   label?: string;
   meta?: string;
   percent?: number;
+  showLabel?: boolean;
   wrapperAttributes?: string;
 };
 

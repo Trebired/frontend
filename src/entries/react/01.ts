@@ -87,6 +87,7 @@ export {
 } from "#khmnuu1q24w1";
 export type *from "#khmnuu1q24w1";
 export {
+  DatePicker,
   Disclosure,
   DisclosureButton,
   Dropdown,

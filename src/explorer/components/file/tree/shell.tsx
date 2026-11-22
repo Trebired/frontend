@@ -4,6 +4,7 @@ import { frontendClassName, frontendDataAttrs, frontendClassNames, frontendCssVa
 import { fileTreeDropAttrs } from "./drag.js";
 
 type FileTreeShellProps = {
+  bare?: boolean;
   children?: ReactNode;
   dropRoot?: boolean;
   dropTarget?: boolean;
@@ -18,9 +19,10 @@ function FileTreeShell(props: FileTreeShellProps) {
     <div
     ref={props.hostRef}
     {...(props.dropRoot ? fileTreeDropAttrs("") : {})}
-    {...frontendDataAttrs({ container: "card" })}
+    {...(props.bare ? {} : frontendDataAttrs({ container: "card" }))}
     className={joinClassNames(
         frontendClassNames("column", "gap-xs", "overflow-hidden", "file-tree-shell"),
+        props.bare ? "" : frontendClassName("padding-sm"),
         frontendClassName(`scroll-min-${props.scrollbarSize || "sm"}`),
     )}
     style={{

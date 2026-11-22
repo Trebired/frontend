@@ -1,7 +1,9 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { createLocalTranslator, icon } from "#4fte8m1x62rd";
 import { documentLanguageTag as documentLang } from "#er0dlx1gtbzh";
 import { graphUnitLabel } from "./units.js";
+import { TimelineStrip } from "./timeline/strip.js";
 import { resolveCanvasColor } from "./utils.js";
 import { resolveFrontendLogger } from "#mhi409n0a05q";
 import {
@@ -119,7 +121,7 @@ function GraphWarning(props) {
     },
     React.createElement(
       "div",
-      { className: frontendClassNames("center", "column", "gap-sm") },
+      { className: frontendClassNames("center", "column", "gap-sm"), style: { alignItems: "center" } },
       icon({
           spec: props.stateIcon,
           style: {
@@ -179,6 +181,23 @@ function GraphFrame(props) {
   );
 }
 
+function timelineSlot(graphId: string) {
+  return graphId && typeof document !== "undefined" ? document.getElementById(`${graphId}_timeline`) : null;
+}
+
+function GraphTimeline(props) {
+  const [slot, setSlot] = React.useState<HTMLElement | null>(null);
+  React.useLayoutEffect(() => {
+      const element = timelineSlot(props.graphId);
+      if (!element) return;
+      element.replaceChildren();
+      setSlot(element);
+    }, [props.graphId]);
+  if (!props.timelineStrip) return null;
+  const strip = React.createElement(TimelineStrip, props.timelineStrip);
+  return slot ? createPortal(strip, slot) : strip;
+}
+
 function GraphLegendView(props) {
   const legendItems = Array.isArray(props.legendItems) ? props.legendItems : [];
   if (!legendItems.length) return null;
@@ -234,6 +253,7 @@ function GraphCardFrame(props) {
     React.createElement(GraphHeader, props),
     React.createElement(GraphFrame, props),
     React.createElement(GraphLegendView, props),
+    React.createElement(GraphTimeline, props),
   );
 }
 

@@ -47,13 +47,21 @@ function editor_content_body(props: EditorContentProps, minHeight: number) {
 }
 
 function editor_sidebar(props: EditorSidebarProps) {
-  const className = String(props.className || primitiveStackClassName({ gap: "sm", noShrink: true })).trim();
-  return (
-    <div className={className} style={props.style}>
-    {editorCardHeader(props.title, props.description)}
-    {props.children}
-    </div>
-  );
+  return card({
+      className: props.className,
+      gap: "xs",
+      noShrink: true,
+      style: props.style,
+      children: (
+        <>
+        <strong>{props.title}</strong>
+        {props.description ? (
+            <Text breakWord muted size="sm">{props.description}</Text>
+          ) : null}
+        {props.children}
+        </>
+      ),
+  });
 }
 
 function editorCardHeader(title: ReactNode, description?: ReactNode) {

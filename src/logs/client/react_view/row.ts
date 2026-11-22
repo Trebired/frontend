@@ -1,3 +1,4 @@
+import { logLineElementId } from "#n0r5108fmldy";
 import { frontendClassName, frontendClassNames, frontendDataAttr } from "#5vbaqj4pirp3";
 import React from "react";
 import { logsT } from "#gu61mitj537f";
@@ -163,6 +164,7 @@ function LogRowView({ view, onOpen, onToggleMarker }) {
       className: [primitiveGapClass("xs"), frontendClassNames("padding-xs2", "min-height-fit")].join(" "),
       [frontendDataAttr("container")]: "log-line",
       [frontendDataAttr("log-key")]: view.logKey,
+      id: logLineElementId(view.entry && view.entry.id) || undefined,
       role: "button",
       tabIndex: 0,
       title: logsT("clickOpenDetails"),

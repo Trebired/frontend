@@ -2,8 +2,14 @@ import { HeadingDepth, headingLevelForDepth } from "#7ly3b59upz0n";
 import { Card, icon } from "#4fte8m1x62rd";
 import type { graph_props } from "./types.js";
 import { renderGroupedDetails, renderRowDetails } from "./details.js";
-import { InlineRow, Text, primitiveCardClassName, primitiveInlineRowClassName } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttrs } from "#5vbaqj4pirp3";
+import {
+  InlineRow,
+  Text,
+  primitiveButtonClassName,
+  primitiveCardClassName,
+  primitiveInlineRowClassName,
+} from "#hzrmwbvgt2ax";
+import { frontendClassName, frontendClassNames, frontendCssVar, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 
 function renderGraphToolbar(props: graph_props) {
   if (!props.toolbarContent) return null;
@@ -36,7 +42,7 @@ function graphShellStateOverlay(model: any) {
           color: stateOverlayColor(model),
       }}
       >
-      <div className={frontendClassNames("center", "column", "gap-sm")}>
+      <div className={frontendClassNames("center", "column", "gap-sm")} style={{ alignItems: "center" }}>
       {icon({
             spec: model.resolvedStateIcon,
             style: {
@@ -93,6 +99,34 @@ function renderGraphMount(model: any, mountClassName: string, titleLevel: number
   );
 }
 
+function renderTimelinePlaceholder(reserved: any) {
+  return (
+    <div aria-hidden="true" className={frontendElementClass("graph", "timeline")}>
+    {reserved.toolbar ? (
+        <div className={frontendElementClass("graph", "timeline-toolbar")}>
+        <span className={primitiveButtonClassName({ size: "sm", variant: "secondary" })} style={{ visibility: "hidden" }}>
+        {"\u00a0"}
+        </span>
+        </div>
+      ) : null}
+    <div className={frontendElementClass("graph", "timeline-track")} />
+    <div className={frontendElementClass("graph", "timeline-labels")} />
+    {Array.from({ length: reserved.series }, (_, index) => (
+          <div className={frontendElementClass("graph", "timeline-stat")} key={index} />
+    ))}
+    </div>
+  );
+}
+
+function renderTimelineSlot(model: any) {
+  if (!model.timelineEnabled) return null;
+  return (
+    <div id={`${model.graphId}_timeline`}>
+    {model.timelineReserved ? renderTimelinePlaceholder(model.timelineReserved) : null}
+    </div>
+  );
+}
+
 function renderGraphDetails(model: any) {
   return (
     <>
@@ -140,6 +174,7 @@ function renderGraphShell(props: graph_props, model: any) {
     {renderGraphToolbar(props)}
     {renderGraphCanvas(model, "graph-shell-mount")}
     {renderGraphDetails(model)}
+    {renderTimelineSlot(model)}
     </Card>
   );
   return (

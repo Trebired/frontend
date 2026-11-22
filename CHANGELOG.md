@@ -4,6 +4,29 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 32.1.0
+
+- Log lines with an entry `id` carry the element id from the new `logLineElementId(id)`, so the element highlight can point at one log line.
+- `renderSharedSteps` takes an optional `href` and `highlight` on a step. The step's row then opens that address with a soft redirect on click or Enter and highlights that element there.
+- `highlightWhenPresent`, which every highlighted navigation uses, waits up to ten seconds for its element with a `MutationObserver` instead of polling for a second and a half, so content that arrives after the page, such as log lines over a socket, is still highlighted. The next navigation cancels the wait.
+- `bar` takes `showLabel: false`, which leaves out the percentage. Steps panels draw their progress bar that way, since a percentage says nothing about steps.
+- Steps panels keep their latest steps. `shared_steps_panel` and `runtime_action_progress` take `save: { channel, key }` and `record`. With `save`, the steps controller sends the panel's steps, copy, title and progress as `steps:save` on that channel whenever they change, coalesced so only the newest record is in flight. With `record`, the panel renders those steps on the server and opens, and the controller continues from them. Added `markStepsChanged`, `normalizeStepsRecord`, `STEPS_SAVE_EVENT`, `SharedStepCards` and the `StepsRecord` and `StepsSave` types.
+- Steps panels take `groupHeaders`, server-rendered cards keyed by group key. Each group of steps becomes that markup, with its steps at `steps_group_slot()` and their number at `steps_group_count()`, both on the server and when the controller redraws. The controller rebinds the inserted markup so its links and disclosures work, and keeps an open disclosure open across redraws.
+- A nested `role="link"` element counts as interactive, so clicking it inside a card with an action trigger no longer also fires the card's trigger.
+- Step links use one delegated handler, so a server-rendered step row with `href` opens its address too.
+- Moved to `@trebired/sockets` 0.3.0 for its reliable `send`.
+- Graphs take `timeline`, which draws one window of a long history and a strip of all of it with its peaks marked, to click, drag or step through with the keyboard. See the README "Graph Timeline" section.
+- The editor viewer's sidebar is one card: its title, description and file tree share the card instead of a header card above a second tree card. `FileTreeView` takes `bare`, which drops the tree's own card, and the sidebar's loading and error states are plain text inside it.
+- The file tree shell uses `padding-sm` instead of the card container's padding, and its empty message no longer adds `padding-sm` of its own.
+- `copy_card`'s `emptyText` uses the normal text size instead of the small one.
+- `logs_view` has a real default size: its panel class was the bare `height-xl`, which matched nothing, so a short log list collapsed. The panel now uses `tbf-height-xl` with `tbf-min-height-xl` and never drops below it.
+- New `DatePicker`: a one-day calendar picker with its own panel, keyboard navigation and Czech and English labels, instead of the native date input.
+- A graph timeline with more history than its window gets a toolbar with longer windows (1 h, 6 h, 1 d, 7 d) and a `DatePicker` that jumps to a day. Long windows are resampled into 240 evenly spaced buckets, empty values stay gaps instead of zero, and relative axis labels count hours and days.
+- A graph's timeline is its own box at the bottom of the graph card, below the details, and lists the average and peak of each series inside the window. The chart keeps a fixed geometry: both axes have fixed sizes, edge labels stay inside, and every window is drawn as 120 equal time slots labelled with the window's own start, middle and end, so moving the window or landing on an empty stretch never moves or resizes the plot. "Latest" and "End" are a primary `sm` button in a row of that height, so it never shifts the layout. The timeline's buttons and the `DatePicker` use the `sm` size, since buttons have no `xs` size. The warning and empty state icon is centred over its message.
+- A graph timeline works for a single series in `points` as well as for `datasets`, and a history longer than three days labels its times with dates only.
+- Graphs take `live: false`, which labels the time axis with clock times instead of counting back to "now".
+- Graph text is available in Czech.
+
 ## 32.0.0
 
 - Moved to `@trebired/sockets` 0.2.0, whose query rooms and `QUERY_CHANGED_EVENT` the remote search panel uses, and to `@trebired/utils` 0.9.10 for `withRenderLocale`.

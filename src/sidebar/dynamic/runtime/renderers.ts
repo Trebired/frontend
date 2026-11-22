@@ -10,6 +10,7 @@ import type {
   DynamicSidebarRuntimeStateContext,
 } from "./types.js";
 import { textValue } from "#yv4ubgils4dc";
+import { sidebarStateTone } from "#6uozdgmi9mlu";
 import { appendIcon } from "#e55z7pkijewq";
 import { frontendClassName, frontendDataAttr } from "#5vbaqj4pirp3";
 
@@ -54,7 +55,7 @@ function defaultStateNode(context: DynamicSidebarRuntimeStateContext) {
   const node = context.document.createElement("span");
   node.className = primitiveStatusDotClassName({
       size: "sm",
-      tone: state === "running" ? "green" : "red",
+      tone: sidebarStateTone(state),
   });
   node.setAttribute("aria-hidden", "true");
   node.setAttribute(frontendDataAttr("state"), state);

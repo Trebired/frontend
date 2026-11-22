@@ -25,11 +25,9 @@ function normalizePoints(points, options) {
         label,
         sortValue: time != null ? time : index,
         sourceIndex: index,
-        value: convertGraphUnitValue(
-          point && point.value,
-          options.unit_of_measurement,
-          options.unit_scale,
-        ),
+        value: point && point.value === null
+        ? null
+        : convertGraphUnitValue(point && point.value, options.unit_of_measurement, options.unit_scale),
       };
     },
   );
@@ -244,11 +242,19 @@ function chartDatasets(aligned) {
   }));
 }
 
+const X_AXIS_HEIGHT = 24;
+const Y_AXIS_WIDTH = 44;
+
 function chartScales(yAxis, bottomTickMap) {
   return {
     x: {
+      afterFit(scale) {
+        scale.height = X_AXIS_HEIGHT;
+      },
       grid: { display: false },
       ticks: {
+        align: "inner",
+        autoSkip: false,
         color: "#8b8b8b",
         maxRotation: 0,
         minRotation: 0,
@@ -259,6 +265,9 @@ function chartScales(yAxis, bottomTickMap) {
       border: { color: "rgba(255,255,255,0.08)" },
     },
     y: {
+      afterFit(scale) {
+        scale.width = Y_AXIS_WIDTH;
+      },
       position: "right",
       min: yAxis.min,
       max: yAxis.max,
@@ -282,7 +291,7 @@ function buildChartConfig(options) {
   const bottomDetails =
   Array.isArray(options.bottomDetails) && options.bottomDetails.length
   ? options.bottomDetails
-  : timestampBottomDetails(aligned.labels, options.lang);
+  : timestampBottomDetails(aligned.labels, options.lang, options.live !== false);
   const bottomTickMap = getBottomTickMap(pointCount, bottomDetails);
 
   return {

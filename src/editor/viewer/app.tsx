@@ -115,7 +115,6 @@ function useEditorViewerLayout(props: any, fileState: any, fullscreenState: any)
 function ViewerSidebar(props: any) {
   return (
     <EditorSidebar
-    className={primitiveStackClassName({ gap: "sm", noShrink: true })}
     description={props.labels.fileTreeDescription}
     title={props.labels.fileTree}
     style={{
@@ -130,27 +129,21 @@ function ViewerSidebar(props: any) {
   );
 }
 
+function SidebarNotice(props: { copy: string; title: string }) {
+  return (
+    <div className={primitiveStackClassName({ gap: "xs" })}>
+    <strong>{props.title}</strong>
+    <Text breakWord muted>{props.copy}</Text>
+    </div>
+  );
+}
+
 function ViewerSidebarBody(props: any) {
   if (props.treeState.treeLoading) {
-    return (
-      <EmptyEditorMessage
-      copy={props.labels.preparingFileBrowser}
-      minHeight={420}
-      title={props.labels.loadingFileTree}
-      />
-    );
+    return <SidebarNotice copy={props.labels.preparingFileBrowser} title={props.labels.loadingFileTree} />;
   }
   if (props.treeState.treeError) {
-    return card({
-        style: { minHeight: 420 },
-        gap: "sm",
-        children: (
-          <>
-          <strong>{props.labels.fileTreeUnavailable}</strong>
-          <Text breakWord muted size="sm">{props.treeState.treeError}</Text>
-          </>
-        ),
-    });
+    return <SidebarNotice copy={props.treeState.treeError} title={props.labels.fileTreeUnavailable} />;
   }
   return <ViewerTree {...props} />;
 }
@@ -159,6 +152,7 @@ function ViewerTree(props: any) {
   return (
     <FileTreeView
     autoExpandPaths={props.focusedPath ? [props.focusedPath] : []}
+    bare
     emptyMessage={props.labels.noFileTreeAvailable}
     height={props.treeHeight}
     highlightedPaths={props.focusedPath ? [props.focusedPath] : []}

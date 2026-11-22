@@ -1,6 +1,8 @@
 import { resolveDocumentTarget } from "#er0dlx1gtbzh";
 import { createDisclosure } from "#z2c0jqmjqds4";
-import { renderSharedSteps } from "./dom.js";
+import { bindStepLinks, renderSharedSteps } from "./dom.js";
+import { readPanelRecord } from "./record.js";
+import { scheduleStepsSave } from "./save.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 import { cssTimeMs, cssToken } from "./../dom/motion.js";
 
@@ -20,9 +22,29 @@ function resolvePanel(target) {
   return el.querySelector ? el.querySelector(frontendDataSelector("steps-panel")) : null;
 }
 
+bindStepLinks();
+
+function stepsOf(panel) {
+  if (!lastSteps.has(panel)) {
+    const record = readPanelRecord(panel);
+    lastSteps.set(panel, record ? record.steps.slice() : []);
+  }
+  return lastSteps.get(panel);
+}
+
+function changed(panel) {
+  scheduleStepsSave(panel, stepsOf(panel));
+}
+
 function paint(panel) {
   const list = panel.querySelector(frontendDataSelector("steps-list"));
-  if (list) renderSharedSteps(document, list, lastSteps.get(panel) || []);
+  if (list) renderSharedSteps(document, list, stepsOf(panel));
+  changed(panel);
+}
+
+function markStepsChanged(target) {
+  const panel = resolvePanel(target);
+  if (panel) changed(panel);
 }
 
 function renderStepsPanel(target, entries) {
@@ -35,7 +57,7 @@ function renderStepsPanel(target, entries) {
 function push(target, entry) {
   const panel = resolvePanel(target);
   if (!panel || !entry) return;
-  const entries = lastSteps.get(panel) || [];
+  const entries = stepsOf(panel);
   entries.push(entry);
   lastSteps.set(panel, entries);
   paint(panel);
@@ -45,6 +67,7 @@ function setCopyMessage(target, message) {
   const panel = resolvePanel(target);
   const el = panel && panel.querySelector(frontendDataSelector("steps-copy"));
   if (el && message) el.textContent = String(message);
+  if (panel) changed(panel);
 }
 
 function open(target) {
@@ -69,6 +92,7 @@ function setStepsProgress(target, percentInput) {
     bar.style.removeProperty("--progress-percent");
     if (fill) fill.style.width = "";
     if (labelEl) labelEl.textContent = "";
+    changed(panel);
     return;
   }
 
@@ -78,6 +102,7 @@ function setStepsProgress(target, percentInput) {
   bar.style.setProperty("--progress-percent", clamped + "%");
   if (fill) fill.style.width = clamped + "%";
   if (labelEl) labelEl.textContent = label;
+  changed(panel);
 }
 
 function begin(target) {
@@ -88,6 +113,7 @@ function begin(target) {
   const list = panel.querySelector(frontendDataSelector("steps-list"));
   if (list) list.innerHTML = "";
   setStepsProgress(panel, 0);
+  changed(panel);
   open(panel);
 
   if (list && typeof list.animate === "function") {
@@ -133,6 +159,7 @@ function setActionsBusy(scope, busy) {
 }
 
 const stepsController = {
+  markStepsChanged,
   resolvePanel,
   renderStepsPanel,
   push,
@@ -145,6 +172,7 @@ const stepsController = {
 };
 
 export {
+  markStepsChanged,
   resolvePanel,
   renderStepsPanel,
   push,

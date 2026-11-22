@@ -6,11 +6,12 @@ import { normalizePath, text } from "#m6ckog6p21a3";
 import { FileTreeRow } from "./file/tree/row.js";
 import { FileTreeShell } from "./file/tree/shell.js";
 import { primitiveTextClassName } from "#hzrmwbvgt2ax";
-import { frontendClassName, frontendClassNames } from "#5vbaqj4pirp3";
+import { frontendClassNames } from "#5vbaqj4pirp3";
 
 const FILE_TREE_ROW_HEIGHT = 34;
 
 type StaticFileTreeViewProps = {
+  bare?: boolean;
   emptyMessage?: string;
   highlightedPaths?: Set<string>;
   hostRef?: any;
@@ -84,6 +85,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
   const rows = flattenStaticRows(options.tree, options.initialOpenState);
   const emptyMessage = text(options.emptyMessage, "No file tree available.");
   const shellProps = {
+    bare: options.bare === true,
     hostRef: options.hostRef,
     scrollbarSize: options.scrollbarSize,
     scrollbarWidth: options.scrollbarWidth,
@@ -92,7 +94,7 @@ function StaticFileTreeView(options: StaticFileTreeViewProps) {
   if (!rows.length) {
     return (
       <FileTreeShell {...shellProps}>
-      <div className={primitiveTextClassName({ className: frontendClassName("padding-sm"), muted: true })}>{emptyMessage}</div>
+      <div className={primitiveTextClassName({ muted: true })}>{emptyMessage}</div>
       </FileTreeShell>
     );
   }

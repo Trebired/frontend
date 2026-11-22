@@ -58,6 +58,7 @@ export {
   search_query_input,
 } from "#xkgew618b00p";
 export { default as shared_steps_panel } from "#hpgy4recky69";
+export { StepsGroupCount, StepsGroupSlot, steps_group_count, steps_group_slot } from "#8ebd8a2eyil9";
 export {
   default as wizard,
   wizard_final_action,
@@ -104,6 +105,7 @@ export {
 } from "#hzrmwbvgt2ax";
 export type *from "#hzrmwbvgt2ax";
 export type { SharedStepsPanelProps } from "#hpgy4recky69";
+export type { StepsRecord, StepsSave } from "#jdm7qktkge73";
 export { LocaleContext, LocaleProvider, useLocale } from "#y0akvvg7irrc";
 export type { LocaleProviderProps, LocaleState } from "#y0akvvg7irrc";
 export {

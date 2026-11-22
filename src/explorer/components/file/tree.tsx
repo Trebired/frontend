@@ -29,6 +29,7 @@ const FILE_TREE_ROW_HEIGHT = 34;
 
 type FileTreeViewProps = {
   autoExpandPaths?: string[];
+  bare?: boolean;
   canMove?: FileTreeMoveCheck;
   dragHandleLabel?: string;
   onMove?: FileTreeMoveHandler;
@@ -191,6 +192,7 @@ function renderInteractiveFileTree(options: any) {
   const dragState = options.drag.state;
   return (
     <FileTreeShell
+    bare={options.props.bare === true}
     dropRoot={options.drag.enabled}
     dropTarget={options.drag.state.active && options.drag.state.target === ""}
     hostRef={options.hostRef}
@@ -220,7 +222,7 @@ function renderInteractiveFileTree(options: any) {
           </div>,
         )
       ) : (
-        <div className={primitiveTextClassName({ className: frontendClassName("padding-sm"), muted: true })}>{emptyMessage}</div>
+        <div className={primitiveTextClassName({ muted: true })}>{emptyMessage}</div>
     )}
     <FileTreeDragGhost state={dragState} />
     </FileTreeShell>
@@ -309,16 +311,21 @@ function FileTreeView(props: FileTreeViewProps) {
   };
   useSyncedInitialOpenState(initialOpenState, setOpenState);
   useTreeScrollFocus(scrollRef, tree, prioritizedPaths, setOpenState);
-  return interactive ? renderInteractiveFileTree(options) : (
+  return interactive ? renderInteractiveFileTree(options) : renderStaticFileTree(options);
+}
+
+function renderStaticFileTree(options: any) {
+  return (
     <StaticFileTreeView
-    highlightedPaths={highlightedPaths}
-    hostRef={hostRef}
-    initialOpenState={initialOpenState}
-    emptyMessage={props.emptyMessage}
-    scrollbarSize={scrollbarSize}
-    scrollbarWidth={scrollbarWidth}
-    tree={tree}
-    treeHeight={treeHeight}
+    bare={options.props.bare === true}
+    highlightedPaths={options.highlightedPaths}
+    hostRef={options.hostRef}
+    initialOpenState={options.initialOpenState}
+    emptyMessage={options.props.emptyMessage}
+    scrollbarSize={options.scrollbarSize}
+    scrollbarWidth={options.scrollbarWidth}
+    tree={options.tree}
+    treeHeight={options.treeHeight}
     />
   );
 }

@@ -5,6 +5,16 @@ import { stringifyJsonForHtml } from "#4fte8m1x62rd";
 import { truthyArray } from "#4fte8m1x62rd";
 import dropdown from "#79y0zfcyhzga";
 import type { graph_props, dataset, legend_item, point } from "./types.js";
+import {
+  readSeries,
+  readTimelineOptions,
+  seriesDays,
+  seriesSpan,
+  timelineDatasets,
+  timelineNeeded,
+  timelineRanges,
+  timelineWindowMs,
+} from "#zoswqmhquwup";
 
 function graphHasData(props: graph_props) {
   if (truthyArray(props.points).length) return true;
@@ -107,6 +117,8 @@ function graphBootJson(props: graph_props, model: any) {
       points: model.pointItems,
       datasets: model.datasetItems,
       legend: model.legendItems,
+      live: props.live !== false,
+      timeline: props.timeline || null,
       loaderHtml: `<div class="${frontendClassName("loader")} ${frontendClassName("md")}" aria-hidden="true"></div>`,
       loading: model.isLoading,
       state: model.resolvedState,
@@ -146,6 +158,16 @@ function graphUnitState(props: graph_props, graphType: string) {
   };
 }
 
+function timelineReserved(props: graph_props) {
+  const options = readTimelineOptions(props.timeline);
+  if (!options) return null;
+  const series = readSeries(timelineDatasets(props));
+  const span = seriesSpan(series);
+  const windowMs = timelineWindowMs(options);
+  if (!span || !timelineNeeded(span, windowMs)) return null;
+  return { series: series.length, toolbar: timelineRanges(windowMs, span).length > 1 || seriesDays(series).size > 1 };
+}
+
 function readGraphModel(props: graph_props) {
   const graphType = toString(props.type, "linear");
   const graphId = toGraphId(props.id);
@@ -165,6 +187,8 @@ function readGraphModel(props: graph_props) {
     isLoading,
     lang: props.lang,
     legendItems: truthyArray<legend_item>(props.legend),
+    timelineEnabled: Boolean(readTimelineOptions(props.timeline)),
+    timelineReserved: timelineReserved(props),
     pointItems: truthyArray<point>(props.points),
     resolvedState: resolvedGraphState(props, isLoading),
     resolvedStateIcon: toString(

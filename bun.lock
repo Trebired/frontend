@@ -6,7 +6,7 @@
       "name": "@trebired/frontend",
       "dependencies": {
         "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.8.2",
-        "@trebired/sockets": "^0.2.0",
+        "@trebired/sockets": "^0.3.0",
         "@trebired/utils": "^0.9.10",
         "chart.js": "^4.5.1",
         "country-flag-icons": "^1.6.20",
@@ -204,7 +204,7 @@
 
     "@trebired/overprint": ["@trebired/overprint@0.9.0", "", { "dependencies": { "country-flag-icons": "^1.6.20", "roughjs": "^4.6.6" }, "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-R41aq9WscXTCd0Gn2pboD5e3+sld9xv0DjsFmeDyLbm9UQ2ZyU1+wNQGr3hjJvidFpqcRm7OXPcttaC6duNxlA=="],
 
-    "@trebired/sockets": ["@trebired/sockets@0.2.0", "", { "dependencies": { "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.8.2", "@trebired/utils": "^0.9.9", "socket.io-client": "^4.8.3" } }, "sha512-6jV+oL3tfj3JOJrxOTl0Tm0TYYdWtmJFWOHAFdoabgGPkJzmrbb14TdpZOGpvPfc0ADXluiUdF1PO5BcBtSsJg=="],
+    "@trebired/sockets": ["@trebired/sockets@0.3.0", "", { "dependencies": { "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.8.2", "@trebired/utils": "^0.9.9", "socket.io-client": "^4.8.3" } }, "sha512-81+HC/BMi0dKtY7WA+PtALWZsQw3SXPlOOrMPS9Iop5Hra8PgSs42/KTLbFGpXK4WszNEyo9KmuBfK0aedJCtg=="],
 
     "@trebired/utils": ["@trebired/utils@0.9.10", "", {}, "sha512-cRYIlz19fj0s42NmsWVm4mTuQWYlODw025SftHWSbJyWASpUbaX5UexpgIUqsRKjsVxJ0JKreaFTpKes6dWuOQ=="],
 

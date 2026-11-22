@@ -37,10 +37,51 @@ const messages: Record<string, string> = {
   "metrics.gpuUsage": "GPU usage",
   "metrics.memoryUsage": "Memory usage",
   "metrics.uploadSpeed": "Upload speed",
+  "timeline.average": "Average {value}",
+  "timeline.day": "Day",
+  "timeline.end": "End",
+  "timeline.label": "Timeline",
+  "timeline.latest": "Latest",
+  "timeline.namedPeak": "{name} peak {value} at {time}",
+  "timeline.noSamples": "No samples in this window",
+  "timeline.now": "now",
+  "timeline.peak": "Peak {value} at {time}",
+  "timeline.range": "{start} to {end}",
+  "timeline.windowLength": "Window length",
+  "timeline.windowPeak": "Peak {value}",
+};
+
+const czechMessages: Record<string, string> = {
+  "empty.noData": "Zatím žádná data.",
+  "feedback.graphUnavailable": "Graf není dostupný.",
+  "fields.unit": "Jednotka",
+  "metrics.cpuUsage": "Využití CPU",
+  "metrics.downloadSpeed": "Rychlost stahování",
+  "metrics.gpuUsage": "Využití GPU",
+  "metrics.memoryUsage": "Využití paměti",
+  "metrics.uploadSpeed": "Rychlost odesílání",
+  "timeline.average": "Průměr {value}",
+  "timeline.day": "Den",
+  "timeline.end": "Konec",
+  "timeline.label": "Časová osa",
+  "timeline.latest": "Nejnovější",
+  "timeline.namedPeak": "{name}: špička {value} v {time}",
+  "timeline.noSamples": "V tomto okně nejsou žádné vzorky",
+  "timeline.now": "teď",
+  "timeline.peak": "Špička {value} v {time}",
+  "timeline.range": "{start} až {end}",
+  "timeline.windowLength": "Délka okna",
+  "timeline.windowPeak": "Špička {value}",
 };
 
 const defineMessages = defineValue as <T extends Record<string, unknown>>(messagesMap: T) => T;
-const createLocalTranslator = createTranslatorFactory((key) => messages[key] || key) as (
+
+function graphMessage(key: string, lang?: string) {
+  const czech = String(lang || "").toLowerCase().startsWith("cs") ? czechMessages[key] : "";
+  return czech || messages[key] || key;
+}
+
+const createLocalTranslator = createTranslatorFactory(graphMessage) as (
   _url?: string,
   _lang?: string,
 ) => Translator;

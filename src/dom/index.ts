@@ -11,6 +11,7 @@ const INTERACTIVE_TARGET_SELECTOR = [
   '[contenteditable="true"]',
   '[role="button"]',
   '[role="checkbox"]',
+  '[role="link"]',
   '[role="switch"]',
 ].join(",");
 

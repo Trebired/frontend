@@ -1,5 +1,6 @@
 type point = {
   label?: string;
+  peak?: number;
   value?: number;
 };
 
@@ -33,6 +34,11 @@ type legend_item = {
   label?: string;
 };
 
+type graph_timeline = {
+  peaks?: number;
+  windowMs?: number;
+};
+
 type graph_props = {
   bottomDetails?: any[];
   datasets?: dataset[];
@@ -42,6 +48,7 @@ type graph_props = {
   id?: string;
   legend?: legend_item[];
   lang?: string;
+  live?: boolean;
   loading?: boolean;
   max?: number | null;
   min?: number | null;
@@ -57,6 +64,7 @@ type graph_props = {
   stateTone?: string;
   stroke?: string;
   subtitle?: string;
+  timeline?: boolean | graph_timeline;
   title?: string;
   toolbarContent?: any;
   type?: string;
@@ -65,4 +73,4 @@ type graph_props = {
   unit_selectable?: boolean;
 };
 
-export type { dataset, graph_props, key_value_group, key_value_row, legend_item, point };
+export type { dataset, graph_props, graph_timeline, key_value_group, key_value_row, legend_item, point };

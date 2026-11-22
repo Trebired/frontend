@@ -13,6 +13,7 @@ import type {
   DynamicSidebarStateContext,
 } from "#9w9ch5jtlv9e";
 import { textValue } from "#yv4ubgils4dc";
+import { sidebarStateTone } from "#6uozdgmi9mlu";
 import { frontendClassName, frontendDataAttrs } from "#5vbaqj4pirp3";
 
 function defaultDynamicSidebarIcon(context: DynamicSidebarItemContext) {
@@ -64,7 +65,7 @@ function defaultDynamicSidebarState(context: DynamicSidebarStateContext) {
     aria-hidden="true"
     className={primitiveStatusDotClassName({
           size: "sm",
-          tone: state === "running" ? "green" : "red",
+          tone: sidebarStateTone(state),
     })}
     {...frontendDataAttrs({ "state": state })}
     {...frontendDataAttrs({ "sidebar-state-dot": "" })}

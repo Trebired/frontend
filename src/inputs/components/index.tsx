@@ -321,6 +321,8 @@ function AutosizeTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
 
 export { AutosizeTextarea, ClearButton, PasswordToggleButton, UploadField };
 export * from "./choice.js";
+export { DatePicker } from "#35l6ph5odh0z";
+export type { DatePickerProps } from "#35l6ph5odh0z";
 export * from "./disclosure.js";
 export * from "./dropdown.js";
 export * from "./search.js";

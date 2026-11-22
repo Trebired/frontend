@@ -4,6 +4,7 @@
 @use "./cropper-internals";
 @use "./primitives";
 @use "./../advanced/textarea/styles/highlight";
+@use "./../advanced/date_picker/styles/index" as date-picker-styles;
 @use "#ggsv3udz97t0" as advanced-input;
 @use "#kf8za6werc6f" as advanced-file;
 @use "#vnoeqwsaz83t" as advanced-dropdown-base;

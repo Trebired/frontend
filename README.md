@@ -124,7 +124,7 @@ A link can carry counts and live state, and `nav` may be a function of the sideb
 />
 ```
 
-`items` are dynamic sidebar items: links with `countPath`, `loaderPath`, `statusPath` and `statusIdleCountPath` read from the sidebar's `entity_counts`, and dividers. A link with a running count shows a loader; otherwise the text at `statusPath` picks an icon, colour and title from `statuses`; otherwise the count at `statusIdleCountPath` shows while the link is active. The server render and the live refresh draw the same thing. `mobile` adds the header links and account section of the mobile menu, `aside` renders the right sidebar, and `labels` replaces the chrome strings of the sidebar controls and the mobile menu.
+`items` are dynamic sidebar items: links with `countPath`, `loaderPath`, `statusPath` and `statusIdleCountPath` read from the sidebar's `entity_counts`, and dividers. A link with a running count shows a loader; otherwise the text at `statusPath` picks an icon, colour and title from `statuses`; otherwise the count at `statusIdleCountPath` shows while the link is active. The server render and the live refresh draw the same thing. A link with a `statePath` shows a dot coloured by the text there: `running` and `online` are green; `queued`, `starting`, `stopping` and `interrupted` are yellow; `stopped`, `clean` and `replaced` are gray; `failed`, `offline` and anything else are red. `mobile` adds the header links and account section of the mobile menu, `aside` renders the right sidebar, and `labels` replaces the chrome strings of the sidebar controls and the mobile menu.
 
 On the server one source feeds the counts:
 
@@ -450,6 +450,11 @@ This package listens; it hosts no socket. Channels belong to the application's s
 - `card_body({ live: { channel, kind, id } })` swaps a live card.
 - `useLive(channel, room, options)` and `connectLiveFields({ channel, room, fields })` from `@trebired/frontend/live` follow a room's data.
 - The log viewer takes `channel` and `room` in its config. It receives `log` events from the room and asks the room's `bootstrap` request for the first page with the viewer's own filters (`includePlatform`, `limit`, `with_style`).
+- Each log line with an entry `id` carries the element id `logLineElementId(id)`, so a link points at one log line through the element highlight: `softRedirect(logsPageUrl, { highlight: logLineElementId(id) })`.
+- `renderSharedSteps` takes an `href` on a step, and optionally a `highlight` element id. That step's row becomes a link (`role="link"`, Enter or click) that opens the address with a soft redirect and highlights that element there.
+- A steps panel's progress bar shows how far the action got and its stage, without a percentage: `bar({ showLabel: false })` leaves the percentage out, and the steps panels always draw their bar that way.
+- A steps panel keeps its latest steps. Give `shared_steps_panel` or `runtime_action_progress` a `save: { channel, key }` and the steps controller sends the panel's steps, copy, title and progress as a `steps:save` event on that channel each time they change, through the reliable `send` of `@trebired/sockets`. Pass the stored value back as `record` and the panel renders those steps on the server, opened, with the same markup the controller draws, and the controller continues from them. The application stores one record per key and checks on the server that the viewer may write that key. `markStepsChanged(panel)` sends a save after code changes the copy or progress bar outside the controller.
+- A group of steps can be the application's own card: `groupHeaders: { [groupKey]: node }` on either panel renders that card for its group, both on the server and when the controller redraws, and the group's steps go wherever that markup places `steps_group_slot()`, with `steps_group_count()` showing how many there are. A process page passes a card holding its publication card and a `Steps` disclosure, the disclosure labelled with the count and holding the slot. Markup without a slot gets its steps right after it. A disclosure inside the group keeps its open state when the controller redraws the steps.
 - The dynamic sidebar subscribes to the rooms its source names. A plain room is resolved to the channel that owns its kind through `channelOf` from `@trebired/sockets/server`; `sidebarRoom(channel, room)` names the channel explicitly. It refreshes its counts through the `sidebar:sync` event on the channel passed to `createSidebarSource({ channel })`. Register `createSidebarSyncHandler()` from `@trebired/frontend/server` as that event on the channel.
 
 Every listener ignores the `snapshot` event a room sends on subscribe, because the page already rendered that state. A listener passed as `subscribe` (`(channel, room, onChange) => cleanup`) replaces the default subscription.
@@ -465,7 +470,29 @@ highlightElement("billing_card");
 softRedirect("/settings", { highlight: "billing_card" });
 ```
 
-When a navigation falls back to a full page load, the highlight is applied after the load. Nothing happens when no element has that id. The ring takes `--tbf-highlight-color`, `--tbf-highlight-width`, `--tbf-highlight-glow` and `--tbf-highlight-duration`, and holds still under reduced motion.
+When a navigation falls back to a full page load, the highlight is applied after the load. An element that the page adds later, such as a log line that arrives over a socket, is highlighted when it appears, for up to ten seconds or until the next navigation. Nothing happens when no element has that id by then. The ring takes `--tbf-highlight-color`, `--tbf-highlight-width`, `--tbf-highlight-glow` and `--tbf-highlight-duration`, and holds still under reduced motion.
+
+### Graph Timeline
+
+A graph that holds more history than fits on one chart takes `timeline`. Pass the whole history in `datasets`, or in `points` for a single series: the chart draws one window of it, five minutes by default, and a strip under the chart draws all of it with the window marked on it and the highest peaks of each dataset as markers.
+
+```tsx
+cpu_graph({ datasets, live: isRunning, timeline: { windowMs: 5 * 60 * 1000, peaks: 3 } });
+```
+
+Clicking the strip moves the window there and dragging it pans; a peak marker moves the window to that peak and names its value and time in a tooltip. The strip is a slider for the keyboard: the arrows pan by a quarter of the window, Page Up and Page Down by a whole window, Home and End jump to the start and the end. While the window sits at the end of a `live` graph it follows new samples, and the strip offers "Latest" once it is moved away. A history no longer than the window gets no strip. `timeline: true` takes the defaults. A point that stands for several samples, such as a minute of an archived history, can carry `peak`, its highest value: the strip draws and marks that peak while the chart draws `value`. `numericHistoryToPoints` takes a third reader for it.
+
+When the history is longer than the window, a toolbar above the strip offers longer windows (one hour, six hours, one day and seven days, each only when the history is longer) and, once the history covers more than one day, a `DatePicker` that moves the window onto the chosen day. Days without data are disabled. A window that holds more than 240 points is drawn as 240 evenly spaced buckets, each the weighted average of its points, so the time axis stays true to time; a bucket with no data is left empty.
+
+`live: false` marks a graph whose data has ended, such as a stopped process. Its time axis shows clock times instead of counting back to "now", and so does a timeline window that does not sit at the end. A history longer than three days shows dates only.
+
+### Date Picker
+
+`DatePicker` from `@trebired/frontend/react` picks one day without the browser's native calendar. `value`, `min` and `max` are local `YYYY-MM-DD` keys, and `onChange` receives the chosen key; `isDateDisabled` turns off single days. The calendar opens in a panel on the layer root, starts the week on the locale's first day and names months and weekdays through `Intl`. The arrows move by a day or a week, Page Up and Page Down by a month (with Shift by a year), Home and End to the start and end of the week, Enter picks and Escape closes and returns focus to the button.
+
+```tsx
+<DatePicker label="Day" lang={lang} max={lastDay} min={firstDay} onChange={setDay} value={day} />
+```
 
 ### Content Management
 

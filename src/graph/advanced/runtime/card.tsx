@@ -10,6 +10,7 @@ import {
   useUnitSelection,
 } from "./card/units.js";
 import { GraphCardFrame } from "./render.js";
+import { useGraphTimeline } from "./timeline/use.js";
 import {
   getDefaultEmptyIcon,
   getDefaultWarningIcon,
@@ -104,7 +105,8 @@ function useGraphCardState(props) {
 
 function GraphCard(props) {
   const rootRef = useRef(null);
-  const state = useGraphCardState(props);
+  const timeline = useGraphTimeline(props);
+  const state = useGraphCardState(timeline.chartProps);
   useEffect(() => {
       registerGraphRoot(rootRef.current, props.id);
       return undefined;
@@ -119,6 +121,9 @@ function GraphCard(props) {
       modalWaiting: state.modalWaiting,
       selectedScale: state.selectedScale,
       subtitle: props.subtitle,
+      timelineStrip: timeline.strip
+      ? { ...timeline.strip, unitMeasurement: state.unitMeasurement, unitScale: state.selectedScale }
+      : null,
       title: props.title,
       titleLevel: props.titleLevel,
       rootRef,

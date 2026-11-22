@@ -17,13 +17,13 @@ const HIGHLIGHT_DURATION_VAR = frontendCssVar("highlight-duration");
 const HIGHLIGHT_QUEUE_KEY = "tbf.highlight.pending";
 const DEFAULT_DURATION_MS = 1600;
 const QUEUE_MAX_AGE_MS = 20000;
-const TARGET_WAIT_MS = 1500;
-const TARGET_POLL_MS = 50;
+const TARGET_WAIT_MS = 10000;
 const RING_GAP_PX = 4;
 const VIEWPORT_MARGIN_PX = 24;
 
 let active: ActiveHighlight | null = null;
 let navigationListenerBound = false;
+let stopWaiting: (() => void) | null = null;
 
 function normalizeHighlightId(value: unknown) {
   const id = typeof value === "string" ? value.trim() : "";
@@ -51,10 +51,17 @@ function clearHighlight() {
   active = null;
 }
 
+function cancelPendingHighlight() {
+  if (stopWaiting) stopWaiting();
+}
+
 function bindNavigationClear() {
   if (navigationListenerBound) return;
   navigationListenerBound = true;
-  document.addEventListener(frontendEventName("live-navigation"), clearHighlight);
+  document.addEventListener(frontendEventName("live-navigation"), () => {
+      cancelPendingHighlight();
+      clearHighlight();
+  });
 }
 
 function isOutsideViewport(target: HTMLElement) {
@@ -119,11 +126,25 @@ function highlightElement(id: unknown, options: HighlightOptions = {}) {
 function highlightWhenPresent(id: unknown, options: HighlightOptions = {}) {
   const value = normalizeHighlightId(id);
   if (!value || typeof document === "undefined") return;
-  const deadline = Date.now() + TARGET_WAIT_MS;
-  const attempt = () => {
-    if (highlightElement(value, options) || Date.now() > deadline) return;
-    setTimeout(attempt, TARGET_POLL_MS);
-  };
+  cancelPendingHighlight();
+  bindNavigationClear();
+  let frame = 0;
+  const observer = new MutationObserver(() => {
+      if (!frame) frame = requestAnimationFrame(attempt);
+  });
+  const timer = setTimeout(() => stop(), TARGET_WAIT_MS);
+  function stop() {
+    observer.disconnect();
+    clearTimeout(timer);
+    cancelAnimationFrame(frame);
+    if (stopWaiting === stop) stopWaiting = null;
+  }
+  function attempt() {
+    frame = 0;
+    if (highlightElement(value, options)) stop();
+  }
+  stopWaiting = stop;
+  observer.observe(document.body, { childList: true, subtree: true });
   requestAnimationFrame(() => requestAnimationFrame(attempt));
 }
 

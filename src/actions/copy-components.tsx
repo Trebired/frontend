@@ -110,7 +110,7 @@ function copyCardRows(props: CopyCardProps, rowsId: string) {
     );
   }
   if (Array.isArray(props.rows) && props.emptyText) {
-    return <p className={primitiveTextClassName({ muted: true, size: "sm" })}>{props.emptyText}</p>;
+    return <p className={primitiveTextClassName({ muted: true })}>{props.emptyText}</p>;
   }
   return null;
 }

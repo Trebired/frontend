@@ -1,0 +1,90 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("date-picker-panel")} {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  box-sizing: border-box;
+  width: max-content;
+  flex-direction: column;
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
+  padding: var(#{ns.css-var("gap-sm")}, 8px);
+  border: var(#{ns.css-var("border-width")}, 1px) solid var(#{ns.css-var("border")}, currentcolor);
+  border-radius: var(#{ns.css-var("radius")}, 0);
+  background: var(#{ns.css-var("ui-dropdown-menu-bg")}, var(#{ns.css-var("surface")}, #fff));
+  box-shadow: var(#{ns.css-var("shadow")}, 0 8px 24px rgba(0, 0, 0, 0.2));
+  color: var(#{ns.css-var("text")}, currentcolor);
+}
+
+#{ns.element-class("date-picker", "header")} {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
+}
+
+#{ns.element-class("date-picker", "title")} {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+#{ns.element-class("date-picker", "grid")} {
+  border-collapse: separate;
+  border-spacing: 2px;
+
+  th {
+    padding-block: 4px;
+    color: var(#{ns.css-var("text-muted")}, currentcolor);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  td {
+    padding: 0;
+  }
+}
+
+#{ns.element-class("date-picker", "day")} {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  padding: 0;
+  border: var(#{ns.css-var("border-width")}, 1px) solid transparent;
+  border-radius: var(#{ns.css-var("radius-sm")}, 0);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color var(#{ns.css-var("transition-fast")}, 0.12s) ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(#{ns.css-var("border")}, currentcolor);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(#{ns.css-var("focus")}, currentcolor);
+    outline-offset: 1px;
+  }
+
+  &[aria-current="date"] {
+    border-color: var(#{ns.css-var("border")}, currentcolor);
+  }
+
+  &[aria-pressed="true"] {
+    border-color: var(#{ns.css-var("focus")}, currentcolor);
+    background: color-mix(in srgb, var(#{ns.css-var("focus")}, currentcolor) 20%, transparent);
+  }
+
+  &#{ns.data("date-picker-outside", "true")} {
+    color: var(#{ns.css-var("text-muted")}, currentcolor);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}

@@ -7,112 +7,12 @@ import {
   primitiveTextClassName,
 } from "#hzrmwbvgt2ax";
 import { toText as onlyString } from "#ndsvdqv80epr";
-
-type SharedStepCardInput = {
-  actionLabel?: string;
-  groupKey?: string;
-  groupLabel?: string;
-  key?: string;
-  level?: string;
-  message: string;
-  recordedAtLabel?: string;
-};
-
-type SharedStepGroup = {
-  actionLabel?: string;
-  key: string;
-  label: string;
-  steps: SharedStepCardInput[];
-};
-
-function normalizeSharedSteps(stepsInput: unknown) {
-  return Array.isArray(stepsInput)
-  ? stepsInput
-  .map((entry) => ({
-        actionLabel: onlyString(entry && (entry as any).actionLabel),
-        groupKey: onlyString(entry && (entry as any).groupKey),
-        groupLabel: onlyString(entry && (entry as any).groupLabel),
-        key: onlyString(entry && (entry as any).key),
-        level: onlyString(entry && (entry as any).level),
-        message: onlyString(entry && (entry as any).message),
-        recordedAtLabel: onlyString(entry && (entry as any).recordedAtLabel),
-  }))
-  .filter((entry) => entry.message)
-  : [];
-}
-
-function stepTone(level: string) {
-  const normalized = onlyString(level).toLowerCase();
-  if (normalized === "fail" || normalized === "error") {
-    return {
-      className: frontendClassName("red"),
-      label: "fail",
-    };
-  }
-  if (normalized === "success" || normalized === "ok") {
-    return {
-      className: frontendClassName("green"),
-      label: "success",
-    };
-  }
-  if (normalized === "warn" || normalized === "warning") {
-    return {
-      className: frontendClassName("yellow"),
-      label: "warning",
-    };
-  }
-
-  return {
-    className: frontendClassName("blue"),
-    label: "event",
-  };
-}
-
-function normalizedGroupKey(input: SharedStepCardInput, index: number) {
-  const explicitKey = onlyString(input && input.groupKey);
-  if (explicitKey) return explicitKey;
-  const explicitLabel = onlyString(input && input.groupLabel);
-  if (explicitLabel) return `group:${explicitLabel.toLowerCase()}`;
-  return `group:${index}`;
-}
-
-function groupSharedSteps(stepsInput: unknown) {
-  const steps = normalizeSharedSteps(stepsInput);
-
-  const hasGrouping = steps.some((entry) => entry.groupKey || entry.groupLabel);
-  if (!hasGrouping) return [];
-
-  const groups: SharedStepGroup[] = [];
-  const byKey = new Map<string, SharedStepGroup>();
-
-  steps
-  .slice()
-  .reverse()
-  .forEach((entry, index) => {
-      const groupKey = normalizedGroupKey(entry, index);
-      const groupLabel = onlyString(entry.groupLabel) || defaultStepsLabel();
-      const actionLabel = onlyString(entry.actionLabel);
-      let group = byKey.get(groupKey);
-      if (!group) {
-        group = {
-          actionLabel,
-          key: groupKey,
-          label: groupLabel,
-          steps: [],
-        };
-        byKey.set(groupKey, group);
-        groups.push(group);
-      } else if (!group.label && groupLabel) {
-        group.label = groupLabel;
-      } else if (!group.actionLabel && actionLabel) {
-        group.actionLabel = actionLabel;
-      }
-
-      group.steps.push(entry);
-  });
-
-  return groups;
-}
+import { groupSharedSteps, normalizeSharedSteps, stepTone } from "./model.js";
+import type { SharedStepCardInput, SharedStepGroup } from "./model.js";
+import { rebind, softRedirect } from "#xhefk4bgh568";
+import { createDisclosure } from "#z2c0jqmjqds4";
+import { createNumberElement } from "#z1ajnkhjieay";
+import { highlightAttrs, highlightTargetOf } from "#8xdkni5exuif";
 
 function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   const message = onlyString(input && input.message);
@@ -153,8 +53,42 @@ function createSharedStepCard(doc: Document, input: SharedStepCardInput) {
   row.appendChild(header);
 
   appendStepRecordedAt(doc, row, input && input.recordedAtLabel);
+  linkStepRow(row, onlyString(input && input.href), onlyString(input && input.highlight));
 
   return row;
+}
+
+const STEP_HREF_ATTR = frontendDataAttr("step-href");
+let stepLinksBound = false;
+
+function stepLinkRow(target: EventTarget | null) {
+  return target instanceof Element ? target.closest<HTMLElement>(`[${STEP_HREF_ATTR}]`) : null;
+}
+
+function openStepLink(row: HTMLElement | null) {
+  const href = row ? onlyString(row.getAttribute(STEP_HREF_ATTR)) : "";
+  if (href) void softRedirect(href, { highlight: highlightTargetOf(row) || undefined });
+}
+
+function bindStepLinks() {
+  if (stepLinksBound || typeof document === "undefined") return;
+  stepLinksBound = true;
+  document.addEventListener("click", (event) => openStepLink(stepLinkRow(event.target)));
+  document.addEventListener("keydown", (event) => {
+      const row = stepLinkRow(event.target);
+      if (event.key !== "Enter" || !row || event.target !== row) return;
+      event.preventDefault();
+      openStepLink(row);
+  });
+}
+
+function linkStepRow(row: HTMLElement, href: string, highlight: string) {
+  if (!href) return;
+  bindStepLinks();
+  row.setAttribute(STEP_HREF_ATTR, href);
+  for (const [name, value] of Object.entries(highlightAttrs(highlight))) row.setAttribute(name, value);
+  row.setAttribute("role", "link");
+  row.tabIndex = 0;
 }
 
 function appendStepRecordedAt(doc: Document, row: HTMLElement, value: unknown) {
@@ -172,7 +106,45 @@ function appendStepRecordedAt(doc: Document, row: HTMLElement, value: unknown) {
   row.appendChild(timeEl);
 }
 
-function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
+const GROUP_HEADER_ATTR = frontendDataAttr("steps-group-header");
+const CARD_GROUP_ATTR = frontendDataAttr("steps-group-card");
+
+function groupHeaderTemplate(container: HTMLElement, key: string) {
+  const panel = container.closest(`[${frontendDataAttr("steps-panel")}]`) || container;
+  const templates = Array.from(panel.querySelectorAll<HTMLTemplateElement>(`template[${GROUP_HEADER_ATTR}]`));
+  return templates.find((template) => template.getAttribute(GROUP_HEADER_ATTR) === key) || null;
+}
+
+function stepCardsList(doc: Document, group: SharedStepGroup) {
+  const list = doc.createElement("div");
+  list.className = primitiveStackClassName({ gap: "xs" });
+  list.setAttribute(frontendDataAttr("steps-group-list"), group.key);
+  group.steps.forEach((entry) => {
+      const card = createSharedStepCard(doc, entry);
+      if (card) list.appendChild(card);
+  });
+  return list;
+}
+
+function createCardStepGroup(doc: Document, group: SharedStepGroup, template: HTMLTemplateElement) {
+  const wrapper = doc.createElement("section");
+  wrapper.setAttribute(frontendDataAttr("steps-group"), group.key);
+  wrapper.setAttribute(CARD_GROUP_ATTR, "");
+  wrapper.appendChild(template.content.cloneNode(true));
+  const slot = wrapper.querySelector<HTMLElement>(`[${frontendDataAttr("steps-group-slot")}]`);
+  const list = stepCardsList(doc, group);
+  if (slot) slot.replaceChildren(...Array.from(list.childNodes));
+  else wrapper.appendChild(list);
+  wrapper.querySelectorAll(`[${frontendDataAttr("steps-group-count")}]`).forEach((count) => {
+      count.replaceChildren(createNumberElement(doc, group.steps.length));
+  });
+  return wrapper;
+}
+
+function createSharedStepGroup(doc: Document, group: SharedStepGroup, container: HTMLElement) {
+  const template = groupHeaderTemplate(container, group.key);
+  if (template) return createCardStepGroup(doc, group, template);
+
   const wrapper = doc.createElement("section");
   wrapper.className = primitiveStackClassName({ gap: "xs" });
   wrapper.setAttribute(frontendDataAttr("steps-group"), group.key);
@@ -183,7 +155,6 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
 
   const header = doc.createElement("div");
   header.className = primitiveStackClassName({ gap: "xs2" });
-
   const title = doc.createElement("h5");
   title.textContent = group.label;
   header.appendChild(title);
@@ -198,18 +169,25 @@ function createSharedStepGroup(doc: Document, group: SharedStepGroup) {
   }
 
   wrapper.appendChild(header);
-
-  const list = doc.createElement("div");
-  list.className = primitiveStackClassName({ gap: "xs" });
-  list.setAttribute(frontendDataAttr("steps-group-list"), group.key);
-
-  group.steps.forEach((entry) => {
-      const card = createSharedStepCard(doc, entry);
-      if (card) list.appendChild(card);
-  });
-
-  wrapper.appendChild(list);
+  wrapper.appendChild(stepCardsList(doc, group));
   return wrapper;
+}
+
+const DISCLOSURE_SELECTOR = `[${frontendDataAttr("disclosure")}]`;
+
+function openCardGroupKeys(container: HTMLElement) {
+  return new Set(
+    Array.from(container.querySelectorAll<HTMLElement>(`[${CARD_GROUP_ATTR}]`))
+    .filter((section) => section.querySelector(DISCLOSURE_SELECTOR)?.getAttribute(frontendDataAttr("disclosure-open")) === "true")
+    .map((section) => section.getAttribute(frontendDataAttr("steps-group")) || ""),
+  );
+}
+
+function rebindInserted(section: HTMLElement, openKeys: Set<string>) {
+  if (!section.isConnected) return;
+  rebind(section);
+  if (!openKeys.has(section.getAttribute(frontendDataAttr("steps-group")) || "")) return;
+  section.querySelectorAll<HTMLElement>(DISCLOSURE_SELECTOR).forEach((root) => createDisclosure(root)?.open(false));
 }
 
 function renderSharedSteps(
@@ -217,6 +195,7 @@ function renderSharedSteps(
   container: HTMLElement,
   stepsInput: unknown,
 ) {
+  const openKeys = openCardGroupKeys(container);
   container.innerHTML = "";
 
   const steps = normalizeSharedSteps(stepsInput);
@@ -235,10 +214,9 @@ function renderSharedSteps(
         const card = createSharedStepCard(doc, entry);
         if (card) container.appendChild(card);
     });
-    grouped.forEach((group) => {
-        const section = createSharedStepGroup(doc, group);
-        if (section) container.appendChild(section);
-    });
+    const sections = grouped.map((group) => createSharedStepGroup(doc, group, container));
+    sections.forEach((section) => container.appendChild(section));
+    sections.filter((section) => section.hasAttribute(CARD_GROUP_ATTR)).forEach((section) => rebindInserted(section, openKeys));
     return;
   }
 
@@ -252,8 +230,4 @@ function renderSharedSteps(
 }
 
 export type { SharedStepCardInput };
-export { createSharedStepCard, groupSharedSteps, renderSharedSteps };
-
-function defaultStepsLabel() {
-  return "Steps";
-}
+export { bindStepLinks, createSharedStepCard, groupSharedSteps, renderSharedSteps };

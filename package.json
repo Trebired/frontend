@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/frontend",
-  "version": "32.0.0",
+  "version": "32.1.0",
   "description": "Generic browser runtime systems for Trebired frontend packages and applications.",
   "type": "module",
   "sideEffects": [
@@ -105,7 +105,7 @@
   },
   "dependencies": {
     "@package/logger-adapter": "npm:@trebired/logger-adapter@^0.8.2",
-    "@trebired/sockets": "^0.2.0",
+    "@trebired/sockets": "^0.3.0",
     "@trebired/utils": "^0.9.10",
     "chart.js": "^4.5.1",
     "country-flag-icons": "^1.6.20",
