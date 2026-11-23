@@ -4,6 +4,10 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 32.2.1
+
+- A failed action no longer shows "[object Object]" under its message. The flash only shows a response's `details` when it is text, so structured details stay out of it.
+
 ## 32.2.0
 
 - New `color_picker` (also `ColorPicker`), a colour field without the browser's native colour input. It renders on the server with a hidden input for the form, a trigger that shows the swatch and its value, and a panel of swatches with a field for a typed hex colour. `bindFrontendRuntime` binds it. The first option, "Automatic", leaves the value empty so the application picks the colour.

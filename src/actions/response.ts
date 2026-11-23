@@ -64,7 +64,7 @@ function computeFlashMeta(
   adapters?: ActionAdapters,
 ): ActionFlashMeta {
   const rawMessage = String(json?.message || "").trim();
-  const rawDescription = String(json?.details || "").trim();
+  const rawDescription = typeof json?.details === "string" ? json.details.trim() : "";
   const message =
   rawMessage && !machineStatus(rawMessage, json)
   ? rawMessage

@@ -12,6 +12,15 @@ async function verifyFlash(context) {
   await verifyClassicConfirm(api);
   await verifyTextConfirm(api);
   await verifyPrompt(api);
+  await verifyActionDetails(context);
+}
+
+async function verifyActionDetails(context) {
+  const actions = await context.importDist("actions");
+  const structured = actions.computeFlashMeta("error", { details: { issues: ["email"] }, message: "Invalid.", ok: false });
+  assert.equal(structured.description, "", "structured details never reach the flash");
+  const text = actions.computeFlashMeta("error", { details: "Connection refused", message: "IMAP failed.", ok: false });
+  assert.equal(text.description, "Connection refused");
 }
 
 async function verifyFlashAboveOpenLayer(context, api) {
