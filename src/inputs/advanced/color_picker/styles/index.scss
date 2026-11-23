@@ -1,0 +1,70 @@
+@use "@trebired/bundler/namespace" as ns;
+
+#{ns.class("color-picker")} {
+  display: inline-flex;
+  min-width: 0;
+}
+
+#{ns.class("color-picker-trigger")} {
+  display: inline-flex;
+  align-items: center;
+  gap: var(#{ns.css-var("gap-xs")}, 8px);
+  width: auto;
+  min-width: 10rem;
+  cursor: pointer;
+  text-align: start;
+}
+
+#{ns.element-class("color-picker", "swatch")} {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: var(#{ns.css-var("border-width")}, 1px) solid color-mix(in srgb, currentcolor 22%, transparent);
+  border-radius: var(#{ns.css-var("radius-sm")}, var(#{ns.css-var("radius")}, 4px));
+  background: var(#{ns.css-var("color-picker-value")}, transparent);
+}
+
+#{ns.element-class("color-picker", "swatch")}#{ns.data("color-empty", "true")} {
+  border-style: dashed;
+}
+
+#{ns.class("color-picker-panel")} {
+  gap: var(#{ns.css-var("gap-sm")}, 8px);
+  width: max-content;
+  max-width: min(18rem, calc(100vw - 1.5rem));
+}
+
+#{ns.element-class("color-picker", "grid")} {
+  display: grid;
+  grid-template-columns: repeat(6, 2rem);
+  gap: var(#{ns.css-var("gap-xs")}, 6px);
+}
+
+#{ns.element-class("color-picker", "option")} {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: var(#{ns.css-var("border-width")}, 1px) solid transparent;
+  border-radius: var(#{ns.css-var("radius")}, 6px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color var(#{ns.css-var("transition-fast")}, 160ms) ease;
+}
+
+#{ns.element-class("color-picker", "option")} #{ns.element-class("color-picker", "swatch")} {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+#{ns.element-class("color-picker", "option")}:hover,
+
+#{ns.element-class("color-picker", "option")}:focus-visible,
+
+#{ns.element-class("color-picker", "option")}[aria-checked="true"] {
+  border-color: currentcolor;
+}

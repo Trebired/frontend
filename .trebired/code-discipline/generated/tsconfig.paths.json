@@ -1156,6 +1156,9 @@
       "#feulcpxohgjo": [
         "../../../src/config/types/glass.ts"
       ],
+      "#fic1lfq88yhu": [
+        "../../../src/inputs/advanced/color_picker/styles/index.scss"
+      ],
       "#fkbyanc8o2ku": [
         "../../../src/graph/advanced/contributions_heatmap/logging.ts"
       ],
@@ -1711,6 +1714,9 @@
       "#mzas1wvri3n5": [
         "../../../src/logs/client/page_registry.ts"
       ],
+      "#n0ji6i6fdx1y": [
+        "../../../src/inputs/advanced/color_picker/index.tsx"
+      ],
       "#n0r5108fmldy": [
         "../../../src/logs/line_id.ts"
       ],
@@ -2188,6 +2194,9 @@
       "#v5ivu5zwa0a7": [
         "../../../src/graph/advanced/contributions_heatmap/model.ts"
       ],
+      "#v613di8pycoh": [
+        "../../../src/inputs/advanced/color_picker/runtime.ts"
+      ],
       "#v63uyk28apn0": [
         "../../../src/popover/styles/index.scss"
       ],
@@ -2485,8 +2494,14 @@
       "#z1ajnkhjieay": [
         "../../../src/primitives/components/number.tsx"
       ],
+      "#z203vt9z9ons": [
+        "../../../scripts/verify/frontend/color_picker.mjs"
+      ],
       "#z2c0jqmjqds4": [
         "../../../src/inputs/advanced/index.ts"
+      ],
+      "#z2ctm70vatby": [
+        "../../../src/inputs/advanced/color_picker/colors.ts"
       ],
       "#z3u8blyu7417": [
         "../../../src/graph/advanced/runtime/points.ts"

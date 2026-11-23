@@ -494,6 +494,14 @@ When the history is longer than the window, a toolbar above the strip offers lon
 <DatePicker label="Day" lang={lang} max={lastDay} min={firstDay} onChange={setDay} value={day} />
 ```
 
+`color_picker` (also `ColorPicker`) picks a colour without the browser's native colour input. It is server markup that `bindFrontendRuntime` binds, so it works in a plain form: the value travels in a hidden input named `name`, as a lowercase `#rrggbb` or empty. The trigger shows the swatch and its value; its panel lists `swatches` (24 calm colours from `COLOR_SWATCHES` by default) and takes a typed hex colour. Unless `automatic={false}`, the first option is "Automatic", which leaves the value empty so the application picks one. Every change fires `change` on the hidden input, so a submit-on-change form reacts.
+
+`distinctColor(used)` picks that colour: the swatch furthest, in OKLab, from every colour already in use. `normalizeHexColor` and `colorDistance` come with it from the root entry, so a server can pick the colour itself.
+
+```tsx
+color_picker({ label: "Color", lang, name: "color", size: "sm" })
+```
+
 ### Content Management
 
 `@trebired/frontend/cms` lets an editor application change the content of a site without touching its code. The developer decides what is editable and within which limits; the editor changes values only inside those limits.

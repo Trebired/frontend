@@ -101,6 +101,9 @@ const EN_MESSAGES: LanguageMessages = {
   siteSearchFailed: "Search is not available right now.",
   siteSearchLabel: "Search this site",
   siteSearchPlaceholder: "Search every page",
+  colorPickerAutomatic: "Automatic",
+  colorPickerCustom: "Custom color",
+  colorPickerPalette: "Colors",
 };
 
 const CS_MESSAGES: LanguageMessages = {
@@ -200,6 +203,9 @@ const CS_MESSAGES: LanguageMessages = {
   siteSearchFailed: "Hledání teď není dostupné.",
   siteSearchLabel: "Hledat na webu",
   siteSearchPlaceholder: "Hledat na všech stránkách",
+  colorPickerAutomatic: "Automaticky",
+  colorPickerCustom: "Vlastní barva",
+  colorPickerPalette: "Barvy",
 };
 
 const MESSAGE_TABLES: Record<string, LanguageMessages> = {

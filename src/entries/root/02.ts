@@ -193,3 +193,4 @@ export {
   visibilityHidden,
 } from "#psqougnr9tsg";
 export type *from "#psqougnr9tsg";
+export { COLOR_SWATCHES, colorDistance, distinctColor, normalizeHexColor } from "./../../inputs/advanced/color_picker/colors.js";

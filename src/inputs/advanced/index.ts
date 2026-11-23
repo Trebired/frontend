@@ -45,6 +45,7 @@ import radioManager, {
   bootRadioManager,
   defineRadioGroupElement,
 } from "./radio/index.client.js";
+import { bindColorPickers } from "./color_picker/runtime.js";
 import searchManager from "./search.js";
 import {
   bindBackendStatusInput,
@@ -124,6 +125,7 @@ function bindAdvancedInputControllers(root?: BindRoot | null) {
   const scope = scopeFor(root);
   if (!scope) return;
   bindAdvancedCheckboxes(scope);
+  bindColorPickers(scope);
   bindAdvancedDisclosures(scope);
   bindAdvancedDropdowns(scope);
   bindAdvancedRadios(scope);
@@ -133,6 +135,7 @@ function bindAdvancedInputControllers(root?: BindRoot | null) {
 }
 
 export {
+  bindColorPickers,
   bindAdvancedCheckboxes,
   bindAdvancedDisclosures,
   bindAdvancedDropdowns,

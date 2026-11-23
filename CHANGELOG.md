@@ -4,6 +4,11 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 32.2.0
+
+- New `color_picker` (also `ColorPicker`), a colour field without the browser's native colour input. It renders on the server with a hidden input for the form, a trigger that shows the swatch and its value, and a panel of swatches with a field for a typed hex colour. `bindFrontendRuntime` binds it. The first option, "Automatic", leaves the value empty so the application picks the colour.
+- New `distinctColor(used, candidates?)`, which returns the swatch furthest in OKLab from every colour already in use, with `COLOR_SWATCHES` (24 calm colours), `normalizeHexColor` and `colorDistance`, all from the root entry.
+
 ## 32.1.1
 
 - `SiteHeader` works on a server-rendered page again. Its mobile menu, the desktop sheet of a link group, the fit check that falls back to the menu, the section highlight of fragment links and the site search ran on React state, which nothing hydrates since 32.0.0, so the toggle and the group triggers did nothing. The header now renders its closed state on the server and `bindFrontendRuntime` binds it, with the same behaviour as before: Escape, a press outside and a link close the menu and the sheet, a hover opens the sheet, and the search loads the index on focus and lists hits as you type.

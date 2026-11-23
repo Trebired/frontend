@@ -13,6 +13,7 @@ import { verifyRecentPages } from "./frontend/recent.mjs";
 import { verifyRouteEntities } from "./frontend/route-entities.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
 import { verifyLocaleRouting, verifyLocaleSwitching } from "./frontend/locale.mjs";
+import { verifyColorPicker } from "./frontend/color_picker.mjs";
 import { verifyMedia, verifyMediaRuntime } from "./frontend/media.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
@@ -78,6 +79,7 @@ async function verifyFrontendMain() {
   await verifyLocaleEndonyms(context);
   await verifySiteChrome(context);
   await verifyMediaRuntime(context);
+  await verifyColorPicker(context);
   await verifySiteSearch(context);
   await verifyHeadings(context);
   await verifyGraphs(context);

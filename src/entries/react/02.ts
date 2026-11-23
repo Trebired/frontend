@@ -119,3 +119,5 @@ export { ErrorPage } from "#dotjuks8qbkc";
 export type { ErrorPageProps } from "#dotjuks8qbkc";
 export { tooltipAttrs } from "#8sfk4kby98q6";
 export type { TooltipAttrsOptions } from "#8sfk4kby98q6";
+export { ColorPicker, color_picker } from "./../../inputs/advanced/color_picker/index.js";
+export type { ColorPickerProps } from "./../../inputs/advanced/color_picker/index.js";
