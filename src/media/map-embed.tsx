@@ -1,4 +1,4 @@
-import { EmbedFrame, type EmbedFrameConsent, type EmbedFrameLabels } from "./embed-frame.js";
+import { EmbedFrame, type EmbedFrameConsent, type EmbedFrameLabels } from "./embed/frame.js";
 
 type MapEmbedProps = {
   aspectRatio?: string;

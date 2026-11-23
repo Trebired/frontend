@@ -11,7 +11,7 @@ import {
   portalElement,
   promoteZIndex,
 } from "#ccvonx3uhbte";
-import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
 const POPOVER_BASE_Z_INDEX = 1040;
 const POPOVER_TRIGGER_SELECTOR = `${frontendDataSelector("popover-trigger")}[aria-controls]`;
@@ -198,6 +198,7 @@ function bindPopoverTrigger(trigger: HTMLElement | null, root: BindRoot = docume
     trigger,
   };
   popover.setAttribute(frontendDataAttr("popover"), "");
+  if (popover.classList.contains(frontendClassName("popover-portaled"))) portalElement(popover);
   setPopoverExpanded(entry, false);
   const onClick = (event: MouseEvent) => {
     event.preventDefault();

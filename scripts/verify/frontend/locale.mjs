@@ -207,4 +207,39 @@ async function verifyLocaleRouting(context) {
   verifyInPlaceSwitch(api);
 }
 
-export { verifyLocaleRouting };
+async function verifyLocaleSwitching(context) {
+  const { bindFrontendRuntime, currentLocale, setCurrentLocale } = await context.importDistRoot();
+  const before = currentLocale();
+  document.body.innerHTML = [
+    '<button id="locale" data-tbf-locale-option data-tbf-locale-endpoint="/ui/lang/set" value="cs">',
+    "Czech",
+    "</button>",
+  ].join("");
+  let persisted = null;
+  let reloadOptions = null;
+  bindFrontendRuntime(document, {
+      adapters: {
+        reload: {
+          reload(options) {
+            reloadOptions = options;
+          },
+        },
+      },
+      locale: {
+        persistLocale(lang, endpoint) {
+          persisted = { endpoint, lang };
+          return Promise.resolve({ ok: true });
+        },
+      },
+      observe: false,
+      quiet: true,
+  });
+  document.getElementById("locale").click();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.deepEqual(persisted, { endpoint: "/ui/lang/set", lang: "cs" });
+  assert.deepEqual(reloadOptions, { preserveState: true, reason: "locale" });
+  assert.equal(currentLocale(), "cs", "the new locale applies before the reload, so the reloaded page renders in it");
+  setCurrentLocale(before);
+}
+
+export { verifyLocaleRouting, verifyLocaleSwitching };

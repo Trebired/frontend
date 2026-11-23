@@ -55,7 +55,9 @@ function verifyMapEmbed(react, render) {
 
 function verifyEmbedFrame(react, render) {
   const html = render(react.EmbedFrame, { src: "https://example.test/thing", title: "Thing" });
-  assert.doesNotMatch(html, /src="https:\/\/example\.test/u, "the embed must not carry src in SSR, or it blocks the document load event");
+  assert.doesNotMatch(html, /\ssrc="https:\/\/example\.test/u, "the embed must not carry src in SSR, or it blocks the document load event");
+  assert.match(html, /data-tbf-embed-src="https:\/\/example\.test\/thing"/u,
+  "the runtime reads the source from the markup, since nothing hydrates the embed");
   assert.match(html, /data-tbf-embed-state="loading"/u, "the embed must start in the loading state");
   assert.match(html, /loader-circle/u, "the embed must show the standard loader while loading");
   assert.match(html, /role="status"/u, "the embed status must be announced");
@@ -219,9 +221,42 @@ async function verifyOpenLightboxShowsImage(react) {
   host.remove();
 }
 
+async function verifyMediaRuntime(context) {
+  const { createElement } = await import("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const react = await context.importDist("react");
+  const root = await context.importDistRoot();
+  const render = (component, props) => renderToStaticMarkup(createElement(component, props));
+  const view = document.defaultView;
+  const host = document.createElement("div");
+  host.innerHTML = render(react.Carousel, { intervalMs: 0, lang: "en", slides: [{ alt: "One", src: "/a.jpg" }, { alt: "Two", src: "/b.jpg" }] })
+  +render(react.ExpandableImage, { alt: "Bar", images: ["/a.jpg", "/b.jpg"], lang: "en", src: "/a.jpg" });
+  document.body.append(host);
+  root.bindFrontendRuntime(host);
+  assert.doesNotMatch(host.innerHTML, /tbf-tbf-/u, "carousel parts carry one prefix, or their active styles never apply");
+  const active = () => [...host.querySelectorAll(".tbf-carousel-slide")].findIndex((slide) => slide.classList.contains("tbf-is-active"));
+  assert.equal(active(), 0, "the server renders the first slide active");
+  host.querySelector(".tbf-carousel-nav-next").click();
+  assert.equal(active(), 1, "the runtime binds the next button, so the server-rendered carousel moves without hydration");
+  assert.equal(host.querySelectorAll(".tbf-carousel-dot")[1].getAttribute("aria-current"), "true", "and its dot follows");
+  host.querySelector(".tbf-carousel-dot").click();
+  assert.equal(active(), 0, "a dot shows its slide");
+  host.querySelector("[data-tbf-expandable-image]").click();
+  const box = document.body.querySelector(":scope > .tbf-lightbox");
+  assert.ok(box, "an expandable image opens its lightbox from the server-rendered template");
+  assert.equal(box.querySelector(".tbf-lightbox-img").getAttribute("src"), "/a.jpg");
+  view.dispatchEvent(new view.KeyboardEvent("keydown", { key: "ArrowRight" }));
+  assert.equal(box.querySelector(".tbf-lightbox-img").getAttribute("src"), "/b.jpg", "the arrow keys step through the gallery");
+  assert.equal(box.querySelector(".tbf-lightbox-caption").textContent, "Bar 2");
+  view.dispatchEvent(new view.KeyboardEvent("keydown", { key: "Escape" }));
+  assert.ok(!box.classList.contains("tbf-is-visible"), "Escape closes the lightbox");
+  box.remove();
+  host.remove();
+}
+
 async function verifyIconSpecsCoverAllUsage(context, root) {
   const dir = path.join(context.sourceDir, "media");
-  const files = await fs.readdir(dir);
+  const files = await fs.readdir(dir, { recursive: true });
   const used = new Set();
   for (const name of files) {
     if (!name.endsWith(".ts") && !name.endsWith(".tsx")) continue;
@@ -259,4 +294,4 @@ async function verifyMedia(context) {
   await verifyTouch(context);
 }
 
-export { verifyMedia };
+export { verifyMedia, verifyMediaRuntime };

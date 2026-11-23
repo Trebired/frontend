@@ -121,23 +121,30 @@ async function verifySiteHeaderMarkup(context) {
   }
 }
 
-async function verifySiteHeaderBehaviour(context) {
+async function mountServerHeader(context, props) {
   const { createElement: h } = await import("react");
-  const { createRoot } = await import("react-dom/client");
-  const { flushSync } = await import("react-dom");
+  const { renderToStaticMarkup } = await import("react-dom/server");
   const react = await context.importDist("react");
+  const runtime = await context.importDistRoot();
   const host = document.createElement("div");
+  host.innerHTML = renderToStaticMarkup(h(react.SiteHeader, props(h)));
   document.body.appendChild(host);
-  const root = createRoot(host);
+  runtime.bindFrontendRuntime(host);
+  return host;
+}
+
+async function verifySiteHeaderBehaviour(context) {
   await useLinks(context, "plain");
-  flushSync(() => root.render(h(react.SiteHeader, { actions: h("a", { href: "#cta" }, "CTA"), brand: "Site" })));
+  const host = await mountServerHeader(context, (h) => ({ actions: h("a", { href: "#cta" }, "CTA"), brand: "Site" }));
   const header = () => host.querySelector("[data-tbf-site-header]").getAttribute("data-tbf-site-header-open");
-  const click = (selector) => flushSync(() => host.querySelector(selector).click());
+  const click = (selector) => host.querySelector(selector).click();
   const wait = () => new Promise((resolve) => setTimeout(resolve, 20));
   const view = document.defaultView;
+  assert.equal(header(), "false", "the server renders the menu closed");
   click(".tbf-site-header__toggle");
-  assert.equal(header(), "true", "the toggle opens the menu");
+  assert.equal(header(), "true", "the runtime binds the server-rendered toggle, so it opens the menu without hydration");
   assert.equal(host.querySelector(".tbf-site-header__toggle").getAttribute("aria-expanded"), "true");
+  assert.equal(host.querySelector(".tbf-site-header__menu").getAttribute("aria-hidden"), "false", "the open menu is exposed");
   click(".tbf-site-header__menu-links .tbf-text-link");
   assert.equal(header(), "false", "choosing a link closes the menu");
   click(".tbf-site-header__toggle");
@@ -145,15 +152,14 @@ async function verifySiteHeaderBehaviour(context) {
   assert.equal(header(), "false", "a link among the menu actions closes the menu");
   click(".tbf-site-header__toggle");
   await wait();
-  flushSync(() => document.dispatchEvent(new view.KeyboardEvent("keydown", { key: "Escape" })));
+  document.dispatchEvent(new view.KeyboardEvent("keydown", { key: "Escape" }));
   assert.equal(header(), "false", "Escape closes the menu");
   click(".tbf-site-header__toggle");
   await wait();
   const outside = document.createElement("p");
   document.body.appendChild(outside);
-  flushSync(() => outside.dispatchEvent(new view.PointerEvent("pointerdown", { bubbles: true })));
+  outside.dispatchEvent(new view.PointerEvent("pointerdown", { bubbles: true }));
   assert.equal(header(), "false", "pressing outside the header closes the menu");
-  flushSync(() => root.unmount());
   host.remove();
   outside.remove();
 }
@@ -209,39 +215,31 @@ async function verifySiteHeaderSheetMarkup(context) {
 }
 
 async function verifySiteHeaderSheetBehaviour(context) {
-  const { createElement: h } = await import("react");
-  const { createRoot } = await import("react-dom/client");
-  const { flushSync } = await import("react-dom");
-  const react = await context.importDist("react");
-  const host = document.createElement("div");
-  document.body.appendChild(host);
-  const root = createRoot(host);
   await useLinks(context, "grouped");
-  flushSync(() => root.render(h(react.SiteHeader, { brand: "Site" })));
+  const host = await mountServerHeader(context, () => ({ brand: "Site" }));
   const sheet = () => host.querySelector(".tbf-site-header__sheet").getAttribute("data-tbf-site-header-sheet");
   const trigger = (index) => host.querySelectorAll(".tbf-site-header__nav-trigger")[index];
   const visible = () => [...host.querySelectorAll(".tbf-site-header__sheet-section")].filter((section) => !section.hidden).length;
-  flushSync(() => trigger(0).click());
+  trigger(0).click();
   assert.equal(sheet(), "open", "pressing a group opens the band");
   assert.equal(trigger(0).getAttribute("aria-expanded"), "true");
   assert.equal(visible(), 1, "and shows that group's section alone");
-  flushSync(() => trigger(1).click());
+  trigger(1).click();
   assert.equal(trigger(1).getAttribute("aria-expanded"), "true", "pressing another group switches the band to it");
   assert.equal(trigger(0).getAttribute("aria-expanded"), "false");
-  flushSync(() => trigger(1).click());
+  trigger(1).click();
   assert.equal(sheet(), "closed", "pressing the open group again closes the band");
-  flushSync(() => trigger(0).click());
-  flushSync(() => document.dispatchEvent(new document.defaultView.KeyboardEvent("keydown", { key: "Escape" })));
+  trigger(0).click();
+  document.dispatchEvent(new document.defaultView.KeyboardEvent("keydown", { key: "Escape" }));
   assert.equal(sheet(), "closed", "Escape closes the band");
-  flushSync(() => trigger(0).click());
-  flushSync(() => host.querySelector(".tbf-site-header__sheet-entry").click());
+  trigger(0).click();
+  host.querySelector(".tbf-site-header__sheet-entry").click();
   assert.equal(sheet(), "closed", "choosing a link closes the band");
-  flushSync(() => trigger(0).click());
+  trigger(0).click();
   const outside = document.createElement("p");
   document.body.appendChild(outside);
-  flushSync(() => outside.dispatchEvent(new document.defaultView.PointerEvent("pointerdown", { bubbles: true })));
+  outside.dispatchEvent(new document.defaultView.PointerEvent("pointerdown", { bubbles: true }));
   assert.equal(sheet(), "closed", "pressing outside the header closes the band");
-  flushSync(() => root.unmount());
   host.remove();
   outside.remove();
 }

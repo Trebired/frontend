@@ -90,3 +90,9 @@
   height: 100%;
   border: 0;
 }
+
+#{ns.class("embed-frame-status")}[hidden],
+
+#{ns.class("embed-frame-fullscreen")}[hidden] {
+  display: none;
+}

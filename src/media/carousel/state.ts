@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { A11Y_CHANGE_EVENT, motionReduced } from "./../a11y/attributes.js";
+import { A11Y_CHANGE_EVENT, motionReduced } from "./../../a11y/attributes.js";
 
 type CarouselState = {
   activeIndex: number;

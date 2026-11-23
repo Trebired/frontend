@@ -37,9 +37,6 @@
       "#0edmzg1kctm7": [
         "../../../src/language/runtime/source/animation.ts"
       ],
-      "#0fs07mm0qoma": [
-        "../../../src/layout/components/site/header/state.ts"
-      ],
       "#0k26zlvzjegd": [
         "../../../src/index.ts"
       ],
@@ -48,9 +45,6 @@
       ],
       "#0m28qhit0zks": [
         "../../../src/a11y/controls.ts"
-      ],
-      "#0mdb644lpzkk": [
-        "../../../src/media/carousel-state.ts"
       ],
       "#0n07kcsve07w": [
         "../../../scripts/verify/frontend/live/modal_trigger.mjs"
@@ -96,6 +90,9 @@
       ],
       "#1d9z4mo1iksz": [
         "../../../src/steps/dom.ts"
+      ],
+      "#1g7tza57efoy": [
+        "../../../src/media/embed/paths.ts"
       ],
       "#1h8vu340iu43": [
         "../../../src/graph/advanced/runtime/render.tsx"
@@ -423,9 +420,6 @@
       ],
       "#5vbaqj4pirp3": [
         "../../../src/namespace/index.ts"
-      ],
-      "#5x2658viyxv1": [
-        "../../../src/media/carousel.tsx"
       ],
       "#5zd51tnvt4yt": [
         "../../../src/inputs/select_cards.ts"
@@ -868,6 +862,9 @@
       "#bu1nq95e3k0f": [
         "../../../src/icons/shared.ts"
       ],
+      "#buoacnc13si6": [
+        "../../../src/layout/site_header/section_spy.ts"
+      ],
       "#buvyckbx24ra": [
         "../../../src/inputs/advanced/dropdown/index.client.ts"
       ],
@@ -1210,9 +1207,6 @@
       "#fxezcrj6rle9": [
         "../../../src/config/typography.ts"
       ],
-      "#fxs37mbghbl4": [
-        "../../../src/layout/components/site/section_spy.ts"
-      ],
       "#fzfi2jetusop": [
         "../../../src/logs/i18n/cs.ts"
       ],
@@ -1242,6 +1236,9 @@
       ],
       "#ggsv3udz97t0": [
         "../../../src/inputs/advanced/input/styles/input.scss"
+      ],
+      "#gh1iwt20csp2": [
+        "../../../src/media/carousel/runtime.ts"
       ],
       "#gi2c2fgone4i": [
         "../../../src/code/index.ts"
@@ -1384,9 +1381,6 @@
       "#i3p68u9n2acm": [
         "../../../src/config/sources/types.ts"
       ],
-      "#i4d0umua982v": [
-        "../../../src/layout/components/site/header/fit.ts"
-      ],
       "#i6fiia6z4x10": [
         "../../../src/live/components/index.tsx"
       ],
@@ -1441,6 +1435,9 @@
       "#j1atd68dl0ir": [
         "../../../src/logs/content.tsx"
       ],
+      "#j3350noszt1e": [
+        "../../../src/media/carousel/index.tsx"
+      ],
       "#j823zi56bdkj": [
         "../../../src/editor/viewer/monaco.tsx"
       ],
@@ -1482,6 +1479,9 @@
       ],
       "#jsw2nd95jg5b": [
         "../../../src/config/module.ts"
+      ],
+      "#juf1lhduy19f": [
+        "../../../src/media/embed/frame.tsx"
       ],
       "#jug9z8qra4yv": [
         "../../../src/server/logging.ts"
@@ -1627,6 +1627,9 @@
       "#lqba84qf9kzf": [
         "../../../src/media/styles/carousel.scss"
       ],
+      "#lvekk641kwqf": [
+        "../../../src/media/runtime.ts"
+      ],
       "#lvf9qqxt5vq8": [
         "../../../src/config/types/links.ts"
       ],
@@ -1647,6 +1650,9 @@
       ],
       "#m2m352h4xbcb": [
         "../../../src/server/live.ts"
+      ],
+      "#m3uc6aqwtkeu": [
+        "../../../src/layout/site_header/search.ts"
       ],
       "#m4qe9whmb0px": [
         "../../../src/runtime/lazy.ts"
@@ -1824,6 +1830,9 @@
       ],
       "#pazzio0dn1au": [
         "../../../src/primitives/components/marquee.tsx"
+      ],
+      "#pdb5sqxvumgw": [
+        "../../../src/layout/site_header/runtime.ts"
       ],
       "#pdonq1ixwr3k": [
         "../../../src/steps/model.ts"
@@ -2080,6 +2089,9 @@
       "#tlkyab3pczjn": [
         "../../../src/primitives/components/layout.tsx"
       ],
+      "#tn4n8pnz3cqo": [
+        "../../../src/media/lightbox-runtime.ts"
+      ],
       "#tn4xlx3rpu5e": [
         "../../../src/layout/styles/site/menu.scss"
       ],
@@ -2206,6 +2218,9 @@
       "#vkg0staaw1wz": [
         "../../../src/config/presets.ts"
       ],
+      "#vmthpqy7ds6k": [
+        "../../../src/media/embed/runtime.ts"
+      ],
       "#vn2vr51nstim": [
         "../../../src/a11y/styles/contrast.scss"
       ],
@@ -2316,9 +2331,6 @@
       ],
       "#wx6aeo50d9rb": [
         "../../../src/spa/closers.ts"
-      ],
-      "#wxwncfjvldfr": [
-        "../../../src/media/embed-frame.tsx"
       ],
       "#wzwwzhupyorp": [
         "../../../src/config/default/config.ts"
@@ -2440,6 +2452,9 @@
       "#yhpwd8s1vkmw": [
         "../../../src/config/default/component-tokens.ts"
       ],
+      "#yizd733k52hy": [
+        "../../../src/media/carousel/state.ts"
+      ],
       "#yjgcom4tq3nc": [
         "../../../src/config/default/media-tokens.ts"
       ],
@@ -2463,9 +2478,6 @@
       ],
       "#yv4ubgils4dc": [
         "../../../src/sidebar/dynamic/tree.ts"
-      ],
-      "#yw5n31q6m01b": [
-        "../../../src/layout/components/site/header/sheet.ts"
       ],
       "#ywso4j7v0tp7": [
         "../../../src/layout/boot.ts"

@@ -12,8 +12,8 @@ import { verifyIcons } from "./frontend/icons.mjs";
 import { verifyRecentPages } from "./frontend/recent.mjs";
 import { verifyRouteEntities } from "./frontend/route-entities.mjs";
 import { verifyFrontendLive } from "./frontend/live.mjs";
-import { verifyLocaleRouting } from "./frontend/locale.mjs";
-import { verifyMedia } from "./frontend/media.mjs";
+import { verifyLocaleRouting, verifyLocaleSwitching } from "./frontend/locale.mjs";
+import { verifyMedia, verifyMediaRuntime } from "./frontend/media.mjs";
 import { verifyFrontendLogging } from "./frontend/logging.mjs";
 import { verifyProductIdentity } from "./frontend/product.mjs";
 import { verifyProgressRequests } from "./frontend/progress.mjs";
@@ -63,7 +63,7 @@ async function verifyFrontendMain() {
   await verifyLocaleRouting(context);
   await verifyMedia(context);
   await verifyProgressRequests(context);
-  await verifyLocaleSwitching();
+  await verifyLocaleSwitching(context);
   await verifyFrontendActions({ importDist, importDistRoot });
   await verifyProductIdentity(context);
   await verifyIcons(context);
@@ -77,6 +77,7 @@ async function verifyFrontendMain() {
   await verifyCopyComponents(context);
   await verifyLocaleEndonyms(context);
   await verifySiteChrome(context);
+  await verifyMediaRuntime(context);
   await verifySiteSearch(context);
   await verifyHeadings(context);
   await verifyGraphs(context);
@@ -150,38 +151,6 @@ function installDom() {
   window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
   globalThis.CSS = window.CSS;
   return window;
-}
-
-async function verifyLocaleSwitching() {
-  const { bindFrontendRuntime } = await importDistRoot();
-  document.body.innerHTML = [
-    '<button id="locale" data-tbf-locale-option data-tbf-locale-endpoint="/ui/lang/set" value="cs">',
-    "Czech",
-    "</button>",
-  ].join("");
-  let persisted = null;
-  let reloadOptions = null;
-  bindFrontendRuntime(document, {
-      adapters: {
-        reload: {
-          reload(options) {
-            reloadOptions = options;
-          },
-        },
-      },
-      locale: {
-        persistLocale(lang, endpoint) {
-          persisted = { endpoint, lang };
-          return Promise.resolve({ ok: true });
-        },
-      },
-      observe: false,
-      quiet: true,
-  });
-  document.getElementById("locale").click();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.deepEqual(persisted, { endpoint: "/ui/lang/set", lang: "cs" });
-  assert.deepEqual(reloadOptions, { preserveState: true, reason: "locale" });
 }
 
 async function verifyTooltip() {

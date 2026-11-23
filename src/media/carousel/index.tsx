@@ -1,10 +1,8 @@
 import { Icon } from "#lbkpzw8nphru";
-import { frontendClassName, frontendClassNames, frontendModifierClass } from "#5vbaqj4pirp3";
+import { frontendClassName, frontendClassNames, frontendDataAttrs, frontendModifierClass } from "#5vbaqj4pirp3";
 import { sourceLanguageMessage } from "#2d8f076g07hg";
-import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT } from "./icons.js";
-import { useCarouselState } from "./carousel-state.js";
-import type { CarouselState } from "./carousel-state.js";
-import { useResolvedLang } from "./lang.js";
+import { ICON_MEDIA_CHEVRON_LEFT, ICON_MEDIA_CHEVRON_RIGHT } from "./../icons.js";
+import { useResolvedLang } from "./../lang.js";
 
 type CarouselSlide = {
   alt?: string;
@@ -28,7 +26,6 @@ type CarouselLabel = (key: string, vars?: Record<string, unknown>) => string;
 type CarouselPartProps = {
   label: CarouselLabel;
   slides: readonly CarouselSlide[];
-  state: CarouselState;
 };
 
 function activeClass(name: string, active: boolean): string {
@@ -40,13 +37,12 @@ function rootClass(props: CarouselProps): string {
   return [frontendClassName("carousel"), placement, props.className].filter(Boolean).join(" ");
 }
 
-function CarouselControls({ label, state }: CarouselPartProps) {
+function CarouselControls({ label }: CarouselPartProps) {
   return (
     <>
     <button
     aria-label={label("mediaSlidePrevious")}
     className={frontendClassNames("carousel-nav", "carousel-nav-prev")}
-    onClick={state.showPrevious}
     type="button"
     >
     <Icon spec={ICON_MEDIA_CHEVRON_LEFT} />
@@ -54,7 +50,6 @@ function CarouselControls({ label, state }: CarouselPartProps) {
     <button
     aria-label={label("mediaSlideNext")}
     className={frontendClassNames("carousel-nav", "carousel-nav-next")}
-    onClick={state.showNext}
     type="button"
     >
     <Icon spec={ICON_MEDIA_CHEVRON_RIGHT} />
@@ -63,16 +58,15 @@ function CarouselControls({ label, state }: CarouselPartProps) {
   );
 }
 
-function CarouselDots({ label, slides, state }: CarouselPartProps) {
+function CarouselDots({ label, slides }: CarouselPartProps) {
   return (
     <div className={frontendClassName("carousel-dots")}>
     {slides.map((slide, index) => (
           <button
-          aria-current={index === state.activeIndex ? "true" : undefined}
+          aria-current={index === 0 ? "true" : undefined}
           aria-label={label("mediaSlide", { index: index + 1 })}
-          className={activeClass(frontendClassName("carousel-dot"), index === state.activeIndex)}
+          className={activeClass("carousel-dot", index === 0)}
           key={slide.src}
-          onClick={() => state.showAt(index)}
           type="button"
           />
     ))}
@@ -83,25 +77,21 @@ function CarouselDots({ label, slides, state }: CarouselPartProps) {
 function Carousel(props: CarouselProps) {
   const slides = props.slides ?? [];
   const lang = useResolvedLang(props.lang);
-  const state = useCarouselState(slides.length, props.intervalMs ?? 5000);
   const label: CarouselLabel = (key, vars) => sourceLanguageMessage(key, lang, vars);
-  const parts = { label, slides, state };
+  const parts = { label, slides };
 
   if (!slides.length) return null;
 
   return (
     <div
     className={rootClass(props)}
-    onBlur={state.onLeave}
-    onFocus={state.onEnter}
-    onMouseEnter={state.onEnter}
-    onMouseLeave={state.onLeave}
+    {...frontendDataAttrs({ "carousel": "", "carousel-interval": String(props.intervalMs ?? 5000) })}
     >
     {slides.map((slide, index) => (
           <img
           alt={slide.alt ?? ""}
-          aria-hidden={index === state.activeIndex ? undefined : "true"}
-          className={activeClass(frontendClassName("carousel-slide"), index === state.activeIndex)}
+          aria-hidden={index === 0 ? undefined : "true"}
+          className={activeClass("carousel-slide", index === 0)}
           key={slide.src}
           src={slide.src}
           />

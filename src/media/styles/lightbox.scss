@@ -62,7 +62,7 @@
 #{ns.class("lightbox")} {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: var(#{ns.css-var("z-modal")}, 1010);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -186,4 +186,8 @@
   #{ns.class("lightbox-nav-next")} {
     right: 1.5rem;
   }
+}
+
+#{ns.class("lightbox-nav")}[hidden] {
+  display: none;
 }

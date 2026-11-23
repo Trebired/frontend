@@ -72,8 +72,4 @@ function activeSection() {
   return active;
 }
 
-function serverActiveSection() {
-  return "";
-}
-
-export { activeSection, observeSections, serverActiveSection, subscribeActiveSection };
+export { activeSection, observeSections, subscribeActiveSection };

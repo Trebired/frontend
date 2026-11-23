@@ -19,6 +19,8 @@ import {
 
 import { bindIcons } from "./icons/index.js";
 import { bindLayouts, type LayoutRuntimeOptions } from "./layout/index.js";
+import { bindSiteHeaders } from "./layout/site_header/runtime.js";
+import { bindMedia } from "./media/runtime.js";
 import type { LiveSubscribe } from "./live/index.js";
 import { bindLazySystems } from "./runtime/lazy.js";
 import { setSpaRebind } from "./spa/config.js";
@@ -132,6 +134,8 @@ function bindFrontendWidgets(
   runBindStep(logger, "wizard", () => bindWizard(scope));
   runBindStep(logger, "tooltips", () => bindTooltips(scope));
   runBindStep(logger, "popovers", () => bindPopovers(scope));
+  runBindStep(logger, "siteHeaders", () => bindSiteHeaders(scope));
+  runBindStep(logger, "media", () => bindMedia(scope));
   runBindStep(logger, "modals", () => bindModals(scope));
   runBindStep(logger, "softRedirectLinks", () => bindSoftRedirectLinks(scope));
   runBindStep(logger, "actionTriggers", () => bindActionTriggers(scope, { navigation: adapters.navigation }));

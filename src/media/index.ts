@@ -5,18 +5,18 @@ export {
   ICON_MEDIA_MAXIMIZE,
   MEDIA_ICON_SPECS,
 } from "./icons.js";
-export { Carousel } from "./carousel.js";
-export type { CarouselControlsPlacement, CarouselProps, CarouselSlide } from "./carousel.js";
-export { prefersReducedMotion, useCarouselState } from "./carousel-state.js";
-export type { CarouselState } from "./carousel-state.js";
+export { Carousel } from "./carousel/index.js";
+export type { CarouselControlsPlacement, CarouselProps, CarouselSlide } from "./carousel/index.js";
+export { prefersReducedMotion, useCarouselState } from "./carousel/state.js";
+export type { CarouselState } from "./carousel/state.js";
 export { ExpandableImage } from "./expandable-image.js";
 export type { ExpandableImageProps } from "./expandable-image.js";
 export { useGalleryState } from "./gallery-state.js";
 export type { GalleryState } from "./gallery-state.js";
 export { Lightbox } from "./lightbox.js";
 export type { LightboxProps } from "./lightbox.js";
-export { EmbedFrame } from "./embed-frame.js";
-export type { EmbedFrameConsent, EmbedFrameLabels, EmbedFrameProps, EmbedFrameState } from "./embed-frame.js";
+export { EmbedFrame } from "./embed/frame.js";
+export type { EmbedFrameConsent, EmbedFrameLabels, EmbedFrameProps, EmbedFrameState } from "./embed/frame.js";
 export { FRAME_ATTRIBUTE, frontendFrameAttrs } from "./frames.js";
 export { MapEmbed } from "./map-embed.js";
 export type { MapEmbedProps } from "./map-embed.js";

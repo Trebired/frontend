@@ -4,6 +4,16 @@ All notable changes to `@trebired/frontend` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 32.1.1
+
+- `SiteHeader` works on a server-rendered page again. Its mobile menu, the desktop sheet of a link group, the fit check that falls back to the menu, the section highlight of fragment links and the site search ran on React state, which nothing hydrates since 32.0.0, so the toggle and the group triggers did nothing. The header now renders its closed state on the server and `bindFrontendRuntime` binds it, with the same behaviour as before: Escape, a press outside and a link close the menu and the sheet, a hover opens the sheet, and the search loads the index on focus and lists hits as you type.
+- `Carousel` works on a server-rendered page: `bindFrontendRuntime` binds its previous and next buttons, its dots and the autoplay, which pauses on hover and focus and stays off when motion is reduced. Its slides and dots no longer carry a doubled `tbf-tbf-` class, so the active slide and dot styles apply.
+- `EmbedFrame` and `MapEmbed` load on a server-rendered page. Their source used to be set from React, so a static page showed the loading state forever. The frame now starts loading when it comes within 300px of the viewport, and the timeout runs from then, so a frame far down the page no longer times out before anyone scrolls to it. Consent, the failure reasons and the fullscreen button work as before. The unused `onState` prop is removed.
+- `ExpandableImage` opens its lightbox on a server-rendered page. The lightbox markup ships in a `template` beside the image and `bindFrontendRuntime` opens it, with the arrow keys, Escape, the focus trap and the scroll lock as before.
+- The lightbox sits on the modal layer, above a sticky site header, which covered its top and its close button.
+- A popover with `tbf-popover-portaled`, such as the locale switcher's, moves to the layer root when it is bound instead of when it first opens, so its hidden panel no longer adds scroll overflow to the container it was rendered in, such as the site header's mobile menu.
+- Switching the language on a static site applies the new locale before the soft reload, so the page and the header render in the chosen language.
+
 ## 32.1.0
 
 - Log lines with an entry `id` carry the element id from the new `logLineElementId(id)`, so the element highlight can point at one log line.

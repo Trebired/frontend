@@ -1,3 +1,4 @@
+import { setCurrentLocale } from "#xp296eiocpdg";
 import { flash } from "./../flash/index.js";
 import { progress } from "./../progress/index.js";
 import { softReload, spaNavigationAdapter } from "./../spa/index.js";
@@ -25,10 +26,13 @@ function localeRuntimeOptions(
   if (locale.refresh || !adapters.reload?.reload) return locale;
   return {
     ...locale,
-    refresh: () => adapters.reload?.reload?.({
-        preserveState: true,
-        reason: "locale",
-    }),
+    refresh: (lang: string) => {
+      setCurrentLocale(lang);
+      return adapters.reload?.reload?.({
+          preserveState: true,
+          reason: "locale",
+      });
+    },
   };
 }
 

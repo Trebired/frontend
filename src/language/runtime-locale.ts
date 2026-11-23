@@ -1,6 +1,7 @@
 import { requestJsonPayload } from "#yasd5gi3ad9a";
 import { queryAll, type BindRoot } from "#er0dlx1gtbzh";
 import { softReload } from "#o9lroe7t0ma6";
+import { setCurrentLocale } from "#xp296eiocpdg";
 import { text } from "./shared.js";
 import { frontendDataAttr, frontendDataSelector } from "#5vbaqj4pirp3";
 
@@ -28,8 +29,9 @@ async function defaultPersistLocale(lang: string, endpoint: string) {
   });
 }
 
-function defaultRefreshLocale() {
+function defaultRefreshLocale(lang: string) {
   if (typeof window === "undefined") return false;
+  setCurrentLocale(lang);
   return softReload({ preserveState: true });
 }
 

@@ -1,9 +1,8 @@
-import { useEffect, useId, useSyncExternalStore } from "react";
+import { useId } from "react";
 import type { ReactNode } from "react";
 import { Disclosure, DisclosureButton } from "./../../../../inputs/components/disclosure.js";
 import { frontendClassName, frontendDataAttrs, frontendElementClass } from "#5vbaqj4pirp3";
 import { useRenderCurrentUrl } from "./../../../../render/current_url.js";
-import { activeSection, observeSections, serverActiveSection, subscribeActiveSection } from "./../section_spy.js";
 import {
   isSiteLinkActive,
   isSiteLinkGroup,
@@ -16,7 +15,6 @@ import {
   sitePathForms,
   type SiteLink,
 } from "./../link.js";
-import type { SiteHeaderSheet } from "./sheet.js";
 import { SiteHeaderSearch } from "./search.js";
 import { SiteLinkCategory } from "./../category.js";
 
@@ -25,15 +23,13 @@ type LinkRenderProps = {
   currentUrl: string;
   hasSection: boolean;
   lang?: string;
-  onNavigate?: () => void;
   section: string;
   softRedirect?: boolean;
-  tabIndex?: number;
 };
 
 type GroupProps = LinkRenderProps & { link: SiteLink; siblings?: SiteLink[] };
 
-type SheetProps = { sheet: SiteHeaderSheet; sheetId: string };
+type SheetProps = { sheetId: string };
 
 const block = "site-header";
 
@@ -44,15 +40,8 @@ function siteLinkLeaves(links: SiteLink[]): SiteLink[] {
 function useSiteLinkState(links: SiteLink[]) {
   const currentUrl = useRenderCurrentUrl();
   const currentPaths = sitePathForms(currentUrl);
-  const fragments = siteLinkLeaves(links)
-  .filter((link) => siteLinkFragment(link) && siteLinkOnCurrentPage(link, currentPaths))
-  .map((link) => siteLinkFragment(link));
-  const fragmentKey = fragments.join("|");
-  useEffect(() => {
-      observeSections(fragmentKey ? fragmentKey.split("|") : []);
-    }, [fragmentKey]);
-  const section = useSyncExternalStore(subscribeActiveSection, activeSection, serverActiveSection);
-  return { currentPaths, currentUrl, hasSection: fragments.length > 0, section };
+  const hasSection = siteLinkLeaves(links).some((link) => siteLinkFragment(link) && siteLinkOnCurrentPage(link, currentPaths));
+  return { currentPaths, currentUrl, hasSection, section: "" };
 }
 
 type AnchorProps = LinkRenderProps & { children?: ReactNode; className?: string; link: SiteLink; plain?: boolean; siblings?: SiteLink[] };
@@ -64,10 +53,8 @@ function SiteHeaderAnchor(props: AnchorProps) {
     active={isSiteLinkActive(link, currentPaths, section, hasSection, props.currentUrl, props.siblings)}
     className={className}
     link={link}
-    onNavigate={props.onNavigate}
     plain={props.plain}
     softRedirect={props.softRedirect}
-    tabIndex={props.tabIndex}
     >
     {props.children}
     </SiteLinkAnchor>
@@ -75,18 +62,13 @@ function SiteHeaderAnchor(props: AnchorProps) {
 }
 
 function SiteHeaderNavTrigger(props: GroupProps & SheetProps & { index: number }) {
-  const { link, sheet } = props;
+  const { link } = props;
   const key = String(props.index);
   return (
     <button
     aria-controls={`${props.sheetId}_${key}`}
-    aria-expanded={sheet.open === key}
+    aria-expanded={false}
     className={frontendElementClass(block, "nav-trigger")}
-    onClick={(event) => sheet.toggle(key, event.detail === 0)}
-    onPointerEnter={(event) => {
-        if (event.pointerType === "mouse") sheet.hover(key);
-    }}
-    tabIndex={props.tabIndex}
     type="button"
     {...frontendDataAttrs({ "site-header-trigger": key })}
     >
@@ -150,37 +132,34 @@ function SheetSection(props: GroupProps & { hidden: boolean; id: string; section
     {...frontendDataAttrs({ "site-header-section": props.sectionKey })}
     >
     {props.link.search ? (
-        <SiteHeaderSearch lang={props.lang} onNavigate={props.onNavigate} softRedirect={props.softRedirect}>{grid}</SiteHeaderSearch>
+        <SiteHeaderSearch lang={props.lang} softRedirect={props.softRedirect}>{grid}</SiteHeaderSearch>
       ) : grid}
     </div>
   );
 }
 
 function SiteHeaderSheetPanel(props: SheetProps & { lang?: string; links: SiteLink[]; softRedirect?: boolean }) {
-  const { links, sheet, sheetId } = props;
+  const { links, sheetId } = props;
   const state = useSiteLinkState(links);
   const groups = links.map((link, index) => ({ index, link })).filter(({ link }) => isSiteLinkGroup(link));
   if (!groups.length) return null;
-  const open = Boolean(sheet.open);
   return (
     <div
-    aria-hidden={!open}
+    aria-hidden={true}
     className={frontendElementClass(block, "sheet")}
-    inert={!open}
-    onPointerEnter={sheet.stay}
-    {...frontendDataAttrs({ "site-header-sheet": open ? "open" : "closed" })}
+    inert
+    {...frontendDataAttrs({ "site-header-sheet": "closed" })}
     >
     <div className={`${frontendElementClass(block, "sheet-body")} ${frontendClassName("scroll-min")}`}>
     <div className={frontendElementClass(block, "sheet-content")}>
     {groups.map(({ index, link }) => (
           <SheetSection
           {...state}
-          hidden={sheet.current !== String(index)}
+          hidden
           id={`${sheetId}_${index}`}
           key={siteLinkKey(link, index)}
           lang={props.lang}
           link={link}
-          onNavigate={sheet.close}
           sectionKey={String(index)}
           softRedirect={props.softRedirect}
           />
@@ -216,7 +195,7 @@ function MenuGroupLinks(props: GroupProps) {
     </div>
   );
   if (!props.link.search) return links;
-  return <SiteHeaderSearch lang={props.lang} onNavigate={props.onNavigate} softRedirect={props.softRedirect}>{links}</SiteHeaderSearch>;
+  return <SiteHeaderSearch lang={props.lang} softRedirect={props.softRedirect}>{links}</SiteHeaderSearch>;
 }
 
 function SiteHeaderMenuGroup(props: GroupProps) {
